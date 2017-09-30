@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have an user_id
 if($user_id == '') {
-    force_page('user', 'search', 'warning_msg='.gettext("No User ID supplied."));
+    force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
     exit;
 }
 

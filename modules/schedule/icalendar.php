@@ -14,13 +14,13 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have a schedule_id or output is set to day
 if($schedule_id == '' && !$VAR['ics_type'] == 'day') {    
-    force_page('schedule', 'search', 'warning_msg='.gettext("Output type or Schedule ID is missing."));
+    force_page('schedule', 'search', 'warning_msg='._gettext("Output type or Schedule ID is missing."));
     exit;
 }
 
 // Check if we have all of the date information
 if($start_year == '' || $start_month == '' || $start_day == '') {
-    force_page('user', 'search', 'warning_msg='.gettext("Some date information is missing."));
+    force_page('user', 'search', 'warning_msg='._gettext("Some date information is missing."));
     exit;
 }
 

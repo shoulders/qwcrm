@@ -43,7 +43,7 @@ function display_workorder_schedules($db, $workorder_id){
     $sql = "SELECT * FROM ".PRFX."schedule WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the work order schedules."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the work order schedules."));
         exit;
     } else {
         
@@ -85,7 +85,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
             notes           =". $db->qstr( $notes           );            
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the schedule record into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
         exit;
     } else {
         
@@ -99,10 +99,10 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         update_workorder_status($db, $workorder_id, 'scheduled'); 
         
         // Insert Work Order History Note
-        insert_workorder_history_note($db, $workorder_id, gettext("Schedule").' '.$schedule_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($db, $workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        write_record_to_activity_log(gettext("Schedule").' '.$schedule_id.' '.gettext("has been created and added to work order").' '.$workorder_id.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');     
+        write_record_to_activity_log(_gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$workorder_id.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');     
         
         // Update last active record
         update_workorder_last_active($db, $workorder_id);
@@ -125,7 +125,7 @@ function get_schedule_details($db, $schedule_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."schedule WHERE schedule_id=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the schedule details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
         exit;
     } else { 
         
@@ -162,7 +162,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $
             ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get all schedule IDs belonging to an employee."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
         exit;
     } else {
         
@@ -205,15 +205,15 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         WHERE schedule_id   =". $db->qstr( $schedule_id         );
    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a schedule record."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
         exit;
     } else {       
          
         // Insert Work Order History Note
-        insert_workorder_history_note($db, $workorder_id, gettext("Schedule").' '.$schedule_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($db, $workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        write_record_to_activity_log(gettext("Schedule").' '.$schedule_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record
         update_workorder_last_active($db, $workorder_id);
@@ -241,7 +241,7 @@ function delete_schedule($db, $schedule_id) {
     $sql = "DELETE FROM ".PRFX."schedule WHERE schedule_id =".$db->qstr($schedule_id);
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete a schedule record."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
         exit;
         
     } else {
@@ -257,10 +257,10 @@ function delete_schedule($db, $schedule_id) {
         }
         
         // Create a Workorder History Note        
-        insert_workorder_history_note($db, $schedule_details['workorder_id'], gettext("Schedule").' '.$schedule_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($db, $schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
-        write_record_to_activity_log(gettext("Schedule").' '.$schedule_id.' '.gettext("for Work Order").' '.$schedule_details['workorder_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record
         update_workorder_last_active($db, $schedule_details['workorder_id']);
@@ -400,22 +400,22 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
     if($type == 'textarea') {      
 
         // Workorder and Schedule Information
-        $description =  gettext("Scope").': \n\n'.
+        $description =  _gettext("Scope").': \n\n'.
                         $workorder['scope'].'\n\n'.
-                        gettext("Description").': \n\n'.
+                        _gettext("Description").': \n\n'.
                         html_to_textarea($workorder['description']).'\n\n'.
-                        gettext("Schedule Notes").': \n\n'.
+                        _gettext("Schedule Notes").': \n\n'.
                         html_to_textarea($single_schedule['notes']);
 
         // Contact Information
-        $description .= gettext("Contact Information")  .''.'\n\n'.
-                        gettext("Company")              .': '   .$customer['display_name'].'\n\n'.
-                        gettext("Contact")              .': '   .$customer['first_name'].' '.$customer['last_name'].'\n\n'.
-                        gettext("Phone")                .': '   .$customer['primary_phone'].'\n\n'.
-                        gettext("Mobile")               .': '   .$customer['mobile_phone'].'\n\n'.
-                        gettext("Website")              .': '   .$customer['website'].'\n\n'.
-                        gettext("Email")                .': '   .$customer['email'].'\n\n'.
-                        gettext("Address")              .': '   .build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']).'\n\n';                        
+        $description .= _gettext("Contact Information")  .''.'\n\n'.
+                        _gettext("Company")              .': '   .$customer['display_name'].'\n\n'.
+                        _gettext("Contact")              .': '   .$customer['first_name'].' '.$customer['last_name'].'\n\n'.
+                        _gettext("Phone")                .': '   .$customer['primary_phone'].'\n\n'.
+                        _gettext("Mobile")               .': '   .$customer['mobile_phone'].'\n\n'.
+                        _gettext("Website")              .': '   .$customer['website'].'\n\n'.
+                        _gettext("Email")                .': '   .$customer['email'].'\n\n'.
+                        _gettext("Address")              .': '   .build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']).'\n\n';                        
     
     }
     
@@ -431,24 +431,24 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
                         '<BODY>\n';
     
         // Workorder and Schedule Information
-        $description .= '<p><strong>'.gettext("Scope").': </strong></p>'.
+        $description .= '<p><strong>'._gettext("Scope").': </strong></p>'.
                         '<p>'.$workorder['scope'].'</p>'.
-                        '<p><strong>'.gettext("Description").': </strong></p>'.
+                        '<p><strong>'._gettext("Description").': </strong></p>'.
                         '<div>'.$workorder['description'].'</div>'.
-                        '<p><strong>'.gettext("Schedule Notes").': </strong></p>'.
+                        '<p><strong>'._gettext("Schedule Notes").': </strong></p>'.
                         '<div>'.$single_schedule['notes'].'</div>';        
 
         // Contact Information
-        $description .= '<p><strong>'.gettext("Contact Information").'</strong></p>'.
+        $description .= '<p><strong>'._gettext("Contact Information").'</strong></p>'.
                         '<p>'.
-                        '<strong>'.gettext("Company")   .':</strong> '  .$customer['display_name'].'<br>'.
-                        '<strong>'.gettext("Contact")   .':</strong> '  .$customer['first_name'].' '.$customer['last_name'].'<br>'.              
-                        '<strong>'.gettext("Phone")     .':</strong> '  .$customer['primary_phone'].'<br>'.
-                        '<strong>'.gettext("Mobile")    .':</strong> '  .$customer['mobile_phone'].'<br>'.
-                        '<strong>'.gettext("Website")   .':</strong> '  .$customer['website'].
-                        '<strong>'.gettext("Email")     .':</strong> '  .$customer['email'].'<br>'.                        
+                        '<strong>'._gettext("Company")   .':</strong> '  .$customer['display_name'].'<br>'.
+                        '<strong>'._gettext("Contact")   .':</strong> '  .$customer['first_name'].' '.$customer['last_name'].'<br>'.              
+                        '<strong>'._gettext("Phone")     .':</strong> '  .$customer['primary_phone'].'<br>'.
+                        '<strong>'._gettext("Mobile")    .':</strong> '  .$customer['mobile_phone'].'<br>'.
+                        '<strong>'._gettext("Website")   .':</strong> '  .$customer['website'].
+                        '<strong>'._gettext("Email")     .':</strong> '  .$customer['email'].'<br>'.                        
                         '</p>'.                
-                        '<p><strong>'.gettext("Contact Information").'Address: </strong></p>'.
+                        '<p><strong>'._gettext("Contact Information").'Address: </strong></p>'.
                         build_html_adddress($customer['address'], $customer['city'], $customer['state'], $customer['zip']);
         
         // Close HTML Wrapper
@@ -604,7 +604,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
         ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the selected schedules."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         exit;
     }
 
@@ -673,21 +673,21 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
                 $calendar .= "<td class=\"menutd2\" align=\"center\" >\n";
 
                 // Schedule Item Title
-                $calendar .= "<b><font color=\"red\">".gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." ".gettext("for")." ". $scheduleObject[$i]['customer_display_name']."</font></b><br>\n";
+                $calendar .= "<b><font color=\"red\">"._gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." "._gettext("for")." ". $scheduleObject[$i]['customer_display_name']."</font></b><br>\n";
 
                 // Time period of schedule
                 $calendar .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['start_time'])." - ".date("H:i",$scheduleObject[$i]['end_time'])."</font></b><br>\n";
 
                 // Schedule Notes
-                $calendar .= "<div style=\"color: blue; font-weight: bold;\">".gettext("Notes").":  ".$scheduleObject[$i]['notes']."</div><br>\n";
+                $calendar .= "<div style=\"color: blue; font-weight: bold;\">"._gettext("Notes").":  ".$scheduleObject[$i]['notes']."</div><br>\n";
 
                 // Links for schedule
-                $calendar .= "<b><a href=\"index.php?page=workorder:details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">".gettext("Work Order")."</a> - </b>";
-                $calendar .= "<b><a href=\"index.php?page=schedule:details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">".gettext("Details")."</a></b>";
+                $calendar .= "<b><a href=\"index.php?page=workorder:details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
+                $calendar .= "<b><a href=\"index.php?page=schedule:details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
                 if(!get_workorder_details($db, $scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
-                    $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">".gettext("Edit")."</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">".gettext("iCalendar")."</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('".gettext("Are you sure you want to delete this schedule?")."');\">".gettext("Delete")."</a></b>\n";                                    
+                    $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("iCalendar")."</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
                 }
 
                 // Close CELL
@@ -759,19 +759,19 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
      
     // If start time is after end time show message and stop further processing
     if($start_timestamp > $end_timestamp) {        
-        $smarty->assign('warning_msg', gettext("Schedule ends before it starts."));
+        $smarty->assign('warning_msg', _gettext("Schedule ends before it starts."));
         return false;
     }
 
     // If the start time is the same as the end time show message and stop further processing
     if($start_timestamp == $end_timestamp) {       
-        $smarty->assign('warning_msg', gettext("Start Time and End Time are the Same."));        
+        $smarty->assign('warning_msg', _gettext("Start Time and End Time are the Same."));        
         return false;
     }
 
     // Check the schedule is within Company Hours    
     if($start_timestamp < $company_day_start || $end_timestamp > $company_day_end) {            
-        $smarty->assign('warning_msg', gettext("You cannot book work outside of company hours"));    
+        $smarty->assign('warning_msg', _gettext("You cannot book work outside of company hours"));    
         return false;
     }    
 
@@ -786,7 +786,7 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
             ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the selected schedules."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         exit;
     }   
     
@@ -798,13 +798,13 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
 
             // Check if this schedule item ends after another item has started      
             if($start_timestamp <= $rs->fields['start_time'] && $end_timestamp >= $rs->fields['start_time']) {                        
-                $smarty->assign('warning_msg', gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
+                $smarty->assign('warning_msg', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
                 return false;           
             }
 
             // Check if this schedule item starts before another item has finished
             if($start_timestamp >= $rs->fields['start_time'] && $start_timestamp <= $rs->fields['end_time']) {                    
-                $smarty->assign('warning_msg', gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
+                $smarty->assign('warning_msg', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
                 return false;
             }
         
@@ -829,7 +829,7 @@ function count_workorder_schedule_items($db, $workorder_id) {
             WHERE workorder_id=".$db->qstr($workorder_id);         
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not count schedule items for the specified Work Order."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
         exit;
         
     } else {      

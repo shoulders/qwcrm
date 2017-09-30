@@ -64,7 +64,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching supplier records."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching supplier records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -110,7 +110,7 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching supplier records."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching supplier records."));
         exit;
     } else {
         
@@ -157,12 +157,12 @@ function insert_supplier($db, $VAR) {
             notes          =". $db->qstr( $VAR['notes']         );            
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the supplier record into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '.gettext("created."));
+        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '._gettext("created."));
 
         return $db->Insert_ID();
         
@@ -181,7 +181,7 @@ function get_supplier_details($db, $supplier_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."supplier WHERE supplier_id=".$db->qstr($supplier_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the supplier details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the supplier details."));
         exit;
     } else {
         
@@ -208,7 +208,7 @@ function get_supplier_types($db) {
     $sql = "SELECT * FROM ".PRFX."supplier_types";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get supplier types."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get supplier types."));
         exit;
     } else {
         
@@ -246,12 +246,12 @@ function update_supplier($db, $supplier_id, $VAR) {
             WHERE supplier_id = ". $db->qstr( $supplier_id );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the supplier details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '.gettext("updated."));
+        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '._gettext("updated."));
 
         return true;
         
@@ -274,12 +274,12 @@ function delete_supplier($db, $supplier_id) {
     $sql = "DELETE FROM ".PRFX."supplier WHERE supplier_id=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the supplier record."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Supplier Record").' '.$db->Insert_ID().' ('.$display_name.') '.gettext("deleted."));
+        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$display_name.') '._gettext("deleted."));
         
         return true;
         
@@ -298,7 +298,7 @@ function last_supplier_id_lookup($db) {
     $sql = "SELECT * FROM ".PRFX."supplier ORDER BY supplier_id DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last supplier record ID."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
         exit;
     } else {
         

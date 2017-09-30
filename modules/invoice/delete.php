@@ -15,12 +15,12 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have an invoice_id
 if($invoice_id == '') {
-    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
+    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
     exit;
 }
 
@@ -37,7 +37,7 @@ if(!delete_invoice($db, $invoice_id)) {
 } else {   
     
     // load the work order invoice page
-    force_page('invoice', 'search', 'information_msg='.gettext("The invoice has been deleted successfully."));
+    force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been deleted successfully."));
     exit;
     
 }

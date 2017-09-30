@@ -20,7 +20,7 @@ if(isset($VAR['submit'])) {
     update_payment_settings($db, $VAR);
 
     // Assign success message    
-    $smarty->assign('information_msg', gettext("Payment Options Updated.")  );    
+    $smarty->assign('information_msg', _gettext("Payment Options Updated.")  );    
     
 }
 

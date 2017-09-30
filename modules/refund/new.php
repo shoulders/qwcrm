@@ -23,13 +23,13 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     if (isset($VAR['submitandnew'])){
 
         // Load New Refund page
-        force_page('refund', 'new', 'information_msg='.gettext("Refund added successfully.")); 
+        force_page('refund', 'new', 'information_msg='._gettext("Refund added successfully.")); 
         exit;
 
     } else {
 
         // Load Refund Details page
-        force_page('refund', 'details', 'refund_id='.$refund_id.'&information_msg='.gettext("Refund added successfully."));        
+        force_page('refund', 'details', 'refund_id='.$refund_id.'&information_msg='._gettext("Refund added successfully."));        
         exit;
 
     }

@@ -13,12 +13,12 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have a workorder_id
 if($workorder_id == '') {
-    force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
     exit;
 }
 
@@ -33,7 +33,7 @@ if(!delete_workorder($db, $workorder_id)) {
     
     
     // load the workorder overview page
-    force_page('workorder', 'overview', 'information_msg='.gettext("Work Order has been deleted."));
+    force_page('workorder', 'overview', 'information_msg='._gettext("Work Order has been deleted."));
     exit;
     
 }

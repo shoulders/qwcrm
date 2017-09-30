@@ -30,7 +30,7 @@ if($QConfig->qwcrm_smarty_debugging == true) {
 // Advanced Debug - Only use in offline sites and for developement only
 if($QConfig->qwcrm_advanced_debug == true) {
 
-    $BuildPage .= "\r\n\r\n<div><p><strong>".gettext("QWcrm Advanced Debug Section")."</strong></p></div>\r\n";
+    $BuildPage .= "\r\n\r\n<div><p><strong>"._gettext("QWcrm Advanced Debug Section")."</strong></p></div>\r\n";
  
     /* 
      * All defined PHP Variables
@@ -45,25 +45,25 @@ if($QConfig->qwcrm_advanced_debug == true) {
      * This explains the page seemingly being display 3 times when debug is on
      * 
      */    
-    $BuildPage .= "<div><p><strong>".gettext("All Defined PHP Variables").":</strong></p></div>\r\n";    
+    $BuildPage .= "<div><p><strong>"._gettext("All Defined PHP Variables").":</strong></p></div>\r\n";    
     $BuildPage .= '<pre>'.print_r(get_defined_vars(), true).'</pre>';
     
     /* 
      * All defined PHP Constants
      */    
-    $BuildPage .= "<div><p><strong>".gettext("All Defined PHP Constants").":</strong></p></div>\r\n";
+    $BuildPage .= "<div><p><strong>"._gettext("All Defined PHP Constants").":</strong></p></div>\r\n";
     $BuildPage .= '<pre>'.print_r(get_defined_constants(), true).'</pre>';
 
     /* 
      * All defined PHP functions
      */    
-    $BuildPage .= "<div><p><strong>".gettext("All Defined PHP Functions").":</strong></p></div>\r\n";
+    $BuildPage .= "<div><p><strong>"._gettext("All Defined PHP Functions").":</strong></p></div>\r\n";
     $BuildPage .= '<pre>'.print_r(get_defined_functions(), true).'</pre>';    
 
     /* 
      * All declared PHP Classes
      */    
-    $BuildPage .= "<div><p><strong>".gettext("All Declared PHP Classes").":</strong></p></div>\r\n";
+    $BuildPage .= "<div><p><strong>"._gettext("All Declared PHP Classes").":</strong></p></div>\r\n";
     $BuildPage .= '<pre>'.print_r(get_declared_classes(), true).'</pre>';   
     
 }

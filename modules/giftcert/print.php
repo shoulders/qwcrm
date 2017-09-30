@@ -24,13 +24,13 @@ $barcode = $bc_generator->getBarcode(get_giftcert_details($db, $giftcert_id, 'gi
 
 // Check if we have an giftcert_id
 if($giftcert_id == '') {
-    force_page('giftcert', 'search', 'warning_msg='.gettext("No Gift Certificate ID supplied."));
+    force_page('giftcert', 'search', 'warning_msg='._gettext("No Gift Certificate ID supplied."));
     exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
-    force_page('giftcert', 'search', 'warning_msg='.gettext("Some or all of the Printing Options are not set."));
+    force_page('giftcert', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
     exit;
 }
 
@@ -45,7 +45,7 @@ $smarty->assign('barcode',          $barcode                                    
 if($VAR['print_content'] == 'gift_certificate') {    
     
     // Build the PDF filename
-    $pdf_filename = gettext("Gift Certificate").' '.$giftcert_id;
+    $pdf_filename = _gettext("Gift Certificate").' '.$giftcert_id;
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
@@ -79,7 +79,7 @@ if($VAR['print_content'] == 'gift_certificate') {
         $body = get_email_message_body($db, 'email_msg_giftcert', $customer_details);
                       
         // Email the PDF
-        send_email($customer_details['email'], gettext("Gift Certificate").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Gift Certificate").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();

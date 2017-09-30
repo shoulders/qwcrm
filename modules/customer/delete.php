@@ -12,12 +12,12 @@ require(INCLUDES_DIR.'modules/customer.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have a customer_id
 if($customer_id == '') {
-    force_page('customer', 'search', 'warning_msg='.gettext("No Customer ID supplied."));
+    force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
     exit;
 }
 

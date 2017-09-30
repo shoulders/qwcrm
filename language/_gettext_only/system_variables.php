@@ -13,111 +13,111 @@
 
 /* Workorder Statuses */
 
-gettext("Unassigned");
-gettext("Assigned");
-gettext("Waiting for Parts");
-gettext("Scheduled");
-gettext("With Client");
-gettext("On Hold");
-gettext("Management");
-gettext("Closed without Invoice");
-gettext("Closed with Invoice");
+_gettext("Unassigned");
+_gettext("Assigned");
+_gettext("Waiting for Parts");
+_gettext("Scheduled");
+_gettext("With Client");
+_gettext("On Hold");
+_gettext("Management");
+_gettext("Closed without Invoice");
+_gettext("Closed with Invoice");
 
 /* Invoice Statuses */
 
-gettext("Pending");
-gettext("Unpaid");
-gettext("Partially Paid");
-gettext("Paid");
-gettext("In Dispute");
-gettext("Overdue");
-gettext("Cancelled");
-gettext("Refunded");
-gettext("Collections");
+_gettext("Pending");
+_gettext("Unpaid");
+_gettext("Partially Paid");
+_gettext("Paid");
+_gettext("In Dispute");
+_gettext("Overdue");
+_gettext("Cancelled");
+_gettext("Refunded");
+_gettext("Collections");
 
 /* Customer */
 
-gettext("Residential");
-gettext("Commercial");
-gettext("Charity");
-gettext("Educational");
-gettext("Goverment");
+_gettext("Residential");
+_gettext("Commercial");
+_gettext("Charity");
+_gettext("Educational");
+_gettext("Goverment");
 
 /* Manual Payment Methods */
 
-gettext("Bank Transfer");
-gettext("Card");
-gettext("Cash");
-gettext("Cheque");
-gettext("Credit");
-gettext("Direct Debit");
-gettext("Gift Certificate");
-gettext("Google Checkout"); 
-gettext("Other");
-gettext("PayPal");
-gettext("Voucher");
+_gettext("Bank Transfer");
+_gettext("Card");
+_gettext("Cash");
+_gettext("Cheque");
+_gettext("Credit");
+_gettext("Direct Debit");
+_gettext("Gift Certificate");
+_gettext("Google Checkout"); 
+_gettext("Other");
+_gettext("PayPal");
+_gettext("Voucher");
 
 /* System Payment Methods */
 
-gettext("Cash");
-gettext("Cheque");
-gettext("Credit Card");
-gettext("Direct Debit");
-gettext("Gift Certificate");
-gettext("PayPal");
+_gettext("Cash");
+_gettext("Cheque");
+_gettext("Credit Card");
+_gettext("Direct Debit");
+_gettext("Gift Certificate");
+_gettext("PayPal");
 
 /* Credit Cards */
 
-gettext("Visa");
-gettext("MasterCard");
-gettext("American Express");
-gettext("Debit Card");
-gettext("Other");
+_gettext("Visa");
+_gettext("MasterCard");
+_gettext("American Express");
+_gettext("Debit Card");
+_gettext("Other");
 
 /* Expense */
 
-gettext("Advertising");
-gettext("Bank Charges");
-gettext("Broadband");
-gettext("Credit");
-gettext("Customer Refund");
-gettext("Equipment");
-gettext("Fuel");
-gettext("Gift Certificate");
-gettext("Landline");
-gettext("Mobile Phone");
-gettext("Office Supplies");
-gettext("Online");
-gettext("Other");
-gettext("Parts");
-gettext("Postage");
-gettext("Rent");
-gettext("Services");
-gettext("Software");
-gettext("Tax");
-gettext("Transport");
-gettext("Utilities");
-gettext("Voucher");
-gettext("Wages");
+_gettext("Advertising");
+_gettext("Bank Charges");
+_gettext("Broadband");
+_gettext("Credit");
+_gettext("Customer Refund");
+_gettext("Equipment");
+_gettext("Fuel");
+_gettext("Gift Certificate");
+_gettext("Landline");
+_gettext("Mobile Phone");
+_gettext("Office Supplies");
+_gettext("Online");
+_gettext("Other");
+_gettext("Parts");
+_gettext("Postage");
+_gettext("Rent");
+_gettext("Services");
+_gettext("Software");
+_gettext("Tax");
+_gettext("Transport");
+_gettext("Utilities");
+_gettext("Voucher");
+_gettext("Wages");
 
 /* Refund */
 
-gettext("Credit Note");
-gettext("Other");
-gettext("Proxy Invoice");
-gettext("Returned Goods");
-gettext("Returned Services");
+_gettext("Credit Note");
+_gettext("Other");
+_gettext("Proxy Invoice");
+_gettext("Returned Goods");
+_gettext("Returned Services");
 
 /* Supplier */
 
-gettext("Advertising");
-gettext("Affiliate Marketing");
-gettext("Courier");
-gettext("Drop Shipping");
-gettext("General");
-gettext("Online");
-gettext("Other");
-gettext("Parts");
-gettext("Services");
-gettext("Software");
-gettext("Wholesale");
+_gettext("Advertising");
+_gettext("Affiliate Marketing");
+_gettext("Courier");
+_gettext("Drop Shipping");
+_gettext("General");
+_gettext("Online");
+_gettext("Other");
+_gettext("Parts");
+_gettext("Services");
+_gettext("Software");
+_gettext("Wholesale");

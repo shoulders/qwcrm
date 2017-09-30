@@ -15,7 +15,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have a schedule_id
 if($schedule_id == '') {
-    force_page('schedule', 'search', 'warning_msg='.gettext("No Schedule ID supplied."));
+    force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
     exit;
 }
 
@@ -40,7 +40,7 @@ if(isset($VAR['submit'])) {
         $start_day             = date('d', date_to_timestamp($VAR['start_date'])  );    
     
         // Load the schedule day with the updated schedule item
-        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='.gettext("Schedule Successfully Updated"));
+        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='._gettext("Schedule Successfully Updated"));
         exit;
         
     }

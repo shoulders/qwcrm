@@ -16,13 +16,13 @@ require(INCLUDES_DIR.'mpdf.php');
 
 // Check if we have a workorder_id
 if($workorder_id == '') {
-    force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
     exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
-    force_page('workorder', 'overview', 'warning_msg='.gettext("Some or all of the Printing Options are not set."));
+    force_page('workorder', 'overview', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
     exit;
 }
 
@@ -41,7 +41,7 @@ $smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workor
 if($VAR['print_content'] == 'technician_workorder_slip') {    
     
     // Build the PDF filename
-    $pdf_filename = gettext("Technician Workorder Slip").' '.$workorder_id;
+    $pdf_filename = _gettext("Technician Workorder Slip").' '.$workorder_id;
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
@@ -75,7 +75,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
         $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
                       
         // Email the PDF
-        send_email($customer_details['email'], gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();
@@ -87,7 +87,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
 if($VAR['print_content'] == 'customer_workorder_slip') {
     
     // Build the PDF filename
-    $pdf_filename = gettext("Customer Workorder Slip").' '.$workorder_id;    
+    $pdf_filename = _gettext("Customer Workorder Slip").' '.$workorder_id;    
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
@@ -121,7 +121,7 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
         $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
                       
         // Email the PDF
-        send_email($customer_details['email'], gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();
@@ -133,7 +133,7 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
 if($VAR['print_content'] == 'technician_job_sheet') {
     
     // Build the PDF filename
-    $pdf_filename = gettext("Technician Job Sheet").' '.$workorder_id;        
+    $pdf_filename = _gettext("Technician Job Sheet").' '.$workorder_id;        
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
@@ -167,7 +167,7 @@ if($VAR['print_content'] == 'technician_job_sheet') {
         $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
                       
         // Email the PDF
-        send_email($customer_details['email'], gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();

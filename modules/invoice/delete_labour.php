@@ -14,12 +14,12 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have an invoice labour_id
 if($VAR['labour_id'] == '') {
-    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice Labour ID supplied."));
+    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice Labour ID supplied."));
     exit;
 }
 

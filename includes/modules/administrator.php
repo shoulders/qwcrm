@@ -86,7 +86,7 @@ function update_acl($db, $permissions) {
                 WHERE `page`    ='". $page_name."';";
             
         if(!$rs = $db->execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Submitted ACL permissions."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
             exit;    
         }                 
 
@@ -136,14 +136,14 @@ function update_acl($db, $permissions) {
                 WHERE `page`    ='". $page_name."';";
 
          if(!$rs = $db->execute($sql)) {
-             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Mandatory ACL permissions."));
+             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
              exit;    
         }               
         
     }
     
     // Log activity        
-    write_record_to_activity_log(gettext("ACL permissions updated."));      
+    write_record_to_activity_log(_gettext("ACL permissions updated."));      
 
 }
 
@@ -174,7 +174,7 @@ function update_qwcrm_config($new_config) {
     write_config_file($merged_config);
     
     // Log activity        
-    write_record_to_activity_log(gettext("QWcrm config settings updated."));   
+    write_record_to_activity_log(_gettext("QWcrm config settings updated."));   
 
     return true;
     
@@ -201,7 +201,7 @@ function delete_qwcrm_config_setting($key) {
     write_config_file($qwcrm_config);
     
     // Log activity
-    write_record_to_activity_log(gettext("The QWcrm config setting").' `'.$key.'` '.gettext("was deleted."));    
+    write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
 
     return true;
     
@@ -257,13 +257,13 @@ function check_for_qwcrm_update() {
 
     // If there is a connection error
     if($curl_error) {         
-        $smarty->assign('warning_msg', gettext("Connection Error - cURL Error Number").': '.$curl_error);
+        $smarty->assign('warning_msg', _gettext("Connection Error - cURL Error Number").': '.$curl_error);
         return;        
     }
     
     // If no response return with error message
     if($curl_response == '' || $curl_error) {         
-        $smarty->assign('warning_msg', gettext("No response from the QWcrm update server."));
+        $smarty->assign('warning_msg', _gettext("No response from the QWcrm update server."));
         $smarty->assign('update_response', 'no_response');
         return;        
     }
@@ -273,7 +273,7 @@ function check_for_qwcrm_update() {
     
     // Verify there is a real response and flag error if not
     if(!$update_response['name']) {
-        $smarty->assign('warning_msg', gettext("No response from the QWcrm update server."));
+        $smarty->assign('warning_msg', _gettext("No response from the QWcrm update server."));
         $smarty->assign('update_response', 'no_response');
         return;       
     }
@@ -296,7 +296,7 @@ function check_for_qwcrm_update() {
     $smarty->assign('update_response', $update_response);
     
     // Log activity        
-    write_record_to_activity_log(gettext("QWcrm checked for updates."));
+    write_record_to_activity_log(_gettext("QWcrm checked for updates."));
 
     return;
 
@@ -311,7 +311,7 @@ function load_acl($db) {
     $sql = "SELECT * FROM ".PRFX."user_acl ORDER BY page";
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to load the Page ACL permissions from the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
         exit;
     }
     
@@ -401,7 +401,7 @@ function prepare_config_data($new_config) {
         $sql = "TRUNCATE ".PRFX."session";                    
           
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the database session table."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
             exit;
             
         }
@@ -441,10 +441,10 @@ function send_test_mail($db) {
     
     $user_details = get_user_details($db, QFactory::getUser()->login_user_id);
     
-    send_email($user_details['email'], gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.QFactory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
+    send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.QFactory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
     
     // Log activity        
-    write_record_to_activity_log(gettext("Test email initiated."));
+    write_record_to_activity_log(_gettext("Test email initiated."));
     
 }
 
@@ -466,10 +466,10 @@ function clear_smarty_cache() {
     //$smarty->clearAllCache(3600);
     
     // Output the system message to the browser   
-    output_notifications_onscreen(gettext("The Smarty cache has been emptied successfully."), '');
+    output_notifications_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
     
     // Log activity        
-    write_record_to_activity_log(gettext("Smarty Cache Cleared."));
+    write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
     
 }
 
@@ -491,10 +491,10 @@ function clear_smarty_compile() {
     $smarty->clearCompiledTemplate();
     
     // Output the system message to the browser   
-    output_notifications_onscreen(gettext("The Smarty compile directory has been emptied successfully."), '');
+    output_notifications_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
     
     // Log activity        
-    write_record_to_activity_log(gettext("Smarty Compile Cache Cleared."));    
+    write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
     
 }
 
@@ -508,7 +508,7 @@ function reset_acl_permissions($db) {
     $sql = "TRUNCATE ".PRFX."user_acl";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed reset default permissions."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
         exit;
         
     } else {
@@ -610,7 +610,7 @@ function reset_acl_permissions($db) {
                 ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed reset default permissions."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
             exit;
 
         }
@@ -618,7 +618,7 @@ function reset_acl_permissions($db) {
     }
     
     // Log activity        
-    write_record_to_activity_log(gettext("ACL permissions reset to default settings."));    
+    write_record_to_activity_log(_gettext("ACL permissions reset to default settings."));    
     
     return;
     

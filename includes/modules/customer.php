@@ -61,7 +61,7 @@ function display_customers($db, $direction = 'DESC', $use_pages = false, $page_n
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of matching customer records."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching customer records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -105,7 +105,7 @@ function display_customers($db, $direction = 'DESC', $use_pages = false, $page_n
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching customer records."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching customer records."));
         exit;
         
     } else {        
@@ -156,12 +156,12 @@ function insert_customer($db, $VAR) {
             create_date     =". $db->qstr( time()                   );          
                         
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer record into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer record into the database."));
         exit;
     } else {
         
         // Log activity 
-        write_record_to_activity_log(gettext("New customer").', '.$VAR['display_name'].', '.gettext("has been created."), null, $db->Insert_ID());        
+        write_record_to_activity_log(_gettext("New customer").', '.$VAR['display_name'].', '._gettext("has been created."), null, $db->Insert_ID());        
         
         return $db->Insert_ID();
         
@@ -182,13 +182,13 @@ function insert_customer_note($db, $customer_id, $note) {
             note        =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the customer note into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer note into the database."));
         exit;
         
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("A new customer note was added to the customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("A new customer note was added to the customer").' '.get_customer_details($db, $customer_id, 'display_name').' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record      
         update_customer_last_active($db, $customer_id);
@@ -210,7 +210,7 @@ function get_customer_details($db, $customer_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer's details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's details."));
         exit;
     } else { 
         
@@ -237,7 +237,7 @@ function get_customer_note($db, $customer_note_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer note."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer note."));
         exit;
     } else { 
         
@@ -264,7 +264,7 @@ function get_customer_notes($db, $customer_id) {
     $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr( $customer_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the customer's notes."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's notes."));
         exit;
     } else {
         
@@ -283,7 +283,7 @@ function get_customer_types($db) {
     $sql = "SELECT * FROM ".PRFX."customer_types";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get customer types."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get customer types."));
         exit;
     } else {
         
@@ -323,12 +323,12 @@ function update_customer($db, $customer_id, $VAR) {
             WHERE customer_id   =". $db->qstr( $customer_id         );
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the Customer's details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Customer's details."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The customer").' '.$VAR['display_name'].' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("The customer").' '.$VAR['display_name'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record      
         update_customer_last_active($db, $customer_id);
@@ -351,7 +351,7 @@ function update_customer_note($db, $customer_note_id, $note) {
             WHERE customer_note_id  =". $db->qstr( $customer_note_id                    );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the customer note."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the customer note."));
         exit;    
         
     } else {
@@ -360,7 +360,7 @@ function update_customer_note($db, $customer_note_id, $note) {
         $customer_id = get_customer_note($db, $customer_note_id, 'customer_id');
         
         // Log activity        
-        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.', null, $customer_id);
+        write_record_to_activity_log(_gettext("Customer Note").' '.$customer_note_id.' '._gettext("for").' '.get_customer_details($db, $customer_id, 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.', null, $customer_id);
         
         // Update last active record        
         update_customer_last_active($db, $customer_id);
@@ -383,7 +383,7 @@ function update_customer_last_active($db, $customer_id = null) {
             WHERE customer_id=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Customer's last active time."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Customer's last active time."));
         exit;
     }
     
@@ -402,7 +402,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Workorders in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Workorders in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
@@ -413,7 +413,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any invoices
     $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Invoices in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Invoices in the database."));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
@@ -424,7 +424,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any gift certificates
     $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE customer_id=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Gift Certificates in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Gift Certificates in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
@@ -435,7 +435,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any customer notes
     $sql = "SELECT count(*) as count FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the customer's Notes in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Notes in the database."));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
@@ -451,19 +451,19 @@ function delete_customer($db, $customer_id){
     // Delete any Customer user accounts
     $sql = "DELETE FROM ".PRFX."user WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer's users from the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer's users from the database."));
         exit;
     }
     
     // Delete Customer
     $sql = "DELETE FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer from the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer from the database."));
         exit;
     }
     
     // Write the record to the activity log                    
-    write_record_to_activity_log(gettext("The customer").' '.$customer_details['display_name'].' '.gettext("has been deleted by").' '.QFactory::getUser()->login_display_name.'.');
+    write_record_to_activity_log(_gettext("The customer").' '.$customer_details['display_name'].' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name.'.');
     
     return true;
     
@@ -481,13 +481,13 @@ function delete_customer_note($db, $customer_note_id) {
     $sql = "DELETE FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the customer note."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer note."));
         exit;
         
     } else {        
         
         // Log activity        
-        write_record_to_activity_log(gettext("Customer Note").' '.$customer_note_id.' '.gettext("for Customer").' '.get_customer_details($db, $customer_id, 'display_name').' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, $customer_id);
+        write_record_to_activity_log(_gettext("Customer Note").' '.$customer_note_id.' '._gettext("for Customer").' '.get_customer_details($db, $customer_id, 'display_name').' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, $customer_id);
         
         // Update last active record        
         update_customer_last_active($db, $customer_id);
@@ -507,7 +507,7 @@ function check_customer_display_name_exists($db, $display_name) {
     $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer WHERE display_name=".$db->qstr($display_name);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check the submitted Display Name for duplicates in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
         exit;
     } else {
         $row = $rs->FetchRow();

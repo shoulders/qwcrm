@@ -88,7 +88,7 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the number of matching user records."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching user records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -132,7 +132,7 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching user records."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching user records."));
         exit;
         
     } else {        
@@ -189,7 +189,7 @@ function insert_user($db, $VAR){
             notes               =". $db->qstr( $VAR['notes']                                );                     
           
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the user record into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
         exit;
     } else {
         
@@ -199,7 +199,7 @@ function insert_user($db, $VAR){
         }
         
         // Log activity        
-        write_record_to_activity_log(gettext("User Account").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '.gettext("created."));
+        write_record_to_activity_log(_gettext("User Account").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '._gettext("created."));
                 
         return $db->Insert_ID();;        
         
@@ -223,7 +223,7 @@ function get_user_details($db, $user_id = null, $item = null) {
     $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$user_id;
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the user details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
         exit;
     } else {
         
@@ -258,7 +258,7 @@ function get_user_id_by_username($db, $username){
     
     $sql = "SELECT user_id FROM ".PRFX."user WHERE username =".$db->qstr($username);    
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by their username."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
         exit;
     } else {
         
@@ -277,7 +277,7 @@ function get_user_id_by_email($db, $email) {
     $sql = "SELECT user_id FROM ".PRFX."user WHERE email =".$db->qstr($email);
     
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by their email."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their email."));
         exit;
     } else {
         
@@ -311,7 +311,7 @@ function get_usergroups($db, $user_type = null) {
     if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the usergroups."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the usergroups."));
         exit;
     } else {
         
@@ -334,7 +334,7 @@ function get_active_users($db, $user_type = null) {
     if($user_type === 'employees') {$sql .= " AND is_employee='1'";}
        
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active users."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active users."));
         exit;
     } else {    
         
@@ -379,7 +379,7 @@ function update_user($db, $user_id, $VAR) {
         WHERE user_id= ".$db->qstr($user_id);
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the user record."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
         exit;
     } else{
         
@@ -394,7 +394,7 @@ function update_user($db, $user_id, $VAR) {
         }
         
         // Log activity        
-        write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '.gettext("updated."));
+        write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '._gettext("updated."));
         
         return true;
         
@@ -414,7 +414,7 @@ function update_user($db, $user_id, $VAR) {
     $sql = "UPDATE ".PRFX."user SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a User's last active time."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
         exit;
     }
     
@@ -435,7 +435,7 @@ function delete_user($db, $user_id) {
     
     // User cannot delete their own account
     if($user_id == QFactory::getUser()->login_user_id) {
-        postEmulationWrite('warning_msg', gettext("You can not delete your own account."));        
+        postEmulationWrite('warning_msg', _gettext("You can not delete your own account."));        
         return false;
     }
     
@@ -444,11 +444,11 @@ function delete_user($db, $user_id) {
         
         $sql = "SELECT count(*) as count FROM ".PRFX."user WHERE usergroup = '7'";    
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the users in the administrator usergroup."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
             exit;
         }  
         if($rs->fields['count'] <= 1 ) {
-            postEmulationWrite('warning_msg', gettext("You can not delete the last administrator user account."));        
+            postEmulationWrite('warning_msg', _gettext("You can not delete the last administrator user account."));        
             return false;
         }
     }
@@ -456,44 +456,44 @@ function delete_user($db, $user_id) {
     // Check if user has created any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE created_by=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', gettext("You can not delete a user who has created work orders."));        
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has created work orders."));        
         return false;
     }
     
     // Check if user has any assigned workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Workorders in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', gettext("You can not delete a user who has assigned work orders."));
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has assigned work orders."));
         return false;
     }
     
     // Check if user has any invoices
     $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Invoices in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', gettext("You can not delete a user who has invoices."));
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has invoices."));
         return false;
     }    
     
     // Check if user is assigned to any gift certificates
     $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE employee_id=".$db->qstr($user_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the user's Gift Certificates in the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Gift Certificates in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', gettext("You can not delete a user who has gift certificates."));
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has gift certificates."));
         return false;
     }
     
@@ -502,12 +502,12 @@ function delete_user($db, $user_id) {
     // Delete User account
     $sql = "DELETE FROM ".PRFX."user WHERE user_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the user from the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
         exit;
     }
     
     // Log activity        
-    write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '.gettext("deleted."));
+    write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted."));
         
     // Update last active record
     if($user_details['customer_id']) {
@@ -541,7 +541,7 @@ function build_active_employee_form_option_list($db, $assigned_user_id){
     $sql = "SELECT display_name, user_id FROM ".PRFX."user WHERE active=1 AND is_employee=1";
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed build and return and User list."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
         exit;
     } else {
         
@@ -566,7 +566,7 @@ function check_user_username_exists($db, $username, $current_username = null){
     $sql = "SELECT username FROM ".PRFX."user WHERE username =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the username exists."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
         exit;
     } else {
         
@@ -574,7 +574,7 @@ function check_user_username_exists($db, $username, $current_username = null){
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', gettext("The Username").', '.$username.' ,'.gettext("already exists! Please use a different one."));
+            $smarty->assign('warning_msg', _gettext("The Username").', '.$username.' ,'._gettext("already exists! Please use a different one."));
             
             return true;
             
@@ -603,7 +603,7 @@ function check_user_email_exists($db, $email, $current_email = null){
     
     if(!$rs = $db->Execute($sql)) {
         
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the email address has been used."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
         exit;
         
     } else {
@@ -612,7 +612,7 @@ function check_user_email_exists($db, $email, $current_email = null){
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', gettext("The email address has already been used. Please use a different one."));
+            $smarty->assign('warning_msg', _gettext("The email address has already been used. Please use a different one."));
             
             return true;
             
@@ -651,7 +651,7 @@ function check_customer_already_has_login($db, $customer_id) {
     $sql = "SELECT user_id FROM ".PRFX."user WHERE customer_id =". $db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the customer already has a login."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the customer already has a login."));
         exit;
     } else {
         
@@ -659,7 +659,7 @@ function check_customer_already_has_login($db, $customer_id) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', gettext("The customer already has a login."));           
+            $smarty->assign('warning_msg', _gettext("The customer already has a login."));           
             
             return true;
             
@@ -705,13 +705,13 @@ function reset_user_password($db, $user_id, $password = null) {
             WHERE user_id   =". $db->qstr( $user_id                             );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
         exit;
         
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '.gettext("password has been reset."));
+        write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("password has been reset."));
         
         // Update last active record
         if(get_user_details($db, $user_id, 'customer_id')) {
@@ -733,7 +733,7 @@ function reset_all_user_passwords($db) {
     $sql = "SELECT user_id FROM ".PRFX."user";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to read all users from the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
         exit;
         
     } else {
@@ -750,7 +750,7 @@ function reset_all_user_passwords($db) {
         }
         
         // Log activity        
-        write_record_to_activity_log(gettext("All User Account passwords have been reset."));
+        write_record_to_activity_log(_gettext("All User Account passwords have been reset."));
         
         return;
         
@@ -774,7 +774,7 @@ function login($VAR, $credentials, $options = array())
     if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
         
         // Set error message
-        $smarty->assign('warning_msg', gettext("Username or Password Missing."));
+        $smarty->assign('warning_msg', _gettext("Username or Password Missing."));
         
         return false;
         
@@ -784,7 +784,7 @@ function login($VAR, $credentials, $options = array())
     if(get_user_details($db, get_user_id_by_username($db, $VAR['login_username']), 'require_reset')) {
         
         // Set error message
-        $smarty->assign('warning_msg', gettext("You must reset your password before you are allowed to login."));
+        $smarty->assign('warning_msg', _gettext("You must reset your password before you are allowed to login."));
         
         return false;
         
@@ -794,10 +794,10 @@ function login($VAR, $credentials, $options = array())
     if(get_user_details($db, get_user_id_by_username($db, $VAR['login_username']), 'active') === '0') {  
 
         // Set error message
-        $smarty->assign('warning_msg', gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
+        $smarty->assign('warning_msg', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
 
         // Log activity       
-        write_record_to_activity_log(gettext("Login denied for").' '.$VAR['login_username'].'.');
+        write_record_to_activity_log(_gettext("Login denied for").' '.$VAR['login_username'].'.');
 
         return false;
 
@@ -810,7 +810,7 @@ function login($VAR, $credentials, $options = array())
         $user = QFactory::getUser();       
 
         // Log activity       
-        write_record_to_activity_log(gettext("Login successful for").' '.$user->login_username.'.');
+        write_record_to_activity_log(_gettext("Login successful for").' '.$user->login_username.'.');
         
         // Update last active record
         if($user->login_customer_id) {            
@@ -818,7 +818,7 @@ function login($VAR, $credentials, $options = array())
         }
 
         // set success message to survice the login event
-        postEmulationWrite('information_msg', gettext("Login successful."));
+        postEmulationWrite('information_msg', _gettext("Login successful."));
         
         return true;
 
@@ -827,9 +827,9 @@ function login($VAR, $credentials, $options = array())
         /* Login failed */
         
         // Log activity       
-        write_record_to_activity_log(gettext("Login unsuccessful for").' '.$credentials['username'].'.');
+        write_record_to_activity_log(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
 
-        $smarty->assign('warning_msg', gettext("Login Failed. Check you username and password."));
+        $smarty->assign('warning_msg', _gettext("Login Failed. Check you username and password."));
         
         return false;
 
@@ -846,7 +846,7 @@ function logout($silent = null)
     $db = QFactory::getDbo();
     
     // Build logout message (while user details exist)
-    $record = gettext("Logout successful for").' '.$user->login_username.'.';
+    $record = _gettext("Logout successful for").' '.$user->login_username.'.';
     
     // Logout
     QFactory::getAuth()->logout();    
@@ -871,8 +871,8 @@ function logout($silent = null)
         // Reload Homepage with message (default)
         
         // only $_GET will work because the session store is destroyed (this is good behaviour)
-        force_page('index.php', null, 'information_msg='.gettext("Logout successful."), 'get');
-        //force_page('index.php?information_msg='.gettext("Logout successful."));
+        force_page('index.php', null, 'information_msg='._gettext("Logout successful."), 'get');
+        //force_page('index.php?information_msg='._gettext("Logout successful."));
         exit;
         
     }
@@ -904,7 +904,7 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
         
         // Failed
         global $smarty;
-        $smarty->assign('warning_msg', gettext("Google reCAPTCHA Verification Failed."));
+        $smarty->assign('warning_msg', _gettext("Google reCAPTCHA Verification Failed."));
         return false;
         
     }  
@@ -941,45 +941,45 @@ function send_reset_email($db, $user_id) {
     $recipient_email = get_user_details($db, $user_id, 'email');
             
     // Set subject  
-    $subject = gettext("Your QWcrm password reset request");    
+    $subject = _gettext("Your QWcrm password reset request");    
         
     // Create Token
     $token = create_reset_token($db, $user_id);
     
     /* Build Email body
-    $body .= gettext("Hello").','."\r\n\r\n";
+    $body .= _gettext("Hello").','."\r\n\r\n";
 
-    $body .= gettext("A request has been made to reset your QWcrm account password.").' ';
-    $body .= gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.")."\r\n\r\n";
+    $body .= _gettext("A request has been made to reset your QWcrm account password.").' ';
+    $body .= _gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.")."\r\n\r\n";
 
-    $body .= gettext("The verification code is").' '.$token."\r\n\r\n";
+    $body .= _gettext("The verification code is").' '.$token."\r\n\r\n";
 
-    $body .= gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
+    $body .= _gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
 
     $body .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_PATH."index.php?page=user:reset&token=".$token."\r\n\r\n";
         
-    $body .= gettext("Thank you.");*/
+    $body .= _gettext("Thank you.");*/
     
     
     // Build Email body
-    $body .= '<p>'.gettext("Hello").','.'</p>';
+    $body .= '<p>'._gettext("Hello").','.'</p>';
     
-    $body .= '<p>'.gettext("A request has been made to reset your QWcrm account password.").' ';
-    $body .= gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.").'</p>';
+    $body .= '<p>'._gettext("A request has been made to reset your QWcrm account password.").' ';
+    $body .= _gettext("To reset your password, you will need to submit this verification code in order to verify that the request was legitimate.").'</p>';
     
-    $body .= '<p>'.gettext("The verification code is").' '.$token.'</p>';
+    $body .= '<p>'._gettext("The verification code is").' '.$token.'</p>';
     
-    $body .= '<p>'.gettext("Select the URL below and proceed with resetting your password.").'</p>';
+    $body .= '<p>'._gettext("Select the URL below and proceed with resetting your password.").'</p>';
     
     $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH ."index.php?page=user:reset&token=".$token.'</p>';  
     
-    $body .= '<p>'.gettext("Thank you.").'</p>';    
+    $body .= '<p>'._gettext("Thank you.").'</p>';    
     
     // Send Reset Email    
     send_email($recipient_email, $subject, $body);
     
     // Log activity        
-    write_record_to_activity_log(gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '.gettext("reset email has been sent."));
+    write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("reset email has been sent."));
     
     return;
     
@@ -1002,7 +1002,7 @@ function authorise_password_reset($db, $token) {
             WHERE token= ".$db->qstr($token);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
         exit;
     } else{
         
@@ -1022,7 +1022,7 @@ function create_reset_token($db, $user_id) {
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check for existing tokens for the submitted user."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
         exit;
     } else {        
         $result_count = $rs->RecordCount();       
@@ -1045,7 +1045,7 @@ function create_reset_token($db, $user_id) {
             token           =". $db->qstr( $token       );                     
           
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the user reset token into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
         exit;
     }
     
@@ -1063,7 +1063,7 @@ function get_user_id_by_reset_code($db, $reset_code) {
     $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
     
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the User ID by secret code."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
         exit;
     } else {
         
@@ -1085,30 +1085,30 @@ function validate_reset_token($db, $token) {
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE token=".$db->qstr($token);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check for existing tokens for the submitted user."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
         exit;
     } else {
         
         // Check there is only 1 record
         if($rs->RecordCount() != 1) {
-            $smarty->assign('warning_msg', gettext("The reset token does not exist."));
+            $smarty->assign('warning_msg', _gettext("The reset token does not exist."));
             return false;
         }
         
         // check if user is block
         if(!is_user_active($db, $rs->fields['user_id'])){
-            $smarty->assign('warning_msg', gettext("The user is blocked."));
+            $smarty->assign('warning_msg', _gettext("The user is blocked."));
             return false;
         }
         
         // Check not expired
         if($rs->fields['expiry_time'] < time()){
-            $smarty->assign('warning_msg', gettext("The reset token has expired."));
+            $smarty->assign('warning_msg', _gettext("The reset token has expired."));
             return false;
         }
         
         // All checked passed
-        $smarty->assign('information_msg', gettext("Token Accepted."));
+        $smarty->assign('information_msg', _gettext("Token Accepted."));
         return true;
         
         
@@ -1128,7 +1128,7 @@ function validate_reset_code($db, $reset_code) {
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code=".$db->qstr($reset_code);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check for the submitted reset code."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
         exit;
     } else {
         
@@ -1145,7 +1145,7 @@ function validate_reset_code($db, $reset_code) {
         }
         
         // All checked passed
-        $smarty->assign('information_msg', gettext("Reset code accepted."));        
+        $smarty->assign('information_msg', _gettext("Reset code accepted."));        
         return true;
         
         
@@ -1162,7 +1162,7 @@ function delete_user_reset_code($db, $user_id) {
     $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete existing tokens for the submitted user."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
         exit;
     }
     
@@ -1177,7 +1177,7 @@ function delete_expired_reset_codes($db) {
     $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$db->qstr(time());
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete existing tokens for the submitted user."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
         exit;
     }
     
@@ -1195,7 +1195,7 @@ function delete_expired_reset_codes($db) {
             WHERE user_id   =". $db->qstr( $user_id  );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to add password reset authorization."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
         exit;
         
     } else{

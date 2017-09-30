@@ -23,13 +23,13 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     if (isset($VAR['submitandnew'])){
 
          // Load the new expense page
-         force_page('expense', 'new', 'information_msg='.gettext("Expense added successfully."));
+         force_page('expense', 'new', 'information_msg='._gettext("Expense added successfully."));
          exit;
 
     } else {
 
         // load expense details page
-        force_page('expense', 'details', 'expense_id='.$expense_id.'&information_msg='.gettext("Expense added successfully."));
+        force_page('expense', 'details', 'expense_id='.$expense_id.'&information_msg='._gettext("Expense added successfully."));
         exit;
 
      }        

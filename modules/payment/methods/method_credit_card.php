@@ -25,13 +25,13 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     // Live processing goes here
 
     // Create a specific note string (if applicable)
-    $method_note = gettext("Card Type").': '.get_credit_card_display_name_from_key($db, $VAR['card_type']).', '.gettext("Name on Card").': '.$VAR['name_on_card'];
+    $method_note = _gettext("Card Type").': '.get_credit_card_display_name_from_key($db, $VAR['card_type']).', '._gettext("Name on Card").': '.$VAR['name_on_card'];
 
     // Insert the transaction with the calculated information
     insert_payment_method_transaction($db, $invoice_id, $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['method_type'], $method_note, $VAR['note']);
     
     // Assign Success message
-    $smarty->assign('information_msg', gettext("Credit Card payment added successfully"));
+    $smarty->assign('information_msg', _gettext("Credit Card payment added successfully"));
     
     /* Post-Processing */
     // goes here    

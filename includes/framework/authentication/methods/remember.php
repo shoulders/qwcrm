@@ -184,7 +184,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
 
             // Issue warning by email to user and/or admin?
             //JLog::add(JText::sprintf('PLG_AUTH_COOKIE_ERROR_LOG_LOGIN_FAILED', $results[0]['user_id']), JLog::WARNING, 'security');
-            gettext("Cookie login failed for user ");
+            _gettext("Cookie login failed for user ");
             $response->status = JAuthentication::STATUS_FAILURE;
 
             return false;
@@ -224,7 +224,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         else
         {
             $response->status        = JAuthentication::STATUS_FAILURE;            
-            $response->error_message = gettext("Username and password do not match or you do not have an account yet.");
+            $response->error_message = _gettext("Username and password do not match or you do not have an account yet.");
         }
     }
 

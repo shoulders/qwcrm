@@ -28,7 +28,7 @@ if($workorder_id && !get_workorder_details($db, $workorder_id, 'invoice_id')) {
     update_workorder_status($db, $workorder_id, 'closed_with_invoice');
     
     // Add a workorder history note
-    insert_workorder_history_note($db, $workorder_id, gettext("Invoice Created ID").': '.$invoice_id);
+    insert_workorder_history_note($db, $workorder_id, _gettext("Invoice Created ID").': '.$invoice_id);
 
     // Load the newly created invoice edit page
     force_page('invoice', 'edit&invoice_id='.$invoice_id);
@@ -48,5 +48,5 @@ if(($customer_id != '' && $VAR['invoice_type'] == 'invoice-only')) {
 }    
   
 // Fallback Error Control 
-force_page('workorder', 'search', 'warning_msg='.gettext("You cannot create an invoice by the method you just tried, report to admins."));
+force_page('workorder', 'search', 'warning_msg='._gettext("You cannot create an invoice by the method you just tried, report to admins."));
 exit;

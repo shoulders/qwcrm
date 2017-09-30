@@ -57,7 +57,7 @@ function update_record_value($db, $select_table, $select_column, $record_identif
         $setup_error_flag = true;
         
         // Log message
-        $record = gettext("Failed to update the value").' '.gettext("for the record").' `'.$record_identifier.'` '.gettext("to").' `'.$record_new_value.'` '.gettext("in the columm").' `'.$record_column.'` '.gettext("from the table").' `'.$select_table.'` ';
+        $record = _gettext("Failed to update the value").' '._gettext("for the record").' `'.$record_identifier.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the columm").' `'.$record_column.'` '._gettext("from the table").' `'.$select_table.'` ';
 
         // Output message via smarty
         $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -71,7 +71,7 @@ function update_record_value($db, $select_table, $select_column, $record_identif
     } else {
         
         // Log message
-        $record = gettext("Successfully updated the value").' '.gettext("for the record").' `'.$record_identifier.'` '.gettext("to").' `'.$record_new_value.'` '.gettext("in the columm").' `'.$record_column.'` '.gettext("from the table").' `'.$select_table.'` ';
+        $record = _gettext("Successfully updated the value").' '._gettext("for the record").' `'.$record_identifier.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the columm").' `'.$record_column.'` '._gettext("from the table").' `'.$select_table.'` ';
                 
         // Output message via smarty - to reduce onscreen output i have disabled success output, it is still logged
         //$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -106,7 +106,7 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
         $setup_error_flag = true;
         
         // Log message
-        $record = gettext("Failed to update the values").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the table").' `'.$table.'` ';
+        $record = _gettext("Failed to update the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the columm").' `'.$column.'` '._gettext("from the table").' `'.$table.'` ';
 
         // Output message via smarty
         $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -123,7 +123,7 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
         if(!$affected_rows = $db->affected_rows()) { $affected_rows = '0'; }
         
         // Log message
-        $record = gettext("Successfully updated the values").' `'.$current_value.'` '.gettext("to").' `'.$new_value.'` '.gettext("in the columm").' `'.$column.'` '.gettext("from the the table").' `'.$table.'` - '.gettext("Records Processed").': '.$affected_rows;
+        $record = _gettext("Successfully updated the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the columm").' `'.$column.'` '._gettext("from the the table").' `'.$table.'` - '._gettext("Records Processed").': '.$affected_rows;
                 
         // Output message via smarty
         $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -181,7 +181,7 @@ function execute_sql_file($db, $sql_file) {
             $error_flag = true;
             
             // Log message
-            $record = gettext("Error performing SQL query").' : '. $query_name['0'];
+            $record = _gettext("Error performing SQL query").' : '. $query_name['0'];
             
             // Output message via smarty
             $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -193,7 +193,7 @@ function execute_sql_file($db, $sql_file) {
         } else {
             
             // Log message
-            $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
+            $record = _gettext("Performed SQL query successfully").' : '. $query_name['0'];
             
             // Output message via smarty
             $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -209,7 +209,7 @@ function execute_sql_file($db, $sql_file) {
     if($error_flag) {
         
         // Log message
-        $record = gettext("One or more SQL rule has failed. Check the logs.");
+        $record = _gettext("One or more SQL rule has failed. Check the logs.");
         
         // Output message via smarty
         $executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
@@ -222,7 +222,7 @@ function execute_sql_file($db, $sql_file) {
     } else {
         
         // Log message
-        $record = gettext("All SQL rules have run successfully.");
+        $record = _gettext("All SQL rules have run successfully.");
         
         // Output message via smarty
         $executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
@@ -288,7 +288,7 @@ function execute_sql_file_lines($db, $sql_file) {
                 $error_flag = true;
 
                 // Log message
-                $record = gettext("Error performing SQL query").' : '. $query_name['0'];
+                $record = _gettext("Error performing SQL query").' : '. $query_name['0'];
                 
                 // Output message via smarty
                 $executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
@@ -299,7 +299,7 @@ function execute_sql_file_lines($db, $sql_file) {
             } else {
 
                 // Log message
-                $record = gettext("Performed SQL query successfully").' : '. $query_name['0'];
+                $record = _gettext("Performed SQL query successfully").' : '. $query_name['0'];
 
                 // Output message via smarty
                 $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -320,7 +320,7 @@ function execute_sql_file_lines($db, $sql_file) {
     if($error_flag) {
 
         // Log message
-        $record = gettext("One or more SQL rule has failed. Check the logs.");
+        $record = _gettext("One or more SQL rule has failed. Check the logs.");
                 
         // Output message via smarty
         $executed_sql_results .= '<div style="color: red;">'.$record.'</div>';
@@ -333,7 +333,7 @@ function execute_sql_file_lines($db, $sql_file) {
     } else {
 
         // Log message
-        $record = gettext("All SQL rules have run successfully.");
+        $record = _gettext("All SQL rules have run successfully.");
                 
         // Output message via smarty
         $executed_sql_results .= '<div style="color: green;">'.$record.'</div>';
@@ -354,7 +354,7 @@ function execute_sql_file_lines($db, $sql_file) {
 function write_record_to_setup_log($setup_type, $record, $database_error = null, $sql_query = null) {
     
     // Install and migrate does not have username or login_user_id available
-    if(QWCRM_SETUP == 'install') {
+    if(defined('QWCRM_SETUP') && QWCRM_SETUP == 'install') {
         $username = '-';
         $login_user_id = '-';
     } else {
@@ -373,7 +373,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
     
     // Write log entry  
     if(!$fp = fopen(SETUP_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Setup Log to save the record."));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
         exit;
     }
     
@@ -521,7 +521,7 @@ function install_database($db) {
     if($setup_error_flag) {
         
         // Log message
-        $record = gettext("The database installation process failed, check the logs.");
+        $record = _gettext("The database installation process failed, check the logs.");
         
         // Output message via smarty
         $executed_sql_results .= '<div>&nbsp;</div>';
@@ -533,7 +533,7 @@ function install_database($db) {
     } else {
         
         // Log message
-        $record = gettext("The database installation process was successful.");
+        $record = _gettext("The database installation process was successful.");
         
         // Output message via smarty
         $executed_sql_results .= '<div>&nbsp;</div>';
@@ -985,7 +985,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         $smarty->assign('setup_error_flag', true);
         
         // Log message
-        $record = gettext("The database migration process failed, check the logs.");
+        $record = _gettext("The database migration process failed, check the logs.");
         
         // Output message via smarty
         $executed_sql_results .= '<div>&nbsp;</div>';
@@ -997,7 +997,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     } else {
         
         // Log message
-        $record = gettext("The database migration process was successful.");
+        $record = _gettext("The database migration process was successful.");
         
         // Output message via smarty
         $executed_sql_results .= '<div>&nbsp;</div>';
@@ -1042,7 +1042,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     $executed_sql_results .= '<div>&nbsp;</div>';
     
     // Log message
-    $record = gettext("Starting the correction of the migrated `workorder` data in QWcrm.");       
+    $record = _gettext("Starting the correction of the migrated `workorder` data in QWcrm.");       
                 
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1078,7 +1078,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Work Orders."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Work Orders."));
         exit;
 
     } else {
@@ -1141,7 +1141,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     /* Final Stuff */
 
     // Log message
-    $record = gettext("Finished the correction of the migrated `workorder` data in QWcrm."); 
+    $record = _gettext("Finished the correction of the migrated `workorder` data in QWcrm."); 
      
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1168,7 +1168,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
     $executed_sql_results .= '<div>&nbsp;</div>';
     
     // Log message
-    $record = gettext("Starting the correction of the migrated `invoice` data in QWcrm.");       
+    $record = _gettext("Starting the correction of the migrated `invoice` data in QWcrm.");       
                 
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1181,7 +1181,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Invoices."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoices."));
         exit;
 
     } else {
@@ -1236,7 +1236,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
     /* Final Stuff */
 
     // Log message
-    $record = gettext("Finished the correction of the migrated `invoice` data in QWcrm."); 
+    $record = _gettext("Finished the correction of the migrated `invoice` data in QWcrm."); 
      
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1263,7 +1263,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
     $executed_sql_results .= '<div>&nbsp;</div>';
     
     // Log message
-    $record = gettext("Starting the correction of the migrated `giftcert` data in QWcrm.");       
+    $record = _gettext("Starting the correction of the migrated `giftcert` data in QWcrm.");       
                 
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1276,7 +1276,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Gift Certificates."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
         exit;
 
     } else {
@@ -1304,7 +1304,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
     /* Final Stuff */
 
     // Log message
-    $record = gettext("Finished the correction of the migrated `giftcert` data in QWcrm."); 
+    $record = _gettext("Finished the correction of the migrated `giftcert` data in QWcrm."); 
      
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1331,7 +1331,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
     $executed_sql_results .= '<div>&nbsp;</div>';
     
     // Log message
-    $record = gettext("Starting the correction of the migrated `schedule` data in QWcrm.");       
+    $record = _gettext("Starting the correction of the migrated `schedule` data in QWcrm.");       
                 
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1354,7 +1354,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Schedules."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Schedules."));
         exit;
 
     } else {
@@ -1376,7 +1376,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
     /* Final Stuff */
 
     // Log message
-    $record = gettext("Finished the correction of the migrated `schedule` data in QWcrm."); 
+    $record = _gettext("Finished the correction of the migrated `schedule` data in QWcrm."); 
      
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1408,7 +1408,7 @@ function get_myitcrm_company_details($db, $item = null) {
     $sql = "SELECT * FROM ".$config->myitcrm_prefix."table_company";
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get MyITCRM company details."));        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
         exit;
     } else {
         
@@ -1439,7 +1439,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     $executed_sql_results .= '<div>&nbsp;</div>';
     
     // Log message
-    $record = gettext("Beginning the migration of MyITCRM data into the QWcrm table").': `'.$qwcrm_table.'`';       
+    $record = _gettext("Beginning the migration of MyITCRM data into the QWcrm table").': `'.$qwcrm_table.'`';       
                 
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
@@ -1457,7 +1457,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         $error_flag = true; 
         
         // Log message
-        $record = gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$db->ErrorMsg();        
+        $record = _gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$db->ErrorMsg();        
                 
         // Result message
         $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
@@ -1540,7 +1540,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
                 ++$records_failed;
                 
                 // Log message
-                $record = gettext("Error migrating a MyITCRM record into QWcrm");
+                $record = _gettext("Error migrating a MyITCRM record into QWcrm");
                 
                 // Result message
                 $executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$db->ErrorMsg().'</span></div>';                
@@ -1560,7 +1560,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
                 /* success  
              
                 // Log message
-                $record = gettext("Successfully migrated a MyITCRM record into QWcrm");
+                $record = _gettext("Successfully migrated a MyITCRM record into QWcrm");
                 
                 // Result message
                 $executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
@@ -1581,9 +1581,9 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         }// EOF While Loop
         
         // Output Record counters        
-        $executed_sql_results .= '<div><span style="color: blue">'.gettext("MyITCRM Records Processed").': '.$records_processed.'</span></div>';
-        $executed_sql_results .= '<div><span style="color: red">'.gettext("Records Failed To Migrate").': '.$records_failed.'</span></div>';
-        $executed_sql_results .= '<div><span style="color: green">'.gettext("Records Successfuly Migrated").': '.$records_successful.'</span></div>';        
+        $executed_sql_results .= '<div><span style="color: blue">'._gettext("MyITCRM Records Processed").': '.$records_processed.'</span></div>';
+        $executed_sql_results .= '<div><span style="color: red">'._gettext("Records Failed To Migrate").': '.$records_failed.'</span></div>';
+        $executed_sql_results .= '<div><span style="color: green">'._gettext("Records Successfuly Migrated").': '.$records_successful.'</span></div>';        
         
         // if there has been an error
         if($error_flag) {
@@ -1592,8 +1592,8 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
             $setup_error_flag = true;
             
             // Log message
-            $record = gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
-            $record_additional = ' - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
+            $record = _gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
+            $record_additional = ' - '._gettext("MyITCRM Records Processed").': '.$records_processed.' - '._gettext("Records Failed To Migrate").': '.$records_failed.' - '._gettext("Records Successfuly Migrated").': '.$records_successful;
             
             // Result message
             $executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
@@ -1610,8 +1610,8 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         } else {
             
             // Log message
-            $record = gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
-            $record_additional = ' - '.gettext("MyITCRM Records Processed").': '.$records_processed.' - '.gettext("Records Failed To Migrate").': '.$records_failed.' - '.gettext("Records Successfuly Migrated").': '.$records_successful;
+            $record = _gettext("Successfully migrated all records into QWcrm table").': `'.$qwcrm_table.'`';
+            $record_additional = ' - '._gettext("MyITCRM Records Processed").': '.$records_processed.' - '._gettext("Records Failed To Migrate").': '.$records_failed.' - '._gettext("Records Successfuly Migrated").': '.$records_successful;
             
             // Result message
             $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';

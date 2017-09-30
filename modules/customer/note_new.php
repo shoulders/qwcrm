@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'modules/customer.php');
 
 // Check if we have a customer_id
 if($customer_id == '') {
-    force_page('customer', 'search', 'warning_msg='.gettext("No Customer ID supplied."));
+    force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
     exit;
 }
 

@@ -29,7 +29,7 @@ if($QConfig->smarty_caching == '2') { $smarty->caching = Smarty::CACHING_LIFETIM
 $smarty->force_cache            = $QConfig->smarty_force_cache;
 $smarty->cache_lifetime         = $QConfig->smarty_cache_lifetime;
 $smarty->cache_modified_check   = $QConfig->smarty_cache_modified_check;
-$smarty->cache_locking          = $QConfig->cache_locking;
+$smarty->cache_locking          = $QConfig->smarty_cache_locking;
 
 
 // Debugging

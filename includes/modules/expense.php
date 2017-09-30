@@ -65,7 +65,7 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching expense records."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -111,7 +111,7 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching expense records."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
         exit;
     } else {
         
@@ -155,12 +155,12 @@ function insert_expense($db, $VAR) {
             
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the expense record into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Expense Record").' '.$db->Insert_ID().' '.gettext("created."));
+        write_record_to_activity_log(_gettext("Expense Record").' '.$db->Insert_ID().' '._gettext("created."));
     
         return $db->Insert_ID();
         
@@ -179,7 +179,7 @@ function get_expense_details($db, $expense_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the expense details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the expense details."));
         exit;
     } else {
         
@@ -206,7 +206,7 @@ function get_expense_types($db) {
     $sql = "SELECT * FROM ".PRFX."expense_types";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get expense types."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get expense types."));
         exit;
     } else {
         
@@ -239,12 +239,12 @@ function update_expense($db, $expense_id, $VAR) {
             WHERE expense_id    =". $db->qstr( $expense_id                      );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the expense details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Expense Record").' '.$expense_id.' '.gettext("updated."));
+        write_record_to_activity_log(_gettext("Expense Record").' '.$expense_id.' '._gettext("updated."));
         
         return true;
         
@@ -265,12 +265,12 @@ function delete_expense($db, $expense_id){
     $sql = "DELETE FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the expense record."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Expense Record").' '.$expense_id.' '.gettext("deleted."));
+        write_record_to_activity_log(_gettext("Expense Record").' '.$expense_id.' '._gettext("deleted."));
         
         return true;
         
@@ -289,7 +289,7 @@ function last_expense_id_lookup($db){
     $sql = "SELECT * FROM ".PRFX."expense ORDER BY expense_id DESC LIMIT 1";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to lookup the last expense record ID."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));
         exit;
     } else {
         

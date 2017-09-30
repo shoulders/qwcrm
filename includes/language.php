@@ -19,7 +19,7 @@ defined('_QWEXEC') or die;
 PhpMyAdmin\MoTranslator\Loader::loadFunctions();
 
 // Autodetect Language - I18N support information here
-if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
+if($QConfig->autodetect_language === '1' || (defined('QWCRM_SETUP') && QWCRM_SETUP == 'install')) {
     
     if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         $language = $QConfig->default_language; 
@@ -39,7 +39,7 @@ if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
 }
 
 // Autodetect Language - I18N support information here
-if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
+if($QConfig->autodetect_language === '1' || (defined('QWCRM_SETUP') && QWCRM_SETUP == 'install')) {
     
     // Use the locale language if detected or default language or british english
     if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
@@ -50,17 +50,17 @@ if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
         }
         
     }
-        
-    // if there is no language file for the locale, set language to british english - This allows me to use CONSTANTS in translations but bypasses normal fallback mechanism for gettext()
+          
+    // if there is no language file for the locale, set language to british english - This allows me to use CONSTANTS in translations but bypasses normal fallback mechanism for _gettext()
     if(!is_file(LANGUAGE_DIR.$language.'/LC_MESSAGES/site.po')) {
-        $language = 'en_GB';        
+        $language = 'en_GB';    
     }
     
 } else {
     
     // Use the default language
     $language = $QConfig->default_language;
-    
+
 }
 
 // Here we define the global system locale given the found language
@@ -72,15 +72,13 @@ _setlocale(LC_ALL, $language);
 // Set the text domain
 $textdomain = 'site';
 
-// this will make gettext look for ../language/<lang>/LC_MESSAGES/site.mo
-_bindtextdomain($textdomain, 'language');
+// this will make _gettext look for ../language/<lang>/LC_MESSAGES/site.mo
+_bindtextdomain($textdomain, LANGUAGE_DIR);
 
 // indicates in what encoding the file should be read
 _bind_textdomain_codeset($textdomain, 'UTF-8');
 
-// here we indicate the default domain the gettext() calls will respond to
+// here we indicate the default domain the _gettext() calls will respond to
 _textdomain($textdomain);
 
 /** Other Functions **/
-
-//echo _gettext("JSCAL2_LANGUAGE_NAME");

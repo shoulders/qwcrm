@@ -324,7 +324,7 @@ class JSession implements IteratorAggregate
             if (QFactory::getSession()->isNew())
             {
                 // Redirect to login screen.                
-                $app->enqueueMessage(gettext("Your session has expired. Please log in again."), 'warning');
+                $app->enqueueMessage(_gettext("Your session has expired. Please log in again."), 'warning');
                 //$app->redirect(JRoute::_('index.php')); // remmed out to prevent poedit finding it
 
                 return true;
@@ -1056,7 +1056,7 @@ class JSession implements IteratorAggregate
             }
             catch (RuntimeException $e)
             {
-                throw new RuntimeException(gettext("Error initialising the session."), $e->getCode(), $e);
+                throw new RuntimeException(_gettext("Error initialising the session."), $e->getCode(), $e);
             }
         }
     } 

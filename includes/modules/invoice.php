@@ -102,7 +102,7 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching Invoice records."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Invoice records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -148,7 +148,7 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to return the matching Invoice records."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoice records."));
         exit;
     } else {
         
@@ -189,7 +189,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
             is_closed       =". $db->qstr( 0                                    ); 
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the invoice record into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the invoice record into the database."));
         exit;
     } else {
         
@@ -197,10 +197,10 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
         $invoice_id = $db->Insert_ID();;
         
         // Create a Workorder History Note  
-        insert_workorder_history_note($db, $workorder_id, gettext("Invoice").' '.$invoice_id.' '.gettext("was created for this Work Order").' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($db, $workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
                 
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$workorder_id.' '.gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
         update_customer_last_active($db, $customer_id);
@@ -245,7 +245,7 @@ function insert_labour_items($db, $invoice_id, $description, $amount, $qty) {
         $sql = substr($sql , 0, -1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert Labour item into the database."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
             exit;
         }
         
@@ -286,7 +286,7 @@ function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
         $sql = substr($sql ,0,-1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert Parts item into the database."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Parts item into the database."));
             exit;
         }
         
@@ -307,13 +307,13 @@ function insert_invoice_prefill_item($db, $VAR){
             active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert an invoice prefill item into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill item into the database."));
         exit;
         
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("An Invoice Prefill Item").gettext("was added by").' '.QFactory::getUser()->login_display_name.'.');     
+        write_record_to_activity_log(_gettext("An Invoice Prefill Item")._gettext("was added by").' '.QFactory::getUser()->login_display_name.'.');     
 
     }
     
@@ -330,7 +330,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."invoice WHERE invoice_id =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice details."));
         exit;
     } else {
         
@@ -357,7 +357,7 @@ function get_invoice_labour_items($db, $invoice_id) {
     $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour items."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour items."));
         exit;
     } else {
         
@@ -380,7 +380,7 @@ function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) 
     $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$db->qstr($invoice_labour_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice labour item details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour item details."));
         exit;
     } else {
         
@@ -407,7 +407,7 @@ function get_invoice_parts_items($db, $invoice_id) {
     $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice parts items."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts items."));
         exit;
     } else {
         
@@ -430,7 +430,7 @@ function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$db->qstr($invoice_parts_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice parts item details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts item details."));
         exit;
     } else {
         
@@ -466,7 +466,7 @@ function get_invoice_prefill_items($db, $type = null, $status = null) {
     if($status) {$sql .= " AND active=".$db->qstr($status);}
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice prefill items for the selected status."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice prefill items for the selected status."));
         exit;
     } else {
         
@@ -489,7 +489,7 @@ function get_invoice_statuses($db) {
     $sql = "SELECT * FROM ".PRFX."invoice_statuses";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice statuses."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice statuses."));
         exit;
     } else {
         
@@ -508,7 +508,7 @@ function get_invoice_status_display_name($db, $status_key) {
     $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$db->qstr($status_key);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice status display name."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice status display name."));
         exit;
     } else {
         
@@ -533,13 +533,13 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
             WHERE invoice_id    =". $db->qstr( $invoice_id                  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice dates and discount rate."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
         exit;    
         
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
         update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
@@ -564,7 +564,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_amount, $balanc
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice's financial totals."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice's financial totals."));
         exit;
     }
     
@@ -600,13 +600,13 @@ function update_invoice_full($db, $VAR) {
             WHERE invoice_id    =". $db->qstr( $VAR['invoice_id']      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice."));
         exit;
         
     } else {
     
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$VAR['invoice_id'].' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
 
         // Update last active record    
         update_customer_last_active($db, $VAR['customer_id']);
@@ -631,13 +631,13 @@ function update_invoice_prefill_item($db, $VAR){
             WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice labour rates item."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice labour rates item."));
         exit;
         
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The Invoice Prefill Item").' '.$VAR['invoice_prefill_id'].' '.gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');    
+        write_record_to_activity_log(_gettext("The Invoice Prefill Item").' '.$VAR['invoice_prefill_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');    
 
     }
     
@@ -653,7 +653,7 @@ function update_invoice_status($db, $invoice_id, $new_status) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $invoice_details['status']) {        
-        postEmulationWrite('warning_msg', gettext("Nothing done. The new status is the same as the current status."));
+        postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status."));
         return false;
     }    
     
@@ -666,7 +666,7 @@ function update_invoice_status($db, $invoice_id, $new_status) {
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a Work Order Status."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Work Order Status."));
         exit;
         
     } else {    
@@ -679,16 +679,16 @@ function update_invoice_status($db, $invoice_id, $new_status) {
         }
         
         // Status updated message
-        postEmulationWrite('information_msg', gettext("Invoice status updated."));  
+        postEmulationWrite('information_msg', _gettext("Invoice status updated."));  
         
         // For writing message to log file, get work order status display name
-        $inv_status_diplay_name = gettext(get_invoice_status_display_name($db, $new_status));
+        $inv_status_diplay_name = _gettext(get_invoice_status_display_name($db, $new_status));
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $invoice_id, gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($db, $invoice_id, _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("Status updated to").' '.$inv_status_diplay_name.' '.gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Update last active record
         update_customer_last_active($db, $invoice_details['customer_id']);
@@ -725,7 +725,7 @@ function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
     }    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice Closed status."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice Closed status."));
         exit;
     }
     
@@ -745,7 +745,7 @@ function update_invoice_last_active($db, $invoice_id = null) {
             WHERE invoice_id=".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update an invoice last active time."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice last active time."));
         exit;
     }
     
@@ -777,7 +777,7 @@ function delete_invoice($db, $invoice_id) {
     $sql = "DELETE FROM ".PRFX."invoice WHERE invoice_id=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete the invoice."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice."));
         exit;
     } else {
         
@@ -788,10 +788,10 @@ function delete_invoice($db, $invoice_id) {
         update_workorder_invoice_id($db, $invoice_details['workorder_id'], '');        
         
         // Create a Workorder History Note  
-        insert_workorder_history_note($db, $invoice_details['invoice_id'], gettext("Invoice").' '.$invoice_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($db, $invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
                 
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("for Work Order").' '.$invoice_details['invoice_id'].' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
                 
         // Update last active record
         update_customer_last_active($db, $invoice_details['customer_id']);
@@ -815,12 +815,12 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $db->qstr($invoice_labour_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice labour item."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice labour item."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_details['invoice_id']);
+        write_record_to_activity_log(_gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_details['invoice_id']);
         
         // Update last active record
         update_customer_last_active($db, $invoice_details['customer_id']);
@@ -842,7 +842,7 @@ function delete_invoice_labour_items($db, $invoice_id) {
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete all of an invoice's labour items."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's labour items."));
         exit;
     } else {
         
@@ -863,13 +863,13 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
     $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $db->qstr($invoice_parts_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice parts item."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice parts item."));
         exit;
         
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_details['invoice_id']);
+        write_record_to_activity_log(_gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.', null, null, null, $invoice_details['invoice_id']);
         
         // Update last active record
         update_customer_last_active($db, $invoice_details['customer_id']);
@@ -891,7 +891,7 @@ function delete_invoice_parts_items($db, $invoice_id) {
     $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete all of an invoice's parts items."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's parts items."));
         exit;
     } else {
         
@@ -910,13 +910,13 @@ function delete_invoice_prefill_item($db, $invoice_prefill_id){
     $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$invoice_prefill_id;
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to delete an invoice prefill item."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice prefill item."));
         exit;
         
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("The Invoice Prefill Item").' '.$invoice_prefill_id.' '.gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("The Invoice Prefill Item").' '.$invoice_prefill_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         return true;
 
@@ -935,7 +935,7 @@ function labour_sub_total($db, $invoice_id) {
     $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_labour WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice labour sub total."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice labour sub total."));
         exit;
     } else {
         
@@ -954,7 +954,7 @@ function parts_sub_total($db, $invoice_id) {
     $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to calculate the invoice parts sub total."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice parts sub total."));
         exit;
     } else {
         
@@ -990,7 +990,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
             WHERE invoice_id    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed update the invoice totals."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed update the invoice totals."));
         exit;
     } else {
      
@@ -1035,7 +1035,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
 
         // Check for file submission errors and echo them
         if ($_FILES['invoice_prefill_csv']['error'] > 0 ) {
-            echo gettext("Return Code").': ' . $_FILES['invoice_prefill_csv']['error'] . '<br />';                
+            echo _gettext("Return Code").': ' . $_FILES['invoice_prefill_csv']['error'] . '<br />';                
 
         // If no errors then proceed to processing the data
         } else {        
@@ -1046,7 +1046,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
                 $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
                 
                 if(!$rs = $db->execute($sql)) {
-                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to empty the prefill items table."));
+                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the prefill items table."));
                     exit;                    
                 }
             }
@@ -1069,7 +1069,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
                 $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, amount, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 
                 if(!$rs = $db->execute($sql)) {
-                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert the new prefill items into the database."));
+                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the new prefill items into the database."));
                     exit;                    
                 }
                 
@@ -1084,7 +1084,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
             unlink($_FILES['invoice_prefill_csv']['tmp_name']);
             
             // Log activity        
-            write_record_to_activity_log(gettext("Invoice Prefill Items were uploaded via csv by").' '.QFactory::getUser()->login_display_name.'.'); 
+            write_record_to_activity_log(_gettext("Invoice Prefill Items were uploaded via csv by").' '.QFactory::getUser()->login_display_name.'.'); 
 
         }
 
@@ -1098,7 +1098,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
         echo "Temp file: " . $_FILES['invoice_prefill_csv']['tmp_name']       . '<br />';
         echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
          */
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
 
     }     
 
@@ -1113,7 +1113,7 @@ function export_invoice_prefill_items_csv($db) {
     $sql = "SELECT description, type, amount, active FROM ".PRFX."invoice_prefill_items";
     
     if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get invoice prefill items from the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice prefill items from the database."));
         exit;
     } else {        
         
@@ -1127,7 +1127,7 @@ function export_invoice_prefill_items_csv($db) {
         $output_stream = fopen('php://output', 'w');
         
         // output the column headings
-        fputcsv($output_stream, array(gettext("Description"), gettext("Type"), gettext("Amount"), gettext("Active")));
+        fputcsv($output_stream, array(_gettext("Description"), _gettext("Type"), _gettext("Amount"), _gettext("Active")));
 
         // loop over the rows, outputting them
         foreach($prefill_items as $key => $value) {
@@ -1139,7 +1139,7 @@ function export_invoice_prefill_items_csv($db) {
         fclose($output_stream);
         
         // Log activity        
-        write_record_to_activity_log(gettext("Invoice Prefill Items were exported by").' '.QFactory::getUser()->login_display_name.'.');
+        write_record_to_activity_log(_gettext("Invoice Prefill Items were exported by").' '.QFactory::getUser()->login_display_name.'.');
         
     }    
     
@@ -1157,43 +1157,43 @@ function export_invoice_prefill_items_csv($db) {
 
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($invoice_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is paid."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is paid."));
         return false;        
     }
     
     /* Is closed
     if($invoice_details['is_closed'] == true) {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it is closed."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it is closed."));
         return false;        
     }*/
     
     // Has transactions
     if(!empty(get_invoice_transactions($db, $invoice_id))) {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions."));
         return false;        
     }
 
     /* Has an outstanding balance
     if($invoice_details['balance'] > 0) {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has an outstanding balance."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has an outstanding balance."));
         return false;
     }
     
     // Has Labour
     if(!empty(get_invoice_labour_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has labour items."));
+       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
        return false;          
     }    
     
     // Has Parts
     if(!empty(get_invoice_parts_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has parts."));
+       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
        return false;          
     }*/
  
@@ -1213,43 +1213,43 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
 
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($invoice_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions and is paid."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is paid."));
         return false;        
     }
     
     // Is closed
     if($invoice_details['is_closed'] == true) {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it is closed."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it is closed."));
         return false;        
     }
     
     // Has transactions
     if(!empty(get_invoice_transactions($db, $invoice_id))) {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has transactions."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions."));
         return false;        
     }
 
     /* Has an outstanding balance
     if($invoice_details['balance'] > 0) {
-        //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has an outstanding balance."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has an outstanding balance."));
         return false;
     }
     
     // Has Labour
     if(!empty(get_invoice_labour_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has labour items."));
+       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
        return false;          
     }    
     
     // Has Parts
     if(!empty(get_invoice_parts_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', gettext("This invoice cannot be deleted because it has parts."));
+       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
        return false;          
     }*/
  
@@ -1269,7 +1269,7 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
     
     // if the new employee is the same as the current one, exit
     if($target_employee_id == $invoice_details['employee_id']) {         
-        postEmulationWrite('warning_msg', gettext("Nothing done. The new employee is the same as the current employee."));
+        postEmulationWrite('warning_msg', _gettext("Nothing done. The new employee is the same as the current employee."));
         return false;
     }     
     
@@ -1291,13 +1291,13 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
     }
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to assign a Work Order to an employee."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to assign a Work Order to an employee."));
         exit;
         
     } else {
         
         // Assigned employee success message
-        postEmulationWrite('information_msg', gettext("Assigned employee updated."));        
+        postEmulationWrite('information_msg', _gettext("Assigned employee updated."));        
         
         // Get Logged in Employee's Display Name        
         $logged_in_employee_display_name = QFactory::getUser()->display_name;
@@ -1307,7 +1307,7 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
         
         // Get the Display Name of the currently Assigned Employee
         if($assigned_employee_id == ''){
-            $assigned_employee_display_name = gettext("Unassigned");            
+            $assigned_employee_display_name = _gettext("Unassigned");            
         } else {            
             $assigned_employee_display_name = get_user_details($db, $assigned_employee_id, 'display_name');
         }
@@ -1316,10 +1316,10 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
         $target_employee_display_name = get_user_details($db, $target_employee_id, 'display_name');
         
         // Creates a History record
-        insert_workorder_history_note($db, $invoice_id, gettext("Invoice").' '.$invoice_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.');
+        insert_workorder_history_note($db, $invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
 
         // Log activity
-        write_record_to_activity_log(gettext("Invoice").' '.$invoice_id.' '.gettext("has been assigned to").' '.$target_employee_display_name.' '.gettext("from").' '.$assigned_employee_display_name.' '.gettext("by").' '. $logged_in_employee_display_name.'.', $target_employee_id);
+        write_record_to_activity_log(_gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.', $target_employee_id);
 
         // Update last active record
         update_user_last_active($db, $invoice_details['employee_id']);

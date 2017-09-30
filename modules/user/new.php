@@ -23,7 +23,7 @@ if($customer_id != '') {
         
     } else {
         
-        force_page('customer', 'details', 'customer_id='.$customer_id.'&warning_msg='.gettext("The customer already has a login."));
+        force_page('customer', 'details', 'customer_id='.$customer_id.'&warning_msg='._gettext("The customer already has a login."));
         
     }    
     

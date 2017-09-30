@@ -31,7 +31,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed."));
+        die(_gettext("No Direct Access Allowed."));
     }   
 
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
@@ -43,7 +43,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
             if(!$user_id = validate_reset_email($db, $VAR['email'])) {
                 
                 // Display error message
-                $smarty->assign('warning_msg', gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
+                $smarty->assign('warning_msg', _gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
                                
                 // Reload the enter_email page
                 $stage = 'enter_email';
@@ -87,7 +87,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed."));
+        die(_gettext("No Direct Access Allowed."));
     }
     
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
@@ -129,7 +129,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user:reset')) {
-        die(gettext("No Direct Access Allowed."));
+        die(_gettext("No Direct Access Allowed."));
     }
     
     // validate the reset code
@@ -139,7 +139,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
         delete_user_reset_code($db, $user_id);
         
         // Display an error message
-        $smarty->assign('warning_msg', gettext("The submitted reset code was invalid."));
+        $smarty->assign('warning_msg', _gettext("The submitted reset code was invalid."));
         
         // Load the enter_email page
         $stage = 'enter_email';
@@ -159,7 +159,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
         logout(true);
 
         // Redirect to login page with success or failed mess
-        force_page('user', 'login', 'information_msg='.gettext("Password reset successfully."));
+        force_page('user', 'login', 'information_msg='._gettext("Password reset successfully."));
         exit;
         
     }

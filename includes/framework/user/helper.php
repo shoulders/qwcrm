@@ -266,8 +266,8 @@ class JUserHelper
         }
         else
         {
-            //JLog::add(gettext("Unable to find a user with given activation string.");, JLog::WARNING, 'jerror');
-            gettext("Unable to find a user with given activation string.");
+            //JLog::add(_gettext("Unable to find a user with given activation string.");, JLog::WARNING, 'jerror');
+            _gettext("Unable to find a user with given activation string.");
 
             return false;
         }

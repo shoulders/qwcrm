@@ -16,7 +16,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have a invoice_id
 if($invoice_id == '') {
-    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
+    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
     exit;
 }
 

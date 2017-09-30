@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'modules/supplier.php');
 
 // Check if we have a supplier_id
 if($supplier_id == '') {
-    force_page('supplier', 'search', 'warning_msg='.gettext("No Supplier ID supplied."));
+    force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
     exit;
 } 
 

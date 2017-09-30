@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'modules/payment.php');
 
 // Check if we have a refund_id
 if($refund_id == '') {
-    force_page('refund', 'search', 'warning_msg='.gettext("No Refund ID supplied."));
+    force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
     exit;
 } 
 

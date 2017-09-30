@@ -14,13 +14,13 @@ require(INCLUDES_DIR.'modules/setup.php');
 require(INCLUDES_DIR.'modules/user.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup:install', 'setup') || QWCRM_SETUP != 'install') {
-    die(gettext("No Direct Access Allowed."));
+if(!check_page_accessed_via_qwcrm('setup:install', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process
 if(!check_page_accessed_via_qwcrm('setup:install') ) {
-    write_record_to_setup_log('install', gettext("QWcrm installation has begun."));
+    write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 }
 
 // Stage 1 - Database Connection -->
@@ -33,17 +33,17 @@ if($VAR['stage'] == '1') {
             
             // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);            
-            write_record_to_setup_log('install', gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
+            write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = '2';
-            $smarty->assign('information_msg', gettext("Database connection successful."));
+            $smarty->assign('information_msg', _gettext("Database connection successful."));
         
         // load the page
         } else {
             
             // reload the database connection page with the details and error message
             $smarty->assign('qwcrm_config', $VAR);
-            //$smarty->assign('warning_msg', gettext("There is a database connection issue. Check your settings."));
-            write_record_to_setup_log('install', gettext("Failed to connect to the database with the supplied credentials.")); 
+            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings."));
+            write_record_to_setup_log('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
             $smarty->assign('stage', '1');
             
         }
@@ -63,7 +63,7 @@ if($VAR['stage'] == '2') {
         $VAR['secret_key']          = JUserHelper::genRandomPassword(32);
         
         submit_qwcrm_config_settings($VAR);
-        write_record_to_setup_log('install', gettext("Config settings have been added to the config file."));
+        write_record_to_setup_log('install', _gettext("Config settings have been added to the config file."));
         $VAR['stage'] = '3';
     
     // load the page
@@ -89,12 +89,12 @@ if($VAR['stage'] == '3') {
     
     if($VAR['submit'] == 'stage3') {
        
-        write_record_to_setup_log('install', gettext("Starting Database installation."));
+        write_record_to_setup_log('install', _gettext("Starting Database installation."));
         
         // install the database file and load the next page
         if(install_database($db)) {
             
-            $record = gettext("The database installed successfully.");
+            $record = _gettext("The database installed successfully.");
             write_record_to_setup_log('install', $record);
             $smarty->assign('information_msg', $record);            
             $VAR['stage'] = '4';            
@@ -102,7 +102,7 @@ if($VAR['stage'] == '3') {
         // load the page with the error message      
         } else {            
               
-           $record = gettext("The database failed to install.");           
+           $record = _gettext("The database failed to install.");           
            write_record_to_setup_log('install', $record);           
            $smarty->assign('warning_msg', $record);           
            $VAR['stage'] = '4';
@@ -142,7 +142,7 @@ if($VAR['stage'] == '5') {
         
         // upload_company details
         update_company_details($db, $VAR);
-        write_record_to_setup_log('install', gettext("Company details inserted."));
+        write_record_to_setup_log('install', _gettext("Company details inserted."));
         $VAR['stage'] = '6';
         
     // load the page    
@@ -163,12 +163,12 @@ if($VAR['stage'] == '6') {
         
         if($VAR['workorder_start_number'] != '') {
             set_workorder_start_number($db, $VAR['workorder_start_number']);
-            write_record_to_setup_log('install', gettext("Starting Work Order number has been set."));
+            write_record_to_setup_log('install', _gettext("Starting Work Order number has been set."));
         }
         
         if($VAR['invoice_start_number'] != '') {
             set_invoice_start_number($db, $VAR['invoice_start_number']);
-            write_record_to_setup_log('install', gettext("Starting Invoice number has been set."));
+            write_record_to_setup_log('install', _gettext("Starting Invoice number has been set."));
         }
         
         $VAR['stage'] = '7';
@@ -187,11 +187,11 @@ if($VAR['stage'] == '7') {
     if($VAR['submit'] == 'stage7') {  
        
         insert_user($db, $VAR);
-        write_record_to_setup_log('install', gettext("The administrator account has been created."));
-        write_record_to_setup_log('install', gettext("The QWcrm installation process has completed successfully."));
+        write_record_to_setup_log('install', _gettext("The administrator account has been created."));
+        write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
         //$VAR['stage'] = '8';
         
-        force_page('user', 'login', 'setup=finished&information_msg='.gettext("The QWcrm installation process has completed successfully.").' '.gettext("Please login with the administrator account you have just created."), 'get');
+        force_page('user', 'login', 'setup=finished&information_msg='._gettext("The QWcrm installation process has completed successfully.").' '._gettext("Please login with the administrator account you have just created."), 'get');
         exit;
     
     // load the page

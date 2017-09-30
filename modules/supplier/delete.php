@@ -12,12 +12,12 @@ require(INCLUDES_DIR.'modules/supplier.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have a supplier_id
 if($supplier_id == '') {
-    force_page('supplier', 'search', 'warning_msg='.gettext("No Supplier ID supplied."));
+    force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
     exit;
 }  
 
@@ -25,5 +25,5 @@ if($supplier_id == '') {
 delete_supplier($db, $supplier_id);
 
 // Load the supplier search page
-force_page('supplier', 'search', 'information_msg='.gettext("Supplier deleted successfully."));
+force_page('supplier', 'search', 'information_msg='._gettext("Supplier deleted successfully."));
 exit;

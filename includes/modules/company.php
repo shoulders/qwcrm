@@ -43,7 +43,7 @@ function get_company_start_end_times($db, $time_event) {
     $sql = "SELECT opening_hour, opening_minute, closing_hour, closing_minute FROM ".PRFX."company";
 
    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the company start and end times."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
         exit;
     } else {        
     
@@ -181,15 +181,15 @@ function update_company_details($db, $VAR) {
 
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         exit;
     } else {
         
         // Assign success message
-        $smarty->assign('information_msg', gettext("Company details updated."));
+        $smarty->assign('information_msg', _gettext("Company details updated."));
         
         // Log activity        
-        write_record_to_activity_log(gettext("Company details updated."));
+        write_record_to_activity_log(_gettext("Company details updated."));
 
         return;
         
@@ -212,15 +212,15 @@ function update_company_hours($db, $openingTime, $closingTime) {
             closing_minute  =". $db->qstr( $closingTime['Time_Minute']   );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update the company hours."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
         exit;
     } else {
         
         // Assign success message
-        $smarty->assign('information_msg', gettext("Business hours have been updated."));
+        $smarty->assign('information_msg', _gettext("Business hours have been updated."));
         
         // Log activity        
-        write_record_to_activity_log(gettext("Business hours have been updated."));        
+        write_record_to_activity_log(_gettext("Business hours have been updated."));        
         
         return true;
         
@@ -244,13 +244,13 @@ function check_start_end_times($start_time, $end_time) {
     
     // If start time is before end time
     if($start_time > $end_time) {        
-        $smarty->assign('warning_msg', gettext("Start Time is after End Time."));
+        $smarty->assign('warning_msg', _gettext("Start Time is after End Time."));
         return false;
     }
         
     // If the start and end time are the same    
     if($start_time ==  $end_time) {        
-        $smarty->assign('warning_msg', gettext("Start Time is the same as End Time."));
+        $smarty->assign('warning_msg', _gettext("Start Time is the same as End Time."));
         return false;
     }
     
@@ -300,7 +300,7 @@ function upload_logo($db) {
     
             // Check for file submission errors and echo them
             if ($_FILES['logo']['error'] > 0 ) {
-                echo gettext("Return Code").': ' . $_FILES['logo']['error'] . '<br />';                
+                echo _gettext("Return Code").': ' . $_FILES['logo']['error'] . '<br />';                
             
             // If no errors then move the file from the PHP temporary storage to the logo location
             } else {
@@ -320,7 +320,7 @@ function upload_logo($db) {
             echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
              */   
             
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update logo because the submitted file was invalid."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
             
         }
         

@@ -15,13 +15,13 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have an employee_id
 if($employee_id == '') {
-    force_page('user', 'search', 'warning_msg='.gettext("No Employee ID supplied."));
+    force_page('user', 'search', 'warning_msg='._gettext("No Employee ID supplied."));
     exit;
 }
 
 // Check if we have a workorder_id
 if($workorder_id == '') {
-    force_page('workorder', 'search', 'warning_msg='.gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
     exit;
 }
 
@@ -48,7 +48,7 @@ if(isset($VAR['submit'])) {
         $start_day             = date('d', date_to_timestamp($VAR['start_date'])  );    
     
         // Load the schedule day with the newly submitted schedule item
-        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='.gettext("Schedule Successfully Created"));
+        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='._gettext("Schedule Successfully Created"));
         exit;
     }
 

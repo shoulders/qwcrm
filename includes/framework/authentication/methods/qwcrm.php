@@ -43,7 +43,7 @@ class PlgAuthenticationQwcrm
         if (empty($credentials['password']))
         {
             $response->status        = JAuthentication::STATUS_FAILURE;            
-            $response->error_message = gettext("Empty password not allowed.");
+            $response->error_message = _gettext("Empty password not allowed.");
 
             return;
         }
@@ -77,7 +77,7 @@ class PlgAuthenticationQwcrm
             {
                 // Invalid password
                 $response->status        = JAuthentication::STATUS_FAILURE;                
-                $response->error_message = gettext("Username and password do not match or you do not have an account yet.");
+                $response->error_message = _gettext("Username and password do not match or you do not have an account yet.");
             }
         }
         else
@@ -88,7 +88,7 @@ class PlgAuthenticationQwcrm
 
             // Invalid user
             $response->status        = JAuthentication::STATUS_FAILURE;            
-            $response->error_message = gettext("Username and password do not match or you do not have an account yet.");
+            $response->error_message = _gettext("Username and password do not match or you do not have an account yet.");
         }
         
         return;
@@ -253,7 +253,7 @@ class PlgAuthenticationQwcrm
         // If the user is blocked, redirect with an error
         if ($instance->block == 1)
         {
-            //$this->app->enqueueMessage(gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');
+            //$this->app->enqueueMessage(_gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');
             return false;            
         }
 
@@ -268,7 +268,7 @@ class PlgAuthenticationQwcrm
 
         if (!$result)
         {
-            $this->app->enqueueMessage(gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');            
+            $this->app->enqueueMessage(_gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');            
             return false;
         }*/
 

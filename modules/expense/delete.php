@@ -12,12 +12,12 @@ require(INCLUDES_DIR.'modules/expense.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have an expense_id
 if($expense_id == '') {
-    force_page('expense', 'search', 'warning_msg='.gettext("No Expense ID supplied."));
+    force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
     exit;
 }   
 

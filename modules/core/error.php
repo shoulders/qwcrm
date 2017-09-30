@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
-    die(gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed."));
 }
 
 /* Grab and Process Values befor sending to the log and displaying */
@@ -58,7 +58,7 @@ $smarty->assign('error_msg',        $error_msg              );
 if($login_usergroup_id <= 6){
     $BuildPage .= $smarty->fetch('core/error.tpl');
 } else {
-    $BuildPage .= gettext("An error has occured but you are not allowed to see it.").'<br>';
-    $BuildPage .= gettext("Timestamp").': '.time().'<br>';
-    $BuildPage .= gettext("Give this information to an admin and they can have a look at it for you.");
+    $BuildPage .= _gettext("An error has occured but you are not allowed to see it.").'<br>';
+    $BuildPage .= _gettext("Timestamp").': '.time().'<br>';
+    $BuildPage .= _gettext("Give this information to an admin and they can have a look at it for you.");
 }

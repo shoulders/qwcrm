@@ -15,7 +15,7 @@ define('QWCRM_MINIMUM_PHP', '5.5.0');
 
 // Check the PHP version is high enough to run QWcrm
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
-    //die(gettext("QWcrm requires PHP").' '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' '.gettext("Your current version is").' '.PHP_VERSION);
+    //die(_gettext("QWcrm requires PHP").' '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' '._gettext("Your current version is").' '.PHP_VERSION);
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' Your current version is '.PHP_VERSION);
 }
 
@@ -99,7 +99,7 @@ verify_qwcrm_is_installed_correctly($db);
 ################################################
 
 // this starts the framework
-if(QWCRM_SETUP != 'install') {
+if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $app = new QFactory;
 }
 
@@ -108,7 +108,7 @@ if(QWCRM_SETUP != 'install') {
 ##########################################################
 
 // Load current user object (empty if not logged in or installing)
-if(QWCRM_SETUP != 'install') {
+if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $user = QFactory::getUser();
 }
 
@@ -151,7 +151,7 @@ if($login_user_id) {update_user_last_active($db, $login_user_id);}
 ################################ 
 
 // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
-if(QWCRM_SETUP != 'install') {
+if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $VAR = array_merge($_POST, $_GET, postEmulationReturnStore());
 } else {
     $VAR = array_merge($_POST, $_GET);
@@ -180,7 +180,7 @@ if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
 ##########################################
 
 // Set Date Format
-if(QWCRM_SETUP != 'install') {
+if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     define('DATE_FORMAT', get_company_details($db, 'date_format'));             // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
 }
 
@@ -217,7 +217,7 @@ $smarty->assign('start_day',                $start_day                  );
 $smarty->assign('user_id',                  $user_id                    );
 
 // Used throughout the site
-if(QWCRM_SETUP != 'install') {
+if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $smarty->assign('currency_sym', get_company_details($db,    'currency_symbol')  );
     $smarty->assign('company_logo', get_company_details($db,    'logo')             );
     $smarty->assign('date_format',  DATE_FORMAT                                     );
@@ -362,11 +362,11 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
 } else {    
   
     // Log activity        
-    write_record_to_activity_log(gettext("A user tried to access the following resource without the correct pemissions.").' ('.$module.':'.$page_tpl.')');  
+    write_record_to_activity_log(_gettext("A user tried to access the following resource without the correct pemissions.").' ('.$module.':'.$page_tpl.')');  
     
-    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("You do not have permission to access the resource - ").' '.$module.':'.$page_tpl);
+    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$module.':'.$page_tpl);
     
-    force_page('index.php', null, 'warning_msg='.gettext("You do not have permission to access this resource or your session has expired.").' ('.$module.':'.$page_tpl.')');
+    force_page('index.php', null, 'warning_msg='._gettext("You do not have permission to access this resource or your session has expired.").' ('.$module.':'.$page_tpl.')');
     exit;
 
 }
@@ -375,7 +375,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
 #        Access Logging                        #
 ################################################
 
-if(!$skip_logging || QWCRM_SETUP) {
+if(!$skip_logging || defined('QWCRM_SETUP')) {
     
     // This logs access details to the access log
     if($QConfig->qwcrm_access_log == true){

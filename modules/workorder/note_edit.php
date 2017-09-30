@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'modules/workorder.php');
 
 // Check if we have a workorder_note_id
 if($VAR['workorder_note_id'] == '') {
-    force_page('workorder', 'search', 'warning_msg='.gettext("No Work Order Note ID supplied."));
+    force_page('workorder', 'search', 'warning_msg='._gettext("No Work Order Note ID supplied."));
     exit;
 }
 
@@ -24,7 +24,7 @@ if(isset($VAR['submit'])) {
     update_workorder_note($db, $VAR['workorder_note_id'], $VAR['note']);
     
     // load the workorder details page
-    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='.gettext("The note has been updated."));
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='._gettext("The note has been updated."));
     exit;
     
 }   

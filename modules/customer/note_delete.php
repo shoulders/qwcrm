@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'modules/customer.php');
 
 // check if we have a customer_note_id
 if($VAR['customer_note_id'] == '') {
-    force_page('customer', 'search', 'warning_msg='.gettext("No Customer Note ID supplied."));
+    force_page('customer', 'search', 'warning_msg='._gettext("No Customer Note ID supplied."));
     exit;
 }
 

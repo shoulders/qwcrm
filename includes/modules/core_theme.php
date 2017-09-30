@@ -17,12 +17,12 @@ defined('_QWEXEC') or die;
 
 function greeting_message_based_on_time($employee_name){
     
-    $morning    = gettext("Good morning").' '.$employee_name;
-    $afternoon  = gettext("Good afternoon").' '.$employee_name;
-    $evening    = gettext("Good evening").' '.$employee_name;
-    $night      = gettext("Working late").' '.$employee_name;
+    $morning    = _gettext("Good morning").' '.$employee_name;
+    $afternoon  = _gettext("Good afternoon").' '.$employee_name;
+    $evening    = _gettext("Good evening").' '.$employee_name;
+    $night      = _gettext("Working late").' '.$employee_name;
     
-    $friday     = gettext("Get ready for the weekend!");
+    $friday     = _gettext("Get ready for the weekend!");
     
     // Get the current hour
     $current_time = date('H');

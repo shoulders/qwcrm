@@ -18,13 +18,13 @@ require(INCLUDES_DIR.'mpdf.php');
 
 // Check if we have an invoice_id
 if($invoice_id == '') {
-    force_page('invoice', 'search', 'warning_msg='.gettext("No Invoice ID supplied."));
+    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
     exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
-    force_page('workorder', 'overview', 'warning_msg='.gettext("Some or all of the Printing Options are not set."));
+    force_page('workorder', 'overview', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
     exit;
 }
 
@@ -47,7 +47,7 @@ $smarty->assign('parts_sub_total',                  parts_sub_total($db, $invoic
 if($VAR['print_content'] == 'invoice') {
     
     // Build the PDF filename
-    $pdf_filename = gettext("Invoice").'-'.$invoice_id;
+    $pdf_filename = _gettext("Invoice").'-'.$invoice_id;
     
     // Print HTML Invoice
     if ($VAR['print_type'] == 'print_html') {        
@@ -85,7 +85,7 @@ if($VAR['print_content'] == 'invoice') {
                       
         // Email the PDF
         $invoice_details = get_invoice_details($db, $invoice_id);
-        send_email($customer_details['email'], gettext("Invoice").' '.$invoice_id, $body, $customer_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
+        send_email($customer_details['email'], _gettext("Invoice").' '.$invoice_id, $body, $customer_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
                 
         // End all other processing
         die();

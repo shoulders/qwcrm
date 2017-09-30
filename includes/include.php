@@ -53,7 +53,7 @@ function get_qwcrm_database_version_number($db) {
     try
     {        
         if(!$rs = $db->execute($sql)) {        
-            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not retrieve the QWcrm database version."));
+            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
             //exit;        
         } else {
 
@@ -91,7 +91,7 @@ function get_company_details($db, $item = null) {
     $sql = "SELECT * FROM ".PRFX."company";
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get company details."));        
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
         exit;
     } else {
         
@@ -124,7 +124,7 @@ function update_user_last_active($db, $user_id = null) {
     $sql = "UPDATE ".PRFX."user SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a User's last active time."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
         exit;
     }
     
@@ -244,7 +244,7 @@ function perform_redirect($url, $type = 'header') {
 // Example to use
 // If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
 // old - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-// new - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not display the Work Order record requested"));
+// new - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
 
 function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) { 
     
@@ -376,7 +376,7 @@ function postEmulationReturnStore($keep_store = false) {
 function prepare_error_data($type, $data = null) {
     
     // Allows errors from install/migrate to be processed
-    if(QWCRM_SETUP != 'install') {
+    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
         $user = QFactory::getUser();
     }
 
@@ -536,12 +536,12 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
 
 function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
-    // If installingif(QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')
-    if(QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade') { return true; }
+    // If installing
+    if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
     
     // error catching - you cannot use normal error logging as it will cause a loop
     if($login_usergroup_id == '') {
-        die(gettext("The ACL has been supplied with no account type ID - I will now die."));                
+        die(_gettext("The ACL has been supplied with no account type ID - I will now die."));                
     }
 
     // Get user's Group Name by login_usergroup_id
@@ -550,7 +550,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
             WHERE usergroup_id =".$db->qstr($login_usergroup_id);
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the user's Group Name by Login Account Type ID."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
         exit;
     } else {
         $usergroup_display_name = $rs->fields['usergroup_display_name'];
@@ -564,7 +564,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($module_page);
 
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Could not get the Page's ACL."));
+        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
         exit;
     } else {
         
@@ -627,12 +627,12 @@ function verify_qwcrm_is_installed_correctly($db) {
     // Test the database connection is valid
     if(!$db->isConnected()) {
         echo $db->ErrorMsg().'<br>';
-        die(gettext("There is a database connection issue. Check your settings in the config file."));
+        die(_gettext("There is a database connection issue. Check your settings in the config file."));
     }
     
     // Check the MySQL version is high enough to run QWcrm
     if (version_compare(get_mysql_version($db), QWCRM_MINIMUM_MYSQL, '<')) {
-        die(gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '.gettext("Your current version is").' '.get_mysql_version($db));
+        die(_gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version($db));
     }
             
     /* Compare the QWcrm file system and database versions - if mismatch load upgrade for further instructions? */
@@ -651,17 +651,17 @@ function verify_qwcrm_is_installed_correctly($db) {
         
         // Setup failes
         if($qwcrm_database_version == 'setup_failed') { 
-            die('<div style="color: red;">'.gettext("A previous setup attempt never completed succesfully and there is an invalid configuration.php file present.").'</div>');            
+            die('<div style="color: red;">'._gettext("A previous setup attempt never completed succesfully and there is an invalid configuration.php file present.").'</div>');            
         }
         
         // Failed upgrade
         if($qwcrm_database_version == '0.0.0') { 
-            die('<div style="color: red;">'.gettext("The upgrade never completed successfully. Check the upgrade and error logs.").'</div>');
+            die('<div style="color: red;">'._gettext("The upgrade never completed successfully. Check the upgrade and error logs.").'</div>');
         }
         
         // If the file system is older than the database
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '<')) {             
-            die('<div style="color: red;">'.gettext("The file system is older than the database. Check the logs and your settings.").'</div>');
+            die('<div style="color: red;">'._gettext("The file system is older than the database. Check the logs and your settings.").'</div>');
         }
         
         // If the file system is newer than the database - run upgrade
@@ -675,17 +675,17 @@ function verify_qwcrm_is_installed_correctly($db) {
     
     // Has been installed but the setup directory is still present  
     /*if(is_dir('setup') ) {
-        die('<div style="color: red;">'.gettext("The setup directory exists!! Please rename or remove the setup directory.").'</div>');       
+        die('<div style="color: red;">'._gettext("The setup directory exists!! Please rename or remove the setup directory.").'</div>');       
     }*/
     
     /* has been installed but the installation directory is still present  
     if(is_dir('install') ) {
-        die('<div style="color: red;">'.gettext("The install Directory Exists!! Please Rename or remove the install directory.").'</div>');       
+        die('<div style="color: red;">'._gettext("The install Directory Exists!! Please Rename or remove the install directory.").'</div>');       
     }
     
     // has been installed but the upgrade directory is still present  
     if(is_dir('upgrade') ) {
-        die('<div style="color: red;">'.gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');     
+        die('<div style="color: red;">'._gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');     
     }  */
     
     // Check configured template is compatible
@@ -694,9 +694,9 @@ function verify_qwcrm_is_installed_correctly($db) {
         // Get template details
         $template_details = parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
         
-        echo gettext("The configured template is not supported by this version of QWcrm.").'<br>';
-        echo gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
-        echo gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
+        echo _gettext("The configured template is not supported by this version of QWcrm.").'<br>';
+        echo _gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
+        echo _gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
         die();
         
     }
@@ -716,9 +716,9 @@ function check_template_compatible() {
     if (version_compare(QWCRM_VERSION, $template_details['qwcrm_min_version'], '<')) {
         
         return false;
-        /*echo gettext("The current version or QWcrm is too low to use this template.").'<br>';
-        echo gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
-        echo gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
+        /*echo _gettext("The current version or QWcrm is too low to use this template.").'<br>';
+        echo _gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
+        echo _gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
         die();*/
         
     }
@@ -727,9 +727,9 @@ function check_template_compatible() {
     if (version_compare(QWCRM_VERSION, $template_details['qwcrm_max_version'], '>')) {
         
         return false;
-        /*echo gettext("The current version or QWcrm is too high to use this template.").'<br>';
-        echo gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
-        echo gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
+        /*echo _gettext("The current version or QWcrm is too high to use this template.").'<br>';
+        echo _gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
+        echo _gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
         die();*/
         
     }
@@ -778,7 +778,7 @@ function parse_xml_file_into_array($file) {
 
     // Load file into memory
     if (!($fp = fopen($file, 'r'))) {
-       die(gettext("Unable to open XML file.").' : '.$file);
+       die(_gettext("Unable to open XML file.").' : '.$file);
     }
     $xmldata = fread($fp, filesize($file));
     fclose($fp);
@@ -979,7 +979,7 @@ function write_record_to_access_log() {
     
     // Write log entry   
     if(!$fp = fopen(ACCESS_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Access Log to save the record."));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
         exit;
     }
     
@@ -1017,7 +1017,7 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
     
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Activity Log to save the record."));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
         exit;
     }
     
@@ -1034,7 +1034,7 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
 
 function write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
     
-    // it is not - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to count the matching Work Orders."));
+    // it is not - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
     
     // If user not logged in (for apache standards)
     if($login_username == '') {
@@ -1046,7 +1046,7 @@ function write_record_to_error_log($login_username, $error_page, $error_type, $e
 
     // Write log entry  
     if(!$fp = fopen(ERROR_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Error Log to save the record."));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
         exit;
     }
     

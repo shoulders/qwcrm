@@ -31,7 +31,7 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     insert_payment_method_transaction($db, $invoice_id, $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['method_type'], $method_note, $VAR['note']);
     
     // Assign Success message
-    $smarty->assign('information_msg', gettext("Cash payment added successfully"));
+    $smarty->assign('information_msg', _gettext("Cash payment added successfully"));
     
     /* Post-Processing */
     // goes here    

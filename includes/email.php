@@ -62,11 +62,11 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     if($config->email_online != true) {
         
         // Log activity 
-        $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
+        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_activity_log($record);
         
         // Output the system message to the browser
-        $system_message = $record.'<br>'.gettext("The email system is not enabled, contact the administrators.");
+        $system_message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
         $smarty->assign('warning_msg', $system_message);
         output_notifications_onscreen('', $system_message);
         
@@ -149,7 +149,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         //var_dump($RfcCompliance_exception);
         
         // Log activity 
-        $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
+        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_activity_log($record);
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
         
@@ -211,7 +211,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             */          
             
             // Log activity             
-            $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
+            $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
             write_record_to_activity_log($record);
             
             // Output the system message to the browser
@@ -229,12 +229,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             output_notifications_onscreen($system_message, '');
             
             // Log activity
-            $record = gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '.gettext("with the subject").' : '.$subject; 
+            $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
             
             if($workorder_id) {
                 
                 // Create a Workorder History Note            
-                insert_workorder_history_note($db, $workorder_id, $record.' : '.gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
+                insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
             
             }
             
@@ -255,7 +255,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         //var_dump($RfcCompliance_exception);
         
         // Log activity 
-        $record = gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
+        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
         write_record_to_email_error_log($Transport_exception->getMessage());
 
@@ -289,7 +289,7 @@ function write_record_to_email_error_log($record) {
     
     // Write log entry
     if(!$fp = fopen(EMAIL_ERROR_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Email Error Log to save the record."));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
         exit;
     }
     
@@ -316,7 +316,7 @@ function write_record_to_email_transport_log($record) {
     
     // Write log entry  
     if(!$fp = fopen(EMAIL_TRANSPORT_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', gettext("Could not open the Email Transport Log to save the record."));
+        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
         exit;
     }
     

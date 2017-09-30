@@ -41,12 +41,12 @@ if($VAR['submit'] == 'update') {
     if(update_qwcrm_config($VAR)) {
         
         // Reload Page to get the new settings - QConfig has already been decalred before the settings are updated
-        force_page('administrator', 'config', 'information_msg='.gettext("Config settings updated successfully."));
+        force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."));
         
     } else {
         
         // Load the submitted values
-        $smarty->assign('warning_msg', gettext("Some information was invalid, please check for errors and try again."));
+        $smarty->assign('warning_msg', _gettext("Some information was invalid, please check for errors and try again."));
         $smarty->assign('qwcrm_config', $VAR);        
         
     }

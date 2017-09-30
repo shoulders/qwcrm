@@ -440,7 +440,7 @@ class JUser
             // Hence this code is required:
             if (isset($array['password2']) && $array['password'] != $array['password2'])
             {
-                QFactory::getApplication()->enqueueMessage(gettext("Passwords do not match. Please re-enter password."), 'error');             
+                QFactory::getApplication()->enqueueMessage(_gettext("Passwords do not match. Please re-enter password."), 'error');             
 
                 return false;
             }
@@ -468,7 +468,7 @@ class JUser
             {
                 if ($array['password'] != $array['password2'])
                 {
-                    $this->setError(gettext("Passwords do not match. Please re-enter password."));
+                    $this->setError(_gettext("Passwords do not match. Please re-enter password."));
 
                     return false;
                 }
@@ -478,7 +478,7 @@ class JUser
                 // Check if the user is reusing the current password if required to reset their password
                 if ($this->requireReset == 1 && $this->userHelper->verifyPassword($this->password_clear, $this->password))
                 {
-                    $this->setError(gettext("You can't reuse your current password, please enter a new password."));
+                    $this->setError(_gettext("You can't reuse your current password, please enter a new password."));
 
                     return false;
                 }
@@ -513,7 +513,7 @@ class JUser
         // Bind the array
         if (!$this->setProperties($array))
         {
-            $this->setError(gettext("Unable to bind array to user object."));
+            $this->setError(_gettext("Unable to bind array to user object."));
 
             return false;
         }
@@ -680,7 +680,7 @@ class JUser
             // Reset to guest user
             $this->guest = 1;
             
-            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, gettext("Failed to load an Employee."));
+            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load an Employee."));
             //exit;
             
             return false;

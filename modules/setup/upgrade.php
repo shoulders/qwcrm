@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/setup.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup:upgrade', 'setup') || QWCRM_SETUP != 'upgrade') {
-    die(gettext("No Direct Access Allowed."));
+if(!check_page_accessed_via_qwcrm('setup:upgrade', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'upgrade') {
+    die(_gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process
 if(!check_page_accessed_via_qwcrm('setup:upgrade') ) {
-    write_record_to_setup_log('upgrade', gettext("QWcrm upgrade has begun."));
+    write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has begun."));
 }
 
 // Build the page

@@ -437,17 +437,17 @@ class JAuthentication
                     {
                         case JAuthentication::STATUS_EXPIRED:
                             //return JError::raiseWarning('102002', JText::_('JLIB_LOGIN_EXPIRED'));
-                            return gettext("Login Expired");
+                            return _gettext("Login Expired");
                             break;
                             
                         case JAuthentication::STATUS_DENIED:
                             //return JError::raiseWarning('102003', JText::_('JLIB_LOGIN_DENIED'));
-                            return gettext("Login Denied");
+                            return _gettext("Login Denied");
                             break;
 
                         default:
                             //return JError::raiseWarning('102004', JText::_('JLIB_LOGIN_AUTHORISATION'));
-                            return gettext("Username and password do not match or you do not have an account yet.");  // this is a guess
+                            return _gettext("Username and password do not match or you do not have an account yet.");  // this is a guess
                             break;
                     }
                 }

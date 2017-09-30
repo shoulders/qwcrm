@@ -43,13 +43,13 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
             note            = ".$db->qstr( $note                                );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to insert transaction into the database."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert transaction into the database."));
         exit;
         
     } else {
         
         // Log activity 
-        write_record_to_activity_log(gettext("Inserted transaction").' '.$db->Insert_ID().'.', QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
+        write_record_to_activity_log(_gettext("Inserted transaction").' '.$db->Insert_ID().'.', QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
                 
     }    
     
@@ -90,13 +90,13 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, '0');
 
         // Transaction log        
-        $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, ".gettext("Note").": $note";
+        $log_msg = _gettext("Partial Payment made by")." $method_name "._gettext("for")." $currency_sym$formatted_amount, "._gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, "._gettext("Note").": $note";
         
         // Insert Transaction into log       
         insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);           
+        insert_workorder_history_note($db, $workorder_id, _gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);           
 
     }
 
@@ -114,13 +114,13 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         if($amount < $invoice_details['total']) {
             
             // Transaction is a partial payment
-            $log_msg = gettext("Partial Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("closing the invoice.")." $method_note, ".gettext("Note").": $note";
+            $log_msg = _gettext("Partial Payment made by")." $method_name "._gettext("for")." $currency_sym$formatted_amount, "._gettext("closing the invoice.")." $method_note, "._gettext("Note").": $note";
         
             
         } else {
             
             // Transaction is payment for the full amount
-            $log_msg = gettext("Full Payment made by")." $method_name ".gettext("for")." $currency_sym$formatted_amount, ".gettext("closing the invoice.")." $method_note, ".gettext("Note").": $note";
+            $log_msg = _gettext("Full Payment made by")." $method_name "._gettext("for")." $currency_sym$formatted_amount, "._gettext("closing the invoice.")." $method_note, "._gettext("Note").": $note";
                     
         }
 
@@ -128,7 +128,7 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
         insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
         
         // Create a Workorder History Note
-        insert_workorder_history_note($db, $workorder_id, gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
+        insert_workorder_history_note($db, $workorder_id, _gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
 
     }
     
@@ -157,7 +157,7 @@ function get_payment_details($db, $item = null){
     $sql = "SELECT * FROM ".PRFX."payment";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment details."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
         exit;
     } else {
         
@@ -187,7 +187,7 @@ function get_active_payment_system_methods($db) {
             WHERE active='1'";    
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get active payment methods."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get active payment methods."));
         exit;
     } else {
         
@@ -206,7 +206,7 @@ function get_payment_system_methods($db) {
     $sql = "SELECT * FROM ".PRFX."payment_system_methods";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment system methods."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment system methods."));
         exit;
     } else {
         
@@ -225,7 +225,7 @@ function get_payment_manual_methods($db) {
     $sql = "SELECT * FROM ".PRFX."payment_manual_methods";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get payment manual methods."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment manual methods."));
         exit;
     } else {
         
@@ -245,7 +245,7 @@ function get_active_credit_cards($db) {
     $sql = "SELECT card_key, display_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the active credit cards."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active credit cards."));
         exit;
     } else {
         
@@ -274,7 +274,7 @@ function get_credit_card_display_name_from_key($db, $card_key) {
     $sql = "SELECT display_name FROM ".PRFX."payment_credit_cards WHERE card_key=".$db->qstr($card_key);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get Credit Card Name by key."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
         exit;
     } else {
         
@@ -294,7 +294,7 @@ function get_invoice_transactions($db, $invoice_id){
     $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE invoice_id =".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to get the invoice's transactions."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice's transactions."));
         exit;
     } else {      
         
@@ -324,12 +324,12 @@ function update_payment_settings($db, $VAR) {
             invoice_footer_msg      =". $db->qstr( $VAR['invoice_footer_msg']       );            
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update payment settings."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment settings."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(gettext("Payment settings updated."));
+        write_record_to_activity_log(_gettext("Payment settings updated."));
 
         return;
         
@@ -365,14 +365,14 @@ function update_active_payment_system_methods($db, $VAR) {
                 WHERE system_method_id=". $db->qstr( $payment_method['system_method_id'] ); 
         
         if(!$rs = $db->execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to update a payment method active state."));
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method active state."));
             exit;
         }
         
     }
     
     // Log activity        
-    write_record_to_activity_log(gettext("Available payment methods updated."));
+    write_record_to_activity_log(_gettext("Available payment methods updated."));
     
 }
 
@@ -391,7 +391,7 @@ function check_payment_method_is_active($db, $method) {
     $sql = "SELECT active FROM ".PRFX."payment_system_methods WHERE system_method_id=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, gettext("Failed to check if the payment method is active."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));
         exit;
     }
     
@@ -418,7 +418,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     // Has a zero amount been submitted, this is not allowed
     if($amount == 0){
         
-        $smarty->assign('warning_msg', gettext("You can not enter a transaction with a zero (0.00) amount."));
+        $smarty->assign('warning_msg', _gettext("You can not enter a transaction with a zero (0.00) amount."));
         
         return false;
         
@@ -427,7 +427,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     // Is the transaction larger than the outstanding invoice balance, this is not allowed
     if($amount > get_invoice_details($db, $invoice_id, 'balance')){
         
-        $smarty->assign('warning_msg', gettext("You can not enter more than the outstanding balance of the invoice."));
+        $smarty->assign('warning_msg', _gettext("You can not enter more than the outstanding balance of the invoice."));
         
         return false;
         

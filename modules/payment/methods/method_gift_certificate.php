@@ -14,12 +14,12 @@ defined('_QWEXEC') or die;
 // Check the Gift Certificate exists and set the giftcert_id
 if(!$giftcert_id = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_code'])) {
     
-    $smarty->assign('warning_msg', gettext("There is no Gift certificate with that code."));
+    $smarty->assign('warning_msg', _gettext("There is no Gift certificate with that code."));
 
     // Make sure the Gift Certificate is valid and then pass the amount to the next process
     } elseif(!validate_giftcert_for_payment($db, $giftcert_id)) {
         
-        $smarty->assign('warning_msg', gettext("This Gift Certificate is not valid."));        
+        $smarty->assign('warning_msg', _gettext("This Gift Certificate is not valid."));        
         
     } else {       
         
@@ -40,13 +40,13 @@ if(!$giftcert_id = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_code'])) 
             // Live processing goes here
 
             // Create a specific note string (if applicable)
-            $method_note = gettext("Gift Certificate Code").': '.$VAR['giftcert_code'];    
+            $method_note = _gettext("Gift Certificate Code").': '.$VAR['giftcert_code'];    
 
             // Insert the transaction with the calculated information
             insert_payment_method_transaction($db, $invoice_id, $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['method_type'], $method_note, $VAR['note']);
 
             // Assign Success message
-            $smarty->assign('information_msg', gettext("Gift Certificate applied successfully"));
+            $smarty->assign('information_msg', _gettext("Gift Certificate applied successfully"));
 
             /* Post-Processing */
 

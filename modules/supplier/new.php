@@ -22,13 +22,13 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     if (isset($VAR['submitandnew'])) {
 
         // load the new supplier page
-        force_page('supplier', 'new', 'information_msg='.gettext("Supplier added successfully.")); 
+        force_page('supplier', 'new', 'information_msg='._gettext("Supplier added successfully.")); 
         exit;
 
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'details', 'supplier_id='.$supplier_id.'&information_msg='.gettext("Supplier added successfully.")); 
+        force_page('supplier', 'details', 'supplier_id='.$supplier_id.'&information_msg='._gettext("Supplier added successfully.")); 
         exit;
 
     }
