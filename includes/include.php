@@ -507,20 +507,12 @@ function prepare_error_data($type, $data = null) {
  * This does cause these translations to be loaded/assigned twice but allows me to use 1 file language instead of 2
  */
 
-function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var = null) {
+function set_page_header_and_meta_data($module, $page_tpl) {
     
     global $smarty;
     
-    /* Page Title
-     * This allows the title to be overidden and legacy compatibility where the title is passed to the new page
-     * or just use the page title from the language file
-     * legacy option will be removed in future
-     */
-    if ($page_title_from_var != null) {
-        $smarty->assign('page_title', $page_title_from_var); 
-    } else {        
-        $smarty->assign('page_title', _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));
-    }    
+    // Page Title
+    $smarty->assign('page_title', _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
     
     // Meta Tags
     $smarty->assign('meta_description', _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
@@ -541,7 +533,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     
     // error catching - you cannot use normal error logging as it will cause a loop
     if($login_usergroup_id == '') {
-        die(_gettext("The ACL has been supplied with no account type ID - I will now die."));                
+        die(_gettext("The ACL has been supplied with no account type ID. QWcrm will now die."));                
     }
 
     // Get user's Group Name by login_usergroup_id
@@ -602,7 +594,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     if(!is_file('configuration.php') && !check_page_accessed_via_qwcrm('setup:choice')) {        
         $_POST['page'] = 'setup:choice';
         $_POST['theme'] = 'menu_off';        
-        define('QWCRM_SETUP', 'install');
+        define('QWCRM_SETUP', 'install');        
         return;        
     }
     

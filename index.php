@@ -74,14 +74,20 @@ require('includes/defines.php');
 // Configure PHP error reporting
 require(INCLUDES_DIR.'php_error.php');
 
-// Load dependancies via composer
-require(LIBRARIES_DIR.'vendor/'.'autoload.php');  // composer vendor packages (currently only motranslator)
-//require __DIR__ . '/vendor/autoload.php';  //official
+// Load QWcrm Security including mandatory security code
+require(INCLUDES_DIR.'security.php');
+
+// Load dependancies via composer (currently only motranslator)
+require(LIBRARIES_DIR.'vendor/'.'autoload.php');
+
+// Load the main QWcrm include file
+require(INCLUDES_DIR.'include.php');
+
+// Verify QWcrm is installed correctly
+verify_qwcrm_is_installed_correctly($db); // this needs to run before the language to prevent language detection error 
 
 // Load Libraries, Includes and QWFramework
 require(INCLUDES_DIR.'language.php');
-require(INCLUDES_DIR.'security.php');
-require(INCLUDES_DIR.'include.php');
 //require(INCLUDES_DIR.'mpdf.php');
 require(INCLUDES_DIR.'email.php');
 require(INCLUDES_DIR.'adodb.php');
@@ -89,16 +95,10 @@ require(INCLUDES_DIR.'smarty.php');
 require(FRAMEWORK_DIR.'qwframework.php');
 
 ################################################
-#    Verify QWcrm is installed correctly       #
-################################################
-
-verify_qwcrm_is_installed_correctly($db);
-
-################################################
 #     Initiate QFramework                      #
 ################################################
 
-// this starts the framework
+// This starts the QFramework
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $app = new QFactory;
 }
@@ -315,7 +315,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     }
 
     // Set Page Header and Meta Data
-    set_page_header_and_meta_data($module, $page_tpl, $VAR['page_title']);    
+    set_page_header_and_meta_data($module, $page_tpl);
 
     // Fetch Header Block
     if($VAR['theme'] != 'off') {     
