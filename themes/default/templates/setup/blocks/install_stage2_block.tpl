@@ -323,9 +323,9 @@
                     <tr>
                         <td align="right"><b>{t}Remember Me{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="remember_me" name="remember_me">                                                       
-                                <option value="0"{if $qwcrm_config.remember_me == '0'} selected{/if}>{t}No{/t}</option>
+                            <select class="olotd5" id="remember_me" name="remember_me">
                                 <option value="1"{if $qwcrm_config.remember_me == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.remember_me == '0'} selected{/if}>{t}No{/t}</option>                                
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Remember Me{/t}</strong></div><hr><div>{t escape=tooltip}Provides remember me functionality so when a user logs in to QWcrm they can stay logged in even if they close the browser. This works by generatating an authentication cookie which has an Expiry Date set by the \'Cookie Lifetime\'.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>

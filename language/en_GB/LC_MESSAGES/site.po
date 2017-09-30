@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-26 18:23+0100\n"
-"PO-Revision-Date: 2017-09-28 16:08+0100\n"
+"POT-Creation-Date: 2017-09-30 14:25+0100\n"
+"PO-Revision-Date: 2017-09-30 14:26+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -13,6 +13,7 @@ msgstr ""
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: _gettext\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: cache\n"
 "X-Poedit-SearchPathExcluded-1: nbproject\n"
@@ -7114,72 +7115,72 @@ msgstr ""
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:523 includes/include.php:527 includes/include.php:528
+#: includes/include.php:522 includes/include.php:526 includes/include.php:527
 msgid "_"
 msgstr ""
 
-#: includes/include.php:545
+#: includes/include.php:544
 msgid "The ACL has been supplied with no account type ID - I will now die."
 msgstr ""
 
-#: includes/include.php:554
+#: includes/include.php:553
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:568
+#: includes/include.php:567
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:636
+#: includes/include.php:630
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:641
+#: includes/include.php:635
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:641 index.php:18
+#: includes/include.php:635
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:660
+#: includes/include.php:654
 msgid ""
 "A previous setup attempt never completed succesfully and there is an invalid "
 "configuration.php file present."
 msgstr ""
 
-#: includes/include.php:665
+#: includes/include.php:659
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:670
+#: includes/include.php:664
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:703
+#: includes/include.php:697
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:704
+#: includes/include.php:698
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:705
+#: includes/include.php:699
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:988
+#: includes/include.php:982
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1026
+#: includes/include.php:1020
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1055
+#: includes/include.php:1049
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -8630,16 +8631,12 @@ msgid ""
 "status."
 msgstr ""
 
-#: index.php:18
-msgid "QWcrm requires PHP"
-msgstr ""
-
-#: index.php:478
+#: index.php:365
 msgid ""
 "A user tried to access the following resource without the correct pemissions."
 msgstr ""
 
-#: index.php:482
+#: index.php:369
 msgid ""
 "You do not have permission to access this resource or your session has "
 "expired."
