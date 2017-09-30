@@ -153,7 +153,7 @@
                                         <!-- Install QWcrm -->   
                                         <tr id="install_next" style="display: none;">
                                             <td>
-                                                <div>{t escape=raw_html}SETUP_INSTALL_MESSAGE{/t}</div>
+                                                <div>{t escape=no}SETUP_INSTALL_MESSAGE{/t}</div>
                                                 <p><a href="index.php?page=setup:install"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
                                             </td>
                                         </tr>                                        
@@ -161,7 +161,7 @@
                                         <!-- Migrate from MyITCRM -->  
                                         <tr id="migrate_next" style="display: none;">
                                             <td>
-                                                <div>{t escape=raw_html}SETUP_MIGRATE_MESSAGE{/t}</div>
+                                                <div>{t escape=no}SETUP_MIGRATE_MESSAGE{/t}</div>
                                                 <p><a href="index.php?page=setup:migrate"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
                                             </td>
                                         </tr>                                         
@@ -169,7 +169,7 @@
                                         {*<!-- Upgrade QWcrm -->                                         
                                         <tr id="upgrade_next" style="display: none;">
                                             <td>
-                                                <div>{t escape=raw_html}SETUP_UPGRADE_MESSAGE{/t}</div>
+                                                <div>{t escape=no}SETUP_UPGRADE_MESSAGE{/t}</div>
                                                 <p><a href="index.php?page=setup:upgrade"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
                                             </td>
                                         </tr>*}                                                                            
