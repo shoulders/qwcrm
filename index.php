@@ -72,7 +72,7 @@ if(is_file('configuration.php')) {
 require('includes/defines.php');
 
 // Configure PHP error reporting
-require(INCLUDES_DIR.'php_error.php');
+require(INCLUDES_DIR.'error.php');
 
 // Load QWcrm Security including mandatory security code
 require(INCLUDES_DIR.'security.php');
@@ -80,17 +80,17 @@ require(INCLUDES_DIR.'security.php');
 // Load dependancies via composer (currently only motranslator)
 require(LIBRARIES_DIR.'vendor/'.'autoload.php');
 
-// Load the main QWcrm include file
+// Load Libraries, Includes and QWFramework
 require(INCLUDES_DIR.'include.php');
+require(INCLUDES_DIR.'adodb.php');
 
 // Verify QWcrm is installed correctly
 verify_qwcrm_is_installed_correctly($db); // this needs to run before the language to prevent language detection error 
 
-// Load Libraries, Includes and QWFramework
+// Load Libraries, Includes and QWFramework - Continued
 require(INCLUDES_DIR.'language.php');
 //require(INCLUDES_DIR.'mpdf.php');
 require(INCLUDES_DIR.'email.php');
-require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
 require(FRAMEWORK_DIR.'qwframework.php');
 
