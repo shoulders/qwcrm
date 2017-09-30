@@ -7,22 +7,6 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-/*
- * Mandatory Code - Code that is run upon the file being loaded
- * Display Functions - Code that is used to primarily display records - linked tables
- * New/Insert Functions - Creation of new records
- * Get Functions - Grabs specific records/fields ready for update - no table linking
- * Update Functions - For updating records/fields
- * Close Functions - Closing Work Orders code
- * Delete Functions - Deleting Work Orders
- * Other Functions - All other functions not covered above
- */
-
-/* 
- * i am going to use this to hold all security related functions for easy reference
- * some code will auto run aswell as functions being here almost like a seperate library
- */
-
 defined('_QWEXEC') or die;
 
 /** Mandatory Code **/

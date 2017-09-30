@@ -21,9 +21,10 @@
         <li>mPDF v6.1.0 | GPLv2 | https://github.com/mpdf/mpdf</li>    
         <li>ADODB V5.20.9 | ADOdb is dual licensed under BSD and LGPL | http://adodb.org/dokuwiki/doku.php | PHP Database Abstraction layer allowing use of different databases whilest using the same SQL code and other database related things.</li>
         <li>Smarty v3.1.30 | LGPL 2.1 or later</li>
-        <li>reCAPTCHA PHP library | BSD-3-Clause | https://github.com/google/recaptcha/blob/1.0.0/php/recaptchalib.php</li>
-        <li>Gettext support for Smarty2/Smarty3 (08-06-17) | LGPL-2.1 | https://github.com/smarty-gettext/smarty-gettext</li>
+        <li>smarty-gettext (08-06-17) (modified for motranslator) | LGPL-2.1 | https://github.com/smarty-gettext/smarty-gettext | Gettext support for Smarty2/Smarty3</li>
+        <li>reCAPTCHA PHP library | BSD-3-Clause | https://github.com/google/recaptcha/blob/1.0.0/php/recaptchalib.php</li>        
         <li>PHP Barcode Generator v0.2.1 | LGPL-3.0 | https://github.com/picqer/php-barcode-generator</li>
         <li>Joomla v3.7.0 Session, Authentication and User code (Adapted) | GPL v2 (or later) | https://www.joomla.org/ | QFramework session, authentication and user handler</li>
+        <li>motranslator v3.3 | GPL-2.0 (or later) | https://github.com/phpmyadmin/motranslator | Translation API for PHP using Gettext MO files</li>
     </ul>
 </div>

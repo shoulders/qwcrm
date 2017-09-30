@@ -15,7 +15,8 @@ define('QWCRM_MINIMUM_PHP', '5.5.0');
 
 // Check the PHP version is high enough to run QWcrm
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
-    die(gettext("QWcrm requires PHP").' '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' '.gettext("Your current version is").' '.PHP_VERSION);
+    //die(gettext("QWcrm requires PHP").' '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' '.gettext("Your current version is").' '.PHP_VERSION);
+    die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' Your current version is '.PHP_VERSION);
 }
 
 #################################################
@@ -36,8 +37,6 @@ $startMem  = memory_get_usage();
 ################################################
 #    Get Root Folder and Physical path info    #
 ################################################
-
-// could i use realpath() here in anyway?
 
 // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\
 define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);
@@ -64,15 +63,23 @@ if(is_file('configuration.php')) {
     // load the config file
     require('configuration.php');
     
-    // Create config object for global scope / settings
+    // Create config object for global scope
     $QConfig = new QConfig;
     
 }
 
-// Load the mandatory system includes
+// Load system constants
 require('includes/defines.php');
-//require(INCLUDES_DIR.'vendor/'.'autoload.php');  // composer vendor packages (currently only motranslator)
-//require(INCLUDES_DIR.'language.php');
+
+// Configure PHP error reporting
+require(INCLUDES_DIR.'php_error.php');
+
+// Load dependancies via composer
+require(LIBRARIES_DIR.'vendor/'.'autoload.php');  // composer vendor packages (currently only motranslator)
+//require __DIR__ . '/vendor/autoload.php';  //official
+
+// Load Libraries, Includes and QWFramework
+require(INCLUDES_DIR.'language.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
 //require(INCLUDES_DIR.'mpdf.php');
@@ -80,115 +87,6 @@ require(INCLUDES_DIR.'email.php');
 require(INCLUDES_DIR.'adodb.php');
 require(INCLUDES_DIR.'smarty.php');
 require(FRAMEWORK_DIR.'qwframework.php');
-
-################################################
-#         Error Reporting                      #
-################################################
-
-// Set the error_reporting
-switch ($QConfig->error_reporting)
-{
-    case 'default':
-    case '-1':
-        break;
-
-    case 'none':
-    case '0':
-        error_reporting(0);
-        break;
-            
-    case 'verysimple':
-        error_reporting(E_ERROR | E_WARNING | E_PARSE | ~E_NOTICE);
-        ini_set('display_errors', 1);
-        break;            
-
-    case 'simple':
-        error_reporting(E_ERROR | E_WARNING | E_PARSE);
-        ini_set('display_errors', 1);
-        break;
-
-    case 'maximum':
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        break;
-
-    case 'development':
-        error_reporting(-1);
-        ini_set('display_errors', 1);
-        break;
-
-    default:
-        //error_reporting($QConfig->error_reporting);
-        ini_set('display_errors', 1);
-        break;
-}
-
-################################################
-#         Load Language                        #
-################################################
-
-// Autodetect Language - I18N support information here
-if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
-    
-    if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        $language = $QConfig->default_language; 
-    }
-    
-} elseif($QConfig->autodetect_language === '0') {
-    
-    $language = $QConfig->default_language;    
-
-// if installing - use the locale language if detected or default to english
-} else {
-    
-    if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        $language = 'en_GB'; 
-    }
-    
-}
-
-// Autodetect Language - I18N support information here
-if($QConfig->autodetect_language === '1' || QWCRM_SETUP == 'install') {
-    
-    // Use the locale language if detected or default language or british english
-    if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        
-        // set default language as the chosen language or fallback to british english
-        if(!$language = $QConfig->default_language) {
-            $language = 'en_GB';
-        }
-        
-    }
-        
-    // if there is no language file for the locale, set language to british english - This allows me to use CONSTANTS in translations but bypasses normal fallback mechanism for gettext()
-    if(!is_file(LANGUAGE_DIR.$language.'/LC_MESSAGES/site.po')) {
-        $language = 'en_GB';        
-    }
-    
-} else {
-    
-    // Use the default language
-    $language = $QConfig->default_language;
-    
-}
-
-// Here we define the global system locale given the found language
-putenv("LANG=$language");
-
-// this might be useful for date functions (LC_TIME) or money formatting (LC_MONETARY), for instance
-setlocale(LC_ALL, $language);
-
-// Set the text domain
-$textdomain = 'site';
-
-// this will make gettext look for ../language/<lang>/LC_MESSAGES/site.mo
-bindtextdomain($textdomain, 'language');
-
-// indicates in what encoding the file should be read
-bind_textdomain_codeset($textdomain, 'UTF-8');
-
-// here we indicate the default domain the gettext() calls will respond to
-textdomain($textdomain);
 
 ################################################
 #    Verify QWcrm is installed correctly       #

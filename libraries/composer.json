@@ -1,0 +1,5 @@
+{
+    "require": {
+        "phpmyadmin/motranslator": "^3.3"
+    }
+}

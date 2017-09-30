@@ -107,24 +107,24 @@ function smarty_block_t($params, $text) {
 	if (isset($count) && isset($plural)) {
 		// use specified textdomain if available
 		if (isset($domain) && isset($context)) {
-			$text = dnpgettext($domain, $context, $text, $plural, $count);
+			$text = _dnpgettext($domain, $context, $text, $plural, $count);
 		} elseif (isset($domain)) {
-			$text = dngettext($domain, $text, $plural, $count);
+			$text = _dngettext($domain, $text, $plural, $count);
 		} elseif(isset($context)) {
-			$text = npgettext($context, $text, $plural, $count);
+			$text = _npgettext($context, $text, $plural, $count);
 		} else {
-			$text = ngettext($text, $plural, $count);
+			$text = _ngettext($text, $plural, $count);
 		}
 	} else {
 		// use specified textdomain if available
 		if (isset($domain) && isset($context)) {
-			$text = dpgettext($domain, $context, $text);
+			$text = _dpgettext($domain, $context, $text);
 		} elseif (isset($domain)) {
-			$text = dgettext($domain, $text);
+			$text = _dgettext($domain, $text);
 		} elseif (isset($context)) {
-			$text = pgettext($context, $text);
+			$text = _pgettext($context, $text);
 		} else {
-			$text = gettext($text);
+			$text = _gettext($text);
 		}
 	}
 
@@ -136,6 +136,7 @@ function smarty_block_t($params, $text) {
 	switch ($escape) {
             
                 case 'html':
+                        // This is the default case (set above)
                         $text = nl2br(htmlspecialchars($text));
                         break;
                     
@@ -159,8 +160,8 @@ function smarty_block_t($params, $text) {
                                                 
                         break;
                     
-                case 'raw_html' :
-                        // display html - no escaping - case 'html' is default mode                        
+                case 'no' :
+                        // no escaping                    
                         break;
 
                 }

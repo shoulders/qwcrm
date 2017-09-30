@@ -49,7 +49,7 @@ function smarty_function_locale($params, &$smarty) {
 		trigger_error("Unknown stack operation '{$stack_operation}'", E_USER_ERROR);
 	}
 
-	bind_textdomain_codeset($domain, 'UTF-8');
-	bindtextdomain($domain, $path);
-	textdomain($domain);
+	_bind_textdomain_codeset($domain, 'UTF-8');
+	_bindtextdomain($domain, $path);
+	_textdomain($domain);
 }

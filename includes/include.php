@@ -499,7 +499,6 @@ function prepare_error_data($type, $data = null) {
     
 }
 
-
 ############################################
 #      Set Page Header and Meta Data       #
 ############################################
@@ -520,12 +519,12 @@ function set_page_header_and_meta_data($module, $page_tpl, $page_title_from_var 
     if ($page_title_from_var != null) {
         $smarty->assign('page_title', $page_title_from_var); 
     } else {        
-        $smarty->assign('page_title', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));
+        $smarty->assign('page_title', _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));
     }    
     
     // Meta Tags
-    $smarty->assign('meta_description', gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
-    $smarty->assign('meta_keywords',    gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
+    $smarty->assign('meta_description', _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
+    $smarty->assign('meta_keywords',    _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
     
     return;
     
@@ -593,12 +592,7 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
 
 function verify_qwcrm_is_installed_correctly($db) {
 
-    /* General Checks */
-
-    // Is gettext installed (for translations)
-    if(!function_exists('gettext')) {
-        die('Gettext is not installed which is required for the translation system.');
-    }
+    /* General Checks */    
     
     /* Installation / Migration */
     

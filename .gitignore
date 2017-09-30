@@ -1,9 +1,8 @@
 /nbproject/
 /cache/smarty/cache/
 /cache/smarty/compile/
+/libraries/vendor/
 /logs/
 /media/
-/install configuration.php
-/migrate configuration.php
-/qwcrm configuration.php
 /configuration.php
+/language/nl_NL/
