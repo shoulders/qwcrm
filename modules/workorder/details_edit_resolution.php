@@ -19,7 +19,7 @@ if($workorder_id == '') {
 
 // Check if we can edit the workorder resolution
 if(get_workorder_details($db, $workorder_id, 'is_closed')) {
-    force_page('workorder', 'details&workorder_id='.$workorder_id);
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'warning_msg='._gettext("Cannot edit the resolution of a closed Work Order."));
     exit;
 }
 

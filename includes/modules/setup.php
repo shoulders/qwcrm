@@ -63,7 +63,7 @@ function update_record_value($db, $select_table, $select_column, $record_identif
         $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
         $executed_sql_results .= '<div>&nbsp;</div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
         
         return false;
@@ -77,7 +77,7 @@ function update_record_value($db, $select_table, $select_column, $record_identif
         //$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
         //$executed_sql_results .= '<div>&nbsp;</div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('correction', $record);
         
         return true;
@@ -96,9 +96,18 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
     global $executed_sql_results;
     global $setup_error_flag;
     
-    $sql = "UPDATE $table SET
-            $column         =". $db->qstr( $new_value )."                      
-            WHERE $column   =". $db->qstr( $current_value  );
+    if($current_value === '*') {
+        
+        $sql = "UPDATE $table SET
+                $column         =". $db->qstr( $new_value       );
+        
+    } else {
+        
+        $sql = "UPDATE $table SET
+                $column         =". $db->qstr( $new_value       )."                      
+                WHERE $column   =". $db->qstr( $current_value   );
+        
+    }
 
     if(!$rs = $db->execute($sql)) { 
         
@@ -112,7 +121,7 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
         $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
         $executed_sql_results .= '<div>&nbsp;</div>';        
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
         
         return false;
@@ -129,7 +138,7 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
         $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
         $executed_sql_results .= '<div>&nbsp;</div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('correction', $record);
         
         return true;
@@ -186,7 +195,7 @@ function execute_sql_file($db, $sql_file) {
             // Output message via smarty
             $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
             
-            // Log mesage to setup log            
+            // Log message to setup log            
             write_record_to_setup_log('install', $record, $db->ErrorMsg(), $sql);
             
             
@@ -198,7 +207,7 @@ function execute_sql_file($db, $sql_file) {
             // Output message via smarty
             $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
             
-            // Log mesage to setup log            
+            // Log message to setup log            
             write_record_to_setup_log('install', $record);
 
         }
@@ -214,7 +223,7 @@ function execute_sql_file($db, $sql_file) {
         // Output message via smarty
         $executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('install', $record);
         
         return false;
@@ -227,7 +236,7 @@ function execute_sql_file($db, $sql_file) {
         // Output message via smarty
         $executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('install', $record);
         
         return true;
@@ -293,7 +302,7 @@ function execute_sql_file_lines($db, $sql_file) {
                 // Output message via smarty
                 $executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
 
-                // Log mesage to setup log                
+                // Log message to setup log                
                 write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);                              
 
             } else {
@@ -304,7 +313,7 @@ function execute_sql_file_lines($db, $sql_file) {
                 // Output message via smarty
                 $executed_sql_results .= '<div style="color: green">'.$record.'</div>';
                 
-                // Log mesage to setup log                
+                // Log message to setup log                
                 write_record_to_setup_log('upgrade', $record);
 
             }            
@@ -325,7 +334,7 @@ function execute_sql_file_lines($db, $sql_file) {
         // Output message via smarty
         $executed_sql_results .= '<div style="color: red;">'.$record.'</div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('upgrade', $record);
         
         return false;
@@ -338,7 +347,7 @@ function execute_sql_file_lines($db, $sql_file) {
         // Output message via smarty
         $executed_sql_results .= '<div style="color: green;">'.$record.'</div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('upgrade', $record);
         
         return true;
@@ -527,7 +536,7 @@ function install_database($db) {
         $executed_sql_results .= '<div>&nbsp;</div>';
         $executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('install', $record);
         
     } else {
@@ -539,7 +548,7 @@ function install_database($db) {
         $executed_sql_results .= '<div>&nbsp;</div>';
         $executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('install', $record);
         
     }    
@@ -908,13 +917,13 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         );
     migrate_table($db, $qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
         
-    // set all users to employees
+    // Set all users to employees
     update_column_values($db, $qwcrm_prefix.'user', 'is_employee', '*', '1');
     
-    // set all users to technicians
+    // Set all users to technicians
     update_column_values($db, $qwcrm_prefix.'user', 'usergroup', '*', '4');
     
-    // set password reset required for all users
+    // Set password reset required for all users
     update_column_values($db, $qwcrm_prefix.'user', 'require_reset', '*', '1');
     
     // Reset all user passwords (passwords will all be random and unknown)
@@ -976,6 +985,9 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     // Schedule
     migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix);
     
+    // User
+    migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix);
+    
     /* Final stuff */
 
     // Final statement
@@ -991,7 +1003,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         $executed_sql_results .= '<div>&nbsp;</div>';
         $executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('migrate', $record);
         
     } else {
@@ -1003,7 +1015,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         $executed_sql_results .= '<div>&nbsp;</div>';
         $executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
         
-        // Log mesage to setup log        
+        // Log message to setup log        
         write_record_to_setup_log('migrate', $record);
         
     } 
@@ -1047,7 +1059,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
     
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
     
     // old MyITCRM workorder status
@@ -1149,7 +1161,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     // Add division to seperate table migration function results
     $executed_sql_results .= '<div>&nbsp;</div>';
 
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
 
     return;
@@ -1173,7 +1185,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
     
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
     
     $sql =  "SELECT * FROM ".$qwcrm_prefix."invoice";                       
@@ -1244,7 +1256,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
     // Add division to seperate table migration function results
     $executed_sql_results .= '<div>&nbsp;</div>';
 
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
 
     return;
@@ -1268,7 +1280,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
     
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
     
     $sql =  "SELECT * FROM ".$qwcrm_prefix."giftcert";                       
@@ -1312,7 +1324,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
     // Add division to seperate table migration function results
     $executed_sql_results .= '<div>&nbsp;</div>';
 
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
 
     return;
@@ -1336,7 +1348,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
     
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
     
     $sql =  "SELECT            
@@ -1384,7 +1396,69 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
     // Add division to seperate table migration function results
     $executed_sql_results .= '<div>&nbsp;</div>';
 
-    // Log mesage to setup log                
+    // Log message to setup log                
+    write_record_to_setup_log('migrate', $record);
+
+    return;
+
+}
+
+############################################
+#   Correct migrated user data             #
+############################################
+
+function migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix) {
+    
+    global $executed_sql_results;
+    
+    // Add division to seperate table migration function results
+    $executed_sql_results .= '<div>&nbsp;</div>';
+    
+    // Log message
+    $record = _gettext("Starting the correction of the migrated `user` data in QWcrm.");       
+                
+    // Result message
+    $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+    
+    // Log message to setup log                
+    write_record_to_setup_log('migrate', $record);
+    
+    $sql = "SELECT * FROM ".$qwcrm_prefix."user";
+
+    /* Processs the records */
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Users."));
+        exit;
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            $qwcrm_record = $rs->GetRowAssoc(); 
+
+            // Sanitise user's usernames - remove all spaces
+            update_record_value($db, $qwcrm_prefix.'user', 'user_id', $qwcrm_record['user_id'], 'username', str_replace(' ', '.', $qwcrm_record['username']));            
+            
+            // Advance the INSERT loop to the next record
+            $rs->MoveNext();           
+
+        }//EOF While loop
+
+    }
+    
+    /* Final Stuff */
+
+    // Log message
+    $record = _gettext("Finished the correction of the migrated `user` data in QWcrm."); 
+     
+    // Result message
+    $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+
+    // Add division to seperate table migration function results
+    $executed_sql_results .= '<div>&nbsp;</div>';
+
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);
 
     return;
@@ -1444,7 +1518,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     // Result message
     $executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
     
-    // Log mesage to setup log                
+    // Log message to setup log                
     write_record_to_setup_log('migrate', $record);        
     
    /* load the records from MyITCRM */
@@ -1462,7 +1536,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
         // Result message
         $executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
         
-        // Log mesage to setup log                
+        // Log message to setup log                
         write_record_to_setup_log('migrate', $record);        
                 
         // output error, could not load table so all of this table was skipped
@@ -1545,7 +1619,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
                 // Result message
                 $executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$db->ErrorMsg().'</span></div>';                
                 
-                // Log mesage to setup log                
+                // Log message to setup log                
                 write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);                
                 
                 
@@ -1565,7 +1639,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
                 // Result message
                 $executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
                                 
-                // Log mesage to setup log                
+                // Log message to setup log                
                 write_record_to_setup_log('migrate', $record);
                
                 */                
@@ -1601,7 +1675,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
             // Add division to seperate table migration function results
             $executed_sql_results .= '<div>&nbsp;</div>';
 
-            // Log mesage to setup log                
+            // Log message to setup log                
             write_record_to_setup_log('migrate', $record.$record_additional);
                 
             return false;
@@ -1619,7 +1693,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
             // Add division to seperate table migration function results
             $executed_sql_results .= '<div>&nbsp;</div>';
 
-            // Log mesage to setup log                
+            // Log message to setup log                
             write_record_to_setup_log('migrate', $record.$record_additional);
             
             return true;

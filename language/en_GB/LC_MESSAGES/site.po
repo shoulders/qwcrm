@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-30 14:25+0100\n"
-"PO-Revision-Date: 2017-09-30 14:26+0100\n"
+"POT-Creation-Date: 2017-09-30 21:52+0100\n"
+"PO-Revision-Date: 2017-09-30 21:53+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -382,7 +382,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:76
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:257
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:311
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:328
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:327
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:379
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:390
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:400
@@ -408,7 +408,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:76
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:257
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:309
-#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:326
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:325
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:377
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:388
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:398
@@ -487,7 +487,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:77
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:256
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:310
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:327
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:328
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:380
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:389
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:399
@@ -514,7 +514,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:77
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:256
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:308
-#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:325
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:326
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:378
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:387
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:397
@@ -6243,6 +6243,13 @@ msgstr ""
 "</ul>\n"
 "<p>These features were never finished or did not work properly so the data "
 "is not migrated.</p>\n"
+"<h2>What is Changed?</h2>\n"
+"<ul>\n"
+"<li>All usernames will be sanitised to match the new QWcrm format. This "
+"means some usernames will be changed.</li>\n"
+"<li>All user passwords will be reset to a random value. This means that "
+"users will have to reset their password to be able to login.</li>\n"
+"</ul>\n"
 "<h2>After the Migration</h2>\n"
 "<p>Once the migration is complete you will either be redirected to the login "
 "screen so you can access QWcrm straight away or if this is a later version "
@@ -7115,72 +7122,72 @@ msgstr ""
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:522 includes/include.php:526 includes/include.php:527
+#: includes/include.php:515 includes/include.php:518 includes/include.php:519
 msgid "_"
 msgstr ""
 
-#: includes/include.php:544
-msgid "The ACL has been supplied with no account type ID - I will now die."
+#: includes/include.php:536
+msgid "The ACL has been supplied with no account type ID. QWcrm will now die."
 msgstr ""
 
-#: includes/include.php:553
+#: includes/include.php:545
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:567
+#: includes/include.php:559
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:630
+#: includes/include.php:622
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:635
+#: includes/include.php:627
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:635
+#: includes/include.php:627
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:654
+#: includes/include.php:646
 msgid ""
 "A previous setup attempt never completed succesfully and there is an invalid "
 "configuration.php file present."
 msgstr ""
 
-#: includes/include.php:659
+#: includes/include.php:651
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:664
+#: includes/include.php:656
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:697
+#: includes/include.php:689
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:698
+#: includes/include.php:690
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:699
+#: includes/include.php:691
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:982
+#: includes/include.php:974
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1020
+#: includes/include.php:1012
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1049
+#: includes/include.php:1041
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -8010,17 +8017,17 @@ msgid "for the record"
 msgstr ""
 
 #: includes/modules/setup.php:60 includes/modules/setup.php:74
-#: includes/modules/setup.php:109 includes/modules/setup.php:126
+#: includes/modules/setup.php:118 includes/modules/setup.php:135
 msgid "to"
 msgstr ""
 
 #: includes/modules/setup.php:60 includes/modules/setup.php:74
-#: includes/modules/setup.php:109 includes/modules/setup.php:126
+#: includes/modules/setup.php:118 includes/modules/setup.php:135
 msgid "in the columm"
 msgstr ""
 
 #: includes/modules/setup.php:60 includes/modules/setup.php:74
-#: includes/modules/setup.php:109
+#: includes/modules/setup.php:118
 msgid "from the table"
 msgstr ""
 
@@ -8028,142 +8035,154 @@ msgstr ""
 msgid "Successfully updated the value"
 msgstr ""
 
-#: includes/modules/setup.php:109
+#: includes/modules/setup.php:118
 msgid "Failed to update the values"
 msgstr ""
 
-#: includes/modules/setup.php:126
+#: includes/modules/setup.php:135
 msgid "Successfully updated the values"
 msgstr ""
 
-#: includes/modules/setup.php:126
+#: includes/modules/setup.php:135
 msgid "from the the table"
 msgstr ""
 
-#: includes/modules/setup.php:126
+#: includes/modules/setup.php:135
 msgid "Records Processed"
 msgstr ""
 
-#: includes/modules/setup.php:184 includes/modules/setup.php:291
+#: includes/modules/setup.php:193 includes/modules/setup.php:300
 msgid "Error performing SQL query"
 msgstr ""
 
-#: includes/modules/setup.php:196 includes/modules/setup.php:302
+#: includes/modules/setup.php:205 includes/modules/setup.php:311
 msgid "Performed SQL query successfully"
 msgstr ""
 
-#: includes/modules/setup.php:212 includes/modules/setup.php:323
+#: includes/modules/setup.php:221 includes/modules/setup.php:332
 msgid "One or more SQL rule has failed. Check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:225 includes/modules/setup.php:336
+#: includes/modules/setup.php:234 includes/modules/setup.php:345
 msgid "All SQL rules have run successfully."
 msgstr ""
 
-#: includes/modules/setup.php:376
+#: includes/modules/setup.php:385
 msgid "Could not open the Setup Log to save the record."
 msgstr ""
 
-#: includes/modules/setup.php:524
+#: includes/modules/setup.php:533
 msgid "The database installation process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:536
+#: includes/modules/setup.php:545
 msgid "The database installation process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:988
+#: includes/modules/setup.php:1000
 msgid "The database migration process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:1000
+#: includes/modules/setup.php:1012
 msgid "The database migration process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:1045
+#: includes/modules/setup.php:1057
 msgid "Starting the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1081 includes/modules/workorder.php:162
+#: includes/modules/setup.php:1093 includes/modules/workorder.php:162
 msgid "Failed to return the matching Work Orders."
 msgstr ""
 
-#: includes/modules/setup.php:1144
+#: includes/modules/setup.php:1156
 msgid "Finished the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1171
+#: includes/modules/setup.php:1183
 msgid "Starting the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1184
+#: includes/modules/setup.php:1196
 msgid "Failed to return the matching Invoices."
 msgstr ""
 
-#: includes/modules/setup.php:1239
+#: includes/modules/setup.php:1251
 msgid "Finished the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1266
+#: includes/modules/setup.php:1278
 msgid "Starting the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1279
+#: includes/modules/setup.php:1291
 msgid "Failed to return the matching Gift Certificates."
 msgstr ""
 
-#: includes/modules/setup.php:1307
+#: includes/modules/setup.php:1319
 msgid "Finished the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1334
+#: includes/modules/setup.php:1346
 msgid "Starting the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1357
+#: includes/modules/setup.php:1369
 msgid "Failed to return the matching Schedules."
 msgstr ""
 
-#: includes/modules/setup.php:1379
+#: includes/modules/setup.php:1391
 msgid "Finished the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1411
+#: includes/modules/setup.php:1418
+msgid "Starting the correction of the migrated `user` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1431
+msgid "Failed to return the matching Users."
+msgstr ""
+
+#: includes/modules/setup.php:1453
+msgid "Finished the correction of the migrated `user` data in QWcrm."
+msgstr ""
+
+#: includes/modules/setup.php:1485
 msgid "Failed to get MyITCRM company details."
 msgstr ""
 
-#: includes/modules/setup.php:1442
+#: includes/modules/setup.php:1516
 msgid "Beginning the migration of MyITCRM data into the QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1460
+#: includes/modules/setup.php:1534
 msgid "Error reading the MyITCRM table"
 msgstr ""
 
-#: includes/modules/setup.php:1543
+#: includes/modules/setup.php:1617
 msgid "Error migrating a MyITCRM record into QWcrm"
 msgstr ""
 
-#: includes/modules/setup.php:1584 includes/modules/setup.php:1596
-#: includes/modules/setup.php:1614
+#: includes/modules/setup.php:1658 includes/modules/setup.php:1670
+#: includes/modules/setup.php:1688
 msgid "MyITCRM Records Processed"
 msgstr ""
 
-#: includes/modules/setup.php:1585 includes/modules/setup.php:1596
-#: includes/modules/setup.php:1614
+#: includes/modules/setup.php:1659 includes/modules/setup.php:1670
+#: includes/modules/setup.php:1688
 msgid "Records Failed To Migrate"
 msgstr ""
 
-#: includes/modules/setup.php:1586 includes/modules/setup.php:1596
-#: includes/modules/setup.php:1614
+#: includes/modules/setup.php:1660 includes/modules/setup.php:1670
+#: includes/modules/setup.php:1688
 msgid "Records Successfuly Migrated"
 msgstr ""
 
-#: includes/modules/setup.php:1595
+#: includes/modules/setup.php:1669
 msgid "Error migrating some records into QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1613
+#: includes/modules/setup.php:1687
 msgid "Successfully migrated all records into QWcrm table"
 msgstr ""
 
@@ -10290,12 +10309,24 @@ msgstr ""
 msgid "Work Order has been deleted."
 msgstr ""
 
-#: modules/workorder/details_edit_comments.php:27
+#: modules/workorder/details_edit_comments.php:22
+msgid "Cannot edit the comments of a closed Work Order."
+msgstr ""
+
+#: modules/workorder/details_edit_comments.php:33
 msgid "Comments have been updated."
 msgstr ""
 
-#: modules/workorder/details_edit_description.php:27
+#: modules/workorder/details_edit_description.php:22
+msgid "Cannot edit the description of a closed Work Order."
+msgstr ""
+
+#: modules/workorder/details_edit_description.php:33
 msgid "Description has been updated."
+msgstr ""
+
+#: modules/workorder/details_edit_resolution.php:22
+msgid "Cannot edit the resolution of a closed Work Order."
 msgstr ""
 
 #: modules/workorder/details_edit_resolution.php:31

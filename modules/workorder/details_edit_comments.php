@@ -17,6 +17,12 @@ if($workorder_id == '') {
     exit;
 }
 
+// Check if we can edit the workorder comments
+if(get_workorder_details($db, $workorder_id, 'is_closed')) {
+    force_page('workorder', 'details&workorder_id='.$workorder_id, 'warning_msg='._gettext("Cannot edit the comments of a closed Work Order."));
+    exit;
+}
+
 // If updated comments are submitted
 if(isset($VAR['submit'])) {
     
