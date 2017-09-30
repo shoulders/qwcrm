@@ -57,10 +57,10 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 // Constant that is checked in included files to prevent direct access
 define('_QWEXEC', 1);
 
-// load the config if the file exists
+// Load the config if the file exists
 if(is_file('configuration.php')) {
     
-    // load the config file
+    // Load the config file
     require('configuration.php');
     
     // Create config object for global scope
@@ -68,7 +68,7 @@ if(is_file('configuration.php')) {
     
 }
 
-// Load system constants
+// Load System Constants
 require('includes/defines.php');
 
 // Configure PHP error reporting
