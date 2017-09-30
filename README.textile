@@ -1,5 +1,9 @@
 h1. QWcrm Latest News
 
+30-09-17
+
+Final testing and changes are being made. QWcrm should be released soon. I will offer support and downloads through my website "QuantumWarp":https://quantumwarp.com/
+
 Keep an eye out on my QW blog for updates. I will only do quick updates until I get the first release done.
 
 "QuantumWarp Blog":https://quantumwarp.com/blog

@@ -71,6 +71,8 @@ if(is_file('configuration.php')) {
 
 // Load the mandatory system includes
 require('includes/defines.php');
+//require(INCLUDES_DIR.'vendor/'.'autoload.php');
+//require(INCLUDES_DIR.'language.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
 //require(INCLUDES_DIR.'mpdf.php');
