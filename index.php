@@ -71,7 +71,7 @@ if(is_file('configuration.php')) {
 
 // Load the mandatory system includes
 require('includes/defines.php');
-//require(INCLUDES_DIR.'vendor/'.'autoload.php');
+//require(INCLUDES_DIR.'vendor/'.'autoload.php');  // composer vendor packages (currently only motranslator)
 //require(INCLUDES_DIR.'language.php');
 require(INCLUDES_DIR.'security.php');
 require(INCLUDES_DIR.'include.php');
@@ -122,19 +122,6 @@ switch ($QConfig->error_reporting)
         ini_set('display_errors', 1);
         break;
 }
-
-#################################################
-#          Security                             #
-#################################################
-
-// it is called by including the file - security php will have some auto run code aswell as functions - this section might not be needed
-
-// should this be run before smarty?
-
-// force ssl - this needs to load the config
-// add security routines here
-
-// url checking, dont forget htaccess single point, post get varible sanitisation
 
 ################################################
 #         Load Language                        #
