@@ -58,6 +58,6 @@ if($VAR['submit'] == 'update') {
     
 }
 
-// Fetch page
+// Build the page
 $BuildPage .= $smarty->fetch('administrator/config.tpl');
 

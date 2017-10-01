@@ -18,6 +18,6 @@ if(isset($VAR['submit'])) {
     
 }
      
-// Fetch page
+// Build the page
 $smarty->assign('company_details', get_company_details($db) );
 $BuildPage .= $smarty->fetch('company/edit.tpl');

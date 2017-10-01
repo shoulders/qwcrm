@@ -323,7 +323,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Invoice For Workorder ID{/t} {$workorder_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Invoice For Workorder ID{/t} {$invoice_details.workorder_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}INVOICE_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}INVOICE_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -353,7 +353,7 @@
                                             <tr class="olotd4">
                                                 <td>{$invoice_id}</td>
                                                 <td>
-                                                    {if $workorder_id > 0}
+                                                    {if {$invoice_details.workorder_id} > 0}
                                                         <a href="index.php?page=workorder:details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a>
                                                     {else}
                                                         {t}n/a{/t}
@@ -377,7 +377,7 @@
                                                 </td>
                                                 <td>
                                                     {if !$transactions}
-                                                        <input id="due_date" name="due_date" class="olotd4" size="10"  value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                        <input id="due_date" name="due_date" class="olotd4" size="10" value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                         <input id="due_date_button" value="+" type="button">                                                    
                                                         <script>                                                        
                                                            Calendar.setup({
@@ -515,8 +515,8 @@
                                                                     <td>{$transactions[t].date|date_format:$date_format}</td>
                                                                     <td><b>{$currency_symbol}</b>{$transactions[t].amount|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        {section name=s loop=$invoice_statuses}
-                                                                            {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
+                                                                        {section name=s loop=$transaction_statuses}
+                                                                            {if $transactions[t].method == $transaction_statuses[s].system_method_id}{t}{$transaction_statuses[s].display_name}{/t}{/if}        
                                                                         {/section} 
                                                                     </td> 
                                                                 </tr>
