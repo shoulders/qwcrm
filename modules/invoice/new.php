@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Create an invoice for the supplied workorder
@@ -19,7 +20,7 @@ if($workorder_id && !get_workorder_details($db, $workorder_id, 'invoice_id')) {
     $customer_id = get_workorder_details($db, $workorder_id, 'customer_id');
     
     // Create the invoice and return the new invoice_id
-    $invoice_id = insert_invoice($db, $customer_id, $workorder_id, get_customer_details($db, $customer_id, 'discount_rate'), get_company_details($db, 'tax_rate'));
+    $invoice_id = insert_invoice($db, $customer_id, $workorder_id, get_customer_details($db, $customer_id, 'discount_rate'));
     
     // Update the workorder with the new invoice_id
     update_workorder_invoice_id($db, $workorder_id, $invoice_id);
@@ -40,7 +41,7 @@ if($workorder_id && !get_workorder_details($db, $workorder_id, 'invoice_id')) {
 if(($customer_id != '' && $VAR['invoice_type'] == 'invoice-only')) {
     
     // Create the invoice and return the new invoice_id
-    $invoice_id = insert_invoice($db, $customer_id, '', get_customer_details($db, $customer_id, 'discount_rate'), get_company_details($db,'tax_rate'));
+    $invoice_id = insert_invoice($db, $customer_id, '', get_customer_details($db, $customer_id, 'discount_rate'));
 
     // Load the newly created invoice edit page
     force_page('invoice', 'edit&invoice_id='.$invoice_id);

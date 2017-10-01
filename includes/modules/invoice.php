@@ -174,7 +174,14 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
 #     insert invoice                #
 #####################################
 
-function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_rate) {
+function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
+    
+    // Tax Rate - Obeys is the VAT/Tax system is enabled
+    if(get_payment_details($db, 'tax_enabled')) {
+        $tax_rate = get_company_details($db, 'tax_rate');
+    } else {
+        $tax_rate = '0';
+    }    
     
     $sql = "INSERT INTO ".PRFX."invoice SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -193,8 +200,8 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate, $tax_r
         exit;
     } else {
         
-        // get invoice_id
-        $invoice_id = $db->Insert_ID();;
+        // Get invoice_id
+        $invoice_id = $db->Insert_ID();
         
         // Create a Workorder History Note  
         insert_workorder_history_note($db, $workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
