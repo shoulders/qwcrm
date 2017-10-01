@@ -401,7 +401,10 @@ function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) 
     
     global $smarty;
     
-    // Disable php error reporting for this function
+    // Get current PHP error reporting level
+    $reporting_level = error_reporting();
+    
+    // Disable PHP error reporting (works globally)
     error_reporting(0);
     
     // create ADOdb database connection - and collection exceptions
@@ -417,13 +420,19 @@ function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) 
         //var_dump($e);
         //adodb_backtrace($e->gettrace());
         
+        // Re-Enable PHP error reporting
+        error_reporting($reporting_level);
+        
         $smarty->assign('warning_msg', $e->msg);
         return false;
               
     }
     
+    // Re-Enable PHP error reporting
+    error_reporting($reporting_level);
+    
     // Return the connection status
-    if(!$db->isConnected()) {             
+    if(!$db->isConnected()) {           
         
         $smarty->assign('warning_msg', prepare_error_data('database_connection_error', $db->ErrorMsg()));
         return false;     

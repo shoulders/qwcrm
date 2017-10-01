@@ -45,18 +45,29 @@ function get_qwcrm_database_version_number($db) {
     
     //global $smarty;
     
-    // Disable php error reporting for this function
+    // Get current PHP error reporting level
+    $reporting_level = error_reporting();
+    
+    // Disable PHP error reporting (works globally)
     error_reporting(0);
     
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
     try
     {        
-        if(!$rs = $db->execute($sql)) {        
+        if(!$rs = $db->execute($sql)) {
+            
+            // Re-Enable PHP error reporting
+            error_reporting($reporting_level);
+            
             //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
-            //exit;        
+            //exit;   
+            
         } else {
 
+            // Re-Enable PHP error reporting
+            error_reporting($reporting_level);
+            
             return $rs->fields['database_version'];
 
         }        
@@ -69,7 +80,11 @@ function get_qwcrm_database_version_number($db) {
         //var_dump($e);
         //adodb_backtrace($e->gettrace());
         
-        //$smarty->assign('warning_msg', $e->msg);        
+        // Re-Enable PHP error reporting
+        error_reporting($reporting_level);
+        
+        //$smarty->assign('warning_msg', $e->msg);       
+        
         return 'setup_failed';
               
     }

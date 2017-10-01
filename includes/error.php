@@ -48,9 +48,19 @@ switch ($QConfig->error_reporting)
         break;
 
     default:
-        error_reporting($QConfig->error_reporting);
+        //error_reporting($QConfig->error_reporting);
         ini_set('display_errors', 1);
         break;
 }
 
 /** Other Functions **/
+
+################################################
+#    WSOD Mitigation                           #  // Use this when you get a white screen error 
+################################################
+
+/*function shutdown(){
+  var_dump(error_get_last());
+}
+
+register_shutdown_function('shutdown');*/

@@ -572,15 +572,19 @@ function update_workorder_resolution($db, $workorder_id, $resolution){
 
 function update_workorder_status($db, $workorder_id, $new_status) {
     
-    // if the new status is the same as the current one, exit
-    if($new_status == get_workorder_details($db, $workorder_id, 'status')) {        
+    // Get current workorder details
+    $workorder_details = get_workorder_details($db, $workorder_id);
+    
+    // If the new status is the same as the current one, exit
+    if($new_status == $workorder_details['status']) {        
         postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status."));
         return false;
     }
     
     $sql = "UPDATE ".PRFX."workorder SET \n";
     
-    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unassigned there should be no employee the '\n' makes sql look neater
+    // when unassigned there should be no employee the '\n' makes sql look neater
+    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }
     
     $sql .="status              =". $db->qstr( $new_status      )."            
             WHERE workorder_id  =". $db->qstr( $workorder_id    );
@@ -589,7 +593,12 @@ function update_workorder_status($db, $workorder_id, $new_status) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Work Order Status."));
         exit;
         
-    } else {        
+    } else {
+        
+        // If status not unassigned and there is not employee set current logged in user as assigned
+        if($workorder_details['employee_id'] == '' && $new_status != 'unassigned') {
+            assign_workorder_to_employee($db, $workorder_id, QFactory::getUser()->login_user_id);
+        }
     
         // Update Workorder 'is_closed' boolean
         if($new_status == 'closed_without_invoice' || $new_status == 'closed_with_invoice') {
@@ -597,7 +606,7 @@ function update_workorder_status($db, $workorder_id, $new_status) {
         } else {
             update_workorder_closed_status($db, $workorder_id, 'open');
         }
-        
+                
         // Status updated message
         postEmulationWrite('information_msg', _gettext("Work Order status updated."));        
         
@@ -973,16 +982,16 @@ function resolution_edit_status_check($db, $workorder_id) {
 
 function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
     
-    // get the workorder details
+    // Get the workorder details
     $workorder_details = get_workorder_details($db, $workorder_id);
     
-    // if the new employee is the same as the current one, exit
+    // If the new employee is the same as the current one, exit
     if($target_employee_id == $workorder_details['employee_id']) {        
         postEmulationWrite('warning_msg', _gettext("Nothing done. The new employee is the same as the current employee."));
         return false;
     }    
     
-    // only change workorder status if unassigned
+    // Only change workorder status if unassigned
     if($workorder_details['status'] == 'unassigned') {
         
         $sql = "UPDATE ".PRFX."workorder SET
