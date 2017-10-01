@@ -629,17 +629,19 @@ function update_workorder_closed_status($db, $workorder_id, $new_closed_status) 
     if($new_closed_status == 'open') {
         
         $sql = "UPDATE ".PRFX."workorder SET
+                closed_by           ='',
                 close_date          ='',
-                is_closed           =". $db->qstr( 0                )."
-                WHERE workorder_id  =". $db->qstr( $workorder_id    );
+                is_closed           =". $db->qstr( 0                                    )."
+                WHERE workorder_id  =". $db->qstr( $workorder_id                        );
         
     }
     
     if($new_closed_status == 'close') {        
         $sql = "UPDATE ".PRFX."workorder SET
-                close_date          =". $db->qstr( time()           ).",
-                is_closed           =". $db->qstr( 1                )."
-                WHERE workorder_id  =". $db->qstr( $workorder_id    );
+                closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+                close_date          =". $db->qstr( time()                               ).",
+                is_closed           =". $db->qstr( 1                                    )."
+                WHERE workorder_id  =". $db->qstr( $workorder_id                        );
         
     }
     
