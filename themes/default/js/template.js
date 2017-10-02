@@ -117,8 +117,11 @@ function onlyPassword(e) {
 
 // Dates
 function onlyDate(e) {   
-   //return false; - Allow only the date picker to fill in date boxes
-   return keyRestriction(e, "0123456789\/", false); 
+   
+   //return keyRestriction(e, "0123456789\/", false);
+   
+   // Allows only the date picker to fill in date boxes
+   return false;
 }
 
 // Only MySQL
