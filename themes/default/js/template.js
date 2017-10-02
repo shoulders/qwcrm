@@ -111,17 +111,8 @@ function onlyUsername(e) {
 }
 
 // Passwords
-function onlyPassword(e) {
-    
-    //return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
-    
-    // No Spaces Allowed
-    var key = e.key;    
-    if (key === ' ' || key === 'Spacebar') {
-        return false;
-    } else {
-        return;
-    }   
+function onlyPassword(e) {    
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*_+-=(){}/\\[]<>:;|?\"',.", false);  
 }
 
 // Dates
