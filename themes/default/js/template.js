@@ -74,9 +74,9 @@ function onlyNumberPeriod(e) {
     return keyRestriction(e, "0123456789.", false);
 }
 
-// Number, Letters, period(.) and apostophe (')
+// Number, Letters, period(.). apostophe (') and hyphen (-)
 function onlyName(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.'", true);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.'-", true);
 }
 
 // Phone Numbers
