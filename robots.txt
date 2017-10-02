@@ -1,0 +1,29 @@
+# If the QWcrm site is installed within a folder such as at
+# e.g. www.example.com/qwcrm/ the robots.txt file MUST be
+# moved to the site root at e.g. www.example.com/robots.txt
+# AND the qwcrm folder name MUST be prefixed to the disallowed
+# path, e.g. the Disallow rule for the /administrator/ folder
+# MUST be changed to read Disallow: /qwcrm/administrator/
+#
+# For more information about the robots.txt standard, see:
+# http://www.robotstxt.org/orig.html
+#
+# For syntax checking, see:
+# http://tool.motoricerca.info/robots-checker.phtml
+
+# No robots should visit any URL on this site
+User-agent: *
+Disallow: /
+
+# Selective blocking
+#User-agent: *
+#Disallow: /cache/
+#Disallow: /includes/
+#Disallow: /language/
+#Disallow: /libraries/
+#Disallow: /logs/
+#Disallow: /media/
+#Disallow: /modules/
+#Disallow: /themes/
+
+#Sitemap: http://www.example.co.uk/sitemap.xml
