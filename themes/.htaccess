@@ -1,3 +1,4 @@
+# Block direct access to template files
 <FilesMatch "\.tpl$">
     Deny from all
 </FilesMatch>
