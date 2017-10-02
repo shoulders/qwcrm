@@ -10,7 +10,6 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
 require(INCLUDES_DIR.'modules/invoice.php');
-require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/workorder.php');
 
 // Create an invoice for the supplied workorder

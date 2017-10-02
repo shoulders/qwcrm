@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 18, 2017 at 04:42 PM
+-- Generation Time: Oct 02, 2017 at 05:39 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.21
 
@@ -29,8 +29,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `#__company` (
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `logo` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
-  `company_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `address` text COLLATE utf8_unicode_ci NOT NULL,
   `city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -41,6 +39,9 @@ CREATE TABLE `#__company` (
   `fax` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `company_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_enabled` int(1) NOT NULL,
   `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `year_start` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `year_end` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -62,8 +63,8 @@ CREATE TABLE `#__company` (
 -- Dumping data for table `#__company`
 --
 
-INSERT INTO `#__company` (`display_name`, `logo`, `company_number`, `vat_number`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `tax_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'media/logo.png', '', '', 'QWcrm House\r\nEasy Street\r\n\r\n\r\nTel: 07777 123456\r\nWeb: quantumwarp.com', 'London', 'London', 'SW1A 1AA', 'United Kingdom', '', '', '', 'noreply@quantumwarp.com', 'https://quantumwarp.com/', '0.00', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>QuantumWarp</p>\r\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\r\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '');
+INSERT INTO `#__company` (`display_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `vat_number`, `tax_enabled`, `tax_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
+('', 'media/logo.png', 'QWcrm House\r\nEasy Street\r\n\r\n\r\nTel: 07777 123456\r\nWeb: quantumwarp.com', 'London', 'London', 'SW1A 1AA', 'United Kingdom', '', '', '', 'noreply@quantumwarp.com', 'https://quantumwarp.com/', '', '', 0, '0.00', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>QuantumWarp</p>\r\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\r\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '');
 
 -- --------------------------------------------------------
 
@@ -337,7 +338,6 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__payment` (
-  `tax_enabled` int(11) NOT NULL,
   `bank_account_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `bank_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `bank_account_number` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
@@ -353,8 +353,8 @@ CREATE TABLE `#__payment` (
 -- Dumping data for table `#__payment`
 --
 
-INSERT INTO `#__payment` (`tax_enabled`, `bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `bank_transaction_msg`, `cheque_payable_to_msg`, `invoice_footer_msg`) VALUES
-(1, '', '', '', '', '', '', '<p>This is a bank transaction message and can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message and can be edited in payment options.</p>');
+INSERT INTO `#__payment` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `bank_transaction_msg`, `cheque_payable_to_msg`, `invoice_footer_msg`) VALUES
+('', '', '', '', '', '', '<p>This is a bank transaction message and can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message and can be edited in payment options.</p>');
 
 -- --------------------------------------------------------
 

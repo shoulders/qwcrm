@@ -311,8 +311,7 @@ function get_invoice_transactions($db, $invoice_id){
 
 function update_payment_settings($db, $VAR) {
     
-    $sql = "UPDATE ".PRFX."payment SET
-            tax_enabled             =". $db->qstr( $VAR['tax_enabled']              ).",
+    $sql = "UPDATE ".PRFX."payment SET            
             bank_account_name       =". $db->qstr( $VAR['bank_account_name']        ).",
             bank_name               =". $db->qstr( $VAR['bank_name']                ).",
             bank_account_number     =". $db->qstr( $VAR['bank_account_number']      ).",

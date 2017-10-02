@@ -23,20 +23,8 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" class="menutd">                                    
-                                    <form method="post" action="index.php?page=payment:options">
-                                        
+                                    <form method="post" action="index.php?page=payment:options">                                        
                                         <table>
-                                            
-                                            <!-- Enable Tax on invoices -->
-                                            <tr>
-                                                <td><b>{t}Enable{/t} {t}VAT/Tax{/t}:</b></td>
-                                                <td>
-                                                    <select class="olotd5" id="tax_enabled" name="tax_enabled">                                                       
-                                                        <option value="0"{if $payment_settings.tax_enabled == '0'} selected{/if}>{t}No{/t}</option>
-                                                        <option value="1"{if $payment_settings.tax_enabled == '1'} selected{/if}>{t}Yes{/t}</option>
-                                                    </select>                                                    
-                                                </td> 
-                                            </tr>
                                             
                                             <!-- Available Payment Types -->
                                             <tr>

@@ -1756,8 +1756,6 @@ function get_merged_company_details($db) {
     
     $merged['display_name']             = $myitcrm_company_details['COMPANY_NAME'];
     $merged['logo']                     = '';
-    $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];
-    $merged['vat_number']               = '';
     $merged['address']                  = $myitcrm_company_details['COMPANY_ADDRESS'];
     $merged['city']                     = $myitcrm_company_details['COMPANY_CITY'];
     $merged['state']                    = $myitcrm_company_details['COMPANY_STATE'];
@@ -1768,6 +1766,9 @@ function get_merged_company_details($db) {
     $merged['fax']                      = $myitcrm_company_details['COMPANY_FAX'];
     $merged['email']                    = $myitcrm_company_details['COMPANY_EMAIL'];
     $merged['website']                  = '';
+    $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];
+    $merged['vat_number']               = '';
+    $merged['tax_enabled']              = '';
     $merged['tax_rate']                 = '';
     $merged['year_start']               = '';
     $merged['year_end']                 = '';

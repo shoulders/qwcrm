@@ -177,7 +177,7 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
     
     // Tax Rate - Obeys is the VAT/Tax system is enabled
-    if(get_payment_details($db, 'tax_enabled')) {
+    if(get_company_details($db, 'tax_enabled')) {
         $tax_rate = get_company_details($db, 'tax_rate');
     } else {
         $tax_rate = '0';

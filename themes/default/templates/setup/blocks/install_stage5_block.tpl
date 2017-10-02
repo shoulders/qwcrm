@@ -68,14 +68,6 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right"><b>{t}Company Number{/t}:</b></td>
-                                                                        <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td align="right"><b>{t}VAT Number{/t}:</b></td>
-                                                                        <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
-                                                                    </tr>
-                                                                    <tr>
                                                                         <td align="right"><b>{t}Address{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                         <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
                                                                     </tr>
@@ -114,6 +106,23 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Website{/t}:</b></td>                                                                
                                                                         <td><input name="website" class="olotd5" value="{$company_details.website}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Company Number{/t}:</b></td>
+                                                                        <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}VAT Number{/t}:</b></td>
+                                                                        <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                    </tr>                                                                    
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Enable{/t} {t}VAT/Tax{/t}:</b></td>
+                                                                        <td>
+                                                                            <select class="olotd5" id="tax_enabled" name="tax_enabled">                                                                                
+                                                                                <option value="1"{if $company_details.tax_enabled == '1'} selected{/if}>{t}Yes{/t}</option>
+                                                                                <option value="0"{if $company_details.tax_enabled == '0'} selected{/if}>{t}No{/t}</option>
+                                                                            </select>                                                    
+                                                                        </td> 
                                                                     </tr> 
                                                                     <tr>
                                                                         <td align="right"><b>{t}VAT/Tax{/t} {t}Rate{/t}:</b></td>
