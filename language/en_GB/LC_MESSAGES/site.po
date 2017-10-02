@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2017-09-30 21:52+0100\n"
-"PO-Revision-Date: 2017-09-30 22:02+0100\n"
+"POT-Creation-Date: 2017-10-02 15:16+0100\n"
+"PO-Revision-Date: 2017-10-02 15:58+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en_GB\n"
@@ -621,9 +621,9 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:25
 #: themes/default/templates/administrator/config.tpl:322
 #: themes/default/templates/setup/blocks/install_stage1_block.tpl:21
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:289
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:288
 #: themes/default/templates/setup/blocks/migrate_stage1_block.tpl:21
-#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:289
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:288
 msgid "Database"
 msgstr ""
 
@@ -1016,13 +1016,13 @@ msgstr ""
 #: themes/default/templates/giftcert/search.tpl:57
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:186
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:245
-#: themes/default/templates/setup/blocks/install_stage2_block.tpl:288
+#: themes/default/templates/setup/blocks/install_stage2_block.tpl:289
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:457
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:530
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:577
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:186
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:245
-#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:288
+#: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:289
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:455
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:528
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:575
@@ -3557,7 +3557,7 @@ msgstr ""
 #: themes/default/templates/user/new.tpl:137
 #: themes/default/templates/user/search.tpl:59
 #: themes/default/templates/user/search.tpl:151
-#: includes/modules/invoice.php:1130
+#: includes/modules/invoice.php:1137
 msgid "Active"
 msgstr ""
 
@@ -3728,7 +3728,7 @@ msgstr ""
 #: themes/default/templates/refund/search.tpl:43
 #: themes/default/templates/schedule/search.tpl:46
 #: themes/default/templates/workorder/search.tpl:46
-#: includes/modules/invoice.php:1130
+#: includes/modules/invoice.php:1137
 msgid "Amount"
 msgstr ""
 
@@ -4058,7 +4058,7 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:73
 #: themes/default/templates/workorder/search.tpl:42
 #: themes/default/templates/workorder/search.tpl:123
-#: includes/modules/invoice.php:1130
+#: includes/modules/invoice.php:1137
 msgid "Type"
 msgstr ""
 
@@ -4718,9 +4718,9 @@ msgstr ""
 #: includes/modules/schedule.php:676 includes/modules/schedule.php:685
 #: includes/modules/workorder.php:266 includes/modules/workorder.php:495
 #: includes/modules/workorder.php:526 includes/modules/workorder.php:557
-#: includes/modules/workorder.php:611 includes/modules/workorder.php:752
-#: includes/modules/workorder.php:788 includes/modules/workorder.php:862
-#: includes/modules/workorder.php:1026 includes/modules/workorder.php:1029
+#: includes/modules/workorder.php:620 includes/modules/workorder.php:763
+#: includes/modules/workorder.php:799 includes/modules/workorder.php:873
+#: includes/modules/workorder.php:1037 includes/modules/workorder.php:1040
 #: modules/workorder/print.php:78 modules/workorder/print.php:124
 #: modules/workorder/print.php:170
 msgid "Work Order"
@@ -4894,7 +4894,7 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:225
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:105
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:134
-#: includes/modules/invoice.php:1130 includes/modules/schedule.php:405
+#: includes/modules/invoice.php:1137 includes/modules/schedule.php:405
 #: includes/modules/schedule.php:436
 msgid "Description"
 msgstr ""
@@ -5109,11 +5109,11 @@ msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:14
 #: themes/default/templates/invoice/printing/print_invoice.tpl:126
-#: themes/default/templates/payment/new.tpl:19 includes/modules/invoice.php:200
-#: includes/modules/invoice.php:203 includes/modules/invoice.php:542
-#: includes/modules/invoice.php:609 includes/modules/invoice.php:691
-#: includes/modules/invoice.php:791 includes/modules/invoice.php:794
-#: includes/modules/invoice.php:1319 includes/modules/invoice.php:1322
+#: themes/default/templates/payment/new.tpl:19 includes/modules/invoice.php:207
+#: includes/modules/invoice.php:210 includes/modules/invoice.php:549
+#: includes/modules/invoice.php:616 includes/modules/invoice.php:698
+#: includes/modules/invoice.php:798 includes/modules/invoice.php:801
+#: includes/modules/invoice.php:1326 includes/modules/invoice.php:1329
 #: modules/invoice/print.php:50 modules/invoice/print.php:88
 msgid "Invoice"
 msgstr ""
@@ -5807,9 +5807,9 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:25
 #: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:38
 #: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:259
-#: themes/default/templates/setup/choice.tpl:157
-#: themes/default/templates/setup/choice.tpl:165
-#: themes/default/templates/setup/choice.tpl:173
+#: themes/default/templates/setup/choice.tpl:158
+#: themes/default/templates/setup/choice.tpl:166
+#: themes/default/templates/setup/choice.tpl:174
 msgid "Next"
 msgstr ""
 
@@ -6129,56 +6129,81 @@ msgstr ""
 "MyITCRM."
 
 #: themes/default/templates/setup/choice.tpl:94
+msgid "SETUP_LICENSE_AGREEMENT"
+msgstr ""
+"<p>Copyright (C) 2017 Jon Brown <a href=\"https://quantumwarp.com/"
+"\">QuantumWarp.com</a></p>\n"
+"<p>QWcrm software is released under the GNU General Public License V3 "
+"(GPL-3.0).</p>\n"
+"<p>This program is free software: you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation, either version 3 of the License, or (at your option) "
+"any later version.</p>\n"
+"<p>This program is distributed in the hope that it will be useful, but "
+"WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY "
+"or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for "
+"more details.</p>\n"
+"<p>The license can be found in the root directory of QWcrm <a href=\"LICENSE."
+"txt\" target=\"_blank\" rel=\"noopener\">(Click here to read)</a>. Not all "
+"assets are covered by the GPL-3.0 and further notes can be found on the "
+"license and attribution pages once QWcrm is installed.</p>\n"
+"<p>You should have received a copy of the GNU General Public License along "
+"with this program. If not, see <a href=\"https://www.gnu.org/licenses/"
+"\">https://www.gnu.org/licenses/</a>.</p>\n"
+"<p>You must confirm you understand and accept the license before continuing."
+"</p>"
+
+#: themes/default/templates/setup/choice.tpl:95
 msgid ""
 "QWcrm software is released under the GNU General Public License V3 (GPL-3.0)."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:95
+#: themes/default/templates/setup/choice.tpl:96
 msgid "The license can be found in the root directory of QWcrm."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:95
+#: themes/default/templates/setup/choice.tpl:96
 msgid "Click here to read"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:96
+#: themes/default/templates/setup/choice.tpl:97
 msgid ""
 "Not all assets are covered by the GPL-3.0 and further notes can be found on "
 "the license and attribution pages once QWcrm is installed."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:97
+#: themes/default/templates/setup/choice.tpl:98
 msgid ""
 "You must confirm you understand and accept the license before continuing."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:102
+#: themes/default/templates/setup/choice.tpl:103
 msgid "I have read and understood the license."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:103
+#: themes/default/templates/setup/choice.tpl:104
 msgid "Accept License"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:118
+#: themes/default/templates/setup/choice.tpl:119
 msgid ""
 "Choose choose whether you want to install a fresh copy of QWcrm or migrate "
 "from MyITCRM"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:125
+#: themes/default/templates/setup/choice.tpl:126
 msgid "Install QWcrm"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:132
+#: themes/default/templates/setup/choice.tpl:133
 msgid "Migrate from MyITCRM"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:139
+#: themes/default/templates/setup/choice.tpl:140
 msgid "Upgrade QWcrm"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:156
+#: themes/default/templates/setup/choice.tpl:157
 msgid "SETUP_INSTALL_MESSAGE"
 msgstr ""
 "<h1>QWcrm Installation Notes</h1>\n"
@@ -6196,7 +6221,7 @@ msgstr ""
 "screen so you can access QWcrm straight away.</p>\n"
 "<p><strong><em>QWcrm Team</em></strong></p>"
 
-#: themes/default/templates/setup/choice.tpl:164
+#: themes/default/templates/setup/choice.tpl:165
 msgid "SETUP_MIGRATE_MESSAGE"
 msgstr ""
 "<h1>MyITCRM to QWcrm Migration Notes</h1>\n"
@@ -6245,12 +6270,17 @@ msgstr ""
 "is not migrated.</p>\n"
 "<h2>What is Changed?</h2>\n"
 "<ul>\n"
-"<li>Users will login with a username and not their display name.</li>\n"
+"<li>All Users\n"
+"<ul>\n"
+"<li>Will now login with a username and not their display name.</li>\n"
+"<li>Passwords will be reset to a random value. This means that users will "
+"have to reset their password to be able to login.</li>\n"
+"<li>Will be moved into the Technicians group.</li>\n"
 "<li>Usernames will be created by using a sanitised version of user's display "
 "name and this username will match the required QWcrm format. This means some "
 "usernames will be changed.</li>\n"
-"<li>All user passwords will be reset to a random value. This means that "
-"users will have to reset their password to be able to login.</li>\n"
+"</ul>\n"
+"</li>\n"
 "<li>All ACL permissions will be reset.</li>\n"
 "</ul>\n"
 "<h2>After the Migration</h2>\n"
@@ -6260,7 +6290,7 @@ msgstr ""
 "QWcrm up to the correct version before use.</p>\n"
 "<p><strong><em>QWcrm Team</em></strong></p>"
 
-#: themes/default/templates/setup/choice.tpl:172
+#: themes/default/templates/setup/choice.tpl:173
 msgid "SETUP_UPGRADE_MESSAGE"
 msgstr ""
 "<p><em>The upgrade mechanism is currently not enabled</em></p>\n"
@@ -6628,7 +6658,7 @@ msgid "Last Change"
 msgstr ""
 
 #: themes/default/templates/workorder/blocks/overview_workorders_unassigned_block.tpl:8
-#: includes/modules/invoice.php:1310 includes/modules/workorder.php:1017
+#: includes/modules/invoice.php:1317 includes/modules/workorder.php:1028
 #: language/_gettext_only/system_variables.php:16
 msgid "Unassigned"
 msgstr ""
@@ -7117,80 +7147,80 @@ msgstr ""
 msgid "Unable to bind array to user object."
 msgstr ""
 
-#: includes/include.php:94
+#: includes/include.php:109
 msgid "Failed to get company details."
 msgstr ""
 
-#: includes/include.php:127
+#: includes/include.php:142
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:515 includes/include.php:518 includes/include.php:519
+#: includes/include.php:530 includes/include.php:533 includes/include.php:534
 msgid "_"
 msgstr ""
 
-#: includes/include.php:536
+#: includes/include.php:551
 msgid "The ACL has been supplied with no account type ID. QWcrm will now die."
 msgstr ""
 
-#: includes/include.php:545
+#: includes/include.php:560
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:559
+#: includes/include.php:574
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:622
+#: includes/include.php:637
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:627
+#: includes/include.php:642
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:627
+#: includes/include.php:642
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:646
+#: includes/include.php:661
 msgid ""
 "A previous setup attempt never completed succesfully and there is an invalid "
 "configuration.php file present."
 msgstr ""
 
-#: includes/include.php:651
+#: includes/include.php:666
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:656
+#: includes/include.php:671
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:689
+#: includes/include.php:704
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:690
+#: includes/include.php:705
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:691
+#: includes/include.php:706
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:974
+#: includes/include.php:989
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1012
+#: includes/include.php:1027
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1041
+#: includes/include.php:1056
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -7300,7 +7330,7 @@ msgstr ""
 msgid "Start Time is the same as End Time."
 msgstr ""
 
-#: includes/modules/company.php:303 includes/modules/invoice.php:1038
+#: includes/modules/company.php:303 includes/modules/invoice.php:1045
 msgid "Return Code"
 msgstr ""
 
@@ -7364,12 +7394,12 @@ msgstr ""
 msgid "A new customer note was added to the customer"
 msgstr ""
 
-#: includes/modules/customer.php:191 includes/modules/invoice.php:200
-#: includes/modules/invoice.php:688 includes/modules/invoice.php:691
-#: includes/modules/invoice.php:1319 includes/modules/invoice.php:1322
+#: includes/modules/customer.php:191 includes/modules/invoice.php:207
+#: includes/modules/invoice.php:695 includes/modules/invoice.php:698
+#: includes/modules/invoice.php:1326 includes/modules/invoice.php:1329
 #: includes/modules/schedule.php:105 includes/modules/workorder.php:333
-#: includes/modules/workorder.php:608 includes/modules/workorder.php:611
-#: includes/modules/workorder.php:1026 includes/modules/workorder.php:1029
+#: includes/modules/workorder.php:617 includes/modules/workorder.php:620
+#: includes/modules/workorder.php:1037 includes/modules/workorder.php:1040
 msgid "by"
 msgstr ""
 
@@ -7398,10 +7428,10 @@ msgid "The customer"
 msgstr ""
 
 #: includes/modules/customer.php:331 includes/modules/customer.php:363
-#: includes/modules/giftcert.php:256 includes/modules/invoice.php:542
-#: includes/modules/invoice.php:609 includes/modules/invoice.php:640
+#: includes/modules/giftcert.php:256 includes/modules/invoice.php:549
+#: includes/modules/invoice.php:616 includes/modules/invoice.php:647
 #: includes/modules/schedule.php:213 includes/modules/schedule.php:216
-#: includes/modules/workorder.php:716
+#: includes/modules/workorder.php:727
 msgid "was updated by"
 msgstr ""
 
@@ -7441,8 +7471,8 @@ msgstr ""
 msgid "Failed to delete the customer from the database."
 msgstr ""
 
-#: includes/modules/customer.php:466 includes/modules/workorder.php:862
-#: includes/modules/workorder.php:925
+#: includes/modules/customer.php:466 includes/modules/workorder.php:873
+#: includes/modules/workorder.php:936
 msgid "has been deleted by"
 msgstr ""
 
@@ -7455,10 +7485,10 @@ msgid "for Customer"
 msgstr ""
 
 #: includes/modules/customer.php:490 includes/modules/giftcert.php:288
-#: includes/modules/invoice.php:791 includes/modules/invoice.php:794
-#: includes/modules/invoice.php:823 includes/modules/invoice.php:872
-#: includes/modules/invoice.php:919 includes/modules/schedule.php:260
-#: includes/modules/schedule.php:263 includes/modules/workorder.php:928
+#: includes/modules/invoice.php:798 includes/modules/invoice.php:801
+#: includes/modules/invoice.php:830 includes/modules/invoice.php:879
+#: includes/modules/invoice.php:926 includes/modules/schedule.php:260
+#: includes/modules/schedule.php:263 includes/modules/workorder.php:939
 msgid "was deleted by"
 msgstr ""
 
@@ -7531,7 +7561,7 @@ msgstr ""
 msgid "Failed to insert the Gift Certificate into the database."
 msgstr ""
 
-#: includes/modules/giftcert.php:173 includes/modules/invoice.php:203
+#: includes/modules/giftcert.php:173 includes/modules/invoice.php:210
 #: includes/modules/schedule.php:102
 msgid "was created by"
 msgstr ""
@@ -7568,210 +7598,210 @@ msgstr ""
 msgid "Failed to return the matching Invoice records."
 msgstr ""
 
-#: includes/modules/invoice.php:192
+#: includes/modules/invoice.php:199
 msgid "Failed to insert the invoice record into the database."
 msgstr ""
 
-#: includes/modules/invoice.php:200
+#: includes/modules/invoice.php:207
 msgid "was created for this Work Order"
 msgstr ""
 
-#: includes/modules/invoice.php:203 includes/modules/invoice.php:794
-#: includes/modules/schedule.php:263 includes/modules/workorder.php:716
-#: includes/modules/workorder.php:928
+#: includes/modules/invoice.php:210 includes/modules/invoice.php:801
+#: includes/modules/schedule.php:263 includes/modules/workorder.php:727
+#: includes/modules/workorder.php:939
 msgid "for Work Order"
 msgstr ""
 
-#: includes/modules/invoice.php:248
+#: includes/modules/invoice.php:255
 msgid "Failed to insert Labour item into the database."
 msgstr ""
 
-#: includes/modules/invoice.php:289
+#: includes/modules/invoice.php:296
 msgid "Failed to insert Parts item into the database."
 msgstr ""
 
-#: includes/modules/invoice.php:310
+#: includes/modules/invoice.php:317
 msgid "Failed to insert an invoice prefill item into the database."
 msgstr ""
 
-#: includes/modules/invoice.php:316
+#: includes/modules/invoice.php:323
 msgid "An Invoice Prefill Item"
 msgstr ""
 
-#: includes/modules/invoice.php:316
+#: includes/modules/invoice.php:323
 msgid "was added by"
 msgstr ""
 
-#: includes/modules/invoice.php:333
+#: includes/modules/invoice.php:340
 msgid "Failed to get invoice details."
 msgstr ""
 
-#: includes/modules/invoice.php:360
+#: includes/modules/invoice.php:367
 msgid "Failed to get invoice labour items."
 msgstr ""
 
-#: includes/modules/invoice.php:383
+#: includes/modules/invoice.php:390
 msgid "Failed to get invoice labour item details."
 msgstr ""
 
-#: includes/modules/invoice.php:410
+#: includes/modules/invoice.php:417
 msgid "Failed to get invoice parts items."
 msgstr ""
 
-#: includes/modules/invoice.php:433
+#: includes/modules/invoice.php:440
 msgid "Failed to get invoice parts item details."
 msgstr ""
 
-#: includes/modules/invoice.php:469
+#: includes/modules/invoice.php:476
 msgid "Failed to get the invoice prefill items for the selected status."
 msgstr ""
 
-#: includes/modules/invoice.php:492
+#: includes/modules/invoice.php:499
 msgid "Failed to get invoice statuses."
 msgstr ""
 
-#: includes/modules/invoice.php:511
+#: includes/modules/invoice.php:518
 msgid "Failed to get the invoice status display name."
 msgstr ""
 
-#: includes/modules/invoice.php:536
+#: includes/modules/invoice.php:543
 msgid "Failed to update the invoice dates and discount rate."
 msgstr ""
 
-#: includes/modules/invoice.php:567
+#: includes/modules/invoice.php:574
 msgid "Failed to update the invoice's financial totals."
 msgstr ""
 
-#: includes/modules/invoice.php:603
+#: includes/modules/invoice.php:610
 msgid "Failed to update the invoice."
 msgstr ""
 
-#: includes/modules/invoice.php:634
+#: includes/modules/invoice.php:641
 msgid "Failed to update an invoice labour rates item."
 msgstr ""
 
-#: includes/modules/invoice.php:640 includes/modules/invoice.php:919
+#: includes/modules/invoice.php:647 includes/modules/invoice.php:926
 msgid "The Invoice Prefill Item"
 msgstr ""
 
-#: includes/modules/invoice.php:656 includes/modules/workorder.php:577
+#: includes/modules/invoice.php:663 includes/modules/workorder.php:580
 msgid "Nothing done. The new status is the same as the current status."
 msgstr ""
 
-#: includes/modules/invoice.php:669 includes/modules/workorder.php:589
+#: includes/modules/invoice.php:676 includes/modules/workorder.php:593
 msgid "Failed to update a Work Order Status."
 msgstr ""
 
-#: includes/modules/invoice.php:682
+#: includes/modules/invoice.php:689
 msgid "Invoice status updated."
 msgstr ""
 
-#: includes/modules/invoice.php:688
+#: includes/modules/invoice.php:695
 msgid "Invoice Status updated to"
 msgstr ""
 
-#: includes/modules/invoice.php:691 includes/modules/workorder.php:608
-#: includes/modules/workorder.php:611
+#: includes/modules/invoice.php:698 includes/modules/workorder.php:617
+#: includes/modules/workorder.php:620
 msgid "Status updated to"
 msgstr ""
 
-#: includes/modules/invoice.php:728
+#: includes/modules/invoice.php:735
 msgid "Failed to update an invoice Closed status."
 msgstr ""
 
-#: includes/modules/invoice.php:748
+#: includes/modules/invoice.php:755
 msgid "Failed to update an invoice last active time."
 msgstr ""
 
-#: includes/modules/invoice.php:780
+#: includes/modules/invoice.php:787
 msgid "Failed to delete the invoice."
 msgstr ""
 
-#: includes/modules/invoice.php:818
+#: includes/modules/invoice.php:825
 msgid "Failed to delete an invoice labour item."
 msgstr ""
 
-#: includes/modules/invoice.php:823
+#: includes/modules/invoice.php:830
 msgid "The Invoice Labour Item"
 msgstr ""
 
-#: includes/modules/invoice.php:845
+#: includes/modules/invoice.php:852
 msgid "Failed to delete all of an invoice's labour items."
 msgstr ""
 
-#: includes/modules/invoice.php:866
+#: includes/modules/invoice.php:873
 msgid "Failed to delete an invoice parts item."
 msgstr ""
 
-#: includes/modules/invoice.php:872
+#: includes/modules/invoice.php:879
 msgid "The Invoice Parts Item"
 msgstr ""
 
-#: includes/modules/invoice.php:894
+#: includes/modules/invoice.php:901
 msgid "Failed to delete all of an invoice's parts items."
 msgstr ""
 
-#: includes/modules/invoice.php:913
+#: includes/modules/invoice.php:920
 msgid "Failed to delete an invoice prefill item."
 msgstr ""
 
-#: includes/modules/invoice.php:938
+#: includes/modules/invoice.php:945
 msgid "Failed to calculate the invoice labour sub total."
 msgstr ""
 
-#: includes/modules/invoice.php:957
+#: includes/modules/invoice.php:964
 msgid "Failed to calculate the invoice parts sub total."
 msgstr ""
 
-#: includes/modules/invoice.php:993
+#: includes/modules/invoice.php:1000
 msgid "Failed update the invoice totals."
 msgstr ""
 
-#: includes/modules/invoice.php:1049
+#: includes/modules/invoice.php:1056
 msgid "Failed to empty the prefill items table."
 msgstr ""
 
-#: includes/modules/invoice.php:1072
+#: includes/modules/invoice.php:1079
 msgid "Failed to insert the new prefill items into the database."
 msgstr ""
 
-#: includes/modules/invoice.php:1087
+#: includes/modules/invoice.php:1094
 msgid "Invoice Prefill Items were uploaded via csv by"
 msgstr ""
 
-#: includes/modules/invoice.php:1101
+#: includes/modules/invoice.php:1108
 msgid ""
 "Failed to update the invoice labour rates because the submitted file was "
 "invalid."
 msgstr ""
 
-#: includes/modules/invoice.php:1116
+#: includes/modules/invoice.php:1123
 msgid "Failed to get invoice prefill items from the database."
 msgstr ""
 
-#: includes/modules/invoice.php:1142
+#: includes/modules/invoice.php:1149
 msgid "Invoice Prefill Items were exported by"
 msgstr ""
 
-#: includes/modules/invoice.php:1272 includes/modules/workorder.php:979
+#: includes/modules/invoice.php:1279 includes/modules/workorder.php:990
 msgid "Nothing done. The new employee is the same as the current employee."
 msgstr ""
 
-#: includes/modules/invoice.php:1294 includes/modules/workorder.php:1001
+#: includes/modules/invoice.php:1301 includes/modules/workorder.php:1012
 msgid "Failed to assign a Work Order to an employee."
 msgstr ""
 
-#: includes/modules/invoice.php:1300 includes/modules/workorder.php:1007
+#: includes/modules/invoice.php:1307 includes/modules/workorder.php:1018
 msgid "Assigned employee updated."
 msgstr ""
 
-#: includes/modules/invoice.php:1319 includes/modules/invoice.php:1322
-#: includes/modules/workorder.php:1026 includes/modules/workorder.php:1029
+#: includes/modules/invoice.php:1326 includes/modules/invoice.php:1329
+#: includes/modules/workorder.php:1037 includes/modules/workorder.php:1040
 msgid "has been assigned to"
 msgstr ""
 
-#: includes/modules/invoice.php:1319 includes/modules/invoice.php:1322
-#: includes/modules/workorder.php:1026 includes/modules/workorder.php:1029
+#: includes/modules/invoice.php:1326 includes/modules/invoice.php:1329
+#: includes/modules/workorder.php:1037 includes/modules/workorder.php:1040
 msgid "from"
 msgstr ""
 
@@ -8074,118 +8104,118 @@ msgstr ""
 msgid "Could not open the Setup Log to save the record."
 msgstr ""
 
-#: includes/modules/setup.php:533
+#: includes/modules/setup.php:542
 msgid "The database installation process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:545
+#: includes/modules/setup.php:554
 msgid "The database installation process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:1000
+#: includes/modules/setup.php:1009
 msgid "The database migration process failed, check the logs."
 msgstr ""
 
-#: includes/modules/setup.php:1012
+#: includes/modules/setup.php:1021
 msgid "The database migration process was successful."
 msgstr ""
 
-#: includes/modules/setup.php:1057
+#: includes/modules/setup.php:1066
 msgid "Starting the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1093 includes/modules/workorder.php:162
+#: includes/modules/setup.php:1102 includes/modules/workorder.php:162
 msgid "Failed to return the matching Work Orders."
 msgstr ""
 
-#: includes/modules/setup.php:1156
+#: includes/modules/setup.php:1165
 msgid "Finished the correction of the migrated `workorder` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1183
+#: includes/modules/setup.php:1192
 msgid "Starting the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1196
+#: includes/modules/setup.php:1205
 msgid "Failed to return the matching Invoices."
 msgstr ""
 
-#: includes/modules/setup.php:1251
+#: includes/modules/setup.php:1260
 msgid "Finished the correction of the migrated `invoice` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1278
+#: includes/modules/setup.php:1287
 msgid "Starting the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1291
+#: includes/modules/setup.php:1300
 msgid "Failed to return the matching Gift Certificates."
 msgstr ""
 
-#: includes/modules/setup.php:1319
+#: includes/modules/setup.php:1328
 msgid "Finished the correction of the migrated `giftcert` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1346
+#: includes/modules/setup.php:1355
 msgid "Starting the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1369
+#: includes/modules/setup.php:1378
 msgid "Failed to return the matching Schedules."
 msgstr ""
 
-#: includes/modules/setup.php:1391
+#: includes/modules/setup.php:1400
 msgid "Finished the correction of the migrated `schedule` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1418
+#: includes/modules/setup.php:1427
 msgid "Starting the correction of the migrated `user` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1431
+#: includes/modules/setup.php:1440
 msgid "Failed to return the matching Users."
 msgstr ""
 
-#: includes/modules/setup.php:1453
+#: includes/modules/setup.php:1462
 msgid "Finished the correction of the migrated `user` data in QWcrm."
 msgstr ""
 
-#: includes/modules/setup.php:1485
+#: includes/modules/setup.php:1494
 msgid "Failed to get MyITCRM company details."
 msgstr ""
 
-#: includes/modules/setup.php:1516
+#: includes/modules/setup.php:1525
 msgid "Beginning the migration of MyITCRM data into the QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1534
+#: includes/modules/setup.php:1543
 msgid "Error reading the MyITCRM table"
 msgstr ""
 
-#: includes/modules/setup.php:1617
+#: includes/modules/setup.php:1626
 msgid "Error migrating a MyITCRM record into QWcrm"
 msgstr ""
 
-#: includes/modules/setup.php:1658 includes/modules/setup.php:1670
-#: includes/modules/setup.php:1688
+#: includes/modules/setup.php:1667 includes/modules/setup.php:1679
+#: includes/modules/setup.php:1697
 msgid "MyITCRM Records Processed"
 msgstr ""
 
-#: includes/modules/setup.php:1659 includes/modules/setup.php:1670
-#: includes/modules/setup.php:1688
+#: includes/modules/setup.php:1668 includes/modules/setup.php:1679
+#: includes/modules/setup.php:1697
 msgid "Records Failed To Migrate"
 msgstr ""
 
-#: includes/modules/setup.php:1660 includes/modules/setup.php:1670
-#: includes/modules/setup.php:1688
+#: includes/modules/setup.php:1669 includes/modules/setup.php:1679
+#: includes/modules/setup.php:1697
 msgid "Records Successfuly Migrated"
 msgstr ""
 
-#: includes/modules/setup.php:1669
+#: includes/modules/setup.php:1678
 msgid "Error migrating some records into QWcrm table"
 msgstr ""
 
-#: includes/modules/setup.php:1687
+#: includes/modules/setup.php:1696
 msgid "Successfully migrated all records into QWcrm table"
 msgstr ""
 
@@ -8506,8 +8536,8 @@ msgid "Failed to insert a Work Order note."
 msgstr ""
 
 #: includes/modules/workorder.php:330 includes/modules/workorder.php:333
-#: includes/modules/workorder.php:713 includes/modules/workorder.php:716
-#: includes/modules/workorder.php:925 includes/modules/workorder.php:928
+#: includes/modules/workorder.php:724 includes/modules/workorder.php:727
+#: includes/modules/workorder.php:936 includes/modules/workorder.php:939
 msgid "Work Order Note"
 msgstr ""
 
@@ -8563,91 +8593,91 @@ msgstr ""
 msgid "Resolution updated by"
 msgstr ""
 
-#: includes/modules/workorder.php:602
+#: includes/modules/workorder.php:611
 msgid "Work Order status updated."
 msgstr ""
 
-#: includes/modules/workorder.php:647
+#: includes/modules/workorder.php:658
 msgid "Failed to update a Work Order's Closed status."
 msgstr ""
 
-#: includes/modules/workorder.php:667
+#: includes/modules/workorder.php:678
 msgid "Failed to update a Work Order last active time."
 msgstr ""
 
-#: includes/modules/workorder.php:687
+#: includes/modules/workorder.php:698
 msgid "Failed to update a Work Order Invoice ID."
 msgstr ""
 
-#: includes/modules/workorder.php:705
+#: includes/modules/workorder.php:716
 msgid "Failed to update a Work Order note."
 msgstr ""
 
-#: includes/modules/workorder.php:713
+#: includes/modules/workorder.php:724
 msgid "updated by"
 msgstr ""
 
-#: includes/modules/workorder.php:744
+#: includes/modules/workorder.php:755
 msgid "Failed to close a Work Order without an invoice."
 msgstr ""
 
-#: includes/modules/workorder.php:749
+#: includes/modules/workorder.php:760
 msgid "Closed without Invoice by"
 msgstr ""
 
-#: includes/modules/workorder.php:752
+#: includes/modules/workorder.php:763
 msgid "has been closed without invoice by"
 msgstr ""
 
-#: includes/modules/workorder.php:780
+#: includes/modules/workorder.php:791
 msgid "Failed to close a Work Order with an invoice."
 msgstr ""
 
-#: includes/modules/workorder.php:785
+#: includes/modules/workorder.php:796
 msgid "Closed with Invoice by"
 msgstr ""
 
-#: includes/modules/workorder.php:788
+#: includes/modules/workorder.php:799
 msgid "has been closed with invoice by"
 msgstr ""
 
-#: includes/modules/workorder.php:810
+#: includes/modules/workorder.php:821
 msgid "This workorder cannot be deleted because it has an invoice."
 msgstr ""
 
-#: includes/modules/workorder.php:816
+#: includes/modules/workorder.php:827
 msgid "This workorder cannot be deleted because its status does not allow it."
 msgstr ""
 
-#: includes/modules/workorder.php:827
+#: includes/modules/workorder.php:838
 msgid "Failed to delete the Work Order"
 msgstr ""
 
-#: includes/modules/workorder.php:836
+#: includes/modules/workorder.php:847
 msgid "Failed to delete the history notes for Work Order"
 msgstr ""
 
-#: includes/modules/workorder.php:845
+#: includes/modules/workorder.php:856
 msgid "Failed to delete the notes for Work Order"
 msgstr ""
 
-#: includes/modules/workorder.php:855
+#: includes/modules/workorder.php:866
 msgid "Failed to delete the schedules for Work Order"
 msgstr ""
 
-#: includes/modules/workorder.php:888
+#: includes/modules/workorder.php:899
 msgid "Failed to check if a Work Order is allowed to be deleted."
 msgstr ""
 
-#: includes/modules/workorder.php:919
+#: includes/modules/workorder.php:930
 msgid "Failed to delete a Work Order note."
 msgstr ""
 
-#: includes/modules/workorder.php:952
+#: includes/modules/workorder.php:963
 msgid "Cannot edit the resolution because the Work Order is already closed."
 msgstr ""
 
-#: includes/modules/workorder.php:959
+#: includes/modules/workorder.php:970
 msgid ""
 "Can not close a work order if it is Waiting for Parts. Please Adjust the "
 "status."
@@ -10058,11 +10088,11 @@ msgstr ""
 msgid "No Invoice Parts ID supplied."
 msgstr ""
 
-#: modules/invoice/new.php:31
+#: modules/invoice/new.php:32
 msgid "Invoice Created ID"
 msgstr ""
 
-#: modules/invoice/new.php:51
+#: modules/invoice/new.php:52
 msgid ""
 "You cannot create an invoice by the method you just tried, report to admins."
 msgstr ""
