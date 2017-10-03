@@ -119,8 +119,8 @@
                                                                         <td align="right"><b>{t}Enable{/t} {t}VAT/Tax{/t}:</b></td>
                                                                         <td>
                                                                             <select class="olotd5" id="tax_enabled" name="tax_enabled">                                                                                
-                                                                                <option value="1"{if $company_details.tax_enabled == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                                 <option value="0"{if $company_details.tax_enabled == '0'} selected{/if}>{t}No{/t}</option>
+                                                                                <option value="1"{if $company_details.tax_enabled == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                             </select>                                                    
                                                                         </td> 
                                                                     </tr> 
