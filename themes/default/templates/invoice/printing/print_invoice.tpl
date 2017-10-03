@@ -69,7 +69,7 @@
             <td valign="top" align="center" width="300">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td width="100%" align="center"><img src="{$theme_images_dir}logo.png" height="100" alt="" border="0"></td>
+                        <td width="100%" align="center"><img src="{$company_logo}" height="100" alt="" border="0"></td>
                     </tr>
                     <tr><td style="text-align:center"><b>{$company_details.display_name}</b></td></tr>
                 </table>
