@@ -80,12 +80,12 @@ require(LIBRARIES_DIR.'vendor/'.'autoload.php');
 // Load Language
 require(INCLUDES_DIR.'language.php');
 
-// Load QWcrm Security including mandatory security code
-require(INCLUDES_DIR.'security.php');
-
 // Load Libraries, Includes and QWFramework
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'adodb.php');
+
+// Load QWcrm Security including mandatory security code
+require(INCLUDES_DIR.'security.php');
 
 // Verify QWcrm is installed correctly
 verify_qwcrm_is_installed_correctly($db); // this needs to run before the language to prevent language detection error 
