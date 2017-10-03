@@ -599,7 +599,7 @@ function update_workorder_status($db, $workorder_id, $new_status) {
         if($workorder_details['employee_id'] == '' && $new_status != 'unassigned') {
             assign_workorder_to_employee($db, $workorder_id, QFactory::getUser()->login_user_id);
         }
-    
+        
         // Update Workorder 'is_closed' boolean
         if($new_status == 'closed_without_invoice' || $new_status == 'closed_with_invoice') {
             update_workorder_closed_status($db, $workorder_id, 'close');
