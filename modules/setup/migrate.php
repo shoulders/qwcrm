@@ -33,18 +33,20 @@ if($VAR['stage'] == '1') {
             
             // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);            
-            write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = '1a';
             $smarty->assign('information_msg', _gettext("Database connection successful."));
+            
+            write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
         
         // load the page with error
         } else {
             
             // reload the database connection page with the details and error message
-            $smarty->assign('qwcrm_config', $VAR);
-            $smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings."));
-            write_record_to_setup_log('migrate', _gettext("Failed to connect to the database with the supplied credentials.")); 
+            $smarty->assign('qwcrm_config', $VAR);            
             $smarty->assign('stage', '1');
+            
+            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings.")); - error done by check_database_connection()
+            write_record_to_setup_log('migrate', _gettext("Failed to connect to the database with the supplied credentials.")); 
             
         }
         

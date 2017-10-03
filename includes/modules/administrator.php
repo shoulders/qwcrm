@@ -385,8 +385,6 @@ function write_config_file($content)
 
 function prepare_config_data($new_config) {
     
-    // Get the database object
-    $db = QFactory::getDbo();
     
     // remove unwanted varibles from the new_config
     unset($new_config['page']);
@@ -397,6 +395,10 @@ function prepare_config_data($new_config) {
     
     // Purge the database session table if we are changing to the database handler.
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+        
+        // Get the database object
+        $db = QFactory::getDbo();
+        
         if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
         {
             $sql = "TRUNCATE ".PRFX."session";                    

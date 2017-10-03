@@ -1488,7 +1488,7 @@ function get_myitcrm_company_details($db, $item = null) {
     
     $config = new QConfig;
     
-    $sql = "SELECT * FROM ".$config->myitcrm_prefix."table_company";
+    $sql = "SELECT * FROM ".$config->myitcrm_prefix."TABLE_COMPANY";
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
@@ -1746,7 +1746,7 @@ function check_myitcrm_database_connection($db, $myitcrm_prefix) {
 
 
 ##############################################
-#  merge QWcrm and MyITCRM compnay details   #
+#  Merge QWcrm and MyITCRM company details   #
 ##############################################
 
 function get_merged_company_details($db) {
