@@ -407,13 +407,13 @@ function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) 
     // Disable PHP error reporting (works globally)
     error_reporting(0);
     
-    // create ADOdb database connection - and collection exceptions
+    // Create ADOdb database connection - and collection exceptions
     try
     {        
         $db->Connect($db_host, $db_user, $db_pass, $db_name);
     }    
     
-    catch (exception $e)
+    catch (Exception $e)
     {
         
         //echo $e->msg;

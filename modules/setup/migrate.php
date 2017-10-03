@@ -74,7 +74,7 @@ if($VAR['stage'] == '1a') {
             
             // reload the database connection page with the details and error message
             $smarty->assign('qwcrm_config', $VAR);
-            $smarty->assign('warning_msg', _gettext("The MyITCRM databse is either missing or the prefix is wrong."));
+            $smarty->assign('warning_msg', _gettext("The MyITCRM database is either missing or the prefix is wrong."));
             write_record_to_setup_log('migrate', _gettext("Failed to connect to the MyITCRM database with the supplied prefix.")); 
             $smarty->assign('stage', '1a');
             

@@ -45,35 +45,22 @@ function get_qwcrm_database_version_number($db) {
     
     //global $smarty;
     
-    // Get current PHP error reporting level
-    $reporting_level = error_reporting();
-    
-    // Disable PHP error reporting (works globally)
-    error_reporting(0);
-    
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
     try
     {        
-        if(!$rs = $db->execute($sql)) {
-            
-            // Re-Enable PHP error reporting
-            error_reporting($reporting_level);
+        if($rs = $db->execute($sql)) {
             
             //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
-            //exit;   
-            
-        } else {
-
-            // Re-Enable PHP error reporting
-            error_reporting($reporting_level);
+            //exit;
             
             return $rs->fields['database_version'];
-
-        }        
+            
+        }
+        
     }
     
-    catch (exception $e)
+    catch (Exception $e)
     {
         
         //echo $e->msg;
@@ -81,7 +68,7 @@ function get_qwcrm_database_version_number($db) {
         //adodb_backtrace($e->gettrace());
         
         // Re-Enable PHP error reporting
-        error_reporting($reporting_level);
+        //error_reporting($reporting_level);
         
         //$smarty->assign('warning_msg', $e->msg);       
         
@@ -388,10 +375,10 @@ function postEmulationReturnStore($keep_store = false) {
 #  Error Handling - Data preperation       #
 ############################################
 
-function prepare_error_data($type, $data = null) {
+function prepare_error_data($type, $data = null, $db_isConnected = null) {
     
     // Allows errors from install/migrate to be processed
-    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    if($db_isConnected && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
         $user = QFactory::getUser();
     }
 
@@ -633,13 +620,12 @@ function verify_qwcrm_is_installed_correctly($db) {
     
     // Test the database connection is valid
     if(!$db->isConnected()) {
-        echo $db->ErrorMsg().'<br>';
-        die(_gettext("There is a database connection issue. Check your settings in the config file."));
+        die('<div style="color: red;">'.$db->ErrorMsg().'<br><br>'._gettext("There is a database connection issue. Check your settings in the config file.").'</div>');
     }
     
     // Check the MySQL version is high enough to run QWcrm
     if (version_compare(get_mysql_version($db), QWCRM_MINIMUM_MYSQL, '<')) {
-        die(_gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version($db));
+        die('<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version($db).'</div>');
     }
             
     /* Compare the QWcrm file system and database versions - if mismatch load upgrade for further instructions? */
@@ -656,9 +642,9 @@ function verify_qwcrm_is_installed_correctly($db) {
             exit;
         }*/
         
-        // Setup failes
+        // Setup failed / Invalid configuration.php
         if($qwcrm_database_version == 'setup_failed') { 
-            die('<div style="color: red;">'._gettext("A previous setup attempt never completed succesfully and there is an invalid configuration.php file present.").'</div>');            
+            die('<div style="color: red;">'._gettext("A previous setup attempt never completed successfully and/or there is an invalid configuration.php file present or the database prefix is wrong.").'</div>');            
         }
         
         // Failed upgrade
@@ -674,6 +660,7 @@ function verify_qwcrm_is_installed_correctly($db) {
         // If the file system is newer than the database - run upgrade
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
             $_POST['page'] = 'setup:upgrade';
+            $_POST['theme'] = 'menu_off';
             define('QWCRM_SETUP', 'upgrade'); 
             return;
         }      

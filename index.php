@@ -83,12 +83,12 @@ require(LIBRARIES_DIR.'vendor/'.'autoload.php');
 // Load Libraries, Includes and QWFramework
 require(INCLUDES_DIR.'include.php');
 require(INCLUDES_DIR.'adodb.php');
+require(INCLUDES_DIR.'language.php');
 
 // Verify QWcrm is installed correctly
 verify_qwcrm_is_installed_correctly($db); // this needs to run before the language to prevent language detection error 
 
 // Load Libraries, Includes and QWFramework - Continued
-require(INCLUDES_DIR.'language.php');
 //require(INCLUDES_DIR.'mpdf.php');
 require(INCLUDES_DIR.'email.php');
 require(INCLUDES_DIR.'smarty.php');

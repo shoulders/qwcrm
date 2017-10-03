@@ -22,7 +22,8 @@ defined('_QWEXEC') or die;
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/');
 require('adodb.inc.php');
 
-// Enable error trapping - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling / used for check_database_connection()
+// Enable error trapping - this extends the system class Exception - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling
+// I think this tries to convert standard PHP errors to Exceptions - needed for get_qwcrm_database_version_number()
 require('adodb-exceptions.inc.php');
 
 // create adodb database connection
@@ -30,5 +31,34 @@ $db = ADONewConnection('mysqli');
 
 // This is needed to allow install/migration/upgrade
 if($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != '') {
-    $db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
+    
+    // Get current PHP error reporting level
+    $reporting_level = error_reporting();
+    
+    // Disable PHP error reporting (works globally)
+    error_reporting(0);
+    
+    // Create ADOdb database connection - and collection exceptions
+    try
+    {        
+        $db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
+    }  
+    
+    catch (Exception $e)
+    {
+        
+        //echo $e->msg;
+        //var_dump($e);
+        //adodb_backtrace($e->gettrace());
+        
+        // Re-Enable PHP error reporting
+        error_reporting($reporting_level);
+        
+        //$smarty->assign('warning_msg', $e->msg.'exception');
+              
+    }
+    
+    // Re-Enable PHP error reporting
+    error_reporting($reporting_level);    
+    
 }
