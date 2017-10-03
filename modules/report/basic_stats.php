@@ -37,6 +37,8 @@ $smarty->assign('employee_workorders_closed_count',             count_workorders
 /** Invoices **/
 
 // Global Invoice Stats
+$smarty->assign('global_invoices_open_count',                   count_invoices($db, 'open')                                 );
+$smarty->assign('global_invoices_pending_count',                count_invoices($db, 'pending')                              );
 $smarty->assign('global_invoices_unpaid_count',                 count_invoices($db, 'unpaid')                               );
 $smarty->assign('global_invoices_partially_paid_count',         count_invoices($db, 'partially_paid')                       );
 $smarty->assign('global_invoices_paid_count',                   count_invoices($db, 'paid')                                 );

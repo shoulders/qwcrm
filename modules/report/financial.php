@@ -27,6 +27,7 @@ if(isset($VAR['submit'])) {
          
     // Invoices
     $smarty->assign('opened_invoices',              count_invoices($db, 'opened', null, $start_date, $end_date)                 );
+    $smarty->assign('pending_invoices',             count_invoices($db, 'pending', null, $start_date, $end_date)                );
     $smarty->assign('partially_paid_invoices',      count_invoices($db, 'partially_paid', null, $start_date, $end_date)         );
     $smarty->assign('paid_invoices',                count_invoices($db, 'paid', null, $start_date, $end_date)                   );
     

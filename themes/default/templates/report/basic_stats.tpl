@@ -120,11 +120,15 @@
                                     <br>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         <tr class="olotd4">
+                                            <td class="row2"><b>{t}Open{/t}</b></td>
+                                            <td class="row2"><b>{t}Pending{/t}</b></td>
                                             <td class="row2"><b>{t}Unpaid{/t}</b></td>
                                             <td class="row2"><b>{t}Partially Paid{/t}</b></td>
                                             <td class="row2"><b>{t}Paid{/t}</b></td>                                                                                        
                                         </tr>
                                         <tr class="olotd4">
+                                            <td>{$global_invoices_open_count}</td>
+                                            <td>{$global_invoices_pending_count}</td>
                                             <td>{$global_invoices_unpaid_count}</td>
                                             <td>{$global_invoices_partially_paid_count}</td>
                                             <td>{$global_invoices_paid_count}</td>                                            
