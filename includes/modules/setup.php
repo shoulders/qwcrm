@@ -416,14 +416,14 @@ function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) 
     catch (Exception $e)
     {
         
-        //echo $e->msg;
-        //var_dump($e);
-        //adodb_backtrace($e->gettrace());
-        
         // Re-Enable PHP error reporting
         error_reporting($reporting_level);
         
+        //echo $e->msg;
+        //var_dump($e);
+        //adodb_backtrace($e->gettrace());
         $smarty->assign('warning_msg', $e->msg);
+        
         return false;
               
     }

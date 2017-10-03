@@ -65,11 +65,7 @@ function get_qwcrm_database_version_number($db) {
         
         //echo $e->msg;
         //var_dump($e);
-        //adodb_backtrace($e->gettrace());
-        
-        // Re-Enable PHP error reporting
-        //error_reporting($reporting_level);
-        
+        //adodb_backtrace($e->gettrace());        
         //$smarty->assign('warning_msg', $e->msg);       
         
         return 'setup_failed';
@@ -375,10 +371,10 @@ function postEmulationReturnStore($keep_store = false) {
 #  Error Handling - Data preperation       #
 ############################################
 
-function prepare_error_data($type, $data = null, $db_isConnected = null) {
+function prepare_error_data($type, $data = null) {
     
     // Allows errors from install/migrate to be processed
-    if($db_isConnected && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
+    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
         $user = QFactory::getUser();
     }
 
@@ -620,7 +616,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     
     // Test the database connection is valid
     if(!$db->isConnected()) {
-        die('<div style="color: red;">'.$db->ErrorMsg().'<br><br>'._gettext("There is a database connection issue. Check your settings in the config file.").'</div>');
+        die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');
     }
     
     // Check the MySQL version is high enough to run QWcrm

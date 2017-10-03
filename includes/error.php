@@ -48,8 +48,8 @@ switch ($QConfig->error_reporting)
         break;
 
     default:
-        //error_reporting($QConfig->error_reporting);
-        ini_set('display_errors', 1);
+        //error_reporting(-1);
+        //ini_set('display_errors', 1);
         break;
 }
 

@@ -42,23 +42,29 @@ if($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != ''
     try
     {        
         $db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
-    }  
+    }
+    
+    // Error handling is tested/displayed/handled in verify_qwcrm_is_installed_correctly() this allows a graceful fail
     
     catch (Exception $e)
     {
         
-        //echo $e->msg;
-        //var_dump($e);
-        //adodb_backtrace($e->gettrace());
-        
         // Re-Enable PHP error reporting
         error_reporting($reporting_level);
         
-        //$smarty->assign('warning_msg', $e->msg.'exception');
+        //echo $e->msg;
+        //var_dump($e);
+        //adodb_backtrace($e->gettrace());        
+        //$smarty->assign('warning_msg', $e->msg);
               
     }
     
     // Re-Enable PHP error reporting
-    error_reporting($reporting_level);    
+    error_reporting($reporting_level);
     
+    /* Return the connection status
+    if(!$db->isConnected()) {        
+        die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');      
+    }*/
+   
 }

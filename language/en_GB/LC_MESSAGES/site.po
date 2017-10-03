@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2017-10-02 17:44+0100\n"
-"PO-Revision-Date: 2017-10-02 17:45+0100\n"
+"Project-Id-Version: QWcrm v3.0.0\n"
+"POT-Creation-Date: 2017-10-03 14:28+0100\n"
+"PO-Revision-Date: 2017-10-03 14:29+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
+"Language-Team: http://quantumwarp.com/\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -399,7 +399,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:567
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:598
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:609
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:122
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:123
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:248
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:280
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:309
@@ -426,7 +426,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:565
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:596
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:607
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:114
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:115
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:248
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:280
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:309
@@ -483,7 +483,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:654
 #: themes/default/templates/invoice/prefill_items.tpl:51
 #: themes/default/templates/invoice/prefill_items.tpl:86
-#: themes/default/templates/report/financial.tpl:340
+#: themes/default/templates/report/financial.tpl:344
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:38
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:49
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:77
@@ -506,7 +506,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:566
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:597
 #: themes/default/templates/setup/blocks/install_stage2_block.tpl:608
-#: themes/default/templates/setup/blocks/install_stage5_block.tpl:123
+#: themes/default/templates/setup/blocks/install_stage5_block.tpl:122
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:249
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:281
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:310
@@ -534,7 +534,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:564
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:595
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:606
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:115
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:114
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:249
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:281
 #: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:310
@@ -2327,11 +2327,11 @@ msgstr ""
 #: themes/default/templates/refund/new.tpl:96
 #: themes/default/templates/refund/search.tpl:42
 #: themes/default/templates/refund/search.tpl:43
-#: themes/default/templates/report/financial.tpl:218
-#: themes/default/templates/report/financial.tpl:236
-#: themes/default/templates/report/financial.tpl:292
-#: themes/default/templates/report/financial.tpl:340
-#: themes/default/templates/report/financial.tpl:346
+#: themes/default/templates/report/financial.tpl:222
+#: themes/default/templates/report/financial.tpl:240
+#: themes/default/templates/report/financial.tpl:296
+#: themes/default/templates/report/financial.tpl:344
+#: themes/default/templates/report/financial.tpl:350
 #: themes/default/templates/schedule/search.tpl:45
 #: themes/default/templates/schedule/search.tpl:46
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:119
@@ -2541,7 +2541,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/dashboard_workorders_with_client_block.tpl:12
 #: themes/default/templates/report/basic_stats.tpl:59
 #: themes/default/templates/report/basic_stats.tpl:105
-#: themes/default/templates/report/basic_stats.tpl:143
+#: themes/default/templates/report/basic_stats.tpl:147
 #: themes/default/templates/report/financial.tpl:117
 #: themes/default/templates/report/financial.tpl:131
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:12
@@ -3065,6 +3065,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:64
 #: themes/default/templates/report/basic_stats.tpl:31
 #: themes/default/templates/report/basic_stats.tpl:77
+#: themes/default/templates/report/basic_stats.tpl:123
 #: themes/default/templates/workorder/blocks/overview_workorders_stats_employee_block.tpl:12
 msgid "Open"
 msgstr ""
@@ -3282,7 +3283,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:65
 #: themes/default/templates/report/basic_stats.tpl:60
 #: themes/default/templates/report/basic_stats.tpl:106
-#: themes/default/templates/report/basic_stats.tpl:144
+#: themes/default/templates/report/basic_stats.tpl:148
 #: themes/default/templates/report/financial.tpl:121
 #: themes/default/templates/workorder/closed.tpl:82
 #: themes/default/templates/workorder/open.tpl:82
@@ -3306,7 +3307,7 @@ msgid "Gift Certificates"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:92
-#: themes/default/templates/report/financial.tpl:169
+#: themes/default/templates/report/financial.tpl:173
 msgid "Expenses"
 msgstr ""
 
@@ -3325,7 +3326,7 @@ msgid "Are you sure you want to delete this Expense Record?"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:107
-#: themes/default/templates/report/financial.tpl:170
+#: themes/default/templates/report/financial.tpl:174
 msgid "Refunds"
 msgstr ""
 
@@ -3529,7 +3530,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:686
 #: themes/default/templates/invoice/open.tpl:85
 #: themes/default/templates/invoice/printing/print_invoice.tpl:254
-#: themes/default/templates/report/financial.tpl:284
+#: themes/default/templates/report/financial.tpl:288
 #: themes/default/templates/workorder/blocks/details_customer_details_block.tpl:85
 msgid "Discount"
 msgstr ""
@@ -3838,9 +3839,9 @@ msgstr ""
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:15
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:49
 #: themes/default/templates/customer/blocks/details_invoice_block.tpl:83
-#: themes/default/templates/report/basic_stats.tpl:125
-#: themes/default/templates/report/financial.tpl:139
-#: themes/default/templates/report/financial.tpl:318
+#: themes/default/templates/report/basic_stats.tpl:127
+#: themes/default/templates/report/financial.tpl:143
+#: themes/default/templates/report/financial.tpl:322
 #: language/_gettext_only/system_variables.php:31
 msgid "Paid"
 msgstr ""
@@ -3852,7 +3853,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:350
 #: themes/default/templates/invoice/printing/print_invoice.tpl:272
 #: themes/default/templates/payment/blocks/new_invoice_details_block.tpl:16
-#: themes/default/templates/report/financial.tpl:326
+#: themes/default/templates/report/financial.tpl:330
 msgid "Balance"
 msgstr ""
 
@@ -4373,8 +4374,8 @@ msgstr ""
 #: themes/default/templates/refund/search.tpl:45
 #: themes/default/templates/refund/search.tpl:125
 #: themes/default/templates/refund/search.tpl:149
-#: themes/default/templates/report/financial.tpl:178
-#: themes/default/templates/report/financial.tpl:196
+#: themes/default/templates/report/financial.tpl:182
+#: themes/default/templates/report/financial.tpl:200
 #: themes/default/templates/schedule/search.tpl:48
 #: themes/default/templates/schedule/search.tpl:130
 #: themes/default/templates/schedule/search.tpl:159
@@ -4478,9 +4479,9 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:268
 #: themes/default/templates/invoice/search.tpl:47
 #: themes/default/templates/refund/search.tpl:44
-#: themes/default/templates/report/financial.tpl:222
-#: themes/default/templates/report/financial.tpl:240
-#: themes/default/templates/report/financial.tpl:346
+#: themes/default/templates/report/financial.tpl:226
+#: themes/default/templates/report/financial.tpl:244
+#: themes/default/templates/report/financial.tpl:350
 #: themes/default/templates/schedule/search.tpl:47
 #: themes/default/templates/workorder/search.tpl:47
 msgid "Gross"
@@ -4497,7 +4498,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:268
 #: themes/default/templates/invoice/search.tpl:47
 #: themes/default/templates/refund/search.tpl:44
-#: themes/default/templates/report/basic_stats.tpl:169
+#: themes/default/templates/report/basic_stats.tpl:173
 #: themes/default/templates/schedule/search.tpl:47
 #: themes/default/templates/workorder/search.tpl:47
 msgid "Total"
@@ -4745,7 +4746,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:139
 #: themes/default/templates/invoice/printing/print_invoice.tpl:162
 #: themes/default/templates/invoice/printing/print_invoice.tpl:250
-#: themes/default/templates/report/financial.tpl:280
+#: themes/default/templates/report/financial.tpl:284
 msgid "Sub Total"
 msgstr ""
 
@@ -4754,10 +4755,10 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:690
 #: themes/default/templates/invoice/open.tpl:86
 #: themes/default/templates/invoice/printing/print_invoice.tpl:259
-#: themes/default/templates/report/financial.tpl:214
-#: themes/default/templates/report/financial.tpl:232
-#: themes/default/templates/report/financial.tpl:288
-#: themes/default/templates/report/financial.tpl:340
+#: themes/default/templates/report/financial.tpl:218
+#: themes/default/templates/report/financial.tpl:236
+#: themes/default/templates/report/financial.tpl:292
+#: themes/default/templates/report/financial.tpl:344
 msgid "Net"
 msgstr ""
 
@@ -4860,7 +4861,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:541
 #: themes/default/templates/invoice/prefill_items.tpl:44
 #: themes/default/templates/invoice/prefill_items.tpl:79
-#: themes/default/templates/report/financial.tpl:167
+#: themes/default/templates/report/financial.tpl:171
 msgid "Labour"
 msgstr ""
 
@@ -4871,8 +4872,8 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:655
 #: themes/default/templates/invoice/printing/print_invoice.tpl:136
 #: themes/default/templates/invoice/printing/print_invoice.tpl:159
-#: themes/default/templates/report/financial.tpl:182
-#: themes/default/templates/report/financial.tpl:200
+#: themes/default/templates/report/financial.tpl:186
+#: themes/default/templates/report/financial.tpl:204
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:235
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:236
 #: themes/default/templates/workorder/printing/print_customer_workorder_slip.tpl:237
@@ -4938,7 +4939,7 @@ msgstr ""
 #: themes/default/templates/invoice/edit.tpl:609
 #: themes/default/templates/invoice/prefill_items.tpl:45
 #: themes/default/templates/invoice/prefill_items.tpl:80
-#: themes/default/templates/report/financial.tpl:168
+#: themes/default/templates/report/financial.tpl:172
 #: language/_gettext_only/system_variables.php:92
 #: language/_gettext_only/system_variables.php:120
 msgid "Parts"
@@ -5543,7 +5544,7 @@ msgstr ""
 #: themes/default/templates/report/basic_stats.tpl:27
 #: themes/default/templates/report/basic_stats.tpl:55
 #: themes/default/templates/report/basic_stats.tpl:119
-#: themes/default/templates/report/basic_stats.tpl:139
+#: themes/default/templates/report/basic_stats.tpl:143
 msgid "Global"
 msgstr ""
 
@@ -5562,44 +5563,50 @@ msgstr ""
 msgid "Current Invoice Stats"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:123
+#: themes/default/templates/report/basic_stats.tpl:124
+#: themes/default/templates/report/financial.tpl:135
+#: language/_gettext_only/system_variables.php:28
+msgid "Pending"
+msgstr ""
+
+#: themes/default/templates/report/basic_stats.tpl:125
 #: language/_gettext_only/system_variables.php:29
 msgid "Unpaid"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:124
-#: themes/default/templates/report/financial.tpl:135
+#: themes/default/templates/report/basic_stats.tpl:126
+#: themes/default/templates/report/financial.tpl:139
 #: language/_gettext_only/system_variables.php:30
 msgid "Partially Paid"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:139
+#: themes/default/templates/report/basic_stats.tpl:143
 msgid "Overall Invoice Stats"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:145
+#: themes/default/templates/report/basic_stats.tpl:149
 msgid "Invoiced Total"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:146
-#: themes/default/templates/report/financial.tpl:304
+#: themes/default/templates/report/basic_stats.tpl:150
+#: themes/default/templates/report/financial.tpl:308
 msgid "Received Monies"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:147
-#: themes/default/templates/report/financial.tpl:308
+#: themes/default/templates/report/basic_stats.tpl:151
+#: themes/default/templates/report/financial.tpl:312
 msgid "Outstanding Balance"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:163
+#: themes/default/templates/report/basic_stats.tpl:167
 msgid "Global - Customer Stats"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:167
+#: themes/default/templates/report/basic_stats.tpl:171
 msgid "New This Month"
 msgstr ""
 
-#: themes/default/templates/report/basic_stats.tpl:168
+#: themes/default/templates/report/basic_stats.tpl:172
 msgid "New This Year"
 msgstr ""
 
@@ -5632,45 +5639,45 @@ msgstr ""
 msgid "Basic Statisitics"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:161
+#: themes/default/templates/report/financial.tpl:165
 msgid "Advanced Statistics"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:186
-#: themes/default/templates/report/financial.tpl:204
+#: themes/default/templates/report/financial.tpl:190
+#: themes/default/templates/report/financial.tpl:208
 msgid "Sub"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:262
+#: themes/default/templates/report/financial.tpl:266
 msgid "Revenue Calculations"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:269
+#: themes/default/templates/report/financial.tpl:273
 msgid "Revenue"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:270
+#: themes/default/templates/report/financial.tpl:274
 msgid "VAT (Tax)"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:271
+#: themes/default/templates/report/financial.tpl:275
 msgid "Calculations"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:296
+#: themes/default/templates/report/financial.tpl:300
 msgid "Gross (Invoiced)"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:322
+#: themes/default/templates/report/financial.tpl:326
 msgid "Received"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:336
+#: themes/default/templates/report/financial.tpl:340
 msgid "Taxable Profit = Invoiced - (Expenses - Refunds)"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:340
-#: themes/default/templates/report/financial.tpl:346
+#: themes/default/templates/report/financial.tpl:344
+#: themes/default/templates/report/financial.tpl:350
 msgid "Applied"
 msgstr ""
 
@@ -7131,80 +7138,80 @@ msgstr ""
 msgid "Unable to bind array to user object."
 msgstr ""
 
-#: includes/include.php:109
+#: includes/include.php:92
 msgid "Failed to get company details."
 msgstr ""
 
-#: includes/include.php:142
+#: includes/include.php:125
 msgid "Failed to update a User's last active time."
 msgstr ""
 
-#: includes/include.php:530 includes/include.php:533 includes/include.php:534
+#: includes/include.php:513 includes/include.php:516 includes/include.php:517
 msgid "_"
 msgstr ""
 
-#: includes/include.php:551
+#: includes/include.php:534
 msgid "The ACL has been supplied with no account type ID. QWcrm will now die."
 msgstr ""
 
-#: includes/include.php:560
+#: includes/include.php:543
 msgid "Could not get the user's Group Name by Login Account Type ID."
 msgstr ""
 
-#: includes/include.php:574
+#: includes/include.php:557
 msgid "Could not get the Page's ACL."
 msgstr ""
 
-#: includes/include.php:637
+#: includes/include.php:619
 msgid ""
 "There is a database connection issue. Check your settings in the config file."
 msgstr ""
 
-#: includes/include.php:642
+#: includes/include.php:624
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: includes/include.php:642
+#: includes/include.php:624
 msgid "Your current version is"
 msgstr ""
 
-#: includes/include.php:661
+#: includes/include.php:643
 msgid ""
-"A previous setup attempt never completed succesfully and there is an invalid "
-"configuration.php file present."
+"A previous setup attempt never completed successfully and/or there is an "
+"invalid configuration.php file present or the database prefix is wrong."
 msgstr ""
 
-#: includes/include.php:666
+#: includes/include.php:648
 msgid ""
 "The upgrade never completed successfully. Check the upgrade and error logs."
 msgstr ""
 
-#: includes/include.php:671
+#: includes/include.php:653
 msgid ""
 "The file system is older than the database. Check the logs and your settings."
 msgstr ""
 
-#: includes/include.php:704
+#: includes/include.php:687
 msgid "The configured template is not supported by this version of QWcrm."
 msgstr ""
 
-#: includes/include.php:705
+#: includes/include.php:688
 msgid "Your current version of QWcrm is"
 msgstr ""
 
-#: includes/include.php:706
+#: includes/include.php:689
 msgid "The template supports QWcrm versions in the range"
 msgstr ""
 
-#: includes/include.php:989
+#: includes/include.php:972
 msgid "Could not open the Access Log to save the record."
 msgstr ""
 
-#: includes/include.php:1027
+#: includes/include.php:1010
 msgid "Could not open the Activity Log to save the record."
 msgstr ""
 
-#: includes/include.php:1056
+#: includes/include.php:1039
 msgid "Could not open the Error Log to save the record."
 msgstr ""
 
@@ -8667,12 +8674,12 @@ msgid ""
 "status."
 msgstr ""
 
-#: index.php:365
+#: index.php:367
 msgid ""
 "A user tried to access the following resource without the correct pemissions."
 msgstr ""
 
-#: index.php:369
+#: index.php:371
 msgid ""
 "You do not have permission to access this resource or your session has "
 "expired."
@@ -9752,10 +9759,6 @@ msgstr ""
 msgid "Closed with Invoice"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:28
-msgid "Pending"
-msgstr ""
-
 #: language/_gettext_only/system_variables.php:32
 msgid "In Dispute"
 msgstr ""
@@ -10142,7 +10145,7 @@ msgstr ""
 msgid "Refund added successfully."
 msgstr ""
 
-#: modules/report/financial.php:80
+#: modules/report/financial.php:81
 msgid "Financial report run for the date range"
 msgstr ""
 
@@ -10261,7 +10264,7 @@ msgid "MyITCRM database connection successful."
 msgstr ""
 
 #: modules/setup/migrate.php:77
-msgid "The MyITCRM databse is either missing or the prefix is wrong."
+msgid "The MyITCRM database is either missing or the prefix is wrong."
 msgstr ""
 
 #: modules/setup/migrate.php:78
