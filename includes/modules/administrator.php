@@ -396,16 +396,18 @@ function prepare_config_data($new_config) {
     $current_config = get_qwcrm_config();
     
     // Purge the database session table if we are changing to the database handler.
-    if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
-    {
-        $sql = "TRUNCATE ".PRFX."session";                    
-          
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
-            exit;
-            
+    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+        if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
+        {
+            $sql = "TRUNCATE ".PRFX."session";                    
+
+            if(!$rs = $db->Execute($sql)) {
+                force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+                exit;
+
+            }
+
         }
-    
     }
                 
     // Set the shared session configuration
