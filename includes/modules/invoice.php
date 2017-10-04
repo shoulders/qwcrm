@@ -1307,7 +1307,7 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
         postEmulationWrite('information_msg', _gettext("Assigned employee updated."));        
         
         // Get Logged in Employee's Display Name        
-        $logged_in_employee_display_name = QFactory::getUser()->display_name;
+        $logged_in_employee_display_name = QFactory::getUser()->login_display_name;
         
         // Get the currently assigned employee ID
         $assigned_employee_id = $invoice_details['employee_id'];

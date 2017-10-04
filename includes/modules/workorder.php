@@ -213,10 +213,11 @@ function display_workorder_history($db, $workorder_id){
     
     $sql = "SELECT 
             ".PRFX."workorder_history.*,
-            ".PRFX."user.display_name
+            ".PRFX."user.display_name AS employee_display_name
+                
             FROM 
-            ".PRFX."workorder_history, 
-            ".PRFX."user 
+            ".PRFX."workorder_history
+            LEFT JOIN ".PRFX."user ON ".PRFX."workorder_history.employee_id = ".PRFX."user.user_id
             WHERE ".PRFX."workorder_history.workorder_id=".$db->qstr($workorder_id)." 
             AND ".PRFX."user.user_id = ".PRFX."workorder_history.employee_id
             ORDER BY ".PRFX."workorder_history.history_id";
@@ -1018,7 +1019,7 @@ function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
         postEmulationWrite('information_msg', _gettext("Assigned employee updated.")); 
         
         // Get Logged in Employee's Display Name        
-        $logged_in_employee_display_name = QFactory::getUser()->display_name;
+        $logged_in_employee_display_name = QFactory::getUser()->login_display_name;
         
         // Get the currently assigned employee ID
         $assigned_employee_id = $workorder_details['employee_id'];
