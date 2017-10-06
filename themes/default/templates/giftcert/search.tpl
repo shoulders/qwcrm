@@ -31,7 +31,7 @@
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}Gift Certificate Code{/t}</b><br>
-                                                                    <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);">                                                            
+                                                                    <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" onkeydown="return onlySearch(event);">                                                            
                                                                     <input name="search_category" value="{$search_category}" type="hidden" />
                                                                     <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
                                                                     <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=giftcert:search';">

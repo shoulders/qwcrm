@@ -51,7 +51,7 @@
                                                                    <br />
                                                                    <b>{t}for{/t}</b>
                                                                    <br />
-                                                                   <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumericAndDate(event);">
+                                                                   <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" required onkeydown="return onlySearch(event);">
                                                                    <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
                                                                    <input class="olotd4" value="{t}reset{/t}" onclick="window.location.href='index.php?page=expense:search';" type="button">
                                                                 </td>

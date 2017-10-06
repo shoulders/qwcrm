@@ -48,7 +48,7 @@
                                                                    <br />
                                                                    <b>{t}for{/t}</b>
                                                                    <br />
-                                                                   <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" />
+                                                                   <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlySearch(event);" />
                                                                    <input class="olotd4" name="submit" value="{t}Search{/t}" type="submit" />
                                                                    <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=refund:search';" type="button">                                                                                      </td>
                                                                 </tr>
