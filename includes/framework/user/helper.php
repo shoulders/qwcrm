@@ -39,8 +39,7 @@ class JUserHelper
         $user = new JUser((int) $userId);
 
         // Add the user to the group if necessary.
-        if (!in_array($groupId, $user->groups))
-        {
+        if (!in_array($groupId, $user->groups)) {
             // Get the title of the group.
             $db = QFactory::getDbo();
             $query = $db->getQuery(true)
@@ -51,8 +50,7 @@ class JUserHelper
             $title = $db->loadResult();
 
             // If the group does not exist, return an exception.
-            if (!$title)
-            {
+            if (!$title) {
                 throw new RuntimeException('Access Usergroup Invalid');
             }
 
@@ -67,13 +65,11 @@ class JUserHelper
         $temp         = JUser::getInstance((int) $userId);
         $temp->groups = $user->groups;
 
-        if (QFactory::getSession()->getId())
-        {
+        if (QFactory::getSession()->getId()) {
             // Set the group data for the user object in the session.
             $temp = QFactory::getUser();
 
-            if ($temp->id == $userId)
-            {
+            if ($temp->id == $userId) {
                 $temp->groups = $user->groups;
             }
         }
@@ -116,8 +112,7 @@ class JUserHelper
         // Remove the user from the group if necessary.
         $key = array_search($groupId, $user->groups);
 
-        if ($key !== false)
-        {
+        if ($key !== false) {
             // Remove the user from the group.
             unset($user->groups[$key]);
 
@@ -132,8 +127,7 @@ class JUserHelper
         // Set the group data for the user object in the session.
         $temp = QFactory::getUser();
 
-        if ($temp->id == $userId)
-        {
+        if ($temp->id == $userId) {
             $temp->groups = $user->groups;
         }
 
@@ -169,16 +163,14 @@ class JUserHelper
         $results = $db->loadObjectList();
 
         // Set the titles for the user groups.
-        for ($i = 0, $n = count($results); $i < $n; $i++)
-        {
+        for ($i = 0, $n = count($results); $i < $n; $i++) {
             $user->groups[$results[$i]->id] = $results[$i]->id;
         }
 
         // Store the user object.
         $user->save();
 
-        if (session_id())
-        {
+        if (session_id()) {
             // Set the group data for any preloaded user objects.
             $temp = QFactory::getUser((int) $userId);
             $temp->groups = $user->groups;
@@ -186,8 +178,7 @@ class JUserHelper
             // Set the group data for the user object in the session.
             $temp = QFactory::getUser();
 
-            if ($temp->id == $userId)
-            {
+            if ($temp->id == $userId) {
                 $temp->groups = $user->groups;
             }
         }
@@ -206,8 +197,7 @@ class JUserHelper
      */
     public static function getProfile($userId = 0)
     {
-        if ($userId == 0)
-        {
+        if ($userId == 0) {
             $user   = QFactory::getUser();
             $userId = $user->id;
         }
@@ -249,23 +239,19 @@ class JUserHelper
         $id = (int) $db->loadResult();
 
         // Is it a valid user to activate?
-        if ($id)
-        {
+        if ($id) {
             $user = JUser::getInstance((int) $id);
 
             $user->set('block', '0');
             $user->set('activation', '');
 
             // Time to take care of business.... store the user.
-            if (!$user->save())
-            {
+            if (!$user->save()) {
                 JLog::add($user->getError(), JLog::WARNING, 'jerror');
 
                 return false;
             }
-        }
-        else
-        {
+        } else {
             //JLog::add(_gettext("Unable to find a user with given activation string.");, JLog::WARNING, 'jerror');
             _gettext("Unable to find a user with given activation string.");
 
@@ -296,10 +282,10 @@ class JUserHelper
         $db->setQuery($query, 0, 1);*/
         
         $sql = "SELECT user_id FROM ".PRFX."user WHERE username = ".$db->qstr($username);
-        $rs = $db->Execute($sql);        
+        $rs = $db->Execute($sql);
 
         //return $db->loadResult();
-        return $rs->fields['user_id'];        
+        return $rs->fields['user_id'];
     }
 
     /**
@@ -334,9 +320,7 @@ class JUserHelper
      */
     public static function verifyPassword($password, $hash, $user_id = 0)
     {
-        
-        if ($hash[0] == '$')
-        {
+        if ($hash[0] == '$') {
             // JCrypt::hasStrongPasswordSupport() includes a fallback for us in the worst case
             //JCrypt::hasStrongPasswordSupport();
             $match = password_verify($password, $hash);
@@ -395,8 +379,7 @@ class JUserHelper
         }*/
 
         // If we have a match and rehash = true, rehash the password with the current algorithm.
-        if ((int) $user_id > 0 && $match && $rehash)
-        {
+        if ((int) $user_id > 0 && $match && $rehash) {
             $user = new JUser($user_id);
             $user->password = static::hashPassword($password);
             $user->save();
@@ -429,8 +412,7 @@ class JUserHelper
         $salt = static::getSalt($encryption, $salt, $plaintext);
 
         // Encrypt the password.
-        switch ($encryption)
-        {
+        switch ($encryption) {
             case 'plain':
                 return $plaintext;
 
@@ -465,29 +447,24 @@ class JUserHelper
                 $context = $plaintext . '$apr1$' . $salt;
                 $binary = static::_bin(md5($plaintext . $salt . $plaintext));
 
-                for ($i = $length; $i > 0; $i -= 16)
-                {
+                for ($i = $length; $i > 0; $i -= 16) {
                     $context .= substr($binary, 0, ($i > 16 ? 16 : $i));
                 }
 
-                for ($i = $length; $i > 0; $i >>= 1)
-                {
+                for ($i = $length; $i > 0; $i >>= 1) {
                     $context .= ($i & 1) ? chr(0) : $plaintext[0];
                 }
 
                 $binary = static::_bin(md5($context));
 
-                for ($i = 0; $i < 1000; $i++)
-                {
+                for ($i = 0; $i < 1000; $i++) {
                     $new = ($i & 1) ? $plaintext : substr($binary, 0, 16);
 
-                    if ($i % 3)
-                    {
+                    if ($i % 3) {
                         $new .= $salt;
                     }
 
-                    if ($i % 7)
-                    {
+                    if ($i % 7) {
                         $new .= $plaintext;
                     }
 
@@ -497,13 +474,11 @@ class JUserHelper
 
                 $p = array();
 
-                for ($i = 0; $i < 5; $i++)
-                {
+                for ($i = 0; $i < 5; $i++) {
                     $k = $i + 6;
                     $j = $i + 12;
 
-                    if ($j == 16)
-                    {
+                    if ($j == 16) {
                         $j = 5;
                     }
 
@@ -547,71 +522,52 @@ class JUserHelper
     public static function getSalt($encryption = 'md5-hex', $seed = '', $plaintext = '')
     {
         // Encrypt the password.
-        switch ($encryption)
-        {
+        switch ($encryption) {
             case 'crypt':
             case 'crypt-des':
-                if ($seed)
-                {
+                if ($seed) {
                     return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 2);
-                }
-                else
-                {
+                } else {
                     return substr(md5(mt_rand()), 0, 2);
                 }
                 break;
 
             case 'sha256':
-                if ($seed)
-                {
+                if ($seed) {
                     return preg_replace('|^{sha256}|i', '', $seed);
-                }
-                else
-                {
+                } else {
                     return static::genRandomPassword(16);
                 }
                 break;
 
             case 'crypt-md5':
-                if ($seed)
-                {
+                if ($seed) {
                     return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 12);
-                }
-                else
-                {
+                } else {
                     return '$1$' . substr(md5(JCrypt::genRandomBytes()), 0, 8) . '$';
                 }
                 break;
 
             case 'crypt-blowfish':
-                if ($seed)
-                {
+                if ($seed) {
                     return substr(preg_replace('|^{crypt}|i', '', $seed), 0, 30);
-                }
-                else
-                {
+                } else {
                     return '$2y$10$' . substr(md5(JCrypt::genRandomBytes()), 0, 22) . '$';
                 }
                 break;
 
             case 'ssha':
-                if ($seed)
-                {
+                if ($seed) {
                     return substr(preg_replace('|^{SSHA}|', '', $seed), -20);
-                }
-                else
-                {
+                } else {
                     return mhash_keygen_s2k(MHASH_SHA1, $plaintext, substr(pack('h*', md5(JCrypt::genRandomBytes())), 0, 8), 4);
                 }
                 break;
 
             case 'smd5':
-                if ($seed)
-                {
+                if ($seed) {
                     return substr(preg_replace('|^{SMD5}|', '', $seed), -16);
-                }
-                else
-                {
+                } else {
                     return mhash_keygen_s2k(MHASH_MD5, $plaintext, substr(pack('h*', md5(JCrypt::genRandomBytes())), 0, 8), 4);
                 }
                 break;
@@ -619,16 +575,12 @@ class JUserHelper
             case 'aprmd5': /* 64 characters that are valid for APRMD5 passwords. */
                 $APRMD5 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-                if ($seed)
-                {
+                if ($seed) {
                     return substr(preg_replace('/^\$apr1\$(.{8}).*/', '\\1', $seed), 0, 8);
-                }
-                else
-                {
+                } else {
                     $salt = '';
 
-                    for ($i = 0; $i < 8; $i++)
-                    {
+                    for ($i = 0; $i < 8; $i++) {
                         $salt .= $APRMD5{mt_rand(0, 63)};
                     }
 
@@ -639,8 +591,7 @@ class JUserHelper
             default:
                 $salt = '';
 
-                if ($seed)
-                {
+                if ($seed) {
                     $salt = $seed;
                 }
 
@@ -671,9 +622,9 @@ class JUserHelper
          * distribution is even, and randomize the start shift so it's not
          * predictable.
          *
-        
+
         // This is php 7 only. the JCrpyt function returns after failing
-        $random = JCrypt::genRandomBytes($length + 1);  // or direct - $random = random_bytes($length + 1);  
+        $random = JCrypt::genRandomBytes($length + 1);  // or direct - $random = random_bytes($length + 1);
         $shift = ord($random[0]);
 
         for ($i = 1; $i <= $length; ++$i)
@@ -683,10 +634,8 @@ class JUserHelper
         }*/
                      
         // this is a workaround
-        for ($i = 1; $i <= $length; ++$i)
-        {
+        for ($i = 1; $i <= $length; ++$i) {
             $makepass .= $salt[rand(0, strlen($salt)-1)];
-            
         }
         
         return $makepass;
@@ -710,8 +659,7 @@ class JUserHelper
         $aprmd5 = '';
         $count = abs($count);
 
-        while (--$count)
-        {
+        while (--$count) {
             $aprmd5 .= $APRMD5[$value & 0x3f];
             $value >>= 6;
         }
@@ -733,8 +681,7 @@ class JUserHelper
         $bin = '';
         $length = strlen($hex);
 
-        for ($i = 0; $i < $length; $i += 2)
-        {
+        for ($i = 0; $i < $length; $i += 2) {
             $tmp = sscanf(substr($hex, $i, 2), '%x');
             $bin .= chr(array_shift($tmp));
         }
@@ -810,12 +757,9 @@ class JUserHelper
         $cookie = new QCookie;
         $cookieValue = $cookie->get($cookieName);
 
-        if (!empty($cookieValue))
-        {
+        if (!empty($cookieValue)) {
             return explode('.', $cookieValue);
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -851,12 +795,9 @@ class JUserHelper
      */
     public static function checkSuperUserInUsers(array $userIds)
     {
-        foreach ($userIds as $userId)
-        {
-            foreach (static::getUserGroups($userId) as $userGroupId)
-            {
-                if (JAccess::checkGroup($userGroupId, 'core.admin'))
-                {
+        foreach ($userIds as $userId) {
+            foreach (static::getUserGroups($userId) as $userGroupId) {
+                if (JAccess::checkGroup($userGroupId, 'core.admin')) {
                     return true;
                 }
             }

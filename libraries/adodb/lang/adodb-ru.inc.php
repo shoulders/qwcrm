@@ -2,7 +2,7 @@
 
 // Russian language file contributed by "Cyrill Malevanov" cyrill#malevanov.spb.ru.
 
-$ADODB_LANG_ARRAY = array (
+$ADODB_LANG_ARRAY = array(
              'LANG'                      => 'ru',
             DB_ERROR                    => 'неизвестная ошибка',
             DB_ERROR_ALREADY_EXISTS     => 'уже существует',

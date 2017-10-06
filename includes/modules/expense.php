@@ -29,21 +29,20 @@ defined('_QWEXEC') or die;
 #         Display expenses                          #
 #####################################################
 
-function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
-    
+function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null)
+{
     global $smarty;
     
-    /* Filter the Records */    
+    /* Filter the Records */
     
     // Restrict by Search Category
-    if($search_category != '') {
+    if ($search_category != '') {
         
         // Filter by search category
-        $whereTheseRecords = " WHERE $search_category";    
+        $whereTheseRecords = " WHERE $search_category";
         
         // Filter by search term
         $likeTheseRecords = " LIKE '%".$search_term."%'";
-        
     }
     
     /* The SQL code */
@@ -54,23 +53,23 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
             ".$likeTheseRecords."
             GROUP BY ".PRFX."expense.expense_id
             ORDER BY ".PRFX."expense.expense_id
-            ".$direction;            
+            ".$direction;
     
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if ($use_pages == true) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);
         
-        // Figure out the total number of records in the database for the given search        
-        if(!$rs = $db->Execute($sql)) {
+        // Figure out the total number of records in the database for the given search
+        if (!$rs = $db->Execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));
             exit;
-        } else {        
-            $total_results = $rs->RecordCount();            
+        } else {
+            $total_results = $rs->RecordCount();
             $smarty->assign('total_results', $total_results);
-        }        
+        }
 
         // Figure out the total number of pages. Always round up using ceil()
         $total_pages = ceil($total_results / $records_per_page);
@@ -80,16 +79,16 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
         $smarty->assign('page_no', $page_no);
         
         // Assign the Previous page
-        if($page_no > 1) {
-            $previous = ($page_no - 1);            
-        } else { 
-            $previous = 1;            
+        if ($page_no > 1) {
+            $previous = ($page_no - 1);
+        } else {
+            $previous = 1;
         }
-        $smarty->assign('previous', $previous);        
+        $smarty->assign('previous', $previous);
         
         // Assign the next page
-        if($page_no < $total_pages){
-            $next = ($page_no + 1);            
+        if ($page_no < $total_pages) {
+            $next = ($page_no + 1);
         } else {
             $next = $total_pages;
         }
@@ -100,35 +99,26 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
         
         // add the restriction on to the SQL
         $sql .= $limitTheseRecords;
-        
     } else {
         
         // This make the drop down menu look correct
         $smarty->assign('total_pages', 1);
-        
     }
 
     /* Return the records */
          
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
         exit;
     } else {
-        
         $records = $rs->GetArray();   // do i need to add the check empty
 
-        if(empty($records)){
-            
+        if (empty($records)) {
             return false;
-            
         } else {
-            
             return $records;
-            
         }
-        
     }
-    
 }
 
 /** Insert Functions **/
@@ -137,36 +127,34 @@ function display_expenses($db, $direction = 'DESC', $use_pages = false, $page_no
 #      Insert Expense                    #
 ##########################################
 
-function insert_expense($db, $VAR) {
-    
+function insert_expense($db, $VAR)
+{
     $sql = "INSERT INTO ".PRFX."expense SET
-            invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
-            payee           =". $db->qstr( $VAR['payee']                   ).",
-            date            =". $db->qstr( date_to_timestamp($VAR['date']) ).",
-            type            =". $db->qstr( $VAR['type']                    ).",
-            payment_method  =". $db->qstr( $VAR['payment_method']          ).",
-            net_amount      =". $db->qstr( $VAR['net_amount']              ).",
-            tax_rate        =". $db->qstr( $VAR['tax_rate']                ).",
-            tax_amount      =". $db->qstr( $VAR['tax_amount']              ).",
-            gross_amount    =". $db->qstr( $VAR['gross_amount']            ).",
-            items           =". $db->qstr( $VAR['items']                   ).",
-            notes           =". $db->qstr( $VAR['notes']                   );
+            invoice_id      =". $db->qstr($VAR['invoice_id']).",
+            payee           =". $db->qstr($VAR['payee']).",
+            date            =". $db->qstr(date_to_timestamp($VAR['date'])).",
+            type            =". $db->qstr($VAR['type']).",
+            payment_method  =". $db->qstr($VAR['payment_method']).",
+            net_amount      =". $db->qstr($VAR['net_amount']).",
+            tax_rate        =". $db->qstr($VAR['tax_rate']).",
+            tax_amount      =". $db->qstr($VAR['tax_amount']).",
+            gross_amount    =". $db->qstr($VAR['gross_amount']).",
+            items           =". $db->qstr($VAR['items']).",
+            notes           =". $db->qstr($VAR['notes']);
                 
             
 
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
         exit;
     } else {
         
-        // Log activity        
+        // Log activity
         write_record_to_activity_log(_gettext("Expense Record").' '.$db->Insert_ID().' '._gettext("created."));
     
         return $db->Insert_ID();
-        
     }
-    
-} 
+}
 
 /** Get Functions **/
 
@@ -174,46 +162,36 @@ function insert_expense($db, $VAR) {
 #  Get Expense Details   #
 ##########################
 
-function get_expense_details($db, $expense_id, $item = null){
-    
+function get_expense_details($db, $expense_id, $item = null)
+{
     $sql = "SELECT * FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
     
-    if(!$rs = $db->execute($sql)){        
+    if (!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the expense details."));
         exit;
     } else {
-        
-        if($item === null){
-            
-            return $rs->GetRowAssoc();            
-            
+        if ($item === null) {
+            return $rs->GetRowAssoc();
         } else {
-            
-            return $rs->fields[$item];   
-            
-        } 
-        
+            return $rs->fields[$item];
+        }
     }
-    
 }
 
 #####################################
 #    Get Expense Types              #
 #####################################
 
-function get_expense_types($db) {
-    
+function get_expense_types($db)
+{
     $sql = "SELECT * FROM ".PRFX."expense_types";
 
-    if(!$rs = $db->execute($sql)){        
+    if (!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get expense types."));
         exit;
     } else {
-        
         return $rs->GetArray();
-        
-    }    
-    
+    }
 }
 
 /** Update Functions **/
@@ -222,35 +200,33 @@ function get_expense_types($db) {
 #     Update Expense                #
 #####################################
 
-function update_expense($db, $expense_id, $VAR) {
-    
+function update_expense($db, $expense_id, $VAR)
+{
     $sql = "UPDATE ".PRFX."expense SET
-            invoice_id          =". $db->qstr( $VAR['invoice_id']               ).",
-            payee               =". $db->qstr( $VAR['payee']                    ).",
-            date                =". $db->qstr( date_to_timestamp($VAR['date'])  ).",
-            type                =". $db->qstr( $VAR['type']                     ).",
-            payment_method      =". $db->qstr( $VAR['payment_method']           ).",
-            net_amount          =". $db->qstr( $VAR['net_amount']               ).",
-            tax_rate            =". $db->qstr( $VAR['tax_rate']                 ).",
-            tax_amount          =". $db->qstr( $VAR['tax_amount']               ).",
-            gross_amount        =". $db->qstr( $VAR['gross_amount']             ).",
-            items               =". $db->qstr( $VAR['items']                    ).",
-            notes               =". $db->qstr( $VAR['notes']                    )."
-            WHERE expense_id    =". $db->qstr( $expense_id                      );                        
+            invoice_id          =". $db->qstr($VAR['invoice_id']).",
+            payee               =". $db->qstr($VAR['payee']).",
+            date                =". $db->qstr(date_to_timestamp($VAR['date'])).",
+            type                =". $db->qstr($VAR['type']).",
+            payment_method      =". $db->qstr($VAR['payment_method']).",
+            net_amount          =". $db->qstr($VAR['net_amount']).",
+            tax_rate            =". $db->qstr($VAR['tax_rate']).",
+            tax_amount          =". $db->qstr($VAR['tax_amount']).",
+            gross_amount        =". $db->qstr($VAR['gross_amount']).",
+            items               =". $db->qstr($VAR['items']).",
+            notes               =". $db->qstr($VAR['notes'])."
+            WHERE expense_id    =". $db->qstr($expense_id);
             
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
         exit;
     } else {
         
-        // Log activity        
+        // Log activity
         write_record_to_activity_log(_gettext("Expense Record").' '.$expense_id.' '._gettext("updated."));
         
         return true;
-        
     }
-    
-} 
+}
 
 /** Close Functions **/
 
@@ -260,22 +236,20 @@ function update_expense($db, $expense_id, $VAR) {
 #    Delete Record                  #
 #####################################
 
-function delete_expense($db, $expense_id){
-    
+function delete_expense($db, $expense_id)
+{
     $sql = "DELETE FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
         exit;
     } else {
         
-        // Log activity        
+        // Log activity
         write_record_to_activity_log(_gettext("Expense Record").' '.$expense_id.' '._gettext("deleted."));
         
         return true;
-        
-    } 
-    
+    }
 }
 
 /** Other Functions **/
@@ -284,17 +258,14 @@ function delete_expense($db, $expense_id){
 #      Last Record Look Up               #
 ##########################################
 
-function last_expense_id_lookup($db){
-    
+function last_expense_id_lookup($db)
+{
     $sql = "SELECT * FROM ".PRFX."expense ORDER BY expense_id DESC LIMIT 1";
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));
         exit;
     } else {
-        
         return $rs->fields['expense_id'];
-        
     }
-    
 }

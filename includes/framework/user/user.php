@@ -182,13 +182,13 @@ class JUser
     
     /**
      * @var    array QWcrm User variables
-     * 
-     */    
-    public $login_user_id           = null;    
+     *
+     */
+    public $login_user_id           = null;
     public $login_username          = null;
     public $login_usergroup_id      = null;
     public $login_display_name      = null;
-    public $login_token             = null;    
+    public $login_token             = null;
     public $login_is_employee       = null;
     public $login_customer_id       = null;
 
@@ -201,10 +201,8 @@ class JUser
      * @since   11.1
      */
     public function __construct($identifier = 0, JUserHelper $userHelper = null)
-    {    
-        
-        if (null === $userHelper)
-        {
+    {
+        if (null === $userHelper) {
             $userHelper = new JUserHelper;
         }
 
@@ -214,19 +212,15 @@ class JUser
         $this->_params = new Registry;
 
         // Load the user if it exists
-        if (!empty($identifier))
-        {
+        if (!empty($identifier)) {
             $this->load($identifier);
-        }
-        else
-        {
+        } else {
             // Initialise
             $this->id = 0;
             $this->sendEmail = 0;
             $this->aid = 0;
             $this->guest = 1;
         }
-        
     }
 
     /**
@@ -241,35 +235,28 @@ class JUser
      */
     public static function getInstance($identifier = 0, JUserHelper $userHelper = null)
     {
-        if (null === $userHelper)
-        {
+        if (null === $userHelper) {
             $userHelper = new JUserHelper;
         }
 
         // Find the user id
-        if (!is_numeric($identifier))
-        {
-            if (!$id = $userHelper->getUserId($identifier))
-            {
+        if (!is_numeric($identifier)) {
+            if (!$id = $userHelper->getUserId($identifier)) {
                 // If the $identifier doesn't match with any id, just return an empty JUser.
                 return new JUser;
             }
-        }
-        else
-        {
+        } else {
             $id = $identifier;
         }
 
         // If the $id is zero, just return an empty JUser.
         // Note: don't cache this user because it'll have a new ID on save!
-        if ($id === 0)
-        {
+        if ($id === 0) {
             return new JUser;
         }
 
         // Check if the user ID is already cached.
-        if (empty(self::$instances[$id]))
-        {
+        if (empty(self::$instances[$id])) {
             $user = new JUser($id, $userHelper);
             self::$instances[$id] = $user;
         }
@@ -356,7 +343,7 @@ class JUser
 
         return $table->setLastVisit($timestamp);*/
         
-        $db = QFactory::getDbo();        
+        $db = QFactory::getDbo();
         $sql = "UPDATE ".PRFX."user SET last_active = ".time()." WHERE user_id = " . $this->id;
         $db->Execute($sql);
         
@@ -427,20 +414,17 @@ class JUser
     public function bind(&$array)
     {
         // Let's check to see if the user is new or not
-        if (empty($this->id))
-        {
+        if (empty($this->id)) {
             // Check the password and create the crypted password
-            if (empty($array['password']))
-            {
+            if (empty($array['password'])) {
                 $array['password'] = $this->userHelper->genRandomPassword();
                 $array['password2'] = $array['password'];
             }
 
             // Not all controllers check the password, although they should.
             // Hence this code is required:
-            if (isset($array['password2']) && $array['password'] != $array['password2'])
-            {
-                QFactory::getApplication()->enqueueMessage(_gettext("Passwords do not match. Please re-enter password."), 'error');             
+            if (isset($array['password2']) && $array['password'] != $array['password2']) {
+                QFactory::getApplication()->enqueueMessage(_gettext("Passwords do not match. Please re-enter password."), 'error');
 
                 return false;
             }
@@ -455,19 +439,14 @@ class JUser
             // Check that username is not greater than 150 characters
             $username = $this->get('username');
 
-            if (strlen($username) > 150)
-            {
+            if (strlen($username) > 150) {
                 $username = substr($username, 0, 150);
                 $this->set('username', $username);
             }
-        }
-        else
-        {
+        } else {
             // Updating an existing user
-            if (!empty($array['password']))
-            {
-                if ($array['password'] != $array['password2'])
-                {
+            if (!empty($array['password'])) {
+                if ($array['password'] != $array['password2']) {
                     $this->setError(_gettext("Passwords do not match. Please re-enter password."));
 
                     return false;
@@ -476,8 +455,7 @@ class JUser
                 $this->password_clear = ArrayHelper::getValue($array, 'password', '', 'string');
 
                 // Check if the user is reusing the current password if required to reset their password
-                if ($this->requireReset == 1 && $this->userHelper->verifyPassword($this->password_clear, $this->password))
-                {
+                if ($this->requireReset == 1 && $this->userHelper->verifyPassword($this->password_clear, $this->password)) {
                     $this->setError(_gettext("You can't reuse your current password, please enter a new password."));
 
                     return false;
@@ -487,23 +465,17 @@ class JUser
 
                 // Reset the change password flag
                 $array['requireReset'] = 0;
-            }
-            else
-            {
+            } else {
                 $array['password'] = $this->password;
             }
         }
 
-        if (array_key_exists('params', $array))
-        {
+        if (array_key_exists('params', $array)) {
             $this->_params->loadArray($array['params']);
 
-            if (is_array($array['params']))
-            {
+            if (is_array($array['params'])) {
                 $params = (string) $this->_params;
-            }
-            else
-            {
+            } else {
                 $params = $array['params'];
             }
 
@@ -511,8 +483,7 @@ class JUser
         }
 
         // Bind the array
-        if (!$this->setProperties($array))
-        {
+        if (!$this->setProperties($array)) {
             $this->setError(_gettext("Unable to bind array to user object."));
 
             return false;
@@ -543,11 +514,9 @@ class JUser
         $table->bind($this->getProperties());
 
         // Allow an exception to be thrown.
-        try
-        {
+        try {
             // Check and store the object.
-            if (!$table->check())
-            {
+            if (!$table->check()) {
                 $this->setError($table->getError());
 
                 return false;
@@ -563,8 +532,7 @@ class JUser
             $isNew = empty($this->id);
 
             // If we aren't allowed to create new users return
-            if ($isNew && $updateOnly)
-            {
+            if ($isNew && $updateOnly) {
                 return true;
             }
 
@@ -581,27 +549,21 @@ class JUser
 
             $iAmRehashingSuperadmin = false;
 
-            if (($my->id == 0 && !$isNew) && $this->id == $oldUser->id && $oldUser->authorise('core.admin') && $oldUser->password != $this->password)
-            {
+            if (($my->id == 0 && !$isNew) && $this->id == $oldUser->id && $oldUser->authorise('core.admin') && $oldUser->password != $this->password) {
                 $iAmRehashingSuperadmin = true;
             }
 
             // We are only worried about edits to this account if I am not a Super Admin.
-            if ($iAmSuperAdmin != true && $iAmRehashingSuperadmin != true)
-            {
+            if ($iAmSuperAdmin != true && $iAmRehashingSuperadmin != true) {
                 // I am not a Super Admin, and this one is, so fail.
-                if (!$isNew && JAccess::check($this->id, 'core.admin'))
-                {
+                if (!$isNew && JAccess::check($this->id, 'core.admin')) {
                     throw new RuntimeException('User not Super Administrator');
                 }
 
-                if ($this->groups != null)
-                {
+                if ($this->groups != null) {
                     // I am not a Super Admin and I'm trying to make one.
-                    foreach ($this->groups as $groupId)
-                    {
-                        if (JAccess::checkGroup($groupId, 'core.admin'))
-                        {
+                    foreach ($this->groups as $groupId) {
+                        if (JAccess::checkGroup($groupId, 'core.admin')) {
                             throw new RuntimeException('User not Super Administrator');
                         }
                     }
@@ -614,8 +576,7 @@ class JUser
 
             $result = $dispatcher->trigger('onUserBeforeSave', array($oldUser->getProperties(), $isNew, $this->getProperties()));
 
-            if (in_array(false, $result, true))
-            {
+            if (in_array(false, $result, true)) {
                 // Plugin will have to raise its own error or throw an exception.
                 return false;
             }
@@ -624,22 +585,18 @@ class JUser
             $result = $table->store();
 
             // Set the id for the JUser object in case we created a new user.
-            if (empty($this->id))
-            {
+            if (empty($this->id)) {
                 $this->id = $table->get('id');
             }
 
-            if ($my->id == $table->id)
-            {
+            if ($my->id == $table->id) {
                 $registry = new Registry($table->params);
                 $my->setParameters($registry);
             }
 
             // Fire the onUserAfterSave event
             $dispatcher->trigger('onUserAfterSave', array($this->getProperties(), $isNew, $result, $this->getError()));
-        }
-        catch (Exception $e)
-        {
+        } catch (Exception $e) {
             $this->setError($e->getMessage());
 
             return false;
@@ -670,12 +627,12 @@ class JUser
      * @since   11.1
      */
     public function load($id)
-    {       
+    {
         $db = QFactory::getDbo();
         
-        $sql = "SELECT * FROM ".PRFX."user WHERE user_id = " . $db->qstr($id);        
+        $sql = "SELECT * FROM ".PRFX."user WHERE user_id = " . $db->qstr($id);
         
-        if(!$rs = $db->execute($sql)){
+        if (!$rs = $db->execute($sql)) {
             
             // Reset to guest user
             $this->guest = 1;
@@ -684,18 +641,17 @@ class JUser
             //exit;
             
             return false;
-            
         } else {
             
             // Load the user record into an array
-            $record = $rs->GetRowAssoc();            
+            $record = $rs->GetRowAssoc();
             
             $this->username                 = $record['username'];
             $this->id                       = $record['user_id'];
             
             // Added for QWcrm
             $this->login_user_id            = $record['user_id'];
-            $this->login_username           = $record['username'];            
+            $this->login_username           = $record['username'];
             $this->login_usergroup_id       = $record['usergroup'];
             $this->login_display_name       = $record['display_name'];
             $this->login_token              = 'login_verified';
@@ -703,8 +659,9 @@ class JUser
             $this->login_customer_id        = $record['customer_id'];
             
             // if not active block the account
-            if($record['active'] != '1') { $this->block = 1; }
-
+            if ($record['active'] != '1') {
+                $this->block = 1;
+            }
         }
 
         /*
@@ -718,12 +675,9 @@ class JUser
         //$this->setProperties($table->getProperties());
 
         // The user is no longer a guest
-        if ($this->id != 0)
-        {
+        if ($this->id != 0) {
             $this->guest = 0;
-        }
-        else
-        {
+        } else {
             $this->guest = 1;
         }
 
@@ -756,12 +710,9 @@ class JUser
         $this->_params    = new Registry;
 
         // Load the user if it exists
-        if (!empty($this->id))
-        {
+        if (!empty($this->id)) {
             $this->load($this->id);
-        }
-        else
-        {
+        } else {
             // Initialise
             $this->id = 0;
             $this->sendEmail = 0;
@@ -814,6 +765,5 @@ class JUser
         $this->data[(string) $key] = $value;
 
         return $this;
-    }     
-    
+    }
 }

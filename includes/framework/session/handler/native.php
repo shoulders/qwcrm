@@ -43,8 +43,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
      */
     public function start()
     {
-        if ($this->isStarted())
-        {
+        if ($this->isStarted()) {
             return true;
         }
 
@@ -89,8 +88,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
      */
     public function setId($id)
     {
-        if ($this->isStarted())
-        {
+        if ($this->isStarted()) {
             throw new LogicException('Cannot change the ID of an active session');
         }
 
@@ -121,8 +119,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
      */
     public function setName($name)
     {
-        if ($this->isStarted())
-        {
+        if ($this->isStarted()) {
             throw new LogicException('Cannot change the name of an active session');
         }
 
@@ -144,8 +141,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
      */
     public function regenerate($destroy = false, $lifetime = null)
     {
-        if (null !== $lifetime)
-        {
+        if (null !== $lifetime) {
             ini_set('session.cookie_lifetime', $lifetime);
         }
 
@@ -155,14 +151,11 @@ class JSessionHandlerNative implements JSessionHandlerInterface
         session_write_close();
         $this->closed = true;
 
-        if (isset($_SESSION))
-        {
+        if (isset($_SESSION)) {
             $backup = $_SESSION;
             $this->doSessionStart();
             $_SESSION = $backup;
-        }
-        else
-        {
+        } else {
             $this->doSessionStart();
         }
 
@@ -184,8 +177,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
     {
         // Verify if the session is active
         if ((version_compare(PHP_VERSION, '5.4', 'ge') && PHP_SESSION_ACTIVE === session_status())
-            || (version_compare(PHP_VERSION, '5.4', 'lt') && $this->started && isset($_SESSION) && $this->getId()))
-        {
+            || (version_compare(PHP_VERSION, '5.4', 'lt') && $this->started && isset($_SESSION) && $this->getId())) {
             $session = QFactory::getSession();
             //$session->set('post_emulation_store', $session->post_emulation_store); // Save the whole $post_emulation_store variable into the registry - in the databse the post_emulation_store always appears to be empty
             $data    = $session->getData();
@@ -210,8 +202,7 @@ class JSessionHandlerNative implements JSessionHandlerInterface
     public function clear()
     {
         // Need to destroy any existing sessions started with session.auto_start
-        if ($this->getId())
-        {
+        if ($this->getId()) {
             session_unset();
             session_destroy();
         }
@@ -241,26 +232,22 @@ class JSessionHandlerNative implements JSessionHandlerInterface
          */
 
         // If running PHP 5.4, try to use the native API
-        if (version_compare(PHP_VERSION, '5.4', 'ge') && PHP_SESSION_ACTIVE === session_status())
-        {
+        if (version_compare(PHP_VERSION, '5.4', 'ge') && PHP_SESSION_ACTIVE === session_status()) {
             throw new RuntimeException('Failed to start the session: already started by PHP.');
         }
 
         // Fallback check for PHP 5.3
-        if (version_compare(PHP_VERSION, '5.4', 'lt') && !$this->closed && isset($_SESSION) && $this->getId())
-        {
+        if (version_compare(PHP_VERSION, '5.4', 'lt') && !$this->closed && isset($_SESSION) && $this->getId()) {
             throw new RuntimeException('Failed to start the session: already started by PHP ($_SESSION is set).');
         }
 
         // If we are using cookies (default true) and headers have already been started (early output),
-        if (ini_get('session.use_cookies') && headers_sent($file, $line))
-        {
+        if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
             throw new RuntimeException(sprintf('Failed to start the session because headers have already been sent by "%s" at line %d.', $file, $line));
         }
 
         // Ok to try and start the session
-        if (!session_start())
-        {
+        if (!session_start()) {
             throw new RuntimeException('Failed to start the session');
         }
 

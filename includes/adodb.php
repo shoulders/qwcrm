@@ -13,8 +13,8 @@ defined('_QWEXEC') or die;
 // ADODB_ASSOC_CASE - You can control the associative fetch case for certain drivers which behave differently. - native is default since v2.90
 //define('ADODB_ASSOC_CASE', 1);  // set what case to use for recordsets where the field name (not table names): 0 = lowercase, 1 = uppercase, 2 = native case
 
-// $ADODB_FETCH_MODE - This is a global variable that determines how arrays are retrieved by recordsets. 
-//$ADODB_FETCH_MODE = ADODB_FETCH_NUM; 
+// $ADODB_FETCH_MODE - This is a global variable that determines how arrays are retrieved by recordsets.
+//$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 
 /* -- */
 
@@ -30,7 +30,7 @@ require('adodb-exceptions.inc.php');
 $db = ADONewConnection('mysqli');
 
 // This is needed to allow install/migration/upgrade
-if($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != '') {
+if ($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != '') {
     
     // Get current PHP error reporting level
     $reporting_level = error_reporting();
@@ -39,32 +39,28 @@ if($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != ''
     error_reporting(0);
     
     // Create ADOdb database connection - and collection exceptions
-    try
-    {        
+    try {
         $db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
     }
     
     // Error handling is tested/displayed/handled in verify_qwcrm_is_installed_correctly() this allows a graceful fail
     
-    catch (Exception $e)
-    {
+    catch (Exception $e) {
         
         // Re-Enable PHP error reporting
         error_reporting($reporting_level);
         
         //echo $e->msg;
         //var_dump($e);
-        //adodb_backtrace($e->gettrace());        
+        //adodb_backtrace($e->gettrace());
         //$smarty->assign('warning_msg', $e->msg);
-              
     }
     
     // Re-Enable PHP error reporting
     error_reporting($reporting_level);
     
     /* Return the connection status
-    if(!$db->isConnected()) {        
-        die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');      
+    if(!$db->isConnected()) {
+        die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');
     }*/
-   
 }

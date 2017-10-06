@@ -81,21 +81,15 @@ class JInput implements Serializable, Countable
      */
     public function __construct($source = null, array $options = array())
     {
-        if (isset($options['filter']))
-        {
+        if (isset($options['filter'])) {
             $this->filter = $options['filter'];
-        }
-        else
-        {
+        } else {
             $this->filter = JFilterInput::getInstance();
         }
 
-        if (is_null($source))
-        {
+        if (is_null($source)) {
             $this->data = &$_REQUEST;
-        }
-        else
-        {
+        } else {
             $this->data = $source;
         }
 
@@ -114,15 +108,13 @@ class JInput implements Serializable, Countable
      */
     public function __get($name)
     {
-        if (isset($this->inputs[$name]))
-        {
+        if (isset($this->inputs[$name])) {
             return $this->inputs[$name];
         }
 
         $className = 'JInput' . ucfirst($name);
 
-        if (class_exists($className))
-        {
+        if (class_exists($className)) {
             $this->inputs[$name] = new $className(null, $this->options);
 
             return $this->inputs[$name];
@@ -130,8 +122,7 @@ class JInput implements Serializable, Countable
 
         $superGlobal = '_' . strtoupper($name);
 
-        if (isset($GLOBALS[$superGlobal]))
-        {
+        if (isset($GLOBALS[$superGlobal])) {
             $this->inputs[$name] = new JInput($GLOBALS[$superGlobal], $this->options);
 
             return $this->inputs[$name];
@@ -166,8 +157,7 @@ class JInput implements Serializable, Countable
      */
     public function get($name, $default = null, $filter = 'cmd')
     {
-        if (isset($this->data[$name]))
-        {
+        if (isset($this->data[$name])) {
             return $this->filter->clean($this->data[$name], $filter);
         }
 
@@ -214,47 +204,31 @@ class JInput implements Serializable, Countable
      */
     protected function getArrayRecursive(array $vars = array(), $datasource = null, $defaultFilter = 'unknown', $recursion = false)
     {
-        if (empty($vars) && is_null($datasource))
-        {
+        if (empty($vars) && is_null($datasource)) {
             $vars = $this->data;
-        }
-        else
-        {
-            if (!$recursion)
-            {
+        } else {
+            if (!$recursion) {
                 $defaultFilter = null;
             }
         }
 
         $results = array();
 
-        foreach ($vars as $k => $v)
-        {
-            if (is_array($v))
-            {
-                if (is_null($datasource))
-                {
+        foreach ($vars as $k => $v) {
+            if (is_array($v)) {
+                if (is_null($datasource)) {
                     $results[$k] = $this->getArrayRecursive($v, $this->get($k, null, 'array'), $defaultFilter, true);
-                }
-                else
-                {
+                } else {
                     $results[$k] = $this->getArrayRecursive($v, $datasource[$k], $defaultFilter, true);
                 }
-            }
-            else
-            {
+            } else {
                 $filter = isset($defaultFilter) ? $defaultFilter : $v;
 
-                if (is_null($datasource))
-                {
+                if (is_null($datasource)) {
                     $results[$k] = $this->get($k, null, $filter);
-                }
-                elseif (isset($datasource[$k]))
-                {
+                } elseif (isset($datasource[$k])) {
                     $results[$k] = $this->filter->clean($datasource[$k], $filter);
-                }
-                else
-                {
+                } else {
                     $results[$k] = $this->filter->clean(null, $filter);
                 }
             }
@@ -290,8 +264,7 @@ class JInput implements Serializable, Countable
      */
     public function def($name, $value)
     {
-        if (isset($this->data[$name]))
-        {
+        if (isset($this->data[$name])) {
             return;
         }
 
@@ -310,14 +283,12 @@ class JInput implements Serializable, Countable
      */
     public function __call($name, $arguments)
     {
-        if (substr($name, 0, 3) == 'get')
-        {
+        if (substr($name, 0, 3) == 'get') {
             $filter = substr($name, 3);
 
             $default = null;
 
-            if (isset($arguments[1]))
-            {
+            if (isset($arguments[1])) {
                 $default = $arguments[1];
             }
 
@@ -377,12 +348,9 @@ class JInput implements Serializable, Countable
         list($this->options, $this->data, $this->inputs) = unserialize($input);
 
         // Load the filter.
-        if (isset($this->options['filter']))
-        {
+        if (isset($this->options['filter'])) {
             $this->filter = $this->options['filter'];
-        }
-        else
-        {
+        } else {
             $this->filter = JFilterInput::getInstance();
         }
     }
@@ -398,14 +366,11 @@ class JInput implements Serializable, Countable
     {
         static $loaded = false;
 
-        if (!$loaded)
-        {
+        if (!$loaded) {
             // Load up all the globals.
-            foreach ($GLOBALS as $global => $data)
-            {
+            foreach ($GLOBALS as $global => $data) {
                 // Check if the global starts with an underscore.
-                if (strpos($global, '_') === 0)
-                {
+                if (strpos($global, '_') === 0) {
                     // Convert global name to input name.
                     $global = strtolower($global);
                     $global = substr($global, 1);

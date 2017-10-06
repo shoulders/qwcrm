@@ -22,7 +22,6 @@ class PlgAuthenticationQwcrm
     public function __construct()
     {
         $this->db = QFactory::getDbo();
-        
     }
     /**
      * This method should handle any authentication and report back to the subject
@@ -40,31 +39,28 @@ class PlgAuthenticationQwcrm
         $response->type = 'Qwcrm';
 
         // Joomla does not like blank passwords
-        if (empty($credentials['password']))
-        {
-            $response->status        = JAuthentication::STATUS_FAILURE;            
+        if (empty($credentials['password'])) {
+            $response->status        = JAuthentication::STATUS_FAILURE;
             $response->error_message = _gettext("Empty password not allowed.");
 
             return;
         }
 
         // Load the relevant user record form the database
-        $sql = "SELECT user_id, password FROM ".PRFX."user WHERE username = ".$this->db->qstr($credentials['username']);        
+        $sql = "SELECT user_id, password FROM ".PRFX."user WHERE username = ".$this->db->qstr($credentials['username']);
         $rs = $this->db->Execute($sql);
         //$result = $rs->GetRowAssoc();
         
         // if there is a record, set it
-        if($rs->RecordCount() == 1) {
-            $result = $rs->GetRowAssoc();            
+        if ($rs->RecordCount() == 1) {
+            $result = $rs->GetRowAssoc();
         }
               
         // if there is a match, verify it
-        if($result)
-        {
+        if ($result) {
             $match = JUserHelper::verifyPassword($credentials['password'], $result['password'], $result['user_id']);
 
-            if ($match === true)
-            {
+            if ($match === true) {
                 // Bring this in line with the rest of the system
                 $user                    = JUser::getInstance($result['user_id']);
                 
@@ -72,27 +68,22 @@ class PlgAuthenticationQwcrm
                 $response->fullname      = $user->name;
                 $response->status        = JAuthentication::STATUS_SUCCESS;
                 $response->error_message = '';
-            }
-            else
-            {
+            } else {
                 // Invalid password
-                $response->status        = JAuthentication::STATUS_FAILURE;                
+                $response->status        = JAuthentication::STATUS_FAILURE;
                 $response->error_message = _gettext("Username and password do not match or you do not have an account yet.");
             }
-        }
-        else
-        {
+        } else {
             // Let's hash the entered password even if we don't have a matching user for some extra response time
             // By doing so, we mitigate side channel user enumeration attacks
             JUserHelper::hashPassword($credentials['password']);
 
             // Invalid user
-            $response->status        = JAuthentication::STATUS_FAILURE;            
+            $response->status        = JAuthentication::STATUS_FAILURE;
             $response->error_message = _gettext("Username and password do not match or you do not have an account yet.");
         }
         
         return;
-        
     }
     
     // joomla\plugins\user\joomla\joomla.php
@@ -119,19 +110,15 @@ class PlgAuthenticationQwcrm
      */
     public function onUserAfterDelete($user, $success, $msg)
     {
-        if (!$success)
-        {
+        if (!$success) {
             return false;
         }
 
         $sql = "DELETE FROM ".PRFX."session WHERE userid = ". (int) $user['id'];
 
-        try
-        {            
+        try {
             $this->db->Execute($sql);
-        }
-        catch (JDatabaseExceptionExecuting $e)
-        {
+        } catch (JDatabaseExceptionExecuting $e) {
             return false;
         }
 
@@ -241,20 +228,18 @@ class PlgAuthenticationQwcrm
      * @since   1.5
      */
     public function onUserLogin($user, $options = array())
-    {        
+    {
         $instance = $this->_getUser($user, $options);
 
         // If _getUser returned an error, then pass it back.
-        if ($instance instanceof Exception)
-        {
+        if ($instance instanceof Exception) {
             return false;
         }
 
         // If the user is blocked, redirect with an error
-        if ($instance->block == 1)
-        {
+        if ($instance->block == 1) {
             //$this->app->enqueueMessage(_gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');
-            return false;            
+            return false;
         }
 
         /* Authorise the user based on the group information - see authentication.php:351
@@ -262,13 +247,13 @@ class PlgAuthenticationQwcrm
         {
             $options['group'] = 'USERS';
         }
-        
+
         // Check the user can login.
         $result = $instance->authorise($options['action']);
 
         if (!$result)
         {
-            $this->app->enqueueMessage(_gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');            
+            $this->app->enqueueMessage(_gettext("Login denied! Your account has either been blocked or you have not activated it yet."), 'warning');
             return false;
         }*/
 
@@ -286,18 +271,15 @@ class PlgAuthenticationQwcrm
         // install the logged in user's object into the session
         $session->set('user', $instance);
 
-        // Ensure the new session's metadata is written to the database        
-        $session->checkSession();        
+        // Ensure the new session's metadata is written to the database
+        $session->checkSession();
 
         // Purge the old session
         $sql = "DELETE FROM ".PRFX."session WHERE session_id = " . $this->db->qstr($oldSessionId);
 
-        try
-        {            
+        try {
             $this->db->Execute($sql);
-        }
-        catch (RuntimeException $e)
-        {
+        } catch (RuntimeException $e) {
             // The old session is already invalidated, don't let this block logging in
         }
 
@@ -309,8 +291,7 @@ class PlgAuthenticationQwcrm
         $cookie_domain = $config->get('cookie_domain', '');
         $cookie_path   = $config->get('cookie_path', '/');
 
-        if (QFactory::isClient('site'))
-        {
+        if (QFactory::isClient('site')) {
             $cookie = new Cookie;
             $cookie->set('qwcrm_user_state', 'logged_in', 0, $cookie_path, $cookie_domain, 0);
         }
@@ -336,16 +317,14 @@ class PlgAuthenticationQwcrm
         $cookie  = new Cookie;
 
         // Make sure we're a valid user first
-        if ($user['id'] == 0 && !$my->get('tmp_user'))
-        {
+        if ($user['id'] == 0 && !$my->get('tmp_user')) {
             return true;
         }
 
         $sharedSessions = $config->get('shared_session', '0');
 
         // Check to see if we're deleting the current session
-        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == QFactory::getClientId())))
-        {
+        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == QFactory::getClientId()))) {
             // Hit the user last visit field
             $my->setLastVisit();
 
@@ -357,21 +336,16 @@ class PlgAuthenticationQwcrm
         //$forceLogout = $this->params->get('forceLogout', 1);
         $forceLogout = 1;
 
-        if ($forceLogout)
-        {
+        if ($forceLogout) {
             $sql = "DELETE FROM ".PRFX."session WHERE userid = " . $this->db->qstr((int) $user['id']);
 
-            if (!$sharedSessions)
-            {
+            if (!$sharedSessions) {
                 $sql .= "AND client_id = " . $this->db->qstr((int) $options['clientid']);
             }
 
-            try
-            {
+            try {
                 $this->db->Execute($sql);
-            }
-            catch (RuntimeException $e)
-            {
+            } catch (RuntimeException $e) {
                 return false;
             }
         }
@@ -380,9 +354,8 @@ class PlgAuthenticationQwcrm
         $cookie_domain = $config->get('cookie_domain', '');
         $cookie_path   = $config->get('cookie_path', '/');
 
-        if (QFactory::isClient('site'))
-        {
-            $cookie->set('qwcrm_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);            
+        if (QFactory::isClient('site')) {
+            $cookie->set('qwcrm_user_state', '', time() - 86400, $cookie_path, $cookie_domain, 0);
         }
 
         return true;
@@ -405,8 +378,7 @@ class PlgAuthenticationQwcrm
         $instance = JUser::getInstance();
         $id = (int) JUserHelper::getUserId($user['username']);
 
-        if ($id)
-        {
+        if ($id) {
             $instance->load($id);
 
             return $instance;
@@ -444,6 +416,5 @@ class PlgAuthenticationQwcrm
         }*/
 
         return $instance;
-    }    
-    
+    }
 }
