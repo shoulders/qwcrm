@@ -27,12 +27,9 @@ class JInputCookie extends JInput
      */
     public function __construct(array $source = null, array $options = array())
     {
-        if (isset($options['filter']))
-        {
+        if (isset($options['filter'])) {
             $this->filter = $options['filter'];
-        }
-        else
-        {
+        } else {
             $this->filter = JFilterInput::getInstance();
         }
 
@@ -83,15 +80,11 @@ class JInputCookie extends JInput
      */
     public function set($name, $value, $expire = 0, $path = '', $domain = '', $secure = false, $httpOnly = false)
     {
-        if (is_array($value))
-        {
-            foreach ($value as $key => $val)
-            {
+        if (is_array($value)) {
+            foreach ($value as $key => $val) {
                 setcookie($name . "[$key]", $val, $expire, $path, $domain, $secure, $httpOnly);
             }
-        }
-        else
-        {
+        } else {
             setcookie($name, $value, $expire, $path, $domain, $secure, $httpOnly);
         }
 

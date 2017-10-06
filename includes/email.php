@@ -30,7 +30,8 @@ require(LIBRARIES_DIR.'swift/swift_required.php');
 #   Basic email wrapper function      #
 #######################################
 
-function php_mail_fallback($to, $subject, $body, $attachment = null) {
+function php_mail_fallback($to, $subject, $body, $attachment = null)
+{
     
     // this wrapper can be used as an intermedery so i can choose what email platform to use and also logging in the future
     
@@ -41,15 +42,14 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
     
     //mail($to, $subject, $body, $headers);
     mail($to, $subject, $body, $headers);
-    
 }
 
 #######################################
 #   Basic email wrapper function      #
 #######################################
 
-function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
-    
+function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null)
+{
     global $smarty;
     
     $config = new QConfig;
@@ -59,10 +59,10 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     clear_onscreen_notifications();
     
     // If email is not enabled, do not send emails
-    if($config->email_online != true) {
+    if ($config->email_online != true) {
         
-        // Log activity 
-        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
+        // Log activity
+        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
         
         // Output the system message to the browser
@@ -71,30 +71,29 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         output_notifications_onscreen('', $system_message);
         
         return false;
-        
-    }    
+    }
    
     /* Create the Transport */
     
     // Use SMTP
-    if($config->email_mailer == 'smtp') {        
+    if ($config->email_mailer == 'smtp') {
                  
-        // Create SMTP Object 
-        $transport = new Swift_SmtpTransport($config->email_smtp_host, $config->email_smtp_port);        
+        // Create SMTP Object
+        $transport = new Swift_SmtpTransport($config->email_smtp_host, $config->email_smtp_port);
 
         // Enable encryption SSL/TLS if set
-        if($config->email_smtp_security != '') {
+        if ($config->email_smtp_security != '') {
             $transport->setEncryption($config->email_smtp_security);
         }
 
         // SMTP Authentication if set
-        if($config->email_smtp_auth) {
+        if ($config->email_smtp_auth) {
             $transport->setUsername($config->email_smtp_username);
-            $transport->setPassword($config->email_smtp_password); 
-        }                               
+            $transport->setPassword($config->email_smtp_password);
+        }
     
     // Use Sendmail / Locally installed MTA - only works on Linux/Unix
-    } elseif($config->email_mailer == 'sendmail') {
+    } elseif ($config->email_mailer == 'sendmail') {
         
         // Standard sendmail
         $transport = new Swift_SendmailTransport($config->email_sendmail_path.' -bs');
@@ -104,10 +103,8 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
                  
     // Use PHP Mail
     } else {
-        
-        $transport = new Swift_MailTransport();   
-        
-    } 
+        $transport = new Swift_MailTransport();
+    }
     
     /* Create the mailer object */
     
@@ -130,26 +127,25 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     /* Create a message */
     
     // Mandatory email settings
-    $email = new Swift_Message();    
+    $email = new Swift_Message();
     
     // Verify the supplied emails, then add them to the object
     try {
         $email->setTo([$recipient_email => $recipient_name]);
-        $email->setFrom([$config->email_mailfrom => $config->email_fromname]);   
+        $email->setFrom([$config->email_mailfrom => $config->email_fromname]);
         
         // Only add 'Reply To' if the reply email address is present. This prevents errors.
-        if($config->email_replyto != '') {
-            $email->setReplyTo([$config->email_replyto => $config->email_replytoname]);  
+        if ($config->email_replyto != '') {
+            $email->setReplyTo([$config->email_replyto => $config->email_replytoname]);
         }
-        
     }
     
     // This will present any email RFC compliance issues
-    catch(Swift_RfcComplianceException $RfcCompliance_exception) {
+    catch (Swift_RfcComplianceException $RfcCompliance_exception) {
         //var_dump($RfcCompliance_exception);
         
-        // Log activity 
-        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
+        // Log activity
+        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
         
@@ -159,41 +155,38 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         output_notifications_onscreen('', $system_message);
         
         return false;
-        
     }
     
     // Subject - prefix with the QWcrm company name to all emails
-    $email->setSubject(get_company_details($db, 'display_name').' - '.$subject);    
+    $email->setSubject(get_company_details($db, 'display_name').' - '.$subject);
     
     /* Build the message body */
     
     // Add the email signature (if not a reset email)
-    if(!check_page_accessed_via_qwcrm('user:reset') && !check_page_accessed_via_qwcrm('administrator:config')) {
+    if (!check_page_accessed_via_qwcrm('user:reset') && !check_page_accessed_via_qwcrm('administrator:config')) {
         $body .= get_email_signature($db, $email);
-    }    
+    }
     
     // Add Message Body
     $email->setBody($body, 'text/html');
     
-    // Optional Alternative Body (useful for text fallback version) - use a library to change the message into plain text?   
-    //$email->addPart('My amazing body in plain text', 'text/plain');    
+    // Optional Alternative Body (useful for text fallback version) - use a library to change the message into plain text?
+    //$email->addPart('My amazing body in plain text', 'text/plain');
     
     // Add Optional attachment
-    if($attachment != null) {
+    if ($attachment != null) {
         
         // Create the attachment with your data
         $attachment = new Swift_Attachment($attachment['data'], $attachment['filename'], $attachment['filetype']);
 
         // Attach it to the message
         $email->attach($attachment);
-        
     }
     
     /* Send the message - and catch transport errors (delivery errors depend on the transport method)*/
     
     try {
-        if (!$mailer->send($email))
-        {
+        if (!$mailer->send($email)) {
             
             // If the email failed to send
             
@@ -202,26 +195,25 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
                 echo "Failures:";
                 print_r($failures);
             }
-            
+
             Failures:
             Array (
                 0 => receiver@bad-domain.org,
                 1 => other-receiver@bad-domain.org
                 )
-            */          
+            */
             
-            // Log activity             
-            $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
+            // Log activity
+            $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
             write_record_to_activity_log($record);
             
             // Output the system message to the browser
             $system_message = $record;
             $smarty->assign('warning_msg', $system_message);
             output_notifications_onscreen('', $system_message);
-
         } else {
 
-            // Successfully sent the email 
+            // Successfully sent the email
             
             // Output the system message to the browser
             $system_message = $record;
@@ -229,32 +221,29 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             output_notifications_onscreen($system_message, '');
             
             // Log activity
-            $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
+            $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject;
             
-            if($workorder_id) {
+            if ($workorder_id) {
                 
-                // Create a Workorder History Note            
+                // Create a Workorder History Note
                 insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
-            
             }
             
             write_record_to_activity_log($record);
             
             // Update last active record
-            update_user_last_active($db, $employee_id);         // will not error if no customer_id sent 
-            update_customer_last_active($db, $customer_id);     // will not error if no customer_id sent    
+            update_user_last_active($db, $employee_id);         // will not error if no customer_id sent
+            update_customer_last_active($db, $customer_id);     // will not error if no customer_id sent
             update_workorder_last_active($db, $workorder_id);   // will not error if no workorder_id sent
-            update_invoice_last_active($db, $invoice_id);       // will not error if no invoice_id sent 
-
+            update_invoice_last_active($db, $invoice_id);       // will not error if no invoice_id sent
         }
-        
     }
     
     // This will present any transport errors
-    catch(Swift_TransportException $Transport_exception) {
+    catch (Swift_TransportException $Transport_exception) {
         //var_dump($RfcCompliance_exception);
         
-        // Log activity 
+        // Log activity
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_activity_log($record);
         write_record_to_email_error_log($Transport_exception->getMessage());
@@ -270,25 +259,27 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     write_record_to_email_transport_log($logger->dump());
     
     return;
-   
 }
 
 ##############################################
 #  Write a record to the Email Error Log     #
 ##############################################
 
-function write_record_to_email_error_log($record) {
+function write_record_to_email_error_log($record)
+{
     
     // if email error logging is not enabled exit
-    if(QFactory::getConfig()->get('qwcrm_email_error_log') != true) { return; }    
+    if (QFactory::getConfig()->get('qwcrm_email_error_log') != true) {
+        return;
+    }
     
-    // Build log entry    
+    // Build log entry
     $log_entry .= $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
     $log_entry .= $record . "\r\n\r\n";
     $log_entry .= '-----------------------------------------------------------------------------' . "\r\n\r\n";
     
     // Write log entry
-    if(!$fp = fopen(EMAIL_ERROR_LOG, 'a')) {        
+    if (!$fp = fopen(EMAIL_ERROR_LOG, 'a')) {
         force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
         exit;
     }
@@ -297,25 +288,27 @@ function write_record_to_email_error_log($record) {
     fclose($fp);
         
     return;
-    
 }
 
 ##############################################
 #  Write a record to the Email Transport Log #
 ##############################################
 
-function write_record_to_email_transport_log($record) {
+function write_record_to_email_transport_log($record)
+{
     
     // if email transport logging is not enabled exit
-    if(QFactory::getConfig()->get('qwcrm_email_transport_log') != true) { return; }
+    if (QFactory::getConfig()->get('qwcrm_email_transport_log') != true) {
+        return;
+    }
     
     // Build log entry
     $log_entry .= $_SERVER['REMOTE_ADDR'] . ',' . QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
     $log_entry .= $record . "\r\n\r\n";
     $log_entry .= '-----------------------------------------------------------------------------' . "\r\n\r\n";
     
-    // Write log entry  
-    if(!$fp = fopen(EMAIL_TRANSPORT_LOG, 'a')) {        
+    // Write log entry
+    if (!$fp = fopen(EMAIL_TRANSPORT_LOG, 'a')) {
         force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
         exit;
     }
@@ -324,5 +317,4 @@ function write_record_to_email_transport_log($record) {
     fclose($fp);
         
     return;
-    
 }

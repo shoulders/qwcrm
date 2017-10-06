@@ -104,8 +104,7 @@ class JFilterInput //extends InputFilter
     {
         $sig = md5(serialize(array($tagsArray, $attrArray, $tagsMethod, $attrMethod, $xssAuto)));
 
-        if (empty(self::$instances[$sig]))
-        {
+        if (empty(self::$instances[$sig])) {
             self::$instances[$sig] = new JFilterInput($tagsArray, $attrArray, $tagsMethod, $attrMethod, $xssAuto, $stripUSC);
         }
 
@@ -143,32 +142,26 @@ class JFilterInput //extends InputFilter
     public function clean($source, $type = 'string')
     {
         // Strip Unicode Supplementary Characters when requested to do so
-        if ($this->stripUSC)
-        {
+        if ($this->stripUSC) {
             // Alternatively: preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xE2\xAF\x91", $source) but it'd be slower.
             $source = $this->stripUSC($source);
         }
 
         // Handle the type constraint cases
-        switch (strtoupper($type))
-        {
+        switch (strtoupper($type)) {
             case 'INT':
             case 'INTEGER':
                 $pattern = '/[-+]?[0-9]+/';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Itterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         preg_match($pattern, (string) $eachString, $matches);
                         $result[] = isset($matches[0]) ? (int) $matches[0] : 0;
                     }
-                }
-                else
-                {
+                } else {
                     preg_match($pattern, (string) $source, $matches);
                     $result = isset($matches[0]) ? (int) $matches[0] : 0;
                 }
@@ -177,19 +170,15 @@ class JFilterInput //extends InputFilter
             case 'UINT':
                 $pattern = '/[-+]?[0-9]+/';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Itterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         preg_match($pattern, (string) $eachString, $matches);
                         $result[] = isset($matches[0]) ? abs((int) $matches[0]) : 0;
                     }
-                }
-                else
-                {
+                } else {
                     preg_match($pattern, (string) $source, $matches);
                     $result = isset($matches[0]) ? abs((int) $matches[0]) : 0;
                 }
@@ -199,19 +188,15 @@ class JFilterInput //extends InputFilter
             case 'DOUBLE':
                 $pattern = '/[-+]?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?/';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Itterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         preg_match($pattern, (string) $eachString, $matches);
                         $result[] = isset($matches[0]) ? (float) $matches[0] : 0;
                     }
-                }
-                else
-                {
+                } else {
                     preg_match($pattern, (string) $source, $matches);
                     $result = isset($matches[0]) ? (float) $matches[0] : 0;
                 }
@@ -220,18 +205,14 @@ class JFilterInput //extends InputFilter
             case 'BOOL':
             case 'BOOLEAN':
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $result[] = (bool) $eachString;
                     }
-                }
-                else
-                {
+                } else {
                     $result = (bool) $source;
                 }
 
@@ -239,18 +220,14 @@ class JFilterInput //extends InputFilter
             case 'WORD':
                 $pattern = '/[^A-Z_]/i';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $result[] = (string) preg_replace($pattern, '', $eachString);
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) preg_replace($pattern, '', $source);
                 }
 
@@ -258,18 +235,14 @@ class JFilterInput //extends InputFilter
             case 'ALNUM':
                 $pattern = '/[^A-Z0-9]/i';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $result[] = (string) preg_replace($pattern, '', $eachString);
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) preg_replace($pattern, '', $source);
                 }
 
@@ -277,19 +250,15 @@ class JFilterInput //extends InputFilter
             case 'CMD':
                 $pattern = '/[^A-Z0-9_\.-]/i';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $cleaned  = (string) preg_replace($pattern, '', $eachString);
                         $result[] = ltrim($cleaned, '.');
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) preg_replace($pattern, '', $source);
                     $result = ltrim($result, '.');
                 }
@@ -298,54 +267,42 @@ class JFilterInput //extends InputFilter
             case 'BASE64':
                 $pattern = '/[^A-Z0-9\/+=]/i';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $result[] = (string) preg_replace($pattern, '', $eachString);
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) preg_replace($pattern, '', $source);
                 }
 
                 break;
             case 'STRING':
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $result[] = (string) $this->remove($this->decode((string) $eachString));
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) $this->remove($this->decode((string) $source));
                 }
 
                 break;
             case 'HTML':
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $result[] = (string) $this->remove((string) $eachString);
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) $this->remove((string) $source);
                 }
 
@@ -357,19 +314,15 @@ class JFilterInput //extends InputFilter
             case 'PATH':
                 $pattern = '/^[A-Za-z0-9_\/-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Itterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         preg_match($pattern, (string) $eachString, $matches);
                         $result[] = isset($matches[0]) ? (string) $matches[0] : '';
                     }
-                }
-                else
-                {
+                } else {
                     preg_match($pattern, $source, $matches);
                     $result = isset($matches[0]) ? (string) $matches[0] : '';
                 }
@@ -377,20 +330,16 @@ class JFilterInput //extends InputFilter
                 break;
             case 'TRIM':
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $cleaned  = (string) trim($eachString);
                         $cleaned  = StringHelper::trim($cleaned, chr(0xE3) . chr(0x80) . chr(0x80));
                         $result[] = StringHelper::trim($cleaned, chr(0xC2) . chr(0xA0));
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) trim($source);
                     $result = StringHelper::trim($result, chr(0xE3) . chr(0x80) . chr(0x80));
                     $result = StringHelper::trim($result, chr(0xC2) . chr(0xA0));
@@ -400,18 +349,14 @@ class JFilterInput //extends InputFilter
             case 'USERNAME':
                 $pattern = '/[\x00-\x1F\x7F<>"\'%&]/';
 
-                if (is_array($source))
-                {
+                if (is_array($source)) {
                     $result = array();
 
                     // Iterate through the array
-                    foreach ($source as $eachString)
-                    {
+                    foreach ($source as $eachString) {
                         $result[] = (string) preg_replace($pattern, '', $eachString);
                     }
-                }
-                else
-                {
+                } else {
                     $result = (string) preg_replace($pattern, '', $source);
                 }
 
@@ -423,28 +368,20 @@ class JFilterInput //extends InputFilter
             default:
 
                 // Are we dealing with an array?
-                if (is_array($source))
-                {
-                    foreach ($source as $key => $value)
-                    {
+                if (is_array($source)) {
+                    foreach ($source as $key => $value) {
                         // Filter element for XSS and other 'bad' code etc.
-                        if (is_string($value))
-                        {
+                        if (is_string($value)) {
                             $source[$key] = $this->_remove($this->_decode($value));
                         }
                     }
                     $result = $source;
-                }
-                else
-                {
+                } else {
                     // Or a string?
-                    if (is_string($source) && !empty($source))
-                    {
+                    if (is_string($source) && !empty($source)) {
                         // Filter source for XSS and other 'bad' code etc.
                         $result = $this->_remove($this->_decode($source));
-                    }
-                    else
-                    {
+                    } else {
                         // Not an array or string... return the passed parameter
                         $result = $source;
                     }
@@ -469,10 +406,8 @@ class JFilterInput //extends InputFilter
     {
         $pattern = '/(("mailto:)+[\w\.\-\+]+\@[^"?]+\.+[^."?]+("|\?))/';
 
-        if (preg_match_all($pattern, $text, $matches))
-        {
-            foreach ($matches[0] as $match)
-            {
+        if (preg_match_all($pattern, $text, $matches)) {
+            foreach ($matches[0] as $match) {
                 $match  = (string) str_replace(array('?', '"'), '', $match);
                 $text   = (string) str_replace($match, JStringPunycode::emailToPunycode($match), $text);
             }
@@ -538,8 +473,7 @@ class JFilterInput //extends InputFilter
         // Make sure we can scan nested file descriptors
         $descriptors = $file;
 
-        if (isset($file['name']) && isset($file['tmp_name']))
-        {
+        if (isset($file['name']) && isset($file['tmp_name'])) {
             $descriptors = self::decodeFileData(
                 array(
                     $file['name'],
@@ -552,19 +486,15 @@ class JFilterInput //extends InputFilter
         }
 
         // Handle non-nested descriptors (single files)
-        if (isset($descriptors['name']))
-        {
+        if (isset($descriptors['name'])) {
             $descriptors = array($descriptors);
         }
 
         // Scan all descriptors detected
-        foreach ($descriptors as $fileDescriptor)
-        {
-            if (!isset($fileDescriptor['name']))
-            {
+        foreach ($descriptors as $fileDescriptor) {
+            if (!isset($fileDescriptor['name'])) {
                 // This is a nested descriptor. We have to recurse.
-                if (!self::isSafeFile($fileDescriptor, $options))
-                {
+                if (!self::isSafeFile($fileDescriptor, $options)) {
                     return false;
                 }
 
@@ -574,35 +504,29 @@ class JFilterInput //extends InputFilter
             $tempNames     = $fileDescriptor['tmp_name'];
             $intendedNames = $fileDescriptor['name'];
 
-            if (!is_array($tempNames))
-            {
+            if (!is_array($tempNames)) {
                 $tempNames = array($tempNames);
             }
 
-            if (!is_array($intendedNames))
-            {
+            if (!is_array($intendedNames)) {
                 $intendedNames = array($intendedNames);
             }
 
             $len = count($tempNames);
 
-            for ($i = 0; $i < $len; $i++)
-            {
+            for ($i = 0; $i < $len; $i++) {
                 $tempName     = array_shift($tempNames);
                 $intendedName = array_shift($intendedNames);
 
                 // 1. Null byte check
-                if ($options['null_byte'])
-                {
-                    if (strstr($intendedName, "\x00"))
-                    {
+                if ($options['null_byte']) {
+                    if (strstr($intendedName, "\x00")) {
                         return false;
                     }
                 }
 
                 // 2. PHP-in-extension check (.php, .php.xxx[.yyy[.zzz[...]]], .xxx[.yyy[.zzz[...]]].php)
-                if (!empty($options['forbidden_extensions']))
-                {
+                if (!empty($options['forbidden_extensions'])) {
                     $explodedName = explode('.', $intendedName);
                     $explodedName =    array_reverse($explodedName);
                     array_pop($explodedName);
@@ -612,10 +536,8 @@ class JFilterInput //extends InputFilter
                      * DO NOT USE array_intersect HERE! array_intersect expects the two arrays to
                      * be set, i.e. they should have unique values.
                      */
-                    foreach ($options['forbidden_extensions'] as $ext)
-                    {
-                        if (in_array($ext, $explodedName))
-                        {
+                    foreach ($options['forbidden_extensions'] as $ext) {
+                        if (in_array($ext, $explodedName)) {
                             return false;
                         }
                     }
@@ -623,29 +545,23 @@ class JFilterInput //extends InputFilter
 
                 // 3. File contents scanner (PHP tag in file contents)
                 if ($options['php_tag_in_content'] || $options['shorttag_in_content']
-                    || ($options['fobidden_ext_in_content'] && !empty($options['forbidden_extensions'])))
-                {
+                    || ($options['fobidden_ext_in_content'] && !empty($options['forbidden_extensions']))) {
                     $fp = @fopen($tempName, 'r');
 
-                    if ($fp !== false)
-                    {
+                    if ($fp !== false) {
                         $data = '';
 
-                        while (!feof($fp))
-                        {
+                        while (!feof($fp)) {
                             $data .= @fread($fp, 131072);
 
-                            if ($options['php_tag_in_content'] && stristr($data, '<?php'))
-                            {
+                            if ($options['php_tag_in_content'] && stristr($data, '<?php')) {
                                 return false;
                             }
 
-                            if ($options['shorttag_in_content'])
-                            {
+                            if ($options['shorttag_in_content']) {
                                 $suspiciousExtensions = $options['shorttag_extensions'];
 
-                                if (empty($suspiciousExtensions))
-                                {
+                                if (empty($suspiciousExtensions)) {
                                     $suspiciousExtensions = array(
                                         'inc', 'phps', 'class', 'php3', 'php4', 'txt', 'dat', 'tpl', 'tmpl',
                                     );
@@ -657,32 +573,26 @@ class JFilterInput //extends InputFilter
                                  */
                                 $collide = false;
 
-                                foreach ($suspiciousExtensions as $ext)
-                                {
-                                    if (in_array($ext, $explodedName))
-                                    {
+                                foreach ($suspiciousExtensions as $ext) {
+                                    if (in_array($ext, $explodedName)) {
                                         $collide = true;
 
                                         break;
                                     }
                                 }
 
-                                if ($collide)
-                                {
+                                if ($collide) {
                                     // These are suspicious text files which may have the short tag (<?) in them
-                                    if (strstr($data, '<?'))
-                                    {
+                                    if (strstr($data, '<?')) {
                                         return false;
                                     }
                                 }
                             }
 
-                            if ($options['fobidden_ext_in_content'] && !empty($options['forbidden_extensions']))
-                            {
+                            if ($options['fobidden_ext_in_content'] && !empty($options['forbidden_extensions'])) {
                                 $suspiciousExtensions = $options['php_ext_content_extensions'];
 
-                                if (empty($suspiciousExtensions))
-                                {
+                                if (empty($suspiciousExtensions)) {
                                     $suspiciousExtensions = array(
                                         'zip', 'rar', 'tar', 'gz', 'tgz', 'bz2', 'tbz', 'jpa',
                                     );
@@ -694,26 +604,21 @@ class JFilterInput //extends InputFilter
                                  */
                                 $collide = false;
 
-                                foreach ($suspiciousExtensions as $ext)
-                                {
-                                    if (in_array($ext, $explodedName))
-                                    {
+                                foreach ($suspiciousExtensions as $ext) {
+                                    if (in_array($ext, $explodedName)) {
                                         $collide = true;
 
                                         break;
                                     }
                                 }
 
-                                if ($collide)
-                                {
+                                if ($collide) {
                                     /*
                                      * These are suspicious text files which may have an executable
                                      * file extension in them
                                      */
-                                    foreach ($options['forbidden_extensions'] as $ext)
-                                    {
-                                        if (strstr($data, '.' . $ext))
-                                        {
+                                    foreach ($options['forbidden_extensions'] as $ext) {
+                                        if (strstr($data, '.' . $ext)) {
                                             return false;
                                         }
                                     }
@@ -749,10 +654,8 @@ class JFilterInput //extends InputFilter
     {
         $result = array();
 
-        if (is_array($data[0]))
-        {
-            foreach ($data[0] as $k => $v)
-            {
+        if (is_array($data[0])) {
+            foreach ($data[0] as $k => $v) {
                 $result[$k] = self::decodeFileData(array($data[0][$k], $data[1][$k], $data[2][$k], $data[3][$k], $data[4][$k]));
             }
 
@@ -789,12 +692,10 @@ class JFilterInput //extends InputFilter
     protected function remove($source)
     {
         // Iteration provides nested tag protection
-        do
-        {
+        do {
             $temp = $source;
             $source = $this->_cleanTags($source);
-        }
-        while ($temp != $source);
+        } while ($temp != $source);
 
         return $source;
     }
@@ -838,8 +739,7 @@ class JFilterInput //extends InputFilter
         // Is there a tag? If so it will certainly start with a '<'.
         $tagOpen_start = StringHelper::strpos($source, '<');
 
-        while ($tagOpen_start !== false)
-        {
+        while ($tagOpen_start !== false) {
             // Get some information about the tag we are processing
             $preTag .= StringHelper::substr($postTag, 0, $tagOpen_start);
             $postTag = StringHelper::substr($postTag, $tagOpen_start);
@@ -849,8 +749,7 @@ class JFilterInput //extends InputFilter
             // Check for mal-formed tag where we have a second '<' before the first '>'
             $nextOpenTag = (StringHelper::strlen($postTag) > $tagOpen_start) ? StringHelper::strpos($postTag, '<', $tagOpen_start + 1) : false;
 
-            if (($nextOpenTag !== false) && ($nextOpenTag < $tagOpen_end))
-            {
+            if (($nextOpenTag !== false) && ($nextOpenTag < $tagOpen_end)) {
                 // At this point we have a mal-formed tag -- remove the offending open
                 $postTag = StringHelper::substr($postTag, 0, $tagOpen_start) . StringHelper::substr($postTag, $tagOpen_start + 1);
                 $tagOpen_start = StringHelper::strpos($postTag, '<');
@@ -858,8 +757,7 @@ class JFilterInput //extends InputFilter
             }
 
             // Let's catch any non-terminated tags and skip over them
-            if ($tagOpen_end === false)
-            {
+            if ($tagOpen_end === false) {
                 $postTag = StringHelper::substr($postTag, $tagOpen_start + 1);
                 $tagOpen_start = StringHelper::strpos($postTag, '<');
                 continue;
@@ -868,8 +766,7 @@ class JFilterInput //extends InputFilter
             // Do we have a nested tag?
             $tagOpen_nested = StringHelper::strpos($fromTagOpen, '<');
 
-            if (($tagOpen_nested !== false) && ($tagOpen_nested < $tagOpen_end))
-            {
+            if (($tagOpen_nested !== false) && ($tagOpen_nested < $tagOpen_end)) {
                 $preTag .= StringHelper::substr($postTag, 0, ($tagOpen_nested + 1));
                 $postTag = StringHelper::substr($postTag, ($tagOpen_nested + 1));
                 $tagOpen_start = StringHelper::strpos($postTag, '<');
@@ -885,18 +782,15 @@ class JFilterInput //extends InputFilter
             $currentSpace = StringHelper::strpos($tagLeft, ' ');
 
             // Are we an open tag or a close tag?
-            if (StringHelper::substr($currentTag, 0, 1) == '/')
-            {
+            if (StringHelper::substr($currentTag, 0, 1) == '/') {
                 // Close Tag
                 $isCloseTag = true;
-                list ($tagName) = explode(' ', $currentTag);
+                list($tagName) = explode(' ', $currentTag);
                 $tagName = StringHelper::substr($tagName, 1);
-            }
-            else
-            {
+            } else {
                 // Open Tag
                 $isCloseTag = false;
-                list ($tagName) = explode(' ', $currentTag);
+                list($tagName) = explode(' ', $currentTag);
             }
 
             /*
@@ -904,8 +798,7 @@ class JFilterInput //extends InputFilter
              * OR no tagname
              * OR remove if xssauto is on and tag is blacklisted
              */
-            if ((!preg_match("/^[a-z][a-z0-9]*$/i", $tagName)) || (!$tagName) || ((in_array(strtolower($tagName), $this->tagBlacklist)) && ($this->xssAuto)))
-            {
+            if ((!preg_match("/^[a-z][a-z0-9]*$/i", $tagName)) || (!$tagName) || ((in_array(strtolower($tagName), $this->tagBlacklist)) && ($this->xssAuto))) {
                 $postTag = StringHelper::substr($postTag, ($tagLength + 2));
                 $tagOpen_start = StringHelper::strpos($postTag, '<');
 
@@ -917,8 +810,7 @@ class JFilterInput //extends InputFilter
              * Time to grab any attributes from the tag... need this section in
              * case attributes have spaces in the values.
              */
-            while ($currentSpace !== false)
-            {
+            while ($currentSpace !== false) {
                 $attr = '';
                 $fromSpace = StringHelper::substr($tagLeft, ($currentSpace + 1));
                 $nextEqual = StringHelper::strpos($fromSpace, '=');
@@ -929,8 +821,7 @@ class JFilterInput //extends InputFilter
                 $startAttPosition = 0;
 
                 // Find position of equal and open quotes ignoring
-                if (preg_match('#\s*=\s*\"#', $fromSpace, $matches, PREG_OFFSET_CAPTURE))
-                {
+                if (preg_match('#\s*=\s*\"#', $fromSpace, $matches, PREG_OFFSET_CAPTURE)) {
                     $startAtt = $matches[0][0];
                     $startAttPosition = $matches[0][1];
                     $closeQuotes = StringHelper::strpos(
@@ -942,52 +833,40 @@ class JFilterInput //extends InputFilter
                 }
 
                 // Do we have an attribute to process? [check for equal sign]
-                if ($fromSpace != '/' && (($nextEqual && $nextSpace && $nextSpace < $nextEqual) || !$nextEqual))
-                {
-                    if (!$nextEqual)
-                    {
+                if ($fromSpace != '/' && (($nextEqual && $nextSpace && $nextSpace < $nextEqual) || !$nextEqual)) {
+                    if (!$nextEqual) {
                         $attribEnd = StringHelper::strpos($fromSpace, '/') - 1;
-                    }
-                    else
-                    {
+                    } else {
                         $attribEnd = $nextSpace - 1;
                     }
 
                     // If there is an ending, use this, if not, do not worry.
-                    if ($attribEnd > 0)
-                    {
+                    if ($attribEnd > 0) {
                         $fromSpace = StringHelper::substr($fromSpace, $attribEnd + 1);
                     }
                 }
 
-                if (StringHelper::strpos($fromSpace, '=') !== false)
-                {
+                if (StringHelper::strpos($fromSpace, '=') !== false) {
                     /*
                      * If the attribute value is wrapped in quotes we need to grab the StringHelper::substring from
                      * the closing quote, otherwise grab until the next space.
                      */
-                    if (($openQuotes !== false) && (StringHelper::strpos(StringHelper::substr($fromSpace, ($openQuotes + 1)), '"') !== false))
-                    {
+                    if (($openQuotes !== false) && (StringHelper::strpos(StringHelper::substr($fromSpace, ($openQuotes + 1)), '"') !== false)) {
                         $attr = StringHelper::substr($fromSpace, 0, ($closeQuotes + 1));
-                    }
-                    else
-                    {
+                    } else {
                         $attr = StringHelper::substr($fromSpace, 0, $nextSpace);
                     }
                 }
 
                 // No more equal signs so add any extra text in the tag into the attribute array [eg. checked]
-                else
-                {
-                    if ($fromSpace != '/')
-                    {
+                else {
+                    if ($fromSpace != '/') {
                         $attr = StringHelper::substr($fromSpace, 0, $nextSpace);
                     }
                 }
 
                 // Last Attribute Pair
-                if (!$attr && $fromSpace != '/')
-                {
+                if (!$attr && $fromSpace != '/') {
                     $attr = $fromSpace;
                 }
 
@@ -1003,33 +882,26 @@ class JFilterInput //extends InputFilter
             $tagFound = in_array(strtolower($tagName), $this->tagsArray);
 
             // If the tag is allowed let's append it to the output string.
-            if ((!$tagFound && $this->tagsMethod) || ($tagFound && !$this->tagsMethod))
-            {
+            if ((!$tagFound && $this->tagsMethod) || ($tagFound && !$this->tagsMethod)) {
                 // Reconstruct tag with allowed attributes
-                if (!$isCloseTag)
-                {
+                if (!$isCloseTag) {
                     // Open or single tag
                     $attrSet = $this->_cleanAttributes($attrSet);
                     $preTag .= '<' . $tagName;
-                    for ($i = 0, $count = count($attrSet); $i < $count; $i++)
-                    {
+                    for ($i = 0, $count = count($attrSet); $i < $count; $i++) {
                         $preTag .= ' ' . $attrSet[$i];
                     }
 
                     // Reformat single tags to XHTML
-                    if (StringHelper::strpos($fromTagOpen, '</' . $tagName))
-                    {
+                    if (StringHelper::strpos($fromTagOpen, '</' . $tagName)) {
                         $preTag .= '>';
-                    }
-                    else
-                    {
+                    } else {
                         $preTag .= ' />';
                     }
                 }
 
                 // Closing tag
-                else
-                {
+                else {
                     $preTag .= '</' . $tagName . '>';
                 }
             }
@@ -1040,8 +912,7 @@ class JFilterInput //extends InputFilter
         }
 
         // Append any code after the end of tags and return
-        if ($postTag != '<')
-        {
+        if ($postTag != '<') {
             $preTag .= $postTag;
         }
 
@@ -1083,8 +954,7 @@ class JFilterInput //extends InputFilter
          * Process each portion based on presence of =" and "<space>, "/>, or ">
          * See if there are any more attributes to process
          */
-        while (preg_match('#<[^>]*?=\s*?(\"|\')#s', $remainder, $matches, PREG_OFFSET_CAPTURE))
-        {
+        while (preg_match('#<[^>]*?=\s*?(\"|\')#s', $remainder, $matches, PREG_OFFSET_CAPTURE)) {
             // Get the portion before the attribute value
             $quotePosition = $matches[0][1];
             $nextBefore = $quotePosition + StringHelper::strlen($matches[0][0]);
@@ -1097,13 +967,10 @@ class JFilterInput //extends InputFilter
             $pregMatch = ($quote == '"') ? '#(\"\s*/\s*>|\"\s*>|\"\s+|\"$)#' : "#(\'\s*/\s*>|\'\s*>|\'\s+|\'$)#";
 
             // Get the portion after attribute value
-            if (preg_match($pregMatch, StringHelper::substr($remainder, $nextBefore), $matches, PREG_OFFSET_CAPTURE))
-            {
+            if (preg_match($pregMatch, StringHelper::substr($remainder, $nextBefore), $matches, PREG_OFFSET_CAPTURE)) {
                 // We have a closing quote
                 $nextAfter = $nextBefore + $matches[0][1];
-            }
-            else
-            {
+            } else {
                 // No closing quote
                 $nextAfter = StringHelper::strlen($remainder);
             }
@@ -1150,13 +1017,11 @@ class JFilterInput //extends InputFilter
     {
         static $ttr;
 
-        if (!is_array($ttr))
-        {
+        if (!is_array($ttr)) {
             // Entity decode
             $trans_tbl = get_html_translation_table(HTML_ENTITIES, ENT_COMPAT, 'ISO-8859-1');
 
-            foreach ($trans_tbl as $k => $v)
-            {
+            foreach ($trans_tbl as $k => $v) {
                 $ttr[$v] = utf8_encode($k);
             }
         }
@@ -1164,15 +1029,13 @@ class JFilterInput //extends InputFilter
         $source = strtr($source, $ttr);
 
         // Convert decimal
-        $source = preg_replace_callback('/&#(\d+);/m', function($m)
-        {
+        $source = preg_replace_callback('/&#(\d+);/m', function ($m) {
             return utf8_encode(chr($m[1]));
         }, $source
         );
 
         // Convert hex
-        $source = preg_replace_callback('/&#x([a-f0-9]+);/mi', function($m)
-        {
+        $source = preg_replace_callback('/&#x([a-f0-9]+);/mi', function ($m) {
             return utf8_encode(chr('0x' . $m[1]));
         }, $source
         );
@@ -1221,17 +1084,14 @@ class JFilterInput //extends InputFilter
      */
     protected function stripUSC($source)
     {
-        if (is_object($source))
-        {
+        if (is_object($source)) {
             return $source;
         }
 
-        if (is_array($source))
-        {
+        if (is_array($source)) {
             $filteredArray = array();
 
-            foreach ($source as $k => $v)
-            {
+            foreach ($source as $k => $v) {
                 $filteredArray[$k] = $this->stripUSC($v);
             }
 

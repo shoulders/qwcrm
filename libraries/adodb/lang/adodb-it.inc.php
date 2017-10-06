@@ -1,7 +1,7 @@
 <?php
 // Italian language file contributed by Tiraboschi Massimiliano aka TiMax
 // www.maxdev.com  timax@maxdev.com
-$ADODB_LANG_ARRAY = array (
+$ADODB_LANG_ARRAY = array(
             'LANG'                      => 'it',
             DB_ERROR                    => 'errore sconosciuto',
             DB_ERROR_ALREADY_EXISTS     => 'esiste già',

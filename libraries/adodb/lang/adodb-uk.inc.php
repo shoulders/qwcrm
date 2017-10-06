@@ -2,7 +2,7 @@
 
 // Ukrainian language file contributed by  Alex Rootoff rootoff{AT}pisem.net.
 
-$ADODB_LANG_ARRAY = array (
+$ADODB_LANG_ARRAY = array(
              'LANG'                      => 'uk',
             DB_ERROR                    => 'невідома помилка',
             DB_ERROR_ALREADY_EXISTS     => 'вже існує',

@@ -10,23 +10,18 @@
 //namespace Joomla\String;
 
 // PHP mbstring and iconv local configuration
-if (version_compare(PHP_VERSION, '5.6', '>='))
-{
+if (version_compare(PHP_VERSION, '5.6', '>=')) {
     @ini_set('default_charset', 'UTF-8');
-}
-else
-{
+} else {
     // Check if mbstring extension is loaded and attempt to load it if not present except for windows
-    if (extension_loaded('mbstring'))
-    {
+    if (extension_loaded('mbstring')) {
         @ini_set('mbstring.internal_encoding', 'UTF-8');
         @ini_set('mbstring.http_input', 'UTF-8');
         @ini_set('mbstring.http_output', 'UTF-8');
     }
 
     // Same for iconv
-    if (function_exists('iconv'))
-    {
+    if (function_exists('iconv')) {
         iconv_set_encoding('internal_encoding', 'UTF-8');
         iconv_set_encoding('input_encoding', 'UTF-8');
         iconv_set_encoding('output_encoding', 'UTF-8');
@@ -78,35 +73,26 @@ abstract class StringHelper
         $styleSpec = isset(static::$incrementStyles[$style]) ? static::$incrementStyles[$style] : static::$incrementStyles['default'];
 
         // Regular expression search and replace patterns.
-        if (is_array($styleSpec[0]))
-        {
+        if (is_array($styleSpec[0])) {
             $rxSearch = $styleSpec[0][0];
             $rxReplace = $styleSpec[0][1];
-        }
-        else
-        {
+        } else {
             $rxSearch = $rxReplace = $styleSpec[0];
         }
 
         // New and old (existing) sprintf formats.
-        if (is_array($styleSpec[1]))
-        {
+        if (is_array($styleSpec[1])) {
             $newFormat = $styleSpec[1][0];
             $oldFormat = $styleSpec[1][1];
-        }
-        else
-        {
+        } else {
             $newFormat = $oldFormat = $styleSpec[1];
         }
 
         // Check if we are incrementing an existing pattern, or appending a new one.
-        if (preg_match($rxSearch, $string, $matches))
-        {
+        if (preg_match($rxSearch, $string, $matches)) {
             $n = empty($n) ? ($matches[1] + 1) : $n;
             $string = preg_replace($rxReplace, sprintf($oldFormat, $n), $string);
-        }
-        else
-        {
+        } else {
             $n = empty($n) ? 2 : $n;
             $string .= sprintf($newFormat, $n);
         }
@@ -176,8 +162,7 @@ abstract class StringHelper
      */
     public static function strpos($str, $search, $offset = false)
     {
-        if ($offset === false)
-        {
+        if ($offset === false) {
             return utf8_strpos($str, $search);
         }
 
@@ -219,8 +204,7 @@ abstract class StringHelper
      */
     public static function substr($str, $offset, $length = false)
     {
-        if ($length === false)
-        {
+        if ($length === false) {
             return utf8_substr($str, $offset);
         }
 
@@ -301,8 +285,7 @@ abstract class StringHelper
      */
     public static function str_ireplace($search, $replace, $str, $count = null)
     {
-        if ($count === false)
-        {
+        if ($count === false) {
             return utf8_ireplace($search, $replace, $str);
         }
 
@@ -366,33 +349,25 @@ abstract class StringHelper
      */
     public static function strcasecmp($str1, $str2, $locale = false)
     {
-        if ($locale)
-        {
+        if ($locale) {
             // Get current locale
             $locale0 = setlocale(LC_COLLATE, 0);
 
-            if (!$locale = setlocale(LC_COLLATE, $locale))
-            {
+            if (!$locale = setlocale(LC_COLLATE, $locale)) {
                 $locale = $locale0;
             }
 
             // See if we have successfully set locale to UTF-8
-            if (!stristr($locale, 'UTF-8') && stristr($locale, '_') && preg_match('~\.(\d+)$~', $locale, $m))
-            {
+            if (!stristr($locale, 'UTF-8') && stristr($locale, '_') && preg_match('~\.(\d+)$~', $locale, $m)) {
                 $encoding = 'CP' . $m[1];
-            }
-            elseif (stristr($locale, 'UTF-8') || stristr($locale, 'utf8'))
-            {
+            } elseif (stristr($locale, 'UTF-8') || stristr($locale, 'utf8')) {
                 $encoding = 'UTF-8';
-            }
-            else
-            {
+            } else {
                 $encoding = 'nonrecodable';
             }
 
             // If we successfully set encoding it to utf-8 or encoding is sth weird don't recode
-            if ($encoding == 'UTF-8' || $encoding == 'nonrecodable')
-            {
+            if ($encoding == 'UTF-8' || $encoding == 'nonrecodable') {
                 return strcoll(utf8_strtolower($str1), utf8_strtolower($str2));
             }
 
@@ -423,33 +398,25 @@ abstract class StringHelper
      */
     public static function strcmp($str1, $str2, $locale = false)
     {
-        if ($locale)
-        {
+        if ($locale) {
             // Get current locale
             $locale0 = setlocale(LC_COLLATE, 0);
 
-            if (!$locale = setlocale(LC_COLLATE, $locale))
-            {
+            if (!$locale = setlocale(LC_COLLATE, $locale)) {
                 $locale = $locale0;
             }
 
             // See if we have successfully set locale to UTF-8
-            if (!stristr($locale, 'UTF-8') && stristr($locale, '_') && preg_match('~\.(\d+)$~', $locale, $m))
-            {
+            if (!stristr($locale, 'UTF-8') && stristr($locale, '_') && preg_match('~\.(\d+)$~', $locale, $m)) {
                 $encoding = 'CP' . $m[1];
-            }
-            elseif (stristr($locale, 'UTF-8') || stristr($locale, 'utf8'))
-            {
+            } elseif (stristr($locale, 'UTF-8') || stristr($locale, 'utf8')) {
                 $encoding = 'UTF-8';
-            }
-            else
-            {
+            } else {
                 $encoding = 'nonrecodable';
             }
 
             // If we successfully set encoding it to utf-8 or encoding is sth weird don't recode
-            if ($encoding == 'UTF-8' || $encoding == 'nonrecodable')
-            {
+            if ($encoding == 'UTF-8' || $encoding == 'nonrecodable') {
                 return strcoll($str1, $str2);
             }
 
@@ -476,13 +443,11 @@ abstract class StringHelper
      */
     public static function strcspn($str, $mask, $start = null, $length = null)
     {
-        if ($start === false && $length === false)
-        {
+        if ($start === false && $length === false) {
             return utf8_strcspn($str, $mask);
         }
 
-        if ($length === false)
-        {
+        if ($length === false) {
             return utf8_strcspn($str, $mask, $start);
         }
 
@@ -542,13 +507,11 @@ abstract class StringHelper
      */
     public static function strspn($str, $mask, $start = null, $length = null)
     {
-        if ($start === null && $length === null)
-        {
+        if ($start === null && $length === null) {
             return utf8_strspn($str, $mask);
         }
 
-        if ($length === null)
-        {
+        if ($length === null) {
             return utf8_strspn($str, $mask, $start);
         }
 
@@ -573,8 +536,7 @@ abstract class StringHelper
     public static function substr_replace($str, $repl, $start, $length = null)
     {
         // Loaded by library loader
-        if ($length === false)
-        {
+        if ($length === false) {
             return utf8_substr_replace($str, $repl, $start);
         }
 
@@ -597,13 +559,11 @@ abstract class StringHelper
      */
     public static function ltrim($str, $charlist = false)
     {
-        if (empty($charlist) && $charlist !== false)
-        {
+        if (empty($charlist) && $charlist !== false) {
             return $str;
         }
 
-        if ($charlist === false)
-        {
+        if ($charlist === false) {
             return utf8_ltrim($str);
         }
 
@@ -626,13 +586,11 @@ abstract class StringHelper
      */
     public static function rtrim($str, $charlist = false)
     {
-        if (empty($charlist) && $charlist !== false)
-        {
+        if (empty($charlist) && $charlist !== false) {
             return $str;
         }
 
-        if ($charlist === false)
-        {
+        if ($charlist === false) {
             return utf8_rtrim($str);
         }
 
@@ -655,13 +613,11 @@ abstract class StringHelper
      */
     public static function trim($str, $charlist = false)
     {
-        if (empty($charlist) && $charlist !== false)
-        {
+        if (empty($charlist) && $charlist !== false) {
             return $str;
         }
 
-        if ($charlist === false)
-        {
+        if ($charlist === false) {
             return utf8_trim($str);
         }
 
@@ -686,13 +642,11 @@ abstract class StringHelper
      */
     public static function ucfirst($str, $delimiter = null, $newDelimiter = null)
     {
-        if ($delimiter === null)
-        {
+        if ($delimiter === null) {
             return utf8_ucfirst($str);
         }
 
-        if ($newDelimiter === null)
-        {
+        if ($newDelimiter === null) {
             $newDelimiter = $delimiter;
         }
 
@@ -731,10 +685,8 @@ abstract class StringHelper
      */
     public static function transcode($source, $from_encoding, $to_encoding)
     {
-        if (is_string($source))
-        {
-            switch (ICONV_IMPL)
-            {
+        if (is_string($source)) {
+            switch (ICONV_IMPL) {
                 case 'glibc':
                     return @iconv($from_encoding, $to_encoding . '//TRANSLIT,IGNORE', $source);
 
@@ -798,12 +750,10 @@ abstract class StringHelper
      */
     public static function unicode_to_utf8($str)
     {
-        if (extension_loaded('mbstring'))
-        {
+        if (extension_loaded('mbstring')) {
             return preg_replace_callback(
                 '/\\\\u([0-9a-fA-F]{4})/',
-                function ($match)
-                {
+                function ($match) {
                     return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UCS-2BE');
                 },
                 $str
@@ -824,12 +774,10 @@ abstract class StringHelper
      */
     public static function unicode_to_utf16($str)
     {
-        if (extension_loaded('mbstring'))
-        {
+        if (extension_loaded('mbstring')) {
             return preg_replace_callback(
                 '/\\\\u([0-9a-fA-F]{4})/',
-                function ($match)
-                {
+                function ($match) {
                     return mb_convert_encoding(pack('H*', $match[1]), 'UTF-8', 'UTF-16BE');
                 },
                 $str

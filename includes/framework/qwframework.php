@@ -42,7 +42,8 @@ require FRAMEWORK_DIR . 'user/user.php';                           // User class
 require FRAMEWORK_DIR . 'user/helper.php';                         // This contains password hassing functions etc.. associated with users but used elswhere
 
 // Main Framework class
-class QFactory {
+class QFactory
+{
     
     // Static
     public static $config       = null;     // Global Config object
@@ -59,34 +60,30 @@ class QFactory {
 
     public function __construct()
     {
-        $this->conf     = self::getConfig();       
+        $this->conf     = self::getConfig();
         global $smarty;
         $this->smarty   = $smarty;
         
         // Enable sessions by default.
-        if (is_null($this->conf->get('session')))
-        {
+        if (is_null($this->conf->get('session'))) {
             $this->conf->set('session', true);
         }
 
         // Set the session default name from the config file            - i need to make a random/hashed name here
-        if (is_null($this->conf->get('session_name')))
-        {
+        if (is_null($this->conf->get('session_name'))) {
             //$this->conf->set('session_name', $this->getName());
             $this->conf->set('session_name', JUserHelper::genRandomPassword(16));
         }
 
         // Create the session if a session name is passed.
-        if ($this->conf->get('session') !== false)
-        {
+        if ($this->conf->get('session') !== false) {
             $this->loadSession();
-        }        
+        }
      
         // Try to automatically login - i,e, using the remember me cookie - instigates a silent login if a 'Remember me' cookie is found
         $rememberMe = new PlgAuthenticationCookie;  // this allows silent login using remember me cookie after checking it exists - need to mnake sure it does not logon if already logged on
         $rememberMe->onAfterInitialise();
         unset($rememberMe);
-    
     }
 
 
@@ -109,15 +106,12 @@ class QFactory {
      */
     public static function getConfig($file = null, $type = 'PHP', $namespace = '')
     {
-        if (!self::$config)
-        {
-            if ($file === null)
-            {
+        if (!self::$config) {
+            if ($file === null) {
                 $file = 'configuration.php';
             }
 
-            self::$config = self::createConfig($file, $type, $namespace);            
-            
+            self::$config = self::createConfig($file, $type, $namespace);
         }
 
         return self::$config;
@@ -137,8 +131,7 @@ class QFactory {
      */
     protected static function createConfig($file, $type = 'PHP', $namespace = '')
     {
-        if (is_file($file))
-        {
+        if (is_file($file)) {
             include_once $file;
         }
 
@@ -152,8 +145,7 @@ class QFactory {
         $name = 'QConfig' . $namespace;
 
         // Handle the PHP configuration type.
-        if ($type == 'PHP' && class_exists($name))
-        {
+        if ($type == 'PHP' && class_exists($name)) {
             // Create the QConfig object
             $config = new $name;
 
@@ -162,7 +154,7 @@ class QFactory {
         }
 
         return $registry;
-    }  
+    }
     
     
 /****************** Session Object ******************/
@@ -182,21 +174,20 @@ class QFactory {
      */
     public function loadSession(JSession $session = null)
     {
-        if ($session !== null)
-        {
+        if ($session !== null) {
             self::$session = $session;
 
             return $this;
         }
 
-        // Generate a session name.        
+        // Generate a session name.
         $name = QFactory::getHash($this->conf->get('session_name', JUserHelper::genRandomPassword(16)));
 
         // Calculate the session lifetime.
         $lifetime = ($this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900);
         
         // another possible option to declare the client(site/administrator)
-        //$options['clientid'] 
+        //$options['clientid']
 
         // Initialize the options for JSession.
         $options = array(
@@ -204,19 +195,16 @@ class QFactory {
             'expire' => $lifetime,
         );
         
-        switch (QFactory::getClientId())
-        {
+        switch (QFactory::getClientId()) {
             case 0:
-                if ($this->conf->get('force_ssl') == 2)
-                {
+                if ($this->conf->get('force_ssl') == 2) {
                     $options['force_ssl'] = true;
                 }
 
                 break;
 
             case 1:
-                if ($this->conf->get('force_ssl') >= 1)
-                {
+                if ($this->conf->get('force_ssl') >= 1) {
                     $options['force_ssl'] = true;
                 }
 
@@ -232,7 +220,7 @@ class QFactory {
          * without a proper dependency injection container.
          */
 
-        $session = QFactory::getSession($options);        
+        $session = QFactory::getSession($options);
 
         // TODO: At some point we need to get away from having session data always in the db.
         //$db = QFactory::getDbo();
@@ -247,16 +235,15 @@ class QFactory {
         $handler = $this->conf->get('session_handler', 'none');
 
         // Check the session is in the database, if not create it else load it
-        if (($handler != 'database' && ($time % 2 || $session->isNew())) || ($handler == 'database' && $session->isNew()))
-        {
+        if (($handler != 'database' && ($time % 2 || $session->isNew())) || ($handler == 'database' && $session->isNew())) {
             $session->checkSession();
         }
 
-        // Set the session object.        
+        // Set the session object.
         self::$session = $session;
 
         return $this;
-    }   
+    }
 
     
    /**
@@ -273,8 +260,7 @@ class QFactory {
      */
     public static function getSession(array $options = array())
     {
-        if (!self::$session)
-        {
+        if (!self::$session) {
             self::$session = self::createSession($options);
         }
 
@@ -302,13 +288,12 @@ class QFactory {
         $sessionHandler = new JSessionHandlerJoomla($options);
         $session        = JSession::getInstance($handler, $options, $sessionHandler);
 
-        if ($session->getState() == 'expired')
-        {
+        if ($session->getState() == 'expired') {
             $session->restart();
         }
 
         return $session;
-    }    
+    }
 
     
 /****************** Authentication Object ******************/
@@ -325,13 +310,11 @@ class QFactory {
      *
      * @see     JAuthentication
      * @since   11.1
-     */       
+     */
     public static function getAuth()
-    {        
-        if(!self::$auth)
-        {
+    {
+        if (!self::$auth) {
             self::$auth = new JAuthentication;
-            
         }
         return self::$auth;
     }
@@ -345,7 +328,7 @@ class QFactory {
     // this handles user data stored in the user section of the session data blob
 
    /**
-     * 
+     *
      * Get a user object.
      *
      * Returns the global {@link JUser} object, only creating it if it doesn't already exist.
@@ -359,18 +342,15 @@ class QFactory {
      */
     public static function getUser($id = null)
     {
-        $instance = self::getSession()->get('user');        
+        $instance = self::getSession()->get('user');
 
-        if (is_null($id))
-        {
-            if (!($instance instanceof JUser))
-            {
+        if (is_null($id)) {
+            if (!($instance instanceof JUser)) {
                 $instance = JUser::getInstance();
             }
         }
         // Check if we have a string as the id or if the numeric id is the current instance
-        elseif (!($instance instanceof JUser) || is_string($id) || $instance->id !== $id)
-        {
+        elseif (!($instance instanceof JUser) || is_string($id) || $instance->id !== $id) {
             $instance = JUser::getInstance($id);
         }
 
@@ -392,8 +372,7 @@ class QFactory {
         $session = self::getSession();
         $registry = $session->get('registry');
 
-        if (!is_null($registry))
-        {
+        if (!is_null($registry)) {
             return $registry->get($key, $default);
         }
 
@@ -415,8 +394,7 @@ class QFactory {
         $session = self::getSession();
         $registry = $session->get('registry');
 
-        if (!is_null($registry))
-        {
+        if (!is_null($registry)) {
             return $registry->set($key, $value);
         }
 
@@ -440,8 +418,7 @@ class QFactory {
         $cur_state = $this->getUserState($key, $default);
         $new_state = $this->input->get($request, null, $type);
 
-        if ($new_state === null)
-        {
+        if ($new_state === null) {
             return $cur_state;
         }
 
@@ -449,7 +426,7 @@ class QFactory {
         $this->setUserState($key, $new_state);
 
         return $new_state;
-    }  
+    }
 
 /****************** Database Object ******************/
     
@@ -465,13 +442,12 @@ class QFactory {
      */
     public static function getDbo()
     {
-        if (!self::$database)
-        {
+        if (!self::$database) {
             self::$database = self::createDbo();
         }
 
         return self::$database;
-    }       
+    }
     
     
     /**
@@ -484,15 +460,13 @@ class QFactory {
      */
     protected static function createDbo()
     {
-          
-        $conf = self::getConfig();       
+        $conf = self::getConfig();
         
         // create adodb database connection
         $db = ADONewConnection('mysqli');
         $db->Connect($conf->get('db_host'), $conf->get('db_user'), $conf->get('db_pass'), $conf->get('db_name'));
                 
-        return $db;        
-    
+        return $db;
     }
 
 
@@ -552,8 +526,7 @@ class QFactory {
      * @since   3.2
      */
     public static function getHash($seed)
-    {        
+    {
         return md5(self::getConfig()->get('secret_key') . $seed);
-    }      
-      
+    }
 }

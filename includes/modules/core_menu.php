@@ -14,32 +14,29 @@
  * Customers - functions for customersd
  */
 
-/* 
+/*
  * These are copied from includes/report.php but with menu added on the front of the name
- * These are only used to show numbers in the menu and could be removed 
+ * These are only used to show numbers in the menu and could be removed
  */
 
 defined('_QWEXEC') or die;
 
 /** Mandatory Code **/
 
-/** Workorders **/ 
+/** Workorders **/
 
 ##########################################
 # Get single Work Order status           #
 ##########################################
 
-function menu_get_single_workorder_is_closed($db, $workorder_id){
-    
+function menu_get_single_workorder_is_closed($db, $workorder_id)
+{
     $sql = "SELECT is_closed FROM ".PRFX."workorder WHERE workorder_id=".$db->qstr($workorder_id);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to a get a single workorder status."));
         exit;
     } else {
-        
         return $rs->fields['is_closed'];
-        
     }
-    
 }

@@ -52,32 +52,27 @@ abstract class JSessionStorage
     {
         $name = strtolower(JFilterInput::getInstance()->clean($name, 'word'));
 
-        if (empty(self::$instances[$name]))
-        {
+        if (empty(self::$instances[$name])) {
             /** @var JSessionStorage $class */
             $class = 'JSessionStorage' . ucfirst($name);
 
-            if (!class_exists($class))
-            {
+            if (!class_exists($class)) {
                 $path = __DIR__ . '/storage/' . $name . '.php';
 
-                if (!file_exists($path))
-                {
+                if (!file_exists($path)) {
                     throw new JSessionExceptionUnsupported('Unable to load session storage class: ' . $name);
                 }
 
                 JLoader::register($class, $path);
 
                 // The class should now be loaded
-                if (!class_exists($class))
-                {
+                if (!class_exists($class)) {
                     throw new JSessionExceptionUnsupported('Unable to load session storage class: ' . $name);
                 }
             }
 
             // Validate the session storage is supported on this platform
-            if (!$class::isSupported())
-            {
+            if (!$class::isSupported()) {
                 throw new JSessionExceptionUnsupported(sprintf('The %s Session Storage is not supported on this platform.', $name));
             }
 

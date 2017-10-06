@@ -15,8 +15,8 @@ defined('_QWEXEC') or die;
 #  Greeting Message Based on Time       #
 #########################################
 
-function greeting_message_based_on_time($employee_name){
-    
+function greeting_message_based_on_time($employee_name)
+{
     $morning    = _gettext("Good morning").' '.$employee_name;
     $afternoon  = _gettext("Good afternoon").' '.$employee_name;
     $evening    = _gettext("Good evening").' '.$employee_name;
@@ -45,13 +45,12 @@ function greeting_message_based_on_time($employee_name){
     // 00:00 - 05:59
     elseif ($current_time >= 0 && $current_time <= 5) {
         $greeting_msg = $night;
-    }    
+    }
     
     // Friday
-    if ($current_day === 'Friday'){
+    if ($current_day === 'Friday') {
         $greeting_msg = $greeting_msg.' - '.$friday;
     }
     
     return $greeting_msg;
-    
 }

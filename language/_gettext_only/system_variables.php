@@ -52,7 +52,7 @@ _gettext("Cheque");
 _gettext("Credit");
 _gettext("Direct Debit");
 _gettext("Gift Certificate");
-_gettext("Google Checkout"); 
+_gettext("Google Checkout");
 _gettext("Other");
 _gettext("PayPal");
 _gettext("Voucher");

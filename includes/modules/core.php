@@ -22,17 +22,14 @@ defined('_QWEXEC') or die;
 # Display Welcome Note                  #
 #########################################
 
-function display_welcome_msg($db){
-    
+function display_welcome_msg($db)
+{
     $sql = "SELECT welcome_msg FROM ".PRFX."company";
        
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
         exit;
-    } else { 
-        
+    } else {
         return $rs->fields['welcome_msg'];
-        
     }
-    
 }

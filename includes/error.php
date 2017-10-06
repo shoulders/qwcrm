@@ -16,8 +16,7 @@ defined('_QWEXEC') or die;
 ################################################
 
 // Set the error_reporting
-switch ($QConfig->error_reporting)
-{
+switch ($QConfig->error_reporting) {
     case 'default':
     case '-1':
         break;
@@ -30,7 +29,7 @@ switch ($QConfig->error_reporting)
     case 'verysimple':
         error_reporting(E_ERROR | E_WARNING | E_PARSE | ~E_NOTICE);
         ini_set('display_errors', 1);
-        break;            
+        break;
 
     case 'simple':
         error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -56,7 +55,7 @@ switch ($QConfig->error_reporting)
 /** Other Functions **/
 
 ################################################
-#    WSOD Mitigation                           #  // Use this when you get a white screen error 
+#    WSOD Mitigation                           #  // Use this when you get a white screen error
 ################################################
 
 /*function shutdown(){

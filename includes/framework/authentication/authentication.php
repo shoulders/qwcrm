@@ -129,8 +129,7 @@ class JAuthentication
      */
     public static function getInstance()
     {
-        if (empty(self::$instance))
-        {
+        if (empty(self::$instance)) {
             self::$instance = new JAuthentication;
         }
 
@@ -271,10 +270,10 @@ class JAuthentication
         // $plugins = QPluginHelper::getPlugin('authentication');
         // this checks to see if a cookie can authenticate
         $plugins = array(
-                        array ('className' => 'PlgAuthenticationCookie',
+                        array('className' => 'PlgAuthenticationCookie',
                                 'type' => 'Authentication',
                                 'name' => 'Cookie'),
-                        array ('className' => 'PlgAuthenticationQwcrm',
+                        array('className' => 'PlgAuthenticationQwcrm',
                                 'type' => 'Authentication',
                                 'name' => 'Qwcrm')
                         );
@@ -289,51 +288,42 @@ class JAuthentication
          * Any errors raised in the plugin should be returned via the JAuthenticationResponse
          * and handled appropriately.
          */
-        foreach ($plugins as $plugin)
-        {
+        foreach ($plugins as $plugin) {
             $className = 'plg' . $plugin['type'] . $plugin['name'];
             //$className = $plugin->className; // i added this
 
-            if (class_exists($className))
-            {
+            if (class_exists($className)) {
                 $plugin = new $className($this, (array) $plugin);
-            }
-            else
-            {
+            } else {
                 // Bail here if the plugin can't be created
-                //JLog::add(JText::sprintf('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', $className), JLog::WARNING, 'jerror');                
+                //JLog::add(JText::sprintf('JLIB_USER_ERROR_AUTHENTICATION_FAILED_LOAD_PLUGIN', $className), JLog::WARNING, 'jerror');
                 continue;
             }
 
             // Try to authenticate
-            $plugin->onUserAuthenticate($credentials, $options, $response);            
+            $plugin->onUserAuthenticate($credentials, $options, $response);
             
             // If authentication is successful break out of the loop
-            if ($response->status === self::STATUS_SUCCESS)
-            {
-                if (empty($response->type))
-                {
+            if ($response->status === self::STATUS_SUCCESS) {
+                if (empty($response->type)) {
                     $response->type = isset($plugin->_name) ? $plugin->_name : $plugin->name;
                 }
 
                 break;
             }
-        }        
+        }
 
-        if (empty($response->username))
-        {
+        if (empty($response->username)) {
             $response->username = $credentials['username'];
         }
 
-        if (empty($response->fullname))
-        {
+        if (empty($response->fullname)) {
             $response->fullname = $credentials['username'];
         }
 
-        if (empty($response->password) && isset($credentials['password']))
-        {
+        if (empty($response->password) && isset($credentials['password'])) {
             $response->password = $credentials['password'];
-        }        
+        }
         
         return $response;
     }
@@ -352,13 +342,13 @@ class JAuthentication
     {
         
         // this is suppose to cycle through auth plugins that have this event and process them
-        // remember.php and qwcrm.php do not have this    
+        // remember.php and qwcrm.php do not have this
         
-        // if user has been blocked or deactivates return the result - i can add stuff here        
+        // if user has been blocked or deactivates return the result - i can add stuff here
         
         // Get plugins in case they haven't been imported already
         //QPluginHelper::importPlugin('user');
-        //QPluginHelper::importPlugin('authentication');        
+        //QPluginHelper::importPlugin('authentication');
         //$dispatcher = JEventDispatcher::getInstance();
         //$results = $dispatcher->trigger('onUserAuthorisation', array($response, $options));
         
@@ -393,7 +383,7 @@ class JAuthentication
     public function login($credentials, $options = array())
     {
         // Get the global JAuthentication object.
-        //$authenticate = JAuthentication::getInstance();        
+        //$authenticate = JAuthentication::getInstance();
         $response = $this->authenticate($credentials, $options); // this cycles through the plugins (qwcrm.php remember.php methods) and collates the responses in a 'reponse class' and then returns it
 
         // Import the user plugin group. // not sure what this is for
@@ -404,8 +394,7 @@ class JAuthentication
         // - STATUS_SUCCESS just measn there is a valid authentication method that can be used
         // - Valid plugins have been cycled through for responses (cookie || username and password)
         // -  this code is not used currently but i could use it to block users
-        if ($response->status === JAuthentication::STATUS_SUCCESS)
-        {
+        if ($response->status === JAuthentication::STATUS_SUCCESS) {
             /*
              * Validate that the user should be able to login (different to being authenticated).
              * This permits authentication plugins blocking the user.
@@ -415,26 +404,22 @@ class JAuthentication
              * If there is no error the process continues to log the user on with onUserLogin() (or my manual version).
              * 
              */
-            $authorisations = $this->authorise($response, $options);            
+            $authorisations = $this->authorise($response, $options);
 
-            foreach ($authorisations as $authorisation)
-            {
+            foreach ($authorisations as $authorisation) {
                 $denied_states = array(JAuthentication::STATUS_EXPIRED, JAuthentication::STATUS_DENIED);
                 
-                if(in_array($authorisation->status, $denied_states))
-                {
+                if (in_array($authorisation->status, $denied_states)) {
                     ////// Trigger onUserAuthorisationFailure Event.
                     //$this->triggerEvent('onUserAuthorisationFailure', array((array) $authorisation));
 
                     // If silent is set, just return false.
-                    if (isset($options['silent']) && $options['silent'])
-                    {
+                    if (isset($options['silent']) && $options['silent']) {
                         return false;
                     }
 
                     // Return the error.
-                    switch ($authorisation->status)
-                    {
+                    switch ($authorisation->status) {
                         case JAuthentication::STATUS_EXPIRED:
                             //return JError::raiseWarning('102002', JText::_('JLIB_LOGIN_EXPIRED'));
                             return _gettext("Login Expired");
@@ -454,12 +439,12 @@ class JAuthentication
             }
 
             ////// OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event. (stored qwcrm.php and remember.php methods)
-            //$results = $this->triggerEvent('onUserLogin', array((array) $response, $options));                     
+            //$results = $this->triggerEvent('onUserLogin', array((array) $response, $options));
             $user['username'] = $response->username;
             $user['fullname'] = $response->fullname;
-            $user['password_clear'] = $response->password_clear;            
-            $user['email'] = $response->email;            
-            $results = array($this->qwcrmAuthPlg->onUserLogin($user, $options));            
+            $user['password_clear'] = $response->password_clear;
+            $user['email'] = $response->email;
+            $results = array($this->qwcrmAuthPlg->onUserLogin($user, $options));
             
             /*
              * If any of the user plugins did not successfully complete the login routine
@@ -470,20 +455,18 @@ class JAuthentication
              */
             $user = QFactory::getUser();
 
-            if ($response->type == 'Cookie')
-            {
+            if ($response->type == 'Cookie') {
                 $user->set('cookieLogin', true);
             }
 
             // if no failed authentication results (currently just qwcrmAuthPlg) set cookie
-            if (in_array(false, $results, true) == false)
-            {
+            if (in_array(false, $results, true) == false) {
                 $options['user'] = $user;
                 $options['responseType'] = $response->type;
 
                 ////// The user is successfully logged in. Run the after login events  (stored qwcrm.php and remember.php methods)
-                //$this->triggerEvent('onUserAfterLogin', array($options));                              
-                $this->cookieAuthPlg->onUserAfterLogin($options);   // Trigger Cookie operations for onUserAfterLogin  
+                //$this->triggerEvent('onUserAfterLogin', array($options));
+                $this->cookieAuthPlg->onUserAfterLogin($options);   // Trigger Cookie operations for onUserAfterLogin
             }
 
             return true;
@@ -493,14 +476,12 @@ class JAuthentication
         //$this->triggerEvent('onUserLoginFailure', array((array) $response));   (stored qwcrm.php and remember.php methods)
 
         // If silent is set, just return false.
-        if (isset($options['silent']) && $options['silent'])
-        {
+        if (isset($options['silent']) && $options['silent']) {
             return false;
         }
 
         // If status is not success, any error will have been raised by the user plugin
-        if ($response->status !== JAuthentication::STATUS_SUCCESS)
-        {
+        if ($response->status !== JAuthentication::STATUS_SUCCESS) {
             //JLog::add($response->error_message, JLog::WARNING, 'jerror');
         }
 
@@ -526,19 +507,18 @@ class JAuthentication
      */
     public function logout($userid = null, $options = array())
     {
-        // Get a user object from the JApplication.       
-        $user = QFactory::getUser($userid);       
+        // Get a user object from the JApplication.
+        $user = QFactory::getUser($userid);
         
         // Get config
         $config = QFactory::getConfig();
 
-        // Build the credentials array.        
+        // Build the credentials array.
         $parameters['username'] = $user->username;
         $parameters['id'] = $user->id;
 
         // Set clientid in the options array if it hasn't been set already and shared sessions are not enabled.
-        if (!$config->get('shared_session', '0') && !isset($options['clientid']))
-        {
+        if (!$config->get('shared_session', '0') && !isset($options['clientid'])) {
             $options['clientid'] = QFactory::getClientId();
         }
 
@@ -549,15 +529,14 @@ class JAuthentication
         //$results = $this->triggerEvent('onUserLogout', array($parameters, $options));   //(stored qwcrm.php and remember.php methods)
         $results = array(
                         $this->cookieAuthPlg->onUserLogout($parameters, $options),
-                        $this->qwcrmAuthPlg->onUserLogout($parameters, $options)       
-                        );        
+                        $this->qwcrmAuthPlg->onUserLogout($parameters, $options)
+                        );
 
         // Check if any of the plugins failed. If none did, success.
-        if (!in_array(false, $results, true))
-        {
+        if (!in_array(false, $results, true)) {
             $options['username'] = $user->get('username');
             
-            //////$this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and remember.php methods)            
+            //////$this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and remember.php methods)
             $this->qwcrmAuthPlg->onUserLogout($parameters, $options);
             $this->cookieAuthPlg->onUserAfterLogout($options);
             
@@ -569,5 +548,4 @@ class JAuthentication
         
         return false;
     }
-        
 }

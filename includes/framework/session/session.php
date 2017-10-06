@@ -111,8 +111,8 @@ class JSession implements IteratorAggregate
     /**
      * POST Emulation
      *
-     */    
-    public $post_emulation_store = array();    
+     */
+    public $post_emulation_store = array();
 
     /**
      * Constructor
@@ -133,8 +133,7 @@ class JSession implements IteratorAggregate
         $this->data = new Registry;
 
         // Clear any existing sessions
-        if ($this->_handler->getId())
-        {
+        if ($this->_handler->getId()) {
             $this->_handler->clear();
         }
 
@@ -159,13 +158,11 @@ class JSession implements IteratorAggregate
      */
     public function __get($name)
     {
-        if ($name === 'storeName')
-        {
+        if ($name === 'storeName') {
             return $this->$name;
         }
 
-        if ($name === 'state' || $name === 'expire')
-        {
+        if ($name === 'state' || $name === 'expire') {
             $property = '_' . $name;
 
             return $this->$property;
@@ -185,8 +182,7 @@ class JSession implements IteratorAggregate
      */
     public static function getInstance($store, $options, JSessionHandlerInterface $handlerInterface = null)
     {
-        if (!is_object(self::$instance))
-        {
+        if (!is_object(self::$instance)) {
             self::$instance = new JSession($store, $options, $handlerInterface);
         }
 
@@ -235,8 +231,7 @@ class JSession implements IteratorAggregate
         $token = $this->get('session.token');
 
         // Create a token
-        if ($token === null || $forceNew)
-        {
+        if ($token === null || $forceNew) {
             $token = $this->_createToken();
             $this->set('session.token', $token);
         }
@@ -261,10 +256,8 @@ class JSession implements IteratorAggregate
         $tStored = $this->get('session.token');
 
         // Check token
-        if (($tStored !== $tCheck))
-        {
-            if ($forceExpire)
-            {
+        if (($tStored !== $tCheck)) {
+            if ($forceExpire) {
                 $this->_state = 'expired';
             }
 
@@ -319,11 +312,9 @@ class JSession implements IteratorAggregate
         $token = self::getFormToken();
         $app = QFactory::getApplication();
 
-        if (!$app->input->$method->get($token, '', 'alnum'))
-        {
-            if (QFactory::getSession()->isNew())
-            {
-                // Redirect to login screen.                
+        if (!$app->input->$method->get($token, '', 'alnum')) {
+            if (QFactory::getSession()->isNew()) {
+                // Redirect to login screen.
                 $app->enqueueMessage(_gettext("Your session has expired. Please log in again."), 'warning');
                 //$app->redirect(JRoute::_('index.php')); // remmed out to prevent poedit finding it
 
@@ -345,8 +336,7 @@ class JSession implements IteratorAggregate
      */
     public function getName()
     {
-        if ($this->getState() === 'destroyed')
-        {
+        if ($this->getState() === 'destroyed') {
             // @TODO : raise error
             return;
         }
@@ -363,8 +353,7 @@ class JSession implements IteratorAggregate
      */
     public function getId()
     {
-        if ($this->getState() === 'destroyed')
-        {
+        if ($this->getState() === 'destroyed') {
             // @TODO : raise error
             return;
         }
@@ -397,13 +386,11 @@ class JSession implements IteratorAggregate
         $iterator = new DirectoryIterator(__DIR__ . '/storage');
 
         /* @type  $file  DirectoryIterator */
-        foreach ($iterator as $file)
-        {
+        foreach ($iterator as $file) {
             $fileName = $file->getFilename();
 
             // Only load for php files.
-            if (!$file->isFile() || $file->getExtension() != 'php')
-            {
+            if (!$file->isFile() || $file->getExtension() != 'php') {
                 continue;
             }
 
@@ -411,14 +398,12 @@ class JSession implements IteratorAggregate
             $class = str_ireplace('.php', '', 'JSessionStorage' . ucfirst(trim($fileName)));
 
             // If the class doesn't exist we have nothing left to do but look at the next type. We did our best.
-            if (!class_exists($class))
-            {
+            if (!class_exists($class)) {
                 continue;
             }
 
             // Sweet!  Our class exists, so now we just need to know if it passes its test method.
-            if ($class::isSupported())
-            {
+            if ($class::isSupported()) {
                 // Connector names should not have file extensions.
                 $connectors[] = str_ireplace('.php', '', $fileName);
             }
@@ -468,8 +453,7 @@ class JSession implements IteratorAggregate
         $this->_input      = $input;
 
         // Nasty workaround to deal in a b/c way with JInput being required in the 3.4+ Handler class.
-        if ($this->_handler instanceof JSessionHandlerJoomla)
-        {
+        if ($this->_handler instanceof JSessionHandlerJoomla) {
             $this->_handler->input = $input;
         }
 
@@ -489,16 +473,14 @@ class JSession implements IteratorAggregate
      */
     public function get($name, $default = null, $namespace = 'default')
     {
-        if (!$this->isActive())
-        {
+        if (!$this->isActive()) {
             $this->start();
         }
 
         // Add prefix to namespace to avoid collisions
         $namespace = '__' . $namespace;
 
-        if ($this->getState() === 'destroyed')
-        {
+        if ($this->getState() === 'destroyed') {
             // @TODO :: generated error here
             $error = null;
 
@@ -521,16 +503,14 @@ class JSession implements IteratorAggregate
      */
     public function set($name, $value = null, $namespace = 'default')
     {
-        if (!$this->isActive())
-        {
+        if (!$this->isActive()) {
             $this->start();
         }
 
         // Add prefix to namespace to avoid collisions
         $namespace = '__' . $namespace;
 
-        if ($this->getState() !== 'active')
-        {
+        if ($this->getState() !== 'active') {
             // @TODO :: generated error here
             return;
         }
@@ -553,16 +533,14 @@ class JSession implements IteratorAggregate
      */
     public function has($name, $namespace = 'default')
     {
-        if (!$this->isActive())
-        {
+        if (!$this->isActive()) {
             $this->start();
         }
 
         // Add prefix to namespace to avoid collisions.
         $namespace = '__' . $namespace;
 
-        if ($this->getState() !== 'active')
-        {
+        if ($this->getState() !== 'active') {
             // @TODO :: generated error here
             return;
         }
@@ -582,16 +560,14 @@ class JSession implements IteratorAggregate
      */
     public function clear($name, $namespace = 'default')
     {
-        if (!$this->isActive())
-        {
+        if (!$this->isActive()) {
             $this->start();
         }
 
         // Add prefix to namespace to avoid collisions
         $namespace = '__' . $namespace;
 
-        if ($this->getState() !== 'active')
-        {
+        if ($this->getState() !== 'active') {
             // @TODO :: generated error here
             return;
         }
@@ -608,8 +584,7 @@ class JSession implements IteratorAggregate
      */
     public function start()
     {
-        if ($this->getState() === 'active')
-        {
+        if ($this->getState() === 'active') {
             return;
         }
 
@@ -622,23 +597,18 @@ class JSession implements IteratorAggregate
         $this->_setTimers();
 
         // Perform security checks
-        if (!$this->_validate())
-        {
+        if (!$this->_validate()) {
             // If the session isn't valid because it expired try to restart it
             // else destroy it.
-            if ($this->_state === 'expired')
-            {
+            if ($this->_state === 'expired') {
                 $this->restart();
-            }
-            else
-            {
+            } else {
                 $this->destroy();
             }
         }
 
         ////// onAfterSessionStart event
         $this->onAfterSessionStart();
-       
     }
 
     /**
@@ -656,8 +626,7 @@ class JSession implements IteratorAggregate
 
         // Ok let's unserialize the whole thing
         // Try loading data from the session
-        if (isset($_SESSION['qwcrm']) && !empty($_SESSION['qwcrm']))
-        {
+        if (isset($_SESSION['qwcrm']) && !empty($_SESSION['qwcrm'])) {
             $data = $_SESSION['qwcrm'];
 
             $data = base64_decode($data);
@@ -719,8 +688,7 @@ class JSession implements IteratorAggregate
     public function destroy()
     {
         // Session was already destroyed
-        if ($this->getState() === 'destroyed')
-        {
+        if ($this->getState() === 'destroyed') {
             return true;
         }
 
@@ -748,8 +716,7 @@ class JSession implements IteratorAggregate
     {
         $this->destroy();
 
-        if ($this->getState() !== 'destroyed')
-        {
+        if ($this->getState() !== 'destroyed') {
             // @TODO :: generated error here
             return false;
         }
@@ -764,8 +731,7 @@ class JSession implements IteratorAggregate
         $this->_handler->regenerate(true, null);
         $this->_state = 'active';
 
-        if (!$this->_validate())
-        {
+        if (!$this->_validate()) {
             /**
              * Destroy the session if it's not valid - we can't restart the session here unlike in the start method
              * else we risk recursion.
@@ -787,8 +753,7 @@ class JSession implements IteratorAggregate
      */
     public function fork()
     {
-        if ($this->getState() !== 'active')
-        {
+        if ($this->getState() !== 'active') {
             // @TODO :: generated error here
             return false;
         }
@@ -882,8 +847,7 @@ class JSession implements IteratorAggregate
      */
     protected function _setTimers()
     {
-        if (!$this->has('session.timer.start'))
-        {
+        if (!$this->has('session.timer.start')) {
             $start = time();
 
             $this->set('session.timer.start', $start);
@@ -909,26 +873,22 @@ class JSession implements IteratorAggregate
     protected function _setOptions(array $options)
     {
         // Set name
-        if (isset($options['name']))
-        {
+        if (isset($options['name'])) {
             $this->_handler->setName(md5($options['name']));
         }
 
         // Set id
-        if (isset($options['id']))
-        {
+        if (isset($options['id'])) {
             $this->_handler->setId($options['id']);
         }
 
         // Set expire time
-        if (isset($options['expire']))
-        {
+        if (isset($options['expire'])) {
             $this->_expire = $options['expire'];
         }
 
         // Get security options
-        if (isset($options['security']))
-        {
+        if (isset($options['security'])) {
             $this->_security = explode(',', $options['security']);
         }
 
@@ -957,8 +917,7 @@ class JSession implements IteratorAggregate
     protected function _validate($restart = false)
     {
         // Allow to restart a session
-        if ($restart)
-        {
+        if ($restart) {
             $this->_state = 'active';
 
             $this->set('session.client.address', null);
@@ -968,14 +927,12 @@ class JSession implements IteratorAggregate
         }
 
         // Check if session has expired
-        if ($this->getExpire())
-        {
+        if ($this->getExpire()) {
             $curTime = $this->get('session.timer.now', 0);
             $maxTime = $this->get('session.timer.last', 0) + $this->getExpire();
 
             // Empty session variables
-            if ($maxTime < $curTime)
-            {
+            if ($maxTime < $curTime) {
                 $this->_state = 'expired';
 
                 return false;
@@ -984,16 +941,12 @@ class JSession implements IteratorAggregate
 
         // Check for client address
         if (in_array('fix_adress', $this->_security) && isset($_SERVER['REMOTE_ADDR'])
-            && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false)
-        {
+            && filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP) !== false) {
             $ip = $this->get('session.client.address');
 
-            if ($ip === null)
-            {
+            if ($ip === null) {
                 $this->set('session.client.address', $_SERVER['REMOTE_ADDR']);
-            }
-            elseif ($_SERVER['REMOTE_ADDR'] !== $ip)
-            {
+            } elseif ($_SERVER['REMOTE_ADDR'] !== $ip) {
                 $this->_state = 'error';
 
                 return false;
@@ -1001,8 +954,7 @@ class JSession implements IteratorAggregate
         }
 
         // Record proxy forwarded for in the session in case we need it later
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false)
-        {
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP) !== false) {
             $this->set('session.client.forwarded', $_SERVER['HTTP_X_FORWARDED_FOR']);
         }
 
@@ -1023,67 +975,60 @@ class JSession implements IteratorAggregate
      * @throws  RuntimeException
      */
     public function checkSession()
-    {   
+    {
         $user   = QFactory::getUser();      // this gets the user from the session
         $db     = QFactory::getDbo();
         $config = QFactory::getConfig();
         
-        $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
-        $rs     = $db->Execute($sql);        
+        $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr($this->getId());
+        $rs     = $db->Execute($sql);
         
         // If the session record doesn't exist initialise it.
-        if($rs->RecordCount() != 1)
-        {
-            $time = $this->isNew() ? time() : $this->get('session.timer.start');            
+        if ($rs->RecordCount() != 1) {
+            $time = $this->isNew() ? time() : $this->get('session.timer.start');
 
-            // Set up the record to insert            
+            // Set up the record to insert
             $record['session_id']  = $this->getId()  ;
             $record['guest']       = (int) $user->guest;
             $record['time']        = (int) $time;
             $record['userid']      = (int) $user->id;
-            $record['username']    = $user->username;                 
+            $record['username']    = $user->username;
            
             // if login not shared between site and admin (joomla thing)
-            if (!$config->get('shared_session', '0'))
-            {
+            if (!$config->get('shared_session', '0')) {
                 $record['client_id'] = (int) QFactory::getClientId();
-            }            
+            }
 
             // If the insert failed, exit the application.
-            try
-            {
-                $db->AutoExecute(PRFX.'session', $record, 'INSERT');                
-            }
-            catch (RuntimeException $e)
-            {
+            try {
+                $db->AutoExecute(PRFX.'session', $record, 'INSERT');
+            } catch (RuntimeException $e) {
                 throw new RuntimeException(_gettext("Error initialising the session."), $e->getCode(), $e);
             }
         }
-    } 
+    }
     
     public function removeExpiredSessions()
     {
-       $db = QFactory::getDbo();
+        $db = QFactory::getDbo();
 
         // Get the current Time
        $time = time();
 
        // Remove expired sessions from the database.
-       if ($time % 2)
-       {
+       if ($time % 2) {
            // The modulus '% 2' introduces a little entropy, making the flushing less accurate
            // by firing the query less than half the time.
-           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - $this->getExpire());            
+           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - $this->getExpire());
            $db->Execute($sql);
-       }  
+       }
     }
     
     public function onAfterSessionStart()
     {
-        if ($this->isNew())
-        {
+        if ($this->isNew()) {
             $this->set('registry', new Registry);
-            $this->set('user', new JUser);            
+            $this->set('user', new JUser);
         }
     }
 }

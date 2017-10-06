@@ -52,15 +52,12 @@ class Cookie //extends Input
      */
     public function __construct(array $source = null, array $options = array())
     {
-            if (isset($options['filter']))
-            {
-                $this->filter = $options['filter'];
-            }
-            else
-            {
-                //$this->filter = new Filter\InputFilter;
+        if (isset($options['filter'])) {
+            $this->filter = $options['filter'];
+        } else {
+            //$this->filter = new Filter\InputFilter;
                 $this->filter = new JFilterInput;
-            }
+        }
 
             // Set the data source.
             $this->data = & $_COOKIE;
@@ -130,13 +127,11 @@ class Cookie //extends Input
      */
     public function get($name, $default = null, $filter = 'cmd')
     {
-        if (isset($this->data[$name]))
-        {           
+        if (isset($this->data[$name])) {
             $filterObj = new JFilterInput;
             return $filterObj->clean($this->data[$name], $filter);
         }
 
         return $default;
     }
-    
-}    
+}

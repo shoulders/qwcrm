@@ -45,34 +45,32 @@ defined('_QWEXEC') or die;
 #    Count Customers                        #
 #############################################
 
-function count_customers($db, $status, $start_date = null, $end_date = null) {    
+function count_customers($db, $status, $start_date = null, $end_date = null)
+{
     
     // Default Action
     $whereTheseRecords = " WHERE customer_id >= '0'";
     
     // Restrict by Status
-    if($status != 'all') {        
-        $whereTheseRecords .= " AND ".PRFX."customer.active= ".$db->qstr($status);            
+    if ($status != 'all') {
+        $whereTheseRecords .= " AND ".PRFX."customer.active= ".$db->qstr($status);
     }
         
     // Filter by Create Data
-    if($start_date && $end_date) {
+    if ($start_date && $end_date) {
         $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date);
     }
     
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."customer
-            ".$whereTheseRecords;                
+            ".$whereTheseRecords;
 
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of customers."));
         exit;
     } else {
-        
-       return $rs->fields['count']; 
-       
+        return $rs->fields['count'];
     }
-    
 }
 
 /** Workorders **/
@@ -81,79 +79,66 @@ function count_customers($db, $status, $start_date = null, $end_date = null) {
 #     Count Work Orders                 #
 #########################################
 
-function count_workorders($db, $status, $user_id = null, $start_date = null, $end_date = null) {
+function count_workorders($db, $status, $user_id = null, $start_date = null, $end_date = null)
+{
     
     // Default Action
     $whereTheseRecords = " WHERE workorder_id >= '1'";
     
     // Restrict by Status
-    if($status != 'all') {
+    if ($status != 'all') {
         
         // All Open Status workorders
-        if($status == 'open') {
-            
+        if ($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '0'";
                     
         // All Close Status workorders
-        } elseif($status == 'close') {
-            
+        } elseif ($status == 'close') {
             $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
                         
         // All Opened workorders
-        } elseif($status == 'opened') {
+        } elseif ($status == 'opened') {
             
-            // do nothing here           
+            // do nothing here
 
         // All Closed workorders
-        } elseif($status == 'closed') {
+        } elseif ($status == 'closed') {
             
             // these give slightly different results because of the ability to manually change status
             
             $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
-            //$whereTheseRecords .= " AND ".PRFX."workorder.close_date != ''";   
-        
+            //$whereTheseRecords .= " AND ".PRFX."workorder.close_date != ''";
         } else {
-            
-            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);                       
-            
+            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);
         }
-        
     }
     
     // Filter by user
-    if($user_id) {
+    if ($user_id) {
         $whereTheseRecords .= " AND employee_id=".$db->qstr($user_id);
     }
     
     // Filter by Date
-    if($status == 'closed') {
-        
-        if($start_date && $end_date) {
+    if ($status == 'closed') {
+        if ($start_date && $end_date) {
             $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
         }
-        
     } else {
-        
-        if($start_date && $end_date) {
+        if ($start_date && $end_date) {
             $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
         }
-        
     }
     
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."workorder
-            ".$whereTheseRecords;    
+            ".$whereTheseRecords;
             
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
         exit;
-        
-    } else {      
-        
+    } else {
         return  $rs->fields['count'];
-        
     }
-    
 }
 
 /** Invoices **/
@@ -162,128 +147,108 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($db, $status = null, $user_id = null, $start_date = null, $end_date = null) {    
+function count_invoices($db, $status = null, $user_id = null, $start_date = null, $end_date = null)
+{
     
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
     
     // Restrict by Status
-    if($status != 'all') {
+    if ($status != 'all') {
         
         // All Open Status invoices
-        if($status == 'open') {
-            
+        if ($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '0'";
                     
         // All Close Status invoices
-        } elseif($status == 'close') {
-            
+        } elseif ($status == 'close') {
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
                         
         // All Opened workorders
-        } elseif($status == 'opened') {
+        } elseif ($status == 'opened') {
             
-            // do nothing here           
+            // do nothing here
 
         // All Closed invoices
-        } elseif($status == 'closed') {
+        } elseif ($status == 'closed') {
             
             // these give slightly different results because of the ability to manually change status
             
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
-            //$whereTheseRecords .= " AND ".PRFX."invoice.close_date != ''";            
-        
+            //$whereTheseRecords .= " AND ".PRFX."invoice.close_date != ''";
         } else {
-            
-            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);                       
-            
+            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
         }
-        
     }
     
     // Filter by user
-    if($user_id) {
+    if ($user_id) {
         $whereTheseRecords .= " AND employee_id=".$db->qstr($user_id);
     }
     
     // Filter by Date
-    if($status == 'closed') {
-        
-        if($start_date && $end_date) {
+    if ($status == 'closed') {
+        if ($start_date && $end_date) {
             $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
-        } 
-        
+        }
     } else {
-        
-        if($start_date && $end_date) {
+        if ($start_date && $end_date) {
             $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
         }
-        
     }
     
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice
-            ".$whereTheseRecords;                
+            ".$whereTheseRecords;
 
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
         exit;
     } else {
-        
-       return $rs->fields['count']; 
-       
+        return $rs->fields['count'];
     }
-    
 }
 
 #########################################
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_date = null) {
+function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_date = null)
+{
         
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
     
     // Restrict by Status
-    if($status != 'all') {
+    if ($status != 'all') {
         
         // Filter by Unpaid Invoices
-        if($status == 'open') {
-            
+        if ($status == 'open') {
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
-        
-        } elseif($status == 'close') {
-            
-            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";        
+        } elseif ($status == 'close') {
+            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
         
         // Return Invoices for the given status
         } else {
-            
             $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
-            
         }
-        
     }
         
     // Filter by Date
-    if($start_date && $end_date) {
+    if ($start_date && $end_date) {
         $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     }
     
     $sql = "SELECT SUM(".PRFX."invoice.$value_name) AS sum
             FROM ".PRFX."invoice
-            ".$whereTheseRecords;                
+            ".$whereTheseRecords;
 
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the invoice discount amounts."));
         exit;
     } else {
-        
-       return $rs->fields['sum']; 
-       
-    }    
-    
+        return $rs->fields['sum'];
+    }
 }
 
 /** Labour **/
@@ -292,66 +257,57 @@ function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_
 #  Count labour items   #
 #########################
 
-function count_labour_items($db, $start_date, $end_date) {
-    
+function count_labour_items($db, $start_date, $end_date)
+{
     $sql = "SELECT SUM(qty) AS count
             FROM ".PRFX."invoice_labour
             INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_labour.invoice_id
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
         exit;
     } else {
-        
-        return $rs->fields['count']; 
-        
-    }   
-    
+        return $rs->fields['count'];
+    }
 }
 
 ###################################
 #  Count different labour items   #
 ###################################
 
-function count_labour_different_items($db, $start_date, $end_date) {
-    
+function count_labour_different_items($db, $start_date, $end_date)
+{
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice_labour
             INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_labour.invoice_id
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
         exit;
     } else {
-        
-        return $rs->fields['count']; 
-        
-    }   
-    
+        return $rs->fields['count'];
+    }
 }
 
 #########################################
 #  Sum selected value of labour items   #
 #########################################
 
-function sum_labour_items($db, $value_name, $start_date, $end_date) {
-    
+function sum_labour_items($db, $value_name, $start_date, $end_date)
+{
     $sql = "SELECT SUM(".PRFX."invoice_labour.$value_name) AS sum
             FROM ".PRFX."invoice_labour
             INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_labour.invoice_id
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items ordered."));
         exit;
     } else {
-        
         return $rs->fields['sum'];
-        
-    }   
-    
+    }
 }
 
 /** Parts **/
@@ -360,66 +316,57 @@ function sum_labour_items($db, $value_name, $start_date, $end_date) {
 #  Count parts items   #
 ########################
 
-function count_parts_items($db, $start_date, $end_date) {
-    
+function count_parts_items($db, $start_date, $end_date)
+{
     $sql = "SELECT SUM(qty) AS count
             FROM ".PRFX."invoice_parts
             INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of different parts items ordered."));
         exit;
     } else {
-        
-        return $rs->fields['count']; 
-        
-    }   
-    
+        return $rs->fields['count'];
+    }
 }
 
 ##################################
 #  Count different parts items   #
 ##################################
 
-function count_parts_different_items($db, $start_date, $end_date) {
-    
+function count_parts_different_items($db, $start_date, $end_date)
+{
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice_parts
             INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of parts items ordered."));
         exit;
     } else {
-        
-        return $rs->fields['count']; 
-        
-    }   
-    
+        return $rs->fields['count'];
+    }
 }
 
 ###################################
 #  Sum selected value of Parts    #
 ###################################
 
-function sum_parts_value($db, $value_name, $start_date, $end_date) {
-    
+function sum_parts_value($db, $value_name, $start_date, $end_date)
+{
     $sql = "SELECT SUM(".PRFX."invoice_parts.$value_name) AS sum
             FROM ".PRFX."invoice_parts
             INNER JOIN ".PRFX."invoice ON ".PRFX."invoice.invoice_id = ".PRFX."invoice_parts.invoice_id
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the total number of parts items ordered."));
         exit;
     } else {
-        
         return $rs->fields['sum'];
-        
-    }   
-    
+    }
 }
 
 /** Expense **/
@@ -428,21 +375,18 @@ function sum_parts_value($db, $value_name, $start_date, $end_date) {
 #  Sum selected value of expenses #
 ###################################
 
-function sum_expenses_value($db, $value_name, $start_date, $end_date) {
-    
+function sum_expenses_value($db, $value_name, $start_date, $end_date)
+{
     $sql = "SELECT SUM(".PRFX."expense.$value_name) AS sum
             FROM ".PRFX."expense
             WHERE date  >= ".$db->qstr($start_date)." AND date  <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
         exit;
     } else {
-        
         return $rs->fields['sum'];
-        
-    }   
-    
+    }
 }
 
 /** Refunds **/
@@ -451,19 +395,16 @@ function sum_expenses_value($db, $value_name, $start_date, $end_date) {
 #  Sum selected value of Refunds  #
 ###################################
 
-function sum_refunds_value($db, $value_name, $start_date, $end_date) {
-    
+function sum_refunds_value($db, $value_name, $start_date, $end_date)
+{
     $sql = "SELECT SUM(".PRFX."refund.$value_name) AS sum
             FROM ".PRFX."refund
             WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected refunds."));
         exit;
     } else {
-        
         return $rs->fields['sum'];
-        
-    }   
-    
+    }
 }

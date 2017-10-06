@@ -70,14 +70,12 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
         //$cookie = $this->input->cookie;
         $cookie = new Cookie;
 
-        if (is_null($cookie->get($session_name)))
-        {
+        if (is_null($cookie->get($session_name))) {
             $cleaner = new JFilterInput;
             //$session_clean = $this->cleaner->get($session_name, false, 'string');  // do i need this? extra security?
-            $session_clean = $cleaner->clean($session_name, 'string');            
+            $session_clean = $cleaner->clean($session_name, 'string');
             
-            if ($session_clean)
-            {
+            if ($session_clean) {
                 $this->setId($session_clean);
                 $cookie->set($session_name, '', time() - 3600);
             }
@@ -102,8 +100,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
          * must also be unset. If a cookie is used to propagate the session id (default behavior),
          * then the session cookie must be deleted.
          */
-        if (isset($_COOKIE[$session_name]))
-        {
+        if (isset($_COOKIE[$session_name])) {
             $config        = QFactory::getConfig();
             $cookie_domain = $config->get('cookie_domain', '');
             $cookie_path   = $config->get('cookie_path', '/');
@@ -124,20 +121,17 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
     {
         $cookie = session_get_cookie_params();
 
-        if ($this->force_ssl)
-        {
+        if ($this->force_ssl) {
             $cookie['secure'] = true;
         }
 
         $config = QFactory::getConfig();
 
-        if ($config->get('cookie_domain', '') != '')
-        {
+        if ($config->get('cookie_domain', '') != '') {
             $cookie['domain'] = $config->get('cookie_domain');
         }
 
-        if ($config->get('cookie_path', '') != '')
-        {
+        if ($config->get('cookie_path', '') != '') {
             $cookie['path'] = $config->get('cookie_path');
         }
 
@@ -155,8 +149,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
      */
     protected function setOptions(array $options)
     {
-        if (isset($options['force_ssl']))
-        {
+        if (isset($options['force_ssl'])) {
             $this->force_ssl = (bool) $options['force_ssl'];
         }
 

@@ -24,7 +24,7 @@
  * @return  string  PHP info
  *
  * @since   1.6
- * 
+ *
  * From {Joomla}administrator/components/com_admin/models/sysinfo.php - it strips dodgy formatting
  */
 
@@ -36,20 +36,17 @@ defined('_QWEXEC') or die;
 #   get current config details             #
 ############################################
 
-function get_qwcrm_config() {
-    
-    if(class_exists(QConfig)) {
+function get_qwcrm_config()
+{
+    if (class_exists(QConfig)) {
         
         // Return the config values if defined
         return get_object_vars(new QConfig);
-        
     } else {
         
         // if not config does not exist yet (i.e. install)
         return array();
-        
     }
-    
 }
 
 /* Update Functions */
@@ -59,16 +56,21 @@ function get_qwcrm_config() {
 #   Update ACL Permissions      #
 #################################
 
-function update_acl($db, $permissions) {
+function update_acl($db, $permissions)
+{
     
     /* Process Submitted Permissions */
     
     // Cycle through the submitted permissions and update the database
-    foreach($permissions as $page_name => $page_permission) {
+    foreach ($permissions as $page_name => $page_permission) {
         
         // Compensate for non 'Page ACL' variables being submitted - skip the record
-        if($page_name == 'page') { continue; }
-        if($page_name == 'submit') { continue; } 
+        if ($page_name == 'page') {
+            continue;
+        }
+        if ($page_name == 'submit') {
+            continue;
+        }
                 
         // Enforce Administrators always have access to everything
         $page_permission['Administrator'] = '1';
@@ -85,11 +87,10 @@ function update_acl($db, $permissions) {
                 `Public`        ='". $page_permission['Public']         ."'
                 WHERE `page`    ='". $page_name."';";
             
-        if(!$rs = $db->execute($sql)) {
+        if (!$rs = $db->execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
-            exit;    
-        }                 
-
+            exit;
+        }
     }
 
     /* Restore Mandatory Permissions */
@@ -100,7 +101,7 @@ function update_acl($db, $permissions) {
         array(
 
             // Permission always granted for all
-            'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),            
+            'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
             'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
             'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
             'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
@@ -115,14 +116,13 @@ function update_acl($db, $permissions) {
             // Permissions always removed for all
             'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
             'setup:choice'      => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),   
+            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
             'setup:upgrade'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')
 
-        ); 
+        );
 
     // Cycle through mandatory permissions and update the database
-    foreach($mandatory_permissions as $page_name => $page_permission) {
-                 
+    foreach ($mandatory_permissions as $page_name => $page_permission) {
         $sql = "UPDATE `".PRFX."user_acl` SET
                 `Administrator` ='". $page_permission['Administrator']  ."',
                 `Manager`       ='". $page_permission['Manager']        ."',
@@ -135,25 +135,24 @@ function update_acl($db, $permissions) {
                 `Public`        ='". $page_permission['Public']         ."'
                 WHERE `page`    ='". $page_name."';";
 
-         if(!$rs = $db->execute($sql)) {
-             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
-             exit;    
-        }               
-        
+        if (!$rs = $db->execute($sql)) {
+            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
+            exit;
+        }
     }
     
-    // Log activity        
-    write_record_to_activity_log(_gettext("ACL permissions updated."));      
-
+    // Log activity
+    write_record_to_activity_log(_gettext("ACL permissions updated."));
 }
 
 ############################################
 #   Update the QWcrm settings file         #
 ############################################
 
-function update_qwcrm_config($new_config) {
+function update_qwcrm_config($new_config)
+{
     
-    // Get a fresh copy of the current settings as an array        
+    // Get a fresh copy of the current settings as an array
     $current_config = get_qwcrm_config();
     
     // Perform miscellaneous options based on configuration settings/changes.
@@ -163,7 +162,7 @@ function update_qwcrm_config($new_config) {
     $merged_config = array_merge($current_config, $new_config);
     
     // Walk through the merged_config array and escape all apostophes (anonymous function)
-    array_walk($merged_config, function(&$value) {
+    array_walk($merged_config, function (&$value) {
         $value = str_replace("'", "\\'", $value);
     });
     
@@ -173,11 +172,10 @@ function update_qwcrm_config($new_config) {
     // Write the configuration file.
     write_config_file($merged_config);
     
-    // Log activity        
-    write_record_to_activity_log(_gettext("QWcrm config settings updated."));   
+    // Log activity
+    write_record_to_activity_log(_gettext("QWcrm config settings updated."));
 
     return true;
-    
 }
 
 /* Delete Functions */
@@ -186,9 +184,10 @@ function update_qwcrm_config($new_config) {
 #   Update the QWcrm settings file         #
 ############################################
 
-function delete_qwcrm_config_setting($key) {
+function delete_qwcrm_config_setting($key)
+{
     
-    // Get a fresh copy of the current settings as an array        
+    // Get a fresh copy of the current settings as an array
     $qwcrm_config = get_qwcrm_config();
     
     // Remove the key from the object
@@ -201,10 +200,9 @@ function delete_qwcrm_config_setting($key) {
     write_config_file($qwcrm_config);
     
     // Log activity
-    write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
+    write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));
 
     return true;
-    
 }
 
 /* Other Functions */
@@ -230,7 +228,7 @@ function getPHPInfo()
     $output = str_replace('<div class="center">', '', $output);
     $output = preg_replace('#<tr class="h">(.*)<\/tr>#', '<thead><tr class="h">$1</tr></thead><tbody>', $output);
     $output = str_replace('</table>', '</tbody></table>', $output);
-    $output = str_replace('</div>', '', $output);    
+    $output = str_replace('</div>', '', $output);
 
     return $output;
 }
@@ -239,8 +237,8 @@ function getPHPInfo()
 #   Check for QWcrm update      #
 #################################
 
-function check_for_qwcrm_update() {
-    
+function check_for_qwcrm_update()
+{
     global $smarty;
     
     // Get curent version and check against quantumwarp.com
@@ -248,75 +246,71 @@ function check_for_qwcrm_update() {
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        // FALSE to stop cURL from verifying the peer's certificate (need unless i bundle certs with my install)
-    curl_setopt($ch, CURLOPT_URL, $update_page);            // The URL to fetch. This can also be set when initializing a session with curl_init(). 
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);            // TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly. 
+    curl_setopt($ch, CURLOPT_URL, $update_page);            // The URL to fetch. This can also be set when initializing a session with curl_init().
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);            // TRUE to return the transfer as a string of the return value of curl_exec() instead of outputting it out directly.
     
-    $curl_response = curl_exec($ch);     
-    $curl_error = curl_errno($ch);  
+    $curl_response = curl_exec($ch);
+    $curl_error = curl_errno($ch);
     curl_close($ch);
 
     // If there is a connection error
-    if($curl_error) {         
+    if ($curl_error) {
         $smarty->assign('warning_msg', _gettext("Connection Error - cURL Error Number").': '.$curl_error);
-        return;        
+        return;
     }
     
     // If no response return with error message
-    if($curl_response == '' || $curl_error) {         
+    if ($curl_response == '' || $curl_error) {
         $smarty->assign('warning_msg', _gettext("No response from the QWcrm update server."));
         $smarty->assign('update_response', 'no_response');
-        return;        
+        return;
     }
 
     // Parse the grabbed XML into an array
     $update_response = parse_xml_sting_into_array($curl_response);
     
     // Verify there is a real response and flag error if not
-    if(!$update_response['name']) {
+    if (!$update_response['name']) {
         $smarty->assign('warning_msg', _gettext("No response from the QWcrm update server."));
         $smarty->assign('update_response', 'no_response');
-        return;       
+        return;
     }
     
     
     // Build the update message
     if (version_compare(QWCRM_VERSION, $update_response['version'], '<')) {
         
-        // An Update is available        
+        // An Update is available
         $smarty->assign('version_compare', '1');
-        
     } else {
         
-        // No Updates available      
+        // No Updates available
         $smarty->assign('version_compare', '0');
-        
     }
 
-    // Assign Variables    
+    // Assign Variables
     $smarty->assign('update_response', $update_response);
     
-    // Log activity        
+    // Log activity
     write_record_to_activity_log(_gettext("QWcrm checked for updates."));
 
     return;
-
 }
 
 #################################
 #   Load ACL Permissions        #
 #################################
 
-function load_acl($db) {
-    
+function load_acl($db)
+{
     $sql = "SELECT * FROM ".PRFX."user_acl ORDER BY page";
     
-    if(!$rs = $db->execute($sql)) {
+    if (!$rs = $db->execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
         exit;
     }
     
-    return $rs->GetArray(); 
-
+    return $rs->GetArray();
 }
 
 ############################################
@@ -328,15 +322,14 @@ function build_config_file_content($config_data)
     $output = "<?php\r\n";
     $output .= "class QConfig {\r\n";
 
-    foreach ($config_data as $key => $value)
-    {
+    foreach ($config_data as $key => $value) {
         $output .= "    public $$key = '$value';\r\n";
     }
 
-   $output .= "}";
+    $output .= "}";
 
-   return $output;   
-}    
+    return $output;
+}
 
 
 ############################################
@@ -349,12 +342,12 @@ function write_config_file($content)
     $file = 'configuration.php';
     
     // if the file does not exist - Create and Open
-    if(!is_file($file)) {
+    if (!is_file($file)) {
         
         // Create and Open file
         $fp = fopen($file, 'x');
     
-    // if file exists - Open    
+    // if file exists - Open
     } else {
         
         // Make file is writable - is this needed?
@@ -362,102 +355,93 @@ function write_config_file($content)
     
         // Open file
         $fp = fopen($file, 'w');
-        
     }
     
-    // Write file    
+    // Write file
     fwrite($fp, $content);
     
     // Close file
     fclose($fp);
 
     // Make file 444
-    chmod($file, '0444');      
+    chmod($file, '0444');
 
     return true;
-    
-}    
+}
 
 
 ############################################
 #   Process config data before saving      #  // joomla\administrator\components\com_config\model\application.php  -  public function save($data)
 ############################################
 
-function prepare_config_data($new_config) {
+function prepare_config_data($new_config)
+{
     
     
     // remove unwanted varibles from the new_config
     unset($new_config['page']);
     unset($new_config['submit']);
     
-    // Get a fresh copy of the current settings as an array        
+    // Get a fresh copy of the current settings as an array
     $current_config = get_qwcrm_config();
     
     // Purge the database session table if we are changing to the database handler.
-    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    if (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
         
         // Get the database object
         $db = QFactory::getDbo();
         
-        if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
-        {
-            $sql = "TRUNCATE ".PRFX."session";                    
+        if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database') {
+            $sql = "TRUNCATE ".PRFX."session";
 
-            if(!$rs = $db->Execute($sql)) {
+            if (!$rs = $db->Execute($sql)) {
                 force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
                 exit;
-
             }
-
         }
     }
                 
     // Set the shared session configuration
-    if (isset($new_config['shared_session']))
-    {
+    if (isset($new_config['shared_session'])) {
         $currentShared = isset($current_config['shared_session']) ? $current_config['shared_session'] : '0';
 
         // Has the user enabled shared sessions?
-        if ($new_config['shared_session'] == 1 && $currentShared == 0)
-        {
+        if ($new_config['shared_session'] == 1 && $currentShared == 0) {
             // Generate a random shared session name
             $new_config['session_name'] = JUserHelper::genRandomPassword(16);
         }
 
         // Has the user disabled shared sessions?
-        if ($new_config['shared_session'] == 0 && $currentShared == 1)
-        {
+        if ($new_config['shared_session'] == 0 && $currentShared == 1) {
             // Remove the session name value
             unset($new_config['session_name']);
         }
-    } 
+    }
     
-    // Return the processed config   
+    // Return the processed config
     return $new_config;
-    
 }
 
 ############################################
 #      Send Test Mail                      #
 ############################################
 
-function send_test_mail($db) {
-    
+function send_test_mail($db)
+{
     $user_details = get_user_details($db, QFactory::getUser()->login_user_id);
     
     send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.QFactory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
     
-    // Log activity        
+    // Log activity
     write_record_to_activity_log(_gettext("Test email initiated."));
-    
 }
 
 ############################################
 #      Clear Smarty Cache                  #
 ############################################
 
-function clear_smarty_cache() {
-    
+function clear_smarty_cache()
+{
     global $smarty;
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
@@ -469,20 +453,19 @@ function clear_smarty_cache() {
     // clears all files over one hour old
     //$smarty->clearAllCache(3600);
     
-    // Output the system message to the browser   
+    // Output the system message to the browser
     output_notifications_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
     
-    // Log activity        
+    // Log activity
     write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
-    
 }
 
 ############################################
 #      Clear Smarty Compile                #
 ############################################
 
-function clear_smarty_compile() {
-    
+function clear_smarty_compile()
+{
     global $smarty;
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
@@ -494,30 +477,29 @@ function clear_smarty_compile() {
     // clear entire compile directory
     $smarty->clearCompiledTemplate();
     
-    // Output the system message to the browser   
+    // Output the system message to the browser
     output_notifications_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
     
-    // Log activity        
-    write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
-    
+    // Log activity
+    write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));
 }
 
 #################################
 #   Reset ACL Permissions       #
 #################################
 
-function reset_acl_permissions($db) {
+function reset_acl_permissions($db)
+{
  
     // Remove current permissions
     $sql = "TRUNCATE ".PRFX."user_acl";
     
-    if(!$rs = $db->Execute($sql)) {
+    if (!$rs = $db->Execute($sql)) {
         force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
         exit;
-        
     } else {
     
-        // Insert default permissions 
+        // Insert default permissions
         $sql = "INSERT INTO `".PRFX."user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
                 ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -613,17 +595,14 @@ function reset_acl_permissions($db) {
                 ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                 ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
-        if(!$rs = $db->Execute($sql)) {
+        if (!$rs = $db->Execute($sql)) {
             force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
             exit;
-
         }
-        
     }
     
-    // Log activity        
-    write_record_to_activity_log(_gettext("ACL permissions reset to default settings."));    
+    // Log activity
+    write_record_to_activity_log(_gettext("ACL permissions reset to default settings."));
     
     return;
-    
 }
