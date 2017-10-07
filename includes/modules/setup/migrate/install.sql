@@ -295,14 +295,14 @@ CREATE TABLE `#__invoice_prefill_items` (
 INSERT INTO `#__invoice_prefill_items` (`invoice_prefill_id`, `description`, `type`, `amount`, `active`) VALUES
 (1, 'Callout', 'Labour', '35.00', 1),
 (2, 'Basic Labour', 'Labour', '20.00', 1),
-(3, 'Virus Removal', 'Labour', '65.00', 0),
-(4, 'PC Clean', 'Labour', '55.00', 0),
-(5, 'Diagnostics', 'Labour', '100.00', 0),
-(6, '3.0ghz 8400 CPU', 'Parts', '88.00', 0),
-(7, 'Server', 'Parts', '999.00', 0),
-(8, 'Hard Drive', 'Parts', '66.50', 0),
-(9, 'SSD', 'Parts', '112.00', 0),
-(10, 'RAM', 'Parts', '78.00', 0);
+(3, 'Virus Removal', 'Labour', '65.00', 1),
+(4, 'PC Clean', 'Labour', '55.00', 1),
+(5, 'Diagnostics', 'Labour', '100.00', 1),
+(6, '3.0ghz 8400 CPU', 'Parts', '88.00', 1),
+(7, 'Server', 'Parts', '999.00', 1),
+(8, 'Hard Drive', 'Parts', '66.50', 1),
+(9, 'SSD', 'Parts', '112.00', 1),
+(10, 'RAM', 'Parts', '78.00', 1);
 
 -- --------------------------------------------------------
 
