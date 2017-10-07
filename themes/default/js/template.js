@@ -146,7 +146,7 @@ function keyRestriction(e, allowedCharacters, spacesAllowed = false, copyAndPast
     // Grab the character from the pressed key
     var key = e.key;
     
-    // Is copy and paste allowed (Ctrl + x,c,v) - Windows and Mac (allows for Caps Lock being on) - fixe paste not working with onlyPhoneNumber()
+    // Is copy and paste allowed (Ctrl + x,c,v) - Windows and Mac (allows for Caps Lock being on)
     if ((e.ctrlKey === true || e.metaKey === true) && (key === 'x' || key === 'X' || key === 'c' || key === 'C' || key === 'v' || key === 'V') && copyAndPasteAllowed === true)
         return true;        
     
