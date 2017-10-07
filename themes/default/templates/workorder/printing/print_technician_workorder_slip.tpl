@@ -119,6 +119,8 @@
 
             <!-- Left Column -->
             <td valign="top" width="60%">
+                
+                <!-- Scope -->
                 <table border="0" cellpadding="4" cellspacing="0">               
                     <tr>
                         <td valign="top" nowrap><b>{t}Scope{/t}:</td>

@@ -98,14 +98,24 @@
         </tr>    
     </table>
     <br />
-
-    <!-- Job Description -->
+    
+    <!-- Job Information -->
     <table width="750" border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse; border: 3px solid black;" bgcolor="#999999">
+        
+        <!-- Scope -->
+        <tr>
+            <td valign="top" nowrap><b>{t}Scope{/t}:</td>
+        </tr>
+        <tr>
+            <td valign="top" nowrap>{$workorder_details.scope}</td>
+        </tr>
+        
+        <!-- Description -->
         <tr>
             <td><b>{t}Description{/t}:<b></td>       
         </tr>
         <tr>
-            <td><div style="min-height: 100px;">{$workorder_details.description}</div></td>
+            <td><div style="min-height: 75px;">{$workorder_details.description}</div></td>
         </tr>
         <tr>
             <td><b>{t}Required Passwords{/t}:</b><br /><br /></td>
