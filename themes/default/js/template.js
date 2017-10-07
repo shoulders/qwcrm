@@ -47,7 +47,7 @@ function changePage() {
     location.href = document.getElementById('changeThisPage').value;
 }
 
-/** Key Input Restrictors - Using event.key **/
+/** Key Input Restrictors - Using event.key **/ // back slash and double quotes need to be escaped
 
 // Allows Only Letters
 function onlyAlpha(e) {
@@ -81,7 +81,7 @@ function onlyName(e) {
 
 // Phone Numbers
 function onlyPhoneNumber(e) {
-    return keyRestriction(e, "0123456789.()-+", true);
+    return keyRestriction(e, "0123456789.()-+", true);    
 }
 
 // URL
@@ -118,9 +118,9 @@ function onlyPassword(e) {
 // Dates
 function onlyDate(e) {   
    
-   //return keyRestriction(e, "0123456789\/", false);
+   //return keyRestriction(e, "0123456789/", false);
    
-   // Allows only the date picker to fill in date boxes
+   // Allows only the date picker to fill in date boxes, no keys or copy and paste (keyboard)
    return false;
 }
 
@@ -134,11 +134,21 @@ function onlyFilePath(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/\\:_.", false);
 }
 
+/* Escape Strings for parsing - is this needed?
+function escapeRegExp(string){
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+*/
+
 // Common Function for Key Input Restriction
-function keyRestriction(e, allowedCharacters, spacesAllowed) {    
+function keyRestriction(e, allowedCharacters, spacesAllowed = false, copyAndPasteAllowed = true) {    
     
     // Grab the character from the pressed key
-    var key = e.key;   
+    var key = e.key;
+    
+    // Is copy and paste allowed (Ctrl + x,c,v) - Windows and Mac (allows for Caps Lock being on) - fixe paste not working with onlyPhoneNumber()
+    if ((e.ctrlKey === true || e.metaKey === true) && (key === 'x' || key === 'X' || key === 'c' || key === 'C' || key === 'v' || key === 'V') && copyAndPasteAllowed === true)
+        return true;        
     
     // Are Spaces Allowed
     if (key === ' ' && spacesAllowed === true)
@@ -159,9 +169,10 @@ function keyRestriction(e, allowedCharacters, spacesAllowed) {
     // Allowed Characters
     else if (allowedCharacters.indexOf(key) > -1)
         return true;
-    else
-        return false;
     
+    // Input not allowed
+    return false;
+   
 }
 
 // Confirm Passwords Match - Form Submmision Control - No Visual message (not used anywhere)
