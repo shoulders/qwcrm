@@ -20,6 +20,12 @@ if($invoice_id == '') {
     exit;
 }
 
+// Check if the invoice is closed
+if(get_invoice_details($db, $invoice_id, 'is_closed')) {
+    force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("You cannot edit the invoice because it is closed."));
+    exit;
+}
+
 ##################################
 #      Update Invoice            #
 ##################################
