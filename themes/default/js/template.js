@@ -118,7 +118,7 @@ function onlyPassword(e) {
 // Dates
 function onlyDate(e) {   
    
-   //return keyRestriction(e, "0123456789/", false);
+   //return keyRestriction(e, "0123456789/", false, false);
    
    // Allows only the date picker to fill in date boxes, no keys or copy and paste (keyboard)
    return false;
