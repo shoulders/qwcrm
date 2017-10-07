@@ -26,9 +26,9 @@ defined('_QWEXEC') or die;
 /** Workorders **/ 
 
 ##########################################
-# Get single Work Order status           #
+# Get single Work Order status           # // not currently used
 ##########################################
-
+/*
 function menu_get_single_workorder_is_closed($db, $workorder_id){
     
     $sql = "SELECT is_closed FROM ".PRFX."workorder WHERE workorder_id=".$db->qstr($workorder_id);
@@ -42,4 +42,4 @@ function menu_get_single_workorder_is_closed($db, $workorder_id){
         
     }
     
-}
+}*/

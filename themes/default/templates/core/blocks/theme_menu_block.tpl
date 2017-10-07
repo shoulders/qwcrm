@@ -37,11 +37,11 @@
                     {if $customer_id != ''}
                         <a href="index.php?page=workorder:new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>                        
                     {/if}
-                    {if $workorder_id != ''}
+                    {* if $workorder_id != ''}
                         {if $menu_workorder_is_closed === '0'}                            
                             <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Close{/t}</a>                            
                         {/if}                       
-                    {/if}
+                    {/if *}
                     <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
                     
                     <!-- workorders admin -->
