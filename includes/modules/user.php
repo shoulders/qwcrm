@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 #    Display Users                  #
 #####################################
 
-function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $user_type = null, $usergroup = null) {
+function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $user_type = null, $usergroup = null) {
     
     global $smarty;
 
@@ -75,8 +75,8 @@ function display_users($db, $direction = 'DESC', $use_pages = false, $page_no = 
             FROM ".PRFX."user
             LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user.usergroup = ".PRFX."user_usergroups.usergroup_id)
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."user.user_id
-            ORDER BY ".PRFX."user.user_id
+            GROUP BY ".PRFX."user.".$order_by."
+            ORDER BY ".PRFX."user.".$order_by."
             ".$direction;  
    
     /* Restrict by pages */

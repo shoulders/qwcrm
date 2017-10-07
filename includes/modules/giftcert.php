@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
+function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
 
     global $smarty;
     
@@ -65,8 +65,8 @@ function display_giftcerts($db, $direction = 'DESC', $use_pages = false, $page_n
             LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.employee_id = ".PRFX."user.user_id
             LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.customer_id = ".PRFX."customer.customer_id            
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."giftcert.giftcert_id           
-            ORDER BY ".PRFX."giftcert.giftcert_id
+            GROUP BY ".PRFX."giftcert.".$order_by."        
+            ORDER BY ".PRFX."giftcert.".$order_by."
             ".$direction;           
 
     /* Restrict by pages */

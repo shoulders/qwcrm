@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Invoices                  #
 #########################################
 
-function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
 
     global $smarty;
     
@@ -89,8 +89,8 @@ function display_invoices($db, $direction = 'DESC', $use_pages = false, $page_no
         LEFT JOIN ".PRFX."user ON ".PRFX."invoice.employee_id = ".PRFX."user.user_id
         LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.customer_id = ".PRFX."customer.customer_id
         ".$whereTheseRecords."
-        GROUP BY ".PRFX."invoice.invoice_id           
-        ORDER BY ".PRFX."invoice.invoice_id
+        GROUP BY ".PRFX."invoice.".$order_by."         
+        ORDER BY ".PRFX."invoice.".$order_by."
         ".$direction;
             
     /* Restrict by pages */

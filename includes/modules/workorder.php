@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 # Display all Work orders for the given status      #
 #####################################################
 
-function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
     
     global $smarty;    
    
@@ -100,8 +100,8 @@ function display_workorders($db, $direction = 'DESC', $use_pages = false, $page_
             LEFT JOIN ".PRFX."user ON ".PRFX."workorder.employee_id   = ".PRFX."user.user_id
             LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.customer_id = ".PRFX."customer.customer_id                 
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."workorder.workorder_id
-            ORDER BY ".PRFX."workorder.workorder_id
+            GROUP BY ".PRFX."workorder.".$order_by."
+            ORDER BY ".PRFX."workorder.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */

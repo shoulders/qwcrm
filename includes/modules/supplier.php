@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Suppliers       #
 ###############################
 
-function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
+function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
     
     global $smarty;
     
@@ -51,8 +51,8 @@ function display_suppliers($db, $direction = 'DESC', $use_pages = false, $page_n
             FROM ".PRFX."supplier                                                   
             ".$whereTheseRecords."
             ".$likeTheseRecords."
-            GROUP BY ".PRFX."supplier.supplier_id
-            ORDER BY ".PRFX."supplier.supplier_id
+            GROUP BY ".PRFX."supplier.".$order_by."
+            ORDER BY ".PRFX."supplier.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */

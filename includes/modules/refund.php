@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display refunds       #
 #############################
 
-function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
+function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
     
     global $smarty;
     
@@ -51,8 +51,8 @@ function display_refunds($db, $direction = 'DESC', $use_pages = false, $page_no 
             FROM ".PRFX."refund                                                   
             ".$whereTheseRecords."
             ".$likeTheseRecords."
-            GROUP BY ".PRFX."refund.refund_id
-            ORDER BY ".PRFX."refund.refund_id
+            GROUP BY ".PRFX."refund.".$order_by."
+            ORDER BY ".PRFX."refund.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
