@@ -49,22 +49,27 @@ function changePage() {
 
 /** Key Input Restrictors - Using event.key **/ // back slash and double quotes need to be escaped
 
-// Allows Only Letters
+/* Allows Only Visible ASCII characters - reference only
+function onlyAllVisible(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~!@#$%^&*()-_=+[]/\\{}|;':\",.<>?", true);
+}*/
+
+// Letters
 function onlyAlpha(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", true);
 }
 
-// Numbers and Letters
+// Letters and Numbers
 function onlyAlphaNumeric(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", true);
 }
 
-// Numbers, Letters, Date and Finance
-function onlySearch(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.", true);
+// Letters and Numbers with Punctuation
+function onlyAlphaNumericPunctuation(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.,'-", true);
 }
 
-// Numbers Only
+// Numbers
 function onlyNumber(e) {
     return keyRestriction(e, "0123456789", false);
 }
@@ -74,9 +79,15 @@ function onlyNumberPeriod(e) {
     return keyRestriction(e, "0123456789.", false);
 }
 
-// Number, Letters, period(.). apostophe (') and hyphen (-)
+// Numbers, Letters, Date and Finance
+function onlySearch(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.,'-", true);
+}
+
+
+// Names
 function onlyName(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.'-", true);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,'-", true);
 }
 
 // Phone Numbers
@@ -97,6 +108,11 @@ function onlyEmail(e) {
 // Addresses
 function onlyAddress(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
+}
+
+// Addresses
+function onlyGiftCertCode(e) {
+    return keyRestriction(e, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", false);
 }
 
 // Currency Symbols

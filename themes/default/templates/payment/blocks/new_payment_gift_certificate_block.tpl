@@ -31,7 +31,7 @@
                                 } );                                                        
                             </script>                                                    
                         </td>
-                        <td><input name="giftcert_code" class="olotd5" type="text" maxlength="16" required onkeydown="return onlyAlphaNumeric(event);"></td> 
+                        <td><input name="giftcert_code" class="olotd5" type="text" maxlength="16" required onkeydown="return onlyGiftCertCode(event);"></td> 
                     </tr>
                     <tr>
                         <td valign="top"><b>{t}Note{/t}</b></td>

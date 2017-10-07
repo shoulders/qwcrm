@@ -56,7 +56,7 @@
 
                                                                             <table cellpadding="5" cellspacing="0">
                                                                                 <tr>
-                                                                                    <td align="right"><b>{t}Company Name{/t}:</b> <span style="color: #ff0000">*</span></td>
+                                                                                    <td align="right"><b>{t}Name{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                     <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
@@ -162,7 +162,7 @@
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td><b>{t}Company Welcome Message{/t}:</b><br>{t}(Dashboard){/t}</td>
+                                                                                    <td><b>{t}Welcome Message{/t}:</b><br>{t}(Dashboard){/t}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea></td>

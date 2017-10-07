@@ -62,7 +62,7 @@
                                                                         <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
                                                                         <td class="olotd4">{$customer_details.display_name}</td>
                                                                         <td class="olotd4">
-                                                                            <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
+                                                                            <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                                                             <div class="suggestionsBoxWrapper">
                                                                                 <div class="suggestionsBox" id="suggestions">
                                                                                     <img src="{$theme_images_dir}upArrow.png" style="position: relative; top: -12px; left: 1px;" alt="upArrow" />
