@@ -136,6 +136,10 @@
                                                                     <td><font color="red"<b> {$pending_invoices}</b></font></td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td><b>{t}Unpaid{/t}:</b></td>
+                                                                    <td><font color="red"<b> {$unpaid_invoices}</b></font></td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td><b>{t}Partially Paid{/t}:</b></td>
                                                                     <td><font color="red"<b> {$partially_paid_invoices}</b></font></td>
                                                                 </tr>
