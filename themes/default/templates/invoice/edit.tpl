@@ -506,7 +506,7 @@
                                                             <tr class="olotd4">
                                                                 <td class="row2"><b>{t}Transaction ID{/t}</b></td>
                                                                 <td class="row2"><b>{t}Date{/t}</b></td>
-                                                                <td class="row2"><b>{t}Price{/t}</b></td>
+                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
                                                                 <td class="row2"><b>{t}Method{/t}</b></td>
                                                             </tr>                                                            
                                                             {section name=t loop=$transactions}
