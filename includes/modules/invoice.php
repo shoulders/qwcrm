@@ -207,8 +207,13 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
         insert_workorder_history_note($db, $workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
                 
         // Log activity        
-        write_record_to_activity_log(_gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');
-
+        if($workorder_id) {            
+            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$workorder_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.';
+        } else {            
+            $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
+        }        
+        write_record_to_activity_log($record);
+        
         // Update last active record    
         update_customer_last_active($db, $customer_id);
         update_workorder_last_active($db, $workorder_id);        
@@ -660,7 +665,7 @@ function update_invoice_status($db, $invoice_id, $new_status) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $invoice_details['status']) {        
-        postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status."));
+        postEmulationWrite('warning_msg', _gettext("Nothing done. The new invoice status is the same as the current invoice status."));
         return false;
     }    
     

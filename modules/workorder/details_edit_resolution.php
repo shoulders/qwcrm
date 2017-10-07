@@ -41,7 +41,9 @@ if(isset($VAR['submit'])) {
 
     // Close with invoice
     if($VAR['submit'] == 'closewithinvoice') {
-        close_workorder_with_invoice($db, $workorder_id, $VAR['resolution']);       
+        close_workorder_with_invoice($db, $workorder_id, $VAR['resolution']);
+        
+        // Create a new invoice attached to this work order
         force_page('invoice', 'new&workorder_id='.$workorder_id, 'information_msg='._gettext("Work Order has been closed with an invoice."));
         exit;
     }
