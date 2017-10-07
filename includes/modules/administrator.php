@@ -358,7 +358,7 @@ function write_config_file($content)
     } else {
         
         // Make file is writable - is this needed?
-        chmod($file, '0644');
+        chmod($file, 0644);
     
         // Open file
         $fp = fopen($file, 'w');
@@ -372,7 +372,7 @@ function write_config_file($content)
     fclose($fp);
 
     // Make file 444
-    chmod($file, '0444');      
+    chmod($file, 0444);      
 
     return true;
     
