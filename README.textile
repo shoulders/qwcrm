@@ -1,5 +1,9 @@
 h1. QWcrm Latest News
 
+01-11-17
+
+just doing the final fixes to do with VAT/Tax and then i can release QWcrm through my website "QuantumWarp":https://quantumwarp.com/
+
 30-09-17
 
 Final testing and changes are being made. QWcrm should be released soon. I will offer support and downloads through my website "QuantumWarp":https://quantumwarp.com/
