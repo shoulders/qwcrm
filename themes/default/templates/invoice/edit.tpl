@@ -72,7 +72,7 @@
         //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
         //el.setAttribute('type', 'text');  // only required of 'input'
-        //el.setAttribute('maxlength', '50');
+        //el.setAttribute('maxlength', '100');
         el.required = true;
         //el.onkeydown = 'return onlyAlphaNumeric(event)';
         buildRow.appendChild(el);
@@ -95,7 +95,7 @@
 
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
-        combo.DOMelem_input.maxLength = 50;    
+        combo.DOMelem_input.maxLength = 100;    
         combo.DOMelem_input.required = true;
         combo.setComboText('');                 // by default sets comobobox to empty
 
@@ -226,7 +226,7 @@
         //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
         //el.setAttribute('type', 'text');
-        //el.setAttribute('maxlength', '50');
+        //el.setAttribute('maxlength', '100');
         el.required = true;       
         //el.onkeydown = 'return onlyAlphaNumeric(event)';
         buildRow.appendChild(el);
@@ -243,7 +243,7 @@
 
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
-        combo.DOMelem_input.maxLength = 50;    
+        combo.DOMelem_input.maxLength = 100;    
         combo.DOMelem_input.required = true;
         combo.setComboText('');                 // by default sets comobobox to empty
 
