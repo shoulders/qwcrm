@@ -41,9 +41,9 @@
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
-                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}VAT/Tax{/t} {t}Rate{/t}</option>
-                                                                        <option value="tax_amount"{if $search_category == 'tax'} selected{/if}>{t}VAT/Tax{/t} {t}Amount{/t}</option>
-                                                                        <option value="gross_amount"{if $search_category == 'total'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>
+                                                                        <option value="vat_rate"{if $search_category == 'vat_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
+                                                                        <option value="vat_amount"{if $search_category == 'vat_amount'} selected{/if}>{t}VAT{/t} {t}Amount{/t}</option>
+                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
                                                                         <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>                                                                        
                                                                     </select>
@@ -116,9 +116,9 @@
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                     <tr>
                                                         <td class="olohead">{t}Expense ID{/t}</td>
-                                                        <td class="olohead">{t}Payee{/t}</td>
-                                                        <td class="olohead">{t}Date{/t}</td>
                                                         <td class="olohead">{t}INV ID{/t}</td>
+                                                        <td class="olohead">{t}Payee{/t}</td>
+                                                        <td class="olohead">{t}Date{/t}</td>                                                        
                                                         <td class="olohead">{t}Type{/t}</td>
                                                         <td class="olohead">{t}Payment Method{/t}</td>
                                                         <td class="olohead">{t}Net Amount{/t}</td>
@@ -133,9 +133,9 @@
                                                         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].expense_id}';" class="row1">
                                                             <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">{$search_result[i].expense_id}</a></td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].payee}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>
                                                             <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$search_result[i].invoice_id}">{$search_result[i].invoice_id}</a></td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].payee}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>                                                            
                                                             <td class="olotd4" nowrap>
                                                                 {section name=s loop=$expense_types}    
                                                                     {if $search_result[i].type == $expense_types[s].expense_type_id}{t}{$expense_types[s].display_name}{/t}{/if}        
@@ -147,8 +147,8 @@
                                                                 {/section} 
                                                             </td>
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].net_amount}</td>
-                                                            <td class="olotd4" nowrap>{$search_result[i].tax_rate} %</td>
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].tax_amount}</td>
+                                                            <td class="olotd4" nowrap>{$search_result[i].vat_rate} %</td>
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].vat_amount}</td>
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].gross_amount}</td>
                                                             <td class="olotd4" nowrap>
                                                                 {if $search_result[i].notes != ''}

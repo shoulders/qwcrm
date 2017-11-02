@@ -223,8 +223,8 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$expense_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}VAT/Tax{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$expense_tax_amount|string_format:"%.2f"}</b></font></td>
+                                                                    <td><b>{t}VAT{/t}:</b></td>
+                                                                    <td><font color="red"<b>{$currency_sym}{$expense_vat_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>{t}Gross{/t}:</b></td>
@@ -241,8 +241,8 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$refund_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}VAT/Tax{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$refund_tax_amount|string_format:"%.2f"}</b></font></td>
+                                                                    <td><b>{t}VAT{/t}:</b></td>
+                                                                    <td><font color="red"<b>{$currency_sym}{$refund_vat_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>{t}Gross{/t}:</b></td>

@@ -39,8 +39,8 @@
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
-                                                                        <option value="tax_rate"{if $search_category == 'tax_rate'} selected{/if}>{t}VAT/Tax{/t} {t}Rate{/t}</option>
-                                                                        <option value="tax_amount"{if $search_category == 'tax_amount'} selected{/if}>{t}VAT/Tax{/t} {t}Amount{/t}</option>
+                                                                        <option value="vat_rate"{if $search_category == 'vat_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
+                                                                        <option value="vat_amount"{if $search_category == 'vat_amount'} selected{/if}>{t}VAT{/t} {t}Amount{/t}</option>
                                                                         <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                      
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
                                                                         <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
@@ -142,8 +142,8 @@
                                                                 {/section} 
                                                             </td>                                                               
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].net_amount}</td>                                                               
-                                                            <td class="olotd4" nowrap>{$search_result[i].tax_rate} %</td>                                                                
-                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].tax_amount}</td>                                                            
+                                                            <td class="olotd4" nowrap>{$search_result[i].vat_rate} %</td>                                                                
+                                                            <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].vat_amount}</td>                                                            
                                                             <td class="olotd4" nowrap>{$currency_sym} {$search_result[i].gross_amount}</td>                                                                
                                                             <td class="olotd4" nowrap>{if $search_result[i].notes != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$search_result[i].items|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();"></td>                                                                

@@ -144,8 +144,8 @@ function insert_refund($db, $VAR) {
             type             =". $db->qstr( $VAR['type']                    ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
-            tax_rate         =". $db->qstr( $VAR['tax_rate']                ).",
-            tax_amount       =". $db->qstr( $VAR['tax_amount']              ).",
+            vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
+            vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
             notes            =". $db->qstr( $VAR['notes']                   );
@@ -227,8 +227,8 @@ function update_refund($db, $refund_id, $VAR) {
             type             =". $db->qstr( $VAR['type']                    ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
-            tax_rate         =". $db->qstr( $VAR['tax_rate']                ).",
-            tax_amount       =". $db->qstr( $VAR['tax_amount']              ).",
+            vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
+            vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
             notes            =". $db->qstr( $VAR['notes']                   )."

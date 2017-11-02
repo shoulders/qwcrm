@@ -89,12 +89,12 @@
                                                                             <td><input name="net_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"></b></a></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}VAT/Tax{/t} {t}Rate{/t}</td>
-                                                                            <td><input name="tax_rate" class="olotd5" size="5" value="{$tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
+                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}VAT{/t} {t}Rate{/t}</td>
+                                                                            <td><input name="vat_rate" class="olotd5" size="5" value="{$vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}VAT/Tax{/t} {t}Amount{/t}</b></td>
-                                                                            <td><input name="tax_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                                            <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
+                                                                            <td><input name="vat_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
