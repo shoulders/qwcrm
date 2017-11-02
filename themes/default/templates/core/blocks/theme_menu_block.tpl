@@ -41,8 +41,7 @@
                         {if $menu_workorder_is_closed === '0'}                            
                             <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Close{/t}</a>                            
                         {/if}                       
-                    {/if *}
-                    <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
+                    {/if *}                    
                     
                     <!-- workorders admin -->
                     {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 3}
@@ -52,7 +51,11 @@
                         {if $workorder_id != ''}
                             <a href="index.php?page=workorder:status&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
                         {/if}    
-                    {/if}
+                    {/if}                
+                
+                    <!-- Schedules -->
+                    <a href="index.php?page=schedule:day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
+                
                 </div>
 
                 <!-- Invoices -->
