@@ -74,14 +74,14 @@
         //el.setAttribute('type', 'text');  // only required of 'input'
         //el.setAttribute('maxlength', '100');
         el.required = true;
-        //el.onkeydown = 'return onlyAlphaNumeric(event)';
+        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
         buildRow.appendChild(el);
         
             // Other key press examples - utested, unused
-            //el.setAttribute('onkeypress', 'return onlyAlphaNumeric(event)');
-            //el.setAttribute('onkeydown', 'return onlyAlphaNumeric(event)');
-            //el.onkeypress = function(event) { return onlyAlphaNumeric(event); } ;        
-            //el.onkeydown = 'return onlyAlphaNumeric(event)';
+            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
+            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
+            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
 
 
         // Description Cell - Populate the Select Options
@@ -102,7 +102,7 @@
         // Description Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
 
-            if(onlyAlphaNumeric(e)) { return true; }
+            if(onlyAlphaNumericPunctuation(e)) { return true; }
 
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();
@@ -228,7 +228,7 @@
         //el.setAttribute('type', 'text');
         //el.setAttribute('maxlength', '100');
         el.required = true;       
-        //el.onkeydown = 'return onlyAlphaNumeric(event)';
+        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
         buildRow.appendChild(el);
         
         
@@ -250,7 +250,7 @@
         // Description Cell - Apply Key restriction to the virtual combobox
         dhtmlxEvent(combo.DOMelem_input, "keypress", function(e) {
 
-            if(onlyAlphaNumeric(e)) { return true; }
+            if(onlyAlphaNumericPunctuation(e)) { return true; }
 
             e.cancelBubble=true;
             if (e.preventDefault) e.preventDefault();

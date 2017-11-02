@@ -66,7 +66,7 @@ function onlyAlphaNumeric(e) {
 
 // Letters and Numbers with Punctuation
 function onlyAlphaNumericPunctuation(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.,'-", true);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.,'-()", true);
 }
 
 // Numbers
