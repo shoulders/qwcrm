@@ -56,4 +56,4 @@ So now give the "demo":http://demo.quantumwarp.com a try or download your free c
 
 h2. Special Thanks
 
-A big thanks goes out to those how have "contributed":https://github.com/shoulders/qwcrm/contributors to MyITCRM
+A big thanks goes out to those how have "contributed":https://github.com/shoulders/qwcrm/contributors to MyITCRM and QWcrm

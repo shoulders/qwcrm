@@ -419,7 +419,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_sql_logging == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_sql_logging == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm SQL Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable SQL logging for QWcrm. This attach the SQL query when present to the standard QWcrm Error Log. This is deisabled by default because it can cause your logs to get large quickly.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm SQL Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable SQL logging for QWcrm. This attach the SQL query when present to the standard QWcrm Error Log. This is disabled by default because it can cause your logs to get large quickly.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>
