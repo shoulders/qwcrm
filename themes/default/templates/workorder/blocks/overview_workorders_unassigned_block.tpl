@@ -70,7 +70,7 @@
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="7" class="error">{t}There are No new Work Orders{/t}</td>
+            <td colspan="7" class="error">{t}There are no unassigned work orders{/t}</td>
         </tr>        
     {/section}
 </table>

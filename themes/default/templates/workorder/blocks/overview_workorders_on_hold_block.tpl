@@ -70,7 +70,7 @@
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="7" class="error">{t}There are No Unpaid Work Orders{/t}</td>
+            <td colspan="7" class="error">{t}There are no work orders on hold{/t}</td>
         </tr>
     {/section}
 </table>
