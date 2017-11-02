@@ -12,6 +12,34 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
+<script>
+
+    function calculateTotals(fieldName) {
+        
+        // Get input values
+        var net_amount  = Number(document.getElementById('net_amount').value);
+        var vat_rate    = Number(document.getElementById('vat_rate').value);
+        var vat_amount  = Number(document.getElementById('vat_amount').value);        
+        
+        // Calculations        
+        var auto_vat_amount = (net_amount * (vat_rate/100));        
+        if(fieldName !== 'vat_amount') {
+            var auto_gross_amount = (net_amount + auto_vat_amount);
+        } else {            
+            var auto_gross_amount = (net_amount + vat_amount);
+        }
+        
+        // Set the new vat_amount input value if not editing the vat_amount input field
+        if(fieldName !== 'vat_amount') {
+            document.getElementById('vat_amount').value = auto_vat_amount.toFixed(2);
+        }
+        
+        // Set the new gross_amount input value
+        document.getElementById('gross_amount').value = auto_gross_amount.toFixed(2);        
+    
+    }
+
+</script>
 
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -85,20 +113,20 @@
                                                                             </td>
                                                                         </tr>                                                                                                          
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Net Amount{/t}</b></td>
-                                                                            <td><input name="net_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"></b></a></td>
+                                                                            <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td><input id="net_amount" name="net_amount" class="olotd5" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('net_amount');"></b></a></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><span style="color: #ff0000"></span><b>{t}VAT{/t} {t}Rate{/t}</td>
-                                                                            <td><input name="vat_rate" class="olotd5" size="5" value="{$vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
+                                                                            <td><input id="vat_rate" name="vat_rate" class="olotd5" size="5" value="{$vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('vat_rate');"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                                                            <td><input name="vat_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                                            <td><input id="vat_amount" name="vat_amount" class="olotd5" size="10" value="0.00" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('vat_amount');"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input name="gross_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                                            <td><input id="gross_amount" name="gross_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
