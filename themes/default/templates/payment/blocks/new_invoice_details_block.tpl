@@ -12,7 +12,7 @@
         <td class="menuhead2"><b>{t}Status{/t}</b></td>
         <td class="menuhead2"><b>{t}Date{/t}</b></td>
         <td class="menuhead2"><b>{t}Due Date{/t}</b></td>
-        <td class="menuhead2"><b>{t}Amount{/t}</b></td>        
+        <td class="menuhead2"><b>{t}Gross{/t}</b></td>        
         <td class="menuhead2"><b>{t}Balance{/t}</b></td>
     </tr>
     <tr class="olotd4">
@@ -25,7 +25,7 @@
         </td>        
         <td class="row2">{$invoice_details.date|date_format:$date_format}</td>
         <td class="row2">{$invoice_details.due_date|date_format:$date_format}</td>
-        <td class="row2">{$currency_sym}{$invoice_details.total|string_format:"%.2f"}</td>        
+        <td class="row2">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>        
         <td class="row2"><font color="#cc0000"><b>{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</b></font></td>      
     </tr>
     <tr>
