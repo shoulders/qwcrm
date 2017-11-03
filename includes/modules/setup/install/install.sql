@@ -40,9 +40,9 @@ CREATE TABLE `#__company` (
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `company_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `tax_enabled` int(1) NOT NULL,
+  `tax_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `vat_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `year_start` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `year_end` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `welcome_msg` text COLLATE utf8_unicode_ci NOT NULL,
@@ -63,8 +63,8 @@ CREATE TABLE `#__company` (
 -- Dumping data for table `#__company`
 --
 
-INSERT INTO `#__company` (`display_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `vat_number`, `tax_enabled`, `tax_rate`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'media/logo.png', 'QWcrm House\r\nEasy Street\r\n\r\n\r\nTel: 07777 123456\r\nWeb: quantumwarp.com', 'London', 'London', 'SW1A 1AA', 'United Kingdom', '', '', '', 'noreply@quantumwarp.com', 'https://quantumwarp.com/', '', '', 0, '0.00', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>QuantumWarp</p>\r\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\r\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '');
+INSERT INTO `#__company` (`display_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
+('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', 'none', '0.00', '', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
 
 -- --------------------------------------------------------
 
@@ -146,8 +146,8 @@ CREATE TABLE `#__expense` (
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `tax_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `notes` text COLLATE utf8_unicode_ci NOT NULL
@@ -228,6 +228,7 @@ CREATE TABLE `#__invoice` (
   `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `due_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `tax_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00',
   `discount_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -253,7 +254,7 @@ CREATE TABLE `#__invoice` (
 CREATE TABLE `#__invoice_labour` (
   `invoice_labour_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `qty` int(10) NOT NULL,
   `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00'
@@ -268,7 +269,7 @@ CREATE TABLE `#__invoice_labour` (
 CREATE TABLE `#__invoice_parts` (
   `invoice_parts_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `qty` int(10) NOT NULL,
   `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00'
@@ -463,8 +464,8 @@ CREATE TABLE `#__refund` (
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `tax_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `notes` text COLLATE utf8_unicode_ci NOT NULL
@@ -645,7 +646,7 @@ INSERT INTO `#__user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Te
 ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('administrator:update', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-('company:edit', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('company:settings', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:dashboard', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -961,6 +962,12 @@ ALTER TABLE `#__invoice_prefill_items`
 --
 ALTER TABLE `#__invoice_statuses`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__payment`
+--
+ALTER TABLE `#__payment`
+  ADD PRIMARY KEY (`bank_account_name`);
 
 --
 -- Indexes for table `#__payment_credit_cards`

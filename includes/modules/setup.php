@@ -749,8 +749,8 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         );
     migrate_table($db, $qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
     
-    // change invoice tax_type to migrated for all migrated invoices
-    update_column_values($db, $qwcrm_prefix.'invoice', 'tax_type', '', 'migrated');
+    // Change tax_type to selected Company Tax Type for all migrated invoices - This is an assumption
+    update_column_values($db, $qwcrm_prefix.'invoice', 'tax_type', '', get_company_details($db, 'tax_type'));
     
     // change close dates from zero to ''
     update_column_values($db, $qwcrm_prefix.'invoice', 'close_date', '0', '');
@@ -1771,8 +1771,8 @@ function get_merged_company_details($db) {
     $merged['email']                    = $myitcrm_company_details['COMPANY_EMAIL'];
     $merged['website']                  = '';
     $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];    
-    $merged['tax_type']                 = '';
-    $merged['tax_rate']                 = '';
+    $merged['tax_type']                 = $qwcrm_company_details['tax_type'];
+    $merged['tax_rate']                 = $qwcrm_company_details['tax_rate'];
     $merged['vat_number']               = '';
     $merged['year_start']               = '';
     $merged['year_end']                 = '';
