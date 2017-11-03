@@ -731,6 +731,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'date'              => 'INVOICE_DATE',
         'due_date'          => 'INVOICE_DUE',
         'discount_rate'     => 'DISCOUNT_APPLIED',
+        'tax_type'          => '',
         'tax_rate'          => 'TAX_RATE',
         'sub_total'         => 'SUB_TOTAL',
         'discount_amount'   => 'DISCOUNT',
@@ -747,6 +748,9 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'paid_date'         => 'PAID_DATE'     
         );
     migrate_table($db, $qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
+    
+    // change invoice tax_type to migrated for all migrated invoices
+    update_column_values($db, $qwcrm_prefix.'invoice', 'tax_type', '', 'migrated');
     
     // change close dates from zero to ''
     update_column_values($db, $qwcrm_prefix.'invoice', 'close_date', '0', '');

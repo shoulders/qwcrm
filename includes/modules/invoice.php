@@ -176,8 +176,11 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
 
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
     
-    // Tax Rate - Obeys is the VAT/Tax system is enabled
-    if(get_company_details($db, 'tax_type') == 'none') {
+    // Get invoice tax type
+    $tax_type = get_company_details($db, 'tax_type');
+    
+    // Tax Rate based on Tax Type
+    if($tax_type == 'none') {
         $tax_rate = '0.00';
     } else {        
         $tax_rate = get_company_details($db, 'tax_rate');
@@ -189,7 +192,8 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
             workorder_id    =". $db->qstr( $workorder_id                        ).",
             date            =". $db->qstr( time()                               ).",
             due_date        =". $db->qstr( time()                               ).",            
-            discount_rate   =". $db->qstr( $discount_rate                       ).",            
+            discount_rate   =". $db->qstr( $discount_rate                       ).",
+            tax_type        =". $db->qstr( $tax_type                            ).",
             tax_rate        =". $db->qstr( $tax_rate                            ).",
             open_date       =". $db->qstr( time()                               ).",
             status          =". $db->qstr( 'pending'                            ).",   
@@ -595,6 +599,7 @@ function update_invoice_full($db, $VAR) {
             date                =". $db->qstr( $VAR['date']            ).",
             due_date            =". $db->qstr( $VAR['due_date']        ).", 
             discount_rate       =". $db->qstr( $VAR['discount_rate']   ).",
+            tax_type            =". $db->qstr( $VAR['tax_type']        ).",   
             tax_rate            =". $db->qstr( $VAR['tax_rate']        ).",   
             sub_total           =". $db->qstr( $VAR['sub_total']       ).",    
             discount_amount     =". $db->qstr( $VAR['discount_amount'] ).",   
