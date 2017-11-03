@@ -139,7 +139,7 @@
                     <div>
                         <span>{t}Company{/t}</span>
                         
-                        <a href="index.php?page=company:edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Settings{/t}</a>
+                        <a href="index.php?page=company:settings"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Settings{/t}</a>
                         
                         <a href="index.php?page=company:business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>                        
                         <a href="index.php?page=payment:options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Payment Options{/t}</a>

@@ -184,7 +184,7 @@
             <!-- Payments Methods -->            
             
             <td colspan="1" valign="top">
-                <table width="540" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                <table width="530" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td align="left" ><font size="-1"><b>{t}Payment Instructions{/t}</b></font></td>
                     </tr>
@@ -245,7 +245,7 @@
             
            <!-- Totals Box -->
             <td colspan="2" valign="TOP">
-                <table width="210" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                <table width="220" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td class="olotd4" align="left"><b>{t}Sub Total{/t}</b></td>
                         <td class="olotd4" width="80" align="right">{$currency_sym} {$invoice_details.sub_total|string_format:"%.2f"}</td>
@@ -254,13 +254,13 @@
                         <td class="olotd4"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
                         <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
                     </tr>
-                    {if $company_details.tax_enabled}
+                    {if $company_details.tax_type != 'none'}
                         <tr>
                             <td class="olotd4"><b>{t}Net{/t}</b></td>
                             <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                         </tr>                    
                         <tr>
-                            <td class="olotd4"><b>{if $company_details.vat_number != ''}{t}VAT{/t}{else}{t}Tax{/t}{/if} (@ {$invoice_details.tax_rate}%)</b></td>
+                            <td class="olotd4"><b>{if $company_details.tax_type == 'vat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} (@ {$invoice_details.tax_rate}%)</b></td>
                             <td class="olotd4" width="80" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>
                         </tr>
                     {/if}
@@ -288,7 +288,7 @@
                 </td>
             </tr>
         {/if}
-        {if $company_details.tax_enabled && $company_details.vat_number != ''}}
+        {if $company_details.tax_type == 'vat'}}
             <tr>
                 <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
             </tr>

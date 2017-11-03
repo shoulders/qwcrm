@@ -1766,10 +1766,10 @@ function get_merged_company_details($db) {
     $merged['fax']                      = $myitcrm_company_details['COMPANY_FAX'];
     $merged['email']                    = $myitcrm_company_details['COMPANY_EMAIL'];
     $merged['website']                  = '';
-    $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];
-    $merged['vat_number']               = '';
-    $merged['tax_enabled']              = '';
+    $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];    
+    $merged['tax_type']                 = '';
     $merged['tax_rate']                 = '';
+    $merged['vat_number']               = '';
     $merged['year_start']               = '';
     $merged['year_end']                 = '';
     $merged['welcome_msg']              = $qwcrm_company_details['welcome_msg'];

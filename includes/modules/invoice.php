@@ -177,10 +177,10 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
     
     // Tax Rate - Obeys is the VAT/Tax system is enabled
-    if(get_company_details($db, 'tax_enabled')) {
+    if(get_company_details($db, 'tax_type') == 'none') {
+        $tax_rate = '0.00';
+    } else {        
         $tax_rate = get_company_details($db, 'tax_rate');
-    } else {
-        $tax_rate = '0';
     }    
     
     $sql = "INSERT INTO ".PRFX."invoice SET     
