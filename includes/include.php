@@ -989,13 +989,13 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
     // if activity logging not enabled exit
     if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
     
-    // Use any supplied IDs instead of $GLOBALS[] counterpart
+    /* Use any supplied IDs instead of $GLOBALS[] counterpart
     if(!$employee_id)   { $employee_id  = $GLOBALS['employee_id'];  }
     if(!$customer_id)   { $customer_id  = $GLOBALS['customer_id'];  }
     if(!$workorder_id)  { $workorder_id = $GLOBALS['workorder_id']; }
-    if(!$invoice_id)    { $invoice_id   = $GLOBALS['invoice_id'];   }    
+    if(!$invoice_id)    { $invoice_id   = $GLOBALS['invoice_id'];   }*/   
     
-    // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
+    // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
     if(!QFactory::getUser()->login_username) {
         $username = '-';
     } else {

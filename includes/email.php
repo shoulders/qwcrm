@@ -63,7 +63,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         
         // Log activity 
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-        write_record_to_activity_log($record);
+        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
         
         // Output the system message to the browser
         $system_message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
@@ -150,7 +150,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         
         // Log activity 
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-        write_record_to_activity_log($record);
+        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
         
         // Output the system message to the browser
@@ -212,7 +212,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             // Log activity             
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
-            write_record_to_activity_log($record);
+            write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
             
             // Output the system message to the browser
             $system_message = $record;
@@ -238,7 +238,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             }
             
-            write_record_to_activity_log($record);
+            write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
             
             // Update last active record
             update_user_last_active($db, $employee_id);         // will not error if no customer_id sent 
@@ -256,7 +256,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         
         // Log activity 
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
-        write_record_to_activity_log($record);
+        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
         write_record_to_email_error_log($Transport_exception->getMessage());
 
         // Output the system message to the browser

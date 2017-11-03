@@ -159,23 +159,22 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $VAR = array_merge($_POST, $_GET);
 }
 
-// These are used globally
-$workorder_id       = $VAR['workorder_id'];
-$customer_id        = $VAR['customer_id'];
-$expense_id         = $VAR['expense_id'];
-$refund_id          = $VAR['refund_id'];
-$supplier_id        = $VAR['supplier_id'];
-$invoice_id         = $VAR['invoice_id'];
-$schedule_id        = $VAR['schedule_id'];
-$giftcert_id        = $VAR['giftcert_id'];
-$user_id            = $VAR['user_id'];
-
-// Make sure an employee_id is always set - if no user is set use the logged in user
-//if(isset($VAR['employee_id'])) {$employee_id = $VAR['employee_id'];} else {$employee_id = QFactory::getUser()->login_user_id;}  // this might not be required
-$employee_id        = $VAR['employee_id'];
-
-// Get the page number if it exists or set to page number to 1 if not
-if(isset($VAR['page_no'])) {$page_no = $VAR['page_no'];} else {$page_no = 1;}
+// These are used globally and also a workaround for undefined indexes
+$workorder_id   =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
+$customer_id    =   isset($VAR['customer_id ']) ? $VAR['customer_id ']  : null;
+$expense_id     =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
+$refund_id      =   isset($VAR['refund_id '])   ? $VAR['refund_id ']    : null;
+$supplier_id    =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   : null;
+$invoice_id     =   isset($VAR['invoice_id'])   ? $VAR['invoice_id']    : null;
+$schedule_id    =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
+$giftcert_id    =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
+$user_id        =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
+$employee_id    =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
+$start_year     =   isset($VAR['start_year'])   ? $VAR['start_year']    : null;
+$start_month    =   isset($VAR['start_month'])  ? $VAR['start_month']   : null;
+$start_day      =   isset($VAR['start_day'])    ? $VAR['start_day']     : null;
+$page_no        =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
+$skip_logging   =   isset($skip_logging)        ? $skip_logging         : null;
 
 ##########################################
 #   Set Global PHP Values from QWcrm     #
@@ -260,7 +259,7 @@ if($QConfig->maintenance){
     }    
 
 // If there is a page set, verify it and build the controller
-} elseif($VAR['page'] != '') { 
+} elseif(isset($VAR['page']) && $VAR['page'] != '') { 
 
     // Explode the URL so we can get the module and page_tpl
     list($module, $page_tpl)    = explode(':', $VAR['page']);
@@ -311,7 +310,7 @@ $BuildPage = '';
 if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     
     // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
-    if ($VAR['theme'] === 'print') {        
+    if (isset($VAR['theme']) && $VAR['theme'] === 'print') {        
         require($page_display_controller);
         goto page_build_end;
     }
@@ -320,7 +319,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     set_page_header_and_meta_data($module, $page_tpl);
 
     // Fetch Header Block
-    if($VAR['theme'] != 'off') {     
+    if(!isset($VAR['theme']) || $VAR['theme'] != 'off') {     
         require('modules/core/blocks/theme_header_block.php');
     } else {
         //echo '<!DOCTYPE html><head></head><body>';
@@ -328,11 +327,11 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
-    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {       
+    if((!isset($VAR['theme']) || $VAR['theme'] != 'off') && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {       
         $BuildPage .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
         
         // is the menu disabled
-        if($VAR['theme'] != 'menu_off') {
+        if(!isset($VAR['theme']) || $VAR['theme'] != 'menu_off') {
             require('modules/core/blocks/theme_menu_block.php'); 
         }
         
@@ -342,12 +341,12 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     require($page_display_controller);    
 
     // Fetch Footer Legacy Template code Block (closes content table)
-    if($VAR['theme'] != 'off' && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {
+    if((!isset($VAR['theme']) || $VAR['theme'] != 'off') && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {
         $BuildPage .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
     }
 
     // Fetch the Footer Block
-    if($VAR['theme'] != 'off'){        
+    if(!isset($VAR['theme']) || $VAR['theme'] != 'off'){        
         require('modules/core/blocks/theme_footer_block.php');        
     }    
 
@@ -363,8 +362,9 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     
 } else {    
   
-    // Log activity        
-    write_record_to_activity_log(_gettext("A user tried to access the following resource without the correct pemissions.").' ('.$module.':'.$page_tpl.')');  
+    // Log activity
+    $record = _gettext("A user tried to access the following resource without the correct pemissions.").' ('.$module.':'.$page_tpl.')';
+    write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id); 
     
     //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$module.':'.$page_tpl);
     
@@ -377,14 +377,15 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
 #        Access Logging                        #
 ################################################
 
-if(!$skip_logging || defined('QWCRM_SETUP')) {
+if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
     
-    // This logs access details to the access log
+    // This logs QWcrm page load details to the access log
     if($QConfig->qwcrm_access_log == true){
         write_record_to_access_log();
     }
     
 }
+
 ################################################
 #         Content Plugins                      #
 ################################################
@@ -397,7 +398,7 @@ if(!$skip_logging || defined('QWCRM_SETUP')) {
 ################################################
 
 // Send Headers if 'print' mode is not set
-if ($VAR['theme'] !== 'print') {        
+if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
     
 }
 
@@ -406,7 +407,7 @@ if ($VAR['theme'] !== 'print') {
 ################################################
 
 // Compress page and send correct compression headers
-if ($QConfig->gzip == true && $VAR['theme'] !== 'print') {
+if ($QConfig->gzip == true && (!isset($VAR['theme']) || $VAR['theme'] !== 'print')) {
 
     $BuildPage = compress_page_output($BuildPage);
     
