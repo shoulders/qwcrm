@@ -342,23 +342,23 @@
                                                             <table cellpadding="5">
                                                                 <tr>
                                                                     <td style="text-align: center;">                                                                        
-                                                                        <p>[G] = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[N] = {t}Net{/t}</p>
-                                                                    </td>
-                                                                </tr>                                                                                                                               
-                                                                <tr>
-                                                                    <td style="text-align: center;">                                                                        
-                                                                        <p><strong>{t}VAT{/t} {t}Registered{/t}</strong></p>
-                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}[N] - ( {t}Expenses{/t}[N] - {t}Refunds{/t}[N] )</p> 
-                                                                        <p>{$currency_sym}{$vat_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})</p>
+                                                                        <p>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}</p>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="text-align: center;">
-                                                                        <p><strong>{t}Basic{/t} / {t}Sales Tax{/t}</strong></p>
-                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}[G] - ( {t}Expenses{/t}[G] - {t}Refunds{/t}[G] )</p>                                                                       
-                                                                        <p>{$currency_sym}{$basic_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>                                                                        
+                                                                        <p><strong>{t}No Tax{/t} / {t}Sales Tax{/t}</strong></p>
+                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[G]{/t} - ( {t}Expenses{/t}{t}[G]{/t} - {t}Refunds{/t}{t}[G]{/t} )</p>                                                                       
+                                                                        <p>{$currency_sym}{$no_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>                                                                        
                                                                     </td>
-                                                                </tr>                                                                
+                                                                </tr> 
+                                                                <tr>
+                                                                    <td style="text-align: center;">                                                                        
+                                                                        <p><strong>{t}VAT{/t}</strong></p>
+                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[N]{/t} - ( {t}Expenses{/t}{t}[N]{/t} - {t}Refunds{/t}{t}[N]{/t} )</p> 
+                                                                        <p>{$currency_sym}{$vat_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})</p>
+                                                                    </td>
+                                                                </tr>                                                                                                                               
                                                             </table>
                                                         </td>                                                                                                              
                                                         
