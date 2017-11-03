@@ -162,7 +162,7 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($db, $status = null, $user_id = null, $start_date = null, $end_date = null) {    
+function count_invoices($db, $status = null, $user_id = null, $start_date = null, $end_date = null, $tax_type = null) {    
     
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
@@ -221,6 +221,12 @@ function count_invoices($db, $status = null, $user_id = null, $start_date = null
         
     }
     
+    // Filter by Tax Type
+    if($tax_type) {
+        $whereTheseRecords .= " AND tax_type=".$db->qstr($tax_type);
+    }
+    
+    // Execute the SQL
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice
             ".$whereTheseRecords;                
@@ -240,7 +246,7 @@ function count_invoices($db, $status = null, $user_id = null, $start_date = null
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_date = null) {
+function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_date = null, $tax_type = null) {
         
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
@@ -271,6 +277,12 @@ function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_
         $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     }
     
+    // Filter by Tax Type
+    if($tax_type) {
+        $whereTheseRecords .= " AND tax_type=".$db->qstr($tax_type);
+    }
+    
+    // Execute the SQL
     $sql = "SELECT SUM(".PRFX."invoice.$value_name) AS sum
             FROM ".PRFX."invoice
             ".$whereTheseRecords;                
