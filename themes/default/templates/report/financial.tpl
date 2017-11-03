@@ -14,7 +14,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>    
-            <table width="700" cellpadding="4" cellspacing="0" border="0">
+            <table width="650" cellpadding="4" cellspacing="0" border="0">
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Financial Report{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
@@ -188,7 +188,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>{t}Qty{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$labour_items_count}</b></font></td>
+                                                                    <td><font color="red"<b>{if $labour_items_count == ''}0{else}{$labour_items_count}{/if}</b></font></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>{t}Sub{/t}:</b></td>
@@ -206,7 +206,7 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>{t}Qty{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$parts_count}</b></font></td>
+                                                                    <td><font color="red"<b>{if $parts_items_count == ''}0{else}{$parts_items_count}{/if}</b></font></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><b>{t}Sub{/t}:</b></td>
@@ -274,9 +274,9 @@
                                                 <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
                                                     
                                                     <tr>                                                        
-                                                        <td class="olohead">{t}Revenue{/t}</td>
-                                                        <td class="olohead">{t}VAT (Tax){/t}</td>
-                                                        <td class="olohead">{t}Calculations{/t}</td>                                                        
+                                                        <td class="olohead">{t}Invoiced{/t}</td>
+                                                        <td class="olohead">{t}VAT{/t}</td>
+                                                        <td class="olohead">{t}Profit{/t}</td>                                                        
                                                     </tr>                                                    
                                                     
                                                     <tr>
@@ -297,11 +297,11 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}VAT/Tax{/t}:</b></td>
+                                                                    <td><b>{t}Tax{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}Gross (Invoiced){/t}:</b></td>
+                                                                    <td><b>{t}Gross{/t}:</b></td>
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_gross_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
@@ -319,16 +319,16 @@
                                                             </table>
                                                         </td>
                                                         
-                                                        <!-- VAT (Tax) -->
+                                                        <!-- VAT -->
                                                         <td class="olotd4" valign="top">
                                                             <table>                                                                
                                                                 <tr>
-                                                                    <td><b>{t}Paid{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$vat_paid|string_format:"%.2f"}</b></font></td>
+                                                                    <td><b>{t}Outlay{/t}:</b></td>
+                                                                    <td><font color="red"<b>{$currency_sym}{$vat_outlay|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}Received{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$vat_received|string_format:"%.2f"}</b></font></td>
+                                                                    <td><b>{t}Invoiced{/t}:</b></td>
+                                                                    <td><font color="red"<b>{$currency_sym}{$vat_invoiced|string_format:"%.2f"}</b></font></td>
                                                                 </tr> 
                                                                 <tr>
                                                                     <td><b>{t}Balance{/t}:</b></td>
@@ -339,22 +339,26 @@
                                                         
                                                         <!-- Calculations -->
                                                         <td class="olotd4" valign="top">
-                                                            <table>
+                                                            <table cellpadding="5">
                                                                 <tr>
-                                                                    <td style="text-align: center;">{t}Taxable Profit = Invoiced - (Expenses - Refunds){/t}</td>
-                                                                </tr>
+                                                                    <td style="text-align: center;">                                                                        
+                                                                        <p>[G] = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[N] = {t}Net{/t}</p>
+                                                                    </td>
+                                                                </tr>                                                                                                                               
                                                                 <tr>
-                                                                    <td style="text-align: center;">
-                                                                        <strong>{t}Net{/t} ({t}No{/t} {t}VAT/Tax{/t} {t}Applied{/t})</strong><br>
-                                                                        {$currency_sym}{$taxable_profit_net} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})
+                                                                    <td style="text-align: center;">                                                                        
+                                                                        <p><strong>{t}VAT{/t} {t}Registered{/t}</strong></p>
+                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}[N] - ( {t}Expenses{/t}[N] - {t}Refunds{/t}[N] )</p> 
+                                                                        <p>{$currency_sym}{$vat_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})</p>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td style="text-align: center;">
-                                                                        <strong>{t}Gross{/t} ({t}VAT/Tax{/t} {t}Applied{/t})</strong><br>
-                                                                        {$currency_sym}{$taxable_profit_gross} = {$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})
+                                                                        <p><strong>{t}Basic{/t} / {t}Sales Tax{/t}</strong></p>
+                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}[G] - ( {t}Expenses{/t}[G] - {t}Refunds{/t}[G] )</p>                                                                       
+                                                                        <p>{$currency_sym}{$basic_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>                                                                        
                                                                     </td>
-                                                                </tr>
+                                                                </tr>                                                                
                                                             </table>
                                                         </td>                                                                                                              
                                                         

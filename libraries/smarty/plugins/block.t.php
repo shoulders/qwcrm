@@ -152,12 +152,8 @@ function smarty_block_t($params, $text) {
                         break;
                     
                 case 'tooltip' :
-                        // for tooltips - JS does not like new lines - tooltip does not like apostrophes
-
-                        // gives single line html with <br>, removes newlines, tabs and escapes apostrophes for javascript
-                        $text = nl2br($text);                        
-                        $text = strtr($text, array("\r" => ' ', "\n" => ' ', "\t" => ' ', '"' => '\\"'));
-                                                
+                        // Tooltips - does not like new lines or apostrophes because it is javascript based
+                        $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', "\t" => '    ','</' => '<\/'));
                         break;
                     
                 case 'no' :

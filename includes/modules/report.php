@@ -57,7 +57,7 @@ function count_customers($db, $status, $start_date = null, $end_date = null) {
         
     // Filter by Create Data
     if($start_date && $end_date) {
-        $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date);
+        $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date + 86399);
     }
     
     $sql = "SELECT COUNT(*) AS count
@@ -129,13 +129,13 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
     if($status == 'closed') {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date + 86399);
         }
         
     } else {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date + 86399);
         }
         
     }
@@ -210,13 +210,13 @@ function count_invoices($db, $status = null, $user_id = null, $start_date = null
     if($status == 'closed') {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date + 86399);
         } 
         
     } else {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date + 86399);
         }
         
     }
