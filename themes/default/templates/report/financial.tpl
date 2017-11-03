@@ -355,8 +355,8 @@
                                                                 <tr>
                                                                     <td style="text-align: center;">                                                                        
                                                                         <p><strong>{t}Sales Tax{/t}</strong></p>
-                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[N]{/t} - ( {t}Expenses{/t}{t}[N]{/t} - {t}Refunds{/t}{t}[N]{/t} )</p> 
-                                                                        <p>{$currency_sym}{$vat_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})</p>
+                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[N]{/t} - ( {t}Expenses{/t}{t}[G]{/t} - {t}Refunds{/t}{t}[G]{/t} )</p> 
+                                                                        <p>{$currency_sym}{$sales_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>
                                                                     </td>
                                                                 </tr> 
                                                                 <tr>

@@ -88,6 +88,7 @@ if(isset($VAR['submit'])) {
     
     // Profit  || Profit = Invoiced - (Expenses - Refunds) 
     $smarty->assign('no_tax_profit',    $invoice_gross_amount - ($expense_gross_amount - $refund_gross_amount)  );
+    $smarty->assign('sales_tax_profit', $invoice_net_amount - ($expense_gross_amount - $refund_gross_amount)    );
     $smarty->assign('vat_tax_profit',   $invoice_net_amount - ($expense_net_amount - $refund_net_amount)        );    
     
     /* Logging */
