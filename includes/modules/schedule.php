@@ -89,14 +89,21 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         exit;
     } else {
         
-        // Get the new Workorders ID
+        // Get work order details
+        $workorder_details = get_workorder_details($db, $workorder_id);
+        
+        // Get the new Schedule ID
         $schedule_id = $db->Insert_ID();
         
-        // Assign the workorder to the scheduled employee        
-        assign_workorder_to_employee($db, $workorder_id, $employee_id);
+        // Assign the work order to the scheduled employee (if not already)
+        if($employee_id != $workorder_details['employee_id']) {
+            assign_workorder_to_employee($db, $workorder_id, $employee_id);
+        }
     
-        // Change the Workorders Status
-        update_workorder_status($db, $workorder_id, 'scheduled'); 
+        // Change the Workorders Status to scheduled (if not already)
+        if($workorder_details['status'] != 'scheduled') {
+            update_workorder_status($db, $workorder_id, 'scheduled');
+        }
         
         // Insert Work Order History Note
         insert_workorder_history_note($db, $workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
