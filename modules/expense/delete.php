@@ -25,5 +25,5 @@ if($expense_id == '') {
 delete_expense($db, $expense_id);
 
 // Load the expense search page
-force_page('expense', 'search');
+force_page('expense', 'search', 'information_msg='._gettext("Expense deleted successfully."));
 exit;

@@ -23,7 +23,7 @@ if(isset($VAR['submit'])) {
     update_supplier($db, $supplier_id, $VAR);
     
     // load the supplier details apge
-    force_page('supplier', 'details&supplier_id='.$supplier_id);
+    force_page('supplier', 'details&supplier_id='.$supplier_id, 'information_msg='._gettext("Supplier updated successfully."));     
     exit;
     
 }

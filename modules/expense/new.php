@@ -29,7 +29,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     } else {
 
         // load expense details page
-        force_page('expense', 'details', 'expense_id='.$expense_id.'&information_msg='._gettext("Expense added successfully."));
+        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='._gettext("Expense added successfully."));
         exit;
 
      }        

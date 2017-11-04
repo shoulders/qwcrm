@@ -20,8 +20,8 @@ if($expense_id == '') {
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-        update_expense($db, $expense_id, $VAR);
-        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='._gettext("The Customer's information was updated."));
+        update_expense($db, $expense_id, $VAR);        
+        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='._gettext("Expense updated successfully.")); 
         exit;    
 
 } else {

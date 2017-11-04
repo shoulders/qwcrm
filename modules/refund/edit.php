@@ -24,7 +24,8 @@ if(isset($VAR['submit'])) {
     update_refund($db, $refund_id, $VAR);
     
     // load details page
-    force_page('refund', 'details&refund_id='.$refund_id);
+    force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("Refund updated successfully.")); 
+    exit;
 }   
 
 // Build the page
