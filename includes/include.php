@@ -1022,17 +1022,19 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
 #  Write a record to the Error Log         #
 ############################################
 
-function write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
+function write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
     
     // it is not - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
     
-    // If user not logged in (for apache standards)
-    if($login_username == '') {
-        $login_username = '-';        
-    }   
+    // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
+    if(!QFactory::getUser()->login_username) {
+        $username = '-';
+    } else {
+        $username = QFactory::getUser()->login_username;
+    }
 
     // Build log entry - perhaps use the apache time stamp below
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$login_username.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']).','.$error_page.','.$error_type.','.$error_location.','.$php_function.','.$database_error.','.$error_msg."\r\n";
 
     // Write log entry  
     if(!$fp = fopen(ERROR_LOG, 'a')) {        

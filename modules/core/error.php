@@ -38,7 +38,7 @@ if($qwcrm_error_log == true){
     
     // Only log error if it exists and the error page has been loaded through the router
     if(isset($error_type) && $module === 'core' && $page_tpl === 'error'){
-        write_record_to_error_log($login_username, $error_page, $error_type, $error_location, $php_function, $database_error, $sql_query_for_log, $error_msg);
+        write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query_for_log, $error_msg);
     }
     
 }
