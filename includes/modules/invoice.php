@@ -1180,50 +1180,26 @@ function export_invoice_prefill_items_csv($db) {
  
     // Get the invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
-
+    
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($invoice_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is paid."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions and is paid."));
         return false;        
     }
-    
-    /* Is closed
-    if($invoice_details['is_closed'] == true) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it is closed."));
-        return false;        
-    }*/
-    
+        
     // Has transactions
     if(!empty(get_invoice_transactions($db, $invoice_id))) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions."));
         return false;        
     }
 
-    /* Has an outstanding balance
-    if($invoice_details['balance'] > 0) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has an outstanding balance."));
-        return false;
-    }
-    
-    // Has Labour
-    if(!empty(get_invoice_labour_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
-       return false;          
-    }    
-    
-    // Has Parts
-    if(!empty(get_invoice_parts_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
-       return false;          
-    }*/
- 
-    // all checks passed
+    // All checks passed
     return true;     
      
  }
@@ -1236,7 +1212,13 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     
     // Get the invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
-
+    
+    // Is closed
+    if($invoice_details['is_closed'] == true) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it is closed."));
+        return false;        
+    }
+    
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
@@ -1247,13 +1229,7 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     if($invoice_details['status'] == 'paid') {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is paid."));
         return false;        
-    }
-    
-    // Is closed
-    if($invoice_details['is_closed'] == true) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it is closed."));
-        return false;        
-    }
+    }    
     
     // Has transactions
     if(!empty(get_invoice_transactions($db, $invoice_id))) {
@@ -1261,25 +1237,33 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
         return false;        
     }
 
-    /* Has an outstanding balance
-    if($invoice_details['balance'] > 0) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has an outstanding balance."));
-        return false;
-    }
-    
+    /*
     // Has Labour
     if(!empty(get_invoice_labour_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
+       postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
        return false;          
     }    
     
     // Has Parts
     if(!empty(get_invoice_parts_items($db, $invoice_id))) {
-       //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
+       postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
        return false;          
-    }*/
- 
-    // all checks passed
+    }
+    */
+    
+    // Has Expenses
+    if(count_expenses($db, $invoice_id) > 0) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has expenses."));
+        return false;
+    }
+        
+    // Has Refunds
+    if(count_refunds($db, $invoice_id) > 0) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has refunds."));
+        return false;
+    }
+     
+    // All checks passed
     return true;
     
 }

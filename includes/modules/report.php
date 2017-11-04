@@ -434,7 +434,45 @@ function sum_parts_value($db, $value_name, $start_date, $end_date) {
     
 }
 
-/** Expense **/
+/** Expenses **/
+
+#########################################
+#     Count Expenses                    #  // Currently only used in invoice delete check
+#########################################
+
+//function count_expenses($db, $status, $user_id = null, $start_date = null, $end_date = null) {
+
+function count_expenses($db, $invoice_id = null, $start_date = null, $end_date = null) {
+    
+    // Default Action
+    $whereTheseRecords = " WHERE expense_id";
+        
+    // Filter by invoice_id
+    if($invoice_id) {
+        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
+    }
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."expense
+            ".$whereTheseRecords;    
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
+        exit;
+        
+    } else {      
+        
+        return $rs->fields['count'];
+        
+    }
+    
+}
 
 ###################################
 #  Sum selected value of expenses #
@@ -458,6 +496,42 @@ function sum_expenses_value($db, $value_name, $start_date, $end_date) {
 }
 
 /** Refunds **/
+
+#########################################
+#     Count Refunds                   #  // Currently only used in invoice delete check
+#########################################
+
+function count_refunds($db, $invoice_id = null, $start_date = null, $end_date = null) {
+    
+    // Default Action
+    $whereTheseRecords = " WHERE refund_id";
+        
+    // Filter by invoice_id
+    if($invoice_id) {
+        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
+    }
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."refund
+            ".$whereTheseRecords;    
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
+        exit;
+        
+    } else {      
+        
+        return $rs->fields['count'];
+        
+    }
+    
+}
 
 ###################################
 #  Sum selected value of Refunds  #
