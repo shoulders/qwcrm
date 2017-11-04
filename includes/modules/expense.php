@@ -160,7 +160,8 @@ function insert_expense($db, $VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Expense Record").' '.$db->Insert_ID().' '._gettext("created."));
+        $record = _gettext("Expense Record").' '.$db->Insert_ID().' '._gettext("created.");
+        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
     
         return $db->Insert_ID();
         
@@ -243,8 +244,9 @@ function update_expense($db, $expense_id, $VAR) {
         exit;
     } else {
         
-        // Log activity        
-        write_record_to_activity_log(_gettext("Expense Record").' '.$expense_id.' '._gettext("updated."));
+        // Log activity
+        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("updated.");
+        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
         
         return true;
         
@@ -260,7 +262,10 @@ function update_expense($db, $expense_id, $VAR) {
 #    Delete Record                  #
 #####################################
 
-function delete_expense($db, $expense_id){
+function delete_expense($db, $expense_id) {
+    
+    // Get invoice_id before deleting the record
+    $invoice_id = get_expense_details($db, $expense_id, 'invoice_id');
     
     $sql = "DELETE FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
     
@@ -270,7 +275,8 @@ function delete_expense($db, $expense_id){
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Expense Record").' '.$expense_id.' '._gettext("deleted."));
+        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
+        write_record_to_activity_log($record, null, null, null, $invoice_id);
         
         return true;
         

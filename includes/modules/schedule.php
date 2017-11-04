@@ -102,7 +102,8 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         insert_workorder_history_note($db, $workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        write_record_to_activity_log(_gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$workorder_id.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');     
+        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$workorder_id.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id);
         
         // Update last active record
         update_workorder_last_active($db, $workorder_id);
@@ -213,7 +214,8 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         insert_workorder_history_note($db, $workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        write_record_to_activity_log(_gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id);
         
         // Update last active record
         update_workorder_last_active($db, $workorder_id);
@@ -260,7 +262,8 @@ function delete_schedule($db, $schedule_id) {
         insert_workorder_history_note($db, $schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['customer_id'], $schedule_details['workorder_id']);
         
         // Update last active record
         update_workorder_last_active($db, $schedule_details['workorder_id']);

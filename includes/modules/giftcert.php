@@ -170,8 +170,9 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
         $giftcert_id = $db->Insert_ID();
 
         // Log activity        
-        write_record_to_activity_log(_gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');      
-
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.';      
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id);
+        
         // Update last active record    
         update_customer_last_active($db, $customer_id);
         
@@ -252,11 +253,14 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
 
     } else {
         
-        // Log activity        
-        write_record_to_activity_log(_gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        $customer_details = get_giftcert_details($db, $giftcert_id);
+        
+        // Log activity
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id']);
 
         // Update last active record    
-        update_customer_last_active($db, get_giftcert_details($db, $giftcert_id, 'customer_id'));
+        update_customer_last_active($db, $customer_details['customer_id']);
 
         return;
         
@@ -284,11 +288,14 @@ function delete_giftcert($db, $giftcert_id) {
         
     } else {
         
+        $customer_details = get_giftcert_details($db, $giftcert_id);
+        
         // Log activity        
-        write_record_to_activity_log(_gettext("Gift Certificate").' '.$giftcert_id.' '.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id']);
         
         // Update last active record        
-        update_customer_last_active($db, get_giftcert_details($db, $giftcert_id, 'customer_id'));
+        update_customer_last_active($db, $customer_details['customer_id']);
         
         return;
 
@@ -380,7 +387,8 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
         $customer_details = get_customer_details($db, get_giftcert_details($db, $giftcert_id, 'customer_id'));
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$customer_details['display_name'].'.', null, $customer_details['customer_id']);
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$customer_details['display_name'].'.';
+        write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id'], null, $invoice_id);
         
     }
     

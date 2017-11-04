@@ -193,15 +193,20 @@ function insert_user($db, $VAR){
         exit;
     } else {
         
+        // Get user_id
+        $user_id = $db->Insert_ID();
+        
         // Update last active record
+        // - update_user_last_active($db, $user_id);
         if($VAR['customer_id']) {
             update_customer_last_active($db, $VAR['customer_id']);
         }
         
         // Log activity        
-        write_record_to_activity_log(_gettext("User Account").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '._gettext("created."));
+        $record = _gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '._gettext("created.");
+        write_record_to_activity_log($record, $user_id);
                 
-        return $db->Insert_ID();;        
+        return $user_id;
         
     }
     
@@ -389,12 +394,14 @@ function update_user($db, $user_id, $VAR) {
         }
         
         // Update last active record
+        // - update_user_last_active($db, $user_id);
         if($VAR['customer_id']) {
             update_customer_last_active($db, $VAR['customer_id']);
         }
         
         // Log activity        
-        write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '._gettext("updated."));
+        $record = _gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '._gettext("updated.");
+        write_record_to_activity_log($record, $user_id);
         
         return true;
         
@@ -507,8 +514,9 @@ function delete_user($db, $user_id) {
     }
     
     // Log activity        
-    write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted."));
-        
+    $record = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
+    write_record_to_activity_log($record, $user_id);
+
     // Update last active record
     if($user_details['customer_id']) {
         update_customer_last_active($db, $user_details['customer_id']);
@@ -711,9 +719,11 @@ function reset_user_password($db, $user_id, $password = null) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("password has been reset."));
+        $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("password has been reset.");
+        write_record_to_activity_log($record, $user_id);
         
         // Update last active record
+        // - update_user_last_active($db, $user_id);
         if(get_user_details($db, $user_id, 'customer_id')) {
             update_customer_last_active($db, get_user_details($db, $user_id, 'customer_id'));
         }
@@ -810,9 +820,14 @@ function login($VAR, $credentials, $options = array())
         $user = QFactory::getUser();       
 
         // Log activity       
-        write_record_to_activity_log(_gettext("Login successful for").' '.$user->login_username.'.');
+        $record = _gettext("Login successful for").' '.$user->login_username.'.';
+        write_record_to_activity_log($record, $user->login_user_id);
+        
         
         // Update last active record
+        /*if($user->login_user_id) {            
+            update_user_last_active($db, $user->login_user_id);
+        }*/   
         if($user->login_customer_id) {            
             update_customer_last_active($db, $user->login_customer_id);
         }
@@ -852,9 +867,12 @@ function logout($silent = null)
     QFactory::getAuth()->logout();    
 
     // Log activity       
-    write_record_to_activity_log($record);
+    write_record_to_activity_log($record, $user->login_user_id);
     
-    // Update last active record
+    // Update last active record 
+    /*if($user->login_user_id) {            
+        update_user_last_active($db, $user->login_user_id);
+    }*/
     if($user->login_customer_id) {            
         update_customer_last_active($db, $user->login_customer_id);
     }
@@ -979,7 +997,8 @@ function send_reset_email($db, $user_id) {
     send_email($recipient_email, $subject, $body);
     
     // Log activity        
-    write_record_to_activity_log(_gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("reset email has been sent."));
+    $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("reset email has been sent.");
+    write_record_to_activity_log($record, $user_id);
     
     return;
     

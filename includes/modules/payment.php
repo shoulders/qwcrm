@@ -49,7 +49,8 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
     } else {
         
         // Log activity 
-        write_record_to_activity_log(_gettext("Inserted transaction").' '.$db->Insert_ID().'.', QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
+        $record = _gettext("Inserted transaction").' '.$db->Insert_ID().'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
                 
     }    
     
