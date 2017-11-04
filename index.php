@@ -161,9 +161,9 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 
 // These are used globally and also a workaround for undefined indexes
 $workorder_id   =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
-$customer_id    =   isset($VAR['customer_id ']) ? $VAR['customer_id ']  : null;
+$customer_id    =   isset($VAR['customer_id'])  ? $VAR['customer_id']   : null;
 $expense_id     =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
-$refund_id      =   isset($VAR['refund_id '])   ? $VAR['refund_id ']    : null;
+$refund_id      =   isset($VAR['refund_id'])    ? $VAR['refund_id']     : null;
 $supplier_id    =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   : null;
 $invoice_id     =   isset($VAR['invoice_id'])   ? $VAR['invoice_id']    : null;
 $schedule_id    =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2017 at 05:39 PM
+-- Generation Time: Nov 04, 2017 at 12:35 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.21
 
@@ -459,6 +459,7 @@ CREATE TABLE `#__payment_transactions` (
 
 CREATE TABLE `#__refund` (
   `refund_id` int(10) NOT NULL,
+  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,

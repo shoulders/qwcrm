@@ -133,12 +133,13 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
 /** Insert Functions **/
 
 ##########################################
-#      Insert New Record                 #
+#      Insert Refund                     #
 ##########################################
 
 function insert_refund($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."refund SET            
+    $sql = "INSERT INTO ".PRFX."refund SET
+            invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
             type             =". $db->qstr( $VAR['type']                    ).",
@@ -156,7 +157,8 @@ function insert_refund($db, $VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Refund Record").' '.$db->Insert_ID().' '._gettext("created."));
+        $record = _gettext("Refund Record").' '.$db->Insert_ID().' '._gettext("created.");
+        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
         
         return $db->Insert_ID();
         
@@ -221,7 +223,7 @@ function get_refund_types($db) {
 function update_refund($db, $refund_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."refund SET
-        
+            invoice_id          =". $db->qstr( $VAR['invoice_id']           ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
             type             =". $db->qstr( $VAR['type']                    ).",
@@ -240,7 +242,8 @@ function update_refund($db, $refund_id, $VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Refund Record").' '.$refund_id.' '._gettext("updated."));   
+        $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("updated.");
+        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
         
         return true;
       
@@ -258,6 +261,9 @@ function update_refund($db, $refund_id, $VAR) {
 
 function delete_refund($db, $refund_id) {
     
+    // Get invoice_id before deleting the record
+    $invoice_id = get_refund_details($db, $refund_id, 'invoice_id');
+    
     $sql = "DELETE FROM ".PRFX."refund WHERE refund_id=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -266,7 +272,8 @@ function delete_refund($db, $refund_id) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Refund Record").' '.$refund_id.' '._gettext("deleted."));
+        $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("deleted.");
+        write_record_to_activity_log($record, null, null, null, $invoice_id);
         
         return true;
         

@@ -24,6 +24,7 @@
                                 <td class="menutd">
                                     <table class="menutable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
+                                            
                                             <!-- Category Search -->
                                             <td valign="top">
                                                 <form method="post" action="index.php?page=refund:search" name="refund_search" id="refund_search" autocomplete="off">
@@ -34,6 +35,7 @@
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>
+                                                                        <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
@@ -107,12 +109,14 @@
                                             </td>
                                             
                                         </tr>
-                                        <tr>
-                                            <td valign="top" colspan="2">
-                                                <!-- Records Table -->
+                                        
+                                        <!-- Records Table -->
+                                        <tr>                                            
+                                            <td valign="top" colspan="2">                                                
                                                 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                                     <tr>
                                                         <td class="olohead">{t}Refund ID{/t}</td>
+                                                        <td class="olohead">{t}INV ID{/t}</td>
                                                         <td class="olohead">{t}Payee{/t}</td>
                                                         <td class="olohead">{t}Date{/t}</td>
                                                         <td class="olohead">{t}Type{/t}</td>
@@ -129,6 +133,7 @@
                                                         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
                                                         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=refund:details&refund_id={$search_result[i].refund_id}';" class="row1">                                                                
                                                             <td class="olotd4" nowrap><a href="index.php?page=refund:details&refund_id={$search_result[i].refund_id}">{$search_result[i].refund_id}</a></td>                                                                
+                                                            <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$search_result[i].invoice_id}">{$search_result[i].invoice_id}</a></td>
                                                             <td class="olotd4" nowrap>{$search_result[i].payee}</td>                                                                
                                                             <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>                                                                
                                                             <td class="olotd4" nowrap>
@@ -163,6 +168,7 @@
                                                 </table>
                                             </td>
                                         </tr>
+                                        
                                     </table>
                                 </td>
                             </tr>

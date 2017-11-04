@@ -93,6 +93,10 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
+                                                                            <td align="right"><b>{t}Invoice ID{/t}</b></td>
+                                                                            <td colspan="3"><input id="invoice_id" name="invoice_id" class="olotd5" size="5" type="text" maxlength="10" onkeydown="return onlyNumber(event);"></td>
+                                                                        </tr>
+                                                                        <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
                                                                                 <select id="type" name="type" class="olotd5"> 
