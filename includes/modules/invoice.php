@@ -1022,7 +1022,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
         /* update invoice status */
         
         // if no invoiceable amount, set to pending
-        if($gross_amount == 0) {
+        if($gross_amount == 0 && $invoice_details['status'] != 'pending') {
             update_invoice_status($db, $invoice_id, 'pending');
         }
         
