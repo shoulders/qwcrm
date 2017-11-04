@@ -13,6 +13,7 @@ require(INCLUDES_DIR.'modules/invoice.php');
 require(INCLUDES_DIR.'modules/payment.php');
 require(INCLUDES_DIR.'modules/report.php');
 require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'modules/user.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
@@ -24,8 +25,6 @@ if($invoice_id == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
     exit;
 }
-
-
 
 // Delete Invoice
 if(!delete_invoice($db, $invoice_id)) {    

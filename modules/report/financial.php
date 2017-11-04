@@ -94,7 +94,7 @@ if(isset($VAR['submit'])) {
     /* Logging */
     
     // Log activity
-    write_record_to_activity_log($_gettext("Financial report run for the date range").': '.$VAR['start_date'].' - '.$VAR['end_date']);
+    write_record_to_activity_log(_gettext("Financial report run for the date range").': '.$VAR['start_date'].' - '.$VAR['end_date']);
     
 } else {
     

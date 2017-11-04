@@ -82,7 +82,7 @@
                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         </form>                                            
                                     {else}
-                                        {t}This Work order cannot be deleted. You can only delete the workorder if it's status is either Created or Open and the Work Order has no invoice.{/t}
+                                        {t}This work order cannot be deleted. You can only delete the work order if it's status is either unassigned or management and the work order has no invoice.{/t}
                                     {/if}                                        
                                 </td>                                
                                 

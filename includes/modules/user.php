@@ -202,8 +202,13 @@ function insert_user($db, $VAR){
             update_customer_last_active($db, $VAR['customer_id']);
         }
         
-        // Log activity        
-        $record = _gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '._gettext("created.");
+        // Log activity
+        if($VAR['customer_id']) {
+            $user_type = _gettext("Customer");
+        } else {
+            $user_type = _gettext("Employee");
+        }        
+        $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$VAR['display_name'].' '._gettext("created").'.';
         write_record_to_activity_log($record, $user_id);
                 
         return $user_id;

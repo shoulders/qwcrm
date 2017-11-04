@@ -49,7 +49,7 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
     } else {
         
         // Log activity 
-        $record = _gettext("Inserted transaction").' '.$db->Insert_ID().'.';
+        $record = _gettext("Payment made on Invoice").' '.$invoice_id.' '._gettext("with transaction").' '.$db->Insert_ID().'.';
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
                 
     }    
@@ -324,12 +324,12 @@ function update_payment_settings($db, $VAR) {
             invoice_footer_msg      =". $db->qstr( $VAR['invoice_footer_msg']       );            
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment settings."));
+        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
         exit;
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Payment settings updated."));
+        //write_record_to_activity_log(_gettext("Payment settings updated."));
 
         return;
         
@@ -372,7 +372,7 @@ function update_active_payment_system_methods($db, $VAR) {
     }
     
     // Log activity        
-    write_record_to_activity_log(_gettext("Available payment methods updated."));
+    //write_record_to_activity_log(_gettext("Available payment methods updated."));
     
 }
 

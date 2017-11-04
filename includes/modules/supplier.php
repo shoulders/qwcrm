@@ -279,7 +279,7 @@ function delete_supplier($db, $supplier_id) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$display_name.') '._gettext("deleted."));
+        write_record_to_activity_log(_gettext("Supplier Record").' '.$supplier_id.' ('.$display_name.') '._gettext("deleted."));
         
         return true;
         

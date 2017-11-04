@@ -291,7 +291,7 @@ function delete_giftcert($db, $giftcert_id) {
         $customer_details = get_giftcert_details($db, $giftcert_id);
         
         // Log activity        
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id']);
         
         // Update last active record        
