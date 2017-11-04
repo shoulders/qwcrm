@@ -287,7 +287,7 @@ function insert_workorder_history_note($db, $workorder_id = null, $note = '') {
     // If Work Order History Notes are not enabled, exit
     if(QFactory::getConfig()->get('workorder_history_notes') != true) { return; }    
     
-    // This prevents errors from such functions as mail.php where a workorder_id is not always present - not currently used
+    // This prevents errors from such functions as email.php where a workorder_id is not always present - not currently used
     if($workorder_id == null) { return; }
     
     $sql = "INSERT INTO ".PRFX."workorder_history SET            

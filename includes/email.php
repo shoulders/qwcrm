@@ -230,14 +230,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             // Log activity
             $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
-            
-            if($workorder_id) {
-                
-                // Create a Workorder History Note            
-                insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
-            
-            }
-            
+            insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
             write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
             
             // Update last active record
