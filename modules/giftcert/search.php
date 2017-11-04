@@ -13,6 +13,15 @@ require(INCLUDES_DIR.'modules/giftcert.php');
 // a workaround until i add a full type search, this keeps the logic intact
 $VAR['search_category'] = 'giftcert_code';
 
+// If a search is submitted
+if(isset($VAR['submit'])) {
+    
+    // Log activity
+    $record = _gettext("A search of gift certificates has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    write_record_to_activity_log($record);
+    
+}
+
 // Build the page
 $smarty->assign('search_category',  $VAR['search_category']                                                                                                                                 );
 $smarty->assign('search_term',      $VAR['search_term']                                                                                                                                     );

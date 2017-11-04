@@ -10,8 +10,17 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/customer.php');
 
- // a workaround until i add a full type search, this keeps the logic intact
+// A workaround until i add a full type search, this keeps the logic intact
 $VAR['search_category'] = 'display_name';
+
+// If a search is submitted
+if(isset($VAR['submit'])) {
+    
+    // Log activity
+    $record = _gettext("A search of customers has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    write_record_to_activity_log($record);
+    
+}
 
 // Build the page
 $smarty->assign('customer_types',   get_customer_types($db)                                                                                                             );

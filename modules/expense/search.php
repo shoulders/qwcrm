@@ -11,6 +11,15 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'modules/expense.php');
 require(INCLUDES_DIR.'modules/payment.php');
 
+// If a search is submitted
+if(isset($VAR['submit'])) {
+    
+    // Log activity
+    $record = _gettext("A search of expenses has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    write_record_to_activity_log($record);
+    
+}
+
 // Build the page
 $smarty->assign('expense_types',    get_expense_types($db)                                                                                          );
 $smarty->assign('payment_methods',  get_payment_manual_methods($db)                                                                                 );

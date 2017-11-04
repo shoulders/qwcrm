@@ -10,6 +10,15 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'modules/supplier.php');
 
+// If a search is submitted
+if(isset($VAR['submit'])) {
+    
+    // Log activity
+    $record = _gettext("A search of suppliers has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    write_record_to_activity_log($record);
+    
+}
+
 $smarty->assign('supplier_types',   get_supplier_types($db)                                                                                             );
 $smarty->assign('search_category',  $VAR['search_category']                                                                                             );
 $smarty->assign('search_term',      $VAR['search_term']                                                                                                 );
