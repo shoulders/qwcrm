@@ -249,7 +249,7 @@ function delete_schedule($db, $schedule_id) {
     } else {
         
         // If there are no schedules left for this workorder
-        if(!count_workorder_schedule_items($db, $schedule_details['workorder_id'])) {
+        if(count_workorder_schedule_items($db, $schedule_details['workorder_id']) == 0) {
             
             // if the workorder status is 'scheduled', change the status to 'assigned'
             if(get_workorder_details($db, $schedule_details['workorder_id'], 'status') == 'scheduled') {
