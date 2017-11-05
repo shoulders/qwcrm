@@ -5,7 +5,7 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<b>{t}Pending Invoices{/t}</b>
+<b>{t}Pending{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
         <td class="olohead">{t}INV ID{/t}</td>
@@ -39,7 +39,7 @@
 </table>
 <br>
 <br>
-<b>{t}Unpaid Invoices{/t}</b>
+<b>{t}Unpaid{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
         <td class="olohead">{t}INV ID{/t}</td>
@@ -73,7 +73,7 @@
 </table>
 <br>
 <br>
-<b>{t}Partially Paid Invoices{/t}</b>
+<b>{t}Partially Paid{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
         <td class="olohead">{t}INV ID{/t}</td>
@@ -107,7 +107,7 @@
 </table>
 <br>
 <br>
-<b>{t}Paid Invoices{/t}</b>
+<b>{t}Paid{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="3" cellspacing="0" >
     <tr>
         <td class="olohead">{t}INV ID{/t}</td>

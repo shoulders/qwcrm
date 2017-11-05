@@ -143,7 +143,7 @@ function smarty_block_t($params, $text) {
                 case 'javascript':
                 case 'js':
                         // javascript escape
-                        $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
+                        $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));                      
                         break;
                     
                 case 'url':
@@ -153,7 +153,7 @@ function smarty_block_t($params, $text) {
                     
                 case 'tooltip' :
                         // Tooltips - does not like new lines or apostrophes because it is javascript based
-                        $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', "\t" => '    ','</' => '<\/'));
+                        $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
                         break;
                     
                 case 'no' :

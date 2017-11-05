@@ -1348,7 +1348,22 @@ function clear_onscreen_notifications() {
 ##############################################
 
 function output_notifications_onscreen($information_msg = '', $warning_msg = '') {
+    
+    // escape here ? like in t block
    
-    echo "<script>processSystemMessages('".$information_msg."', '".$warning_msg."');</script>";
+    echo "<script>processSystemMessages('".escape_for_javascript($information_msg)."', '".escape_for_javascript($warning_msg)."');</script>";
+    
+}
+
+##############################################
+#  escape string for use in Javascript       #
+##############################################
+
+function escape_for_javascript($text){
+    
+    $text = nl2br($text);
+    $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
+    
+    return $text;
     
 }

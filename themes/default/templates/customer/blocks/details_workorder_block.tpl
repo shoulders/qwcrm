@@ -5,11 +5,11 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<b>{t}Open Work Orders{/t}</b>
+<b>{t}Open{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
         <td class="olohead">{t}WO ID{/t}</td>
-        <td class="olohead"><b>{t}INV ID{/t}</b></td>
+        <td class="olohead">{t}INV ID{/t}</td>
         <td class="olohead">{t}Date Opened{/t}</td>
         <td class="olohead">{t}Customer{/t}</td>
         <td class="olohead">{t}Scope{/t}</td>
@@ -46,6 +46,7 @@
             <td class="olotd4">
                 {if $open_workorders[o].employee_id != ''}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$open_workorders[o].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$open_workorders[o].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$open_workorders[o].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$open_workorders[o].employee_email}');" onMouseOut="hideddrivetip();">
+                    <a class="link1" href="index.php?page=user:details&user_id={$open_workorders[o].employee_id}">{$open_workorders[o].employee_display_name}</a>
                 {else}
                     {t}Not Assigned{/t}
                 {/if}
@@ -57,7 +58,7 @@
                     <img src="{$theme_images_dir}icons/16x16/fileprint.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Print{/t}');" onMouseOut="hideddrivetip();">
                 </a>
                 <a href="index.php?page=workorder:details&workorder_id={$open_workorders[o].workorder_id}&customer_id={$open_workorders[o].customer_id}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif"  alt="" border="0" onMouseOver="ddrivetip('{t}View Work Order{/t}');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>
             </td>
             
@@ -65,11 +66,11 @@
     {/section}
 </table>
 <br>
-<b>{t}Closed Work Orders{/t}</b>
+<b>{t}Closed{/t}</b>
 <table class="olotable" width="100%" border="0" cellpadding="1" cellspacing="0">
     <tr>
         <td class="olohead">{t}WO ID{/t}</td>
-        <td class="olohead"><b>{t}INV ID{/t}</b></td>
+        <td class="olohead">{t}INV ID{/t}</td>
         <td class="olohead">{t}Date Opened{/t}</td>
         <td class="olohead">{t}Customer{/t}</td>
         <td class="olohead">{t}Scope{/t}</td>

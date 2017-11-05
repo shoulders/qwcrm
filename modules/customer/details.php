@@ -22,22 +22,22 @@ if($customer_id == '') {
 }
 
 // Build the page
-$smarty->assign('customer_types',           get_customer_types($db)                                                                                             );
-$smarty->assign('customer_details',         get_customer_details($db, $customer_id)                                                                             );
+$smarty->assign('customer_types',           get_customer_types($db)                                                                                                 );
+$smarty->assign('customer_details',         get_customer_details($db, $customer_id)                                                                                 );
 
-$smarty->assign('workorder_statuses',       get_workorder_statuses($db)                                                                                         );
-$smarty->assign('open_workorders',          display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'open', null, $customer_id)      );
-$smarty->assign('closed_workorders',        display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'closed', null, $customer_id)    );
+$smarty->assign('workorder_statuses',       get_workorder_statuses($db)                                                                                             );
+$smarty->assign('open_workorders',          display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'open', null, $customer_id)          );
+$smarty->assign('closed_workorders',        display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'closed', null, $customer_id)        );
 
-$smarty->assign('pending_invoices',         display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'pending', null, $customer_id)       );
-$smarty->assign('unpaid_invoices',          display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'unpaid', null, $customer_id)        );
-$smarty->assign('partially_paid_invoices',  display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'unpaid', null, $customer_id)        );
-$smarty->assign('paid_invoices',            display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'paid', null, $customer_id)          );
+$smarty->assign('pending_invoices',         display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'pending', null, $customer_id)           );
+$smarty->assign('unpaid_invoices',          display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'unpaid', null, $customer_id)            );
+$smarty->assign('partially_paid_invoices',  display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'partially_paid', null, $customer_id)    );
+$smarty->assign('paid_invoices',            display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'paid', null, $customer_id)              );
 
-$smarty->assign('active_giftcerts',         display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '0', null, $customer_id)     );
-$smarty->assign('redeemed_giftcerts',       display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '1', null, $customer_id)     );
+$smarty->assign('active_giftcerts',         display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '0', null, $customer_id)         );
+$smarty->assign('redeemed_giftcerts',       display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '1', null, $customer_id)         );
 
-$smarty->assign('GoogleMapString',          build_googlemap_directions_string($db, $customer_id, $login_user_id)                                                );
-$smarty->assign('customer_notes',           get_customer_notes($db, $customer_id)                                                                               );
+$smarty->assign('GoogleMapString',          build_googlemap_directions_string($db, $customer_id, $login_user_id)                                                    );
+$smarty->assign('customer_notes',           get_customer_notes($db, $customer_id)                                                                                   );
 
 $BuildPage .= $smarty->fetch('customer/details.tpl');

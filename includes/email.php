@@ -27,7 +27,7 @@ require(LIBRARIES_DIR.'swift/swift_required.php');
 /* Other Functions */
 
 #######################################
-#   Basic email wrapper function      #
+#   Basic email wrapper function      #  // not currently used
 #######################################
 
 function php_mail_fallback($to, $subject, $body, $attachment = null) {
@@ -67,7 +67,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         
         // Output the system message to the browser
         $system_message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
-        $smarty->assign('warning_msg', $system_message);
+        //$smarty->assign('warning_msg', $system_message);
         output_notifications_onscreen('', $system_message);
         
         return false;
@@ -146,16 +146,17 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     
     // This will present any email RFC compliance issues
     catch(Swift_RfcComplianceException $RfcCompliance_exception) {
+        
         //var_dump($RfcCompliance_exception);
         
         // Log activity 
-        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
+        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
+        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);        
         
         // Output the system message to the browser
-        $system_message = $record.'<br>'.$record.'<br>'.$RfcCompliance_exception->getMessage();
-        $smarty->assign('warning_msg', $system_message);
+        $system_message = $record.'<br>'.$RfcCompliance_exception->getMessage();
+        //$smarty->assign('warning_msg', $system_message);
         output_notifications_onscreen('', $system_message);
         
         return false;
@@ -216,22 +217,22 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             // Output the system message to the browser
             $system_message = $record;
-            $smarty->assign('warning_msg', $system_message);
+            //$smarty->assign('warning_msg', $system_message);
             output_notifications_onscreen('', $system_message);
 
         } else {
-
-            // Successfully sent the email 
             
-            // Output the system message to the browser
-            $system_message = $record;
-            $smarty->assign('information_msg', $system_message);
-            output_notifications_onscreen($system_message, '');
+            // Successfully sent the email 
             
             // Log activity
             $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
             insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
             write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
+            
+            // Output the system message to the browser
+            $system_message = $record;
+            //$smarty->assign('information_msg', $system_message);
+            output_notifications_onscreen($system_message, '');
             
             // Update last active record
             update_user_last_active($db, $employee_id);         // will not error if no customer_id sent 
@@ -245,18 +246,22 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     
     // This will present any transport errors
     catch(Swift_TransportException $Transport_exception) {
-        //var_dump($RfcCompliance_exception);
+        
+        // this one is faulty when no transport available
+        
+        //var_dump($Transport_exception);
         
         // Log activity 
-        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
+        $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_email_error_log($Transport_exception->getMessage());
+        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
 
         // Output the system message to the browser
-        preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);
+        preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
         $system_message = $record.'<br>'.$matches[0];
-        $smarty->assign('warning_msg', $system_message);
-        output_notifications_onscreen('', $system_message);          // output the first line of the error message only
+        //$smarty->assign('warning_msg', $system_message);
+        output_notifications_onscreen('', $system_message);
+        
     }
     
     // Write the Email Transport Record to the log
