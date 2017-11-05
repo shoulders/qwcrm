@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.0.0\n"
-"POT-Creation-Date: 2017-11-05 14:52+0000\n"
-"PO-Revision-Date: 2017-11-05 14:52+0000\n"
+"POT-Creation-Date: 2017-11-05 16:49+0000\n"
+"PO-Revision-Date: 2017-11-05 16:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: http://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -3511,7 +3511,8 @@ msgstr ""
 #: themes/default/templates/workorder/search.tpl:52
 #: includes/modules/customer.php:366 includes/modules/payment.php:94
 #: includes/modules/payment.php:118 includes/modules/payment.php:124
-#: includes/modules/schedule.php:686
+#: includes/modules/schedule.php:686 modules/invoice/print.php:119
+#: modules/schedule/icalendar.php:49
 msgid "for"
 msgstr ""
 
@@ -4609,8 +4610,9 @@ msgstr ""
 #: includes/modules/giftcert.php:294 includes/modules/giftcert.php:390
 #: language/_gettext_only/system_variables.php:54
 #: language/_gettext_only/system_variables.php:66
-#: language/_gettext_only/system_variables.php:86 modules/giftcert/print.php:48
-#: modules/giftcert/print.php:82
+#: language/_gettext_only/system_variables.php:86 modules/giftcert/print.php:53
+#: modules/giftcert/print.php:59 modules/giftcert/print.php:72
+#: modules/giftcert/print.php:96 modules/giftcert/print.php:100
 msgid "Gift Certificate"
 msgstr ""
 
@@ -4769,8 +4771,8 @@ msgstr "Navigate through the closed invoices by using the navigation arrows."
 #: includes/modules/workorder.php:638 includes/modules/workorder.php:789
 #: includes/modules/workorder.php:832 includes/modules/workorder.php:907
 #: includes/modules/workorder.php:1073 includes/modules/workorder.php:1076
-#: modules/workorder/print.php:78 modules/workorder/print.php:124
-#: modules/workorder/print.php:170
+#: modules/workorder/print.php:94 modules/workorder/print.php:153
+#: modules/workorder/print.php:212
 msgid "Work Order"
 msgstr ""
 
@@ -5125,7 +5127,10 @@ msgid "Export Prefill Items as a CSV file"
 msgstr ""
 
 #: themes/default/templates/invoice/prefill_items.tpl:98
+#: themes/default/templates/schedule/day.tpl:64
 #: themes/default/templates/schedule/details.tpl:37
+#: themes/default/templates/workorder/blocks/details_schedule_block.tpl:97
+#: includes/modules/schedule.php:699
 msgid "Export"
 msgstr ""
 
@@ -5173,8 +5178,9 @@ msgstr ""
 #: includes/modules/invoice.php:560 includes/modules/invoice.php:629
 #: includes/modules/invoice.php:713 includes/modules/invoice.php:811
 #: includes/modules/invoice.php:814 includes/modules/invoice.php:1328
-#: includes/modules/invoice.php:1331 modules/invoice/print.php:50
-#: modules/invoice/print.php:88
+#: includes/modules/invoice.php:1331 modules/invoice/print.php:53
+#: modules/invoice/print.php:59 modules/invoice/print.php:73
+#: modules/invoice/print.php:99 modules/invoice/print.php:103
 msgid "Invoice"
 msgstr ""
 
@@ -5759,7 +5765,7 @@ msgid "Setting schedule for work order"
 msgstr ""
 
 #: themes/default/templates/schedule/day.tpl:64
-msgid "ICS Schedule"
+msgid "Day Schedule"
 msgstr ""
 
 #: themes/default/templates/schedule/details.tpl:13
@@ -6681,6 +6687,8 @@ msgstr ""
 #: includes/modules/schedule.php:109 includes/modules/schedule.php:112
 #: includes/modules/schedule.php:221 includes/modules/schedule.php:224
 #: includes/modules/schedule.php:269 includes/modules/schedule.php:272
+#: modules/schedule/icalendar.php:43 modules/schedule/icalendar.php:62
+#: modules/schedule/icalendar.php:69
 msgid "Schedule"
 msgstr ""
 
@@ -6696,11 +6704,6 @@ msgstr ""
 
 #: themes/default/templates/workorder/blocks/details_schedule_block.tpl:96
 msgid "Are you sure you want to delete this Schedule?"
-msgstr ""
-
-#: themes/default/templates/workorder/blocks/details_schedule_block.tpl:97
-#: includes/modules/schedule.php:699
-msgid "iCalendar"
 msgstr ""
 
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:15
@@ -7020,7 +7023,8 @@ msgstr ""
 "Processing, Simple to use"
 
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:36
-#: modules/workorder/print.php:136
+#: modules/workorder/print.php:165 modules/workorder/print.php:171
+#: modules/workorder/print.php:184 modules/workorder/print.php:208
 msgid "Technician Job Sheet"
 msgstr ""
 
@@ -10147,7 +10151,7 @@ msgid "A search of expenses has been performed with the search term"
 msgstr ""
 
 #: modules/giftcert/delete.php:21 modules/giftcert/details.php:17
-#: modules/giftcert/edit.php:17 modules/giftcert/print.php:27
+#: modules/giftcert/edit.php:17 modules/giftcert/print.php:28
 msgid "No Gift Certificate ID supplied."
 msgstr ""
 
@@ -10165,9 +10169,27 @@ msgstr ""
 msgid "You cannot edit this Gift Certificate because it has been redeemed."
 msgstr ""
 
-#: modules/giftcert/print.php:33 modules/invoice/print.php:27
+#: modules/giftcert/print.php:34 modules/invoice/print.php:27
 #: modules/workorder/print.php:25
 msgid "Some or all of the Printing Options are not set."
+msgstr ""
+
+#: modules/giftcert/print.php:59 modules/invoice/print.php:59
+#: modules/invoice/print.php:119 modules/workorder/print.php:53
+#: modules/workorder/print.php:112 modules/workorder/print.php:171
+msgid "has been printed as html."
+msgstr ""
+
+#: modules/giftcert/print.php:72 modules/invoice/print.php:73
+#: modules/workorder/print.php:66 modules/workorder/print.php:125
+#: modules/workorder/print.php:184
+msgid "has been printed as a PDF."
+msgstr ""
+
+#: modules/giftcert/print.php:96 modules/invoice/print.php:99
+#: modules/workorder/print.php:90 modules/workorder/print.php:149
+#: modules/workorder/print.php:208
+msgid "has been emailed as a PDF."
 msgstr ""
 
 #: modules/giftcert/search.php:20
@@ -10199,6 +10221,10 @@ msgstr ""
 #: modules/invoice/new.php:45
 msgid ""
 "You cannot create an invoice by the method you just tried, report to admins."
+msgstr ""
+
+#: modules/invoice/print.php:119
+msgid "Address Envelope"
 msgstr ""
 
 #: modules/payment/methods/method_cash.php:34
@@ -10298,8 +10324,16 @@ msgstr ""
 msgid "Some date information is missing."
 msgstr ""
 
-#: modules/schedule/icalendar.php:44
-msgid "Day Schedule"
+#: modules/schedule/icalendar.php:43
+msgid "Day"
+msgstr ""
+
+#: modules/schedule/icalendar.php:49 modules/schedule/icalendar.php:69
+msgid "has been exported."
+msgstr ""
+
+#: modules/schedule/icalendar.php:62
+msgid "WorkOrder"
 msgstr ""
 
 #: modules/schedule/new.php:18
@@ -10522,11 +10556,13 @@ msgstr ""
 msgid "The note has been inserted."
 msgstr ""
 
-#: modules/workorder/print.php:44
+#: modules/workorder/print.php:47 modules/workorder/print.php:53
+#: modules/workorder/print.php:66 modules/workorder/print.php:90
 msgid "Technician Workorder Slip"
 msgstr ""
 
-#: modules/workorder/print.php:90
+#: modules/workorder/print.php:106 modules/workorder/print.php:112
+#: modules/workorder/print.php:125 modules/workorder/print.php:149
 msgid "Customer Workorder Slip"
 msgstr ""
 
