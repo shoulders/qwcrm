@@ -226,19 +226,19 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             // Log activity
             $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
-            insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);
-            write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
+            if($workorder_id) {insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);}
+            write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);            
             
             // Output the system message to the browser
             $system_message = $record;
             //$smarty->assign('information_msg', $system_message);
             output_notifications_onscreen($system_message, '');
             
-            // Update last active record
-            update_user_last_active($db, $employee_id);         // will not error if no customer_id sent 
-            update_customer_last_active($db, $customer_id);     // will not error if no customer_id sent    
-            update_workorder_last_active($db, $workorder_id);   // will not error if no workorder_id sent
-            update_invoice_last_active($db, $invoice_id);       // will not error if no invoice_id sent 
+            // Update last active record (will not error if no invoice_id sent )
+            update_user_last_active($db, $employee_id);
+            if($customer_id) {update_customer_last_active($db, $customer_id);}  
+            if($workorder_id) {update_workorder_last_active($db, $workorder_id);}
+            if($invoice_id) {update_invoice_last_active($db, $invoice_id);}
 
         }
         
