@@ -308,20 +308,20 @@ function ics_header_settings() {
 function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
     
     // Get the schedule information
-    $single_schedule    = get_schedule_details($db, $schedule_id);
-    $workorder          = get_workorder_details($db, $single_schedule['workorder_id']);
+    $schedule_details    = get_schedule_details($db, $schedule_id);
+    $workorder          = get_workorder_details($db, $schedule_details['workorder_id']);
     $customer           = get_customer_details($db, $workorder['customer_id']);
     
-    $start_datetime     = timestamp_to_ics_datetime($single_schedule['start_time']);
-    $end_datetime       = timestamp_to_ics_datetime($single_schedule['end_time']);
+    $start_datetime     = timestamp_to_ics_datetime($schedule_details['start_time']);
+    $end_datetime       = timestamp_to_ics_datetime($schedule_details['end_time']);
     $current_datetime   = timestamp_to_ics_datetime(time());
 
-    $summary            = prepare_ics_strings('SUMMARY', $customer['display_name'].' - Workorder '.$single_schedule['workorder_id'].' - Schedule '.$schedule_id);
-    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $single_schedule, $customer, $workorder));
-    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $single_schedule, $customer, $workorder));
+    $summary            = prepare_ics_strings('SUMMARY', $customer['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
+    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $schedule_details, $customer, $workorder));
+    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $schedule_details, $customer, $workorder));
     
     $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']));
-    $uniqid             = 'QWcrm-'.$single_schedule['schedule_id'].'-'.$single_schedule['start_time'];    
+    $uniqid             = 'QWcrm-'.$schedule_details['schedule_id'].'-'.$schedule_details['start_time'];    
   
     // Build the Schedule .ics content
     
@@ -696,7 +696,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
                 $calendar .= "<b><a href=\"index.php?page=schedule:details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
                 if(!get_workorder_details($db, $scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
                     $calendar .= " - <b><a href=\"index.php?page=schedule:edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ".
-                                    "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("iCalendar")."</a></b> - ".
+                                    "<b><a href=\"index.php?page=schedule:icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("Export")."</a></b> - ".
                                     "<b><a href=\"index.php?page=schedule:delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
                 }
 
