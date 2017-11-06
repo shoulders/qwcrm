@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.0.0\n"
-"POT-Creation-Date: 2017-11-05 16:49+0000\n"
-"PO-Revision-Date: 2017-11-05 16:49+0000\n"
+"POT-Creation-Date: 2017-11-06 09:52+0000\n"
+"PO-Revision-Date: 2017-11-06 09:53+0000\n"
 "Last-Translator: \n"
 "Language-Team: http://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -425,9 +425,9 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:565
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:596
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:607
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:250
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:282
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:311
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:251
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:283
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:312
 #: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:157
 #: themes/default/templates/user/blocks/details_details_block.tpl:91
 #: themes/default/templates/user/edit.tpl:147
@@ -529,9 +529,9 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:564
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:595
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:606
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:251
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:283
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:312
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:252
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:284
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:313
 #: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:156
 #: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:160
 #: themes/default/templates/user/blocks/details_details_block.tpl:90
@@ -1026,7 +1026,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:455
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:528
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:575
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:119
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:120
 #: themes/default/templates/user/search.tpl:47
 #: themes/default/templates/user/search.tpl:57
 msgid "None"
@@ -2293,7 +2293,7 @@ msgstr ""
 
 #: themes/default/templates/company/settings.tpl:124
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:119
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:120
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:121
 msgid "Sales"
 msgstr ""
 
@@ -2306,10 +2306,8 @@ msgstr ""
 #: themes/default/templates/expense/new.tpl:129
 #: themes/default/templates/expense/search.tpl:44
 #: themes/default/templates/expense/search.tpl:45
-#: themes/default/templates/invoice/closed.tpl:87
 #: themes/default/templates/invoice/details.tpl:284
 #: themes/default/templates/invoice/edit.tpl:695
-#: themes/default/templates/invoice/open.tpl:87
 #: themes/default/templates/invoice/printing/print_invoice.tpl:264
 #: themes/default/templates/refund/details.tpl:45
 #: themes/default/templates/refund/details.tpl:55
@@ -2324,32 +2322,32 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:278
 #: themes/default/templates/report/financial.tpl:364
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:120
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:121
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:122
 msgid "VAT"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:130
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:125
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:126
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:127
 msgid "Tax Rate"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:134
 #: themes/default/templates/invoice/printing/print_invoice.tpl:294
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:129
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:130
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:131
 msgid "VAT Number"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:138
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:133
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:134
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:135
 msgid "Financial Year Start"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:152
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:147
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:148
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:149
 msgid "Financial Year End"
 msgstr ""
 
@@ -2359,7 +2357,7 @@ msgstr ""
 
 #: themes/default/templates/company/settings.tpl:166
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:161
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:162
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:163
 msgid "(Dashboard)"
 msgstr ""
 
@@ -2369,19 +2367,19 @@ msgstr ""
 
 #: themes/default/templates/company/settings.tpl:193
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:188
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:189
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:190
 msgid "Currency Symbol"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:197
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:192
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:193
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:194
 msgid "Currency Code"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:198
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:193
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:194
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:195
 msgid ""
 "eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = "
 "AUD"
@@ -2389,25 +2387,25 @@ msgstr ""
 
 #: themes/default/templates/company/settings.tpl:201
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:196
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:197
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:198
 msgid "Date Format"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:227
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:222
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:223
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:224
 msgid "Edit Email Messaging functions"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:236
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:296
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:297
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:298
 msgid "Email Signature"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:241
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:301
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:302
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:303
 msgid "Use this to place your logo in the message"
 msgstr ""
 
@@ -2417,15 +2415,15 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:247
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:279
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:308
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:248
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:280
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:309
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:249
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:281
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:310
 msgid "Enabled"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:266
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:232
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:233
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:234
 msgid "Workorder Message"
 msgstr ""
 
@@ -2433,8 +2431,8 @@ msgstr ""
 #: themes/default/templates/company/settings.tpl:303
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:237
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:269
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:238
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:270
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:239
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:271
 msgid "Customer's name"
 msgstr ""
 
@@ -2442,8 +2440,8 @@ msgstr ""
 #: themes/default/templates/company/settings.tpl:304
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:238
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:270
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:239
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:271
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:240
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:272
 msgid "Customer's contact first name"
 msgstr ""
 
@@ -2451,8 +2449,8 @@ msgstr ""
 #: themes/default/templates/company/settings.tpl:305
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:239
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:271
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:240
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:272
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:241
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:273
 msgid "Customer's contact last name"
 msgstr ""
 
@@ -2460,14 +2458,14 @@ msgstr ""
 #: themes/default/templates/company/settings.tpl:306
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:240
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:272
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:241
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:273
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:242
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:274
 msgid "Customer's credit terms"
 msgstr ""
 
 #: themes/default/templates/company/settings.tpl:298
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:264
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:265
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:266
 msgid "Invoice Message"
 msgstr ""
 
@@ -3459,7 +3457,7 @@ msgstr ""
 
 #: themes/default/templates/core/dashboard.tpl:38
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:161
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:162
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:163
 msgid "Company Welcome Message"
 msgstr ""
 
@@ -4808,6 +4806,11 @@ msgstr ""
 msgid "Net"
 msgstr ""
 
+#: themes/default/templates/invoice/closed.tpl:87
+#: themes/default/templates/invoice/open.tpl:87
+msgid "VAT/Tax"
+msgstr ""
+
 #: themes/default/templates/invoice/closed.tpl:96
 #: themes/default/templates/invoice/open.tpl:96
 msgid "Contact Info"
@@ -5876,7 +5879,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_stage2_block.tpl:629
 #: themes/default/templates/setup/blocks/migrate_stage3_block.tpl:25
 #: themes/default/templates/setup/blocks/migrate_stage4_block.tpl:26
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:335
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:336
 #: themes/default/templates/setup/blocks/migrate_stage6_block.tpl:25
 #: themes/default/templates/setup/blocks/migrate_stage7_block.tpl:38
 #: themes/default/templates/setup/blocks/migrate_stage8_block.tpl:259
@@ -5931,7 +5934,7 @@ msgid "Company Name"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_stage5_block.tpl:179
-#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:180
+#: themes/default/templates/setup/blocks/migrate_stage5_block.tpl:181
 msgid "Edit your Company's Currency Settings"
 msgstr ""
 
