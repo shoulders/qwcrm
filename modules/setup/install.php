@@ -73,7 +73,7 @@ if($VAR['stage'] == '2') {
     // load the page
     } else {
         
-        // Set mandatory default values               
+        // Set default mandatory values - This makes it easier for users only
         $VAR['theme_name']          = 'default';
         $VAR['google_server']       = 'https://www.google.com/';
         $VAR['session_lifetime']    = '15';
