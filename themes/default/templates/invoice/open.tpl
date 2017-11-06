@@ -84,7 +84,7 @@
                                                         <td class="olohead" nowarp>{t}Sub Total{/t}</td>                                                        
                                                         <td class="olohead" nowarp>{t}Discount{/t}</td>
                                                         <td class="olohead" nowarp>{t}Net{/t}</td>
-                                                        <td class="olohead" nowarp>{t}VAT{/t}</td> 
+                                                        <td class="olohead" nowarp>{t}VAT/Tax{/t}</td> 
                                                         <td class="olohead" nowarp>{t}Gross{/t}</td>                                                        
                                                     </tr>
                                                     {section name=q loop=$invoices}

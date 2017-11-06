@@ -654,8 +654,8 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'type'              => 'EXPENSE_TYPE',
         'payment_method'    => 'EXPENSE_PAYMENT_METHOD',
         'net_amount'        => 'EXPENSE_NET_AMOUNT',
-        'tax_rate'          => 'EXPENSE_TAX_RATE',
-        'tax_amount'        => 'EXPENSE_TAX_AMOUNT',
+        'vat_rate'          => 'EXPENSE_TAX_RATE',
+        'vat_amount'        => 'EXPENSE_TAX_AMOUNT',
         'gross_amount'      => 'EXPENSE_GROSS_AMOUNT',
         'items'             => 'EXPENSE_ITEMS',
         'notes'             => 'EXPENSE_NOTES'        
@@ -815,8 +815,8 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'type'              => 'REFUND_TYPE',
         'payment_method'    => 'REFUND_PAYMENT_METHOD',
         'net_amount'        => 'REFUND_NET_AMOUNT',
-        'tax_rate'          => 'REFUND_TAX_RATE',
-        'tax_amount'        => 'REFUND_TAX_AMOUNT',
+        'vat_rate'          => 'REFUND_TAX_RATE',
+        'vat_amount'        => 'REFUND_TAX_AMOUNT',
         'gross_amount'      => 'REFUND_GROSS_AMOUNT',
         'items'             => 'REFUND_ITEMS',
         'notes'             => 'REFUND_NOTES'        
