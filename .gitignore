@@ -1,12 +1,7 @@
-/nbproject/
 /cache/smarty/cache/
 /cache/smarty/compile/
 /libraries/vendor/
-/configuration.php
+/logs/
 /media/
-/logs/access.log
-/logs/activity.log
-/logs/email_error.log
-/logs/email_transport.log
-/logs/error.log
-/logs/setup.log
+/nbproject/
+/configuration.php
