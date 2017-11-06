@@ -1,5 +1,13 @@
 h1. QWcrm Latest News
 
+06-11-17
+
+All work has been completed on QWcrm. It is also possible to migrate from MyITCRM to QWcrm.
+
+I am just doing final testing to make sure I have not missed anything and then I can release it while I update my website.
+
+If the update of my website goes smoothly I can release this week hopefully.
+
 01-11-17
 
 just doing the final fixes to do with VAT/Tax and then i can release QWcrm through my website "QuantumWarp":https://quantumwarp.com/
