@@ -114,7 +114,7 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Tax Type{/t}:</b></td>
                                                                         <td>
-                                                                            <select class="olotd5" id="tax_type" name="tax_type">
+                                                                            <select class="olotd5" id="tax_type" name="tax_type" required>
                                                                                 <option value=""{if $company_details.tax_type == ''} selected{/if}>&nbsp;</option>
                                                                                 <option value="none"{if $company_details.tax_type == 'none'} selected{/if}>{t}None{/t}</option>
                                                                                 <option value="sales"{if $company_details.tax_type == 'sales'} selected{/if}>{t}Sales{/t}</option>
