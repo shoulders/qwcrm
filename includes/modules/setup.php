@@ -929,7 +929,10 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'notes'             => ''
         );
     migrate_table($db, $qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
-        
+    
+    // Set all users to have create date of now 
+    update_column_values($db, $qwcrm_prefix.'user', 'register_date', '*', time());
+    
     // Set all users to employees
     update_column_values($db, $qwcrm_prefix.'user', 'is_employee', '*', '1');
     
