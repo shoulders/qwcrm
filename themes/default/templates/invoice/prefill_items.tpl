@@ -38,7 +38,7 @@
                                                             <form method="post" action="index.php?page=invoice:prefill_items">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$invoice_prefill_items[q].invoice_prefill_id}</td>
-                                                                    <td class="olotd4" nowrap><input name="description" class="olotd5" size="50" value="{$invoice_prefill_items[q].description}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                    <td class="olotd4" nowrap><input name="description" class="olotd5" size="50" value="{$invoice_prefill_items[q].description}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
                                                                     <td class="olotd4" nowrap>
                                                                         <select class="olotd5" name="type">
                                                                             <option value="Labour" {if $invoice_prefill_items[q].type == 'Labour'} selected{/if}>{t}Labour{/t}</option>
@@ -73,7 +73,7 @@
                                                             <td class="olohead">{t}Action{/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4"><input name="description" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                            <td class="olotd4"><input name="description" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
                                                             <td class="olotd4" nowrap>
                                                                 <select class="olotd5" name="type">
                                                                     <option value="Labour" selected>{t}Labour{/t}</option>
