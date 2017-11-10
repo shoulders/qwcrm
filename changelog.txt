@@ -1,5 +1,0 @@
-PLEASE REPORT ANY BUGS OR FEATURES THAT YOU FIND SO THAT WE CAN FIX'EM!
-To view more details on these issues, please visit http://quantumwarp.com/
-
-=== v3.0.0 ===
-First Major Release
