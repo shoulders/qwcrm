@@ -2,8 +2,7 @@
 
 06-11-17
 
-All work has been completed on QWcrm. It is also possible to migrate
-from MyITCRM to QWcrm.
+All work has been completed on QWcrm. It is also possible to migrate from MyITCRM to QWcrm.
 
 I am just doing final testing to make sure I have not missed anything
 and then I can release it while I update my website.
@@ -60,12 +59,12 @@ maintain and track your customers information and work orders, payments
 made, invoicing, employees and jobs.
 
 Whilst [QWcrm](http://quantumwarp.com) was originally designed for the
-Computer Repairs Industry, it can easily be used for any type of repiars
+Computer Repairs Industry, it can easily be used for any type of repairs
 related business
 
-\* Electrical Device Repairs and Servicing;  
-\* Small/Large Plant Maintenance and Servicing;  
-\* Motorcycles, Cars, Lawn Equipment Servicing and Repairs.
+* Electrical Device Repairs and Servicing 
+* Small/Large Plant Maintenance and Servicing 
+* Motorcycles, Cars, Lawn Equipment Servicing and Repairs
 
 We also strong community input via the
 [forum.](http://quantumwarp.com/forum/) With new features and bugs being
@@ -73,13 +72,11 @@ actively reported and resolved. It’s also a great way to get personal
 involvement from all our end users to help build on this software.  
 Some of [QWcrm’s](http://quantumwarp.com) Features:
 
-\* Customer details including Google maps directions ;  
-\* Work Order (Jobs/Tasks) Management ;  
-\* Work Order scheduling via calendar per employee ;  
-\* Billing and Invoicing ;  
-\* Accept payments via Credit Cards via either Paymate, Paypal ,
-Cheques, Cash or Gift Certificates ;  
-and much more\!
+* Customer details including Google maps directions 
+* Work Order (Jobs/Tasks) Management 
+* Work Order scheduling via calendar per employee
+* Billing and Invoicing
+* Accept payments via Credit Cards via either Paymate, Paypal, Cheques, Cash or Gift Certificates and much more\!
 
 So now give the [demo](http://demo.quantumwarp.com) a try or download
 your free copy and start optimizing your business with this easy to use
