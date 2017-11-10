@@ -2,7 +2,8 @@
 
 06-11-17
 
-All work has been completed on QWcrm. It is also possible to migrate from MyITCRM to QWcrm.
+All work has been completed on QWcrm. It is also possible to migrate
+from MyITCRM to QWcrm.
 
 I am just doing final testing to make sure I have not missed anything
 and then I can release it while I update my website.
@@ -24,11 +25,9 @@ I will offer support and downloads through my website
 Keep an eye out on my QW blog for updates. I will only do quick updates
 until I get the first release done.
 
-[QuantumWarp
-Blog](https://quantumwarp.com/blog)
+[QuantumWarp Blog](https://quantumwarp.com/blog)
 
-![QWcrm](https://quantumwarp.com/images/common/Quantumwarp-Logo-Black-GitHub.png
-"QWcrm"):http://quantumwarp.com
+![QWcrm](https://quantumwarp.com/images/common/Quantumwarp-Logo-Black-GitHub.png "QWcrm"):http://quantumwarp.com
 
 # New Version Coming Soon
 
