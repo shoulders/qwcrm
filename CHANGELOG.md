@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 Please report any bugs or features that you find so that they can be fixed.
-To get more details visit http://quantumwarp.com/
+To get more details visit https://quantumwarp.com/
 
 ## [Unreleased]
 
