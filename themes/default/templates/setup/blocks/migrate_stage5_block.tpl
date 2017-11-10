@@ -113,7 +113,7 @@
                                                                         <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                     </tr>                                                                    
                                                                     <tr>
-                                                                        <td align="right"><b>{t}Tax Type{/t}:</b></td>
+                                                                        <td align="right"><b>{t}Tax Type{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                         <td>
                                                                             <select class="olotd5" id="tax_type" name="tax_type" required>
                                                                                 <option value=""{if $company_details.tax_type == ''} selected{/if}>&nbsp;</option>
