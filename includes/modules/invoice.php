@@ -556,8 +556,11 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
         
         $invoice_details = get_invoice_details($db, $invoice_id);
         
+        // Create a Workorder History Note  
+        insert_workorder_history_note($db, $invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        
         // Log activity        
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record    
@@ -625,8 +628,11 @@ function update_invoice_full($db, $VAR) {
         
     } else {
     
+        // Create a Workorder History Note  
+        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        
         // Log activity        
-        $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
         write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
 
         // Update last active record    
@@ -842,6 +848,9 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
         exit;
     } else {
         
+        // Create a Workorder History Note 
+        // not currently needed
+        
         // Log activity        
         $record = _gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
@@ -891,6 +900,9 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
         exit;
         
     } else {
+        
+        // Create a Workorder History Note 
+        // not currently needed
         
         // Log activity        
         $record = _gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
