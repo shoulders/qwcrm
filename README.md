@@ -1,7 +1,6 @@
 # QWcrm Latest News
 
 Check my blog for the latest news on [QuantumWarp Blog](https://quantumwarp.com/blog)
-
 Over at [QuantumWarp.com](https://quantumwarp.com/)
 
 # What is QWcrm?
@@ -36,7 +35,7 @@ QWcrm has many features, not all can be listed here:
 * Work Order (Jobs/Tasks) Management 
 * Work Order Scheduling
 * Invoicing
-* Assign payments to invoices (Manually)
+* Assign payments to invoices
 * Templatable
 * Migrate data from MyITCRM
 * Gift Certificates
@@ -46,8 +45,8 @@ QWcrm has many features, not all can be listed here:
 
 ## Support
 
-There is a [forum](http://quantumwarp.com/forum/) available for support over at [QuantumWarp.com](http://quantumwarp.com/forum/)
-With new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all
+There is a [forum](http://quantumwarp.com/forum/) available for support over at [QuantumWarp](http://quantumwarp.com/forum/)
+with new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all
 our end users to help build on this software. 
 
 Always search the forum and double check your problem before posting.
@@ -56,7 +55,7 @@ If you do need to post, the more information you can supply, the easier it is to
 
 ## MyITCRM
 
-You can completely replace MyITCRM with QWcrm because it has all of the features you use and more.
+You can completely replace MyITCRM with QWcrm because it has all of the features you are use too and more.
 QWcrm has an migrator to transfer your data from MyITCRM to QWcrm allowing for a seamless transition.
 
 ## Requirements
