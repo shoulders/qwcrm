@@ -1,33 +1,32 @@
 # QWcrm Latest News
 
-Check my blog for the latest news on QWcrm [QuantumWarp Blog](https://quantumwarp.com/blog)
+Check my blog for the latest news on [QuantumWarp Blog](https://quantumwarp.com/blog)
 
-![QWcrm](https://quantumwarp.com/images/common/Quantumwarp-Logo-Black-GitHub.png "QWcrm"):http://quantumwarp.com
+Over at [QuantumWarp.com](https://quantumwarp.com/)
 
 # What is QWcrm?
 
-[QWcrm](http://quantumwarp.com) - Free and Opensource CRM Software.
+[QWcrm](http://quantumwarp.com) is a free and opensource CRM software designed to be easy to use
+and is ideal for small businesses to use for all of their Job (Work Order ) and invoicing management needs in one package.
 
-[QWcrm](http://quantumwarp.com) is designed for the needs of the Service
-and Repairs Business Industry.
+There are no over complicated things that you need to do or learn
+to use this software because it was developed with end users in mind.
 
-[QWcrm](http://quantumwarp.com) provides your business the tools to
-maintain and track your customers information and work orders, payments
-made, invoicing, employees and jobs.
+QWcrm is a complete redevelopment of MyITCRM. All the core code has been rewritten,
+all issues and bugs fixed,  whilst maintaining the essence of MyITCRM.
 
-Whilst [QWcrm](http://quantumwarp.com) was originally designed for the
-Computer Repairs Industry, it can easily be used for any type of repairs
-related business
+QWcrm can be used for many different businesses because it is flexible:
+* Computer Repairs Industry
+* Electrical Device Repairs and Servicing
+* Mobile Phone Repairs
+* Small/Large Plant Maintenance and Servicing
+* Garages / Vehicle Repairs
+* Gardening Business
+* Many more...
 
-* Electrical Device Repairs and Servicing 
-* Small/Large Plant Maintenance and Servicing 
-* Motorcycles, Cars, Lawn Equipment Servicing and Repairs
 
-We also strong community input via the
-[forum.](http://quantumwarp.com/forum/) With new features and bugs being
-actively reported and resolved. It’s also a great way to get personal
-involvement from all our end users to help build on this software.  
-Some of [QWcrm’s](http://quantumwarp.com) Features:
+
+Features:
 
 * Customer details including Google maps directions 
 * Work Order (Jobs/Tasks) Management 
@@ -39,8 +38,19 @@ So now give the [demo](http://demo.quantumwarp.com) a try or download
 your free copy and start optimizing your business with this easy to use
 and feature packed CRM Program.
 
+## Support
 
-## I have MyITCRM
+There is a  forum available for support over at QuantumWarp.com, [Click Here](https://quantumwarp.com/)
+
+We also strong community input via the
+[forum.](http://quantumwarp.com/forum/) With new features and bugs being
+actively reported and resolved. It’s also a great way to get personal
+involvement from all our end users to help build on this software. 
+
+Always search the forum and double check your problem before posting. The more information you
+can supply with you post, the easier it is to fix.
+
+## MyITCRM
 
 You can completely replace MyITCRM with QWcrm because it has all of the features you use and more.
 and QWcrm has an migrator to get transfer your data from MyITCRM to QWcrm allowing for a seamless transition.
