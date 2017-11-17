@@ -14,7 +14,7 @@ to use this software because it was developed with end users in mind.
 QWcrm is a complete redevelopment of MyITCRM. All the core code has been rewritten,
 all issues and bugs fixed.
 
-whilst maintaining the essence of MyITCRM, QWcrm is a separate and modern CRM which will grow in features and performance.
+Whilst maintaining the essence of MyITCRM, QWcrm is a separate and modern CRM which will grow in features and performance.
 
 ## Suitable for
 
