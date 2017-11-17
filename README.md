@@ -58,7 +58,7 @@ If you do need to post, the more information you can supply, the easier it is to
 ## MyITCRM
 
 You can completely replace MyITCRM with QWcrm because it has all of the features you are use too and more.
-QWcrm has an migrator to transfer your data from MyITCRM to QWcrm allowing for a seamless transition.
+QWcrm has a migrator to transfer your data from MyITCRM to QWcrm allowing for a seamless transition.
 
 ## Requirements
 
