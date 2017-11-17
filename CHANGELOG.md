@@ -7,13 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
-## [Unreleased]
-
-## [3.0.0] - 2017-11-17
+## 3.0.0 - 2017-11-17
 ### Initial Release
 - QWcrm is a complete rewrite of MyITCRM
 - Can migrate all data from MyITCRM
 - All features now work
 - 650+ issues fixed / features added
-
-[3.0.0]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.3.0...v1.0.0
