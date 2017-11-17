@@ -6,8 +6,8 @@ Over at [QuantumWarp.com](https://quantumwarp.com/)
 
 # What is QWcrm?
 
-[QWcrm](http://quantumwarp.com) is a free and opensource CRM software designed to be easy to use
-and is ideal for small businesses to use for all of their Job (Work Order ) and invoicing management needs in one package.
+[QWcrm](http://quantumwarp.com) is a free and Open Source CRM software designed to be easy to use
+and is ideal for small businesses to use for all of their Job (Work Order )and invoicing management needs in one package.
 
 There are no over complicated things that you need to do or learn
 to use this software because it was developed with end users in mind.
@@ -15,7 +15,10 @@ to use this software because it was developed with end users in mind.
 QWcrm is a complete redevelopment of MyITCRM. All the core code has been rewritten,
 all issues and bugs fixed,  whilst maintaining the essence of MyITCRM.
 
+## Suitable for
+
 QWcrm can be used for many different businesses because it is flexible:
+
 * Computer Repairs Industry
 * Electrical Device Repairs and Servicing
 * Mobile Phone Repairs
@@ -24,37 +27,41 @@ QWcrm can be used for many different businesses because it is flexible:
 * Gardening Business
 * Many more...
 
+## Features
 
+QWcrm has many features, not all can be listed here:
 
-Features:
-
-* Customer details including Google maps directions 
+* Employees and roles
+* Customer Management
 * Work Order (Jobs/Tasks) Management 
-* Work Order scheduling via calendar per employee
-* Billing and Invoicing
-* Accept payments via Credit Cards via either Paymate, Paypal, Cheques, Cash or Gift Certificates and much more\!
-
-So now give the [demo](http://demo.quantumwarp.com) a try or download
-your free copy and start optimizing your business with this easy to use
-and feature packed CRM Program.
+* Work Order Scheduling
+* Invoicing
+* Assign payments to invoices (Manually)
+* Templatable
+* Migrate data from MyITCRM
+* Gift Certificates
+* Expenses and Refunds
+* Suppliers Database
+* Financial Report
 
 ## Support
 
-There is a  forum available for support over at QuantumWarp.com, [Click Here](https://quantumwarp.com/)
+There is a [forum](http://quantumwarp.com/forum/) available for support over at [QuantumWarp.com](http://quantumwarp.com/forum/)
+With new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all
+our end users to help build on this software. 
 
-We also strong community input via the
-[forum.](http://quantumwarp.com/forum/) With new features and bugs being
-actively reported and resolved. It’s also a great way to get personal
-involvement from all our end users to help build on this software. 
+Always search the forum and double check your problem before posting.
 
-Always search the forum and double check your problem before posting. The more information you
-can supply with you post, the easier it is to fix.
+If you do need to post, the more information you can supply, the easier it is to fix.
 
 ## MyITCRM
 
 You can completely replace MyITCRM with QWcrm because it has all of the features you use and more.
-and QWcrm has an migrator to get transfer your data from MyITCRM to QWcrm allowing for a seamless transition.
+QWcrm has an migrator to transfer your data from MyITCRM to QWcrm allowing for a seamless transition.
 
+## Requirements
+
+A web server with PHP 5.5.0+ and MySQL 5.0.0+
 
 ## Special Thanks
 
