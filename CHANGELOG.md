@@ -12,7 +12,7 @@ To get more details visit https://quantumwarp.com/
 ## [3.0.0] - 2017-11-17
 
 ### Initial Release
+- QWcrm is a complete rewrite of MyITCRM
 - Can migrate all data from MyITCRM
-- All MyITCRM code has been replaced
 - All features now work
 - 650+ issues fixed / features added

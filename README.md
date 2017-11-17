@@ -1,50 +1,8 @@
 # QWcrm Latest News
 
-06-11-17
-
-All work has been completed on QWcrm. It is also possible to migrate
-from MyITCRM to QWcrm.
-
-I am just doing final testing to make sure I have not missed anything
-and then I can release it while I update my website.
-
-If the update of my website goes smoothly I can release this week
-hopefully.
-
-01-11-17
-
-just doing the final fixes to do with VAT/Tax and then i can release
-QWcrm through my website [QuantumWarp](https://quantumwarp.com/)
-
-30-09-17
-
-Final testing and changes are being made. QWcrm should be released soon.
-I will offer support and downloads through my website
-[QuantumWarp](https://quantumwarp.com/)
-
-Keep an eye out on my QW blog for updates. I will only do quick updates
-until I get the first release done.
-
-[QuantumWarp Blog](https://quantumwarp.com/blog)
+Check my blog for the latest news on QWcrm [QuantumWarp Blog](https://quantumwarp.com/blog)
 
 ![QWcrm](https://quantumwarp.com/images/common/Quantumwarp-Logo-Black-GitHub.png "QWcrm"):http://quantumwarp.com
-
-# New Version Coming Soon
-
-I have just started to upgrade the code as it is a mess so please bear
-with me. This software when finished will upgrade MyITCRM v2.9.3.
-
-The first major release will consist of a a full code check and tidy,
-full translation capability, smooth upgrading.
-
-I cant give a time line but you can see that I am very active on this
-project.
-
-thanks
-
-shoulders
-
-### Requirements: - [QWcrm Installation Requirements](https://github.com/shoulders/qwcrm/wiki/Installation-on-Web-Host)
 
 # What is QWcrm?
 
@@ -80,6 +38,13 @@ Some of [QWcrm’s](http://quantumwarp.com) Features:
 So now give the [demo](http://demo.quantumwarp.com) a try or download
 your free copy and start optimizing your business with this easy to use
 and feature packed CRM Program.
+
+
+## I have MyITCRM
+
+You can completely replace MyITCRM with QWcrm because it has all of the features you use and more.
+and QWcrm has an migrator to get transfer your data from MyITCRM to QWcrm allowing for a seamless transition.
+
 
 ## Special Thanks
 
