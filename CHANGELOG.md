@@ -15,3 +15,5 @@ To get more details visit https://quantumwarp.com/
 - Can migrate all data from MyITCRM
 - All features now work
 - 650+ issues fixed / features added
+
+[3.0.0]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.3.0...v1.0.0
