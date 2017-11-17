@@ -5,8 +5,8 @@ Over at [QuantumWarp.com](https://quantumwarp.com/)
 
 # What is QWcrm?
 
-[QWcrm](http://quantumwarp.com) is a free and Open Source CRM software designed to be easy to use
-and is ideal for small businesses to use for all of their Job (Work Order )and invoicing management needs in one package.
+[QWcrm](http://quantumwarp.com) is a free and Open Source CRM designed for 
+small businesses to be easy to use system for all of their Job (Work Order) and invoicing needs in one package.
 
 There are no over complicated things that you need to do or learn
 to use this software because it was developed with end users in mind.
