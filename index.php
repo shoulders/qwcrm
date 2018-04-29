@@ -57,7 +57,7 @@ define('QWCRM_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 // Constant that is checked in included files to prevent direct access
 define('_QWEXEC', 1);
 
-// Load the config if the file exists
+// Load the config if it exists
 if(is_file('configuration.php')) {
     
     // Load the config file
@@ -74,7 +74,7 @@ require('includes/defines.php');
 // Configure PHP error reporting
 require(INCLUDES_DIR.'error.php');
 
-// Load dependancies via composer (currently only motranslator)
+// Load dependencies via composer (currently only motranslator)
 require(LIBRARIES_DIR.'vendor/'.'autoload.php');
 
 // Load Language
@@ -190,7 +190,7 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 ##########################################################################
 
 // QWcrm System Folders
-$smarty->assign('includes_dir',             INCLUDES_DIR                );      // set includes directory  //do i need this one
+$smarty->assign('includes_dir',             INCLUDES_DIR                );      // set includes directory  // Do I need this one
 $smarty->assign('media_dir',                MEDIA_DIR                   );      // set media directory
 
 // QWcrm Theme Directory Template Variables
@@ -239,7 +239,7 @@ if(isset($VAR['warning_msg'])){
 }
 
 ############################################
-#  Page Preperation Logic                  #
+#  Page Preparation Logic                  #
 #  Extract Page Parameters and Validate    #
 #  the page exists ready for building      #
 ############################################   
@@ -363,7 +363,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
 } else {    
   
     // Log activity
-    $record = _gettext("A user tried to access the following resource without the correct pemissions.").' ('.$module.':'.$page_tpl.')';
+    $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$module.':'.$page_tpl.')';
     write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id); 
     
     //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$module.':'.$page_tpl);
@@ -390,7 +390,7 @@ if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
 #         Content Plugins                      #
 ################################################
 
-// You can add plugins here that change the page content
+// You can add plugins here that parse and change the page content
 // $BuildPage
 
 ################################################
