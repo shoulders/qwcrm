@@ -2,8 +2,8 @@
 /src/cache/smarty/cache/
 /src/cache/smarty/compile/
 /src/libraries/vendor/
-
-
+/src/logs/
+/src/media/
 /src/nbproject/
 /src/configuration.php
 /.php_cs.cache
