@@ -129,7 +129,7 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
 /** Insert Functions **/
 
 #####################################
-#    insert new customer            #
+#    Insert new customer            #
 #####################################
 
 function insert_customer($db, $VAR) {
@@ -171,7 +171,7 @@ function insert_customer($db, $VAR) {
 } 
 
 #############################
-#    insert customer note   #
+#    Insert customer note   #
 #############################
 
 function insert_customer_note($db, $customer_id, $note) {
@@ -312,7 +312,7 @@ function update_customer($db, $customer_id, $VAR) {
             credit_terms    =". $db->qstr( $VAR['credit_terms']     ).",               
             discount_rate   =". $db->qstr( $VAR['discount_rate']    ).",
             type            =". $db->qstr( $VAR['type']             ).", 
-            active          =". $db->qstr( $VAR['type']             ).", 
+            active          =". $db->qstr( $VAR['active']           ).", 
             primary_phone   =". $db->qstr( $VAR['primary_phone']    ).",    
             mobile_phone    =". $db->qstr( $VAR['mobile_phone']     ).",
             fax             =". $db->qstr( $VAR['fax']              ).",
