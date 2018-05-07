@@ -18,6 +18,7 @@ defined('_QWEXEC') or die;
 
 /* -- */
 
+/* Load Dependencies Manually
 // Set Path for ADODB in the php include path
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/');
 require('adodb.inc.php');
@@ -25,6 +26,7 @@ require('adodb.inc.php');
 // Enable error trapping - this extends the system class Exception - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling
 // I think this tries to convert standard PHP errors to Exceptions - needed for get_qwcrm_database_version_number()
 require('adodb-exceptions.inc.php');
+ */
 
 // create adodb database connection
 $db = ADONewConnection('mysqli');
