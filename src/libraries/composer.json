@@ -1,6 +1,7 @@
 {
     "require": {
         "phpmyadmin/motranslator": "^3.3",
-        "smarty/smarty": "^3.1"
+        "smarty/smarty": "^3.1",
+        "mpdf/mpdf": "^7.0"
     }
 }

@@ -9,18 +9,18 @@
 defined('_QWEXEC') or die;
 
 // Define mPDF Config
-//define('_MPDF_TEMP_PATH', '../../common/templfiles'); // Folders for temporary files
-//define('_MPDF_RRFONTDATAPATH', '../../common/templfiles'); // if you wish to use a different folder for temporaary files you should define this constant
+//define('_MPDF_TEMP_PATH', '../../common/templfiles');         // Folders for temporary files
+//define('_MPDF_RRFONTDATAPATH', '../../common/templfiles');    // if you wish to use a different folder for temporaary files you should define this constant
 
-// Load Dependencies - something to do with Composer
-require_once(LIBRARIES_DIR.'mpdf/vendor/autoload.php');
+// Load Dependencies Manually
+//require_once(LIBRARIES_DIR.'mpdf/vendor/autoload.php');
 
 // Output a PDF in the browser
 function mpdf_output_in_browser($pdf_filename, $pdf_template) {
     
-    // Initialize mPDF
-    $mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html
-
+    // Initialize mPDF    
+    $mpdf = new \Mpdf\Mpdf();
+    
     //not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
     //$mpdf->SetTitle('My Title');
 
@@ -39,7 +39,7 @@ function mpdf_output_in_browser($pdf_filename, $pdf_template) {
 function mpdf_output_as_varible($pdf_filename, $pdf_template) {
     
     // Initialize mPDF
-    $mpdf = new mPDF('c');  // c = only use core fonts - https://mpdf.github.io/fonts-languages/fonts-in-mpdf-6-x.html
+    $mpdf = new \Mpdf\Mpdf();
 
     // not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
     //$mpdf->SetTitle('My Title');
