@@ -21,7 +21,7 @@ function mpdf_output_in_browser($pdf_filename, $pdf_template) {
     // Initialize mPDF    
     $mpdf = new \Mpdf\Mpdf();
     
-    //not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
+    // Not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
     //$mpdf->SetTitle('My Title');
 
     // Build the PDF
