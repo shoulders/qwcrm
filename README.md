@@ -62,7 +62,7 @@ QWcrm has a migrator to transfer your data from MyITCRM to QWcrm allowing for a 
 
 ## Requirements
 
-A web server with PHP 5.5.0+ and MySQL 5.0.0+
+A web server with PHP 5.6+ and MySQL 5.0.0+
 
 ## Special Thanks
 
