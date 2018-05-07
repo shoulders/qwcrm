@@ -2,14 +2,14 @@
 /cache/smarty/compile/
 /libraries/vendor/
 /logs/
-/media/
+
 /nbproject/
 /configuration.php
 /src/cache/smarty/cache/
 /src/cache/smarty/compile/
 /src/libraries/vendor/
 /src/logs/
-/src/media/
+
 /src/nbproject/
 /src/configuration.php
 /.php_cs.cache
