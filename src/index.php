@@ -75,7 +75,7 @@ require('includes/defines.php');
 require(INCLUDES_DIR.'error.php');
 
 // Load dependencies via composer (currently only motranslator)
-require(LIBRARIES_DIR.'vendor/'.'autoload.php');
+require(VENDOR_DIR.'autoload.php');
 
 // Load Language
 require(INCLUDES_DIR.'language.php');

@@ -27,6 +27,7 @@ define('LANGUAGE_DIR',              'language/'                     );
 define('LIBRARIES_DIR',             'libraries/'                    );
 define('LOGS_DIR',                  'logs/'                         );
 define('SETUP_DIR',                 INCLUDES_DIR.'modules/setup/'   );
+define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'         );
 
 // Smarty
 define('SMARTY_CACHE_DIR',          CACHE_DIR.'smarty/cache/'       );
