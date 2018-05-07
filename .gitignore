@@ -3,7 +3,7 @@
 /src/cache/smarty/compile/
 /src/libraries/vendor/
 
-/src/media/
+
 /src/nbproject/
 /src/configuration.php
 /.php_cs.cache
