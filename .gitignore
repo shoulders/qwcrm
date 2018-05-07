@@ -1,15 +1,12 @@
-/cache/smarty/cache/
-/cache/smarty/compile/
-/libraries/vendor/
-/logs/
-
 /nbproject/
-/configuration.php
 /src/cache/smarty/cache/
 /src/cache/smarty/compile/
 /src/libraries/vendor/
 
-
+/src/media/
 /src/nbproject/
 /src/configuration.php
 /.php_cs.cache
+
+
+
