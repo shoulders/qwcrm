@@ -74,63 +74,7 @@
                                         </tr>
                                         <tr>
                                             <td valign="top" colspan="2">
-                                                <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
-                                                    <tr>
-                                                        <td class="olohead"><b>{t}WO ID{/t}</b></td>
-                                                        <td class="olohead"><b>{t}INV ID{/t}</b></td>
-                                                        <td class="olohead"><b>{t}Opened{/t}</b></td>
-                                                        <td class="olohead"><b>{t}Closed{/t}</b></td>
-                                                        <td class="olohead"><b>{t}Customer{/t}</b></td>
-                                                        <td class="olohead"><b>{t}Scope{/t}</b></td>
-                                                        <td class="olohead"><b>{t}Status{/t}</b></td>
-                                                        <td class="olohead"><b>{t}Technician{/t}</b></td>
-                                                    </tr>
-                                                    {section name=i loop=$workorders}                                                    
-                                                        {if $workorders[i].workorder_id != ''}
-                                                            <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}';" class="row1">
-                                                                
-                                                                <!-- WO ID -->
-                                                                <td class="olotd4"><a href="index.php?page=workorder:details&workorder_id={$workorders[i].workorder_id}">{$workorders[i].workorder_id}</a></td>
-                                                                
-                                                                <!-- INV ID -->
-                                                                <td class="olotd4"><a href="index.php?page=invoice:details&invoice_id={$workorders[i].invoice_id}">{$workorders[i].invoice_id}</a></td>
-                                                                
-                                                                <!-- Opened -->
-                                                                <td class="olotd4"> {$workorders[i].workorder_open_date|date_format:$date_format}</td>
-                                                                
-                                                                <!-- Closed -->
-                                                                <td class="olotd4">{$workorders[i].workorder_close_date|date_format:$date_format}</td>
-                                                                
-                                                                <!-- Customer -->
-                                                                <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$workorders[i].customer_first_name} {$workorders[i].customer_last_name}<br><b>{t}Phone{/t}: </b>{$workorders[i].customer_phone}<br><b>{t}Mobile{/t}: </b>{$workorders[i].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$workorders[i].customer_phone}<br><b>{t}Address{/t}: </b><br>{$workorders[i].customer_address|nl2br|regex_replace:"/[\r\t\n]/":" "}}<br>{$workorders[i].customer_city}<br>{$workorders[i].customer_state}<br>{$workorders[i].customer_zip}<br>{$workorders[i].customer_country}');" onMouseOut="hideddrivetip();">
-                                                                    <a class="link1" href="index.php?page=customer:details&customer_id={$workorders[i].customer_id}">{$workorders[i].customer_display_name}</a>
-                                                                </td>
-                                                                
-                                                                <!-- Scope -->
-                                                                <td class="olotd4" nowrap>{$workorders[i].workorder_scope}</td>
-                                                                
-                                                                <!-- Status -->
-                                                                <td class="olotd4" align="center">
-                                                                    {section name=s loop=$workorder_statuses}    
-                                                                        {if $workorders[i].workorder_status == $workorder_statuses[s].status_key}{t}{$workorder_statuses[s].display_name}{/t}{/if}        
-                                                                    {/section}                                                 
-                                                                </td>
-                                                                
-                                                                <!-- Employee -->
-                                                                <td class="olotd4" nowrap>
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$workorders[i].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$workorders[i].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$workorders[i].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$workorders[i].employee_email}');" onMouseOut="hideddrivetip();">
-                                                                    <a class="link1" href="index.php?page=user:details&user_id={$workorders[i].employee_id}">{$workorders[i].employee_display_name}</a>
-                                                                </td>
-                                                                
-                                                            </tr>
-                                                        {else}
-                                                            <tr>
-                                                                <td colspan="6" class="error">{t}There are no closed work orders.{/t}</td>
-                                                            </tr>
-                                                        {/if}
-                                                    {/section}
-                                                </table>
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$workorders_closed block_title=''}
                                             </td>
                                         </tr>
                                     </table>

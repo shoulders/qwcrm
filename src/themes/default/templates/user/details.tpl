@@ -44,7 +44,7 @@
 
                                             <!-- Tab 2 Contents - User Open Work Orders -->
                                             <div id="tab_2_contents" class="tab_contents">                                                                                            
-                                                {include file='user/blocks/details_open_workorders_block.tpl'}                                                
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$user_workorders block_title=''}                                               
                                             </div>
 
                                         </div>

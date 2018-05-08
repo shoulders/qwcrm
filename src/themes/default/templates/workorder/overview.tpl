@@ -25,50 +25,50 @@
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         <tr>
                                             <td>
-                                                <a name="unassigned"></a>                                                
-                                                {include file='workorder/blocks/overview_workorders_stats_employee_block.tpl'}
+                                                <a name="workorder_stats"></a>                                                
+                                                {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$overview_workorder_stats block_title=_gettext("Work Order Stats")}                                               
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="unassigned"></a>                                                
-                                                {include file='workorder/blocks/overview_workorders_unassigned_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_unassigned block_title=_gettext("Unassigned")}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="assigned"></a>
-                                                {include file='workorder/blocks/overview_workorders_assigned_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_assigned block_title=_gettext("Assigned")}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="waiting_for_parts"></a>
-                                                {include file='workorder/blocks/overview_workorders_waiting_for_parts_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_waiting_for_parts block_title=_gettext("Waiting for Parts")}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="scheduled"></a>
-                                                {include file='workorder/blocks/overview_workorders_scheduled_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_scheduled block_title=_gettext("Scheduled")}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="with_client"></a>
-                                                {include file='workorder/blocks/overview_workorders_with_client_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_with_client block_title=_gettext("With Client")}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="on_hold"></a>
-                                                {include file='workorder/blocks/overview_workorders_on_hold_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_on_hold block_title=_gettext("On Hold")}
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
                                                 <a name="management"></a>
-                                                {include file='workorder/blocks/overview_workorders_management_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$overview_workorders_management block_title=_gettext("Management")}
                                             </td>
                                         </tr>
                                     </table>
