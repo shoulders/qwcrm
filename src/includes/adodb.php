@@ -18,9 +18,11 @@ defined('_QWEXEC') or die;
 
 /* -- */
 
-/* Load Dependencies Manually
-// Set Path for ADODB in the php include path
+/*
+// Set Path for ADODB in the php include path (Not needed because it is loaded by Composer)
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/');
+
+// Load Dependency Manually (Not needed because it is loaded by composer)
 require('adodb.inc.php');
 
 // Enable error trapping - this extends the system class Exception - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling

@@ -8,9 +8,11 @@
 
 defined('_QWEXEC') or die;
 
-/* Manually Include Smarty (not required for composer autoload method)
-// Set Path for SMARTY in the php include path
+/*
+// Set Path for SMARTY in the PHP include path (Not needed because it is loaded by composer)
 set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty/');
+
+// Load Dependency Manually (Not needed because it is loaded by Composer)
 require_once('Smarty.class.php');
  */
 

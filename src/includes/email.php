@@ -21,10 +21,8 @@
 
 defined('_QWEXEC') or die;
 
-/*
-// Load Dependencies Manually (Swiftmailer)
-require(LIBRARIES_DIR.'swift/swift_required.php')
- */
+// Load Dependency Manually (Not needed because it is loaded by Composer)
+//require(LIBRARIES_DIR.'swift/swift_required.php')
 
 /* Other Functions */
 

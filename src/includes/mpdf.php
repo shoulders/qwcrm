@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 //define('_MPDF_TEMP_PATH', '../../common/templfiles');         // Folders for temporary files
 //define('_MPDF_RRFONTDATAPATH', '../../common/templfiles');    // if you wish to use a different folder for temporaary files you should define this constant
 
-// Load Dependencies Manually
+// Load Dependency Manually (Not needed because it is loaded by Composer)
 //require_once(LIBRARIES_DIR.'mpdf/vendor/autoload.php');
 
 // Output a PDF in the browser
