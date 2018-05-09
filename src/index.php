@@ -104,287 +104,21 @@ require(INCLUDES_DIR.'smarty.php');
 // Load the session and user framework
 require(FRAMEWORK_DIR.'qwframework.php');
 
-################################################
-#     Initiate QFramework                      #
-################################################
-
-// This starts the QFramework
+// Initiate the QFramework 
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $app = new QFactory;
 }
 
-##########################################################
-#   Assign the User's Variables to PHP and Smarty        #
-##########################################################
+// Configure variables to be used by the system
+require(INCLUDES_DIR.'variables.php');
 
-// Load current user object (empty if not logged in or installing)
-if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    $user = QFactory::getUser();
-}
+// Route the page request
+require(INCLUDES_DIR.'router.php');
 
-// Set User PHP variables
-$login_user_id          = $user->login_user_id;         // QFactory::getUser()->login_user_id; - this also works exactly the same
-$login_username         = $user->login_username;
-$login_display_name     = $user->login_display_name;
-$login_token            = $user->login_token;           // could this be replaced
-$login_is_employee      = $user->login_is_employee;
-$login_customer_id      = $user->login_customer_id;     // is only set when there is a customer_id in the user account
+// Build the page payload
+require(INCLUDES_DIR.'buildpage.php');
 
-// If there is no logged in user, set usergroup to Public (This can cause looping if not present)
-if(!isset($login_token )){
-    $login_usergroup_id = 9;
-} else {
-    $login_usergroup_id = $user->login_usergroup_id;   
-}
-
-// Remove User object as no longer needed (for security)
-unset($user);
-
-// Assign User varibles to smarty
-$smarty->assign('login_user_id',            $login_user_id          );
-$smarty->assign('login_username',           $login_username         );
-$smarty->assign('login_usergroup_id',       $login_usergroup_id     );
-$smarty->assign('login_display_name',       $login_display_name     );
-$smarty->assign('login_token',              $login_token            );
-$smarty->assign('login_is_employee',        $login_is_employee      );
-$smarty->assign('login_customer_id',        $login_customer_id      );
-
-################################################
-#   Update Last Active Times                   #
-################################################
-
-// Logged in Users
-if($login_user_id) {update_user_last_active($db, $login_user_id);}
-
-################################
-#   Set Global PHP Values      #
-################################ 
-
-// Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
-if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    $VAR = array_merge($_POST, $_GET, postEmulationReturnStore());
-} else {
-    $VAR = array_merge($_POST, $_GET);
-}
-
-// These are used globally and also a workaround for undefined indexes
-$workorder_id   =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
-$customer_id    =   isset($VAR['customer_id'])  ? $VAR['customer_id']   : null;
-$expense_id     =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
-$refund_id      =   isset($VAR['refund_id'])    ? $VAR['refund_id']     : null;
-$supplier_id    =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   : null;
-$invoice_id     =   isset($VAR['invoice_id'])   ? $VAR['invoice_id']    : null;
-$schedule_id    =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
-$giftcert_id    =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
-$user_id        =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
-$employee_id    =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
-$start_year     =   isset($VAR['start_year'])   ? $VAR['start_year']    : null;
-$start_month    =   isset($VAR['start_month'])  ? $VAR['start_month']   : null;
-$start_day      =   isset($VAR['start_day'])    ? $VAR['start_day']     : null;
-$page_no        =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
-$skip_logging   =   isset($skip_logging)        ? $skip_logging         : null;
-
-##########################################
-#   Set Global PHP Values from QWcrm     #
-##########################################
-
-// Set Date Format
-if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    define('DATE_FORMAT', get_company_details($db, 'date_format'));             // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
-}
-
-##########################################################################
-#   Assign variables into smarty for use by component templates          #
-##########################################################################
-
-// QWcrm System Folders
-$smarty->assign('includes_dir',             INCLUDES_DIR                );      // set includes directory  // Do I need this one
-$smarty->assign('media_dir',                MEDIA_DIR                   );      // set media directory
-
-// QWcrm Theme Directory Template Variables
-$smarty->assign('theme_dir',                THEME_DIR                   );      // set theme directory
-$smarty->assign('theme_images_dir',         THEME_IMAGES_DIR            );      // set theme images directory
-$smarty->assign('theme_css_dir',            THEME_CSS_DIR               );      // set theme CSS directory
-$smarty->assign('theme_js_dir',             THEME_JS_DIR                );      // set theme JS directory
-
-// QWcrm Theme Directory Template Smarty File Include Path Variables
-$smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
-
-// These are used globally but mainly for the menu !!
-$smarty->assign('workorder_id',             $workorder_id               );
-$smarty->assign('customer_id',              $customer_id                );
-$smarty->assign('employee_id',              $employee_id                );
-$smarty->assign('expense_id',               $expense_id                 );
-$smarty->assign('giftcert_id',              $giftcert_id                );
-$smarty->assign('invoice_id',               $invoice_id                 );
-$smarty->assign('refund_id',                $refund_id                  );
-$smarty->assign('supplier_id',              $supplier_id                );
-$smarty->assign('schedule_id',              $schedule_id                );
-$smarty->assign('start_year',               $start_year                 );
-$smarty->assign('start_month',              $start_month                );
-$smarty->assign('start_day',                $start_day                  );
-$smarty->assign('user_id',                  $user_id                    );
-
-// Used throughout the site
-if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    $smarty->assign('currency_sym', get_company_details($db,    'currency_symbol')  );
-    $smarty->assign('company_logo', get_company_details($db,    'logo')             );
-    $smarty->assign('date_format',  DATE_FORMAT                                     );
-}
-
-#############################
-#        Messages           #
-#############################
-
-// Information Message (Green)
-if(isset($VAR['information_msg'])){
-    $smarty->assign('information_msg', $VAR['information_msg']);
-}
-
-// Warning Message (Red)
-if(isset($VAR['warning_msg'])){
-    $smarty->assign('warning_msg', $VAR['warning_msg']);
-}
-
-############################################
-#  Page Preparation Logic                  #
-#  Extract Page Parameters and Validate    #
-#  the page exists ready for building      #
-############################################   
-
-// Maintenance Mode
-if($QConfig->maintenance){
-    
-    // Set to the maintenance page    
-    $page_display_controller = COMPONENTS_DIR.'core/maintenance.php'; 
-    $component      = 'core';
-    $page_tpl       = 'maintenance';
-    $VAR['theme']   = 'off';   
-    
-    // If user logged in, then log user off (Hard logout, no logging)
-    if(isset($login_token)) {    
-        QFactory::getAuth()->logout(); 
-    }    
-
-// If there is a page set, verify it and build the controller
-} elseif(isset($VAR['page']) && $VAR['page'] != '') { 
-
-    // Explode the URL so we can get the component and page_tpl
-    list($component, $page_tpl) = explode(':', $VAR['page']);
-    $page_display_controller    = COMPONENTS_DIR.$component.'/'.$page_tpl.'.php';
-
-    // Check to see if the page exists and set it, otherwise send them to the 404 page
-    if (file_exists($page_display_controller)){
-        $page_display_controller = COMPONENTS_DIR.$component.'/'.$page_tpl.'.php';            
-    } else {
-        
-        // set to the 404 error page 
-        $page_display_controller = COMPONENTS_DIR.'core/404.php'; 
-        $component  = 'core';
-        $page_tpl   = '404';
-        
-        // Send 404 header
-        $VAR['theme'] = 'off';
-        header('HTTP/1.1 404 Not Found');
-        
-    }        
-
-// If no page specified load a default landing page   
-} else {        
-
-    if(isset($login_token)){
-        // If logged in
-        $page_display_controller    = COMPONENTS_DIR.'core/dashboard.php';
-        $component                  = 'core';
-        $page_tpl                   = 'dashboard';       
-    } else {
-        // If NOT logged in
-        $page_display_controller    = COMPONENTS_DIR.'core/home.php';
-        $component                  = 'core';
-        $page_tpl                   = 'home';            
-    }
-
-}
-
-###############################################
-#    Build and Display the page (as required) #
-#    if the user has the correct permissions  #
-###############################################
-
-// This varible holds the page as it is built
-$BuildPage = '';
-
-/* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_usergroup_id, $component, $page_tpl)) {
-    
-    // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
-    if (isset($VAR['theme']) && $VAR['theme'] === 'print') {        
-        require($page_display_controller);
-        goto page_build_end;
-    }
-
-    // Set Page Header and Meta Data
-    set_page_header_and_meta_data($component, $page_tpl);
-
-    // Fetch Header Block
-    if(!isset($VAR['theme']) || $VAR['theme'] != 'off') {     
-        require(COMPONENTS_DIR.'core/blocks/theme_header_block.php');
-    } else {
-        //echo '<!DOCTYPE html><head></head><body>';
-        require(COMPONENTS_DIR.'core/blocks/theme_header_theme_off_block.php');
-    }
-
-    // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
-    if((!isset($VAR['theme']) || $VAR['theme'] != 'off') && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {       
-        $BuildPage .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
-        
-        // is the menu disabled
-        if(!isset($VAR['theme']) || $VAR['theme'] != 'menu_off') {
-            require(COMPONENTS_DIR.'core/blocks/theme_menu_block.php'); 
-        }
-        
-    }    
-
-    // Fetch the Page Content
-    require($page_display_controller);    
-
-    // Fetch Footer Legacy Template code Block (closes content table)
-    if((!isset($VAR['theme']) || $VAR['theme'] != 'off') && isset($login_token) && $login_usergroup_id != 7 && $login_usergroup_id != 8 && $login_usergroup_id != 9) {
-        $BuildPage .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
-    }
-
-    // Fetch the Footer Block
-    if(!isset($VAR['theme']) || $VAR['theme'] != 'off'){        
-        require(COMPONENTS_DIR.'core/blocks/theme_footer_block.php');        
-    }    
-
-    // Fetch the Debug Block
-    if($QConfig->qwcrm_debug == true){
-        require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');        
-        $BuildPage .= "\r\n</body>\r\n</html>";
-    } else {
-        $BuildPage .= "\r\n</body>\r\n</html>";
-    }
-    
-    page_build_end:
-    
-} else {    
-  
-    // Log activity
-    $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
-    write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id); 
-    
-    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$component.':'.$page_tpl);
-    
-    force_page('index.php', null, 'warning_msg='._gettext("You do not have permission to access this resource or your session has expired.").' ('.$component.':'.$page_tpl.')');
-    exit;
-
-}
-
-################################################
-#        Access Logging                        #
-################################################
-
+// Access Logging
 if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
     
     // This logs QWcrm page load details to the access log
@@ -398,31 +132,25 @@ if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
 #         Content Plugins                      #
 ################################################
 
-// You can add plugins here that parse and change the page content
+// Plugins You can add plugins here that parse and change the page content
 // $BuildPage
 
 ################################################
 #         Headers                              #
 ################################################
 
-// Send Headers if 'print' mode is not set
+// Send optional Headers if 'print' mode is not set
 if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
-    
+
+    // Compress page payload and send compression headers
+    if ($QConfig->gzip == true) {
+        $BuildPage = compress_page_output($BuildPage);    
+    }
+        
 }
 
 ################################################
-#         Page Compression                     #
-################################################
-
-// Compress page and send correct compression headers
-if ($QConfig->gzip == true && (!isset($VAR['theme']) || $VAR['theme'] !== 'print')) {
-
-    $BuildPage = compress_page_output($BuildPage);
-    
-}
-    
-################################################
-#    Display the Built Page                    #
+#         Display the Built Page               #
 ################################################
 
 echo $BuildPage;
