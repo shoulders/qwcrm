@@ -38,7 +38,7 @@
 
                                             <!-- Tab 1 Contents (Customer Details) -->
                                             <div id="tab_1_contents" class="tab_contents tab_contents_active">
-                                                {include file='customer/blocks/details_details_block.tpl'}
+                                                {include file='customer/blocks/display_customer_details_block.tpl'}
                                             </div>
 
                                             <!-- Tab 2 Contents (Work Orders) -->

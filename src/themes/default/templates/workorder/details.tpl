@@ -54,25 +54,15 @@
                                         <!-- This is a div that hold all the tabbed contents -->
                                         <div class="tab_contents_container">
 
-                                            <!-- Tab 1 Contents - Work Order Details -->
+                                            <!-- Tab 1 Contents - Details -->
                                             <div id="tab_1_contents" class="tab_contents tab_contents_active">                                                
                                                 <table width="700" cellpadding="5" cellspacing="0" border="0" >                                                                
                                                     <tr>
                                                         <td class="menutd2" colspan="2">
                                                             <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                                 <tr>
-                                                                    <td width="100%" valign="top">
-                                                                        <!-- Display Work order -->                                                                
+                                                                    <td width="100%" valign="top">                                                                                                                                     
                                                                         {include file='workorder/blocks/details_workorder_block.tpl'}
-                                                                        <br>
-                                                                        <!-- Display Description -->
-                                                                        {include file='workorder/blocks/details_description_block.tpl'}
-                                                                        <br>
-                                                                        <!-- Display Comment -->
-                                                                        {include file='workorder/blocks/details_comments_block.tpl'}
-                                                                        <br>
-                                                                        <!-- Display Resolution -->
-                                                                        {include file='workorder/blocks/details_resolution_block.tpl'}                                                            
                                                                         <br>
                                                                     </td>
                                                                 </tr>
@@ -89,9 +79,8 @@
                                                         <td class="menutd2" colspan="2">
                                                             <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                                 <tr>
-                                                                    <td width="700" valign="top">                                                            
-                                                                        <!-- Display Customer Contact -->
-                                                                        {include file="workorder/blocks/details_customer_details_block.tpl"}
+                                                                    <td width="700" valign="top">                                                                        
+                                                                        {include file='customer/blocks/display_customer_details_block.tpl'}
                                                                         <br>
                                                                     </td>
                                                                 </tr>
@@ -109,8 +98,7 @@
                                                             <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                                 <tr>
                                                                     <td width="100%" valign="top">                                                            
-                                                                        <!-- Display Schedule -->
-                                                                        {include file="workorder/blocks/details_schedule_block.tpl"}
+                                                                        {include file='workorder/blocks/details_schedule_block.tpl'}
                                                                         <br>
                                                                     </td>
                                                                 </tr>
@@ -128,8 +116,7 @@
                                                             <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                                 <tr>
                                                                     <td width="100%" valign="top">                                                            
-                                                                        <!-- Display Work Order Notes -->
-                                                                        {include file="workorder/blocks/details_note_block.tpl"}
+                                                                        {include file='workorder/blocks/details_note_block.tpl'}
                                                                         <br>
                                                                     </td>
                                                                 </tr>
@@ -147,8 +134,7 @@
                                                             <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                                 <tr>
                                                                     <td width="100%" valign="top">                                                            
-                                                                        <!-- Display Work Order History -->
-                                                                        {include file="workorder/blocks/details_history_block.tpl"}
+                                                                        {include file='workorder/blocks/details_history_block.tpl'}
                                                                         <br>
                                                                     </td>
                                                                 </tr>

@@ -5,6 +5,9 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
+
+<!-- Workorder Information -->
+
 <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
     <tr>
         <td class="olohead" align="center">{t}WO ID{/t}</td>
@@ -46,4 +49,123 @@
         <td class="olotd4" align="center">{$workorder_details.last_active|date_format:$date_format}</td>  
         
      </tr>
+</table>
+<br>
+
+<!-- Workorder Description -->
+
+<table class="olotable" width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="olohead">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Description{/t}</td>
+                    <td class="menuhead2" width="20%" align="right">
+                        <table cellpadding="2" cellspacing="2" border="0">
+                            <tr>
+                                <td width="33%" align="right">
+                                    {if $workorder_details.status != 6}
+                                        <a href="index.php?page=workorder:details_edit_description&workorder_id={$workorder_details.workorder_id}">
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Click to edit description{/t}');" onMouseOut="hideddrivetip();">                                                 
+                                        </a>
+                                    {/if}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="olotd4">
+            <table width="100%" cellspacing="0" cellpadding="4">
+                <tr>
+                    <td>{$workorder_details.description}<br></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<br>
+
+<!-- Workorder Comments -->
+
+<table class="olotable" width="100%" border="0"  cellpadding="0" cellspacing="0" summary="Work order display">
+    <tr>
+        <td class="olohead">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Comments{/t}</td>
+                    <td class="menuhead2" width="20%" align="right">
+                        <table cellpadding="2" cellspacing="2" border="0">
+                            <tr>
+                                <td width="33%" align="right">
+                                    {if $workorder_details.status != 6}
+                                        <a href="index.php?page=workorder:details_edit_comment&workorder_id={$workorder_id}">
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Click to edit comments{/t}');" onMouseOut="hideddrivetip();">                                                 
+                                        </a>
+                                    {/if}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="menutd">
+            <table width="100%" cellpadding="4" cellspacing="0">
+                <tr>
+                    <td>{$workorder_details.comments}<br></td>
+                </tr>
+            </table>    
+        </td>    
+    </tr>
+</table>
+<br>
+
+<!-- Workorder Resolution -->
+
+<table class="olotable" border="0" width="100%" cellpadding="0" cellspacing="0" >
+    <tr>
+        <td class="olohead">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Resolution{/t}</td>
+                    <td class="menuhead2" width="20%" align="right">
+                        <table cellpadding="2" cellspacing="2" border="0">
+                            <tr>
+                                <td width="33%" align="right">
+                                    {if $workorder_details.status != 6}
+                                        <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_details.workorder_id}">
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit resolution{/t}');" onMouseOut="hideddrivetip();">
+                                        </a>
+                                    {/if}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="menutd">
+            <table width="100%" cellpadding="4" cellspacing="0" border="0">
+                <tr>
+                    <td>                        
+                        {if $workorder_details.closed_by != ''}
+                            <p>
+                                <b>{t}Closed by{/t}: </b>{$employee_details.display_name}<br>
+                                <b>{t}Date{/t}: </b>{$workorder_details.close_date|date_format:$date_format}<br>
+                            </p>
+                        {/if}
+                        <div>{$workorder_details.resolution}</div>                        
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
 </table>
