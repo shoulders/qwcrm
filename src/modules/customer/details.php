@@ -29,10 +29,11 @@ $smarty->assign('workorder_statuses',       get_workorder_statuses($db)         
 $smarty->assign('workorders_open',          display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'open', null, $customer_id)          );
 $smarty->assign('workorders_closed',        display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'closed', null, $customer_id)        );
 
-$smarty->assign('pending_invoices',         display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'pending', null, $customer_id)           );
-$smarty->assign('unpaid_invoices',          display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'unpaid', null, $customer_id)            );
-$smarty->assign('partially_paid_invoices',  display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'partially_paid', null, $customer_id)    );
-$smarty->assign('paid_invoices',            display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'paid', null, $customer_id)              );
+$smarty->assign('invoices_pending',         display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'pending', null, $customer_id)           );
+$smarty->assign('invoices_unpaid',          display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'unpaid', null, $customer_id)            );
+$smarty->assign('invoices_partially_paid',  display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'partially_paid', null, $customer_id)    );
+$smarty->assign('invoices_paid',            display_invoices($db, 'invoice_id', 'DESC', false, $page_no, '25', null, null, 'paid', null, $customer_id)              );
+$smarty->assign('invoice_statuses',         get_invoice_statuses($db)                                                                                               );
 
 $smarty->assign('active_giftcerts',         display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '0', null, $customer_id)         );
 $smarty->assign('redeemed_giftcerts',       display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '1', null, $customer_id)         );
