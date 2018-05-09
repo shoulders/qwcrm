@@ -44,6 +44,12 @@ QWcrm has many features, not all can be listed here:
 * Expenses and Refunds
 * Suppliers Database
 * Financial Report
+* Fully Translatable
+* Automatic Language Translation
+* Activity Logging
+* Access Logging
+* Error Logging
+* Advanced Debugging
 
 ## Support
 
