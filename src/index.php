@@ -74,7 +74,7 @@ require('includes/defines.php');
 // Configure PHP error reporting
 require(INCLUDES_DIR.'error.php');
 
-// Load dependencies via composer (currently only motranslator)
+// Load dependencies via composer
 require(VENDOR_DIR.'autoload.php');
 
 // Load Language
@@ -82,6 +82,8 @@ require(INCLUDES_DIR.'language.php');
 
 // Load Libraries, Includes and QWFramework
 require(INCLUDES_DIR.'include.php');
+
+// Load database abstraction layer
 require(INCLUDES_DIR.'adodb.php');
 
 // Load QWcrm Security including mandatory security code
@@ -90,10 +92,16 @@ require(INCLUDES_DIR.'security.php');
 // Verify QWcrm is installed correctly
 verify_qwcrm_is_installed_correctly($db); // this needs to run before the language to prevent language detection error 
 
-// Load Libraries, Includes and QWFramework - Continued
+// Load PDF creation library
 //require(INCLUDES_DIR.'mpdf.php');
+
+// Load email transport
 require(INCLUDES_DIR.'email.php');
+
+// Load template engine
 require(INCLUDES_DIR.'smarty.php');
+
+// Load the session and user framework
 require(FRAMEWORK_DIR.'qwframework.php');
 
 ################################################
