@@ -14,7 +14,7 @@ require_once(INCLUDES_DIR.'modules/core_theme.php');
 $smarty->assign('IPaddress',                get_ip_address()                    );  // IP address of the Visitor
 $smarty->assign('pageLoadTime',             microtime(1) - $startTime           );  // Time to load the page to the nearest microsecond
 $smarty->assign('pageDisplayController',    $page_display_controller            );  // the location of the real php file that loads the page
-$smarty->assign('loadedModule',             $module                             );  // Loaded module
+$smarty->assign('loadedComponent',          $component                          );  // Loaded component
 $smarty->assign('loadedPageTpl',            $page_tpl                           );  // Loaded page
 $smarty->assign('startMem',                 $startMem / 1048576                 );  // PHP Memory used when starting QWcrm (in MB)
 $smarty->assign('currentMem',               memory_get_usage() / 1048576        );  // PHP Memory used at the time this php is called (in MB)

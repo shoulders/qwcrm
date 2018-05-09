@@ -194,7 +194,7 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 }
 
 ##########################################################################
-#   Assign variables into smarty for use by all native module templates  #
+#   Assign variables into smarty for use by component templates          #
 ##########################################################################
 
 // QWcrm System Folders
@@ -256,10 +256,10 @@ if(isset($VAR['warning_msg'])){
 if($QConfig->maintenance){
     
     // Set to the maintenance page    
-    $page_display_controller = 'modules/core/maintenance.php'; 
-    $module     = 'core';
-    $page_tpl   = 'maintenance';
-    $VAR['theme'] = 'off';   
+    $page_display_controller = COMPONENTS_DIR.'core/maintenance.php'; 
+    $component      = 'core';
+    $page_tpl       = 'maintenance';
+    $VAR['theme']   = 'off';   
     
     // If user logged in, then log user off (Hard logout, no logging)
     if(isset($login_token)) {    
@@ -269,18 +269,18 @@ if($QConfig->maintenance){
 // If there is a page set, verify it and build the controller
 } elseif(isset($VAR['page']) && $VAR['page'] != '') { 
 
-    // Explode the URL so we can get the module and page_tpl
-    list($module, $page_tpl)    = explode(':', $VAR['page']);
-    $page_display_controller    = 'modules/'.$module.'/'.$page_tpl.'.php';
+    // Explode the URL so we can get the component and page_tpl
+    list($component, $page_tpl) = explode(':', $VAR['page']);
+    $page_display_controller    = COMPONENTS_DIR.$component.'/'.$page_tpl.'.php';
 
     // Check to see if the page exists and set it, otherwise send them to the 404 page
     if (file_exists($page_display_controller)){
-        $page_display_controller = 'modules/'.$module.'/'.$page_tpl.'.php';            
+        $page_display_controller = COMPONENTS_DIR.$component.'/'.$page_tpl.'.php';            
     } else {
         
         // set to the 404 error page 
-        $page_display_controller = 'modules/core/404.php'; 
-        $module     = 'core';
+        $page_display_controller = COMPONENTS_DIR.'core/404.php'; 
+        $component  = 'core';
         $page_tpl   = '404';
         
         // Send 404 header
@@ -294,13 +294,13 @@ if($QConfig->maintenance){
 
     if(isset($login_token)){
         // If logged in
-        $page_display_controller    = 'modules/core/dashboard.php';
-        $module                     = 'core';
+        $page_display_controller    = COMPONENTS_DIR.'core/dashboard.php';
+        $component                  = 'core';
         $page_tpl                   = 'dashboard';       
     } else {
         // If NOT logged in
-        $page_display_controller    = 'modules/core/home.php';
-        $module                     = 'core';
+        $page_display_controller    = COMPONENTS_DIR.'core/home.php';
+        $component                  = 'core';
         $page_tpl                   = 'home';            
     }
 
@@ -315,7 +315,7 @@ if($QConfig->maintenance){
 $BuildPage = '';
 
 /* Check the requested page with 'logged in' user against the ACL for authorisation - if allowed, display */
-if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
+if(check_acl($db, $login_usergroup_id, $component, $page_tpl)) {
     
     // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
     if (isset($VAR['theme']) && $VAR['theme'] === 'print') {        
@@ -324,14 +324,14 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
     }
 
     // Set Page Header and Meta Data
-    set_page_header_and_meta_data($module, $page_tpl);
+    set_page_header_and_meta_data($component, $page_tpl);
 
     // Fetch Header Block
     if(!isset($VAR['theme']) || $VAR['theme'] != 'off') {     
-        require('modules/core/blocks/theme_header_block.php');
+        require(COMPONENTS_DIR.'core/blocks/theme_header_block.php');
     } else {
         //echo '<!DOCTYPE html><head></head><body>';
-        require('modules/core/blocks/theme_header_theme_off_block.php');
+        require(COMPONENTS_DIR.'core/blocks/theme_header_theme_off_block.php');
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
@@ -340,7 +340,7 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
         
         // is the menu disabled
         if(!isset($VAR['theme']) || $VAR['theme'] != 'menu_off') {
-            require('modules/core/blocks/theme_menu_block.php'); 
+            require(COMPONENTS_DIR.'core/blocks/theme_menu_block.php'); 
         }
         
     }    
@@ -355,12 +355,12 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
 
     // Fetch the Footer Block
     if(!isset($VAR['theme']) || $VAR['theme'] != 'off'){        
-        require('modules/core/blocks/theme_footer_block.php');        
+        require(COMPONENTS_DIR.'core/blocks/theme_footer_block.php');        
     }    
 
     // Fetch the Debug Block
     if($QConfig->qwcrm_debug == true){
-        require('modules/core/blocks/theme_debug_block.php');        
+        require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');        
         $BuildPage .= "\r\n</body>\r\n</html>";
     } else {
         $BuildPage .= "\r\n</body>\r\n</html>";
@@ -371,12 +371,12 @@ if(check_acl($db, $login_usergroup_id, $module, $page_tpl)) {
 } else {    
   
     // Log activity
-    $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$module.':'.$page_tpl.')';
+    $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
     write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id); 
     
-    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$module.':'.$page_tpl);
+    //force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$component.':'.$page_tpl);
     
-    force_page('index.php', null, 'warning_msg='._gettext("You do not have permission to access this resource or your session has expired.").' ('.$module.':'.$page_tpl.')');
+    force_page('index.php', null, 'warning_msg='._gettext("You do not have permission to access this resource or your session has expired.").' ('.$component.':'.$page_tpl.')');
     exit;
 
 }

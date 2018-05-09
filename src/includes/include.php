@@ -139,14 +139,14 @@ function update_user_last_active($db, $user_id = null) {
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($module, $page_tpl = null, $variables = null, $method = 'post') {
+function force_page($component, $page_tpl = null, $variables = null, $method = 'post') {
     
     /* Standard URL Redirect */
     
-    if($module != 'index.php' && $page_tpl == null) {       
+    if($component != 'index.php' && $page_tpl == null) {       
 
         // Build the URL and perform the redirect
-        perform_redirect($module);        
+        perform_redirect($component);        
 
     }
     
@@ -155,7 +155,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
     if($method == 'get') {
         
         // If home, dashboard or maintenance do not show module:page
-        if($module == 'index.php') { 
+        if($component == 'index.php') { 
             
             // If there are variables, prepare them
             if($variables) {$variables = '?'.$variables; }
@@ -170,7 +170,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
             if($variables) { $variables = '&'.$variables; }
             
             // Build the URL and perform the redirect, with/without varibles
-            perform_redirect('index.php?page='.$module.':'.$page_tpl.$variables);            
+            perform_redirect('index.php?page='.$component.':'.$page_tpl.$variables);            
             
         }
         
@@ -195,7 +195,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
         }
         
         // If home, dashboard or maintenance do not show module:page
-        if($module == 'index.php') { 
+        if($component == 'index.php') { 
             
             // Build the URL and perform the redirect
             perform_redirect('index.php');
@@ -204,7 +204,7 @@ function force_page($module, $page_tpl = null, $variables = null, $method = 'pos
         } else {
             
             // Build the URL and perform the redirect
-            perform_redirect('index.php?page='.$module.':'.$page_tpl);            
+            perform_redirect('index.php?page='.$component.':'.$page_tpl);            
                 
         }
         
@@ -505,16 +505,16 @@ function prepare_error_data($type, $data = null) {
  * This does cause these translations to be loaded/assigned twice but allows me to use 1 file language instead of 2
  */
 
-function set_page_header_and_meta_data($module, $page_tpl) {
+function set_page_header_and_meta_data($component, $page_tpl) {
     
     global $smarty;
     
     // Page Title
-    $smarty->assign('page_title', _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
+    $smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
     
     // Meta Tags
-    $smarty->assign('meta_description', _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
-    $smarty->assign('meta_keywords',    _gettext(strtoupper($module).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
+    $smarty->assign('meta_description', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
+    $smarty->assign('meta_keywords',    _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
     
     return;
     
@@ -524,7 +524,7 @@ function set_page_header_and_meta_data($module, $page_tpl) {
 #  Verify User's authorization for a specific page / operation      #
 #####################################################################
 
-function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
+function check_acl($db, $login_usergroup_id, $component, $page_tpl) {
     
     // If installing
     if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
@@ -547,11 +547,11 @@ function check_acl($db, $login_usergroup_id, $module, $page_tpl) {
     } 
     
     // Build the page name for the ACL lookup
-    $module_page = $module.':'.$page_tpl;
+    $component_page = $component.':'.$page_tpl;
     
     /* Check Page to see if we have access */
     
-    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($module_page);
+    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($component_page);
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));

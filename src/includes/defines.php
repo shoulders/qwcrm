@@ -19,6 +19,7 @@ define('PRFX',                      $QConfig->db_prefix             );
 
 // System Folders
 define('CACHE_DIR',                 'cache/'                        );
+define('COMPONENTS_DIR',            'components/'                   );
 define('INCLUDES_DIR',              'includes/'                     );
 define('FRAMEWORK_DIR',             INCLUDES_DIR.'framework/'       );
 define('MEDIA_DIR',                 'media/'                        );
@@ -26,7 +27,8 @@ define('MODULES_DIR',               'modules/'                      );
 define('LANGUAGE_DIR',              'language/'                     );
 define('LIBRARIES_DIR',             'libraries/'                    );
 define('LOGS_DIR',                  'logs/'                         );
-define('SETUP_DIR',                 INCLUDES_DIR.'modules/setup/'   );
+define('PLUGINS_DIR',               'plugins/'                      );
+define('SETUP_DIR',                 INCLUDES_DIR.'components/setup/');
 define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'         );
 
 // Smarty

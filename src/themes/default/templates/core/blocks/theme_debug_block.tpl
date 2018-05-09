@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <td><b><span class="text3">{t}Module{/t}:</span></b></td>
-            <td>{$loadedModule}</td>
+            <td>{$loadedComponent}</td>
         </tr>
         <tr>
             <td><b><span class="text3">{t}Page{/t}:</span></b></td>
