@@ -6,9 +6,9 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
-################################################
-#   Minimum PHP Version                        #
-################################################
+#################################################
+#   PHP Configuration                           #
+#################################################
 
 // Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
 define('QWCRM_MINIMUM_PHP', '5.5.0');
@@ -19,18 +19,14 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' Your current version is '.PHP_VERSION);
 }
 
-#################################################
-#   PHP enviromental settings                   #
-#################################################
-
-// disable magic quotes
+// Disable magic quotes
 ini_set('magic_quotes_runtime', 0);
 
 #################################################
 # Debuging Information Start Varible Acqusition #
 #################################################
 
-// Saves the start time and memory usage.
+// Save the start time and memory usage.
 $startTime = microtime(1);
 $startMem  = memory_get_usage();
 
@@ -104,7 +100,7 @@ require(INCLUDES_DIR.'smarty.php');
 // Load the session and user framework
 require(QFRAMEWORK_DIR.'qwframework.php');
 
-// Initiate the QFramework 
+// Start the QFramework 
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $app = new QFactory;
 }
@@ -115,7 +111,7 @@ require(INCLUDES_DIR.'variables.php');
 // Route the page request
 require(INCLUDES_DIR.'router.php');
 
-// Build the page payload
+// Build the page content payload
 require(INCLUDES_DIR.'buildpage.php');
 
 // Access Logging
@@ -133,7 +129,6 @@ if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
 ################################################
 
 // Plugins You can add plugins here that parse and change the page content
-// $BuildPage
 
 ################################################
 #         Headers                              #
