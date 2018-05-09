@@ -23,9 +23,9 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('search_category',  $VAR['search_category']                                                                                                                                 );
-$smarty->assign('search_term',      $VAR['search_term']                                                                                                                                     );
-$smarty->assign('status',           $VAR['status']                                                                                                                                          );
-$smarty->assign('is_redeemed',      $VAR['is_redeemed']                                                                                                                                     );
-$smarty->assign('search_result',    display_giftcerts($db, 'giftcert_id', 'DESC', true, $page_no, '25', $VAR['search_term'], $VAR['search_category'], $VAR['status'], $VAR['is_redeemed'])  );
+$smarty->assign('search_category',      $VAR['search_category']                                                                                                                                 );
+$smarty->assign('search_term',          $VAR['search_term']                                                                                                                                     );
+$smarty->assign('status',               $VAR['status']                                                                                                                                          );
+$smarty->assign('is_redeemed',          $VAR['is_redeemed']                                                                                                                                     );
+$smarty->assign('display_giftcerts',    display_giftcerts($db, 'giftcert_id', 'DESC', true, $page_no, '25', $VAR['search_term'], $VAR['search_category'], $VAR['status'], $VAR['is_redeemed'])  );
 $BuildPage .= $smarty->fetch('giftcert/search.tpl');

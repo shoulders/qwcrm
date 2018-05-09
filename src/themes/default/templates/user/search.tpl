@@ -116,45 +116,7 @@
                                         <!-- Search Results Table -->
                                         <tr>
                                             <td valign="top" colspan="2">
-                                                <table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
-                                                    <tr>
-                                                        <td class="olohead">{t}ID{/t}</td>
-                                                        <td class="olohead">{t}Display Name{/t}</td>
-                                                        <td class="olohead">{t}First Name{/t}</td>
-                                                        <td class="olohead">{t}Last Name{/t}</td>
-                                                        <td class="olohead">{t}Type{/t}</td>
-                                                        <td class="olohead">{t}Usergroup{/t}</td>
-                                                        <td class="olohead">{t}Status{/t}</td>
-                                                        <td class="olohead">{t}Email{/t}</td>
-                                                        <td class="olohead">{t}Action{/t}</td>
-                                                    </tr>
-                                                    {section name=i loop=$search_result}
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=user:details&user_id={$search_result[i].user_id}';" class="row1">
-                                                            <td class="olotd4"><a href="index.php?page=user:details&user_id={$search_result[i].user_id}">{$search_result[i].user_id}</a></td>
-                                                            <td class="olotd4">
-                                                                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$search_result[i].address|nl2br|regex_replace:"/[\r\t\n]/":" "}}<br>{$search_result[i].city}<br>{$search_result[i].state}<br>{$search_result[i].zip}<br>{$search_result[i].country}');" onMouseOut="hideddrivetip();">
-                                                                {$search_result[i].display_name}
-                                                            </td>
-                                                            <td class="olotd4">{$search_result[i].first_name}</td>
-                                                            <td class="olotd4">{$search_result[i].last_name}</td>
-                                                            <td class="olotd4">
-                                                                {if $search_result[i].is_employee == '0'}{t}Customer{/t}{/if}
-                                                                {if $search_result[i].is_employee == '1'}{t}Employee{/t}{/if}                                                            
-                                                            </td>
-                                                            <td class="olotd4">
-                                                                {section name=b loop=$usergroups}
-                                                                    {if $search_result[i].usergroup == $usergroups[b].usergroup_id}{$usergroups[b].usergroup_display_name}{/if}
-                                                                {/section}   
-                                                            </td>
-                                                            <td class="olotd4">
-                                                                {if $search_result[i].active == '0'}{t}Blocked{/t}{/if}
-                                                                {if $search_result[i].active == '1'}{t}Active{/t}{/if}                                                            
-                                                            </td>
-                                                            <td class="olotd4"><a href="mailto: {$search_result[i].email}"><font class="blueLink">{$search_result[i].email}</font></a></td>
-                                                            <td class="olotd4"><a href="index.php?page=user:details&user_id={$search_result[i].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=user:edit&user_id={$search_result[i].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a></td>                                                        
-                                                        </tr>
-                                                    {/section}
-                                                </table>
+                                                {include file='user/blocks/display_users_block.tpl' display_users=$display_users block_title=''}
                                             </td>
                                         </tr>
                                         

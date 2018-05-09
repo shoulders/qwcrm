@@ -116,52 +116,7 @@
                                         <!-- Search Results Table -->
                                         <tr>
                                             <td valign="top" colspan="2">
-                                                <table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
-                                                    <tr>
-                                                        <td class="olohead">{t}ID{/t}</td>
-                                                        <td class="olohead">{t}Code{/t}</td>
-                                                        <td class="olohead">{t}Customer{/t}</td>
-                                                        <td class="olohead">{t}Expires{/t}</td>
-                                                        <td class="olohead">{t}Date Redeemed{/t}</td>
-                                                        <td class="olohead">{t}Is Active{/t}</td>
-                                                        <td class="olohead">{t}Amount{/t}</td>
-                                                        <td class="olohead">{t}Notes{/t}</td> 
-                                                        <td class="olohead">{t}Action{/t}</td>
-                                                    </tr>
-                                                    {section name=i loop=$search_result}
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=giftcert:details&giftcert_id={$search_result[i].user_id}';" class="row1">
-                                                            <td class="olotd4"><a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].giftcert_id}">{$search_result[i].giftcert_id}</a></td>
-                                                            <td class="olotd4">{$search_result[i].giftcert_code}</td>
-                                                            <td class="olotd4"><a href="index.php?page=customer:details&customer_id={$search_result[i].customer_id}">{$search_result[i].customer_display_name}</a></td>
-                                                            <td class="olotd4">{$search_result[i].date_expires|date_format:$date_format}</td>
-                                                            <td class="olotd4">
-                                                                {if !$search_result[i].date_redeemed == ''}
-                                                                    {$search_result[i].date_redeemed|date_format:$date_format}
-                                                                {/if}
-                                                            </td>
-                                                            <td class="olotd4">
-                                                                {if $search_result[i].active == '1'}{t}Active{/t}{/if}
-                                                                {if $search_result[i].active == '0'}{t}Blocked{/t}{/if}
-                                                            </td> 
-                                                            <td class="olotd4">{$currency_sym} {$search_result[i].amount}</td>                                                            
-                                                            <td class="olotd4" nowrap>
-                                                                {if $search_result[i].notes != ''}
-                                                                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$search_result[i].notes}</div>');" onMouseOut="hideddrivetip();">
-                                                                {/if}
-                                                            </td>
-                                                            <td class="olotd4">
-                                                                <a href="index.php?page=giftcert:details&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                                                                <a href="index.php?page=giftcert:edit&giftcert_id={$search_result[i].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                                                                <a href="index.php?page=giftcert:print&giftcert_id={$search_result[i].giftcert_id}&print_content=gift_certificate&print_type=print_html&theme=print" target="_blank"> 
-                                                                    <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Gift Certificate{/t}');" onMouseOut="hideddrivetip();">
-                                                                </a>
-                                                                <a href="index.php?page=giftcert:delete&giftcert_id={$search_result[i].giftcert_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Gift Certificate?{/t}');">
-                                                                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
-                                                                </a>
-                                                            </td>
-                                                        </tr>
-                                                    {/section}
-                                                </table>
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$display_giftcerts block_title=''}
                                             </td>
                                         </tr>
                                         

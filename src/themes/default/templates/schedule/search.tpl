@@ -6,6 +6,9 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
 <div>{t}Coming Soon{/t}</div>
+
+{* add to display_schedules_block *}
+
 {*<table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>

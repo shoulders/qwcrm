@@ -38,27 +38,40 @@
 
                                             <!-- Tab 1 Contents (Customer Details) -->
                                             <div id="tab_1_contents" class="tab_contents tab_contents_active">
-                                                {include file='customer/blocks/details_customer_details_block.tpl'}
+                                                {include file='customer/blocks/details_details_block.tpl'}
                                             </div>
 
                                             <!-- Tab 2 Contents (Work Orders) -->
                                             <div id="tab_2_contents" class="tab_contents">
-                                                {include file='customer/blocks/details_workorder_block.tpl'}
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$workorders_open block_title=_gettext("Open")}
+                                                <br>
+                                                {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$workorders_closed block_title=_gettext("Closed")}
                                             </div>
 
                                             <!-- Tab 3 Contents (Invoices) -->
                                             <div id="tab_3_contents" class="tab_contents">
-                                                {include file='customer/blocks/details_invoice_block.tpl'}
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_pending block_title=_gettext("Pending")}
+                                                <br>
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_unpaid block_title=_gettext("Unpaid")}
+                                                <br>
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_partially_paid block_title=_gettext("Partially Paid")}
+                                                <br>
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_paid block_title=_gettext("Paid")}
                                             </div>
 
                                             <!-- Tab 4 Contents (Gift Certificates) -->
                                             <div id="tab_4_contents" class="tab_contents">
-                                                {include file='customer/blocks/details_giftcert_block.tpl'}
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_active block_title=_gettext("Active Gift Certificates")}
+                                                <br>
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed Gift Certificates")}
                                             </div>
 
                                             <!-- Tab 5 Contents (Customer Notes) -->
                                             <div id="tab_5_contents" class="tab_contents">                        
-                                                {include file='customer/blocks/details_note_block.tpl'}   
+                                                {include file='customer/blocks/details_notes_block.tpl'}   
                                             </div>
 
                                         </div>
