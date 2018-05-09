@@ -30,5 +30,9 @@
                 </table>
             </td>
         </tr>
+    {sectionelse}
+        <tr>
+            <td colspan="6" class="error">{t}There are no history notes.{/t}</td>
+        </tr>        
     {/section}
 </table>

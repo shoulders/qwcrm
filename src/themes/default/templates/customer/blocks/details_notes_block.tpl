@@ -59,6 +59,10 @@
                             <div>{$customer_notes[n].note}<br></div>
                         </td>
                     </tr>
+                {sectionelse}
+                    <tr>
+                        <td colspan="6" class="error">{t}There are no customer notes.{/t}</td>
+                    </tr>        
                 {/section}
             </table>                            
         </td>          

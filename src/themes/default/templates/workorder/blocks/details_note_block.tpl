@@ -59,6 +59,10 @@
                             <div>{$workorder_notes[n].description}<br></div>
                         </td>
                     </tr>
+                {sectionelse}
+                    <tr>
+                        <td colspan="6" class="error">{t}There are no workorder notes.{/t}</td>
+                    </tr>        
                 {/section}
             </table>                            
         </td>          
