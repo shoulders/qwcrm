@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/workorder.php');
-require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'components/customer.php');
+require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'components/user.php');
 
 // Check if we have a workorder_id
 if($workorder_id == '') {

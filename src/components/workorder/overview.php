@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/report.php');
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'components/report.php');
+require(INCLUDES_DIR.'components/workorder.php');
 
 // Workorder Stats
 $overview_workorder_stats = array(

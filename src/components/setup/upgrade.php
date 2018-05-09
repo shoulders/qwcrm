@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/setup.php');
+require(INCLUDES_DIR.'components/setup.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup:upgrade', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'upgrade') {

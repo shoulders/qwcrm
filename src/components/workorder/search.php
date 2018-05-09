@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'components/workorder.php');
 
 /* If a search is submitted
 if(isset($VAR['submit'])) {

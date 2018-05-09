@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/schedule.php');
+require(INCLUDES_DIR.'components/schedule.php');
 
 /* If a search is submitted
 if(isset($VAR['submit'])) {

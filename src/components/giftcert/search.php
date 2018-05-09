@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/giftcert.php');
+require(INCLUDES_DIR.'components/giftcert.php');
 
 // a workaround until i add a full type search, this keeps the logic intact
 $VAR['search_category'] = 'giftcert_code';

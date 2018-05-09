@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/payment.php');
+require(INCLUDES_DIR.'components/payment.php');
 
 // If changes submited
 if(isset($VAR['submit'])) {

@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/report.php');
+require(INCLUDES_DIR.'components/report.php');
 
 /** Work Orders **/
 

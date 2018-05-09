@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/giftcert.php');
-require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'components/customer.php');
+require(INCLUDES_DIR.'components/giftcert.php');
+require(INCLUDES_DIR.'components/user.php');
 
 // Check if we have an giftcert_id
 if($giftcert_id == '') {

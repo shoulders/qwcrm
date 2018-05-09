@@ -8,12 +8,12 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/invoice.php');
-require(INCLUDES_DIR.'modules/payment.php');
-require(INCLUDES_DIR.'modules/report.php');
-require(INCLUDES_DIR.'modules/workorder.php');
-require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'components/customer.php');
+require(INCLUDES_DIR.'components/invoice.php');
+require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'components/report.php');
+require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'components/user.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {

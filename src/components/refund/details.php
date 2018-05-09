@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/refund.php');
-require(INCLUDES_DIR.'modules/payment.php');
+require(INCLUDES_DIR.'components/refund.php');
+require(INCLUDES_DIR.'components/payment.php');
 
 // Check if we have a refund_id
 if($refund_id == '') {

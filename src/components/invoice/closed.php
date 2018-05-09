@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/invoice.php');
+require(INCLUDES_DIR.'components/invoice.php');
 
 // Build the page
 $smarty->assign('invoices', display_invoices($db, 'invoice_id', 'DESC', true, $page_no, '25', null, null, 'closed'));

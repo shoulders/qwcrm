@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/core.php');
-require(INCLUDES_DIR.'modules/report.php');
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'components/core.php');
+require(INCLUDES_DIR.'components/report.php');
+require(INCLUDES_DIR.'components/workorder.php');
 
 // Display Welcome Note
 $smarty->assign('welcome_note', display_welcome_msg($db));

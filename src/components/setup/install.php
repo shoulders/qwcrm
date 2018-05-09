@@ -8,10 +8,10 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/administrator.php');
-require(INCLUDES_DIR.'modules/company.php');
-require(INCLUDES_DIR.'modules/setup.php');
-require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'components/administrator.php');
+require(INCLUDES_DIR.'components/company.php');
+require(INCLUDES_DIR.'components/setup.php');
+require(INCLUDES_DIR.'components/user.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup:install', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {

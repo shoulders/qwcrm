@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/company.php');
+require(INCLUDES_DIR.'components/company.php');
 
 // Update Company details
 if(isset($VAR['submit'])) {

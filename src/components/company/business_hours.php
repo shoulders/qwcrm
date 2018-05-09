@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/company.php');
+require(INCLUDES_DIR.'components/company.php');
 
 // If new times submitted
 if(isset($VAR['submit'])) {

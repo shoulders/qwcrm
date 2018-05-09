@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/expense.php');
-require(INCLUDES_DIR.'modules/payment.php');
+require(INCLUDES_DIR.'components/expense.php');
+require(INCLUDES_DIR.'components/payment.php');
 
 // If a search is submitted
 if(isset($VAR['submit'])) {

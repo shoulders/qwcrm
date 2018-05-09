@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/administrator.php');
-require(INCLUDES_DIR.'modules/user.php');
+require(INCLUDES_DIR.'components/administrator.php');
+require(INCLUDES_DIR.'components/user.php');
 
 // Clear Smarty Cache
 if($VAR['clear_smarty_cache'] == 'true') {

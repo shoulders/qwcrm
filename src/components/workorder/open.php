@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'components/workorder.php');
 
 // Build the page
 $smarty->assign('workorder_statuses', get_workorder_statuses($db));

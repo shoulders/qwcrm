@@ -8,10 +8,10 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/customer.php');
-require(INCLUDES_DIR.'modules/invoice.php'); // require to stop email sub-system error
-require(INCLUDES_DIR.'modules/user.php');
-require(INCLUDES_DIR.'modules/workorder.php');
+require(INCLUDES_DIR.'components/customer.php');
+require(INCLUDES_DIR.'components/invoice.php'); // require to stop email sub-system error
+require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'components/workorder.php');
 
 // Delete any expired resets (CRON is better)
 delete_expired_reset_codes($db);

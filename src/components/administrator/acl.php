@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'modules/administrator.php');
+require(INCLUDES_DIR.'components/administrator.php');
 
 // Update the ACL permissions if submitted
 if($VAR['submit'] == 'reset_default') {
