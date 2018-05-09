@@ -600,7 +600,7 @@ function reset_acl_permissions($db) {
                 ('workorder:closed', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                 ('workorder:delete', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                 ('workorder:details', 1, 1, 1, 1, 0, 1, 0, 0, 0),
-                ('workorder:details_edit_comments', 1, 1, 1, 1, 0, 1, 0, 0, 0),
+                ('workorder:details_edit_comment', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:details_edit_description', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:details_edit_resolution', 1, 1, 1, 1, 0, 1, 0, 0, 0),
                 ('workorder:new', 1, 1, 1, 1, 0, 1, 0, 0, 0),

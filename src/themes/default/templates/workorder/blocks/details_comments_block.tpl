@@ -16,7 +16,7 @@
                             <tr>
                                 <td width="33%" align="right">
                                     {if $workorder_details.status != 6}
-                                        <a href="index.php?page=workorder:details_edit_comments&workorder_id={$workorder_id}">
+                                        <a href="index.php?page=workorder:details_edit_comment&workorder_id={$workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Click to edit comments{/t}');" onMouseOut="hideddrivetip();">                                                 
                                         </a>
                                     {/if}
