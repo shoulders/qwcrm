@@ -21,14 +21,15 @@ define('PRFX',                      $QConfig->db_prefix             );
 define('CACHE_DIR',                 'cache/'                        );
 define('COMPONENTS_DIR',            'components/'                   );
 define('INCLUDES_DIR',              'includes/'                     );
-define('FRAMEWORK_DIR',             INCLUDES_DIR.'framework/'       );
 define('MEDIA_DIR',                 'media/'                        );
 define('MODULES_DIR',               'modules/'                      );
 define('LANGUAGE_DIR',              'language/'                     );
 define('LIBRARIES_DIR',             'libraries/'                    );
 define('LOGS_DIR',                  'logs/'                         );
 define('PLUGINS_DIR',               'plugins/'                      );
+
 define('SETUP_DIR',                 INCLUDES_DIR.'components/setup/');
+define('QFRAMEWORK_DIR',            LIBRARIES_DIR.'qframework/'     );
 define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'         );
 
 // Smarty

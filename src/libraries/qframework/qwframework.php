@@ -11,35 +11,35 @@
 defined('_QWEXEC') or die;
 
 // General Helpers
-require FRAMEWORK_DIR . 'general/Registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
-require FRAMEWORK_DIR . 'general/WebClient.php';                   // Gets the browser details from the session (used in cookie creation)
-require FRAMEWORK_DIR . 'general/Cookie.php';                      // Cookie Object with set and get
+require QFRAMEWORK_DIR . 'general/Registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
+require QFRAMEWORK_DIR . 'general/WebClient.php';                   // Gets the browser details from the session (used in cookie creation)
+require QFRAMEWORK_DIR . 'general/Cookie.php';                      // Cookie Object with set and get
 
 // Input
-require FRAMEWORK_DIR . 'input/StringHelper.php';                  // Filtering of strings
-require FRAMEWORK_DIR . 'input/JFilterInput.php';                  // Filtering of strings - a class for filtering input from any data source - used for QCookie and authenticatin
-require FRAMEWORK_DIR . 'input/core.php';                          // Used just for function utf8_strpos() from JFilterInput
-require FRAMEWORK_DIR . 'input/input.php';                         // This is an abstracted input class used to manage retrieving data from the application environment. (i.e. cookie.php)
-require FRAMEWORK_DIR . 'input/cookie.php';                        // Extends input.php with cooke get and set functions to allow manipulation of cookie data via input.php class
+require QFRAMEWORK_DIR . 'input/StringHelper.php';                  // Filtering of strings
+require QFRAMEWORK_DIR . 'input/JFilterInput.php';                  // Filtering of strings - a class for filtering input from any data source - used for QCookie and authenticatin
+require QFRAMEWORK_DIR . 'input/core.php';                          // Used just for function utf8_strpos() from JFilterInput
+require QFRAMEWORK_DIR . 'input/input.php';                         // This is an abstracted input class used to manage retrieving data from the application environment. (i.e. cookie.php)
+require QFRAMEWORK_DIR . 'input/cookie.php';                        // Extends input.php with cooke get and set functions to allow manipulation of cookie data via input.php class
 
 // Session
-require FRAMEWORK_DIR . 'session/session.php';                     // Primary Class for managing HTTP sessions
-require FRAMEWORK_DIR . 'session/storage.php';                     // Custom session storage handler for PHP
-require FRAMEWORK_DIR . 'session/storage/none.php';                // File session handler for PHP - Allows to set 'none' for session handler which defaults to standard session files
-require FRAMEWORK_DIR . 'session/storage/database.php';            // Database session storage handler for PHP - can use databse for session controll
-require FRAMEWORK_DIR . 'session/handler/interface.php';           // Interface for managing HTTP sessions - 'index file' no function shere
-require FRAMEWORK_DIR . 'session/handler/native.php';              // Interface for managing HTTP sessions - extends interface.php
-require FRAMEWORK_DIR . 'session/handler/joomla.php';              // Interface for managing HTTP sessions - extends native.php
+require QFRAMEWORK_DIR . 'session/session.php';                     // Primary Class for managing HTTP sessions
+require QFRAMEWORK_DIR . 'session/storage.php';                     // Custom session storage handler for PHP
+require QFRAMEWORK_DIR . 'session/storage/none.php';                // File session handler for PHP - Allows to set 'none' for session handler which defaults to standard session files
+require QFRAMEWORK_DIR . 'session/storage/database.php';            // Database session storage handler for PHP - can use databse for session controll
+require QFRAMEWORK_DIR . 'session/handler/interface.php';           // Interface for managing HTTP sessions - 'index file' no function shere
+require QFRAMEWORK_DIR . 'session/handler/native.php';              // Interface for managing HTTP sessions - extends interface.php
+require QFRAMEWORK_DIR . 'session/handler/joomla.php';              // Interface for managing HTTP sessions - extends native.php
 
 // Authentication
-require FRAMEWORK_DIR . 'authentication/authentication.php';       // Authentication class, provides an interface for the Joomla authentication system
-require FRAMEWORK_DIR . 'authentication/response.php';             // Authentication response class, provides an object for storing user and error details - this is used to store the responses from the qwcrm.php and remember.php authorisation plugins
-require FRAMEWORK_DIR . 'authentication/methods/qwcrm.php';        // Facilitates standard username and password authorisation
-require FRAMEWORK_DIR . 'authentication/methods/remember.php';     // Facilitates 'Remember me' cookie authorisation
+require QFRAMEWORK_DIR . 'authentication/authentication.php';       // Authentication class, provides an interface for the Joomla authentication system
+require QFRAMEWORK_DIR . 'authentication/response.php';             // Authentication response class, provides an object for storing user and error details - this is used to store the responses from the qwcrm.php and remember.php authorisation plugins
+require QFRAMEWORK_DIR . 'authentication/methods/qwcrm.php';        // Facilitates standard username and password authorisation
+require QFRAMEWORK_DIR . 'authentication/methods/remember.php';     // Facilitates 'Remember me' cookie authorisation
 
 // User
-require FRAMEWORK_DIR . 'user/user.php';                           // User class - Handles all application interaction with a user
-require FRAMEWORK_DIR . 'user/helper.php';                         // This contains password hassing functions etc.. associated with users but used elswhere
+require QFRAMEWORK_DIR . 'user/user.php';                           // User class - Handles all application interaction with a user
+require QFRAMEWORK_DIR . 'user/helper.php';                         // This contains password hassing functions etc.. associated with users but used elswhere
 
 // Main Framework class
 class QFactory {

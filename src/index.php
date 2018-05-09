@@ -102,7 +102,7 @@ require(INCLUDES_DIR.'email.php');
 require(INCLUDES_DIR.'smarty.php');
 
 // Load the session and user framework
-require(FRAMEWORK_DIR.'qwframework.php');
+require(QFRAMEWORK_DIR.'qwframework.php');
 
 // Initiate the QFramework 
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
