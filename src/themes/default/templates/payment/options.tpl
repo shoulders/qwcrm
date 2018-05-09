@@ -59,7 +59,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Sort Code{/t}</b></td>
-                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlyNumber(event);"></td>
+                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlySortcode(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank IBAN{/t}</b></td>

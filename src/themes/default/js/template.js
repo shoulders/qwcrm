@@ -79,7 +79,12 @@ function onlyNumberPeriod(e) {
     return keyRestriction(e, "0123456789.", false);
 }
 
-// Numbers, Letters, Date and Finance
+// Sortcode
+function onlySortcode(e) {
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-", true);
+}
+
+// Search
 function onlySearch(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/.,'-", true);
 }
@@ -109,7 +114,7 @@ function onlyAddress(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
 }
 
-// Addresses
+// Gift Certificate Code
 function onlyGiftCertCode(e) {
     return keyRestriction(e, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", false);
 }
@@ -139,12 +144,12 @@ function onlyDate(e) {
    return false;
 }
 
-// Only MySQL
+// MySQL
 function onlyMysqlDatabaseName(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$_", false);
 }
 
-// Only FilePath - covers unix/linux/windows
+// FilePath - covers unix/linux/windows
 function onlyFilePath(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/\\:_.", false);
 }

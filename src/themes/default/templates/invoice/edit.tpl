@@ -54,7 +54,7 @@
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumber(event)');
+        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
         buildRow.appendChild(el);
 
 
@@ -208,7 +208,7 @@
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumber(event)');
+        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
         buildRow.appendChild(el);
 
 
