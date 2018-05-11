@@ -6,45 +6,46 @@
  */
 
 tinymce.init({
-     
-    selector : "textarea:not(.mceNoEditor)",                                // Select all textarea excluding the mceNoEditor class    
-    theme: 'modern',
-    branding: false,                                                        // remove the 'powered by timymce' branding 
-    //content_css: 'css/content.css',                                       // point this to your template CSS for inline styling
-    browser_spellcheck: true,                                               // enable browser native spell check
-    schema: 'html5',                                                        // set to use html5
-    insertdatetime_dateformat: '{$date_format}',                            // override the default formatting rule for date formats inserted by the mceInsertDate command
-    //insertdatetime_element: true,                                         // HTML5 time elements gets generated when you insert dates/times.
-    insertdatetime_formats: ['{$date_format}', '%H:%M:%S', '%I:%M:%S %p'],  // specify a list of date/time formats to be used in the date menu or date select box.
-        
-    // Menu Items and Toolbar Buttons
-    menubar: false,                                                         // file/edit menu at the top - enabled by default    
-    contextmenu: 'cut copy paste | link',                                   // Enable these items in the context menu   
-        
-    // Enable these Toolbar Buttons
-    toolbar: [        
-        'undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap | insertdatetime',
-        'bullist numlist | table | unlink link | spellchecker | cut copy paste removeformat | fullscreen code'      
-    ],
     
-    // Enable these Plugins
-    plugins: [
-      'advlist autolink link lists charmap hr spellchecker visualchars code fullscreen table contextmenu paste textcolor insertdatetime'      
-    ],
-
-    // On Submit if TinyMCE Editor is empty and has the class "mceCheckForContent" on its placeholder, dont submit the form and put a red border around it
+    selector : "textarea:not(.mceNoEditor)",
+    
+    // On Submit if TinyMCE Editor is empty and has the class "wysiwyg-checkforcontent" on its placeholder, dont submit the form and put a red border around it
     setup: function(editor) {
+        
         editor.on('submit', function(e) {
 
-            var placeholderElement = editor.getElement();   
-            var testClass = "mceCheckForContent";            
+            var placeholderElement = editor.getElement();  
+            var testClass = "mceCheckForContent";
             
-            if(placeholderElement.classList.contains(testClass) && editor.getContent() === '') {
+            if(
+                placeholderElement.classList.contains(testClass) &&
+                (editor.getContent() === '' ||
+                
+                // This section might not be required on new versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
+                editor.getContent() === '<p><\/p>' || editor.getContent() === '<p>&nbsp;<\/p>' ||
+                editor.getContent() === '<div><\/div>' || editor.getContent() === '<div>&nbsp;<\/div>')
+                
+            ) {
                 editor.getContainer().style.border = '3px solid red';
                 return false;
             }
 
         });
-    }
+    },
+    
+    branding: false,
+    menubar: false,    
+    toolbar: [       
+        'undo redo | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | outdent indent | blockquote hr charmap insertdatetime | help',
+        'bullist numlist | table | link unlink | cut copy paste | removeformat | preview code fullscreen '                     
+    ],    
+    schema: 'html5-strict',    
+    invalid_elements: 'iframe,script,style,applet,body,bgsound,base,basefont,frame,frameset,head,html,id,ilayer,layer,link,meta,name,title,xml',
+    browser_spellcheck: true,    
+    contextmenu: 'cut copy paste | link',    
+    insertdatetime_formats: ['{$date_format}', '%H:%M:%S', '%I:%M:%S %p'],    
+    plugins: [
+        'advlist autolink charmap code contextmenu fullscreen help hr insertdatetime link lists paste preview table textcolor visualchars'
+    ]    
 
 });
