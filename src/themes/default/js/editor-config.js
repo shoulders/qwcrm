@@ -33,6 +33,7 @@ tinymce.init({
         });
     },
     
+    elementpath: false,
     branding: false,
     menubar: false,    
     toolbar: [       
