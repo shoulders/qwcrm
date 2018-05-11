@@ -30,8 +30,8 @@ tinymce.init( {
                 return false;
             }
 
-        });
-    },
+        } );
+    } ,
     
     elementpath: false,
     branding: false,
