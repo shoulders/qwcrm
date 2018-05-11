@@ -11,7 +11,7 @@
     <p>This should cover any required attributions that are needed for use of a particular license or software.</p>
     <ul>
         <li><strong>Name and version | License | URL | What it does?</strong></li>
-        <li>TinyMCE - Version 4.7.12 (2016-05-03) | LGPL v2.1 (or later)</li>
+        <li>TinyMCE - Version 4.7.10 (2018-04-03) | LGPL v2.1 (or later)</li>
         <li>dhtmlxCombo v50 Standard | GPL v2 (or later)</li>
         <li>jquery v3.1.1 | jquery.org/license</li>
         <li>swiftmailer v5.4.8 | MIT | https://github.com/swiftmailer/swiftmailer</li>    
