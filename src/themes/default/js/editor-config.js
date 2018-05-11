@@ -21,7 +21,7 @@ tinymce.init({
                 placeholderElement.classList.contains(testClass) &&
                 (editor.getContent() === '' ||
                 
-                // This section might not be required on new versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
+                // This section might not be required on newer versions on TinyMCE and only when padding empty tags is enabled for <p> and <div>
                 editor.getContent() === '<p><\/p>' || editor.getContent() === '<p>&nbsp;<\/p>' ||
                 editor.getContent() === '<div><\/div>' || editor.getContent() === '<div>&nbsp;<\/div>')
                 
