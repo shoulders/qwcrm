@@ -38,87 +38,73 @@
                                                 <td class="olohead">{t}Guest{/t}</td>
                                                 <td class="olohead">{t}Public{/t}</td>
                                             </tr>
-                                            {section name=q loop=$acl}
+                                            {section name=i loop=$acl}
                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
 
                                                     <!-- Module:Page -->
-                                                    <td class="olotd4"><b>{$acl[q].page}</b></td>
+                                                        <td class="olotd4"><b>{$acl[i].page}</b></td>
+                                                    
+                                                    {if $acl[i].page == 'core:404' || $acl[i].page == 'core:error' || $acl[i].page == 'core:home' || $acl[i].page == 'core:maintenance' || $acl[i].page == 'user:login'}
+                                                        
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Manager]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Supervisor]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Technician]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Clerical]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Counter]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Customer]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Guest]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Public]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        
+                                                    {else}
+                                                        
+                                                        <!-- Administrator -->
+                                                        <td class="olotd4" style="background-color: #E0E0E0;">
+                                                            <input name="{$acl[i].page}[Administrator]" type="hidden" value="1">{t}Yes{/t}
+                                                        </td>
 
-                                                    <!-- Administrator -->
-                                                    <td class="olotd4">
-                                                        {*<select name="{$acl[q].page}[Administrator]">
-                                                            <option value="1" {if $acl[q].Administrator == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Administrator == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select>*}
-                                                        <input type="hidden" name="{$acl[q].page}[Administrator]" value="1">
-                                                        {if $acl[q].Administrator == '1'}{t}Yes{/t}{/if}
-                                                        {if $acl[q].Administrator == '0'}{t}No{/t}{/if}
-                                                    </td>
+                                                        <!-- Manager -->
+                                                        <td class="olotd4">
+                                                           <input name="{$acl[i].page}[Manager]" {if $acl[i].Manager == '1'}checked="" {/if}type="checkbox" value="1">
+                                                        </td>
 
-                                                    <!-- Manager -->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Manager]">
-                                                            <option value="1" {if $acl[q].Manager == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Manager == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select>
-                                                    </td>
+                                                        <!-- Supervisor -->
+                                                        <td class="olotd4">
+                                                            <input name="{$acl[i].page}[Supervisor]" {if $acl[i].Supervisor == '1'}checked="" {/if}type="checkbox" value="1">                                                        
+                                                        </td>
 
-                                                    <!-- Supervisor -->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Supervisor]">
-                                                            <option value="1" {if $acl[q].Supervisor == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Supervisor == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select> 
-                                                    </td>
+                                                        <!-- Technician -->
+                                                        <td class="olotd4">
+                                                            <input name="{$acl[i].page}[Technician]" {if $acl[i].Technician == '1'}checked="" {/if}type="checkbox" value="1">
+                                                        </td>
 
-                                                    <!-- Technician -->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Technician]">
-                                                            <option value="1" {if $acl[q].Technician == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Technician == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select> 
-                                                    </td>
+                                                        <!-- Clerical -->
+                                                        <td class="olotd4">
+                                                            <input name="{$acl[i].page}[Clerical]" {if $acl[i].Clerical == '1'}checked="" {/if}type="checkbox" value="1">
+                                                        </td>
 
-                                                    <!-- Clerical -->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Clerical]">
-                                                            <option value="1" {if $acl[q].Clerical == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Clerical == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select>
-                                                    </td>
+                                                        <!-- Counter-->
+                                                        <td class="olotd4">
+                                                            <input name="{$acl[i].page}[Counter]" {if $acl[i].Counter == '1'}checked="" {/if}type="checkbox" value="1">
+                                                        </td>                                                
 
-                                                    <!-- Counter-->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Counter]">
-                                                            <option value="1" {if $acl[q].Counter == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Counter == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select>
-                                                    </td>                                                
+                                                        <!-- Customer -->
+                                                        <td class="olotd4">
+                                                            <input name="{$acl[i].page}[Customer]" {if $acl[i].Customer == '1'}checked="" {/if}type="checkbox" value="1">
+                                                        </td>
 
-                                                    <!-- Customer -->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Customer]">
-                                                            <option value="1" {if $acl[q].Customer == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Customer == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select>
-                                                    </td>
+                                                        <!-- Guest -->
+                                                        <td class="olotd4">
+                                                            <input name="{$acl[i].page}[Guest]" {if $acl[i].Guest == '1'}checked="" {/if}type="checkbox" value="1">
+                                                        </td>
 
-                                                    <!-- Guest -->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Guest]">
-                                                            <option value="1" {if $acl[q].Guest == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Guest == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select>
-                                                    </td>
-
-                                                    <!-- Public -->
-                                                    <td class="olotd4">
-                                                        <select name="{$acl[q].page}[Public]">
-                                                            <option value="1" {if $acl[q].Public == '1'}selected{/if}>{t}Yes{/t}</option>
-                                                            <option value="0" {if $acl[q].Public == '0'}selected{/if}>{t}No{/t}</option>
-                                                        </select>
-                                                    </td>                                                    
-
+                                                        <!-- Public -->
+                                                        <td class="olotd4">
+                                                            <input name="{$acl[i].page}[Public]" {if $acl[i].Public == '1'}checked="" {/if}type="checkbox" value="1">
+                                                        </td>
+                                                        
+                                                    {/if}
+                                                    
                                                 </tr>
                                             {/section}
                                         </table>                                                                      
@@ -139,6 +125,18 @@
                             </table>
                         </td>
                     </tr>
+                    
+                    <!-- Message -->                
+                    <tr>
+                        <td colspan="2">
+                            <table>
+                                <tr>
+                                    <td class="olotd4" style="width: 40px; background-color: #E0E0E0;"></td>
+                                    <td> = {t}Mandatory Settings, you cannot change these.{/t}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>                    
 
                 </table>
             </form>  
