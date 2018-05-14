@@ -4,6 +4,7 @@
         "smarty/smarty": "^3.1",
         "mpdf/mpdf": "^7.0",
         "adodb/adodb-php": "^5.20",
-        "swiftmailer/swiftmailer": "^5.4"
+        "swiftmailer/swiftmailer": "^5.4",
+        "google/recaptcha": "^1.1"
     }
 }

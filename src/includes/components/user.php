@@ -911,23 +911,36 @@ function logout($silent = null)
 function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
     
     // Load ReCaptcha library
-    require_once(LIBRARIES_DIR.'recaptchalib.php');    
-    $reCaptcha = new ReCaptcha($recaptcha_secret_key);
+    //require_once(LIBRARIES_DIR.'recaptchalib.php');    
+    $recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_secret_key);
     
     // Get response from Google
-    $response = $reCaptcha->verifyResponse($_SERVER['REMOTE_ADDR'], $recaptcha_response);
+    $response = $recaptcha->verify($recaptcha_response, $_SERVER['REMOTE_ADDR']);
     
     //  and if successfull authenticate
-    if ($response != null && $response->success) {
+    if ($response->isSuccess()) {
         
         // Success
         return true;
         
     } else {
         
-        // Failed
         global $smarty;
-        $smarty->assign('warning_msg', _gettext("Google reCAPTCHA Verification Failed."));
+        
+        
+        // If it's not successful, then one or more error codes will be returned.      
+        $error_msg .= '<h2>Something went wrong</h2>';
+        $error_msg .= '<p>The following error was returned:';
+            foreach ($response->getErrorCodes() as $error_code) {
+                $error_msg .= '<kbd>'.$error_code.'</kbd> ';
+            }
+        $error_msg .= '</p>';
+        $error_msg .= '<p>Check the error code reference at <kbd><a href="https://developers.google.com/recaptcha/docs/verify#error-code-reference">https://developers.google.com/recaptcha/docs/verify#error-code-reference</a></kbd>.';
+        $error_msg .= '<p><strong>Note:</strong> Error code <kbd>missing-input-response</kbd> may mean the user just didn\'t complete the reCAPTCHA.</p>';
+        $error_msg .= '<p><a href="/">Try again</a></p>';    
+        
+        
+        $smarty->assign('warning_msg', _gettext("Google reCAPTCHA Verification Failed.").$error_msg);
         return false;
         
     }  
