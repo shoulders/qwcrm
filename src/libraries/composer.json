@@ -5,6 +5,7 @@
         "mpdf/mpdf": "^7.0",
         "adodb/adodb-php": "^5.20",
         "swiftmailer/swiftmailer": "^5.4",
-        "google/recaptcha": "^1.1"
+        "google/recaptcha": "^1.1",
+        "picqer/php-barcode-generator": "^0.2.2"
     }
 }
