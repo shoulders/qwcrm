@@ -12,13 +12,6 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/giftcert.php');
 require(INCLUDES_DIR.'mpdf.php');
 
-// Load the Barcode library
-require(LIBRARIES_DIR.'php-barcode-generator/BarcodeGenerator.php');
-require(LIBRARIES_DIR.'php-barcode-generator/BarcodeGeneratorHTML.php');
-//require(LIBRARIES_DIR.'php-barcode-generator/BarcodeGeneratorJPG.php');
-//require(LIBRARIES_DIR.'php-barcode-generator/BarcodeGeneratorPNG.php');
-//require(LIBRARIES_DIR.'php-barcode-generator/BarcodeGeneratorSVG.php');
-
 // Generate the barcode (as html)
 $bc_generator = new Picqer\Barcode\BarcodeGeneratorHTML();
 $barcode = $bc_generator->getBarcode(get_giftcert_details($db, $giftcert_id, 'giftcert_code'), $bc_generator::TYPE_CODE_128);
@@ -44,7 +37,6 @@ $smarty->assign('company_details',  get_company_details($db)    );
 $smarty->assign('customer_details', $customer_details           );
 $smarty->assign('giftcert_details', $giftcert_details           );
 $smarty->assign('barcode',          $barcode                    );
-
 
 // Gift Certificate Print Routine
 if($VAR['print_content'] == 'gift_certificate') {    

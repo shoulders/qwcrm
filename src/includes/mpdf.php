@@ -18,6 +18,9 @@ defined('_QWEXEC') or die;
 // Output a PDF in the browser
 function mpdf_output_in_browser($pdf_filename, $pdf_template) {
     
+    // Add .pdf extension
+    $pdf_filename .= '.pdf';
+
     // Initialize mPDF    
     $mpdf = new \Mpdf\Mpdf();
     
@@ -38,6 +41,9 @@ function mpdf_output_in_browser($pdf_filename, $pdf_template) {
 // Return a PDF in a variable
 function mpdf_output_as_varible($pdf_filename, $pdf_template) {
     
+    // Add .pdf extension
+    $pdf_filename .= '.pdf';    
+
     // Initialize mPDF
     $mpdf = new \Mpdf\Mpdf();
 
