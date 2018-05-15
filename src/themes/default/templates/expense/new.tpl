@@ -61,7 +61,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
                                             <td>                                                                                             
-                                                <form action="index.php?page=expense:new" method="post" name="new_expense" id="new_expense">                                                
+                                                <form action="index.php?component=expense&page_tpl=new" method="post" name="new_expense" id="new_expense">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

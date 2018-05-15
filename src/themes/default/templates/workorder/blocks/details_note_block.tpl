@@ -15,7 +15,7 @@
                         <table cellpadding="2" cellspacing="2" border="0">
                             <tr> 
                                 <td width="33%" align="right">   
-                                    <a href="index.php?page=workorder:note_new&workorder_id={$workorder_id}">
+                                    <a href="index.php?component=workorder&page_tpl=note_new&workorder_id={$workorder_id}">
                                         <img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" border="0" onMouseOver="ddrivetip('{t}Click to create a new note{/t}');" onMouseOut="hideddrivetip();">
                                     </a>                    
                                 </td>  
@@ -38,10 +38,10 @@
                                     <td><b>{t}Workorder Note ID{/t}: {$workorder_notes[n].workorder_note_id}</b></td>
                                     <td width="33%" align="right">
                                         {if $login_usergroup_id == 1}
-                                            <a href="index.php?page=workorder:note_edit&workorder_note_id={$workorder_notes[n].workorder_note_id}">
+                                            <a href="index.php?component=workorder&page_tpl=note_edit&workorder_note_id={$workorder_notes[n].workorder_note_id}">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
-                                            <a href="index.php?page=workorder:note_delete&workorder_note_id={$workorder_notes[n].workorder_note_id}" onClick="return confirmChoice('{t}Are you sure you want to delete this note?{/t}');">
+                                            <a href="index.php?component=workorder&page_tpl=note_delete&workorder_note_id={$workorder_notes[n].workorder_note_id}" onClick="return confirmChoice('{t}Are you sure you want to delete this note?{/t}');">
                                                 <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
                                             </a>
                                         {/if}

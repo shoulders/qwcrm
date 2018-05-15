@@ -27,7 +27,7 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form method="post" action="index.php?page=refund:search" name="refund_search" id="refund_search" autocomplete="off">
+                                                <form method="post" action="index.php?component=refund&page_tpl=search" name="refund_search" id="refund_search" autocomplete="off">
                                                     <div>                                                       
                                                         <table border="0">
                                                             <tr>
@@ -52,7 +52,7 @@
                                                                    <br />
                                                                    <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlySearch(event);" />
                                                                    <input class="olotd4" name="submit" value="{t}Search{/t}" type="submit" />
-                                                                   <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=refund:search';" type="button">                                                                                      </td>
+                                                                   <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=refund&page_tpl=search';" type="button">                                                                                      </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
@@ -70,19 +70,19 @@
                                                             
                                                             <!-- Left buttons -->
                                                             <td>                                                                
-                                                                <a href="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                <a href="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                <a href="index.php?component=refund&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                <a href="index.php?component=refund&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                             </td>                                                   
                                                     
                                                             <!-- Dropdown Menu -->
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                        <option value="index.php?component=refund&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
                                                                             {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                                                    <option value="index.php?component=refund&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
                                                                         {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>
@@ -90,8 +90,8 @@
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                <a href="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                <a href="index.php?page=refund:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                <a href="index.php?component=refund&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                <a href="index.php?component=refund&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                             </td>                                                                                             
                                                     
                                                         </tr>

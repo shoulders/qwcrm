@@ -25,7 +25,7 @@
                     <td class="menutd2" colspan="2">
                         
                         <!-- Date Range -->
-                        <form action="index.php?page=report:financial" method="post" name="stats_report" id="stats_report">
+                        <form action="index.php?component=report&page_tpl=financial" method="post" name="stats_report" id="stats_report">
                             
                             <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
                                 <tr>

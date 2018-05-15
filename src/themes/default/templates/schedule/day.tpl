@@ -50,7 +50,7 @@
                                                                         var m = M + 1;                                          // Correction for assignment issue above
                                                                         var d = dateForLink.getDate();                          // integer, 1..31
                                                                         // redirect...
-                                                                        window.location = "index.php?page=schedule:day&start_year="+y+"&start_month="+m+"&start_day="+d+"&workorder_id={$workorder_id}";
+                                                                        window.location = "index.php?component=schedule&page_tpl=day&start_year="+y+"&start_month="+m+"&start_day="+d+"&workorder_id={$workorder_id}";
                                                                     }
                                                     } );                                                
                                                 </script>                                                
@@ -60,15 +60,15 @@
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0">
                                         <tr>
                                             <td>
-                                                <button type="submit" name="{t}Print{/t}" OnClick=location.href="index.php?page=schedule:day&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&theme=off";>{t}Print{/t}</button>
-                                                <button type="submit" name="ics-schedule" OnClick=location.href="index.php?page=schedule:icalendar&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&employee_id={$selected_employee}&ics_type=day&theme=print";>{t}Export{/t} {t}Day Schedule{/t}</button>
+                                                <button type="submit" name="{t}Print{/t}" OnClick=location.href="index.php?component=schedule&page_tpl=day&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&theme=off";>{t}Print{/t}</button>
+                                                <button type="submit" name="ics-schedule" OnClick=location.href="index.php?component=schedule&page_tpl=icalendar&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&employee_id={$selected_employee}&ics_type=day&theme=print";>{t}Export{/t} {t}Day Schedule{/t}</button>
                                             </td>
                                             <td valign="top" align="right" valign="middle">
                                                 {if $login_usergroup_id <= 3 }
                                                     <form>
                                                         <select id="changeThisPage" onChange="changePage();">
                                                             {section name=i loop=$employees}
-                                                                <option value="index.php?page=schedule:day&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&employee_id={$employees[i].user_id}" {if $selected_employee == $employees[i].user_id} selected {/if}>{$employees[i].display_name}</option>
+                                                                <option value="index.php?component=schedule&page_tpl=day&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&employee_id={$employees[i].user_id}" {if $selected_employee == $employees[i].user_id} selected {/if}>{$employees[i].display_name}</option>
                                                             {/section}
                                                         </select>
                                                     </form>

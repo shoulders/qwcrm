@@ -24,7 +24,7 @@
         <td class="olotd4" align="center">{$workorder_details.workorder_id}</td>
         
         <!-- INV ID -->
-        <td class="olotd4" align="center"><a href="index.php?page=invoice:details&invoice_id={$workorder_details.invoice_id}">{$workorder_details.invoice_id}</a></td>                                                                
+        <td class="olotd4" align="center"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$workorder_details.invoice_id}">{$workorder_details.invoice_id}</a></td>                                                                
         
         <!-- Opened -->
         <td class="olotd4" align="center">{$workorder_details.open_date|date_format:$date_format}</td>        
@@ -42,7 +42,7 @@
         <!-- Assigned To -->
         <td class="olotd4" align="center">
             <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$employee_details.work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$employee_details.mobile_phone}<br><b>{t}Home{/t}: </b>{$employee_details.home_primary_phone}');" onMouseOut="hideddrivetip();">                
-           <a class="link1" href="index.php?page=user:details&user_id={$workorder_details.employee_id}">{$employee_details.display_name}</a>
+           <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$workorder_details.employee_id}">{$employee_details.display_name}</a>
         </td>
         
         <!-- Last Change -->
@@ -65,7 +65,7 @@
                             <tr>
                                 <td width="33%" align="right">
                                     {if $workorder_details.status != 6}
-                                        <a href="index.php?page=workorder:details_edit_description&workorder_id={$workorder_details.workorder_id}">
+                                        <a href="index.php?component=workorder&page_tpl=details_edit_description&workorder_id={$workorder_details.workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt="" border="0" onMouseOver="ddrivetip('{t}Click to edit description{/t}');" onMouseOut="hideddrivetip();">                                                 
                                         </a>
                                     {/if}
@@ -102,7 +102,7 @@
                             <tr>
                                 <td width="33%" align="right">
                                     {if $workorder_details.status != 6}
-                                        <a href="index.php?page=workorder:details_edit_comment&workorder_id={$workorder_id}">
+                                        <a href="index.php?component=workorder&page_tpl=details_edit_comment&workorder_id={$workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Click to edit comments{/t}');" onMouseOut="hideddrivetip();">                                                 
                                         </a>
                                     {/if}
@@ -139,7 +139,7 @@
                             <tr>
                                 <td width="33%" align="right">
                                     {if $workorder_details.status != 6}
-                                        <a href="index.php?page=workorder:details_edit_resolution&workorder_id={$workorder_details.workorder_id}">
+                                        <a href="index.php?component=workorder&page_tpl=details_edit_resolution&workorder_id={$workorder_details.workorder_id}">
                                             <img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit resolution{/t}');" onMouseOut="hideddrivetip();">
                                         </a>
                                     {/if}

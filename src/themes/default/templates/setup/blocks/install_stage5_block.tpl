@@ -13,7 +13,7 @@
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="../`$theme_js_dir_finc`editor-config.js"}</script>
 
-<form method="post" action="index.php?page=setup:install" enctype="multipart/form-data">
+<form method="post" action="index.php?component=setup&page_tpl=install" enctype="multipart/form-data">
     <table width="600" cellpadding="5" cellspacing="0" border="0">
         <tr>
             <td class="menuhead2" width="80%">&nbsp;{t}Stage 5 - Company Details{/t}</td>

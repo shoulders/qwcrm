@@ -25,7 +25,7 @@
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
-                        <form method="post" action="index.php?page=company:settings" enctype="multipart/form-data">
+                        <form method="post" action="index.php?component=company&page_tpl=settings" enctype="multipart/form-data">
                             <table width="100%" border="0" cellpadding="20" cellspacing="0">
                                 <tr>
                                     <td>

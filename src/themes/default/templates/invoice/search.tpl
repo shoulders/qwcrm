@@ -28,7 +28,7 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form method="post" action="index.php?page=expense:search" name="expense_search" id="expense_search">
+                                                <form method="post" action="index.php?component=expense&page_tpl=search" name="expense_search" id="expense_search">
                                                     <div>                                                        
                                                         <table border="0">
                                                             <tr>
@@ -53,7 +53,7 @@
                                                                    <br />
                                                                    <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" required onkeydown="return onlySearch(event);">
                                                                    <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
-                                                                   <input class="olotd4" value="{t}reset{/t}" onclick="window.location.href='index.php?page=expense:search';" type="button">
+                                                                   <input class="olotd4" value="{t}reset{/t}" onclick="window.location.href='index.php?component=expense&page_tpl=search';" type="button">
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -72,19 +72,19 @@
                                                             
                                                             <!-- Left buttons -->
                                                             <td>                                                                
-                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                             </td>                                                   
                                                     
                                                             <!-- Dropdown Menu -->
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                        <option value="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
                                                                             {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                                                    <option value="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
                                                                         {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>
@@ -92,8 +92,8 @@
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                <a href="index.php?page=expense:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                             </td>                                                                                             
                                                     
                                                         </tr>
@@ -132,11 +132,11 @@
                                                     </tr>
                                                     {section name=i loop=$search_result}
                                                         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$search_result[i].expense_id}';" class="row1">
-                                                            <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">{$search_result[i].expense_id}</a></td>
+                                                        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=expense&page_tpl=details&expense_id={$search_result[i].expense_id}';" class="row1">
+                                                            <td class="olotd4" nowrap><a href="index.php?component=expense&page_tpl=details&expense_id={$search_result[i].expense_id}">{$search_result[i].expense_id}</a></td>
                                                             <td class="olotd4" nowrap>{$search_result[i].payee}</td>
                                                             <td class="olotd4" nowrap>{$search_result[i].date|date_format:$date_format}</td>
-                                                            <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$search_result[i].invoice_id}">{$search_result[i].invoice_id}</a></td>
+                                                            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$search_result[i].invoice_id}">{$search_result[i].invoice_id}</a></td>
                                                             <td class="olotd4" nowrap>
                                                                 {section name=s loop=$expense_types}    
                                                                     {if $search_result[i].type == $expense_types[s].expense_type_id}{t}{$expense_types[s].display_name}{/t}{/if}        
@@ -158,13 +158,13 @@
                                                             </td>
                                                             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$search_result[i].items|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <a href="index.php?page=expense:details&expense_id={$search_result[i].expense_id}">
+                                                                <a href="index.php?component=expense&page_tpl=details&expense_id={$search_result[i].expense_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=expense:edit&expense_id={$search_result[i].expense_id}">
+                                                                <a href="index.php?component=expense&page_tpl=edit&expense_id={$search_result[i].expense_id}">
                                                                     <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
-                                                                <a href="index.php?page=expense:delete&expense_id={$search_result[i].expense_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
+                                                                <a href="index.php?component=expense&page_tpl=delete&expense_id={$search_result[i].expense_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
                                                                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Expense Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                 </a>
                                                             </td>

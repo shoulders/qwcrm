@@ -23,7 +23,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?page=user:edit&user_id={$user_id}" method="post" name="edit_user" id="edit_user" onsubmit="return confirmPasswordsMatch();"> 
+                                    <form action="index.php?component=user&page_tpl=edit&user_id={$user_id}" method="post" name="edit_user" id="edit_user" onsubmit="return confirmPasswordsMatch();"> 
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">
@@ -70,7 +70,7 @@
                                                                                         <td align="right"><strong>{t}Customer{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
                                                                                         <td>
                                                                                             {if !$is_employee}
-                                                                                                <a href="index.php?page=customer:details&customer_id={$user_details.customer_id}">{$customer_display_name}</a>                                                                                               
+                                                                                                <a href="index.php?component=customer&page_tpl=details&customer_id={$user_details.customer_id}">{$customer_display_name}</a>                                                                                               
                                                                                                 <input type="hidden" name="customer_id" value="{$user_details.customer_id}">
                                                                                             {else}                                                                                                
                                                                                                 <input type="hidden" name="customer_id" value="">

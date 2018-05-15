@@ -23,7 +23,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" >                                  
-                                    <form method="post" action="index.php?page=customer:note_new&customer_id={$customer_id}">                                        
+                                    <form method="post" action="index.php?component=customer&page_tpl=note_new&customer_id={$customer_id}">                                        
                                         <table class="olotable" width="100%" border="0">
                                             <tr>
                                                 <td class="olohead"></td>

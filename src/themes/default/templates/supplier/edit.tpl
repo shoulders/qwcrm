@@ -33,7 +33,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                         <tr>
                                             <td>                                                
-                                                <form action="index.php?page=supplier:edit&supplier_id={$supplier_id}" method="post" name="edit_supplier" id="edit_supplier" autocomplete="off">                                                
+                                                <form action="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}" method="post" name="edit_supplier" id="edit_supplier" autocomplete="off">                                                
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                         <tr>
                                                             <td class="menuhead" colspan="2">{t}Contact{/t}</td>

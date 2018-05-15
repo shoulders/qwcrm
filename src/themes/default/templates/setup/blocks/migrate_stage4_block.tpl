@@ -5,7 +5,7 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<form method="post" action="index.php?page=setup:migrate">                   
+<form method="post" action="index.php?component=setup&page_tpl=migrate">                   
     <table width="600" cellpadding="5" cellspacing="0" border="0">
         <tr>
             <td class="menuhead2" width="80%">&nbsp;{t}Stage 4 - Database Installation Results{/t}</td>

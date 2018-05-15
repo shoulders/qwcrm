@@ -24,7 +24,7 @@
                         <table  cellspacing="5" border="0" cellpadding="5" align="center">
                             <tr>
                                 <td>
-                                    <form action="index.php?page=user:reset" method="post">
+                                    <form action="index.php?component=user&page_tpl=reset" method="post">
                                         <table width="75%" cellspacing="0" border="0" cellpadding="5" align="center">
                                             <tr>
                                                 <td colspan="2">{t}To complete the password reset process, please enter a new password.{/t}</td>

@@ -31,7 +31,7 @@ $(document).ready(function() {
  * 
 // Performs a redirect to the new Search Page Number - takes the inputted value and adds it to the end
 function GotoPageNumber() {
-    document.page_select.action='index.php?page=supplier:view&submit=submit&pagetitle={}page_no=' + document.page_select.page_select_number.value;
+    document.page_select.action='index.php?component=supplier&page_tpl=view&submit=submit&pagetitle={}page_no=' + document.page_select.page_select_number.value;
     return true;
 
 */

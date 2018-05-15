@@ -24,7 +24,7 @@
                 </tr>
                 <tr>
                     <td align="center">
-                        <button id="login_button" type="submit" name="login" onclick="window.location.href='index.php?page=user:login';">
+                        <button id="login_button" type="submit" name="login" onclick="window.location.href='index.php?component=user&page_tpl=login';">
                             <img src="{$theme_images_dir}tick.png" alt=""> {t}Login{/t}
                         </button>
                     </td>                    

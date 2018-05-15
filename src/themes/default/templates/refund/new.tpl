@@ -61,7 +61,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
                                             <td>                                               
-                                                <form action="index.php?page=refund:new" method="post" name="new_refund" id="new_refund" autocomplete="off">                                                
+                                                <form action="index.php?component=refund&page_tpl=new" method="post" name="new_refund" id="new_refund" autocomplete="off">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

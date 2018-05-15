@@ -12,7 +12,7 @@
                 <tr>
                     <td class="menuhead2" width="80%">{t}Expense Details {/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <a href="index.php?page=expense:edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" height="16" border="0">{t}Edit{/t}</a>
+                        <a href="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" height="16" border="0">{t}Edit{/t}</a>
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}EXPENSE_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}EXPENSE_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">                        
                     </td>
                 </tr>
@@ -65,7 +65,7 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?page=invoice:details&invoice_id={$expense_details.invoice_id}">{$expense_details.invoice_id}</a></td>
+                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$expense_details.invoice_id}">{$expense_details.invoice_id}</a></td>
                                             <td></td>
                                             <td></td>
                                         </tr>

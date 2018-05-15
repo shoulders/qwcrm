@@ -84,7 +84,7 @@
                             {if !$update_response}  
                                 <tr>
                                     <td>
-                                        <form method="post" action="index.php?page=administrator:update"> 
+                                        <form method="post" action="index.php?component=administrator&page_tpl=update"> 
                                             <button class="olotd5" type="submit" name="submit" value="check_for_update">{t}Check for Update{/t}</button>
                                         </form>
                                     </td>

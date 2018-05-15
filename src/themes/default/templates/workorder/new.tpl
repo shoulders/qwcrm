@@ -48,7 +48,7 @@
                                                 <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                                                     <tr>
                                                         <td valign="top">                                                    
-                                                            <form method="post" action="index.php?page=workorder:new" name="new_workorder" id="new_workorder"> 
+                                                            <form method="post" action="index.php?component=workorder&page_tpl=new" name="new_workorder" id="new_workorder"> 
                                                                 
                                                                 <!-- Header -->
                                                                 <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
@@ -131,7 +131,7 @@
                                                                 <tr>
                                                                     <td class="menuhead2" width="80%">{t}Customer Details{/t}</td>
                                                                     <td class="menuhead2" width="20%" align="right">
-                                                                        <a href="index.php?page=customer:edit&amp;customer_id={$customer_details.id}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
+                                                                        <a href="index.php?component=customer&page_tpl=edit&amp;customer_id={$customer_details.id}"<img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" alt="" /></a>
                                                                     </td>
                                                                 </tr>
                                                             </table>

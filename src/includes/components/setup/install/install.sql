@@ -648,6 +648,7 @@ INSERT INTO `#__user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Te
 ('administrator:update', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('company:settings', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:dashboard', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),

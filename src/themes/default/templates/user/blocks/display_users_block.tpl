@@ -19,8 +19,8 @@
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=u loop=$display_users}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=user:details&user_id={$display_users[u].user_id}';" class="row1">
-            <td class="olotd4"><a href="index.php?page=user:details&user_id={$display_users[u].user_id}">{$display_users[u].user_id}</a></td>
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}';" class="row1">
+            <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}">{$display_users[u].user_id}</a></td>
             <td class="olotd4">
                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('{$display_users[u].address|nl2br|regex_replace:"/[\r\t\n]/":" "}}<br>{$display_users[u].city}<br>{$display_users[u].state}<br>{$display_users[u].zip}<br>{$display_users[u].country}');" onMouseOut="hideddrivetip();">
                 {$display_users[u].display_name}
@@ -41,7 +41,7 @@
                 {if $display_users[u].active == '1'}{t}Active{/t}{/if}                                                            
             </td>
             <td class="olotd4"><a href="mailto: {$display_users[u].email}"><font class="blueLink">{$display_users[u].email}</font></a></td>
-            <td class="olotd4"><a href="index.php?page=user:details&user_id={$display_users[u].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=user:edit&user_id={$display_users[u].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a></td>                                                        
+            <td class="olotd4"><a href="index.php?component=user:details&user_id={$display_users[u].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=user&page_tpl=edit&user_id={$display_users[u].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a></td>                                                        
         </tr>
     {/section}
 </table>

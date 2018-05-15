@@ -5,7 +5,7 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<form method="post" action="index.php?page=payment:new&invoice_id={$invoice_id}">
+<form method="post" action="index.php?component=payment&page_tpl=new&invoice_id={$invoice_id}">
     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
         <tr>
             <td class="menuhead2">&nbsp;{t}Cheque{/t}</td>

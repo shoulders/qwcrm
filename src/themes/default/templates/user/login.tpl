@@ -25,7 +25,7 @@
                             <table  cellspacing="5" border="0" cellpadding="5" align="center">
                                 <tr>
                                     <td>
-                                        <form action="index.php?page=user:login" method="post">
+                                        <form action="index.php?component=user&page_tpl=login" method="post">
                                             <table width="25%" cellspacing="0" border="0" cellpadding="5" align="center">
                                                 
                                                 <!-- Login Form -->
@@ -49,7 +49,7 @@
 
                                                 <!-- Forgotten Password -->
                                                 <tr align="center">
-                                                    <td colspan="2"><a href="index.php?page=user:reset">{t}Forgot your password?{/t}</a></td>
+                                                    <td colspan="2"><a href="index.php?component=user&page_tpl=reset">{t}Forgot your password?{/t}</a></td>
                                                 </tr>
                                                 
                                             </table>
@@ -82,7 +82,7 @@
     {else}
         <tr>
             <td align="center">
-                <button id="logout_button" type="submit" name="logout" onclick="window.location.href='index.php?page=user:login&action=logout';">
+                <button id="logout_button" type="submit" name="logout" onclick="window.location.href='index.php?component=user&page_tpl=login&action=logout';">
                     <img src="{$theme_images_dir}tick.png" alt=""> {t}Logout{/t}
                 </button>
             </td>                    

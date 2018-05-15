@@ -8,7 +8,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <form method="post" action="index.php?page=administrator:acl">
+            <form method="post" action="index.php?component=administrator&page_tpl=acl">
                 <table width="400" cellpadding="4" cellspacing="0" border="0">
                     
                     <!-- Header -->
@@ -44,7 +44,7 @@
                                                     <!-- Module:Page -->
                                                         <td class="olotd4"><b>{$acl[i].page}</b></td>
                                                     
-                                                    {if $acl[i].page == 'core:404' || $acl[i].page == 'core:error' || $acl[i].page == 'core:home' || $acl[i].page == 'core:maintenance' || $acl[i].page == 'user:login'}
+                                                    {if $acl[i].page == 'core:403' || $acl[i].page == 'core:404' || $acl[i].page == 'core:error' || $acl[i].page == 'core:home' || $acl[i].page == 'core:maintenance' || $acl[i].page == 'user:login'}
                                                         
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="{$acl[i].page}[Manager]" type="hidden" value="1">{t}Yes{/t}</td>

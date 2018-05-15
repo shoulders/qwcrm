@@ -16,8 +16,8 @@
         <td class="menuhead2"><b>{t}Balance{/t}</b></td>
     </tr>
     <tr class="olotd4">
-        <td class="row2"><a href="index.php?page=invoice:details&invoice_id={$invoice_details.invoice_id}">{$invoice_details.invoice_id}</a></td>         
-        <td class="row2">{if $invoice_details.workorder_id}<a href="index.php?page=workorder:details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a>{else}{t}n/a{/t}{/if}</td>
+        <td class="row2"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$invoice_details.invoice_id}">{$invoice_details.invoice_id}</a></td>         
+        <td class="row2">{if $invoice_details.workorder_id}<a href="index.php?component=workorder&page_tpl=details&workorder_id={$invoice_details.workorder_id}">{$invoice_details.workorder_id}</a>{else}{t}n/a{/t}{/if}</td>
         <td class="row2">
             {section name=s loop=$invoice_statuses}
                 {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        

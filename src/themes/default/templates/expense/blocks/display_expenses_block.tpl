@@ -24,9 +24,9 @@
      </tr>
      {section name=e loop=$display_expenses}
          <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?page=expense:details&expense_id={$display_expenses[e].expense_id}';" class="row1">
-             <td class="olotd4" nowrap><a href="index.php?page=expense:details&expense_id={$display_expenses[e].expense_id}">{$display_expenses[e].expense_id}</a></td>
-             <td class="olotd4" nowrap><a href="index.php?page=invoice:details&invoice_id={$display_expenses[e].invoice_id}">{$display_expenses[e].invoice_id}</a></td>
+         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}';" class="row1">
+             <td class="olotd4" nowrap><a href="index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}">{$display_expenses[e].expense_id}</a></td>
+             <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_expenses[e].invoice_id}">{$display_expenses[e].invoice_id}</a></td>
              <td class="olotd4" nowrap>{$display_expenses[e].payee}</td>
              <td class="olotd4" nowrap>{$display_expenses[e].date|date_format:$date_format}</td>                                                            
              <td class="olotd4" nowrap>
@@ -50,13 +50,13 @@
              </td>
              <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_expenses[e].items|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();"></td>
              <td class="olotd4" nowrap>
-                 <a href="index.php?page=expense:details&expense_id={$display_expenses[e].expense_id}">
+                 <a href="index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}">
                      <img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('<b>{t}View Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                  </a>
-                 <a href="index.php?page=expense:edit&expense_id={$display_expenses[e].expense_id}">
+                 <a href="index.php?component=expense&page_tpl=edit&expense_id={$display_expenses[e].expense_id}">
                      <img src="{$theme_images_dir}icons/16x16/small_edit.gif" alt=""  border="0" onMouseOver="ddrivetip('<b>{t}Edit Expense Details{/t}</b>');" onMouseOut="hideddrivetip();">
                  </a>
-                 <a href="index.php?page=expense:delete&expense_id={$display_expenses[e].expense_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
+                 <a href="index.php?component=expense&page_tpl=delete&expense_id={$display_expenses[e].expense_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Expense Record? This will permanently remove the record from the database.{/t}');">
                      <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Expense Record{/t}</b>');" onMouseOut="hideddrivetip();">
                  </a>
              </td>

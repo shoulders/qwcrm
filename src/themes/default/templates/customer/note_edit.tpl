@@ -30,7 +30,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form method="post" action="index.php?page=customer:note_edit&customer_note_id={$customer_note.customer_note_id}">
+                                    <form method="post" action="index.php?component=customer&page_tpl=note_edit&customer_note_id={$customer_note.customer_note_id}">
                                         <p><b>{t}Edit Customer Note{/t}</b></p>                                        
                                         {*<div>
                                             <b>{t}Date{/t}:<b><br>

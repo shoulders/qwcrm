@@ -20,7 +20,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" class="menutd">
-                                    <form method="post" action="index.php?page=company:business_hours">                                
+                                    <form method="post" action="index.php?component=company&page_tpl=business_hours">                                
                                         <table>
                                             <tr>
                                                 <td><b>{t}Opening Time{/t}</b></td>

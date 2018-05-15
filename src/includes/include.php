@@ -948,7 +948,7 @@ function write_record_to_access_log() {
     $uri            = $_SERVER['REQUEST_URI'];                              // the URL
     $protocol       = $_SERVER['SERVER_PROTOCOL'];                          // HTTP/1.0    
     
-    $status         = '-';                                                  // page returned status - dont think I can get this 200,401,404 etc..
+    $status         = '-';                                                  // page returned status - dont think I can get this 200,401,403,404 etc..
     $bytes          = '-';                                                  // cant get this - page size / payload size
     
     // Referring URL

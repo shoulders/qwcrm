@@ -30,7 +30,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form method="post" action="index.php?page=workorder:note_edit&workorder_note_id={$workorder_note_details.workorder_note_id}">
+                                    <form method="post" action="index.php?component=workorder&page_tpl=note_edit&workorder_note_id={$workorder_note_details.workorder_note_id}">
                                         <p><b>{t}Edit Workorder Note{/t}</b></p>                                        
                                         {*<div>
                                             <b>{t}Date{/t}:<b><br>

@@ -28,11 +28,11 @@
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
                                 <td class="olotd4">                                    
-                                    <form method="post" action="index.php?page=giftcert:new" name="giftcert_new" id="giftcert_new">
+                                    <form method="post" action="index.php?component=giftcert&page_tpl=new" name="giftcert_new" id="giftcert_new">
                                         <table>
                                             <tr>
                                                 <td><b>{t}Customer{/t}</b></td>
-                                                <td><a href="index.php?page=customer:details&customer_id={$customer_id}">{$customer_details.customer_display_name}</a></td>
+                                                <td><a href="index.php?component=customer&page_tpl=details&customer_id={$customer_id}">{$customer_details.customer_display_name}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>

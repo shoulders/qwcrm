@@ -62,6 +62,13 @@ _gettext("COMPANY_SETTINGS_HELP_CONTENT");
 
 /* Core */
 
+// core:403
+_gettext("CORE_403_PAGE_TITLE");
+_gettext("CORE_403_META_DESCRIPTION");
+_gettext("CORE_403_META_KEYWORDS");
+_gettext("CORE_403_HELP_TITLE");
+_gettext("CORE_403_HELP_CONTENT");
+
 // core:404
 _gettext("CORE_404_PAGE_TITLE");
 _gettext("CORE_404_META_DESCRIPTION");

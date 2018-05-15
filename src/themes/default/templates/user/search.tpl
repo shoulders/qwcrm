@@ -25,7 +25,7 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">                                                
-                                                <form action="index.php?page=user:search" method="post" name="user_search" id="user_search">
+                                                <form action="index.php?component=user&page_tpl=search" method="post" name="user_search" id="user_search">
                                                     <div>
                                                         <table border="0">
                                                             <tr>
@@ -34,7 +34,7 @@
                                                                     <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" onkeydown="return onlySearch(event);">                                                            
                                                                     <input name="search_category" value="{$search_category}" type="hidden" />
                                                                     <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
-                                                                    <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?page=user:search';">
+                                                                    <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=user&page_tpl=search';">
                                                                 </td>
                                                             </tr>
                                                             <tr>                                                                
@@ -73,19 +73,19 @@
                                                             
                                                             <!-- Left buttons -->
                                                             <td>                                                                
-                                                                <a href="index.php?page=user:search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                <a href="index.php?page=user:search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                             </td>                                                   
                                                     
                                                             <!-- Dropdown Menu -->
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?page=user:search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                        <option value="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}" {if $page_no == $smarty.section.page.index } Selected {/if}>
                                                                             {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?page=user:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
+                                                                    <option value="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}" {if $page_no == $total_pages} selected {/if}>
                                                                         {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>
@@ -93,8 +93,8 @@
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                <a href="index.php?page=user:search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                <a href="index.php?page=user:search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                             </td>                                                                                             
                                                     
                                                         </tr>

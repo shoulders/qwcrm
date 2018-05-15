@@ -61,7 +61,7 @@
             {if $user_details.customer_id == ''}
                 {t}n/a{/t}
             {else}                
-                <a href="index.php?page=customer:details&customer_id={$user_details.customer_id}">{$customer_display_name}</a>
+                <a href="index.php?component=customer&page_tpl=details&customer_id={$user_details.customer_id}">{$customer_display_name}</a>
             {/if}
         </td>
     </tr>

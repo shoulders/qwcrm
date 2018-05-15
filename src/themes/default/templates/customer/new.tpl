@@ -28,7 +28,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
                                             <td>                                                
-                                                <form action="index.php?page=customer:new" method="post" name="new_customer" id="new_customer">                                                
+                                                <form action="index.php?component=customer&page_tpl=new" method="post" name="new_customer" id="new_customer">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

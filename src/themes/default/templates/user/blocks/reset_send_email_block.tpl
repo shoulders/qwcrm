@@ -24,7 +24,7 @@
                         <table  cellspacing="5" border="0" cellpadding="5" align="center">
                             <tr>
                                 <td>
-                                    <form action="index.php?page=user:reset" method="post">
+                                    <form action="index.php?component=user&page_tpl=reset" method="post">
                                         <table width="50%" cellspacing="0" border="0" cellpadding="5" align="center">
                                             <tr>
                                                 <td colspan="2">{t}Please enter the email address for your account. A verification code will be sent to you. Once you have received the verification code, you will be able to choose a new password for your account.{/t}</td>

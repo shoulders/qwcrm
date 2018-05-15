@@ -24,7 +24,7 @@
                         <table  cellspacing="5" border="0" cellpadding="5" align="center">
                             <tr>
                                 <td>
-                                    <form action="index.php?page=user:reset" method="post">
+                                    <form action="index.php?component=user&page_tpl=reset" method="post">
                                         <table width="75%" cellspacing="0" border="0" cellpadding="5" align="center">
                                             <tr>
                                                 <td colspan="2">{t}An email has been sent to your email address. The email contains a verification code, please paste the verification code in the field below to prove that you are the owner of this account.{/t}</td>

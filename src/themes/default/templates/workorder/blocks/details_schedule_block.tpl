@@ -62,7 +62,7 @@
                                                             var m = M + 1;                                          // Correction for assignment issue above
                                                             var d = dateForLink.getDate();                          // integer, 1..31
                                                             // redirect...
-                                                            window.location = "index.php?page=schedule:day&start_year="+y+"&start_month="+m+"&start_day="+d+"&customer_id={$customer_id}&employee_id={$login_user_id}&workorder_id={$workorder_id}";
+                                                            window.location = "index.php?component=schedule&page_tpl=day&start_year="+y+"&start_month="+m+"&start_day="+d+"&customer_id={$customer_id}&employee_id={$login_user_id}&workorder_id={$workorder_id}";
                                                         }
                                         } );                                    
                                     </script>
@@ -92,9 +92,9 @@
                                                                             </p>                                                                            
                                                                             <b>{t}Notes{/t}:</b><br />
                                                                             <div>{$workorder_schedules[i].notes}</div><br>
-                                                                            <button type="button" onClick="window.location='index.php?page=schedule:edit&schedule_id={$workorder_schedules[i].schedule_id}';">{t}Edit{/t}</button>
-                                                                            <a href="index.php?page=schedule:delete&schedule_id={$workorder_schedules[i].schedule_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Schedule?{/t}');"><button type="button">{t}Delete{/t}</button></a>                                                                            
-                                                                            <button type="button" onClick="window.location='index.php?page=schedule:icalendar&schedule_id={$workorder_schedules[i].schedule_id}&theme=print';">{t}Export{/t}</button>                                                                                                                                 
+                                                                            <button type="button" onClick="window.location='index.php?component=schedule&page_tpl=edit&schedule_id={$workorder_schedules[i].schedule_id}';">{t}Edit{/t}</button>
+                                                                            <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$workorder_schedules[i].schedule_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Schedule?{/t}');"><button type="button">{t}Delete{/t}</button></a>                                                                            
+                                                                            <button type="button" onClick="window.location='index.php?component=schedule&page_tpl=icalendar&schedule_id={$workorder_schedules[i].schedule_id}&theme=print';">{t}Export{/t}</button>                                                                                                                                 
                                                                         </td>
                                                                     </tr>
                                                                 </table>
