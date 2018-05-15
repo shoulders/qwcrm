@@ -15,12 +15,13 @@ defined('_QWEXEC') or die;
 ############################################   
 
 // Maintenance Mode
-if($QConfig->maintenance){
+if($QConfig->maintenance) {
     
     // Set to the maintenance page    
-    $page_display_controller = COMPONENTS_DIR.'core/maintenance.php'; 
     $component      = 'core';
     $page_tpl       = 'maintenance';
+    
+    // Disable Theme
     $VAR['theme']   = 'off';   
     
     // If user logged in, then log user off (Hard logout, no logging)
@@ -28,42 +29,44 @@ if($QConfig->maintenance){
         QFactory::getAuth()->logout(); 
     }    
 
-// If there is a page set, verify it and build the controller
-} elseif(isset($VAR['page']) && $VAR['page'] != '') { 
-
-    // Explode the URL so we can get the component and page_tpl
-    list($component, $page_tpl) = explode(':', $VAR['page']);
-    $page_display_controller    = COMPONENTS_DIR.$component.'/'.$page_tpl.'.php';
-
-    // Check to see if the page exists and set it, otherwise send them to the 404 page
-    if (file_exists($page_display_controller)){
-        $page_display_controller = COMPONENTS_DIR.$component.'/'.$page_tpl.'.php';            
+// If no page specified set page based on login status
+} elseif(!isset($VAR['page'])) {    
+    
+    if(isset($login_token)) {
+        
+        // If logged in
+        $component                  = 'core';
+        $page_tpl                   = 'dashboard';
+        
     } else {
         
-        // set to the 404 error page 
-        $page_display_controller = COMPONENTS_DIR.'core/404.php'; 
+        // If NOT logged in
+        $component                  = 'core';
+        $page_tpl                   = 'home';  
+        
+    }     
+    
+// If there is a page set
+} else {        
+
+    // Explode the URL so we can get the component and page_tpl
+    list($component, $page_tpl) = explode(':', $VAR['page']);    
+
+    // Check to see if the page controller exists otherwise set to the 404 page
+    if (!file_exists(COMPONENTS_DIR.$component.'/'.$page_tpl.'.php')) {
+                   
+        // Set to the 404 error page       
         $component  = 'core';
         $page_tpl   = '404';
         
-        // Send 404 header
+        // Disable Theme
         $VAR['theme'] = 'off';
-        header('HTTP/1.1 404 Not Found');
-        
-    }        
-
-// If no page specified load a default landing page   
-} else {        
-
-    if(isset($login_token)){
-        // If logged in
-        $page_display_controller    = COMPONENTS_DIR.'core/dashboard.php';
-        $component                  = 'core';
-        $page_tpl                   = 'dashboard';       
+       
     } else {
-        // If NOT logged in
-        $page_display_controller    = COMPONENTS_DIR.'core/home.php';
-        $component                  = 'core';
-        $page_tpl                   = 'home';            
+        // Use discovered $component and $page_tpl        
     }
-
+    
 }
+
+// Return the page display controller for the requested page
+$page_display_controller = COMPONENTS_DIR.$component.'/'.$page_tpl.'.php'; 

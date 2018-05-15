@@ -144,6 +144,9 @@ if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') {
         
 }
 
+//should this be here for 404 - currently in 404.php
+//header('HTTP/1.1 404 Not Found');
+
 ################################################
 #         Display the Built Page               #
 ################################################
