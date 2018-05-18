@@ -38,7 +38,7 @@ $smarty->assign('invoice_statuses',         get_invoice_statuses($db)           
 $smarty->assign('giftcerts_active',         display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '0', null, $customer_id)         );
 $smarty->assign('giftcerts_redeemed',       display_giftcerts($db, 'giftcert_id', 'DESC', false, $page_no, '25', null, null, null, '1', null, $customer_id)         );
 
-$smarty->assign('GoogleMapString',          build_googlemap_directions_string($db, $customer_id, $login_user_id)                                                    );
+$smarty->assign('GoogleMapString',          build_googlemap_directions_string($db, $customer_id, $user->login_user_id)                                                    );
 $smarty->assign('customer_notes',           get_customer_notes($db, $customer_id)                                                                                   );
 
 $BuildPage .= $smarty->fetch('customer/details.tpl');

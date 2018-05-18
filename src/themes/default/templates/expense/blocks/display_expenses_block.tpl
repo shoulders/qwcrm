@@ -61,5 +61,9 @@
                  </a>
              </td>
          </tr>
-     {/section}
+    {sectionelse}
+        <tr>
+            <td colspan="13" class="error">{t}There are no expenses.{/t}</td>
+        </tr>        
+    {/section}
  </table>

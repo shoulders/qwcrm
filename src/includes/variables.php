@@ -17,39 +17,28 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $user = QFactory::getUser();
 }
 
-// Set User PHP variables
-$login_user_id          = $user->login_user_id;         // QFactory::getUser()->login_user_id; - this also works exactly the same
-$login_username         = $user->login_username;
-$login_display_name     = $user->login_display_name;
-$login_token            = $user->login_token;           // could this be replaced
-$login_is_employee      = $user->login_is_employee;
-$login_customer_id      = $user->login_customer_id;     // is only set when there is a customer_id in the user account
+// User Profile Examples
+//$user->login_user_id;
+//QFactory::getUser()->login_user_id;
 
 // If there is no logged in user, set usergroup to Public (This can cause looping if not present)
-if(!isset($login_token )){
-    $login_usergroup_id = 9;
-} else {
-    $login_usergroup_id = $user->login_usergroup_id;   
-}
-
-// Remove User object as no longer needed (for security)
-unset($user);
+if(!isset($user->login_token)) { $user->login_usergroup_id = 9; }
 
 // Assign User varibles to smarty
-$smarty->assign('login_user_id',            $login_user_id          );
-$smarty->assign('login_username',           $login_username         );
-$smarty->assign('login_usergroup_id',       $login_usergroup_id     );
-$smarty->assign('login_display_name',       $login_display_name     );
-$smarty->assign('login_token',              $login_token            );
-$smarty->assign('login_is_employee',        $login_is_employee      );
-$smarty->assign('login_customer_id',        $login_customer_id      );
+$smarty->assign('login_user_id',            $user->login_user_id          );
+$smarty->assign('login_username',           $user->login_username         );
+$smarty->assign('login_usergroup_id',       $user->login_usergroup_id     );
+$smarty->assign('login_display_name',       $user->login_display_name     );
+$smarty->assign('login_token',              $user->login_token            );
+$smarty->assign('login_is_employee',        $user->login_is_employee      );
+$smarty->assign('login_customer_id',        $user->login_customer_id      );
 
 ################################################
 #   Update Last Active Times                   #
 ################################################
 
 // Logged in Users
-if($login_user_id) {update_user_last_active($db, $login_user_id);}
+if($user->login_user_id) { update_user_last_active($db, $user->login_user_id); }
 
 ################################
 #   Set Global PHP Values      #

@@ -61,7 +61,7 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching customer records."));
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching customer records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -88,7 +88,7 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
         }
         $smarty->assign('next', $next); 
         
-       // Only return the given page's records
+        // Only return the given page's records
         $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
         
         // add the restriction on to the SQL
@@ -105,7 +105,7 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching customer records."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching customer records."));
         exit;
         
     } else {        
@@ -156,7 +156,7 @@ function insert_customer($db, $VAR) {
             create_date     =". $db->qstr( time()                   );          
                         
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer record into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer record into the database."));
         exit;
     } else {
         
@@ -183,7 +183,7 @@ function insert_customer_note($db, $customer_id, $note) {
             note        =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer note into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer note into the database."));
         exit;
         
     } else {
@@ -212,7 +212,7 @@ function get_customer_details($db, $customer_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's details."));
         exit;
     } else { 
         
@@ -239,7 +239,7 @@ function get_customer_note($db, $customer_note_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer note."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer note."));
         exit;
     } else { 
         
@@ -266,7 +266,7 @@ function get_customer_notes($db, $customer_id) {
     $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr( $customer_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's notes."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's notes."));
         exit;
     } else {
         
@@ -285,7 +285,7 @@ function get_customer_types($db) {
     $sql = "SELECT * FROM ".PRFX."customer_types";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get customer types."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get customer types."));
         exit;
     } else {
         
@@ -325,7 +325,7 @@ function update_customer($db, $customer_id, $VAR) {
             WHERE customer_id   =". $db->qstr( $customer_id         );
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Customer's details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Customer's details."));
         exit;
     } else {
         
@@ -354,7 +354,7 @@ function update_customer_note($db, $customer_note_id, $note) {
             WHERE customer_note_id  =". $db->qstr( $customer_note_id                    );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the customer note."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the customer note."));
         exit;    
         
     } else {
@@ -387,7 +387,7 @@ function update_customer_last_active($db, $customer_id = null) {
             WHERE customer_id=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Customer's last active time."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Customer's last active time."));
         exit;
     }
     
@@ -406,7 +406,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Workorders in the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Workorders in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
@@ -417,7 +417,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any invoices
     $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Invoices in the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Invoices in the database."));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
@@ -428,7 +428,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any gift certificates
     $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE customer_id=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Gift Certificates in the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Gift Certificates in the database."));
         exit;
     }  
     if($rs->fields['count'] > 0 ) {
@@ -439,7 +439,7 @@ function delete_customer($db, $customer_id){
     // Check if customer has any customer notes
     $sql = "SELECT count(*) as count FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Notes in the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Notes in the database."));
         exit;
     }    
     if($rs->fields['count'] > 0 ) {
@@ -455,14 +455,14 @@ function delete_customer($db, $customer_id){
     // Delete any Customer user accounts
     $sql = "DELETE FROM ".PRFX."user WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer's users from the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer's users from the database."));
         exit;
     }
     
     // Delete Customer
     $sql = "DELETE FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer from the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer from the database."));
         exit;
     }
     
@@ -486,7 +486,7 @@ function delete_customer_note($db, $customer_note_id) {
     $sql = "DELETE FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer note."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer note."));
         exit;
         
     } else {        
@@ -515,7 +515,7 @@ function check_customer_display_name_exists($db, $display_name) {
     $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer WHERE display_name=".$db->qstr($display_name);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
         exit;
     } else {
         $row = $rs->FetchRow();

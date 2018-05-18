@@ -78,7 +78,7 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Gift Certificate records."));
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Gift Certificate records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -122,7 +122,7 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificate records."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificate records."));
         exit;
         
     } else {        
@@ -162,7 +162,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
             notes           =". $db->qstr( $notes                               );
 
     if(!$db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the Gift Certificate into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the Gift Certificate into the database."));
         exit;
 
     } else {
@@ -193,7 +193,7 @@ function get_giftcert_details($db, $giftcert_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."giftcert WHERE giftcert_id=".$db->qstr($giftcert_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate details."));
         exit;
     } else {
         
@@ -220,7 +220,7 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
     $sql = "SELECT * FROM ".PRFX."giftcert WHERE giftcert_code=".$db->qstr( $giftcert_code );
 
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate ID by the Gift Certificate code."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate ID by the Gift Certificate code."));
         exit;
     }
     
@@ -248,7 +248,7 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
             WHERE giftcert_id =".$giftcert_id;
 
     if(!$db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate record in the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate record in the database."));
         exit;
 
     } else {
@@ -283,7 +283,7 @@ function delete_giftcert($db, $giftcert_id) {
     $sql = "UPDATE ".PRFX."giftcert SET active='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Gift Certificate."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Gift Certificate."));
         exit;
         
     } else {
@@ -380,7 +380,7 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
             WHERE giftcert_id   =". $db->qstr( $giftcert_id );
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
         exit;
     } else {
         

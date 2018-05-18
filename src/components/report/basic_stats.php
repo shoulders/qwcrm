@@ -24,15 +24,15 @@ $smarty->assign('global_workorders_opened_count',               count_workorders
 $smarty->assign('global_workorders_closed_count',               count_workorders($db, 'closed')                             );
 
 // Employee Workorder Stats
-$smarty->assign('employee_workorders_open_count',               count_workorders($db, 'open', $login_user_id)               );
-$smarty->assign('employee_workorders_assigned_count',           count_workorders($db, 'assigned', $login_user_id)           );
-$smarty->assign('employee_workorders_waiting_for_parts_count',  count_workorders($db, 'waiting_for_parts', $login_user_id)  );
-$smarty->assign('employee_workorders_scheduled_count',          count_workorders($db, 'scheduled', $login_user_id)          );
-$smarty->assign('employee_workorders_with_client_count',        count_workorders($db, 'with_client', $login_user_id)        );
-$smarty->assign('employee_workorders_on_hold_count',            count_workorders($db, 'on_hold', $login_user_id)            );
-$smarty->assign('employee_workorders_management_count',         count_workorders($db, 'management', $login_user_id)         );
-$smarty->assign('employee_workorders_opened_count',             count_workorders($db, 'opened', $login_user_id)             );
-$smarty->assign('employee_workorders_closed_count',             count_workorders($db, 'closed', $login_user_id)             );
+$smarty->assign('employee_workorders_open_count',               count_workorders($db, 'open', $user->login_user_id)               );
+$smarty->assign('employee_workorders_assigned_count',           count_workorders($db, 'assigned', $user->login_user_id)           );
+$smarty->assign('employee_workorders_waiting_for_parts_count',  count_workorders($db, 'waiting_for_parts', $user->login_user_id)  );
+$smarty->assign('employee_workorders_scheduled_count',          count_workorders($db, 'scheduled', $user->login_user_id)          );
+$smarty->assign('employee_workorders_with_client_count',        count_workorders($db, 'with_client', $user->login_user_id)        );
+$smarty->assign('employee_workorders_on_hold_count',            count_workorders($db, 'on_hold', $user->login_user_id)            );
+$smarty->assign('employee_workorders_management_count',         count_workorders($db, 'management', $user->login_user_id)         );
+$smarty->assign('employee_workorders_opened_count',             count_workorders($db, 'opened', $user->login_user_id)             );
+$smarty->assign('employee_workorders_closed_count',             count_workorders($db, 'closed', $user->login_user_id)             );
 
 /** Invoices **/
 

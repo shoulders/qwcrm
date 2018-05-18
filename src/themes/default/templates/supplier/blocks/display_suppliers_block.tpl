@@ -45,5 +45,9 @@
                 </a>
             </td>
         </tr>
+    {sectionelse}
+        <tr>
+            <td colspan="8" class="error">{t}There are no suppliers.{/t}</td>
+        </tr>        
     {/section}
 </table>

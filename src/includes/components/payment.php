@@ -43,7 +43,7 @@ function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $dat
             note            = ".$db->qstr( $note                                );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert transaction into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert transaction into the database."));
         exit;
         
     } else {
@@ -158,7 +158,7 @@ function get_payment_details($db, $item = null){
     $sql = "SELECT * FROM ".PRFX."payment";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
         exit;
     } else {
         
@@ -188,7 +188,7 @@ function get_active_payment_system_methods($db) {
             WHERE active='1'";    
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get active payment methods."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get active payment methods."));
         exit;
     } else {
         
@@ -207,7 +207,7 @@ function get_payment_system_methods($db) {
     $sql = "SELECT * FROM ".PRFX."payment_system_methods";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment system methods."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment system methods."));
         exit;
     } else {
         
@@ -226,7 +226,7 @@ function get_payment_manual_methods($db) {
     $sql = "SELECT * FROM ".PRFX."payment_manual_methods";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment manual methods."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment manual methods."));
         exit;
     } else {
         
@@ -246,7 +246,7 @@ function get_active_credit_cards($db) {
     $sql = "SELECT card_key, display_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active credit cards."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active credit cards."));
         exit;
     } else {
         
@@ -275,7 +275,7 @@ function get_credit_card_display_name_from_key($db, $card_key) {
     $sql = "SELECT display_name FROM ".PRFX."payment_credit_cards WHERE card_key=".$db->qstr($card_key);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
         exit;
     } else {
         
@@ -295,7 +295,7 @@ function get_invoice_transactions($db, $invoice_id){
     $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE invoice_id =".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice's transactions."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice's transactions."));
         exit;
     } else {      
         
@@ -324,7 +324,7 @@ function update_payment_settings($db, $VAR) {
             invoice_footer_msg      =". $db->qstr( $VAR['invoice_footer_msg']       );            
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
         exit;
     } else {
         
@@ -365,7 +365,7 @@ function update_active_payment_system_methods($db, $VAR) {
                 WHERE system_method_id=". $db->qstr( $payment_method['system_method_id'] ); 
         
         if(!$rs = $db->execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method active state."));
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method active state."));
             exit;
         }
         
@@ -391,7 +391,7 @@ function check_payment_method_is_active($db, $method) {
     $sql = "SELECT active FROM ".PRFX."payment_system_methods WHERE system_method_id=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));
         exit;
     }
     

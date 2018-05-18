@@ -24,7 +24,7 @@ if(isset($workorder_id)) {
 }
 
 // if no selected_employee, use the logged in user
-if(!$employee_id) {$employee_id = $login_user_id;}
+if(!$employee_id) {$employee_id = $user->login_user_id;}
 
 // Assign the variables
 $smarty->assign('start_year',               $start_year                                                                                                 );

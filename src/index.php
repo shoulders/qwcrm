@@ -110,9 +110,14 @@ require(INCLUDES_DIR.'variables.php');
 
 // Route the page request
 require(INCLUDES_DIR.'router.php');
+//$_SERVER['QUERY_STRING']  $_SERVER['QUERY_STRING']
+//if($sef_enabled) { parseRoute($sef_enabled, $VAR); }    // If SEF is enabled
+$page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
+//echo $page_controller;
 
 // Build the page content payload
 require(INCLUDES_DIR.'buildpage.php');
+$BuildPage = get_page_content($db, $page_controller, $page_no, $VAR, $QConfig, $user);
 
 // Access Logging
 if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {

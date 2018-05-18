@@ -43,5 +43,9 @@
             <td class="olotd4"><a href="mailto: {$display_users[u].email}"><font class="blueLink">{$display_users[u].email}</font></a></td>
             <td class="olotd4"><a href="index.php?component=user:details&user_id={$display_users[u].user_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Users Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;<a href="index.php?page=user&page_tpl=edit&user_id={$display_users[u].user_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a></td>                                                        
         </tr>
+    {sectionelse}
+        <tr>
+            <td colspan="9" class="error">{t}There are no users.{/t}</td>
+        </tr>        
     {/section}
 </table>

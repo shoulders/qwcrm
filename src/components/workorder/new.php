@@ -26,7 +26,7 @@ if(isset($VAR['submit'])){
 
     // If workorder is to be assigned to an employee
     if($VAR['assign_to_employee'] === '1') {       
-        assign_workorder_to_employee($db, $workorder_id, $login_user_id);  
+        assign_workorder_to_employee($db, $workorder_id, $user->login_user_id);  
     }
     
     // load the workorder details page

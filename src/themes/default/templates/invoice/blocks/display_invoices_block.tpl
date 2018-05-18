@@ -42,7 +42,7 @@
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="6" class="error">{t}There are no invoices.{/t}</td>
+            <td colspan="12" class="error">{t}There are no invoices.{/t}</td>
         </tr>        
     {/section}
 </table>

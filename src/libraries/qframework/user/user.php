@@ -680,7 +680,7 @@ class JUser
             // Reset to guest user
             $this->guest = 1;
             
-            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load an Employee."));
+            //force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load an Employee."));
             //exit;
             
             return false;
@@ -768,11 +768,9 @@ class JUser
             $this->aid = 0;
             $this->guest = 1;
         }
-    }
+    }    
     
-    
-    
-     /**
+    /**
      * Method to get the value from the data array
      *
      * @param   string  $key           Key to search for in the data array

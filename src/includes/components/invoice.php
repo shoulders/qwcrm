@@ -102,7 +102,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Invoice records."));
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Invoice records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -148,7 +148,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoice records."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoice records."));
         exit;
     } else {
         
@@ -200,7 +200,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
             is_closed       =". $db->qstr( 0                                    ); 
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the invoice record into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the invoice record into the database."));
         exit;
     } else {
         
@@ -261,7 +261,7 @@ function insert_labour_items($db, $invoice_id, $description, $amount, $qty) {
         $sql = substr($sql , 0, -1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
             exit;
         }
         
@@ -302,7 +302,7 @@ function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
         $sql = substr($sql ,0,-1);
         
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Parts item into the database."));
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Parts item into the database."));
             exit;
         }
         
@@ -323,7 +323,7 @@ function insert_invoice_prefill_item($db, $VAR){
             active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill item into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill item into the database."));
         exit;
         
     } else {
@@ -346,7 +346,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."invoice WHERE invoice_id =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice details."));
         exit;
     } else {
         
@@ -373,7 +373,7 @@ function get_invoice_labour_items($db, $invoice_id) {
     $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour items."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour items."));
         exit;
     } else {
         
@@ -396,7 +396,7 @@ function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) 
     $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$db->qstr($invoice_labour_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour item details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour item details."));
         exit;
     } else {
         
@@ -423,7 +423,7 @@ function get_invoice_parts_items($db, $invoice_id) {
     $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts items."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts items."));
         exit;
     } else {
         
@@ -446,7 +446,7 @@ function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
     $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$db->qstr($invoice_parts_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts item details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice parts item details."));
         exit;
     } else {
         
@@ -482,7 +482,7 @@ function get_invoice_prefill_items($db, $type = null, $status = null) {
     if($status) {$sql .= " AND active=".$db->qstr($status);}
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice prefill items for the selected status."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice prefill items for the selected status."));
         exit;
     } else {
         
@@ -505,7 +505,7 @@ function get_invoice_statuses($db) {
     $sql = "SELECT * FROM ".PRFX."invoice_statuses";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice statuses."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice statuses."));
         exit;
     } else {
         
@@ -524,7 +524,7 @@ function get_invoice_status_display_name($db, $status_key) {
     $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$db->qstr($status_key);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice status display name."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice status display name."));
         exit;
     } else {
         
@@ -549,7 +549,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
             WHERE invoice_id    =". $db->qstr( $invoice_id                  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
         exit;    
         
     } else {
@@ -586,7 +586,7 @@ function update_invoice_transaction_only($db, $invoice_id, $paid_amount, $balanc
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice's financial totals."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice's financial totals."));
         exit;
     }
     
@@ -623,7 +623,7 @@ function update_invoice_full($db, $VAR) {
             WHERE invoice_id    =". $db->qstr( $VAR['invoice_id']      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice."));
         exit;
         
     } else {
@@ -658,7 +658,7 @@ function update_invoice_prefill_item($db, $VAR){
             WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice labour rates item."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice labour rates item."));
         exit;
         
     } else {
@@ -694,7 +694,7 @@ function update_invoice_status($db, $invoice_id, $new_status) {
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Work Order Status."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Work Order Status."));
         exit;
         
     } else {    
@@ -754,7 +754,7 @@ function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
     }    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice Closed status."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice Closed status."));
         exit;
     }
     
@@ -774,7 +774,7 @@ function update_invoice_last_active($db, $invoice_id = null) {
             WHERE invoice_id=".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice last active time."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice last active time."));
         exit;
     }
     
@@ -806,7 +806,7 @@ function delete_invoice($db, $invoice_id) {
     $sql = "DELETE FROM ".PRFX."invoice WHERE invoice_id=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice."));
         exit;
     } else {
         
@@ -844,7 +844,7 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $db->qstr($invoice_labour_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice labour item."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice labour item."));
         exit;
     } else {
         
@@ -875,7 +875,7 @@ function delete_invoice_labour_items($db, $invoice_id) {
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's labour items."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's labour items."));
         exit;
     } else {
         
@@ -896,7 +896,7 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
     $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $db->qstr($invoice_parts_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice parts item."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice parts item."));
         exit;
         
     } else {
@@ -928,7 +928,7 @@ function delete_invoice_parts_items($db, $invoice_id) {
     $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's parts items."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete all of an invoice's parts items."));
         exit;
     } else {
         
@@ -947,7 +947,7 @@ function delete_invoice_prefill_item($db, $invoice_prefill_id){
     $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$invoice_prefill_id;
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice prefill item."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice prefill item."));
         exit;
         
     } else {
@@ -972,7 +972,7 @@ function labour_sub_total($db, $invoice_id) {
     $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_labour WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice labour sub total."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice labour sub total."));
         exit;
     } else {
         
@@ -991,7 +991,7 @@ function parts_sub_total($db, $invoice_id) {
     $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice parts sub total."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice parts sub total."));
         exit;
     } else {
         
@@ -1027,7 +1027,7 @@ function recalculate_invoice_totals($db, $invoice_id) {
             WHERE invoice_id    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed update the invoice totals."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed update the invoice totals."));
         exit;
     } else {
      
@@ -1083,7 +1083,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
                 $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
                 
                 if(!$rs = $db->execute($sql)) {
-                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the prefill items table."));
+                    force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the prefill items table."));
                     exit;                    
                 }
             }
@@ -1106,7 +1106,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
                 $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, amount, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 
                 if(!$rs = $db->execute($sql)) {
-                    force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the new prefill items into the database."));
+                    force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the new prefill items into the database."));
                     exit;                    
                 }
                 
@@ -1135,7 +1135,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
         echo "Temp file: " . $_FILES['invoice_prefill_csv']['tmp_name']       . '<br />';
         echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
          */
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice labour rates because the submitted file was invalid."));
 
     }     
 
@@ -1150,7 +1150,7 @@ function export_invoice_prefill_items_csv($db) {
     $sql = "SELECT description, type, amount, active FROM ".PRFX."invoice_prefill_items";
     
     if(!$rs = $db->Execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice prefill items from the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice prefill items from the database."));
         exit;
     } else {        
         
@@ -1312,7 +1312,7 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
     }
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to assign a Work Order to an employee."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to assign a Work Order to an employee."));
         exit;
         
     } else {

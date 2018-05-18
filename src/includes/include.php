@@ -51,7 +51,7 @@ function get_qwcrm_database_version_number($db) {
     {        
         if($rs = $db->execute($sql)) {
             
-            //force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
+            //force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
             //exit;
             
             return $rs->fields['database_version'];
@@ -89,7 +89,7 @@ function get_company_details($db, $item = null) {
     $sql = "SELECT * FROM ".PRFX."company";
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
         exit;
     } else {
         
@@ -122,7 +122,7 @@ function update_user_last_active($db, $user_id = null) {
     $sql = "UPDATE ".PRFX."user SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
         exit;
     }
     
@@ -170,7 +170,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             if($variables) { $variables = '&'.$variables; }
             
             // Build the URL and perform the redirect, with/without varibles
-            perform_redirect('index.php?page='.$component.':'.$page_tpl.$variables);            
+            perform_redirect('index.php?component='.$component.'&page_tpl='.$page_tpl.$variables);            
             
         }
         
@@ -204,7 +204,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
         } else {
             
             // Build the URL and perform the redirect
-            perform_redirect('index.php?page='.$component.':'.$page_tpl);            
+            perform_redirect('index.php?component='.$component.'&page_tpl='.$page_tpl);            
                 
         }
         
@@ -241,10 +241,10 @@ function perform_redirect($url, $type = 'header') {
 
 // Example to use
 // If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
-// old - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-// new - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
+// old - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+// new - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
 
-function force_error_page($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) { 
+function force_error_page($component, $page_tpl, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) { 
     
     // Load config settigns
     $QConfig = new QConfig;
@@ -255,7 +255,8 @@ function force_error_page($error_page, $error_type, $error_location, $php_functi
         // make sure the page object is empty
         $BuildPage = '';
 
-        $VAR['error_page']      = prepare_error_data('error_page', $error_page);
+        $VAR['component']       = prepare_error_data('component', $component);
+        $VAR['page_tpl']        = prepare_error_data('page_tpl', $page_tpl);
         $VAR['error_type']      = $error_type;
         $VAR['error_location']  = prepare_error_data('error_location', $error_location);
         $VAR['php_function']    = prepare_error_data('php_function', $php_function);
@@ -400,8 +401,28 @@ function prepare_error_data($type, $data = null) {
     }
     */
         
-    /* Error Page (by using $_GET['page'] */    
-    if($type === 'error_page') {
+    /* Component (by using $_GET['component'] */    
+    if($type === 'component') {
+        
+        // compensate for home and dashboard
+        if($data == '') {
+            
+            // Must be Login or Home
+            if(isset($user->login_token)) {
+                $error_page = 'core';
+            } else {
+                $error_page = 'core';
+            }    
+        } else {
+            $error_page = $data;            
+        }       
+        
+        return $data;
+        
+    }     
+    
+    /* Page_tpl (by using $_GET['page'] */    
+    if($type === 'page_tpl') {
         
         // compensate for home and dashboard
         if($data == '') {
@@ -416,9 +437,9 @@ function prepare_error_data($type, $data = null) {
             $error_page = $data;            
         }       
         
-        return $error_page;
+        return $data;
         
-    }     
+    } 
     
     /* Error Location */
     if($type === 'error_location') {     
@@ -524,23 +545,23 @@ function set_page_header_and_meta_data($component, $page_tpl) {
 #  Verify User's authorization for a specific page / operation      #
 #####################################################################
 
-function check_acl($db, $login_usergroup_id, $component, $page_tpl) {
+function check_acl($db, $user, $component, $page_tpl) {
     
     // If installing
     if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
     
     // error catching - you cannot use normal error logging as it will cause a loop
-    if($login_usergroup_id == '') {
+    if($user->login_usergroup_id == '') {
         die(_gettext("The ACL has been supplied with no account type ID. QWcrm will now die."));                
     }
 
     // Get user's Group Name by login_usergroup_id
     $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
             FROM ".PRFX."user_usergroups
-            WHERE usergroup_id =".$db->qstr($login_usergroup_id);
+            WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
         exit;
     } else {
         $usergroup_display_name = $rs->fields['usergroup_display_name'];
@@ -554,7 +575,7 @@ function check_acl($db, $login_usergroup_id, $component, $page_tpl) {
     $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($component_page);
 
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['page'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
         exit;
     } else {
         
@@ -969,7 +990,7 @@ function write_record_to_access_log() {
     
     // Write log entry   
     if(!$fp = fopen(ACCESS_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
         exit;
     }
     
@@ -1007,7 +1028,7 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
     
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
         exit;
     }
     
@@ -1024,7 +1045,7 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
 
 function write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
     
-    // it is not - force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
+    // it is not - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
     
     // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
     if(!QFactory::getUser()->login_username) {
@@ -1038,7 +1059,7 @@ function write_record_to_error_log($error_page, $error_type, $error_location, $p
 
     // Write log entry  
     if(!$fp = fopen(ERROR_LOG, 'a')) {        
-        force_error_page($_GET['page'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
         exit;
     }
     

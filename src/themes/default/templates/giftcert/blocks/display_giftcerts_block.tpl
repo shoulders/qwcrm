@@ -52,7 +52,7 @@
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="6" class="error">{t}There are no gift certificates.{/t}</td>
+            <td colspan="9" class="error">{t}There are no gift certificates.{/t}</td>
         </tr>        
     {/section}
 </table>

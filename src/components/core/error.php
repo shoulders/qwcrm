@@ -15,7 +15,7 @@ if(!check_page_accessed_via_qwcrm()) {
 
 /* Grab and Process Values befor sending to the log and displaying */
 //$error_page         = prepare_error_data('error_page'); // only needed when using referrer
-$error_page         = $VAR['error_page'];
+$error_page         = $VAR['component'].':'.$VAR['page_tpl'];
 $error_type         = $VAR['error_type'];
 $error_location     = $VAR['error_location'];
 $php_function       = $VAR['php_function'];
@@ -55,7 +55,7 @@ $smarty->assign('sql_query',        $sql_query              );
 $smarty->assign('error_msg',        $error_msg              );
     
 // Prevent Customers/Guests/Public users and scapers accidentally seeing the errors
-if($login_usergroup_id <= 6){
+if($user->login_usergroup_id <= 6){
     $BuildPage .= $smarty->fetch('core/error.tpl');
 } else {
     $BuildPage .= _gettext("An error has occured but you are not allowed to see it.").'<br>';

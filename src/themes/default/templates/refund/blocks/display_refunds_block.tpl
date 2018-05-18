@@ -57,5 +57,9 @@
                 </a>
             </td>
         </tr>
+    {sectionelse}
+        <tr>
+            <td colspan="13" class="error">{t}There are no refunds.{/t}</td>
+        </tr>        
     {/section}
 </table>

@@ -64,7 +64,7 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching refund records."));
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching refund records."));
             exit;
         } else {        
             $total_results = $rs->RecordCount();            
@@ -110,7 +110,7 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching refund records."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching refund records."));
         exit;
     } else {
         
@@ -152,7 +152,7 @@ function insert_refund($db, $VAR) {
             notes            =". $db->qstr( $VAR['notes']                   );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
         exit;
     } else {
         
@@ -177,7 +177,7 @@ function get_refund_details($db, $refund_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."refund WHERE refund_id=".$db->qstr($refund_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
         exit;
     } else {
         
@@ -204,7 +204,7 @@ function get_refund_types($db) {
     $sql = "SELECT * FROM ".PRFX."refund_types";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get refund types."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get refund types."));
         exit;
     } else {
         
@@ -237,7 +237,7 @@ function update_refund($db, $refund_id, $VAR) {
             WHERE refund_id  = ". $db->qstr( $refund_id                     );                        
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
         exit;
     } else {
         
@@ -267,7 +267,7 @@ function delete_refund($db, $refund_id) {
     $sql = "DELETE FROM ".PRFX."refund WHERE refund_id=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
         exit;
     } else {
         
@@ -292,7 +292,7 @@ function last_refund_id_lookup($db) {
     $sql = "SELECT * FROM ".PRFX."refund ORDER BY refund_id DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['page'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
         exit;
     } else {
         
