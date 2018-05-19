@@ -773,6 +773,9 @@ function parse_xml_sting_into_array($string) {
 
 function parse_xml_file_into_array($file) {
     
+    // Remove base path to make reference relative
+    $file = str_replace(QWCRM_BASE_PATH, '', $file);
+    
     // SimpleXML - Convert an XML file into a SimpleXMLElement object, then output keys and elements of the object:
     $xml_object = simplexml_load_file($file);
    

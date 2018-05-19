@@ -837,7 +837,7 @@ class JUserHelper
         $uaShort = str_replace($browserVersion, 'abcd', $uaString);
         //return md5(JUri::base() . $uaShort);
 
-        return md5(QWCRM_DOMAIN . QWCRM_PATH . $uaShort);
+        return md5(QWCRM_DOMAIN . QWCRM_BASE_PATH . $uaShort);
     }
 
     /**

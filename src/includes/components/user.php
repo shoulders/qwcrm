@@ -989,7 +989,7 @@ function send_reset_email($db, $user_id) {
 
     $body .= _gettext("Select the URL below and proceed with resetting your password.")."\r\n\r\n";
 
-    $body .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_PATH."index.php?component=user&page_tpl=reset&token=".$token."\r\n\r\n";
+    $body .= QWCRM_PROTOCOL. QWCRM_DOMAIN . QWCRM_BASE_PATH."index.php?component=user&page_tpl=reset&token=".$token."\r\n\r\n";
         
     $body .= _gettext("Thank you.");*/
     
@@ -1004,7 +1004,7 @@ function send_reset_email($db, $user_id) {
     
     $body .= '<p>'._gettext("Select the URL below and proceed with resetting your password.").'</p>';
     
-    $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH ."index.php?component=user&page_tpl=reset&token=".$token.'</p>';  
+    $body .= '<p>'. QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH ."index.php?component=user&page_tpl=reset&token=".$token.'</p>';  
     
     $body .= '<p>'._gettext("Thank you.").'</p>';    
     

@@ -13,7 +13,7 @@ defined('_QWEXEC') or die;
 
 // Force SSL/HTTPS if enabled - add base path stuff here
 if($QConfig->force_ssl == 1 && !isset($_SERVER['HTTPS'])) {   
-    force_page('https://' . QWCRM_DOMAIN . QWCRM_PATH );
+    force_page('https://' . QWCRM_DOMAIN . QWCRM_BASE_PATH );
     exit;
 }
 
@@ -34,7 +34,7 @@ function check_page_accessed_via_qwcrm($qwcrm_page = null, $access_rule = null) 
     if($qwcrm_page != null) {       
         
         // If supplied page matches the 'Referring Page'
-        if(preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH, '/').'index\.php\?page='.$qwcrm_page.'.*/U', getenv('HTTP_REFERER'))) {
+        if(preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'index\.php\?page='.$qwcrm_page.'.*/U', getenv('HTTP_REFERER'))) {
             
             return true;
             
@@ -44,14 +44,14 @@ function check_page_accessed_via_qwcrm($qwcrm_page = null, $access_rule = null) 
             if($access_rule == 'setup') {                
                 
                 // No Referer but page is directly loaded by '', '/', 'index.php'
-                if(getenv('HTTP_REFERER') == '' && preg_match('/^'.preg_quote(QWCRM_PATH, '/').'(index\.php)?$/U', getenv('REQUEST_URI'))) {
+                if(getenv('HTTP_REFERER') == '' && preg_match('/^'.preg_quote(QWCRM_BASE_PATH, '/').'(index\.php)?$/U', getenv('REQUEST_URI'))) {
                     
                     return true;
                     
                 }
                 
                 // If 'Referring Page' == '', '/', 'index.php'
-                if(preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH, '/').'(index\.php)?$/U', getenv('HTTP_REFERER'))) {
+                if(preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index\.php)?$/U', getenv('HTTP_REFERER'))) {
                     
                     return true;
                     
@@ -68,7 +68,7 @@ function check_page_accessed_via_qwcrm($qwcrm_page = null, $access_rule = null) 
     // Check if 'ANY' QWcrm page is the referer   
     } else {
         
-        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_PATH, '/').'(index\.php\?page=)?.*/U', getenv('HTTP_REFERER'));
+        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index\.php\?page=)?.*/U', getenv('HTTP_REFERER'));
         
     }
     
