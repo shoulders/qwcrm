@@ -17,13 +17,13 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have an giftcert_id
-if($giftcert_id == '') {
+if($VAR['giftcert_id'] == '') {
     force_page('giftcert', 'search', 'warning_msg='._gettext("No Gift Certificate ID supplied."));
     exit;
 }
 
 // Delete the Gift Certificate - the giftcert is only deactivated
-delete_giftcert($db, $giftcert_id);
+delete_giftcert($db, $VAR['giftcert_id']);
     
 // Reload the customers details page
 force_page('giftcert', 'search', 'information_msg='._gettext("Gift Certificate deleted(blocked) successfully."));

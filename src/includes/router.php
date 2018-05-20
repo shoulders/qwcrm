@@ -8,6 +8,24 @@
 
 defined('_QWEXEC') or die;
 
+/* Mandatory */
+
+// If SEF routing is enabled
+if ($QConfig->sef) {
+    
+    // Running parseSEF only when the link is a SEF allows the use of Non-SEF URLS aswell
+    if (check_link_is_sef($_SERVER['REQUEST_URI'])) {
+        
+        // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
+        parseSEF($_SERVER['REQUEST_URI'], $VAR, true);
+    
+    }
+    
+}
+    
+// Get the page controller
+$page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
+
 ############################################
 #  Build path to relevant Page Controller  #
 ############################################
@@ -106,7 +124,7 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
 #  Build SEF URL from Non-SEF URL //or return $VAR variables  #
 ###############################################################
 
-function buildSEF($non_sef_url) {    
+function buildSEF($non_sef_url) {
     
     // Move URL into an array 
     $parsed_url = parse_url($non_sef_url);
@@ -206,6 +224,9 @@ function parseSEF($sef_url, &$VAR = null, $setOnlyVAR = false) {
 
 function check_page_exists($db, $component = null, $page_tpl = null) {
     
+    // Old checking code here
+    //if (file_exists(COMPONENTS_DIR.$component.'/'.$page_tpl.'.php')){ ... }
+    
     $sql = "SELECT page FROM ".PRFX."user_acl WHERE page = ".$db->qstr($component.':'.$page_tpl);
     
     if(!$rs = $db->Execute($sql)) {
@@ -224,5 +245,32 @@ function check_page_exists($db, $component = null, $page_tpl = null) {
         }
             
     }
+    
+}
+
+#####################################
+#  Check to see if the link is SEF  #
+#####################################
+
+function check_link_is_sef($url) {
+    
+    // Get URL path
+    $url = parse_url($url, PHP_URL_PATH);
+
+    // Remove base path from URL path
+    $url = str_replace(QWCRM_BASE_PATH, '', $url);
+
+    // Check to see if what remains start with index.php    
+    if (preg_match('|^index\.php|U', $url)) {
+        
+        // is Non-SEF
+        return false;
+        
+    } else {
+
+        // is SEF
+        return true;
+        
+    }   
     
 }

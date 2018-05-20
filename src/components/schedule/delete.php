@@ -18,17 +18,17 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a schedule_id
-if($schedule_id == '') {
+if($VAR['schedule_id'] == '') {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
     exit;
 }
 
 // get workorder_id
-$workorder_id = get_schedule_details($db, $schedule_id, 'workorder_id');
+$VAR['workorder_id'] = get_schedule_details($db, $VAR['schedule_id'], 'workorder_id');
 
 // Delete the schedule
-delete_schedule($db, $schedule_id);
+delete_schedule($db, $VAR['schedule_id']);
 
 // load schedule search page
-force_page('workorder', 'details&workorder_id='.$workorder_id);
+force_page('workorder', 'details&workorder_id='.$VAR['workorder_id']);
 exit;

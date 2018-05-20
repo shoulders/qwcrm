@@ -15,7 +15,7 @@ require(INCLUDES_DIR.'components/payment.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have an invoice_id
-if($invoice_id == '') {
+if($VAR['invoice_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
     exit;
 }
@@ -55,10 +55,10 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('customer_details',                 get_customer_details($db, get_invoice_details($db, $invoice_id , 'customer_id'))    );
-$smarty->assign('invoice_details',                  get_invoice_details($db, $invoice_id)                                               );
+$smarty->assign('customer_details',                 get_customer_details($db, get_invoice_details($db, $VAR['invoice_id'] , 'customer_id'))    );
+$smarty->assign('invoice_details',                  get_invoice_details($db, $VAR['invoice_id'])                                               );
 $smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                                           );
-$smarty->assign('transactions',                     get_invoice_transactions($db, $invoice_id)                                          );
+$smarty->assign('transactions',                     get_invoice_transactions($db, $VAR['invoice_id'])                                          );
 $smarty->assign('transaction_statuses',             get_payment_system_methods($db)                                                     );
 $smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                                              );
 $smarty->assign('active_credit_cards',              get_active_credit_cards($db)                                                        );

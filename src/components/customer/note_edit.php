@@ -20,7 +20,7 @@ if($VAR['customer_note_id'] == '') {
 if(isset($VAR['submit'])) {
                
     update_customer_note($db, $VAR['customer_note_id'], $VAR['note']);
-    force_page('customer', 'details&customer_id='.$customer_id);   
+    force_page('customer', 'details&customer_id='.$VAR['customer_id']);   
     exit;
     
 } else {    

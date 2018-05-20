@@ -11,8 +11,8 @@ defined('_QWEXEC') or die;
 require_once(INCLUDES_DIR.'components/core_menu.php');
  
 /* Get Workorder Status if we have a workorder_id - not currently used
-if($workorder_id != '') {
-    $smarty->assign('menu_workorder_is_closed', menu_get_single_workorder_is_closed($db, $workorder_id));
+if($VAR['workorder_id'] != '') {
+    $smarty->assign('menu_workorder_is_closed', menu_get_single_workorder_is_closed($db, $VAR['workorder_id']));
 }*/
 
 // Display menu block

@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 /* Invoice Processing */
 
 // Validate the basic invoice totals after the transaction is applied, then if successful return the results
-if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR['amount'])) {
+if(!$new_invoice_totals = validate_payment_method_totals($db, $VAR['invoice_id'], $VAR['amount'])) {
     
     // Do nothing - Specific Error information has already been set via postEmulation    
     
@@ -28,7 +28,7 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     $method_note = '';
 
     // Insert the transaction with the calculated information
-    insert_payment_method_transaction($db, $invoice_id, $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['method_type'], $method_note, $VAR['note']);
+    insert_payment_method_transaction($db, $VAR['invoice_id'], $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['method_type'], $method_note, $VAR['note']);
     
     // Assign Success message
     $smarty->assign('information_msg', _gettext("Cash payment added successfully"));
@@ -37,6 +37,6 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $invoice_id, $VAR[
     // goes here    
         
     // After a sucessful process redirect to the invoice payment page
-    //force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg=Full Payment made successfully');
+    //force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'information_msg=Full Payment made successfully');
     
 }

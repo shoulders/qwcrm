@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have a schedule_id
-if($schedule_id == '') {
+if($VAR['schedule_id'] == '') {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
     exit;
 }
@@ -23,7 +23,7 @@ if($schedule_id == '') {
 if(isset($VAR['submit'])) {    
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!update_schedule($db, $VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $schedule_id, $employee_id, $customer_id, $workorder_id)) {        
+    if (!update_schedule($db, $VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $VAR['schedule_id'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
         
         $smarty->assign('start_date',       $VAR['start_date']                                                  );       
         $smarty->assign('start_time',       $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );                
@@ -35,12 +35,12 @@ if(isset($VAR['submit'])) {
     } else {       
         
         // Load the schedule day with the updated schedule item        
-        $start_year            = date('Y', date_to_timestamp($VAR['start_date'])  );
-        $start_month           = date('m', date_to_timestamp($VAR['start_date'])  );
-        $start_day             = date('d', date_to_timestamp($VAR['start_date'])  );    
+        $VAR['start_year']            = date('Y', date_to_timestamp($VAR['start_date'])  );
+        $VAR['start_month']           = date('m', date_to_timestamp($VAR['start_date'])  );
+        $VAR['start_day']             = date('d', date_to_timestamp($VAR['start_date'])  );    
     
         // Load the schedule day with the updated schedule item
-        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='._gettext("Schedule Successfully Updated"));
+        force_page('schedule', 'day', 'start_year='.$VAR['start_year'].'&start_month='.$VAR['start_month'].'&start_day='.$VAR['start_day'].'&employee_id='.$VAR['employee_id'].'&workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Updated"));
         exit;
         
     }
@@ -49,7 +49,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Get the Schedule Record
-    $schedule_item = get_schedule_details($db, $schedule_id);
+    $schedule_item = get_schedule_details($db, $VAR['schedule_id']);
     
     // Corrects the extra time segment issue    
     $end_time = $schedule_item['end_time'] + 1;

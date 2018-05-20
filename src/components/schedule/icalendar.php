@@ -14,19 +14,19 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have a employee_id and output is set to day
-if($VAR['ics_type'] == 'day' && $employee_id == '') {    
+if($VAR['ics_type'] == 'day' && $VAR['employee_id'] == '') {    
     force_page('schedule', 'search', 'warning_msg='._gettext("Employee ID missing."));
     exit;
 }
 
 // Check if we have a schedule_id if output is not set to day
-if($VAR['ics_type'] != 'day' && $schedule_id == '') {    
+if($VAR['ics_type'] != 'day' && $VAR['schedule_id'] == '') {    
     force_page('schedule', 'search', 'warning_msg='._gettext("Schedule ID is missing."));
     exit;
 }
 
 // Check if we have all of the date information required
-if($start_year == '' || $start_month == '' || $start_day == '') {
+if($VAR['start_year'] == '' || $VAR['start_month'] == '' || $VAR['start_day'] == '') {
     force_page('user', 'search', 'warning_msg='._gettext("Some date information is missing."));
     exit;
 }
@@ -37,36 +37,36 @@ if($start_year == '' || $start_month == '' || $start_day == '') {
 if($VAR['ics_type'] == 'day') {
     
     // Get Employee Display Name
-    $user_display_name = get_user_details($db, $employee_id, 'display_name');
+    $user_display_name = get_user_details($db, $VAR['employee_id'], 'display_name');
     
     // Set filename    
-    $ics_filename = str_replace(' ', '-', $user_display_name).'_'._gettext("Day").'-'._gettext("Schedule").'_'.$start_year.'-'.$start_month.'-'.$start_day.'.ics';
+    $ics_filename = str_replace(' ', '-', $user_display_name).'_'._gettext("Day").'-'._gettext("Schedule").'_'.$VAR['start_year'].'-'.$VAR['start_month'].'-'.$VAR['start_day'].'.ics';
     
     // Build Day Schedule for the employee as an .ics
-    $ics_content =  build_ics_schedule_day($db, $employee_id, $start_year, $start_month, $start_day);
+    $ics_content =  build_ics_schedule_day($db, $VAR['employee_id'], $VAR['start_year'], $VAR['start_month'], $VAR['start_day']);
     
     // Log activity
-    $record = 'Day Schedule'.' ('.$start_year.'-'.$start_month.'-'.$start_day.') '._gettext("for").' ' .$user_display_name.' '._gettext("has been exported.");
-    write_record_to_activity_log($record, $employee_id);
+    $record = 'Day Schedule'.' ('.$VAR['start_year'].'-'.$VAR['start_month'].'-'.$VAR['start_day'].') '._gettext("for").' ' .$user_display_name.' '._gettext("has been exported.");
+    write_record_to_activity_log($record, $VAR['employee_id']);
 
 // Single ICS
 } else {
     
     // Get Schedule Details
-    $schedule_details = get_schedule_details($db, $schedule_id);
+    $schedule_details = get_schedule_details($db, $VAR['schedule_id']);
     
     // Get Customer Display Name
     $customer_display_name = get_customer_details($db, $schedule_details['workorder_id'], 'display_name');
     
     // Set filename
-    $ics_filename   = _gettext("Schedule").'-'.$schedule_id.'_'._gettext("WorkOrder").'-'.$schedule_details['workorder_id'].'_'.str_replace(' ', '-', $customer_display_name).'.ics';
+    $ics_filename   = _gettext("Schedule").'-'.$VAR['schedule_id'].'_'._gettext("WorkOrder").'-'.$schedule_details['workorder_id'].'_'.str_replace(' ', '-', $customer_display_name).'.ics';
     //$ics_filename   = 'schedule.ics';
     
     // Build a single schedule item as an .ics
-    $ics_content =  build_single_schedule_ics($db, $schedule_id);
+    $ics_content =  build_single_schedule_ics($db, $VAR['schedule_id']);
     
     // Log activity
-    $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been exported.");
+    $record = _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("has been exported.");
     write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['customer_id'], $schedule_details['workorder_id']);
     
 }

@@ -12,18 +12,18 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Set the template for the correct user type (customer/employee)
-if($customer_id != '') {
+if($VAR['customer_id'] != '') {
     
     // check if there is already a user for the customer (and error if there is)
-    if(!check_customer_already_has_login($db, $customer_id)) {
+    if(!check_customer_already_has_login($db, $VAR['customer_id'])) {
         
         $smarty->assign('is_employee', '0');
-        $smarty->assign('customer_display_name', get_customer_details($db, $customer_id, 'customer_display_name'));
+        $smarty->assign('customer_display_name', get_customer_details($db, $VAR['customer_id'], 'customer_display_name'));
         $smarty->assign('usergroups', get_usergroups($db, 'customers'));
         
     } else {
         
-        force_page('customer', 'details', 'customer_id='.$customer_id.'&warning_msg='._gettext("The customer already has a login."));
+        force_page('customer', 'details', 'customer_id='.$VAR['customer_id'].'&warning_msg='._gettext("The customer already has a login."));
         
     }    
     
@@ -36,8 +36,8 @@ if($customer_id != '') {
 if(isset($VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $user_id, 'username')) ||
-        check_user_email_exists($db, $VAR['email'], get_user_details($db, $user_id, 'email'))) {     
+    if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $VAR['user_id'], 'username')) ||
+        check_user_email_exists($db, $VAR['email'], get_user_details($db, $VAR['user_id'], 'email'))) {     
         
         // send the posted data back to smarty
         $user_details = $VAR;
@@ -49,10 +49,10 @@ if(isset($VAR['submit'])) {
         } else {    
             
             // Insert user record (and return the new ID)
-            $user_id = insert_user($db, $VAR);
+            $VAR['user_id'] = insert_user($db, $VAR);
             
             // Redirect to the new user's details page
-            force_page('user', 'details&user_id='.$user_id);
+            force_page('user', 'details&user_id='.$VAR['user_id']);
             exit;
             
         }

@@ -28,12 +28,12 @@ $employee_workorder_stats = array(
 $smarty->assign('employee_workorder_stats', $employee_workorder_stats);
 
 // Employee Workorders
-$smarty->assign('employee_workorders_assigned',          display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'assigned', $user->login_user_id)          );
-$smarty->assign('employee_workorders_waiting_for_parts', display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'waiting_for_parts', $user->login_user_id) );
-$smarty->assign('employee_workorders_scheduled',         display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'scheduled', $user->login_user_id)         );
-$smarty->assign('employee_workorders_with_client',       display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'with_client', $user->login_user_id)       );
-$smarty->assign('employee_workorders_on_hold',           display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'on_hold', $user->login_user_id)           );
-$smarty->assign('employee_workorders_management',        display_workorders($db, 'workorder_id', 'DESC', false, $page_no, '25', null, null, 'management', $user->login_user_id)        );
+$smarty->assign('employee_workorders_assigned',          display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'assigned', $user->login_user_id)          );
+$smarty->assign('employee_workorders_waiting_for_parts', display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'waiting_for_parts', $user->login_user_id) );
+$smarty->assign('employee_workorders_scheduled',         display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'scheduled', $user->login_user_id)         );
+$smarty->assign('employee_workorders_with_client',       display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'with_client', $user->login_user_id)       );
+$smarty->assign('employee_workorders_on_hold',           display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'on_hold', $user->login_user_id)           );
+$smarty->assign('employee_workorders_management',        display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'management', $user->login_user_id)        );
 
 // Build the page
 $smarty->assign('workorder_statuses', get_workorder_statuses($db));

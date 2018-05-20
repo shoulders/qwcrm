@@ -12,5 +12,5 @@ require(INCLUDES_DIR.'components/workorder.php');
 
 // Build the page
 $smarty->assign('workorder_statuses', get_workorder_statuses($db));
-$smarty->assign('workorders_open', display_workorders($db, 'workorder_id', 'DESC', true, $page_no, '25', null, null, 'open'));
+$smarty->assign('workorders_open', display_workorders($db, 'workorder_id', 'DESC', true, $VAR['page_no'], '25', null, null, 'open'));
 $BuildPage .= $smarty->fetch('workorder/open.tpl');

@@ -35,7 +35,7 @@ if($VAR['send_test_mail'] == 'true') {
     die();    
 }
 
-// Update Company details
+// Update Config details
 if($VAR['submit'] == 'update') {   
     
     if(update_qwcrm_config($VAR)) {

@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Check if we have a customer_id
-if($customer_id == '') {
+if($VAR['customer_id'] == '') {
     force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
     exit;
 }
@@ -22,19 +22,19 @@ if($customer_id == '') {
 if(isset($VAR['submit'])){
     
     // insert the submitted workorder and return it's id
-    $workorder_id = insert_workorder($db, $customer_id, $VAR['scope'], $VAR['description'], $VAR['comments']);
+    $VAR['workorder_id'] = insert_workorder($db, $VAR['customer_id'], $VAR['scope'], $VAR['description'], $VAR['comments']);
 
     // If workorder is to be assigned to an employee
     if($VAR['assign_to_employee'] === '1') {       
-        assign_workorder_to_employee($db, $workorder_id, $user->login_user_id);  
+        assign_workorder_to_employee($db, $VAR['workorder_id'], $user->login_user_id);  
     }
     
     // load the workorder details page
-    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='._gettext("New Work Order created."));
+    force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("New Work Order created."));
     exit;
         
 }
 
 // Build the page
-$smarty->assign('customer_details', get_customer_details($db, $customer_id));
+$smarty->assign('customer_details', get_customer_details($db, $VAR['customer_id']));
 $BuildPage .= $smarty->fetch('workorder/new.tpl');

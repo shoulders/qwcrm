@@ -18,8 +18,11 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 }
 
 // User Profile Examples
-//$user->login_user_id;
-//QFactory::getUser()->login_user_id;
+// $user->login_user_id; - this is a variable defined in the calss
+// QFactory::getUser()->login_user_id;
+// QFactory::getConfig()->get('sef') - this is a variable stored in the registry
+// $config = QFactory::getConfig();  | $config->get('sef')
+// $QConfig->sef - only works for the QConfig class I made in the root
 
 // If there is no logged in user, set usergroup to Public (This can cause looping if not present)
 if(!isset($user->login_token)) { $user->login_usergroup_id = 9; }
@@ -52,6 +55,25 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 }
 
 // These are used globally and also a workaround for undefined indexes
+$VAR['workorder_id']   =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
+$VAR['customer_id']    =   isset($VAR['customer_id'])  ? $VAR['customer_id']   : null;
+$VAR['expense_id']     =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
+$VAR['refund_id']     =   isset($VAR['refund_id'])    ? $VAR['refund_id']     : null;
+$VAR['supplier_id']    =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   : null;
+$VAR['invoice_id']    =   isset($VAR['invoice_id'])   ? $VAR['invoice_id']    : null;
+$VAR['schedule_id']    =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
+$VAR['giftcert_id']    =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
+$VAR['user_id']       =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
+$VAR['employee_id']    =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
+//$VAR['start_year']     =   isset($VAR['start_year'])   ? $VAR['start_year']    : null;
+//$VAR['start_month']    =   isset($VAR['start_month'])  ? $VAR['start_month']   : null;
+//$VAR['start_day']      =   isset($VAR['start_day'])    ? $VAR['start_day']     : null;
+$VAR['page_no']        =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
+
+//$skip_logging   =   isset($skip_logging)        ? $skip_logging         : null;
+
+
+// These are used globally and also a workaround for undefined indexes
 $workorder_id   =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
 $customer_id    =   isset($VAR['customer_id'])  ? $VAR['customer_id']   : null;
 $expense_id     =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
@@ -62,10 +84,11 @@ $schedule_id    =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
 $giftcert_id    =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
 $user_id        =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
 $employee_id    =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
-$start_year     =   isset($VAR['start_year'])   ? $VAR['start_year']    : null;
-$start_month    =   isset($VAR['start_month'])  ? $VAR['start_month']   : null;
-$start_day      =   isset($VAR['start_day'])    ? $VAR['start_day']     : null;
+//$start_year     =   isset($VAR['start_year'])   ? $VAR['start_year']    : null;
+//$start_month    =   isset($VAR['start_month'])  ? $VAR['start_month']   : null;
+//$start_day      =   isset($VAR['start_day'])    ? $VAR['start_day']     : null;
 $page_no        =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
+
 $skip_logging   =   isset($skip_logging)        ? $skip_logging         : null;
 
 ##########################################

@@ -17,7 +17,7 @@ $new_record_id = last_supplier_id_lookup($db) +1;
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
         
     // insert the supplier record and get the supplier_id
-    $supplier_id = insert_supplier($db, $VAR);
+    $VAR['supplier_id'] = insert_supplier($db, $VAR);
             
     if (isset($VAR['submitandnew'])) {
 
@@ -28,7 +28,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'details&supplier_id='.$supplier_id, 'information_msg='._gettext("Supplier added successfully.")); 
+        force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier added successfully.")); 
         exit;
 
     }

@@ -24,7 +24,7 @@ if(isset($VAR['submit'])) {
     update_workorder_note($db, $VAR['workorder_note_id'], $VAR['note']);
     
     // load the workorder details page
-    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='._gettext("The note has been updated."));
+    force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("The note has been updated."));
     exit;
     
 }   

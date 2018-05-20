@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/supplier.php');
 
 // Check if we have a supplier_id
-if($supplier_id == '') {
+if($VAR['supplier_id'] == '') {
     force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
     exit;
 } 
@@ -20,15 +20,15 @@ if($supplier_id == '') {
 if(isset($VAR['submit'])) {    
         
     // update the supplier record
-    update_supplier($db, $supplier_id, $VAR);
+    update_supplier($db, $VAR['supplier_id'], $VAR);
     
     // load the supplier details apge
-    force_page('supplier', 'details&supplier_id='.$supplier_id, 'information_msg='._gettext("Supplier updated successfully."));     
+    force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier updated successfully."));     
     exit;
     
 }
 
 // Build the page
 $smarty->assign('supplier_types', get_supplier_types($db));
-$smarty->assign('supplier_details', get_supplier_details($db, $supplier_id));
+$smarty->assign('supplier_details', get_supplier_details($db, $VAR['supplier_id']));
 $BuildPage .= $smarty->fetch('supplier/edit.tpl');

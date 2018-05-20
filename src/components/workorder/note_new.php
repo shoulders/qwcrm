@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have a workorder_id
-if($workorder_id == '') {
+if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
     exit;
 }
@@ -21,10 +21,10 @@ if($workorder_id == '') {
 if(isset($VAR['submit'])){
     
     // insert the note into the database
-    insert_workorder_note($db, $workorder_id, $VAR['workorder_note']);
+    insert_workorder_note($db, $VAR['workorder_id'], $VAR['workorder_note']);
     
     // load the workorder details page    
-    force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='._gettext("The note has been inserted."));
+    force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("The note has been inserted."));
     exit;
     
 }

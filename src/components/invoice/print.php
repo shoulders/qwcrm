@@ -17,7 +17,7 @@ require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'mpdf.php');
 
 // Check if we have an invoice_id
-if($invoice_id == '') {
+if($VAR['invoice_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
     exit;
 }
@@ -29,7 +29,7 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Get Record Details
-$invoice_details = get_invoice_details($db, $invoice_id);
+$invoice_details = get_invoice_details($db, $VAR['invoice_id']);
 $customer_details = get_customer_details($db, $invoice_details['customer_id']);
 
 /// Assign Variables
@@ -41,22 +41,22 @@ $smarty->assign('workorder_details',                get_workorder_details($db, $
 $smarty->assign('payment_details',                  get_payment_details($db)                                        );
 $smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                          );
 $smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                       );
-$smarty->assign('labour_items',                     get_invoice_labour_items($db, $invoice_id)                      );
-$smarty->assign('parts_items',                      get_invoice_parts_items($db, $invoice_id)                       );
-$smarty->assign('labour_sub_total',                 labour_sub_total($db, $invoice_id)                              );
-$smarty->assign('parts_sub_total',                  parts_sub_total($db, $invoice_id)                               );
+$smarty->assign('labour_items',                     get_invoice_labour_items($db, $VAR['invoice_id'])                      );
+$smarty->assign('parts_items',                      get_invoice_parts_items($db, $VAR['invoice_id'])                       );
+$smarty->assign('labour_sub_total',                 labour_sub_total($db, $VAR['invoice_id'])                              );
+$smarty->assign('parts_sub_total',                  parts_sub_total($db, $VAR['invoice_id'])                               );
 
 // Invoice Print Routine
 if($VAR['print_content'] == 'invoice') {
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Invoice").'-'.$invoice_id;
+    $pdf_filename = _gettext("Invoice").'-'.$VAR['invoice_id'];
     
     // Print HTML Invoice
     if ($VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been printed as html.");
+        $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Build the page
@@ -70,7 +70,7 @@ if($VAR['print_content'] == 'invoice') {
         $pdf_template = $smarty->fetch('invoice/printing/print_invoice.tpl');
         
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Output PDF in brower
@@ -96,11 +96,11 @@ if($VAR['print_content'] == 'invoice') {
         $body = get_email_message_body($db, 'email_msg_invoice', $customer_details);
         
         // Log activity
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Email the PDF        
-        send_email($customer_details['email'], _gettext("Invoice").' '.$invoice_id, $body, $customer_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
+        send_email($customer_details['email'], _gettext("Invoice").' '.$VAR['invoice_id'], $body, $customer_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
                 
         // End all other processing
         die();

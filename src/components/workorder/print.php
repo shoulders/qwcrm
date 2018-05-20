@@ -15,7 +15,7 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'mpdf.php');
 
 // Check if we have a workorder_id
-if($workorder_id == '') {
+if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
     exit;
 }
@@ -27,7 +27,7 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Get Record Details
-$workorder_details  = get_workorder_details($db, $workorder_id);
+$workorder_details  = get_workorder_details($db, $VAR['workorder_id']);
 $customer_details   = get_customer_details($db, $workorder_details['customer_id']);
 
 /// Assign Variables
@@ -37,20 +37,20 @@ $smarty->assign('customer_details',     $customer_details                       
 $smarty->assign('workorder_details',    $workorder_details                                              );
 $smarty->assign('customer_types',       get_customer_types($db)                                         );
 $smarty->assign('workorder_statuses',   get_workorder_statuses($db)                                     );
-$smarty->assign('workorder_notes',      display_workorder_notes($db, $workorder_id)                     );
-$smarty->assign('workorder_schedules',  display_workorder_schedules($db, $workorder_id)                 );
+$smarty->assign('workorder_notes',      display_workorder_notes($db, $VAR['workorder_id'])                     );
+$smarty->assign('workorder_schedules',  display_workorder_schedules($db, $VAR['workorder_id'])                 );
 
 // Technician Workorder Slip Print Routine
 if($VAR['print_content'] == 'technician_workorder_slip') {    
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Technician Workorder Slip").' '.$workorder_id;
+    $pdf_filename = _gettext("Technician Workorder Slip").' '.$VAR['workorder_id'];
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Technician Workorder Slip").' '.$workorder_id.' '._gettext("has been printed as html.");
+        $record = _gettext("Technician Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Build the page
@@ -63,7 +63,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         
         // Log activity
-        $record = _gettext("Technician Workorder Slip").' '.$workorder_id.' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Technician Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Output PDF in brower
@@ -87,11 +87,11 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
         $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
         
         // Log activity
-        $record = _gettext("Technician Workorder Slip").' '.$workorder_id.' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Technician Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Email the PDF
-        send_email($customer_details['email'], _gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Work Order").' '.$VAR['workorder_id'], $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();
@@ -103,13 +103,13 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
 if($VAR['print_content'] == 'customer_workorder_slip') {
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Customer Workorder Slip").' '.$workorder_id;    
+    $pdf_filename = _gettext("Customer Workorder Slip").' '.$VAR['workorder_id'];    
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Customer Workorder Slip").' '.$workorder_id.' '._gettext("has been printed as html.");
+        $record = _gettext("Customer Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Build the page
@@ -122,7 +122,7 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
         $pdf_template = $smarty->fetch('workorder/printing/print_customer_workorder_slip.tpl');
         
         // Log activity
-        $record = _gettext("Customer Workorder Slip").' '.$workorder_id.' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Customer Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Output PDF in brower
@@ -146,11 +146,11 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
         $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
         
         // Log activity
-        $record = _gettext("Customer Workorder Slip").' '.$workorder_id.' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Customer Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Email the PDF
-        send_email($customer_details['email'], _gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Work Order").' '.$VAR['workorder_id'], $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();
@@ -162,13 +162,13 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
 if($VAR['print_content'] == 'technician_job_sheet') {
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Technician Job Sheet").' '.$workorder_id;        
+    $pdf_filename = _gettext("Technician Job Sheet").' '.$VAR['workorder_id'];        
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Technician Job Sheet").' '.$workorder_id.' '._gettext("has been printed as html.");
+        $record = _gettext("Technician Job Sheet").' '.$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
                 
         // Build the page
@@ -181,7 +181,7 @@ if($VAR['print_content'] == 'technician_job_sheet') {
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
         
         // Log activity
-        $record = _gettext("Technician Job Sheet").' '.$workorder_id.' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Technician Job Sheet").' '.$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
             
         // Output PDF in brower
@@ -205,11 +205,11 @@ if($VAR['print_content'] == 'technician_job_sheet') {
         $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
         
         // Log activity
-        $record = _gettext("Technician Job Sheet").' '.$workorder_id.' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Technician Job Sheet").' '.$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
             
         // Email the PDF
-        send_email($customer_details['email'], _gettext("Work Order").' '.$workorder_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Work Order").' '.$VAR['workorder_id'], $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();

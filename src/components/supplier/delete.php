@@ -16,13 +16,13 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a supplier_id
-if($supplier_id == '') {
+if($VAR['supplier_id'] == '') {
     force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
     exit;
 }  
 
 // Delete the supplier function call
-delete_supplier($db, $supplier_id);
+delete_supplier($db, $VAR['supplier_id']);
 
 // Load the supplier search page
 force_page('supplier', 'search', 'information_msg='._gettext("Supplier deleted successfully."));

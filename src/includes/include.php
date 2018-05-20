@@ -150,9 +150,9 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
 
     }
     
-    /* GET - Send Variables via $_GET */
+    /* GET - Send Variables via $_GET / Return URL*/
     
-    if($method == 'get') {
+    if($method == 'get' || $method == 'url') {
         
         // If home, dashboard or maintenance do not show module:page
         if($component == 'index.php') { 
@@ -160,8 +160,18 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             // If there are variables, prepare them
             if($variables) {$variables = '?'.$variables; }
             
-            // Build the URL and perform the redirect, with/without varibles
-            perform_redirect('index.php'.$variables);            
+            // Build URL with/without variables
+            $url = 'index.php'.$variables;
+            
+            // Convert to SEF if enabled            
+            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url); }
+            
+            // Perform redirect
+            if($method == 'get') {
+                perform_redirect($url);
+            } else {
+                return $url;
+            }
 
         // Page Name and Variables (QWcrm Style Redirect)  
         } else {
@@ -169,9 +179,18 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             // If there are variables, prepare them
             if($variables) { $variables = '&'.$variables; }
             
-            // Build the URL and perform the redirect, with/without varibles
-            perform_redirect('index.php?component='.$component.'&page_tpl='.$page_tpl.$variables);            
+            // Build URL with/without variables
+            $url = 'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
             
+            // Convert to SEF if enabled            
+            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url); }
+            
+            // Perform redirect
+            if($method == 'get') {
+                perform_redirect($url);            
+            } else {
+                return $url;
+            }
         }
         
     }
@@ -197,14 +216,26 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
         // If home, dashboard or maintenance do not show module:page
         if($component == 'index.php') { 
             
-            // Build the URL and perform the redirect
-            perform_redirect('index.php');
+            // Build URL
+            $url = 'index.php';
+            
+            // Convert to SEF if enabled            
+            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url); }
+            
+            // Perform redirect
+            perform_redirect($url);
        
         // Page Name and Variables (QWcrm Style Redirect)     
         } else {
             
-            // Build the URL and perform the redirect
-            perform_redirect('index.php?component='.$component.'&page_tpl='.$page_tpl);            
+            // Build URL
+            $url = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
+            
+            // Convert to SEF if enabled            
+            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url);}
+            
+            // Perform redirect
+            perform_redirect($url);
                 
         }
         
@@ -246,11 +277,8 @@ function perform_redirect($url, $type = 'header') {
 
 function force_error_page($component, $page_tpl, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) { 
     
-    // Load config settigns
-    $QConfig = new QConfig;
-   
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
-    if($QConfig->error_page_raw_output) {
+    if(QFactory::getConfig()->get('error_page_raw_output')) {
         
         // make sure the page object is empty
         $BuildPage = '';
@@ -275,7 +303,8 @@ function force_error_page($component, $page_tpl, $error_type, $error_location, $
     } else {
         
         // Pass varibles to the error page after preperation
-        postEmulationWrite('error_page',         prepare_error_data('error_page', $error_page)           );
+        postEmulationWrite('component',          prepare_error_data('error_page', $component)            );
+        postEmulationWrite('page_tpl',           prepare_error_data('error_page', $page_tpl)             );
         postEmulationWrite('error_type',         $error_type                                             );
         postEmulationWrite('error_location',     prepare_error_data('error_location', $error_location)   );
         postEmulationWrite('php_function',       prepare_error_data('php_function', $php_function)       );

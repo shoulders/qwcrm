@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/refund.php');
 require(INCLUDES_DIR.'components/payment.php');
 
 // Check if we have a refund_id
-if($refund_id == '') {
+if($VAR['refund_id'] == '') {
     force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
     exit;
 } 
@@ -21,15 +21,15 @@ if($refund_id == '') {
 if(isset($VAR['submit'])) {    
         
     // Update the refund in the database
-    update_refund($db, $refund_id, $VAR);
+    update_refund($db, $VAR['refund_id'], $VAR);
     
     // load details page
-    force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("Refund updated successfully.")); 
+    force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'information_msg='._gettext("Refund updated successfully.")); 
     exit;
 }   
 
 // Build the page
 $smarty->assign('refund_types', get_refund_types($db));
 $smarty->assign('payment_methods', get_payment_manual_methods($db));
-$smarty->assign('refund_details', get_refund_details($db, $refund_id));
+$smarty->assign('refund_details', get_refund_details($db, $VAR['refund_id']));
 $BuildPage .= $smarty->fetch('refund/edit.tpl');

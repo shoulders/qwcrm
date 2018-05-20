@@ -8,3 +8,4 @@
 /src/configuration.php
 /.php_cs.cache
 /tmp/
+/src/.htaccess

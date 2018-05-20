@@ -11,6 +11,6 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/invoice.php');
 
 // Build the page
-$smarty->assign('invoices', display_invoices($db, 'invoice_id', 'DESC', true, $page_no, '25', null, null, 'open'));
+$smarty->assign('invoices', display_invoices($db, 'invoice_id', 'DESC', true, $VAR['page_no'], '25', null, null, 'open'));
 $smarty->assign('invoice_statuses', get_invoice_statuses($db));
 $BuildPage .= $smarty->fetch('invoice/open.tpl');

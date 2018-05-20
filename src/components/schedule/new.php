@@ -14,25 +14,25 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have an employee_id
-if($employee_id == '') {
+if($VAR['employee_id'] == '') {
     force_page('user', 'search', 'warning_msg='._gettext("No Employee ID supplied."));
     exit;
 }
 
 // Check if we have a workorder_id
-if($workorder_id == '') {
+if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
     exit;
 }
 
 // Get customer_id
-$customer_id =  get_workorder_details($db, $workorder_id, 'customer_id');
+$VAR['customer_id'] =  get_workorder_details($db, $VAR['workorder_id'], 'customer_id');
 
 // If new schedule item submitted
 if(isset($VAR['submit'])) {
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!insert_schedule($db, $VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $employee_id, $customer_id, $workorder_id)) {        
+    if (!insert_schedule($db, $VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
                  
         $smarty->assign('start_date',   $VAR['start_date']                                                  );       
         $smarty->assign('start_time',   $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );              
@@ -43,21 +43,21 @@ if(isset($VAR['submit'])) {
     } else {       
             
         // Load the schedule day with the updated schedule item        
-        $start_year            = date('Y', date_to_timestamp($VAR['start_date'])  );
-        $start_month           = date('m', date_to_timestamp($VAR['start_date'])  );
-        $start_day             = date('d', date_to_timestamp($VAR['start_date'])  );    
+        $VAR['start_year']            = date('Y', date_to_timestamp($VAR['start_date'])  );
+        $VAR['start_month']           = date('m', date_to_timestamp($VAR['start_date'])  );
+        $VAR['start_day']             = date('d', date_to_timestamp($VAR['start_date'])  );    
     
         // Load the schedule day with the newly submitted schedule item
-        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.$employee_id.'&workorder_id='.$workorder_id.'&information_msg='._gettext("Schedule Successfully Created"));
+        force_page('schedule', 'day', 'start_year='.$VAR['start_year'].'&start_month='.$VAR['start_month'].'&start_day='.$VAR['start_day'].'&employee_id='.$VAR['employee_id'].'&workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Created"));
         exit;
     }
 
 // If new schedule form is intially loaded, load schedule item from the database and assign
 } else {
     
-    $smarty->assign('start_date',          convert_year_month_day_to_date($start_year, $start_month, $start_day)    );
+    $smarty->assign('start_date',          convert_year_month_day_to_date($VAR['start_year'], $VAR['start_month'], $VAR['start_day'])    );
     $smarty->assign('start_time',          $VAR['start_time']                                                       );    
-    $smarty->assign('end_date',            convert_year_month_day_to_date($start_year, $start_month, $start_day)    );
+    $smarty->assign('end_date',            convert_year_month_day_to_date($VAR['start_year'], $VAR['start_month'], $VAR['start_day'])    );
     $smarty->assign('end_time',            $VAR['start_time']                                                       ); 
     
 }

@@ -13,31 +13,31 @@ require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Check if we have a workorder_id
-if($workorder_id == '') {
+if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
     exit;
 }
 
 // Get the Id of the employee assigned to the workorder
-$assigned_employee_id = get_workorder_details($db, $workorder_id, 'employee_id');
+$assigned_employee_id = get_workorder_details($db, $VAR['workorder_id'], 'employee_id');
 
 // Update Work Order Status
 if(isset($VAR['change_status'])){
-    update_workorder_status($db, $workorder_id, $VAR['assign_status']);    
-    force_page('workorder', 'status&workorder_id='.$workorder_id);
+    update_workorder_status($db, $VAR['workorder_id'], $VAR['assign_status']);    
+    force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
     exit; 
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
-    assign_workorder_to_employee($db, $workorder_id, $VAR['target_employee_id']);    
-    force_page('workorder', 'status&workorder_id='.$workorder_id);
+    assign_workorder_to_employee($db, $VAR['workorder_id'], $VAR['target_employee_id']);    
+    force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
     exit; 
 }
 
 // Delete a Work Order
 if(isset($VAR['delete'])) {    
-    force_page('workorder', 'delete', 'workorder_id='.$workorder_id);
+    force_page('workorder', 'delete', 'workorder_id='.$VAR['workorder_id']);
     exit;
 }
 
@@ -65,12 +65,12 @@ foreach($statuses as $status) {
 /* -- */
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',     !get_workorder_details($db, $workorder_id, 'invoice_id')        );
-$smarty->assign('allowed_to_change_employee',   !get_workorder_details($db, $workorder_id, 'is_closed')         );
-$smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($db, $workorder_id)  );
+$smarty->assign('allowed_to_change_status',     !get_workorder_details($db, $VAR['workorder_id'], 'invoice_id')        );
+$smarty->assign('allowed_to_change_employee',   !get_workorder_details($db, $VAR['workorder_id'], 'is_closed')         );
+$smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($db, $VAR['workorder_id'])  );
 $smarty->assign('active_employees',             get_active_users($db, 'employees')                              );
 $smarty->assign('workorder_statuses',           $edited_statuses                                                );
-$smarty->assign('workorder_status',             get_workorder_details($db, $workorder_id, 'status')             );
+$smarty->assign('workorder_status',             get_workorder_details($db, $VAR['workorder_id'], 'status')             );
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                           );
 $smarty->assign('assigned_employee_details',    get_user_details($db, $assigned_employee_id)                    );
 

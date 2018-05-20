@@ -259,8 +259,8 @@ if($VAR['stage'] == '8') {
     if($VAR['submit'] == 'stage8') {
                 
         // Insert the record - if the username or email have not been used
-        if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $user_id, 'username')) ||
-            check_user_email_exists($db, $VAR['email'], get_user_details($db, $user_id, 'email'))) {     
+        if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $VAR['user_id'], 'username')) ||
+            check_user_email_exists($db, $VAR['email'], get_user_details($db, $VAR['user_id'], 'email'))) {     
 
             // send the posted data back to smarty
             $user_details = $VAR;

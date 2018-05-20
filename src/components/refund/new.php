@@ -18,7 +18,7 @@ $new_record_id = last_refund_id_lookup($db) +1;
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
     // insert the refund and get the refund_id
-    $refund_id = insert_refund($db, $VAR);
+    $VAR['refund_id'] = insert_refund($db, $VAR);
         
     if (isset($VAR['submitandnew'])){
 
@@ -29,7 +29,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     } else {
 
         // Load Refund Details page
-        force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("Refund added successfully."));        
+        force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'information_msg='._gettext("Refund added successfully."));        
         exit;
 
     }

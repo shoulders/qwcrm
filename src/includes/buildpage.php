@@ -8,17 +8,16 @@
 
 defined('_QWEXEC') or die;
 
-// when using SEF this command sets component and page_tpl
-parseSEF($_SERVER['REQUEST_URI'], $VAR, true);
-$page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
+/* Mandatory */
 
-$BuildPage = get_page_content($db, $page_controller, $page_no, $VAR, $QConfig, $user);
+// Build the page
+$BuildPage = get_page_content($db, $startTime, $page_controller, $VAR, $QConfig, $user);
 
 ############################
-#  Build the page content  #
+#  Build the page content  #    // All variables should be passed by $VAR because it is its own scope
 ############################
 
-function get_page_content($db, $page_controller, $page_no, $VAR = null, $QConfig = null, $user = null) {
+function get_page_content($db, $startTime, $page_controller, $VAR, $QConfig = null, $user = null) {
     
     global $smarty;    
     
@@ -76,23 +75,25 @@ function get_page_content($db, $page_controller, $page_no, $VAR = null, $QConfig
 
     page_build_end:
     
-    // Process all of the pages links
-    pages_links_to_sef($BuildPage);
+    // Process page links
+    if ($QConfig->sef) { page_links_to_sef($BuildPage); }
         
     return $BuildPage;
     
 }
 
-######################################
-#  Change all internal links to SEF  #
-######################################
+###########################################
+#  Change all internal page links to SEF  #
+###########################################
 
-function pages_links_to_sef(&$BuildPage) {
+function page_links_to_sef(&$BuildPage) {
     
-    $BuildPage = preg_replace_callback('|href="(index\.php.*)"|U',
+    //$BuildPage = preg_replace_callback('|href="(index\.php.*)"|U',
+    $BuildPage = preg_replace_callback('|"(index\.php.*)"|U',
         function($matches) {
             
-            return 'href="'.buildSEF($matches[1]).'"';
+            //return 'href="'.buildSEF($matches[1]).'"';
+            return '"'.buildSEF($matches[1]).'"';
 
         }, $BuildPage);
     
@@ -102,7 +103,7 @@ function pages_links_to_sef(&$BuildPage) {
 
 
 ####################################################################
-#  Cycle through the built HTML and apss matches to link_parser()  #
+#  Cycle through the built HTML and pass matches to link_parser()  #
 ####################################################################
 
 function page_links_parser(&$BuildPage) {

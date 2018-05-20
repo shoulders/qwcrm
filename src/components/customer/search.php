@@ -27,5 +27,5 @@ $smarty->assign('customer_types',       get_customer_types($db)                 
 $smarty->assign('search_category',      $VAR['search_category']                                                                                                             );
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                 );
 $smarty->assign('status',               $VAR['status']                                                                                                                      );
-$smarty->assign('display_customers',    display_customers($db, 'customer_id', 'DESC', true, $page_no, '25', $VAR['search_term'], $VAR['search_category'], $VAR['status'])   );
+$smarty->assign('display_customers',    display_customers($db, 'customer_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['status'])   );
 $BuildPage .= $smarty->fetch('customer/search.tpl');

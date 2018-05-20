@@ -14,10 +14,10 @@ require(INCLUDES_DIR.'mpdf.php');
 
 // Generate the barcode (as html)
 $bc_generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-$barcode = $bc_generator->getBarcode(get_giftcert_details($db, $giftcert_id, 'giftcert_code'), $bc_generator::TYPE_CODE_128);
+$barcode = $bc_generator->getBarcode(get_giftcert_details($db, $VAR['giftcert_id'], 'giftcert_code'), $bc_generator::TYPE_CODE_128);
 
 // Check if we have an giftcert_id
-if($giftcert_id == '') {
+if($VAR['giftcert_id'] == '') {
     force_page('giftcert', 'search', 'warning_msg='._gettext("No Gift Certificate ID supplied."));
     exit;
 }
@@ -29,7 +29,7 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Get Gift Certificate details
-$giftcert_details = get_giftcert_details($db, $giftcert_id);
+$giftcert_details = get_giftcert_details($db, $VAR['giftcert_id']);
 $customer_details = get_customer_details($db, $giftcert_details['customer_id']);
 
 // Assign Variables
@@ -42,13 +42,13 @@ $smarty->assign('barcode',          $barcode                    );
 if($VAR['print_content'] == 'gift_certificate') {    
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Gift Certificate").' '.$giftcert_id;
+    $pdf_filename = _gettext("Gift Certificate").' '.$VAR['giftcert_id'];
     
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("has been printed as html.");
+        $record = _gettext("Gift Certificate").' '.$VAR['giftcert_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['customer_id'], $giftcert_details['workorder_id'], $giftcert_details['invoice_id']);
         
         // Build the page
@@ -61,7 +61,7 @@ if($VAR['print_content'] == 'gift_certificate') {
         $pdf_template = $smarty->fetch('giftcert/printing/print_gift_certificate.tpl');
         
         // Log activity
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Gift Certificate").' '.$VAR['giftcert_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['customer_id'], $giftcert_details['workorder_id'], $giftcert_details['invoice_id']);
         
         // Output PDF in brower
@@ -85,11 +85,11 @@ if($VAR['print_content'] == 'gift_certificate') {
         $body = get_email_message_body($db, 'email_msg_giftcert', $customer_details);
         
         // Log activity
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Gift Certificate").' '.$VAR['giftcert_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['customer_id'], $giftcert_details['workorder_id'], $giftcert_details['invoice_id']);
         
         // Email the PDF
-        send_email($customer_details['email'], _gettext("Gift Certificate").' '.$giftcert_id, $body, $customer_details['display_name'], $attachment);
+        send_email($customer_details['email'], _gettext("Gift Certificate").' '.$VAR['giftcert_id'], $body, $customer_details['display_name'], $attachment);
         
         // End all other processing
         die();

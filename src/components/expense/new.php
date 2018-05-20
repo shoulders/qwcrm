@@ -18,7 +18,7 @@ $new_record_id = last_expense_id_lookup($db) +1;
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
     // Insert the Expense into the databse
-    $expense_id = insert_expense($db, $VAR);
+    $VAR['expense_id'] = insert_expense($db, $VAR);
 
     if (isset($VAR['submitandnew'])){
 
@@ -29,7 +29,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     } else {
 
         // load expense details page
-        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='._gettext("Expense added successfully."));
+        force_page('expense', 'details&expense_id='.$VAR['expense_id'], 'information_msg='._gettext("Expense added successfully."));
         exit;
 
      }        

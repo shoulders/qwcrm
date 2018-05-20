@@ -119,7 +119,7 @@ require(INCLUDES_DIR.'buildpage.php');
 if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
     
     // This logs QWcrm page load details to the access log
-    if($QConfig->qwcrm_access_log == true){
+    if($QConfig->qwcrm_access_log){
         write_record_to_access_log();
     }
     
@@ -139,7 +139,7 @@ if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
 if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
 
     // Compress page payload and send compression headers
-    if ($QConfig->gzip == true) {
+    if ($QConfig->gzip) {
         $BuildPage = compress_page_output($BuildPage);    
     }
         
