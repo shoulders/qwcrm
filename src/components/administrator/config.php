@@ -38,16 +38,20 @@ if($VAR['send_test_mail'] == 'true') {
 // Update Config details
 if($VAR['submit'] == 'update') {   
     
-    if(update_qwcrm_config($VAR)) {
+    if(update_qwcrm_config($VAR['qwconfig'])) {
         
-        // Reload Page to get the new settings - QConfig has already been decalred before the settings are updated
-        force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."));
+        // Reload Page to get the new settings - Ccompensate for SEF change               
+        if ($VAR['qwconfig']['sef']) {
+            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), 'post', 'sef'); 
+        } else {
+            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), 'post', 'nonsef'); 
+        }
         
     } else {
         
         // Load the submitted values
         $smarty->assign('warning_msg', _gettext("Some information was invalid, please check for errors and try again."));
-        $smarty->assign('qwcrm_config', $VAR);        
+        $smarty->assign('qwcrm_config', $VAR['qwconfig']);        
         
     }
     

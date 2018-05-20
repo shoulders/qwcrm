@@ -28,35 +28,35 @@
                     <tr>
                         <td align="right"><b>{t}Host{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_host" class="olotd5" size="25" value="{$qwcrm_config.db_host}" type="text" maxlength="20" placeholder="localhost" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[db_host]" class="olotd5" size="25" value="{$qwcrm_config.db_host}" type="text" maxlength="20" placeholder="localhost" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Host{/t}</strong></div><hr><div>{t escape=tooltip}The hostname for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Database Name{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_name" class="olotd5" size="25" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
+                            <input name="qwconfig[db_name]" class="olotd5" size="25" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Name{/t}</strong></div><hr><div>{t escape=tooltip}The name for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>
                         <td align="right"><b>{t}Database Username{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_user" class="olotd5" size="25" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[db_user]" class="olotd5" size="25" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Username{/t}</strong></div><hr><div>{t escape=tooltip}The username for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     {*<tr>
                         <td align="right"><b>{t}Database Password{/t}</b></td>
                         <td>
-                            <input name="db_pass" class="olotd5" size="25" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[db_pass]" class="olotd5" size="25" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Password{/t}</strong></div><hr><div>{t escape=tooltip}The password for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>*}                
                     <tr>
                         <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="db_prefix" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);"/>
+                            <input name="qwconfig[db_prefix]" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -71,7 +71,7 @@
                     <tr>
                         <td align="right"><b>{t}Search Engine Friendly URLs{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="sef" name="sef">                                                       
+                            <select class="olotd5" id="sef" name="qwconfig[sef]">                                                       
                                 <option value="0"{if $qwcrm_config.sef == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.sef == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -81,7 +81,7 @@
                     <tr>
                         <td align="right"><b>{t}Gzip Page Compression{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="gzip" name="gzip">                                                       
+                            <select class="olotd5" id="gzip" name="qwconfig[gzip]">                                                       
                                 <option value="0"{if $qwcrm_config.gzip == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.gzip == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -91,7 +91,7 @@
                     {*<tr>
                         <td align="right"><b>{t}Site Maintenance{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="maintenance" name="maintenance">                                                       
+                            <select class="olotd5" id="maintenance" name="qwconfig[maintenance]">                                                       
                                 <option value="0"{if $qwcrm_config.maintenance == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.maintenance == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -102,23 +102,23 @@
                         <td align="right"><b>{t}Theme Name{/t}</b></td>
                         <td>
                             {$qwcrm_config.theme_name}
-                            <input name="theme_name" class="olotd5" value="{$qwcrm_config.theme_name}" type="hidden" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[theme_name]" class="olotd5" value="{$qwcrm_config.theme_name}" type="hidden" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Theme Name{/t}</strong></div><hr><div>{t escape=tooltip}This is the theme QWcrm is using. The ability to change the theme is not currently available, although the templating code is all present.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Default Language{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="default_language" name="default_language">                                                       
+                            <select class="olotd5" id="default_language" name="qwconfig[default_language]">                                                       
                                 <option value="en_GB"{if $qwcrm_config.default_language == 'en_GB'} selected{/if}>{t}English{/t}</option>                                
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Default Language{/t}</strong></div><hr><div>{t escape=tooltip}This is the default language QWcrm uses. If \'Autodetect Language\' is disabled or the user\'s language is not availabe then this language will be used to display translations. If for some reason this fails, the language will default to english.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Default Language{/t}</strong></div><hr><div>{t escape=tooltip}This is the default language QWcrm uses. If \'Autodetect Language\' is disabled or the user\'s language is not availabe then this language will be used to display translations. If for some reason this fails, the language will default to english. This only works if your PHP enviroment supports Internationalization.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Autodetect Language{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="autodetect_language" name="autodetect_language">                                                       
+                            <select class="olotd5" id="autodetect_language" name="qwconfig[autodetect_language]">                                                       
                                 <option value="0"{if $qwcrm_config.autodetect_language == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.autodetect_language == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -128,7 +128,7 @@
                     <tr>
                         <td align="right"><b>{t}Google Server{/t}</b> <span style="color: #ff0000">*</span></td>                                                          
                         <td>
-                            <input name="google_server" class="olotd5" value="{$qwcrm_config.google_server}" size="50" type="url" maxlength="50" placeholder="https://www.google.com/" pattern="^https?://.+" required onkeydown="return onlyURL(event);"/>
+                            <input name="qwconfig[google_server]" class="olotd5" value="{$qwcrm_config.google_server}" size="50" type="url" maxlength="50" placeholder="https://www.google.com/" pattern="^https?://.+" required onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Google Server{/t}</strong></div><hr><div>{t escape=tooltip}This is your regionally prefered Google website. It is currently used for Google Maps to generate directions.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr> 
@@ -144,7 +144,7 @@
                     <tr>
                         <td align="right"><b>{t}Send Mail{/t}:</b></td>
                         <td>
-                            <select class="olotd5" name="email_online">                                                                    
+                            <select class="olotd5" name="qwconfig[email_online]">                                                                    
                                 <option value="0" {if $qwcrm_config.email_online == '0' } selected{/if}>No</option>
                                 <option value="1" {if $qwcrm_config.email_online == '1' } selected{/if}>Yes</option>                                                                    
                             </select>
@@ -154,7 +154,7 @@
                     <tr>
                         <td align="right"><b>{t}Mailer{/t}:</b></td>
                         <td>
-                            <select class="olotd5" name="email_mailer">
+                            <select class="olotd5" name="qwconfig[email_mailer]">
                                 <option value="phpmail" {if $qwcrm_config.email_mailer != '' } selected{/if}>{t}PHP Mail{/t}</option>
                                 <option value="sendmail" {if $qwcrm_config.email_mailer == 'sendmail' } selected{/if}>Sendmail</option>
                                 <option value="smtp" {if $qwcrm_config.email_mailer == 'smtp' } selected{/if}>SMTP</option>                                                                    
@@ -165,28 +165,28 @@
                     <tr>
                         <td align="right"><b>{t}From Email{/t}:</b> <span style="color: #ff0000">*</span></td> 
                         <td>
-                            <input name="email_mailfrom" class="olotd5" size="55" value="{$qwcrm_config.email_mailfrom}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" required onkeydown="return onlyEmail(event);">
+                            <input name="qwconfig[email_mailfrom]" class="olotd5" size="55" value="{$qwcrm_config.email_mailfrom}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" required onkeydown="return onlyEmail(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}From Email{/t}</strong></div><hr><div>{t escape=tooltip}The email address that will be used to send site email.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}From Name{/t}:</b></td>
                         <td>
-                            <input name="email_fromname" class="olotd5" size="25" value="{$qwcrm_config.email_fromname}" type="text" maxlength="20" placeholder="QuantumWarp" onkeydown="return onlyName(event);">
+                            <input name="qwconfig[email_fromname]" class="olotd5" size="25" value="{$qwcrm_config.email_fromname}" type="text" maxlength="20" placeholder="QuantumWarp" onkeydown="return onlyName(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}From Name{/t}</strong></div><hr><div>{t escape=tooltip}Text displayed in the header &quot;From:&quot; field when sending a site email. Usually the site name.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>                        
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Reply To Email{/t}:</b></td>
                         <td>
-                            <input name="email_replyto" class="olotd5" size="55" value="{$qwcrm_config.email_replyto}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);">
+                            <input name="qwconfig[email_replyto]" class="olotd5" size="55" value="{$qwcrm_config.email_replyto}" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Reply To Email{/t}</strong></div><hr><div>{t escape=tooltip}The email address that will be used to receive end user(s) reply.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>                        
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Reply To Name{/t}:</b></td>
                         <td>
-                            <input name="email_replytoname" class="olotd5" size="25" value="{$qwcrm_config.email_replytoname}" type="text" maxlength="20" placeholder="QuantumWarp" onkeydown="return onlyName(event);">
+                            <input name="qwconfig[email_replytoname]" class="olotd5" size="25" value="{$qwcrm_config.email_replytoname}" type="text" maxlength="20" placeholder="QuantumWarp" onkeydown="return onlyName(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Reply To Name{/t}</strong></div><hr><div>{t escape=tooltip}Text displayed in the header &quot;To:&quot; field when end user(s) replying to received email.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                                                        
@@ -200,7 +200,7 @@
                     <tr>
                         <td align="right"><b>{t}Sendmail Path{/t}:</b></td>
                         <td>
-                            <input name="email_sendmail_path" class="olotd5" size="55" value="{$qwcrm_config.email_sendmail_path}" type="text" maxlength="100" placeholder="/usr/sbin/sendmail" onkeydown="return onlyFilePath(event);">
+                            <input name="qwconfig[email_sendmail_path]" class="olotd5" size="55" value="{$qwcrm_config.email_sendmail_path}" type="text" maxlength="100" placeholder="/usr/sbin/sendmail" onkeydown="return onlyFilePath(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Sendmail Path{/t}</strong></div><hr><div>{t escape=tooltip}Enter the path to the sendmail program folder on the host server.<br/>This is only needed when using sendmail and usually does not need to be changed.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -214,21 +214,21 @@
                     <tr>
                         <td align="right"><b>{t}SMTP Host{/t}:</b></td>
                         <td>
-                            <input name="email_smtp_host" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_host}" type="text" maxlength="50" placeholder="mail.quantumwarp.com" onkeydown="return onlyURL(event);">
+                            <input name="qwconfig[email_smtp_host]" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_host}" type="text" maxlength="50" placeholder="mail.quantumwarp.com" onkeydown="return onlyURL(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Host{/t}</strong></div><hr><div>{t escape=tooltip}Enter the name of the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}SMTP Port{/t}:</b></td>
                         <td>
-                            <input name="email_smtp_port" class="olotd5" size="5" value="{$qwcrm_config.email_smtp_port}" type="text" maxlength="50" onkeydown="return onlyNumber(event);">
+                            <input name="qwconfig[email_smtp_port]" class="olotd5" size="5" value="{$qwcrm_config.email_smtp_port}" type="text" maxlength="50" onkeydown="return onlyNumber(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Port{/t}</strong></div><hr><div>{t escape=tooltip}Enter the port number of the SMTP server QWcrm will use to send emails. Usually:<br />- 25 when using an unsecure mail server<br />- 465 when using a secure server with SMTPS<br />- 25 or 587 when using a secure server with SMTP with STARTTLS extension.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}SMTP Security{/t}:</b></td>
                         <td>
-                            <select class="olotd5" name="email_smtp_security">
+                            <select class="olotd5" name="qwconfig[email_smtp_security]">
                                 <option value="" {if $qwcrm_config.email_smtp_security != '' } selected{/if}>{t}None{/t}</option>
                                 <option value="ssl" {if $qwcrm_config.email_smtp_security == 'ssl' } selected{/if}>SSL</option>
                                 <option value="tls" {if $qwcrm_config.email_smtp_security == 'tls' } selected{/if}>TLS</option>                                                                    
@@ -239,7 +239,7 @@
                     <tr>
                         <td align="right"><b>{t}SMTP Authentication{/t}:</b></td>
                         <td>
-                            <select class="olotd5" name="email_smtp_auth">                                                                    
+                            <select class="olotd5" name="qwconfig[email_smtp_auth]">                                                                    
                                 <option value="0" {if $qwcrm_config.email_smtp_auth == '0' } selected{/if}>No</option>
                                 <option value="1" {if $qwcrm_config.email_smtp_auth == '1' } selected{/if}>Yes</option>                                                                    
                             </select>
@@ -249,14 +249,14 @@
                     <tr>
                         <td align="right"><b>{t}SMTP Username{/t}:</b></td>
                         <td>
-                            <input name="email_smtp_username" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_username}" type="text" maxlength="50" onkeydown="return onlyUsername(event);">
+                            <input name="qwconfig[email_smtp_username]" class="olotd5" size="55" value="{$qwcrm_config.email_smtp_username}" type="text" maxlength="50" onkeydown="return onlyUsername(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Username{/t}</strong></div><hr><div>{t escape=tooltip}Enter the username for access to the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}SMTP Password{/t}:</b></td>
                         <td>
-                            <input name="email_smtp_password" class="olotd5" size="25" value="{$qwcrm_config.email_smtp_password}" type="password" maxlength="20" onkeydown="return onlyPassword(event);">
+                            <input name="qwconfig[email_smtp_password]" class="olotd5" size="25" value="{$qwcrm_config.email_smtp_password}" type="password" maxlength="20" onkeydown="return onlyPassword(event);">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Password{/t}</strong></div><hr><div>{t escape=tooltip}Enter the password for the SMTP host.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -284,7 +284,7 @@
                     <tr>
                         <td align="right"><b>{t}Force SSL/HTTPS{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="force_ssl" name="force_ssl">                                                       
+                            <select class="olotd5" id="force_ssl" name="qwconfig[force_ssl]">                                                       
                                 <option value="0"{if $qwcrm_config.force_ssl == '0'} selected{/if}>{t}None{/t}</option>
                                 {*<option value="1"{if $qwcrm_config.force_ssl == '1'} selected{/if}>{t}Administrator Only{/t}</option>*}
                                 <option value="1"{if $qwcrm_config.force_ssl == '2'} selected{/if}>{t}Entire Site{/t}</option>
@@ -295,7 +295,7 @@
                     <tr>
                         <td align="right"><b>{t}reCAPTCHA{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="recaptcha" name="recaptcha">                                                       
+                            <select class="olotd5" id="recaptcha" name="qwconfig[recaptcha]">                                                       
                                 <option value="0"{if $qwcrm_config.recaptcha == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.recaptcha == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -306,14 +306,14 @@
                     <tr>
                         <td align="right"><b>{t}reCAPTCHA Site Key{/t}</b></td>
                         <td>
-                            <input name="recaptcha_site_key" class="olotd5" size="45" value="{$qwcrm_config.recaptcha_site_key}" type="text" maxlength="40" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[recaptcha_site_key]" class="olotd5" size="45" value="{$qwcrm_config.recaptcha_site_key}" type="text" maxlength="40" onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}reCAPTCHA Site Key{/t}</strong></div><hr><div>{t escape=tooltip} The site key is used to invoke reCAPTCHA service on your site or mobile application.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}reCAPTCHA Secret Key{/t}</b></td>
                         <td>
-                            <input name="recaptcha_secret_key" class="olotd5" size="45" value="{$qwcrm_config.recaptcha_secret_key}" type="text" maxlength="40" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[recaptcha_secret_key]" class="olotd5" size="45" value="{$qwcrm_config.recaptcha_secret_key}" type="text" maxlength="40" onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}reCAPTCHA Secret Key{/t}</strong></div><hr><div>{t escape=tooltip}The secret key authorizes communication between your application backend and the reCAPTCHA server to verify the user\'s response. The secret key needs to be kept safe for security purposes.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -327,7 +327,7 @@
                     <tr>
                         <td align="right"><b>{t}Session Handler{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="session_handler" name="session_handler">                                                       
+                            <select class="olotd5" id="session_handler" name="qwconfig[session_handler]">                                                       
                                 <option value="none"{if $qwcrm_config.session_handler == 'none'} selected{/if}>{t}None{/t}</option>
                                 <option value="database"{if $qwcrm_config.session_handler == 'database'} selected{/if}>{t}Database{/t}</option>
                             </select>
@@ -337,14 +337,14 @@
                     <tr>
                         <td align="right"><b>{t}Session Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="session_lifetime" class="olotd5" size="25" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" placeholder="15" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qwconfig[session_lifetime]" class="olotd5" size="25" value="{$qwcrm_config.session_lifetime}" type="text" maxlength="20" placeholder="15" required onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}Auto log out a User after they have been inactive for the entered number of minutes. Do not set too high.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     {*<tr>
                         <td align="right"><b>{t}Shared Session{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="shared_session" name="shared_session">                                                       
+                            <select class="olotd5" id="shared_session" name="qwconfig[shared_session]">                                                       
                                 <option value="0"{if $qwcrm_config.shared_session == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.shared_session == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -361,7 +361,7 @@
                     <tr>
                         <td align="right"><b>{t}Remember Me{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="remember_me" name="remember_me">                                                       
+                            <select class="olotd5" id="remember_me" name="qwconfig[remember_me]">                                                       
                                 <option value="0"{if $qwcrm_config.remember_me == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.remember_me == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -371,14 +371,14 @@
                     <tr>
                         <td align="right"><b>{t}Cookie Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="cookie_lifetime" class="olotd5" size="25" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" placeholder="60" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qwconfig[cookie_lifetime]" class="olotd5" size="25" value="{$qwcrm_config.cookie_lifetime}" type="text" maxlength="20" placeholder="60" required onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}The number of days until the authentication cookie will expire. Other factors may cause it to expire before this. Longer lengths are less secure.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Token Length{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="cookie_token_length" class="olotd5" size="25" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" placeholder="16" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qwconfig[cookie_token_length]" class="olotd5" size="25" value="{$qwcrm_config.cookie_token_length}" type="text" maxlength="20" placeholder="16" required onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Token Length{/t}</strong></div><hr><div>{t escape=tooltip}The length of the key to use to encrypt the cookie. Longer lengths are more secure, but they will slow performance.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -392,14 +392,14 @@
                     <tr>
                         <td align="right"><b>{t}Cookie Domain{/t}</b></td>
                         <td>
-                            <input name="cookie_domain" class="olotd5" size="55" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="50" placeholder="quantumwarp.com" onkeydown="return onlyURL(event);"/>
+                            <input name="qwconfig[cookie_domain]" class="olotd5" size="55" value="{$qwcrm_config.cookie_domain}" type="text" maxlength="50" placeholder="quantumwarp.com" onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Domain{/t}</strong></div><hr><div>{t escape=tooltip}Domain to use when setting session cookies. Precede domain with \'.\' if cookie should be valid for all subdomains.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cookie Path{/t}</b></td>
                         <td>
-                            <input name="cookie_path" class="olotd5" size="55" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" placeholder="qwcrm/" onkeydown="return onlyURL(event);"/>
+                            <input name="qwconfig[cookie_path]" class="olotd5" size="55" value="{$qwcrm_config.cookie_path}" type="text" maxlength="20" placeholder="qwcrm/" onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cookie Path{/t}</strong></div><hr><div>{t escape=tooltip}Path the cookie should be valid for.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -413,7 +413,7 @@
                     <tr>
                         <td align="right"><b>{t}Work Order History Notes{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="workorder_history_notes" name="workorder_history_notes">                                                       
+                            <select class="olotd5" id="workorder_history_notes" name="qwconfig[workorder_history_notes]">                                                       
                                 <option value="0"{if $qwcrm_config.workorder_history_notes == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.workorder_history_notes == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -423,7 +423,7 @@
                     <tr>
                         <td align="right"><b>{t}Access Log{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_access_log" name="qwcrm_access_log">                                                       
+                            <select class="olotd5" id="qwcrm_access_log" name="qwconfig[qwcrm_access_log]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_access_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_access_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -433,7 +433,7 @@
                     <tr>
                         <td align="right"><b>{t}Activity Log{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_activity_log" name="qwcrm_activity_log">                                                       
+                            <select class="olotd5" id="qwcrm_activity_log" name="qwconfig[qwcrm_activity_log]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_activity_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_activity_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -443,7 +443,7 @@
                     <tr>
                         <td align="right"><b>{t}Error Log{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_error_log" name="qwcrm_error_log">                                                       
+                            <select class="olotd5" id="qwcrm_error_log" name="qwconfig[qwcrm_error_log]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_error_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_error_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -453,7 +453,7 @@
                     <tr>
                         <td align="right"><b>{t}SQL Logging{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_sql_logging " name="qwcrm_sql_logging">                                                       
+                            <select class="olotd5" id="qwcrm_sql_logging " name="qwconfig[qwcrm_sql_logging]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_sql_logging == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_sql_logging == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -463,7 +463,7 @@
                     <tr>
                         <td align="right"><b>{t}Email Error Log{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_email_error_log" name="qwcrm_email_error_log">                                                       
+                            <select class="olotd5" id="qwcrm_email_error_log" name="qwconfig[qwcrm_email_error_log]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_email_error_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_email_error_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -473,7 +473,7 @@
                     <tr>
                         <td align="right"><b>{t}Email Transport Log{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_email_transport_log" name="qwcrm_email_transport_log">                                                       
+                            <select class="olotd5" id="qwcrm_email_transport_log" name="qwconfig[qwcrm_email_transport_log]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_email_transport_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_email_transport_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -490,7 +490,7 @@
                     <tr>
                         <td align="right"><b>{t}Error Reporting{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="error_reporting" name="error_reporting">                                
+                            <select class="olotd5" id="error_reporting" name="qwconfig[error_reporting]">                                
                                 <option value="default"{if $qwcrm_config.error_reporting == 'default'} selected{/if}>{t}System Default{/t}</option>
                                 <option value="none"{if $qwcrm_config.error_reporting == 'none'} selected{/if}>{t}None{/t}</option>
                                 <option value="verysimple"{if $qwcrm_config.error_reporting == 'verysimple'} selected{/if}>{t}Very Simple{/t}</option>
@@ -504,7 +504,7 @@
                     <tr>
                         <td align="right"><b>{t}Error Page Raw Output{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="error_page_raw_output" name="error_page_raw_output">                                                       
+                            <select class="olotd5" id="error_page_raw_output" name="qwconfig[error_page_raw_output]">                                                       
                                 <option value="0"{if $qwcrm_config.error_page_raw_output == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.error_page_raw_output == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -521,7 +521,7 @@
                     <tr>
                         <td align="right"><b>{t}QWcrm Debug{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_debug" name="qwcrm_debug">                                                       
+                            <select class="olotd5" id="qwcrm_debug" name="qwconfig[qwcrm_debug]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_debug == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_debug == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -531,7 +531,7 @@
                     <tr>
                         <td align="right"><b>{t}QWcrm Advanced Debug{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_advanced_debug" name="qwcrm_advanced_debug">                                                       
+                            <select class="olotd5" id="qwcrm_advanced_debug" name="qwconfig[qwcrm_advanced_debug]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_advanced_debug == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_advanced_debug == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -541,7 +541,7 @@
                     <tr>
                         <td align="right"><b>{t}Smarty Debugging (QWcrm){/t}</b></td>
                         <td>
-                            <select class="olotd5" id="qwcrm_smarty_debugging" name="qwcrm_smarty_debugging">                                                       
+                            <select class="olotd5" id="qwcrm_smarty_debugging" name="qwconfig[qwcrm_smarty_debugging]">                                                       
                                 <option value="0"{if $qwcrm_config.qwcrm_smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_smarty_debugging == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -551,7 +551,7 @@
                     {*<tr>
                         <td align="right"><b>{t}Smarty Debugging{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="smarty_debugging" name="smarty_debugging">                                                       
+                            <select class="olotd5" id="smarty_debugging" name="qwconfig[smarty_debugging]">                                                       
                                 <option value="0"{if $qwcrm_config.smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -561,7 +561,7 @@
                     <tr>
                         <td align="right"><b>{t}Smarty Debugging Control{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="smarty_debugging_ctrl" name="smarty_debugging_ctrl">
+                            <select class="olotd5" id="smarty_debugging_ctrl" name="qwconfig[smarty_debugging_ctrl]">
                                 <option value=""{if $qwcrm_config.smarty_debugging_ctrl == ''} selected{/if}>{t}No Control{/t}</option>
                                 <option value="NONE"{if $qwcrm_config.smarty_debugging_ctrl == 'NONE'} selected{/if}>{t}None{/t}</option>
                                 <option value="URL"{if $qwcrm_config.smarty_debugging_ctrl == 'URL'} selected{/if}>{t}URL{/t}</option>
@@ -580,7 +580,7 @@
                     <tr>
                         <td align="right"><b>{t}Force Compile{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="smarty_force_compile" name="smarty_force_compile">                                                       
+                            <select class="olotd5" id="smarty_force_compile" name="qwconfig[smarty_force_compile]">                                                       
                                 <option value="0"{if $qwcrm_config.smarty_force_compile == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_force_compile == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -597,7 +597,7 @@
                     {*<tr>
                         <td align="right"><b>{t}Force Cache{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="smarty_force_cache" name="smarty_force_cache">                                                       
+                            <select class="olotd5" id="smarty_force_cache" name="qwconfig[smarty_force_cache]">                                                       
                                 <option value="0"{if $qwcrm_config.smarty_force_cache == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_force_cache== '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -607,7 +607,7 @@
                     <tr>
                         <td align="right"><b>{t}Caching{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="smarty_caching" name="smarty_caching">                                                       
+                            <select class="olotd5" id="smarty_caching" name="qwconfig[smarty_caching]">                                                       
                                 <option value="0"{if $qwcrm_config.smarty_caching == '0'} selected{/if}>{t}None{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_caching == '1'} selected{/if}>{t}Current{/t}</option>
                                 <option value="2"{if $qwcrm_config.smarty_caching == '2'} selected{/if}>{t}Saved{/t}</option>
@@ -618,14 +618,14 @@
                     <tr>
                         <td align="right"><b>{t}Cache Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="smarty_cache_lifetime" class="olotd5" value="{$qwcrm_config.smarty_cache_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qwconfig[smarty_cache_lifetime]" class="olotd5" value="{$qwcrm_config.smarty_cache_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumber(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}This is the length of time in seconds that a template cache is valid. Once this time has expired, the cache will be regenerated.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Cache Modified Check{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="smarty_cache_modified_check" name="smarty_cache_modified_check">                                                       
+                            <select class="olotd5" id="smarty_cache_modified_check" name="qwconfig[smarty_cache_modified_check]">                                                       
                                 <option value="0"{if $qwcrm_config.smarty_cache_modified_check == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_cache_modified_check == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
@@ -635,7 +635,7 @@
                     <tr>
                         <td align="right"><b>{t}Cache Locking{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="smarty_cache_locking" name="smarty_cache_locking">                                                       
+                            <select class="olotd5" id="smarty_cache_locking" name="qwconfig[smarty_cache_locking]">                                                       
                                 <option value="0"{if $qwcrm_config.smarty_cache_locking == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.smarty_cache_locking == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>

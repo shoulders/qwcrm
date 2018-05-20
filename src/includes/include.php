@@ -139,7 +139,15 @@ function update_user_last_active($db, $user_id = null) {
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($component, $page_tpl = null, $variables = null, $method = 'post') {
+function force_page($component, $page_tpl = null, $variables = null, $method = null, $url_type = null) {
+    
+    // Default transport method - When i set $url_type I still want to use default $method (i.e. administrator:config)
+    if ($method == null) { $method = 'post'; }
+
+    // Set URL type to be used
+    if ($url_type == 'sef') { $makeSEF = true; }
+    elseif ($url_type == 'nonsef') { $makeSEF = false; }
+    else { $makeSEF = QFactory::getConfig()->get('sef'); } 
     
     /* Standard URL Redirect */
     
@@ -164,7 +172,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = 'index.php'.$variables;
             
             // Convert to SEF if enabled            
-            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url); }
+            if ($makeSEF) { $url = buildSEF($url); }
             
             // Perform redirect
             if($method == 'get') {
@@ -183,7 +191,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = 'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
             
             // Convert to SEF if enabled            
-            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url); }
+            if ($makeSEF) { $url = buildSEF($url); }
             
             // Perform redirect
             if($method == 'get') {
@@ -220,7 +228,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = 'index.php';
             
             // Convert to SEF if enabled            
-            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url); }
+            if ($makeSEF) { $url = buildSEF($url); }
             
             // Perform redirect
             perform_redirect($url);
@@ -232,7 +240,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
             
             // Convert to SEF if enabled            
-            if (QFactory::getConfig()->get('sef')) { $url = buildSEF($url);}
+            if ($makeSEF) { $url = buildSEF($url);}
             
             // Perform redirect
             perform_redirect($url);
