@@ -47,7 +47,7 @@ define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);
 define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 
 ################################################
-#         Initialise QWCRM                     #
+#         Load QWCRM                           #
 ################################################
 
 // Constant that is checked in included files to prevent direct access
@@ -85,9 +85,6 @@ require(INCLUDES_DIR.'adodb.php');
 // Load QWcrm Security including mandatory security code
 require(INCLUDES_DIR.'security.php');
 
-// Verify QWcrm is installed correctly
-verify_qwcrm_is_installed_correctly($db); // this needs to run before the language to prevent language detection error 
-
 // Load PDF creation library
 //require(INCLUDES_DIR.'mpdf.php');
 
@@ -100,20 +97,39 @@ require(INCLUDES_DIR.'smarty.php');
 // Load the session and user framework
 require(QFRAMEWORK_DIR.'qwframework.php');
 
+// Route the page request
+require(INCLUDES_DIR.'router.php');
+
+################################################
+#         Test QWCRM Enviroment                #
+################################################
+
+// Verify QWcrm is installed correctly
+verify_qwcrm_install_state($db);
+
+################################################
+#         Initialise QWCRM                     #
+################################################
+
 // Start the QFramework 
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $app = new QFactory;
 }
 
-// Configure variables to be used by the system
+// Configure variables to be used by QWcrm
 require(INCLUDES_DIR.'variables.php');
 
-// Route the page request
-require(INCLUDES_DIR.'router.php');
+// Process the URL for page routing
+prepare_page_routing($QConfig, $VAR);
+
+// Get the page controller - no user has been set to calculate what page to load
+$page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
 
 // Build the page content payload
 require(INCLUDES_DIR.'buildpage.php');
-//print_r($VAR);die;
+
+// Build the page
+$BuildPage = get_page_content($db, $startTime, $page_controller, $VAR, $QConfig, $user);
 
 // Access Logging
 if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {

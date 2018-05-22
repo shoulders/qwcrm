@@ -169,7 +169,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
             if($variables) {$variables = '?'.$variables; }
             
             // Build URL with/without variables
-            $url = 'index.php'.$variables;
+            $url = QWCRM_BASE_PATH.'index.php'.$variables;
             
             // Convert to SEF if enabled            
             if ($makeSEF) { $url = buildSEF($url); }
@@ -188,7 +188,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
             if($variables) { $variables = '&'.$variables; }
             
             // Build URL with/without variables
-            $url = 'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
+            $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
             
             // Convert to SEF if enabled            
             if ($makeSEF) { $url = buildSEF($url); }
@@ -211,7 +211,6 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
         if($variables) {          
 
             // Parse the URL into an array            
-            $variable_array = array();
             parse_str($variables, $variable_array);
 
             // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
@@ -225,7 +224,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
         if($component == 'index.php') { 
             
             // Build URL
-            $url = 'index.php';
+            $url = QWCRM_BASE_PATH.'index.php';
             
             // Convert to SEF if enabled            
             if ($makeSEF) { $url = buildSEF($url); }
@@ -237,7 +236,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
         } else {
             
             // Build URL
-            $url = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
+            $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl;
             
             // Convert to SEF if enabled            
             if ($makeSEF) { $url = buildSEF($url);}
@@ -578,94 +577,39 @@ function set_page_header_and_meta_data($component, $page_tpl) {
     
 }
 
-#####################################################################
-#  Verify User's authorization for a specific page / operation      #
-#####################################################################
+##########################################################
+#  Verify QWcrm install state and set routing as needed  #
+##########################################################
 
-function check_acl($db, $user, $component, $page_tpl) {
-    
-    // If installing
-    if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
-    
-    // error catching - you cannot use normal error logging as it will cause a loop
-    if($user->login_usergroup_id == '') {
-        die(_gettext("The ACL has been supplied with no account type ID. QWcrm will now die."));                
-    }
-
-    // Get user's Group Name by login_usergroup_id
-    $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
-            FROM ".PRFX."user_usergroups
-            WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
-    
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
-        exit;
-    } else {
-        $usergroup_display_name = $rs->fields['usergroup_display_name'];
-    } 
-    
-    // Build the page name for the ACL lookup
-    $component_page = $component.':'.$page_tpl;
-    
-    /* Check Page to see if we have access */
-    
-    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($component_page);
-
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
-        exit;
-    } else {
-        
-        $acl = $rs->fields['acl'];
-        
-        // Add if guest (8) rules here if there are errors
-        
-        if($acl != 1) {
-            
-            return false;
-            
-        } else {
-            
-            return true;
-            
-        }
-        
-    }
-    
-}    
-
-############################################
-#  Verify QWcrm is installed correctly     #
-############################################
-
-function verify_qwcrm_is_installed_correctly($db) {
+function verify_qwcrm_install_state($db) {
 
     /* General Checks */    
     
     /* Installation / Migration */
     
-    // If there is no configuration file load setup:choice (if not refered from setup:choice)   
-        /*(!is_file('configuration.php') ||
-          (check_page_accessed_via_qwcrm('setup:install') && ($_GET['setup'] != 'finished' || $_POST['setup'] != 'finished')))*/    
-    if(!is_file('configuration.php') && !check_page_accessed_via_qwcrm('setup:choice')) {        
-        $_POST['page'] = 'setup:choice';
-        $_POST['theme'] = 'menu_off';        
+    // If there is no configuration file load setup:choice (if not refered from setup:choice)       
+    if(!is_file('configuration.php') && !check_page_accessed_via_qwcrm('setup', 'choice')) {        
+        $_POST['component'] = 'setup';
+        $_POST['page_tpl']  = 'choice';
+        $_POST['theme']     = 'menu_off';        
         define('QWCRM_SETUP', 'install');        
         return;        
     }
     
     // if installation is in progress
-    if(check_page_accessed_via_qwcrm('setup:install') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {        
-        $_POST['page'] = 'setup:install';
-        $_POST['theme'] = 'menu_off';        
+    if(check_page_accessed_via_qwcrm('setup', 'install') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {        
+        $_POST['component'] = 'setup';
+        $_POST['page_tpl']  = 'install';
+        $_POST['theme']     = 'menu_off';        
         define('QWCRM_SETUP', 'install'); 
         return;        
     }
     
     // if migration is in progress
-    if(check_page_accessed_via_qwcrm('setup:migrate') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {
-        $_POST['page'] = 'setup:migrate';
-        $_POST['theme'] = 'menu_off';        
+    if(check_page_accessed_via_qwcrm('setup', 'migrate') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {
+        $_POST['component'] = 'setup';
+        $_POST['page_tpl']  = 'migrate';
+        $_POST['theme']     = 'menu_off';        
         define('QWCRM_SETUP', 'install'); 
         return;        
     }
@@ -713,8 +657,9 @@ function verify_qwcrm_is_installed_correctly($db) {
         
         // If the file system is newer than the database - run upgrade
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            $_POST['page'] = 'setup:upgrade';
-            $_POST['theme'] = 'menu_off';
+            $_POST['component']     = 'setup';
+            $_POST['page_tpl']      = 'upgrade';
+            $_POST['theme']         = 'menu_off';
             define('QWCRM_SETUP', 'upgrade'); 
             return;
         }      
@@ -737,7 +682,7 @@ function verify_qwcrm_is_installed_correctly($db) {
     }  */
     
     // Check configured template is compatible
-    if(!check_template_compatible()) {
+    if(!check_template_is_compatible()) {
         
         // Get template details
         $template_details = parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
@@ -755,7 +700,7 @@ function verify_qwcrm_is_installed_correctly($db) {
 #  check the selected template is valid for this version of QWcrm  #
 ####################################################################
 
-function check_template_compatible() {
+function check_template_is_compatible() {
     
     // Get template details
     $template_details = parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');

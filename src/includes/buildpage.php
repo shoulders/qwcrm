@@ -8,11 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-/* Mandatory */
-
-// Build the page
-$BuildPage = get_page_content($db, $startTime, $page_controller, $VAR, $QConfig, $user);
-
 ############################
 #  Build the page content  #    // All variables should be passed by $VAR because it is its own scope
 ############################
@@ -82,58 +77,50 @@ function get_page_content($db, $startTime, $page_controller, $VAR, $QConfig = nu
     
 }
 
-###########################################
-#  Change all internal page links to SEF  #
-###########################################
-
-function page_links_to_sef(&$BuildPage) {
-    
-    //$BuildPage = preg_replace_callback('|href="(index\.php.*)"|U',
-    $BuildPage = preg_replace_callback('|"(index\.php.*)"|U',
-        function($matches) {
-            
-            //return 'href="'.buildSEF($matches[1]).'"';
-            return '"'.buildSEF($matches[1]).'"';
-
-        }, $BuildPage);
-    
-    return $BuildPage;
-    
-}
-
-
 ####################################################################
 #  Cycle through the built HTML and pass matches to link_parser()  #
 ####################################################################
 
 function page_links_parser(&$BuildPage) {
     
-    //preg_match_all('#<body[^>]*>(.*)</body>#siU', $phpInfo, $output);
+    // i.e. permissions and convert to sef - unless i have a lot they dont need to be in a wrapper function
+}
+
+###########################################
+#  Change all internal page links to SEF  #
+###########################################
+
+function page_links_to_sef(&$BuildPage) {
     
-    // send matched (full Matched link <a>...</a>) links to the parser - I should only do this when SEF is enabled?
-    preg_replace_callback('|<a( href="(index\.php.*)")>.*<\/a>|', 'link_parser', $BuildPage);    
-    
+    // Replace nonsef links within ""
+    $BuildPage = preg_replace_callback('|"(index\.php.*)"|U',
+        function($matches) {
+            
+            return '"'.buildSEF($matches[1]).'"';
+
+        }, $BuildPage);
+        
+    // Replace nonsef links within '' (i.e. javascript)
+    $BuildPage = preg_replace_callback("|'(index\.php.*)'|U",
+        function($matches) {
+        
+            return "'".buildSEF($matches[1])."'";
+
+        }, $BuildPage);
+        
     return $BuildPage;
     
 }
+
+
 
 ################################################################################
 #  The is the wrapping function for the callback method from preg_match_all()  #
 ################################################################################
 
-function link_parser($matches) {
-    
-    $url = $matches;
-    
-    $url = link_permission($url[0]);
-    
-    $sef_url = true;
-    if($sef_url) { $url = buildSEF($url[2]); }  // change the link to SEF
-    
-    return $url;
-    
+function link_parser($url) {
+       
 }
-
 
 #################################################################################
 #  Does the user have permission to use/see the link - if not remove/modify it  #
@@ -151,7 +138,7 @@ function link_permission($non_sef_url) {
     parse_str($parsed_url['query'], $parsed_url_query);
     
     // Check to see if user is allowed to use the asset
-    if(check_acl($db, $user, $parsed_url_query['component'], $parsed_url_query['page_tpl'])) {
+    if(check_page_acl($db, $parsed_url_query['component'], $parsed_url_query['page_tpl'])) {
         
         
         // if permission denied - modify the link by removing the href="" as per HTML spec to disable the link

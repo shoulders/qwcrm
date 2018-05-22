@@ -186,7 +186,7 @@ class JUser
      */    
     public $login_user_id           = null;    
     public $login_username          = null;
-    public $login_usergroup_id      = null;
+    public $login_usergroup_id      = 9;    // Default is a public user
     public $login_display_name      = null;
     public $login_token             = null;    
     public $login_is_employee       = null;

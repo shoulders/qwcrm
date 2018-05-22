@@ -30,7 +30,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 } elseif(isset($VAR['submit']) && isset($VAR['email']) && $VAR['email'] != '') {
     
     // Prevent direct access to this page
-    if(!check_page_accessed_via_qwcrm('user:reset')) {
+    if(!check_page_accessed_via_qwcrm('user', 'reset')) {
         die(_gettext("No Direct Access Allowed."));
     }   
 
@@ -86,7 +86,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 } elseif(isset($VAR['submit']) && isset($VAR['token']) && $VAR['token'] != '') {
     
     // Prevent direct access to this page
-    if(!check_page_accessed_via_qwcrm('user:reset')) {
+    if(!check_page_accessed_via_qwcrm('user', 'reset')) {
         die(_gettext("No Direct Access Allowed."));
     }
     
@@ -128,7 +128,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 } elseif(isset($VAR['submit']) && isset($VAR['reset_code']) && $VAR['reset_code'] != '' && isset($VAR['password']) && $VAR['password'] != '') {
     
     // Prevent direct access to this page
-    if(!check_page_accessed_via_qwcrm('user:reset')) {
+    if(!check_page_accessed_via_qwcrm('user', 'reset')) {
         die(_gettext("No Direct Access Allowed."));
     }
     

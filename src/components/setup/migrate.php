@@ -14,12 +14,12 @@ require(INCLUDES_DIR.'components/setup.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup:migrate', 'setup')  || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'setup')  || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process
-if(!check_page_accessed_via_qwcrm('setup:migrate') ) {
+if(!check_page_accessed_via_qwcrm('setup', 'migrate') ) {
     write_record_to_setup_log('migrate', _gettext("QWcrm migration from MyITCRM has begun."));
 }
 

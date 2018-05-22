@@ -169,7 +169,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     /* Build the message body */
     
     // Add the email signature (if not a reset email)
-    if(!check_page_accessed_via_qwcrm('user:reset') && !check_page_accessed_via_qwcrm('administrator:config')) {
+    if(!check_page_accessed_via_qwcrm('user', 'reset') && !check_page_accessed_via_qwcrm('administrator', 'config')) {
         $body .= get_email_signature($db, $email);
     }    
     

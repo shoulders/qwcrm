@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'components/user.php');
 
 // Clear Smarty Cache
 if($VAR['clear_smarty_cache'] == 'true') {
-    if(check_page_accessed_via_qwcrm('administrator:config')) {
+    if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         clear_smarty_cache();
     }
     die();
@@ -21,7 +21,7 @@ if($VAR['clear_smarty_cache'] == 'true') {
 
 // Clear Smarty Compile
 if($VAR['clear_smarty_compile'] == 'true') {    
-    if(check_page_accessed_via_qwcrm('administrator:config')) {
+    if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         clear_smarty_compile();        
     }    
     die();
@@ -29,7 +29,7 @@ if($VAR['clear_smarty_compile'] == 'true') {
 
 // Send a Test Mail
 if($VAR['send_test_mail'] == 'true') {
-    if(check_page_accessed_via_qwcrm('administrator:config')) {
+    if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         send_test_mail($db);
     }
     die();    

@@ -14,12 +14,12 @@ require(INCLUDES_DIR.'components/setup.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup:install', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+if(!check_page_accessed_via_qwcrm('setup', 'install', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process
-if(!check_page_accessed_via_qwcrm('setup:install') ) {
+if(!check_page_accessed_via_qwcrm('setup', 'install') ) {
     write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 }
 
