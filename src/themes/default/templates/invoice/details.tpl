@@ -62,13 +62,13 @@
                                         <!-- Scope -->
                                         <tr class="olotd4">
                                             <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
-                                            <td>{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
+                                            <td colspan="7">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
                                         </tr>
 
                                         <tr>
 
                                             <!-- Customer Details -->
-                                            <td colspan="6" valign="top" align="left">
+                                            <td colspan="5" valign="top" align="left">
                                                 <b>{t}Bill{/t}</b>                                                        
                                                 <table cellpadding="0" cellspacing="0">
                                                     <tr>
@@ -87,7 +87,7 @@
                                             </td>
 
                                             <!-- Company Details -->
-                                            <td colspan="3" valign="top" >
+                                            <td colspan="4" valign="top" >
                                                 <b>{t}Pay To{/t}</b>
                                                 <table cellpadding="0" cellspacing="0" width="100%">
                                                     <tr>

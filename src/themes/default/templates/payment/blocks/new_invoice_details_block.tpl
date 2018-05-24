@@ -29,11 +29,11 @@
         <td class="row2"><font color="#cc0000"><b>{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</b></font></td>      
     </tr>
     <tr>
-        <td colspan="6" valign="top">            
+        <td colspan="7" valign="top">            
             <table cellpadding="0" cellspacing="0">
                 <tr>
                     <td valign="top">
-                        {$customer_details.display_name}
+                        <a href="index.php?component=customer&page_tpl=details&customer_id={$customer_details.customer_id}">{$customer_details.display_name}</a>
                     </td>
                 </tr>
                 <tr>

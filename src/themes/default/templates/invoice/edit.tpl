@@ -403,7 +403,7 @@
                                             <!-- Scope -->
                                             <tr class="olotd4">
                                                 <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
-                                                <td>{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
+                                                <td colspan="6">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
                                             </tr>
 
                                             <tr>
@@ -450,7 +450,7 @@
 
                                             <!-- Terms and Discount -->
                                             <tr>
-                                                <td colspan="7" valign="top" align="left">                                                        
+                                                <td colspan="8" valign="top" align="left">                                                        
                                                     <b>{t}TERMS{/t}:</b> {$customer_details.credit_terms}<br>
                                                     <b>{t}Customer Discount Rate{/t}:</b>
                                                     {if !$transactions}
