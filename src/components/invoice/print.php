@@ -41,10 +41,10 @@ $smarty->assign('workorder_details',                get_workorder_details($db, $
 $smarty->assign('payment_details',                  get_payment_details($db)                                        );
 $smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                          );
 $smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                       );
-$smarty->assign('labour_items',                     get_invoice_labour_items($db, $VAR['invoice_id'])                      );
-$smarty->assign('parts_items',                      get_invoice_parts_items($db, $VAR['invoice_id'])                       );
-$smarty->assign('labour_sub_total',                 labour_sub_total($db, $VAR['invoice_id'])                              );
-$smarty->assign('parts_sub_total',                  parts_sub_total($db, $VAR['invoice_id'])                               );
+$smarty->assign('labour_items',                     get_invoice_labour_items($db, $VAR['invoice_id'])               );
+$smarty->assign('parts_items',                      get_invoice_parts_items($db, $VAR['invoice_id'])                );
+$smarty->assign('labour_sub_total',                 labour_sub_total($db, $VAR['invoice_id'])                       );
+$smarty->assign('parts_sub_total',                  parts_sub_total($db, $VAR['invoice_id'])                        );
 
 // Invoice Print Routine
 if($VAR['print_content'] == 'invoice') {

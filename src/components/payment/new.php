@@ -27,40 +27,49 @@ if(isset($VAR['submit'])) {
     switch($VAR['method_type']) {
 
         case 'credit_card':
-        require(MODULES_DIR.'payment/methods/method_credit_card.php');
+        require(COMPONENTS_DIR.'payment/methods/method_credit_card.php');
         break;
 
         case 'cheque':
-        require(MODULES_DIR.'payment/methods/method_cheque.php');
+        require(COMPONENTS_DIR.'payment/methods/method_cheque.php');
         break;
 
         case 'cash':
-        require(MODULES_DIR.'payment/methods/method_cash.php');
+        require(COMPONENTS_DIR.'payment/methods/method_cash.php');
         break;
 
         case 'gift_certificate':
-        require(MODULES_DIR.'payment/methods/method_gift_certificate.php');
+        require(COMPONENTS_DIR.'payment/methods/method_gift_certificate.php');
         break;
 
         case 'paypal':
-        require(MODULES_DIR.'payment/methods/method_paypal.php');
+        require(COMPONENTS_DIR.'payment/methods/method_paypal.php');
         break;
 
         case 'direct_deposit':
-        require(MODULES_DIR.'payment/methods/method_direct_deposit.php');
+        require(COMPONENTS_DIR.'payment/methods/method_direct_deposit.php');
         break;    
 
     }
 
 }
 
+// If the invoice has been closed redirect to the invoice details page / redirect after last payment added.
+if(get_invoice_details($db, $VAR['invoice_id'], 'is_closed')) {
+    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id']);
+}
+
 // Build the page
-$smarty->assign('customer_details',                 get_customer_details($db, get_invoice_details($db, $VAR['invoice_id'] , 'customer_id'))    );
-$smarty->assign('invoice_details',                  get_invoice_details($db, $VAR['invoice_id'])                                               );
-$smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                                           );
-$smarty->assign('transactions',                     get_invoice_transactions($db, $VAR['invoice_id'])                                          );
-$smarty->assign('transaction_statuses',             get_payment_system_methods($db)                                                     );
-$smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                                              );
-$smarty->assign('active_credit_cards',              get_active_credit_cards($db)                                                        );
+$smarty->assign('customer_details',                 get_customer_details($db, get_invoice_details($db, $VAR['invoice_id'] , 'customer_id'))     );
+$smarty->assign('invoice_details',                  get_invoice_details($db, $VAR['invoice_id'])                                                );
+$smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                                                   );
+$smarty->assign('transactions',                     get_invoice_transactions($db, $VAR['invoice_id'])                                           );
+
+// this needs fixing also - it has an issue number #833
+$smarty->assign('transaction_statuses',             get_payment_system_methods($db)                                                             );
+
+// #849
+$smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                                                      );
+$smarty->assign('active_credit_cards',              get_active_credit_cards($db)                                                                );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');

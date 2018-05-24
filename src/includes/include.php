@@ -300,7 +300,7 @@ function force_error_page($component, $page_tpl, $error_type, $error_location, $
         $VAR['error_msg']       = $error_msg;
 
         // Error page main content and processing logic
-        require(MODULES_DIR.'core/error.php');
+        require(COMPONENTS_DIR.'core/error.php');
 
         // output the error page
         echo $BuildPage;

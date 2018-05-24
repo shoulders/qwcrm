@@ -190,7 +190,7 @@
                     </tr>
 
                     <!-- Cheque -->                        
-                    {if $active_payment_system_methods.cheque == '1'}
+                    {if $active_payment_system_methods.cheque}
                         <tr>
                             <td>                                    
                                 <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
@@ -202,7 +202,7 @@
                     {/if}
 
                     <!-- Direct Deposit -->
-                    {if $active_payment_system_methods.direct_deposit == '1'}
+                    {if $active_payment_system_methods.direct_deposit}
                         <tr>
                             <td>
                                 <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Direct Deposit{/t}</b><br>
@@ -225,7 +225,7 @@
                     {/if}
 
                     <!-- PayPal -->
-                    {if $active_payment_system_methods.paypal == '1'}
+                    {if $active_payment_system_methods.paypal}
                     <tr>
                         <td>
                             <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
@@ -234,7 +234,7 @@
                     {/if}
 
                     <!-- If none of the above are enabled then display this message -->                        
-                    {if $active_payment_system_methods.cheque != '1' && $active_payment_system_methods.direct_deposit_active != '1' && $active_payment_system_methods.direct_deposit_active != '1'}
+                    {if !$active_payment_system_methods.cheque && !$active_payment_system_methods.direct_deposit_active && !$active_payment_system_methods}
                         <tr>
                             <td>{t}Please call us to discuss payment options.{/t}</td>
                         </tr>

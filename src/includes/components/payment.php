@@ -185,7 +185,7 @@ function get_active_payment_system_methods($db) {
     $sql = "SELECT
             system_method_id, active
             FROM ".PRFX."payment_system_methods
-            WHERE active='1'";    
+            WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get active payment methods."));
@@ -242,7 +242,7 @@ function get_payment_manual_methods($db) {
 #########################################
 
 function get_active_credit_cards($db) {
-    
+
     $sql = "SELECT card_key, display_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
