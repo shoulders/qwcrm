@@ -8,18 +8,19 @@
 <b>{$block_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr>
-        <td class="olohead" nowarp>{t}Invoice ID{/t}</td>
-        <td class="olohead" nowarp>{t}Work Order{/t}</td>
-        <td class="olohead" nowarp>{t}Date{/t}</td>
-        <td class="olohead" nowarp>{t}Due Date{/t}</td>
-        <td class="olohead" nowarp>{t}Customer{/t}</td>                                                        
-        <td class="olohead" nowarp>{t}Employee{/t}</td>
-        <td class="olohead" nowarp>{t}Status{/t}</td>
-        <td class="olohead" nowarp>{t}Sub Total{/t}</td>                                                        
-        <td class="olohead" nowarp>{t}Discount{/t}</td>
-        <td class="olohead" nowarp>{t}Net{/t}</td>
-        <td class="olohead" nowarp>{t}VAT/Tax{/t}</td> 
-        <td class="olohead" nowarp>{t}Gross{/t}</td>                                                        
+        <td class="olohead" nowrap>{t}Invoice ID{/t}</td>
+        <td class="olohead" nowrap>{t}Work Order{/t}</td>
+        <td class="olohead" nowrap>{t}Date{/t}</td>
+        <td class="olohead" nowrap>{t}Due Date{/t}</td>
+        <td class="olohead" nowrap>{t}Customer{/t}</td>                                                        
+        <td class="olohead" nowrap>{t}Employee{/t}</td>
+        <td class="olohead" nowrap>{t}Status{/t}</td>
+        <td class="olohead" nowrap>{t}Sub Total{/t}</td>                                                        
+        <td class="olohead" nowrap>{t}Discount{/t}</td>
+        <td class="olohead" nowrap>{t}Net{/t}</td>
+        <td class="olohead" nowrap>{t}VAT/Tax{/t}</td> 
+        <td class="olohead" nowrap>{t}Gross{/t}</td>
+        <td class="olohead" nowrap>{t}Balance{/t}</td>
     </tr>
     {section name=i loop=$display_invoices}
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=invoice&page_tpl=edit&invoice_id={$display_invoices[i].invoice_id}';" class="row1">
@@ -38,11 +39,12 @@
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].discount_amount}</td>
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].net_amount}</td> 
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].tax_amount}</td>                                                           
-            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].gross_amount}</td>                                                            
+            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].gross_amount}</td>
+            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].balance}</td> 
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="12" class="error">{t}There are no invoices.{/t}</td>
+            <td colspan="13" class="error">{t}There are no invoices.{/t}</td>
         </tr>        
     {/section}
 </table>
