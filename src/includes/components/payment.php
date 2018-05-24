@@ -24,6 +24,24 @@ defined('_QWEXEC') or die;
 
 /** Display Functions **/
 
+####################################################
+#   Display transactions for the given invoice_id  #  // Only basic return needed for now
+####################################################
+
+function display_transactions($db, $invoice_id){
+    
+    $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE invoice_id =".$db->qstr($invoice_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice's transactions."));
+        exit;
+    } else {      
+        
+        return $rs->GetArray();
+    }
+    
+}
+
 /** Insert Functions **/
 
 ############################
@@ -177,7 +195,7 @@ function get_payment_details($db, $item = null){
 }
 
 ################################################
-#   Get get active system payment methods      # // If i dont have METHOD in the select, the array is not built correctly
+#   Get get active system payment methods      # // If i dont have 'system_method_id' and 'active' in the select, the array is not built correctly
 ################################################
 
 function get_active_payment_system_methods($db) {
@@ -282,25 +300,6 @@ function get_credit_card_display_name_from_key($db, $card_key) {
         return $rs->fields['display_name'];
         
     }    
-    
-}
-
-
-#########################################
-#   Get invoice transactions            #
-#########################################
-
-function get_invoice_transactions($db, $invoice_id){
-    
-    $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE invoice_id =".$db->qstr($invoice_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice's transactions."));
-        exit;
-    } else {      
-        
-        return $rs->GetArray();
-    }
     
 }
 

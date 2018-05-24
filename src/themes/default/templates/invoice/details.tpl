@@ -141,45 +141,13 @@
                                         
                                     {/if} 
 
-                                    <!-- Transaction Log -->
-                                    {if $transactions != null}                                            
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
-                                            <tr>
-                                                <td class="menuhead2">&nbsp;{t}Transaction Log{/t}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2">
-                                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                        <tr class="olotd4">
-                                                            <td class="row2"><b>{t}Transaction ID{/t}</b></td>
-                                                            <td class="row2"><b>{t}Date{/t}</b></td>
-                                                            <td class="row2"><b>{t}Amount{/t}</b></td>
-                                                            <td class="row2"><b>{t}Method{/t}</b></td>
-                                                        </tr>                                                            
-                                                        {section name=t loop=$transactions}
-                                                            <tr class="olotd4">
-                                                                <td>{$transactions[t].transaction_id}</td>
-                                                                <td>{$transactions[t].date|date_format:$date_format}</td>
-                                                                <td><b>{$currency_symbol}</b>{$transactions[t].amount|string_format:"%.2f"}</td>
-                                                                <td>
-                                                                    {section name=s loop=$invoice_statuses}
-                                                                        {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
-                                                                    {/section} 
-                                                                </td> 
-                                                            </tr>
-                                                            <tr class="olotd4">
-                                                                <td><b>{t}Note{/t}</b></td>
-                                                                <td colspan="3">{$transactions[t].note}</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="row2" colspan="4">&nbsp;</td>
-                                                            </tr>
-                                                        {/section}
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <br>
+                                    <!-- Transactions -->
+                                    {if $display_transactions}
+                                        <tr>
+                                            <td>                                                
+                                                {include file='payment/blocks/display_transactions_block.tpl'}
+                                            </td>
+                                        </tr>                                    
                                     {/if}                                            
 
                                     <!-- Labour Items -->

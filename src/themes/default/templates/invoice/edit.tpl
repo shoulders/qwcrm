@@ -361,7 +361,7 @@
                                                 </td>
                                                 <td><a href="index.php?component=user&page_tpl=details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td> 
                                                 <td>
-                                                    {if !$transactions}
+                                                    {if !$display_transactions}
                                                         <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                         <input id="date_button" value="+" type="button">                                                    
                                                         <script>                                                        
@@ -376,7 +376,7 @@
                                                     {/if}
                                                 </td>
                                                 <td>
-                                                    {if !$transactions}
+                                                    {if !$display_transactions}
                                                         <input id="due_date" name="due_date" class="olotd4" size="10" value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                         <input id="due_date_button" value="+" type="button">                                                    
                                                         <script>                                                        
@@ -453,7 +453,7 @@
                                                 <td colspan="8" valign="top" align="left">                                                        
                                                     <b>{t}TERMS{/t}:</b> {$customer_details.credit_terms}<br>
                                                     <b>{t}Customer Discount Rate{/t}:</b>
-                                                    {if !$transactions}
+                                                    {if !$display_transactions}
                                                         <input type="text" class="olotd4" size="4" name="discount_rate" value="{$invoice_details.discount_rate|string_format:"%.2f"}"> %<br>
                                                         <b>** {t}Change this if you want to temporarily override the discount rate for this invoice ONLY{/t} **</b>
                                                     {else}                                                        
@@ -491,49 +491,16 @@
 
                                                 </td>
                                             </tr>
-                                        </table>
-                                        <br>
+                                        </table>                                       
 
-                                        <!-- Transaction Log -->
-                                        {if $transactions != null}                                            
-                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
-                                                <tr>
-                                                    <td class="menuhead2">&nbsp;{t}Transaction Log{/t}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="menutd2">
-                                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                            <tr class="olotd4">
-                                                                <td class="row2"><b>{t}Transaction ID{/t}</b></td>
-                                                                <td class="row2"><b>{t}Date{/t}</b></td>
-                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
-                                                                <td class="row2"><b>{t}Method{/t}</b></td>
-                                                            </tr>                                                            
-                                                            {section name=t loop=$transactions}
-                                                                <tr class="olotd4">
-                                                                    <td>{$transactions[t].transaction_id}</td>
-                                                                    <td>{$transactions[t].date|date_format:$date_format}</td>
-                                                                    <td><b>{$currency_symbol}</b>{$transactions[t].amount|string_format:"%.2f"}</td>
-                                                                    <td>
-                                                                        {section name=s loop=$transaction_statuses}
-                                                                            {if $transactions[t].method == $transaction_statuses[s].system_method_id}{t}{$transaction_statuses[s].display_name}{/t}{/if}        
-                                                                        {/section} 
-                                                                    </td> 
-                                                                </tr>
-                                                                <tr class="olotd4">
-                                                                    <td><b>{t}Note{/t}</b></td>
-                                                                    <td colspan="3">{$transactions[t].note}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="row2" colspan="4">&nbsp;</td>
-                                                                </tr>
-                                                            {/section}
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                            <br>
-                                        {/if}                                            
+                                        <!-- Transactions -->
+                                        {if $display_transactions}                                        
+                                            <tr>
+                                                <td>                                                
+                                                    {include file='payment/blocks/display_transactions_block.tpl'}
+                                                </td>
+                                            </tr>                                    
+                                        {/if}                                              
 
                                         <!-- Labour Items -->
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
@@ -561,7 +528,7 @@
                                                                     <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        {if !$transactions}
+                                                                        {if !$display_transactions}
                                                                             <a href="index.php?component=invoice&page_tpl=delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
                                                                                 <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                             </a>
@@ -579,7 +546,7 @@
                                                     {/if}
                                                     <br>
                                                     
-                                                    {if !$transactions}
+                                                    {if !$display_transactions}
                                                         <!-- Additional Javascript Labour Table -->
                                                         <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                             <tr class="olotd4">
@@ -629,7 +596,7 @@
                                                                     <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
                                                                     <td>
-                                                                        {if !$transactions}
+                                                                        {if !$display_transactions}
                                                                             <a href="index.php?component=invoice&page_tpl=delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
                                                                                 <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
                                                                             </a>
@@ -647,7 +614,7 @@
                                                     {/if}
                                                     <br>
                                                     
-                                                    {if !$transactions}
+                                                    {if !$display_transactions}
                                                         <!-- Additional Javascript Parts Table -->
                                                         <table id="parts_items" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                             <tr class="olotd4">
@@ -712,7 +679,7 @@
                                                 <td align="left" valign="top" width="25%">                                                        
                                                     <input type="hidden" name="invoice_id" value="{$invoice_details.invoice_id}">
                                                     <input type="hidden" name="sub_total" value="{$invoice_details.sub_total|string_format:"%.2f"}">
-                                                    {if !$transactions}
+                                                    {if !$display_transactions}
                                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                     {/if}
                                                 </td>

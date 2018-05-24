@@ -1205,7 +1205,7 @@ function export_invoice_prefill_items_csv($db) {
     }
         
     // Has transactions
-    if(!empty(get_invoice_transactions($db, $invoice_id))) {
+    if(!empty(display_transactions($db, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions."));
         return false;        
     }
@@ -1243,7 +1243,7 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     }    
     
     // Has transactions
-    if(!empty(get_invoice_transactions($db, $invoice_id))) {
+    if(!empty(display_transactions($db, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions."));
         return false;        
     }

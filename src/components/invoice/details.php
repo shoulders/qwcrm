@@ -33,7 +33,8 @@ $smarty->assign('parts_items',              get_invoice_parts_items($db, $VAR['i
 // Invoice Totals
 $smarty->assign('labour_sub_total',         labour_sub_total($db, $VAR['invoice_id'])                                                          );
 $smarty->assign('parts_sub_total',          parts_sub_total($db, $VAR['invoice_id'])                                                           );
-$smarty->assign('transactions',             get_invoice_transactions($db, $VAR['invoice_id'])                                                  );
+
+$smarty->assign('display_transactions',     display_transactions($db, $VAR['invoice_id'])                                                  );
 $smarty->assign('transaction_statuses',     get_payment_system_methods($db)                                                             );
 
 // Misc

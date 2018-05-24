@@ -33,11 +33,13 @@
                             </tr>
 
                             <!-- Transactions -->
-                            <tr>
-                                <td>                                                
-                                    {include file='payment/blocks/new_transactions_log_block.tpl'}
-                                </td>
-                            </tr>                            
+                            {if $display_transactions}
+                                <tr>
+                                    <td>                                                
+                                        {include file='payment/blocks/display_transactions_block.tpl'}
+                                    </td>
+                                </tr>
+                            {/if}
                                 
                             {if $invoice_details.is_closed == 0 && $invoice_details.balance > 0}
                                 
