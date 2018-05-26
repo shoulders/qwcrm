@@ -33,6 +33,7 @@ QWcrm can be used for many different businesses because it is flexible:
 QWcrm has many features, not all can be listed here:
 
 * Employees and roles
+* Configurable permissions
 * Customer Management
 * Work Order (Jobs/Tasks) Management 
 * Work Order Scheduling
@@ -50,6 +51,7 @@ QWcrm has many features, not all can be listed here:
 * Access Logging
 * Error Logging
 * Advanced Debugging
+* SEF router
 
 ## Support
 
