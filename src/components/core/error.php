@@ -15,44 +15,43 @@ if(!check_page_accessed_via_qwcrm()) {
 
 /* Grab and Process Values befor sending to the log and displaying */
 //$error_page         = prepare_error_data('error_page'); // only needed when using referrer
-$error_page         = $VAR['component'].':'.$VAR['page_tpl'];
+$error_component    = $VAR['error_component'];
+$error_page_tpl     = $VAR['error_page_tpl'];
 $error_type         = $VAR['error_type'];
 $error_location     = $VAR['error_location'];
-$php_function       = $VAR['php_function'];
-$database_error     = $VAR['database_error'];
-$sql_query          = $VAR['sql_query'];
+$error_php_function = $VAR['error_php_function'];
+$error_database     = $VAR['error_database'];
+$error_sql_query    = $VAR['error_sql_query'];
 $error_msg          = $VAR['error_msg'];
 
 // Is Logging of SQL enabled
 if(QFactory::getConfig()->get('qwcrm_error_logging')) {
     
     // Prepare the SQL statement for the error log (already been prepared for output to screen)
-    $sql_query_for_log = str_replace('<br>', '\r\n', $sql_query);
+    $sql_query_for_log = str_replace('<br>', '\r\n', $error_sql_query);
     
 } else {    
     $sql_query_for_log = '';    
 }
 
-/* This logs errors to the error log (does not record the SQL Query */
-if($qwcrm_error_log == true){    
+/* This logs errors to the error log (does not currently record the SQL Query) */
+if($qwcrm_error_log){    
     
-    // Only log error if it exists and the error page has been loaded through the router
-    if(isset($error_type) && $component === 'core' && $page_tpl === 'error'){
-        write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $sql_query_for_log, $error_msg);
-    }
+    write_record_to_error_log($error_component.':'.$error_page_tpl, $error_type, $error_location, $error_php_function, $error_database, $sql_query_for_log, $error_msg);
     
 }
 
 /* Smarty Template output */
 
 // Assign variables to display on the error page (core:error)
-$smarty->assign('error_page',       $error_page             );
-$smarty->assign('error_type',       $error_type             );
-$smarty->assign('error_location',   $error_location         );
-$smarty->assign('php_function',     $php_function           );
-$smarty->assign('database_error',   $database_error         );
-$smarty->assign('sql_query',        $sql_query              );
-$smarty->assign('error_msg',        $error_msg              );
+$smarty->assign('error_component',      $error_component        );
+$smarty->assign('error_page_tpl',       $error_page_tpl         );
+$smarty->assign('error_type',           $error_type             );
+$smarty->assign('error_location',       $error_location         );
+$smarty->assign('error_php_function',   $error_php_function     );
+$smarty->assign('error_database',       $error_database         );
+$smarty->assign('error_sql_query',      $error_sql_query        );
+$smarty->assign('error_msg',            $error_msg              );
     
 // Prevent Customers/Guests/Public users and scapers accidentally seeing the errors
 if($user->login_usergroup_id <= 6){

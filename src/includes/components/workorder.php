@@ -30,15 +30,21 @@ defined('_QWEXEC') or die;
 
 function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
     
-    global $smarty;    
+    global $smarty;
    
     /* Filter the Records */
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."workorder.workorder_id";
     
+    // Restrict results by search category (customer) and search term
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
+    
+   // Restrict results by search category (employee) and search term
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
+    
     // Restrict results by search category and search term
-    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."workorder.$search_category LIKE '%$search_term%'";} 
     
     // Restrict by Status
     if($status != null) {
@@ -127,21 +133,15 @@ function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC'
         // Set the page number
         $smarty->assign('page_no', $page_no);
         
-        // Assign the Previous page
-        if($page_no > 1) {
-            $previous = ($page_no - 1);            
-        } else { 
-            $previous = 1;            
-        }
-        $smarty->assign('previous', $previous);        
+        // Assign the Previous page        
+        $previous = ($page_no - 1);        
+        $smarty->assign('previous', $previous);          
         
-        // Assign the next page
-        if($page_no < $total_pages){
-            $next = ($page_no + 1);            
-        } else {
-            $next = $total_pages;
-        }
-        $smarty->assign('next', $next);      
+        // Assign the next page        
+        if($page_no == $total_pages) {$next = 0;}
+        elseif($page_no < $total_pages) {$next = ($page_no + 1);}
+        else {$next = $total_pages;}
+        $smarty->assign('next', $next);
         
         // Only return the given page's records
         $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;

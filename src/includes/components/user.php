@@ -48,10 +48,10 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
     // Restrict results by user type
     if($user_type != null) {
         
-        if($user_type == 'customers') { 
+        if($user_type == 'customer') { 
             $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('7');}            
         
-        if($user_type == 'employees') {
+        if($user_type == 'employee') {
             
             $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('1');
             $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('2');

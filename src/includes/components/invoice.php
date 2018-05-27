@@ -35,20 +35,26 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     /* Filter the Records */
     
     // Default Action
-    $whereTheseRecords = " WHERE ".PRFX."invoice.invoice_id";
+    $whereTheseRecords = "WHERE ".PRFX."invoice.invoice_id";
+    
+    // Restrict results by search category (customer) and search term
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
+    
+   // Restrict results by search category (employee) and search term
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";} 
     
     // Restrict results by search category and search term
-    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice.$search_category LIKE '%$search_term%'";}
     
     // Restrict by Status
     if($status != null) {
         
-        // All Open workorders
+        // All Open Invoices
         if($status == 'open') {
             
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
         
-        // All Closed workorders
+        // All Closed Invoices
         } elseif($status == 'closed') {
             
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
@@ -92,7 +98,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
         GROUP BY ".PRFX."invoice.".$order_by."         
         ORDER BY ".PRFX."invoice.".$order_by."
         ".$direction;
-            
+
     /* Restrict by pages */
     
     if($use_pages == true) {
@@ -116,20 +122,14 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
         // Set the page number
         $smarty->assign('page_no', $page_no);
 
-        // Assign the Previous page
-        if($page_no > 1) {
-            $previous = ($page_no - 1);            
-        } else { 
-            $previous = 1;            
-        }
+        // Assign the Previous page        
+        $previous = ($page_no - 1);        
         $smarty->assign('previous', $previous);        
         
-        // Assign the next page
-        if($page_no < $total_pages){
-            $next = ($page_no + 1);            
-        } else {
-            $next = $total_pages;
-        }
+        // Assign the next page        
+        if($page_no == $total_pages) {$next = 0;}
+        elseif($page_no < $total_pages) {$next = ($page_no + 1);}
+        else {$next = $total_pages;}
         $smarty->assign('next', $next);
         
         // Only return the given page's records

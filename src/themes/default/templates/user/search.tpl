@@ -43,20 +43,20 @@
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}Filter By User Type{/t}</b><br>
-                                                                    <select class="olotd5" id="search_type" name="search_type">
-                                                                        <option value=""{if $search_type == ''} selected{/if}>{t}None{/t}</option>                                                                        
-                                                                        <option value="employees"{if $search_type == 'employees'} selected{/if}>{t}Employees{/t}</option>
-                                                                        <option value="customers"{if $search_type == 'customers'} selected{/if}>{t}Customers{/t}</option>
+                                                                    <select class="olotd5" id="search_type" name="filter_type">
+                                                                        <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="employees"{if $filter_type == 'employees'} selected{/if}>{t}Employees{/t}</option>
+                                                                        <option value="customers"{if $filter_type == 'customers'} selected{/if}>{t}Customers{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}Filter By Active Status{/t}</b><br>
-                                                                    <select class="olotd5" id="search_active" name="search_active">
-                                                                        <option value=""{if $search_active == ''} selected{/if}>{t}None{/t}</option> 
-                                                                        <option value="0"{if $search_active == '0'} selected{/if}>{t}Blocked{/t}</option>
-                                                                        <option value="1"{if $search_active == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                    <select class="olotd5" id="filter_active" name="filter_active">
+                                                                        <option value=""{if $filter_active == ''} selected{/if}>{t}None{/t}</option> 
+                                                                        <option value="0"{if $filter_active == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                        <option value="1"{if $filter_active == '1'} selected{/if}>{t}Active{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>

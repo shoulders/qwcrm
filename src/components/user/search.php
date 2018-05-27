@@ -26,8 +26,8 @@ if(isset($VAR['submit'])) {
 $smarty->assign('usergroups',       get_usergroups($db)                                                                                                                                     );
 $smarty->assign('search_category',  $VAR['search_category']                                                                                                                                 );
 $smarty->assign('search_term',      $VAR['search_term']                                                                                                                                     );
-$smarty->assign('search_active',    $VAR['search_active']                                                                                                                                   );
-$smarty->assign('search_type',      $VAR['search_type']                                                                                                                                     );
-$smarty->assign('display_users',    display_users($db, 'user_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['search_active'], $VAR['search_type'])   );
+$smarty->assign('search_active',    $VAR['filter_active']                                                                                                                                   );
+$smarty->assign('search_type',      $VAR['filter_type']                                                                                                                                     );
+$smarty->assign('display_users',    display_users($db, 'user_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_active'], $VAR['filter_type'])   );
 
 $BuildPage .= $smarty->fetch('user/search.tpl');

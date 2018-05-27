@@ -36,7 +36,7 @@
                     <!-- Single workorders -->
                     {if $customer_id != ''}
                         <a href="index.php?component=workorder&page_tpl=new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>                        
-                    {/if}
+                    {/if}                    
                     {* if $workorder_id != ''}
                         {if $menu_workorder_is_closed === '0'}                            
                             <a href="index.php?component=workorder&page_tpl=details_edit_resolution&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Close{/t}</a>                            
@@ -56,6 +56,8 @@
                     <!-- Schedules -->
                     <a href="index.php?component=schedule&page_tpl=day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
                 
+                    <a href="index.php?component=workorder&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
+                    
                 </div>
 
                 <!-- Invoices -->
@@ -66,13 +68,15 @@
                     {/if}
                     <a href="index.php?component=invoice&page_tpl=open"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Open{/t}</a> 
                     <a href="index.php?component=invoice&page_tpl=closed"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>                                       
-                    
+                                        
                     <!-- invoice admin -->
                     {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                        {if $invoice_id != ''}
                             <a href="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
                         {/if}                        
                     {/if}
+                    
+                    <a href="index.php?component=invoice&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
                 
                 </div>
                 

@@ -43,20 +43,20 @@
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}Filter By Status{/t}</b><br>
-                                                                    <select class="olotd5" id="status" name="status">
-                                                                        <option value=""{if $status == ''} selected{/if}>{t}None{/t}</option>                                                                        
-                                                                        <option value="1"{if $status == '1'} selected{/if}>{t}Active{/t}</option>
-                                                                        <option value="0"{if $status == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                    <select class="olotd5" id="filter_status" name="filter_status">
+                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}Filter By Redemption Status{/t}</b><br>
-                                                                    <select class="olotd5" id="status" name="is_redeemed">
-                                                                        <option value=""{if $is_redeemed == ''} selected{/if}>{t}None{/t}</option>                                                                        
-                                                                        <option value="1"{if $is_redeemed == '1'} selected{/if}>{t}Redeemed{/t}</option>
-                                                                        <option value="0"{if $is_redeemed == '0'} selected{/if}>{t}Not Redeemed{/t}</option>
+                                                                    <select class="olotd5" id="filter_is_redeemed" name="filter_is_redeemed">
+                                                                        <option value=""{if $filter_is_redeemed == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="1"{if filter_is_redeemed == '1'} selected{/if}>{t}Redeemed{/t}</option>
+                                                                        <option value="0"{if $filter_is_redeemed == '0'} selected{/if}>{t}Not Redeemed{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>

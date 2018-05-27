@@ -52,7 +52,7 @@
                                                                    <br />
                                                                    <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" required onkeydown="return onlySearch(event);">
                                                                    <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
-                                                                   <input class="olotd4" value="{t}reset{/t}" onclick="window.location.href='index.php?component=expense&page_tpl=search';" type="button">
+                                                                   <input class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=expense&page_tpl=search';" type="button">
                                                                 </td>
                                                             </tr>
                                                             <tr>

@@ -257,18 +257,18 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
 function perform_redirect($url, $type = 'header') {
    
     // Redirect using Headers (cant always use this method in QWcrm)
-    if($type == 'header') {
+    if($type == 'header') {        
         header('Location: ' . $url);
-        exit;
+        exit;        
     }
     
     // Redirect using Javascript
-    if($type == 'javascript') {                     
+    if($type == 'javascript') {         
         echo('
                 <script>
                     window.location = "'.$url.'"
                 </script>
-            ');        
+            ');         
     }
     
 }
@@ -282,7 +282,7 @@ function perform_redirect($url, $type = 'header') {
 // old - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 // new - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
 
-function force_error_page($component, $page_tpl, $error_type, $error_location, $php_function, $database_error, $sql_query, $error_msg) { 
+function force_error_page($error_component, $error_page_tpl, $error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
     
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
     if(QFactory::getConfig()->get('error_page_raw_output')) {
@@ -290,14 +290,14 @@ function force_error_page($component, $page_tpl, $error_type, $error_location, $
         // make sure the page object is empty
         $BuildPage = '';
 
-        $VAR['component']       = prepare_error_data('component', $component);
-        $VAR['page_tpl']        = prepare_error_data('page_tpl', $page_tpl);
-        $VAR['error_type']      = $error_type;
-        $VAR['error_location']  = prepare_error_data('error_location', $error_location);
-        $VAR['php_function']    = prepare_error_data('php_function', $php_function);
-        $VAR['database_error']  = $database_error ;
-        $VAR['sql_query']       = prepare_error_data('sql_query', $sql_query);
-        $VAR['error_msg']       = $error_msg;
+        $VAR['error_component']     = prepare_error_data('error_component', $error_component);
+        $VAR['error_page_tpl']      = prepare_error_data('error_page_tpl', $error_page_tpl);
+        $VAR['error_type']          = $error_type;
+        $VAR['error_location']      = prepare_error_data('error_location', $error_location);
+        $VAR['error_php_function']  = prepare_error_data('error_php_function', $error_php_function);
+        $VAR['error_database']      = $error_database ;
+        $VAR['error_sql_query']     = prepare_error_data('error_sql_query', $error_sql_query);
+        $VAR['error_msg']           = $error_msg;
 
         // Error page main content and processing logic
         require(COMPONENTS_DIR.'core/error.php');
@@ -310,14 +310,14 @@ function force_error_page($component, $page_tpl, $error_type, $error_location, $
     } else {
         
         // Pass varibles to the error page after preperation
-        postEmulationWrite('component',          prepare_error_data('error_page', $component)            );
-        postEmulationWrite('page_tpl',           prepare_error_data('error_page', $page_tpl)             );
-        postEmulationWrite('error_type',         $error_type                                             );
-        postEmulationWrite('error_location',     prepare_error_data('error_location', $error_location)   );
-        postEmulationWrite('php_function',       prepare_error_data('php_function', $php_function)       );
-        postEmulationWrite('database_error',     $database_error                                         );
-        postEmulationWrite('sql_query',          prepare_error_data('sql_query', $sql_query)             );
-        postEmulationWrite('error_msg',          $error_msg                                              );    
+        postEmulationWrite('error_component',    prepare_error_data('error_component', $error_component)        );
+        postEmulationWrite('error_page_tpl',     prepare_error_data('error_page_tpl', $error_page_tpl)          );
+        postEmulationWrite('error_type',         $error_type                                                    );
+        postEmulationWrite('error_location',     prepare_error_data('error_location', $error_location)          );
+        postEmulationWrite('error_php_function', prepare_error_data('error_php_function', $error_php_function)  );
+        postEmulationWrite('error_database',     $error_database                                                );
+        postEmulationWrite('error_sql_query',    prepare_error_data('error_sql_query', $error_sql_query)        );
+        postEmulationWrite('error_msg',          $error_msg                                                     );    
 
         // Load Error Page
         force_page('core', 'error');
@@ -437,47 +437,45 @@ function prepare_error_data($type, $data = null) {
     }
     */
         
-    /* Component (by using $_GET['component'] */    
-    if($type === 'component') {
+    // Component (by using $_GET['component']
+    if($type === 'error_component') {
         
         // compensate for home and dashboard
         if($data == '') {
             
             // Must be Login or Home
             if(isset($user->login_token)) {
-                $error_page = 'core';
+                $data = 'core';
             } else {
-                $error_page = 'core';
-            }    
-        } else {
-            $error_page = $data;            
+                $data = 'core';
+            } 
+            
         }       
         
         return $data;
         
     }     
     
-    /* Page_tpl (by using $_GET['page'] */    
-    if($type === 'page_tpl') {
+    // Page_tpl (by using $_GET['page'])
+    if($type === 'error_page_tpl') {
         
         // compensate for home and dashboard
         if($data == '') {
             
             // Must be Login or Home
             if(isset($user->login_token)) {
-                $error_page = 'dashboard';
+                $data = 'dashboard';
             } else {
-                $error_page = 'home';
-            }    
-        } else {
-            $error_page = $data;            
-        }       
+                $data = 'home';
+            } 
+            
+        }      
         
         return $data;
         
     } 
     
-    /* Error Location */
+    // Error Location
     if($type === 'error_location') {     
                
         // remove qwcrm base physical webroot path
@@ -496,16 +494,16 @@ function prepare_error_data($type, $data = null) {
 
     }
    
-    /* PHP Function */
-    if($type === 'php_function') {
+    // PHP Function
+    if($type === 'error_php_function') {
 
         // add () to the end of the php function name
         if($data != '') { $data.= '()'; }        
         return $data;
     }
     
-    /* Database Error */
-    if($type === 'database_error') {
+    // Database Error
+    if($type === 'error_database') {
 
         // remove newlines from the database string
         if($data != '') {
@@ -514,31 +512,18 @@ function prepare_error_data($type, $data = null) {
         }
         return $data;
         
-    }
-    
-    /* Database Connection Error */
-    if($type === 'database_connection_error') {
+    }    
 
-        // remove newlines from the database string
-        if($data != '') {
-            $data = str_replace("\r", '', $data);
-            $data = str_replace("\n", '', $data);
-            $data = str_replace("'", "\\'", $data); 
-        }
-        return $data;
-        
-    }
-    
-    /* SQL Query - for display */
-    if($type === 'sql_query') {
+    // SQL Query - for display
+    if($type === 'error_sql_query') {
 
         // change newlines to <br>
         if($data != '') { $data = str_replace("\n", '<br>', $data); }        
         return $data;
         
-    }
+    }      
     
-    /* SQL Query - for log */
+    // SQL Query - for log
     if($type === 'sql_query_for_log') {
         
         // done seperate because used in MyITCRM migration with dirty data
@@ -551,6 +536,19 @@ function prepare_error_data($type, $data = null) {
         return $data;
         
     }     
+    
+    // Database Connection Error
+    if($type === 'error_database_connection') {
+
+        // remove newlines from the database string
+        if($data != '') {
+            $data = str_replace("\r", '', $data);
+            $data = str_replace("\n", '', $data);
+            $data = str_replace("'", "\\'", $data); 
+        }
+        return $data;
+        
+    }  
     
 }
 

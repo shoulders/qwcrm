@@ -10,11 +10,11 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/workorder.php');
 
-/* If a search is submitted
+// If a search is submitted
 if(isset($VAR['submit'])) {
     
     // Log activity
-    $record = _gettext("A search of work orders has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    $record = _gettext("A search of workoders has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
     write_record_to_activity_log($record);
     
 }
@@ -22,6 +22,8 @@ if(isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('search_category',  $VAR['search_category']                                                                             );
 $smarty->assign('search_term',      $VAR['search_term']                                                                                 );
-$smarty->assign('search_result',    display_workorders($db, 'workorder_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category']) );*/
+$smarty->assign('filter_status',    $VAR['filter_status']                                                                               );
+$smarty->assign('workorder_statuses', get_workorder_statuses($db)                                                                       );
+$smarty->assign('display_workorders', display_workorders($db, 'workorder_id', 'DESC', true, $VAR['page_no'], '5', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'])   );
 
 $BuildPage .= $smarty->fetch('workorder/search.tpl');

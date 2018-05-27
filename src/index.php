@@ -22,6 +22,9 @@ if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
 // Disable magic quotes
 ini_set('magic_quotes_runtime', 0);
 
+// Constant that is checked in included files to prevent direct access
+define('_QWEXEC', 1);
+
 #################################################
 # Debuging Information Start Varible Acqusition #
 #################################################
@@ -49,9 +52,6 @@ define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 ################################################
 #         Load QWCRM                           #
 ################################################
-
-// Constant that is checked in included files to prevent direct access
-define('_QWEXEC', 1);
 
 // Load the config if it exists
 if(is_file('configuration.php')) {

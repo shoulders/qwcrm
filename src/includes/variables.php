@@ -49,7 +49,7 @@ if(!isset($VAR)) { $VAR = array(); }
 
 // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    $VAR = array_merge($_POST, $_GET, $VAR, postEmulationReturnStore());
+    $VAR = array_merge($_POST, $_GET, $VAR, postEmulationReturnStore());    
 } else {
     $VAR = array_merge($_POST, $_GET, $VAR);
 }
