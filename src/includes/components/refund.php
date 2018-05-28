@@ -78,20 +78,14 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
         // Set the page number
         $smarty->assign('page_no', $page_no);
         
-        // Assign the Previous page
-        if($page_no > 1) {
-            $previous = ($page_no - 1);            
-        } else { 
-            $previous = 1;            
-        }
-        $smarty->assign('previous', $previous);        
+        // Assign the Previous page        
+        $previous = ($page_no - 1);        
+        $smarty->assign('previous', $previous);          
         
-        // Assign the next page
-        if($page_no < $total_pages){
-            $next = ($page_no + 1);            
-        } else {
-            $next = $total_pages;
-        }
+        // Assign the next page        
+        if($page_no == $total_pages) {$next = 0;}
+        elseif($page_no < $total_pages) {$next = ($page_no + 1);}
+        else {$next = $total_pages;}
         $smarty->assign('next', $next);
         
         // Only return the given page's records

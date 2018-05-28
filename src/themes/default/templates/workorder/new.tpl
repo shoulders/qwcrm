@@ -56,7 +56,7 @@
                                                                         <td class="olohead">{t}Opened{/t}</td>
                                                                         <td class="olohead">{t}Customer{/t}</td>
                                                                         <td class="olohead">{t}Scope{/t}</td>                                                                        
-                                                                        <td class="olohead">{t}Technician{/t}</td>
+                                                                        <td class="olohead">{t}Employee{/t}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4">{$smarty.now|date_format:$date_format}</td>

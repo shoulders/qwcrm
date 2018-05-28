@@ -36,7 +36,7 @@
             <td class="olotd4">{$currency_sym} {$display_giftcerts[g].amount}</td>                                                            
             <td class="olotd4" nowrap>
                 {if $display_giftcerts[g].notes != ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_giftcerts[g].notes}</div>');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_giftcerts[g].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4">

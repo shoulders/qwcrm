@@ -42,24 +42,24 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Filter By User Type{/t}</b><br>
-                                                                    <select class="olotd5" id="search_type" name="filter_type">
-                                                                        <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>                                                                        
-                                                                        <option value="employees"{if $filter_type == 'employees'} selected{/if}>{t}Employees{/t}</option>
-                                                                        <option value="customers"{if $filter_type == 'customers'} selected{/if}>{t}Customers{/t}</option>
+                                                                    <b>{t}Filter By Status{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_status" name="filter_status">
+                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option> 
+                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Filter By Active Status{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_active" name="filter_active">
-                                                                        <option value=""{if $filter_active == ''} selected{/if}>{t}None{/t}</option> 
-                                                                        <option value="0"{if $filter_active == '0'} selected{/if}>{t}Blocked{/t}</option>
-                                                                        <option value="1"{if $filter_active == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                    <b>{t}Filter By User Type{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_usertype" name="filter_usertype">
+                                                                        <option value=""{if $filter_usertype == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="employee"{if $filter_usertype == 'employee'} selected{/if}>{t}Employee{/t}</option>
+                                                                        <option value="customer"{if $filter_usertype == 'customer'} selected{/if}>{t}Customer{/t}</option>
                                                                     </select>
                                                                 </td>
-                                                            </tr>
+                                                            </tr>                                                            
                                                         </table>
                                                     </div>
                                                 </form>
@@ -72,9 +72,11 @@
                                                         <tr>
                                                             
                                                             <!-- Left buttons -->
-                                                            <td>                                                                
-                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                            <td>
+                                                                {if $previous}
+                                                                    <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_usertype}&filter_status={$filter_usertype}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                    <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_usertype}&filter_status={$filter_usertype}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                {/if}
                                                             </td>                                                   
                                                     
                                                             <!-- Dropdown Menu -->
@@ -93,8 +95,10 @@
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                {if $next}
+                                                                    <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_usertype}&filter_status={$filter_usertype}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=user&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_usertype}&filter_status={$filter_usertype}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                {/if}
                                                             </td>                                                                                             
                                                     
                                                         </tr>

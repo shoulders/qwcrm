@@ -34,6 +34,153 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 
 /** Display Functions **/
 
+#####################################################
+# Display all Work orders for the given status      # // Status is not currently used but it will be
+#####################################################
+
+function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+    
+    global $smarty;
+   
+    /* Filter the Records */
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."schedule.schedule_id";
+    
+    // Restrict results by search category (customer) and search term
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
+    
+   // Restrict results by search category (employee) and search term
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
+    
+    // Restrict results by search category and search term
+    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."schedule.$search_category LIKE '%$search_term%'";} 
+    
+    // Restrict by Status
+    if($status != null) {
+        
+        // All Open schedules
+        if($status == 'open') {
+            
+            $whereTheseRecords .= " AND ".PRFX."schedule.is_closed != '1'";
+        
+        // All Closed schedules
+        } elseif($status == 'closed') {
+            
+            $whereTheseRecords .= " AND ".PRFX."schedule.is_closed = '1'";
+        
+        // Return schedules for the given status
+        } else {
+            
+            $whereTheseRecords .= " AND ".PRFX."schedule.status= ".$db->qstr($status);
+            
+        }
+        
+    }        
+
+    // Restrict by Employee
+    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
+
+    // Restrict by Customer
+    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
+    
+    /* The SQL code */
+    
+    $sql =  "SELECT
+            ".PRFX."customer.display_name AS customer_display_name,       
+            
+            ".PRFX."user.display_name AS employee_display_name,
+                            
+            ".PRFX."schedule.schedule_id,
+            ".PRFX."schedule.employee_id,
+            ".PRFX."schedule.customer_id,
+            ".PRFX."schedule.workorder_id,
+            ".PRFX."schedule.start_time,
+            ".PRFX."schedule.end_time,
+            ".PRFX."schedule.notes
+               
+            FROM ".PRFX."schedule
+            LEFT JOIN ".PRFX."user ON ".PRFX."schedule.employee_id   = ".PRFX."user.user_id
+            LEFT JOIN ".PRFX."customer ON ".PRFX."schedule.customer_id = ".PRFX."customer.customer_id                 
+            ".$whereTheseRecords."
+            GROUP BY ".PRFX."schedule.".$order_by."
+            ORDER BY ".PRFX."schedule.".$order_by."
+            ".$direction;            
+    
+    /* Restrict by pages */
+    
+    if($use_pages == true) {
+    
+        // Get Start Record
+        $start_record = (($page_no * $records_per_page) - $records_per_page);
+        
+        // Figure out the total number of records in the database for the given search        
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
+            exit;
+        } else {        
+            $total_results = $rs->RecordCount();            
+            $smarty->assign('total_results', $total_results);
+        }        
+
+        // Figure out the total number of pages. Always round up using ceil()
+        $total_pages = ceil($total_results / $records_per_page);
+        $smarty->assign('total_pages', $total_pages);
+        
+        // Set the page number
+        $smarty->assign('page_no', $page_no);
+        
+        // Assign the Previous page        
+        $previous = ($page_no - 1);        
+        $smarty->assign('previous', $previous);          
+        
+        // Assign the next page        
+        if($page_no == $total_pages) {$next = 0;}
+        elseif($page_no < $total_pages) {$next = ($page_no + 1);}
+        else {$next = $total_pages;}
+        $smarty->assign('next', $next);
+        
+        // Only return the given page's records
+        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
+        
+        // add the restriction on to the SQL
+        $sql .= $limitTheseRecords;
+        
+    } else {
+        
+        // This make the drop down menu look correct
+        $smarty->assign('total_pages', 1);
+        
+    }
+  
+    /* Return the records */
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
+        exit;
+    } else {
+        
+        $records = $rs->GetArray();
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
+        
+    }
+    
+}
+
+
+
+
+
+
 ###############################
 # Display Workorder Schedules #
 ###############################
@@ -722,11 +869,11 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
             // If workorder_id is present enable clickable links
             } else {            
                 if(date('i',$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H&page_tpl=i", $matrixStartTime)."</b></td>\n";
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H&page_tpl=i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H&page_tpl=i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 } else {
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H&page_tpl=i", $matrixStartTime)."</td>\n";
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule:new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H&page_tpl=i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H&page_tpl=i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 }                
             }          
             

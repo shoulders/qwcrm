@@ -23,11 +23,11 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page with the results for the current search (if there is no search term, all results are returned)
-$smarty->assign('usergroups',       get_usergroups($db)                                                                                                                                     );
-$smarty->assign('search_category',  $VAR['search_category']                                                                                                                                 );
-$smarty->assign('search_term',      $VAR['search_term']                                                                                                                                     );
-$smarty->assign('search_active',    $VAR['filter_active']                                                                                                                                   );
-$smarty->assign('search_type',      $VAR['filter_type']                                                                                                                                     );
-$smarty->assign('display_users',    display_users($db, 'user_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_active'], $VAR['filter_type'])   );
+$smarty->assign('usergroups',       get_usergroups($db)                                                                                                                                                 );
+$smarty->assign('search_category',  $VAR['search_category']                                                                                                                                             );
+$smarty->assign('search_term',      $VAR['search_term']                                                                                                                                                 );
+$smarty->assign('filter_status',    $VAR['filter_status']                                                                                                                                               );
+$smarty->assign('filter_usertype',  $VAR['filter_usertype']                                                                                                                                             );
+$smarty->assign('display_users',    display_users($db, 'user_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'], $VAR['filter_usertype'])    );
 
 $BuildPage .= $smarty->fetch('user/search.tpl');

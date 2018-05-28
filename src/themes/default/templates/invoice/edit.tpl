@@ -342,7 +342,7 @@
                                             <tr class="olotd4">
                                                 <td class="row2"><b>{t}Invoice ID{/t}</b></td>
                                                 <td class="row2"><b>{t}Work Order{/t}</b></td>
-                                                <td class="row2"><b>{t}Technician{/t}</b></td> 
+                                                <td class="row2"><b>{t}Employee{/t}</b></td> 
                                                 <td class="row2"><b>{t}Date{/t}</b></td>
                                                 <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
                                                 <td class="row2"><b>{t}Status{/t}</b></td>

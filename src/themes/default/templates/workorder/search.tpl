@@ -38,7 +38,8 @@
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>
                                                                         <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>
-                                                                        <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>                                                                                                                                                                                                                     
+                                                                        <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
+                                                                        <option value="scope"{if $search_category == 'scope'} selected{/if}>{t}Scope{/t}</option>
                                                                         <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
                                                                         <option value="comments"{if $search_category == 'comments'} selected{/if}>{t}Comments{/t}</option> 
                                                                         <option value="resolution"{if $search_category == 'resolution'} selected{/if}>{t}Resolution{/t}</option>                                                                       
@@ -80,9 +81,9 @@
                                                     <table>
                                                         <tr>
                                                             
-                                                            <!-- Left buttons -->                                                            
+                                                            <!-- Left Buttons -->                                                            
                                                             <td>  
-                                                                {if $previous != 0} 
+                                                                {if $previous} 
                                                                     <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
                                                                     <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
@@ -104,7 +105,7 @@
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                {if $next != 0}
+                                                                {if $next}
                                                                     <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
                                                                     <a href="index.php?component=workorder&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}

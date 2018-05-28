@@ -15,7 +15,7 @@
         <td class="olohead"><b>{t}Customer{/t}</b></td>
         <td class="olohead"><b>{t}Scope{/t}</b></td>
         <td class="olohead"><b>{t}Status{/t}</b></td>
-        <td class="olohead"><b>{t}Technician{/t}</b></td>
+        <td class="olohead"><b>{t}Employee{/t}</b></td>
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=w loop=$display_workorders}        
@@ -51,7 +51,7 @@
 
             <!-- Employee -->
             <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Technician Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$display_workorders[w].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$display_workorders[w].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$display_workorders[w].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$display_workorders[w].employee_email}');" onMouseOut="hideddrivetip();">
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Employee Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$display_workorders[w].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$display_workorders[w].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$display_workorders[w].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$display_workorders[w].employee_email}');" onMouseOut="hideddrivetip();">
                 <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_workorders[w].employee_id}">{$display_workorders[w].employee_display_name}</a>
             </td>            
 

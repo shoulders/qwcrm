@@ -43,6 +43,8 @@ function prepare_page_routing($QConfig, &$VAR = null) {
         }
 
     }
+    
+    return;
 
 }
     
@@ -234,6 +236,8 @@ function parseSEF($sef_url, &$VAR = null, $setOnlyVAR = false) {
 
 function check_page_exists($db, $component = null, $page_tpl = null) {
     
+    $one = $component;
+    $two = $page_tpl;
     // Old checking code here
     //if (file_exists(COMPONENTS_DIR.$component.'/'.$page_tpl.'.php')){ ... }
     
@@ -410,7 +414,10 @@ function check_page_acl($db, $component, $page_tpl, $user = null) {
 #  Check page has been internally refered  #
 ############################################
 
-function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null) {    
+function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null) {
+    
+    // If no referer, page was not access via QWcrm and a setup procedure is not occuring
+    if(!getenv('HTTP_REFERER') && $access_rule != 'setup') {return false;}
     
     // Check if a 'SPECIFIC' QWcrm page is the referer
     if($component != null && $page_tpl != null) {       
@@ -420,39 +427,23 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
             
             return true;
             
-        } else {            
+        }
+        
+        // Setup Access Rule - allow direct access (useful for setup routines and some system pages)
+        if(!getenv('HTTP_REFERER') && $access_rule == 'setup') {          
             
-            // Setup Access Rule - Prevent Specified Direct Page Access but allow direct via index.php (useful for setup:install, setup:migrate, setup:upgrade / system pages)
-            if($access_rule == 'setup') {                
-                
-                // No Referer, but page is directly loaded by '', '/', 'index.php'
-                if(getenv('HTTP_REFERER') == '' && preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'relative', 'auto'), '/').'/U', getenv('REQUEST_URI'))) {
-                    
-                    return true;
-                    
-                }
-                
-                // If 'Referring Page' == '', '/', 'index.php'
-                if(preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'full', 'auto'), '/').'/U', getenv('HTTP_REFERER'))) {
-                    
-                    return true;
-                    
-                }
-                
-            }                     
-    
-        }//build_url_from_variables($component, $page_tpl, 'full', 'auto')
-        //(index\.php)?
-        //'(index\.php\?page=)?.*/U'
+            return true;
+
+        }
         
-        // Referring Page does not match and no access rules were triggered to allow access
-        return false;   
-          
+        // Page was not accessed via QWcrm
+        return false;
+                  
         
-    // Check if 'ANY' QWcrm page is the referer   
+    // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
     } else {
         
-        return preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'full', 'auto'), '/').'/U', getenv('HTTP_REFERER'));
+        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', getenv('HTTP_REFERER'));       
         
     }
     

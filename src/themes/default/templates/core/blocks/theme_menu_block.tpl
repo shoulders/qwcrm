@@ -53,11 +53,17 @@
                         {/if}    
                     {/if}                
                 
-                    <!-- Schedules -->
-                    <a href="index.php?component=schedule&page_tpl=day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Schedules{/t}</a>
-                
                     <a href="index.php?component=workorder&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
+
+                </div>
                     
+                <!-- Schedules -->
+                <div>
+                    <span>{t}Schedules{/t}</span>
+                    
+                    <a href="index.php?component=schedule&page_tpl=day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Daily{/t}</a>
+                    <a href="index.php?component=schedule&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
+                                        
                 </div>
 
                 <!-- Invoices -->

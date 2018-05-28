@@ -156,7 +156,7 @@
                         <td valign="top">{$workorder_details.open_date|date_format:$date_format}</td>
                     </tr>                
                     <tr>
-                        <td valign="top" nowrap><b>{t}Technician{/t}</b></td>
+                        <td valign="top" nowrap><b>{t}Employee{/t}</b></td>
                         <td valign="top">{$employee_details.display_name}</td>
                     </tr>
                     <tr>
@@ -188,7 +188,7 @@
                         <td>__________________</td>
                     </tr>
                     <tr>
-                        <td><b>{t}Technician{/t}</b></td>
+                        <td><b>{t}Employee{/t}</b></td>
                         <td>__________________</td>
                     </tr>
                     <tr>
