@@ -690,6 +690,7 @@ INSERT INTO `#__user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Te
 ('invoice:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('payment:options', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),

@@ -44,9 +44,9 @@
             
             <!-- Notes -->            
             <td class="olotd4" nowrap>
-                 {if $display_schedules[a].notes}
-                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_schedules[a].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
-                 {/if}
+                {if $display_schedules[a].notes}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_schedules[a].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {/if}
              </td>
 
             <!-- Action -->

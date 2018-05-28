@@ -319,6 +319,13 @@ _gettext("PAYMENT_OPTIONS_META_KEYWORDS");
 _gettext("PAYMENT_OPTIONS_HELP_TITLE");
 _gettext("PAYMENT_OPTIONS_HELP_CONTENT");
 
+// payment:options
+_gettext("PAYMENT_SEARCH_PAGE_TITLE");
+_gettext("PAYMENT_SEARCH_META_DESCRIPTION");
+_gettext("PAYMENT_SEARCH_META_KEYWORDS");
+_gettext("PAYMENT_SEARCH_HELP_TITLE");
+_gettext("PAYMENT_SEARCH_HELP_CONTENT");
+
 /* Refund */
 
 // refund:details

@@ -66,10 +66,6 @@ function update_acl($db, $permissions) {
     // Cycle through the submitted permissions and update the database
     foreach($permissions as $page_name => $page_permission) {
         
-        // Compensate for non 'Page ACL' variables being submitted - skip the record
-        if($page_name == 'page') { continue; }
-        if($page_name == 'submit') { continue; } 
-                
         // Enforce Administrators always have access to everything
         $page_permission['Administrator'] = '1';
 
@@ -84,7 +80,7 @@ function update_acl($db, $permissions) {
                 `Guest`         ='". $page_permission['Guest']          ."',
                 `Public`        ='". $page_permission['Public']         ."'
                 WHERE `page`    ='". $page_name."';";
-            
+          
         if(!$rs = $db->execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
             exit;    
@@ -568,6 +564,7 @@ function reset_acl_permissions($db) {
                 ('invoice:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
                 ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
                 ('payment:options', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
                 ('refund:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('refund:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('refund:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),

@@ -18,7 +18,7 @@ if($VAR['submit'] == 'reset_default') {
 
 // Update the ACL permissions if submitted
 if($VAR['submit'] == 'update') {
-    update_acl($db, $VAR);    
+    update_acl($db, $VAR['qwpermissions']);    
     $smarty->assign('information_msg', _gettext("Permissions Updated."));    
 }
     
