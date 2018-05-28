@@ -32,14 +32,12 @@
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_payments[p].invoice_id}">{$display_payments[p].invoice_id}</a></td>
             
             <!-- Employee -->
-            <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Employee Info{/t}</b></center><hr><b>{t}Employee{/t}: </b>{$display_payments[p].employee_display_name}<br><b>{t}Mobile{/t}: </b>{$display_payments[p].employee_work_mobile_phone}<br><b>{t}Home{/t}: </b>{$display_payments[p].employee_home_primary_phone}<br><b>{t}Email{/t}: </b>{$display_payments[p].employee_email}');" onMouseOut="hideddrivetip();">
+            <td class="olotd4" nowrap>                
                 <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_payments[p].employee_id}">{$display_payments[p].employee_display_name}</a>
             </td>
             
             <!-- Customer -->
-            <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$display_payments[p].customer_first_name} {$display_payments[p].customer_last_name}<br><b>{t}Phone{/t}: </b>{$display_payments[p].customer_phone}<br><b>{t}Mobile{/t}: </b>{$display_payments[p].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$display_payments[p].customer_phone}<br><b>{t}Address{/t}: </b><br>{$display_payments[p].customer_address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>{$display_payments[p].customer_city}<br>{$display_payments[p].customer_state}<br>{$display_payments[p].customer_zip}<br>{$display_payments[p].customer_country}');" onMouseOut="hideddrivetip();">
+            <td class="olotd4" nowrap>                
                 <a class="link1" href="index.php?component=customer&page_tpl=details&customer_id={$display_payments[p].customer_id}">{$display_payments[p].customer_display_name}</a>
             </td>            
 
