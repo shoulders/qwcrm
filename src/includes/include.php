@@ -131,7 +131,7 @@ function update_user_last_active($db, $user_id = null) {
 /* Other Functions */
 
 #####################################
-#   force_page - Page Redirector    #
+#   force_page - Page Redirector    #  // can send variables as a get string or variable
 #####################################
 
 /*
@@ -139,11 +139,11 @@ function update_user_last_active($db, $user_id = null) {
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($component, $page_tpl = null, $variables = null, $method = null, $url_type = null) {
+function force_page($component, $page_tpl = null, $variables = null, $method = 'post', $url_type = 'auto') {
     
-    // Default transport method - When i set $url_type I still want to use default $method (i.e. administrator:config)
-    if ($method == null) { $method = 'post'; }
-
+    //http_build_query ()
+    // parse_str()
+    
     // Set URL type to be used
     if ($url_type == 'sef') { $makeSEF = true; }
     elseif ($url_type == 'nonsef') { $makeSEF = false; }
@@ -162,11 +162,14 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
     
     if($method == 'get' || $method == 'url') {
         
+        // If variables exist and are in an array convert into an encoded string
+        if($variables && is_array($variables)) { $variables = http_build_query($variables); }
+        
         // If home, dashboard or maintenance do not show module:page
         if($component == 'index.php') { 
             
             // If there are variables, prepare them
-            if($variables) {$variables = '?'.$variables; }
+            if($variables) { $variables = '?'.$variables; }
             
             // Build URL with/without variables
             $url = QWCRM_BASE_PATH.'index.php'.$variables;
@@ -208,10 +211,14 @@ function force_page($component, $page_tpl = null, $variables = null, $method = n
     if($method == 'post') {
         
         // If there are variables, prepare them
-        if($variables) {          
-
-            // Parse the URL into an array            
-            parse_str($variables, $variable_array);
+        if($variables) {
+            
+            // If variables are in an encoded string convert to an array
+            if(is_string($variables)) {
+                parse_str($variables, $variable_array);
+            } else {
+                $variable_array = $variables;
+            }
 
             // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
             foreach($variable_array as $key => $value) {                    
@@ -284,21 +291,25 @@ function perform_redirect($url, $type = 'header') {
 
 function force_error_page($error_component, $error_page_tpl, $error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
     
+    // Prepare Variables
+    $variables['error_component']     = prepare_error_data('error_component', $error_component);
+    $variables['error_page_tpl']      = prepare_error_data('error_page_tpl', $error_page_tpl);
+    $variables['error_type']          = $error_type;
+    $variables['error_location']      = prepare_error_data('error_location', $error_location);
+    $variables['error_php_function']  = prepare_error_data('error_php_function', $error_php_function);
+    $variables['error_database']      = $error_database ;
+    $variables['error_sql_query']     = prepare_error_data('error_sql_query', $error_sql_query);
+    $variables['error_msg']           = $error_msg;
+    
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
     if(QFactory::getConfig()->get('error_page_raw_output')) {
         
-        // make sure the page object is empty
+        // Create and empty page object
         $BuildPage = '';
-
-        $VAR['error_component']     = prepare_error_data('error_component', $error_component);
-        $VAR['error_page_tpl']      = prepare_error_data('error_page_tpl', $error_page_tpl);
-        $VAR['error_type']          = $error_type;
-        $VAR['error_location']      = prepare_error_data('error_location', $error_location);
-        $VAR['error_php_function']  = prepare_error_data('error_php_function', $error_php_function);
-        $VAR['error_database']      = $error_database ;
-        $VAR['error_sql_query']     = prepare_error_data('error_sql_query', $error_sql_query);
-        $VAR['error_msg']           = $error_msg;
-
+        
+        // Load error variables for BuildPage
+        $VAR = $variables;
+        
         // Error page main content and processing logic
         require(COMPONENTS_DIR.'core/error.php');
 
@@ -307,21 +318,12 @@ function force_error_page($error_component, $error_page_tpl, $error_type, $error
         exit;
     
     // This will show errors within the template as normal - but occassionaly can cause boot loops during development
-    } else {
-        
-        // Pass varibles to the error page after preperation
-        postEmulationWrite('error_component',    prepare_error_data('error_component', $error_component)        );
-        postEmulationWrite('error_page_tpl',     prepare_error_data('error_page_tpl', $error_page_tpl)          );
-        postEmulationWrite('error_type',         $error_type                                                    );
-        postEmulationWrite('error_location',     prepare_error_data('error_location', $error_location)          );
-        postEmulationWrite('error_php_function', prepare_error_data('error_php_function', $error_php_function)  );
-        postEmulationWrite('error_database',     $error_database                                                );
-        postEmulationWrite('error_sql_query',    prepare_error_data('error_sql_query', $error_sql_query)        );
-        postEmulationWrite('error_msg',          $error_msg                                                     );    
+    } else {  
 
         // Load Error Page
-        force_page('core', 'error');
+        force_page('core', 'error', $variables, 'post', 'auto');
         exit;
+        
     }
     
 }
