@@ -10,7 +10,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{t}Status for Workorder{/t} {$workorder_id}</td>
+                    <td class="menuhead2" width="80%">{t}Status{/t} {t}for{/t} <a href="index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}">{t}Work order{/t} {$workorder_id}</a></td>                    
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_STATUS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_STATUS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
