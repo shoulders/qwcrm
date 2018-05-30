@@ -235,16 +235,18 @@ function parseSEF($sef_url, &$VAR = null, $setOnlyVAR = false) {
 #######################
 
 function check_page_exists($db, $component = null, $page_tpl = null) {
+
+    // If a valid page has not been submitted
+    if($component == null || $page_tpl == null) { return false; }
+
+    // Check the controller file exists
+    if (!file_exists(COMPONENTS_DIR.$component.'/'.$page_tpl.'.php')) { return false;  }
     
-    $one = $component;
-    $two = $page_tpl;
-    // Old checking code here
-    //if (file_exists(COMPONENTS_DIR.$component.'/'.$page_tpl.'.php')){ ... }
-    
+    // Check to see if the page exists in the ACL
     $sql = "SELECT page FROM ".PRFX."user_acl WHERE page = ".$db->qstr($component.':'.$page_tpl);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check is a page exists."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
         exit;
     } else {
         
