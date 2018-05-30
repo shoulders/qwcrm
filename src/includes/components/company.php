@@ -138,7 +138,7 @@ function update_company_details($db, $VAR) {
         delete_logo($db);        
     }
     
-    // A new logo is supplied, delete old one and upload
+    // A new logo is supplied, delete old and upload new
     if($_FILES['logo']['name']) {
         delete_logo($db);
         $new_logo_filepath = upload_logo($db);
@@ -185,6 +185,10 @@ function update_company_details($db, $VAR) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         exit;
     } else {
+        
+            
+        // Refresh company logo
+        $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details($db, 'logo'));
         
         // Assign success message
         $smarty->assign('information_msg', _gettext("Company details updated."));
@@ -265,8 +269,15 @@ function check_start_end_times($start_time, $end_time) {
 
 function delete_logo($db) {
     
-    if(get_company_details($db, 'logo')) {            
-        unlink(get_company_details($db, 'logo'));
+    // Only delete a logo if there is one set
+    if(get_company_details($db, 'logo')) {
+        
+        // Prepare the correct file name from the entry in the database
+        $logo_file = parse_url(MEDIA_DIR . get_company_details($db, 'logo'), PHP_URL_PATH);
+        
+        // Perform the deletion
+        unlink($logo_file);
+        
     }
     
 }
@@ -308,7 +319,8 @@ function upload_logo($db) {
                 move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);              
             }
             
-            return MEDIA_DIR.$new_logo_filename;
+            // return the filename with a random query to allow for caching issues
+            return $new_logo_filename . '?' . strtolower(JUserHelper::genRandomPassword(3));
             
         // If file is invalid then load the error page  
         } else {

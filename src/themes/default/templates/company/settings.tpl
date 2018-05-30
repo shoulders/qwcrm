@@ -63,7 +63,11 @@
                                                                                     <td align="right"><b>{t}Logo{/t}:</b></td>
                                                                                     <td>
                                                                                         <input name="logo" type="file" accept=".png, .jpg, .jpeg, .gif">
-                                                                                        <img src="{$company_details.logo}" height="50px" alt="{t}Company Logo{/t}">                                                                
+                                                                                        {if $company_details.logo}
+                                                                                            <img src="{$company_logo}" height="50px" alt="{t}Company Logo{/t}">
+                                                                                        {else}
+                                                                                            {t}No company logo has been set!{/t}
+                                                                                        {/if}
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>

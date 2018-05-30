@@ -696,7 +696,7 @@ function is_user_active($db, $user_id) {
 }
 
 #####################################
-#    reset a user's password        #    
+#    Reset a user's password        #    
 #####################################
 
 function reset_user_password($db, $user_id, $password = null) { 
@@ -734,7 +734,7 @@ function reset_user_password($db, $user_id, $password = null) {
 }
 
 #####################################
-#    reset all user's passwords     #   // used for migrations or security
+#    Reset all user's passwords     #   // used for migrations or security
 #####################################
 
 function reset_all_user_passwords($db) { 

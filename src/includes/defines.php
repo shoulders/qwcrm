@@ -27,8 +27,6 @@ define('LANGUAGE_DIR',              'language/'                         );
 define('LIBRARIES_DIR',             'libraries/'                        );
 define('LOGS_DIR',                  'logs/'                             );
 define('PLUGINS_DIR',               'plugins/'                          );
-
-
 define('SETUP_DIR',                 INCLUDES_DIR.'components/setup/'    );
 define('QFRAMEWORK_DIR',            LIBRARIES_DIR.'qframework/'         );
 define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'             );
@@ -36,6 +34,9 @@ define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'             );
 // Smarty
 define('SMARTY_CACHE_DIR',          CACHE_DIR.'smarty/cache/'           );
 define('SMARTY_COMPILE_DIR',        CACHE_DIR.'smarty/compile/'         );
+
+// Asset Folders
+define('QW_MEDIA_DIR',              QWCRM_BASE_PATH.MEDIA_DIR           );
 
 // Theme Folders
 if($QConfig->theme_name) {

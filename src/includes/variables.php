@@ -96,8 +96,7 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 ##########################################################################
 
 // QWcrm System Folders
-$smarty->assign('includes_dir',             INCLUDES_DIR                );      // set includes directory  // Do I need this one
-$smarty->assign('media_dir',                MEDIA_DIR                   );      // set media directory
+$smarty->assign('media_dir',                QW_MEDIA_DIR                   );      // set media directory
 
 // QWcrm Theme Directory Template Variables
 $smarty->assign('theme_dir',                THEME_DIR                   );      // set theme directory
@@ -125,8 +124,8 @@ $smarty->assign('user_id',                  $user_id                    );
 
 // Used throughout the site
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    $smarty->assign('currency_sym', get_company_details($db,    'currency_symbol')  );
-    $smarty->assign('company_logo', get_company_details($db,    'logo')             );
+    $smarty->assign('currency_sym', get_company_details($db, 'currency_symbol')     );
+    $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details($db, 'logo')    );
     $smarty->assign('date_format',  DATE_FORMAT                                     );
 }
 

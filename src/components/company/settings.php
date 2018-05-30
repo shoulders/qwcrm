@@ -17,7 +17,7 @@ if(isset($VAR['submit'])) {
     update_company_details($db, $VAR);    
     
 }
-     
+
 // Build the page
 $smarty->assign('company_details', get_company_details($db) );
 $BuildPage .= $smarty->fetch('company/settings.tpl');
