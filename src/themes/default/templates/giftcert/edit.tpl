@@ -31,6 +31,10 @@
                                     <form method="post" action="index.php?component=giftcert&page_tpl=edit&giftcert_id={$giftcert_id}" name="giftcert_edit" id="giftcert_edit">
                                         <table>
                                             <tr>
+                                                <td><b>{t}Gift Certificate ID{/t}</b></td>
+                                                <td>{$giftcert_details.giftcert_id}</td>
+                                            </tr>                                            
+                                            <tr>
                                                 <td><b>{t}Gift Certificate Code{/t}</b></td>
                                                 <td>{$giftcert_details.giftcert_code}</td>
                                             </tr>
