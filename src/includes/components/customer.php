@@ -73,14 +73,14 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
         $smarty->assign('total_pages', $total_pages);
 
         // Assign the Previous page        
-        $previous = ($page_no - 1);        
-        $smarty->assign('previous', $previous);          
+        $previous_page_no = ($page_no - 1);        
+        $smarty->assign('previous_page_no', $previous_page_no);          
         
         // Assign the next page        
-        if($page_no == $total_pages) {$next = 0;}
-        elseif($page_no < $total_pages) {$next = ($page_no + 1);}
-        else {$next = $total_pages;}
-        $smarty->assign('next', $next);
+        if($page_no == $total_pages) {$next_page_no = 0;}
+        elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
+        else {$next_page_no = $total_pages;}
+        $smarty->assign('next_page_no', $next_page_no);
         
         // Only return the given page's records
         $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;

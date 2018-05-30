@@ -83,9 +83,9 @@
                                                             
                                                             <!-- Left Buttons -->                                                            
                                                             <td>  
-                                                                {if $previous} 
+                                                                {if $previous_page_no} 
                                                                     <a href="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>
                                                     
@@ -105,8 +105,8 @@
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                {if $next}
-                                                                    <a href="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                {if $next_page_no}
+                                                                    <a href="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
                                                                     <a href="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
