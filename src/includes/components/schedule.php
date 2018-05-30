@@ -87,17 +87,11 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
     /* The SQL code */
     
     $sql =  "SELECT
+            ".PRFX."schedule.*,
+                
             ".PRFX."customer.display_name AS customer_display_name,       
             
-            ".PRFX."user.display_name AS employee_display_name,
-                            
-            ".PRFX."schedule.schedule_id,
-            ".PRFX."schedule.employee_id,
-            ".PRFX."schedule.customer_id,
-            ".PRFX."schedule.workorder_id,
-            ".PRFX."schedule.start_time,
-            ".PRFX."schedule.end_time,
-            ".PRFX."schedule.notes
+            ".PRFX."user.display_name AS employee_display_name           
                
             FROM ".PRFX."schedule
             LEFT JOIN ".PRFX."user ON ".PRFX."schedule.employee_id   = ".PRFX."user.user_id

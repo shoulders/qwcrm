@@ -329,16 +329,18 @@ function force_error_page($error_component, $error_page_tpl, $error_type, $error
 }
 
 ###########################################
-#  POST Emulation - for server to server  #  // might only work for logged in users, need to check, but fails on logout because session data is destroyed?
+#  POST Emulation - for server to server  #  // Might only work for logged in users, need to check, but fails on logout because session data is destroyed?
 ###########################################
 
 /*
  * this writes into the session registry/$data
- * the register_shutdown_function() in native.php registers teh save()function to be run as the last thing run by the script
- * $post_emulation_varible to registry code in the save() function in native.php - does work but i cannot control if the post varibles stay in the databse store
+ * the register_shutdown_function() in native.php registers the function save() to be run as the last thing run by the script
+ * $post_emulation_variable is created in the session registry.
+ * It does work but i cannot control if the post varibles stay in the database store. Is this correct???
+ * There is a timer to prevent abuse of this emulation and to keep messages valid. It is set to 5 seconds.
  */
 
-// this writes to the $post_emulation_varible and then the varible to the store
+// This writes to the $post_emulation_varible and then the varible to the store
 function postEmulationWrite($key, $value) {
     
     // Refresh the store timer to keep it fresh

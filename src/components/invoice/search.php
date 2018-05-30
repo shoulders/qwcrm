@@ -24,6 +24,6 @@ $smarty->assign('search_category',  $VAR['search_category']                     
 $smarty->assign('search_term',      $VAR['search_term']                                                                                 );
 $smarty->assign('filter_status',    $VAR['filter_status']                                                                               );
 $smarty->assign('invoice_statuses', get_invoice_statuses($db)                                                                           );
-$smarty->assign('display_invoices', display_invoices($db, 'invoice_id', 'DESC', true, $VAR['page_no'], '5', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'])   );
+$smarty->assign('display_invoices', display_invoices($db, 'invoice_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'])   );
 
 $BuildPage .= $smarty->fetch('invoice/search.tpl');

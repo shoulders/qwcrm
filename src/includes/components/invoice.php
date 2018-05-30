@@ -40,8 +40,14 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     // Restrict results by search category (customer) and search term
     if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
     
-   // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";} 
+    // Restrict results by search category (employee) and search term
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}
+    
+    // Restrict results by search category (labour items / labour descriptions) and search term
+    elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE '%$search_term%'";} 
+
+    // Restrict results by search category (parts items / parts descriptions) and search term
+    elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE '%$search_term%'";}    
     
     // Restrict results by search category and search term
     elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice.$search_category LIKE '%$search_term%'";}
@@ -79,21 +85,57 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     $sql = "SELECT        
         ".PRFX."invoice.*,
             
-        ".PRFX."user.display_name AS employee_display_name,
-        ".PRFX."user.work_primary_phone AS employee_work_primary_phone,
-        ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
-        ".PRFX."user.home_mobile_phone AS employee_home_mobile_phone,
-            
         ".PRFX."customer.display_name AS customer_display_name,
         ".PRFX."customer.first_name AS customer_first_name,
         ".PRFX."customer.last_name AS customer_last_name,
         ".PRFX."customer.primary_phone AS customer_phone,
         ".PRFX."customer.mobile_phone AS customer_mobile_phone,
-        ".PRFX."customer.fax AS customer_fax
-       
+        ".PRFX."customer.fax AS customer_fax,
+            
+        ".PRFX."user.display_name AS employee_display_name,
+        ".PRFX."user.work_primary_phone AS employee_work_primary_phone,
+        ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
+        ".PRFX."user.home_mobile_phone AS employee_home_mobile_phone,
+        
+        labour.labour_items,
+        parts.parts_items
+
         FROM ".PRFX."invoice
+            
+        LEFT JOIN (
+            SELECT ".PRFX."invoice_labour.invoice_id,            
+            GROUP_CONCAT(
+                CONCAT(".PRFX."invoice_labour.qty, ' x ', ".PRFX."invoice_labour.description)                
+                ORDER BY ".PRFX."invoice_labour.invoice_labour_id
+                ASC
+                SEPARATOR '|||'                
+            ) AS labour_items           
+            FROM ".PRFX."invoice_labour
+            GROUP BY ".PRFX."invoice_labour.invoice_id
+            ORDER BY ".PRFX."invoice_labour.invoice_id
+            ASC            
+            ) AS labour
+        ON ".PRFX."invoice.invoice_id = labour.invoice_id 
+        
+        LEFT JOIN (
+            SELECT 
+            ".PRFX."invoice_parts.invoice_id,            
+            GROUP_CONCAT(
+                CONCAT(".PRFX."invoice_parts.qty, ' x ', ".PRFX."invoice_parts.description)                
+                ORDER BY ".PRFX."invoice_parts.invoice_parts_id
+                ASC
+                SEPARATOR '|||'                
+            ) AS parts_items
+            FROM ".PRFX."invoice_parts
+            GROUP BY ".PRFX."invoice_parts.invoice_id
+            ORDER BY ".PRFX."invoice_parts.invoice_id
+            ASC            
+            ) AS parts
+        ON ".PRFX."invoice.invoice_id = parts.invoice_id 
+
+        LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.customer_id = ".PRFX."customer.customer_id         
         LEFT JOIN ".PRFX."user ON ".PRFX."invoice.employee_id = ".PRFX."user.user_id
-        LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.customer_id = ".PRFX."customer.customer_id
+        
         ".$whereTheseRecords."
         GROUP BY ".PRFX."invoice.".$order_by."         
         ORDER BY ".PRFX."invoice.".$order_by."
@@ -159,7 +201,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
             return false;
             
         } else {
-            
+
             return $records;
             
         }

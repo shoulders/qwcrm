@@ -39,7 +39,10 @@
                                                                         <option value="date"{if $search_category == 'date'} selected{/if}>{t}Date{/t}</option>
                                                                         <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>                                                                                                                                                                                                                     
-                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross{/t}</option>                                                                        
+                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross{/t}</option>
+                                                                        <option disabled>----------</option>                                                                        
+                                                                        <option value="labour_items"{if $search_category == 'labour_items'} selected{/if}>{t}Labour{/t}</option>
+                                                                        <option value="parts_items"{if $search_category == 'parts_items'} selected{/if}>{t}Parts{/t}</option>                                                                        
                                                                     </select>
                                                                    <br />
                                                                    <b>{t}for{/t}</b>
