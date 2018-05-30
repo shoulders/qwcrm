@@ -242,7 +242,10 @@
                                                                     <!-- Submit Button -->
                                                                     
                                                                     <tr>
-                                                                        <td colspan="2"><input name="submit" class="olotd5" style="margin-left: 40px;" value="{t}Submit{/t}" type="submit"></td>
+                                                                        <td colspan="2">
+                                                                            <input name="submit" class="olotd5" style="margin-left: 40px;" value="{t}Submit{/t}" type="submit">
+                                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=user&page_tpl=search';" type="button">
+                                                                        </td>
                                                                     </tr>
                                                                     
                                                                 </table>                                                                

@@ -153,10 +153,10 @@
                                                                         </tr>                                                                        
                                                                     </tbody>
                                                                         <tr>
-                                                                            <td></td>
-                                                                            <td>
+                                                                            <td colspan="2">
                                                                                 <input name="submit" class="olotd5" value="{t}Submit{/t}" type="submit">
                                                                                 <input name="submitandnew" class="olotd5" value="{t}Submit and New{/t}" type="submit">
+                                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=refund&page_tpl=search';" type="button">
                                                                             </td>
                                                                         </tr>
                                                                 </table>

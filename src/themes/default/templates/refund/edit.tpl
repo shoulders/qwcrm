@@ -107,9 +107,10 @@
                                                             <td><textarea class="olotd5" name="notes" cols="50" rows="15">{$refund_details.notes}</textarea></td>
                                                         </tr>                                                        
                                                         <tr>
-                                                            <td></td>
-                                                            <td><button type="submit" name="submit" value="update">{t}Update{/t}</button></td>
-                                                            
+                                                            <td colspan="2">
+                                                                <button type="submit" name="submit" value="update">{t}Update{/t}</button>
+                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=refund&page_tpl=details&refund_id={$refund_id}';" type="button">
+                                                            </td>                                                            
                                                         </tr>
                                                     </form>
                                                     

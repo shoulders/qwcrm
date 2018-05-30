@@ -152,10 +152,10 @@
                                                                         <td><textarea name="notes" class="olotd5" cols="50" rows="15"></textarea></td>
                                                                     </tr>                                                                                                                                       
                                                                     <tr>
-                                                                        <td></td>
-                                                                        <td>
+                                                                        <td colspan="2">
                                                                             <input name="submit" class="olotd5" value="{t}Submit{/t}" type="submit">
                                                                             <input name="submitandnew" class="olotd5" value="{t}Submit and New{/t}" type="submit">
+                                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=expense&page_tpl=search';" type="button">
                                                                         </td>
                                                                     </tr>
                                                                 </table>

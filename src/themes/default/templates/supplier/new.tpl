@@ -131,6 +131,7 @@
                                                                             <td>
                                                                                 <input class="olotd5" name="submit" value="{t}Submit{/t}" type="submit">
                                                                                 <input class="olotd5" name="submitandnew" value="{t}Submit and New{/t}" type="submit">
+                                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=supplier&page_tpl=search';" type="button">
                                                                             </td>
                                                                         </tr>
                                                                 </table>

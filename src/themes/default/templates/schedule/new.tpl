@@ -81,6 +81,7 @@
                                                                             <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                                                             <input type="hidden" name="employee_id" value="{$employee_id}">
                                                                             <input type="submit" name="submit" value="{t}Submit{/t}">
+                                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';" type="button">
                                                                         </td>
                                                                     </tr>
                                                                 </table>

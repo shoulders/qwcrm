@@ -150,8 +150,10 @@
                                                                             <td colspan="2"><textarea name="notes" class="olotd5" cols="50" rows="20"></textarea></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td></td>
-                                                                            <td><input class="olotd5" name="submit" value="Submit" type="submit" /></td>
+                                                                            <td colspan="2">
+                                                                                <input class="olotd5" name="submit" value="Submit" type="submit" />
+                                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=search';" type="button">
+                                                                            </td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

@@ -681,6 +681,7 @@
                                                     <input type="hidden" name="sub_total" value="{$invoice_details.sub_total|string_format:"%.2f"}">
                                                     {if !$display_transactions}
                                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=invoice&page_tpl=search';" type="button">
                                                     {/if}
                                                 </td>
                                                 <td align="right" width="75%"></td>

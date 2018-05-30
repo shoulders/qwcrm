@@ -35,7 +35,10 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><input type="submit" name="submit" value="Submit"></td>
+                                                <td colspan="2">
+                                                    <input type="submit" name="submit" value="Submit">&nbsp;
+                                                    <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php';" type="button">
+                                                </td>
                                             </tr>    
                                         </table>
                                         {t}These settings are used to display the start and stop times of the schedule.{/t}

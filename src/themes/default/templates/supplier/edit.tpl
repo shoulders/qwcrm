@@ -124,8 +124,10 @@
                                                             <td><textarea name="notes" class="olotd5" cols="50" rows="20">{$supplier_details.notes}</textarea></td>
                                                         </tr>
                                                         <tr>
-                                                            <td></td>
-                                                            <td><input class="olotd5" name="submit" type="submit" value="{t}Update{/t}" /></td>
+                                                            <td colspan="2">
+                                                                <input class="olotd5" name="submit" type="submit" value="{t}Update{/t}" />
+                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}';" type="button">
+                                                            </td>
                                                         </tr>                                                        
                                                     </table>
                                                 </form>

@@ -658,7 +658,8 @@
                     
                     <tr>
                         <td colspan="2" style="text-align: center;">
-                            <button class="olotd5" type="submit" name="submit" value="update">{t}Update{/t}</button>
+                            <button class="olotd5" type="submit" name="submit" value="update">{t}Update{/t}</button>&nbsp;
+                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php';" type="button">
                         </td>
                     </tr> 
                     

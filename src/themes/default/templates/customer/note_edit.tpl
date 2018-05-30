@@ -49,6 +49,7 @@
                                         <br>
                                         <input type="hidden" name="customer_id" value="{$customer_note.customer_id}">
                                         <input class="olotd4" name="submit" value="{t}Submit{/t}" type="submit">
+                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_note.customer_id}';" type="button">                                        
                                     </form>
                                     <br>
                                 </td>

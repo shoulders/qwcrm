@@ -864,10 +864,10 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
             } else {            
                 if(date('i',$matrixStartTime) == 0) {
                     $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H&page_tpl=i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 } else {
                     $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H&page_tpl=i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 }                
             }          
             

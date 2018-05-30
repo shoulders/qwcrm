@@ -74,6 +74,7 @@
                                             <tr>
                                                 <td colspan="2">                                                    
                                                     <input type="submit" name="submit" value="Submit">
+                                                    <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=giftcert&page_tpl=details&giftcert_id={$giftcert_id}';" type="button">
                                                 </td>
                                             </tr>
                                         </table>

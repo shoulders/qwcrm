@@ -18,7 +18,7 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}New Gift Certificate for{/t} {$customer_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}New Gift Certificate for{/t} {t}Customer{/t} {$customer_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}GIFTCERT_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}GIFTCERT_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
@@ -71,6 +71,7 @@
                                                 <td colspan="2">
                                                     <input name="customer_id" value="{$customer_id}" type="hidden" />
                                                     <input type="submit" name="submit" value="Submit">
+                                                    <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_id}';" type="button">
                                                 </td>
                                             </tr>
                                         </table>

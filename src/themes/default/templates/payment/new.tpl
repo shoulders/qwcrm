@@ -31,6 +31,14 @@
                                     {include file='payment/blocks/new_invoice_details_block.tpl'}
                                 </td>
                             </tr>
+                            
+                            <!-- Cancel Button -->
+                            <tr>
+                                <td>                                                
+                                    <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';" type="button">
+                                </td>
+                            </tr>
+                            
 
                             <!-- Transactions -->
                             {if $display_transactions}

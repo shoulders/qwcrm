@@ -33,7 +33,8 @@
                                             </tr>
                                         </table>
                                         <br>
-                                        <input class="olotd4" name="submit" value="submit" type="submit">    
+                                        <input class="olotd4" name="submit" value="submit" type="submit">
+                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_id}';" type="button">                                        
                                     </form>
                                     <br>
                                 </td>

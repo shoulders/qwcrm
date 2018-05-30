@@ -150,8 +150,10 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td></td>
-                                                            <td><input class="olotd5" name="submit" value="Update" type="submit"></td>
+                                                            <td colspan="2">
+                                                                <input class="olotd5" name="submit" value="Update" type="submit">
+                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_id}';" type="button">
+                                                            </td>
                                                         </tr>
                                                     </table>                                                    
                                                 </form>                                                

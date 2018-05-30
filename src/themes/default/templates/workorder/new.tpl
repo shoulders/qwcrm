@@ -109,7 +109,8 @@
                                                                     <tr>
                                                                         <td>
                                                                             <input name="customer_id" value="{$customer_id}" type="hidden">
-                                                                            <button type="submit" name="submit" value="submit">{t}Submit{/t}</button> 
+                                                                            <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=workorder&page_tpl=search';" type="button">
                                                                         </td>
                                                                     </tr>
                                                                 </table>

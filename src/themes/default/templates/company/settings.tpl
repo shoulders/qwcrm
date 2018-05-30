@@ -339,7 +339,10 @@
                                 <!-- Update Button -->
 
                                 <tr>
-                                    <td><input class="olotd5" type="submit" name="submit" value="submit"></td>
+                                    <td>
+                                        <input class="olotd5" type="submit" name="submit" value="submit">&nbsp;
+                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php';" type="button">
+                                    </td>
                                 </tr>  
 
                             </table>

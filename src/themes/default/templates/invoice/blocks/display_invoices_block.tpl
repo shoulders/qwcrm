@@ -25,8 +25,8 @@
         <td class="olohead" nowrap>{t}Balance{/t}</td>
     </tr>
     {section name=i loop=$display_invoices}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=invoice&page_tpl=edit&invoice_id={$display_invoices[i].invoice_id}';" class="row1">
-            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=edit&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a></td>
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}';" class="row1">
+            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_invoices[i].workorder_id}">{$display_invoices[i].workorder_id}</a></td>
             <td class="olotd4" nowrap>{$display_invoices[i].date|date_format:$date_format}</td>
             <td class="olotd4" nowrap>{$display_invoices[i].due_date|date_format:$date_format}</td>

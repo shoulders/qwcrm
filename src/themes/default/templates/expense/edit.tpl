@@ -105,8 +105,10 @@
                                                         <td><textarea name="notes" class="olotd5" cols="50" rows="15">{$expense_details.notes}</textarea></td>
                                                     </tr>                                                    
                                                     <tr>
-                                                        <td></td>
-                                                        <td><input name="submit" class="olotd5" value="{t}Update{/t}" type="submit"></td>
+                                                        <td colspan="2">
+                                                            <input name="submit" class="olotd5" value="{t}Update{/t}" type="submit">
+                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=expense&page_tpl=details&expense_id={$expense_id}';" type="button">
+                                                        </td>
                                                     </tr>                                        
                                                 </table>
                                             </form>                                            
