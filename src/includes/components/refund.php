@@ -28,36 +28,38 @@ defined('_QWEXEC') or die;
 #     Display refunds       #
 #############################
 
-function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
+function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_type = null, $filter_payment_method = null) {
     
     global $smarty;
     
-    /* Filter the Records */    
+    /* Records Search */    
     
-    // Restrict by Search Category
-    if($search_category != '') {
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."refund.refund_id\n";
+    
+    // Restrict results by search category and search term
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."refund.$search_category LIKE '%$search_term%'";} 
+    
+    /* Filter the Records */  
+    
+    // Restrict by Type
+    if($filter_type) { $whereTheseRecords .= " AND ".PRFX."refund.type= ".$db->qstr($filter_type);}
         
-        // Filter by search category
-        $whereTheseRecords = " WHERE $search_category";    
-        
-        // Filter by search term
-        $likeTheseRecords = " LIKE '%".$search_term."%'";
-        
-    }
+    // Restrict by Method
+    if($filter_payment_method) { $whereTheseRecords .= " AND ".PRFX."refund.payment_method= ".$db->qstr($filter_payment_method);} 
     
     /* The SQL code */
     
     $sql =  "SELECT * 
             FROM ".PRFX."refund                                                   
-            ".$whereTheseRecords."
-            ".$likeTheseRecords."
+            ".$whereTheseRecords."            
             GROUP BY ".PRFX."refund.".$order_by."
             ORDER BY ".PRFX."refund.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if($use_pages) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);

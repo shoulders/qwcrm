@@ -30,28 +30,30 @@ defined('_QWEXEC') or die;
 #    Display Users                  #
 #####################################
 
-function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $user_type = null, $usergroup = null) {
+function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $filter_user_type = null, $usergroup = null) {
     
     global $smarty;
 
-    /* Filter the Records */
+    /* Records Search */
         
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."user.user_id";    
+    $whereTheseRecords = "WHERE ".PRFX."user.user_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";}    
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";}
+    
+    /* Filter the Records */
         
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."user.active=".$db->qstr($status);}  
+    if($filter_status) {$whereTheseRecords .= " AND ".PRFX."user.active=".$db->qstr($filter_status);}  
     
     // Restrict results by user type
-    if($user_type != null) {
+    if($filter_user_type) {
         
-        if($user_type == 'customer') { 
+        if($filter_user_type == 'customer') { 
             $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('7');}            
         
-        if($user_type == 'employee') {
+        if($filter_user_type == 'employee') {
             
             $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('1');
             $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('2');
@@ -65,7 +67,7 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
     }
          
     // Restrict results by usergroup
-    if($usergroup != null) {$whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr($usergroup);}
+    if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr($usergroup);}
     
     /* The SQL code */    
     
@@ -81,7 +83,7 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
    
     /* Restrict by pages */
         
-    if($use_pages == true) {
+    if($use_pages) {
         
         // Get the start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);        

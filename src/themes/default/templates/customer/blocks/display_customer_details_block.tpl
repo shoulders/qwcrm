@@ -79,10 +79,7 @@
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}Active{/t}</b></td>
-                                            <td class="menutd">
-                                                {if $customer_details.active == 0}{t}Blocked{/t}{/if}
-                                                {if $customer_details.active == 1}{t}Active{/t}{/if}                                                                                               
-                                            </td>
+                                            <td class="menutd">{if $customer_details.active == 1}{t}Active{/t}{else}{t}Blocked{/t}{/if}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Account Created{/t}</b></td>

@@ -38,14 +38,14 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 # Display all Work orders for the given status      # // Status is not currently used but it will be
 #####################################################
 
-function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $employee_id = null, $customer_id = null) {
     
     global $smarty;
    
-    /* Filter the Records */
+    /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."schedule.schedule_id";
+    $whereTheseRecords = "WHERE ".PRFX."schedule.schedule_id\n";
     
     // Restrict results by search category (customer) and search term
     if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
@@ -54,35 +54,37 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
     elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
     
     // Restrict results by search category and search term
-    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."schedule.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule.$search_category LIKE '%$search_term%'";} 
+    
+    /* Filter the Records */
     
     // Restrict by Status
-    if($status != null) {
+    if($filter_status) {
         
         // All Open schedules
-        if($status == 'open') {
+        if($filter_status == 'open') {
             
             $whereTheseRecords .= " AND ".PRFX."schedule.is_closed != '1'";
         
         // All Closed schedules
-        } elseif($status == 'closed') {
+        } elseif($filter_status == 'closed') {
             
             $whereTheseRecords .= " AND ".PRFX."schedule.is_closed = '1'";
         
         // Return schedules for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."schedule.status= ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."schedule.status= ".$db->qstr($filter_status);
             
         }
         
     }        
 
     // Restrict by Employee
-    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
@@ -103,7 +105,7 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
     
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if($use_pages) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);

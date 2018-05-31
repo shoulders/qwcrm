@@ -50,7 +50,7 @@
                                                                    <br />
                                                                    <b>{t}for{/t}</b>
                                                                    <br />
-                                                                   <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" required onkeydown="return onlySearch(event);">
+                                                                   <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" onkeydown="return onlySearch(event);">
                                                                    <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
                                                                    <input class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=expense&page_tpl=search';" type="button">
                                                                 </td>
@@ -58,6 +58,30 @@
                                                             <tr>
                                                                 <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Type{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_type" name="filter_type">
+                                                                        <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>                                                                        
+                                                                        {section name=t loop=$expense_types}    
+                                                                            <option value="{$expense_types[t].expense_type_id}"{if $filter_type == $expense_types[t].expense_type_id} selected{/if}>{t}{$expense_types[t].display_name}{/t}</option>        
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            </tr> 
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Method{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_payment_method" name="filter_payment_method">
+                                                                        <option value=""{if $filter_payment_method == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>                                                                        
+                                                                        {section name=t loop=$payment_methods}    
+                                                                            <option value="{$payment_methods[t].manual_method_id}"{if $filter_payment_method == $payment_methods[t].manual_method_id} selected{/if}>{t}{$payment_methods[t].display_name}{/t}</option>        
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            </tr>                                                            
                                                         </table>
                                                     </div>
                                                 </form>                                                

@@ -32,28 +32,30 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
 
     global $smarty;
     
-    /* Filter the Records */
+    /* Records Search */
         
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."giftcert.giftcert_id";    
+    $whereTheseRecords = "WHERE ".PRFX."giftcert.giftcert_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.$search_category LIKE '%$search_term%'";}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert.$search_category LIKE '%$search_term%'";}
+    
+    /* Filter the Records */
     
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.active=".$db->qstr($status);} 
+    if($status) {$whereTheseRecords .= " AND ".PRFX."giftcert.active=".$db->qstr($status);} 
     
     // Restrict by redmption Status
-    if($is_redeemed != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.is_redeemed=".$db->qstr($is_redeemed);}
+    if($is_redeemed) {$whereTheseRecords .= " AND ".PRFX."giftcert.is_redeemed=".$db->qstr($is_redeemed);}
     
     // Restrict by Employee
-    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.employee_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."giftcert.employee_id=".$db->qstr($employee_id);}
     
     // Restrict by Customer
-    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."giftcert.customer_id=".$db->qstr($customer_id);}
     
     // Restrict by Invoice
-    if($invoice_id != null) {$whereTheseRecords .= " AND ".PRFX."giftcert.invoice_id=".$db->qstr($invoice_id);}
+    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."giftcert.invoice_id=".$db->qstr($invoice_id);}
     
     /* The SQL code */
     
@@ -71,7 +73,7 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
 
     /* Restrict by pages */
         
-    if($use_pages == true) {
+    if($use_pages) {
         
         // Get the start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);        

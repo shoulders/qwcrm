@@ -15,6 +15,8 @@
         <td class="olohead">{t}Phone{/t}</td>
         <td class="olohead">{t}Type{/t}</td>
         <td class="olohead">{t}Email{/t}</td>
+        <td class="olohead">{t}Active{/t}</td>
+        <td class="olohead">{t}Notes{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=c loop=$display_customers}
@@ -27,9 +29,15 @@
             <td class="olotd4" nowrap>
                 {section name=s loop=$customer_types}    
                     {if $display_customers[c].type == $customer_types[s].customer_type_id}{t}{$customer_types[s].display_name}{/t}{/if}        
-                {/section}   
+                {/section}
             </td>
-            <td class="olotd4" nowrap><a href="mailto:{$display_customers[c].email}"><font class="blueLink">{$display_customers[c].email}</font></a></td>                                                            
+            <td class="olotd4" nowrap><a href="mailto:{$display_customers[c].email}"><font class="blueLink">{$display_customers[c].email}</font></a></td>
+            <td class="olotd4" nowrap>{if $display_customers[c].active == 1}{t}Active{/t}{else}{t}Blocked{/t}{/if}</td>
+            <td class="olotd4" nowrap>
+                {if $display_customers[c].notes != ''}
+                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_customers[c].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                 {/if}
+            </td>
             <td class="olotd4" nowrap>
                 <a href="index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Customer Details{/t}');" onMouseOut="hideddrivetip()"></a>&nbsp;
                 <a href="index.php?component=workorder&page_tpl=new&customer_id={$display_customers[c].customer_id}"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Work Order{/t}');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;

@@ -28,14 +28,14 @@ defined('_QWEXEC') or die;
 #     Display Invoices                  #
 #########################################
 
-function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $employee_id = null, $customer_id = null) {
 
     global $smarty;
     
-    /* Filter the Records */
+    /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."invoice.invoice_id";
+    $whereTheseRecords = "WHERE ".PRFX."invoice.invoice_id\n";
     
     // Restrict results by search category (customer) and search term
     if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
@@ -52,33 +52,35 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     // Restrict results by search category and search term
     elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice.$search_category LIKE '%$search_term%'";}
     
+    /* Filter the Records */
+    
     // Restrict by Status
-    if($status != null) {
+    if($filter_status) {
         
         // All Open Invoices
-        if($status == 'open') {
+        if($filter_status == 'open') {
             
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
         
         // All Closed Invoices
-        } elseif($status == 'closed') {
+        } elseif($filter_status == 'closed') {
             
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
         
         // Return Workorders for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($filter_status);
             
         }
         
     }
 
     // Restrict by Employee
-    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."invoice.employee_id=".$db->qstr($employee_id);}        
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."invoice.employee_id=".$db->qstr($employee_id);}        
 
     // Restrict by Customer
-    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."invoice.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."invoice.customer_id=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
@@ -114,7 +116,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
             GROUP BY ".PRFX."invoice_labour.invoice_id
             ORDER BY ".PRFX."invoice_labour.invoice_id
             ASC            
-            ) AS labour
+        ) AS labour
         ON ".PRFX."invoice.invoice_id = labour.invoice_id 
         
         LEFT JOIN (
@@ -130,7 +132,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
             GROUP BY ".PRFX."invoice_parts.invoice_id
             ORDER BY ".PRFX."invoice_parts.invoice_id
             ASC            
-            ) AS parts
+        ) AS parts
         ON ".PRFX."invoice.invoice_id = parts.invoice_id 
 
         LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.customer_id = ".PRFX."customer.customer_id         
@@ -143,7 +145,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
 
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if($use_pages) {
         
         // Get the start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);        

@@ -28,33 +28,46 @@ defined('_QWEXEC') or die;
 #   Display Customers               #
 #####################################
 
-function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null) {
+function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $filter_type = null) {
     
     global $smarty;
 
-    /* Filter the Records */
+    /* Records Search */
     
     // Default Action    
-    $whereTheseRecords = " WHERE ".PRFX."customer.customer_id";
+    $whereTheseRecords = " WHERE ".PRFX."customer.customer_id\n";    
     
-    // Restrict results by search category and search term
-    if($search_term != null) {$whereTheseRecords .= " AND ".PRFX."customer.$search_category LIKE '%$search_term%'";} 
-        
+    // Search category (contact) and search term
+    if($search_category == 'contact') {$havingTheseRecords .= " HAVING contact LIKE '%$search_term%'";}
+    
+    // Search category with search term
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer.$search_category LIKE '%$search_term%'";}     
+    
+    /* Filter the Records */    
+    
     // Restrict by Status
-    if($status != null) {$whereTheseRecords .= " AND ".PRFX."customer.active=".$db->qstr($status);}
+    if($filter_status) {$whereTheseRecords .= " AND ".PRFX."customer.active=".$db->qstr($filter_status);}
+    
+    // Restrict by Type
+    if($filter_type) {$whereTheseRecords .= " AND ".PRFX."customer.type= ".$db->qstr($filter_type);}    
 
     /* The SQL code */    
     
-    $sql = "SELECT *              
-        FROM ".PRFX."customer       
+    $sql = "SELECT        
+        ".PRFX."customer.*,            
+        CONCAT(".PRFX."customer.first_name, ' ', ".PRFX."customer.last_name) AS contact
+        
+        FROM ".PRFX."customer            
+ 
         ".$whereTheseRecords."
         GROUP BY ".PRFX."customer.".$order_by."
+        ".$havingTheseRecords."
         ORDER BY ".PRFX."customer.".$order_by."
         ".$direction;  
    
     /* Restrict by pages */
         
-    if($use_pages == true) {
+    if($use_pages) {
         
         // Get the start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);        

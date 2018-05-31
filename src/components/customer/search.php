@@ -10,9 +10,6 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/customer.php');
 
-// A workaround until i add a full type search, this keeps the logic intact
-$VAR['search_category'] = 'display_name';
-
 // If a search is submitted
 if(isset($VAR['submit'])) {
     
@@ -23,9 +20,10 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('customer_types',       get_customer_types($db)                                                                                                             );
 $smarty->assign('search_category',      $VAR['search_category']                                                                                                             );
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                 );
-$smarty->assign('filter_status',        $VAR['filter_status']                                                                                                                      );
-$smarty->assign('display_customers',    display_customers($db, 'customer_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'])   );
+$smarty->assign('filter_status',        $VAR['filter_status']                                                                                                               );
+$smarty->assign('filter_type',          $VAR['filter_type']                                                                                                                 );
+$smarty->assign('customer_types',       get_customer_types($db)                                                                                                             );
+$smarty->assign('display_customers',    display_customers($db, 'customer_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'], $VAR['filter_type'])   );
 $BuildPage .= $smarty->fetch('customer/search.tpl');

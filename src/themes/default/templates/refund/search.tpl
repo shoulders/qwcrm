@@ -50,13 +50,38 @@
                                                                    <br />
                                                                    <b>{t}for{/t}</b>
                                                                    <br />
-                                                                   <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlySearch(event);" />
+                                                                   <input class="olotd4" name="search_term" value="{$search_term}" type="text" maxlength="20" onkeydown="return onlySearch(event);" />
                                                                    <input class="olotd4" name="submit" value="{t}Search{/t}" type="submit" />
-                                                                   <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=refund&page_tpl=search';" type="button">                                                                                      </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
-                                                                </tr>
+                                                                   <input class="olotd4" type="button" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=refund&page_tpl=search';" type="button">
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Type{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_type" name="filter_type">
+                                                                        <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>                                                                        
+                                                                        {section name=t loop=$refund_types}    
+                                                                            <option value="{$refund_types[t].refund_type_id}"{if $filter_type == $refund_types[t].refund_type_id} selected{/if}>{t}{$refund_types[t].display_name}{/t}</option>        
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            </tr> 
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Method{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_payment_method" name="filter_payment_method">
+                                                                        <option value=""{if $filter_payment_method == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>                                                                        
+                                                                        {section name=t loop=$payment_methods}    
+                                                                            <option value="{$payment_methods[t].manual_method_id}"{if $filter_method == $payment_methods[t].manual_method_id} selected{/if}>{t}{$payment_methods[t].display_name}{/t}</option>        
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            </tr>                                                         
                                                         </table>
                                                     </div>
                                                 </form>

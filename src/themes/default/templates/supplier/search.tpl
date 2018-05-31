@@ -43,7 +43,7 @@
                                                                 <br />
                                                                 <b>{t}for{/t}</b>
                                                                 <br />
-                                                                <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="20" required onkeydown="return onlySearch(event);" />
+                                                                <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="20" onkeydown="return onlySearch(event);" />
                                                                 <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
                                                                 <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=supplier&page_tpl=search';">
                                                             </td>
@@ -51,6 +51,18 @@
                                                         <tr>
                                                             <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
                                                         </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <b>{t}Filter By Type{/t}</b><br>
+                                                                <select class="olotd5" id="filter_type" name="filter_type">
+                                                                    <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
+                                                                    <option disabled>----------</option>                                                                        
+                                                                    {section name=t loop=$supplier_types}    
+                                                                        <option value="{$supplier_types[t].supplier_type_id}"{if $filter_type == $supplier_types[t].supplier_type_id} selected{/if}>{t}{$supplier_types[t].display_name}{/t}</option>        
+                                                                    {/section}
+                                                                /select>
+                                                            </td>
+                                                        </tr>                                                        
                                                     </table>                                                        
                                                 </form>                                          
                                             </td>                                                   
@@ -64,8 +76,8 @@
                                                             <!-- Left Buttons -->
                                                             <td>
                                                                 {if $previous_page_no}
-                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>                                                   
                                                     
@@ -86,8 +98,8 @@
                                                             <!-- Right Side Buttons --> 
                                                             <td>
                                                                 {if $next_page_no}
-                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=supplier&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
                                                     

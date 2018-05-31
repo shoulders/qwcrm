@@ -29,40 +29,42 @@ defined('_QWEXEC') or die;
 #         Display expenses                          #
 #####################################################
 
-function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
+function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_type = null, $filter_payment_method = null) {
     
     global $smarty;
+
+    /* Records Search */
     
-    /* Filter the Records */    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."expense.expense_id\n";
     
-    // Restrict by Search Category
-    if($search_category != '') {
-        
-        // Filter by search category
-        $whereTheseRecords = " WHERE $search_category";    
-        
-        // Filter by search term
-        $likeTheseRecords = " LIKE '%".$search_term."%'";
-        
-    }
+    // Restrict results by search category and search term
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense.$search_category LIKE '%$search_term%'";}     
     
+    /* Filter the Records */  
+    
+    // Restrict by Type
+    if($filter_type) { $whereTheseRecords .= " AND ".PRFX."expense.type= ".$db->qstr($filter_type);}
+        
+    // Restrict by Method
+    if($filter_payment_method) { $whereTheseRecords .= " AND ".PRFX."expense.payment_method= ".$db->qstr($filter_payment_method);} 
+        
     /* The SQL code */
     
     $sql =  "SELECT * 
             FROM ".PRFX."expense                                                   
-            ".$whereTheseRecords."
-            ".$likeTheseRecords."
+            ".$whereTheseRecords."            
             GROUP BY ".PRFX."expense.".$order_by."
             ORDER BY ".PRFX."expense.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if($use_pages) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);
-        
+
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));

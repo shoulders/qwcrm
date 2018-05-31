@@ -28,51 +28,53 @@ defined('_QWEXEC') or die;
 # Display all Work orders for the given status      #
 #####################################################
 
-function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $employee_id = null, $customer_id = null) {
     
     global $smarty;
    
-    /* Filter the Records */
+    /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."workorder.workorder_id";
+    $whereTheseRecords = "WHERE ".PRFX."workorder.workorder_id\n";    
     
     // Restrict results by search category (customer) and search term
     if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}
     
     // Restrict results by search category and search term
-    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."workorder.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder.$search_category LIKE '%$search_term%'";}  
+    
+    /* Filter the Records */
     
     // Restrict by Status
-    if($status != null) {
+    if($filter_status) {
         
         // All Open workorders
-        if($status == 'open') {
+        if($filter_status == 'open') {
             
             $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
         
         // All Closed workorders
-        } elseif($status == 'closed') {
+        } elseif($filter_status == 'closed') {
             
             $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
         
         // Return Workorders for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($filter_status);
             
         }
         
     }        
 
     // Restrict by Employee
-    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
@@ -112,7 +114,7 @@ function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC'
     
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if($use_pages) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);

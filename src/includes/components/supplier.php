@@ -28,36 +28,35 @@ defined('_QWEXEC') or die;
 #     Display Suppliers       #
 ###############################
 
-function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null) {
+function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_type = null) {
     
     global $smarty;
     
-    /* Filter the Records */    
+    /* Records Search */ 
     
-    // Restrict by Search Category
-    if($search_category != '') {
-        
-        // Filter by search category
-        $whereTheseRecords = " WHERE $search_category";    
-        
-        // Filter by search term
-        $likeTheseRecords = " LIKE '%".$search_term."%'";
-        
-    }
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."supplier.supplier_id\n";
+    
+    // Restrict results by search category and search term
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier.$search_category LIKE '%$search_term%'";}
+    
+    /* Filter the Records */ 
+    
+    // Restrict by Type
+    if($filter_type) { $whereTheseRecords .= " AND ".PRFX."supplier.type= ".$db->qstr($filter_type);}
     
     /* The SQL code */
     
     $sql =  "SELECT * 
             FROM ".PRFX."supplier                                                   
-            ".$whereTheseRecords."
-            ".$likeTheseRecords."
+            ".$whereTheseRecords."            
             GROUP BY ".PRFX."supplier.".$order_by."
             ORDER BY ".PRFX."supplier.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if($use_pages) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);

@@ -30,15 +30,24 @@
                                                 <form action="index.php?component=customer&page_tpl=search" method="post" name="customer_search" id="customer_search">                                                
                                                     <div>                                                        
                                                         <table border="0">
-                                                           <tr>
-                                                                <td>
-                                                                    <b>{t}Display Name{/t}</b><br>
-                                                                    <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" onkeydown="return onlySearch(event);">
-                                                                    <input name="search_category" value="{$search_category}" type="hidden" />
-                                                                    <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
-                                                                    <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=search';">
+                                                            <tr>
+                                                                <td align="left" valign="top"><b>{t}Customer Search{/t}</b>
+                                                                    <br />
+                                                                    <select class="olotd5" id="search_category" name="search_category">
+                                                                        <option value="customer_id"{if $search_category == 'customer_id'} selected{/if}>{t}Customer ID{/t}</option>
+                                                                        <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Display Name{/t}</option>
+                                                                        <option value="contact"{if $search_category == 'contact'} selected{/if}>{t}Contact{/t}</option>
+                                                                        <option value="email"{if $search_category == 'email'} selected{/if}>{t}Email{/t}</option>
+                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>                                                                        
+                                                                    </select>
+                                                                   <br />
+                                                                   <b>{t}for{/t}</b>
+                                                                   <br />
+                                                                   <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" onkeydown="return onlySearch(event);">                                                                   
+                                                                   <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
+                                                                   <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=search';">
                                                                 </td>
-                                                            </tr> 
+                                                            </tr>                                                            
                                                             <tr>
                                                                 <td><font color="red">{t}NO special characters like !@#$%^*(){/t}</font></td>
                                                             </tr>
@@ -46,12 +55,25 @@
                                                                 <td>
                                                                     <b>{t}Filter By Status{/t}</b><br>
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>
                                                                         <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
                                                                         <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Type{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_type" name="filter_type">
+                                                                        <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>                                                                        
+                                                                        {section name=t loop=$customer_types}    
+                                                                            <option value="{$customer_types[t].customer_type_id}"{if $filter_type == $customer_types[t].customer_type_id} selected{/if}>{t}{$customer_types[t].display_name}{/t}</option>        
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            </tr> 
                                                         </table>
                                                     </div>
                                                 </form>

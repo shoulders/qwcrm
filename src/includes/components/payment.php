@@ -32,10 +32,10 @@ function display_payments($db, $order_by = 'transaction_id', $direction = 'DESC'
     
     global $smarty;
    
-    /* Filter the Records */
+    /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."payment_transactions.transaction_id";
+    $whereTheseRecords = "WHERE ".PRFX."payment_transactions.transaction_id\n";
     
     // Restrict results by search category (customer) and search term
     if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
@@ -44,16 +44,18 @@ function display_payments($db, $order_by = 'transaction_id', $direction = 'DESC'
     elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
     
     // Restrict results by search category and search term
-    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.$search_category LIKE '%$search_term%'";} 
+    
+    /* Filter the Records */
     
     // Restrict by Status
-    if($method != null) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.method= ".$db->qstr($method);}        
+    if($method) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.method= ".$db->qstr($method);}        
 
     // Restrict by Employee
-    if($employee_id != null) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id != null) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
@@ -82,7 +84,7 @@ function display_payments($db, $order_by = 'transaction_id', $direction = 'DESC'
     
     /* Restrict by pages */
     
-    if($use_pages == true) {
+    if($use_pages) {
     
         // Get Start Record
         $start_record = (($page_no * $records_per_page) - $records_per_page);
