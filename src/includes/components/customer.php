@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #   Display Customers               #
 #####################################
 
-function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $filter_type = null) {
+function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $type = null) {
     
     global $smarty;
 
@@ -46,10 +46,10 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
     /* Filter the Records */    
     
     // Restrict by Status
-    if($filter_status) {$whereTheseRecords .= " AND ".PRFX."customer.active=".$db->qstr($filter_status);}
+    if($status) {$whereTheseRecords .= " AND ".PRFX."customer.active=".$db->qstr($status);}
     
     // Restrict by Type
-    if($filter_type) {$whereTheseRecords .= " AND ".PRFX."customer.type= ".$db->qstr($filter_type);}    
+    if($type) {$whereTheseRecords .= " AND ".PRFX."customer.type= ".$db->qstr($type);}    
 
     /* The SQL code */    
     

@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Invoices                  #
 #########################################
 
-function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $employee_id = null, $customer_id = null) {
+function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
 
     global $smarty;
     
@@ -55,22 +55,22 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     /* Filter the Records */
     
     // Restrict by Status
-    if($filter_status) {
+    if($status) {
         
         // All Open Invoices
-        if($filter_status == 'open') {
+        if($status == 'open') {
             
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
         
         // All Closed Invoices
-        } elseif($filter_status == 'closed') {
+        } elseif($status == 'closed') {
             
             $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
         
         // Return Workorders for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($filter_status);
+            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
             
         }
         

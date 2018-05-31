@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 #    Display Users                  #
 #####################################
 
-function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $filter_user_type = null, $usergroup = null) {
+function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $usertype = null, $usergroup = null) {
     
     global $smarty;
 
@@ -45,15 +45,15 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
     /* Filter the Records */
         
     // Restrict by Status
-    if($filter_status) {$whereTheseRecords .= " AND ".PRFX."user.active=".$db->qstr($filter_status);}  
+    if($status) {$whereTheseRecords .= " AND ".PRFX."user.active=".$db->qstr($status);}  
     
     // Restrict results by user type
-    if($filter_user_type) {
+    if($usertype) {
         
-        if($filter_user_type == 'customer') { 
+        if($usertype == 'customer') { 
             $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('7');}            
         
-        if($filter_user_type == 'employee') {
+        if($usertype == 'employee') {
             
             $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('1');
             $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('2');

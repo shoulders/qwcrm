@@ -38,7 +38,7 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 # Display all Work orders for the given status      # // Status is not currently used but it will be
 #####################################################
 
-function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $employee_id = null, $customer_id = null) {
+function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
     
     global $smarty;
    
@@ -59,22 +59,22 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
     /* Filter the Records */
     
     // Restrict by Status
-    if($filter_status) {
+    if($status) {
         
         // All Open schedules
-        if($filter_status == 'open') {
+        if($status == 'open') {
             
             $whereTheseRecords .= " AND ".PRFX."schedule.is_closed != '1'";
         
         // All Closed schedules
-        } elseif($filter_status == 'closed') {
+        } elseif($status == 'closed') {
             
             $whereTheseRecords .= " AND ".PRFX."schedule.is_closed = '1'";
         
         // Return schedules for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."schedule.status= ".$db->qstr($filter_status);
+            $whereTheseRecords .= " AND ".PRFX."schedule.status= ".$db->qstr($status);
             
         }
         

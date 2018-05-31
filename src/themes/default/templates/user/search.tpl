@@ -52,11 +52,11 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Filter By User Type{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_user_type" name="filter_user_type">
-                                                                        <option value=""{if $filter_user_type == ''} selected{/if}>{t}None{/t}</option>                                                                        
-                                                                        <option value="employee"{if $filter_user_type == 'employee'} selected{/if}>{t}Employee{/t}</option>
-                                                                        <option value="customer"{if $filter_user_type == 'customer'} selected{/if}>{t}Customer{/t}</option>
+                                                                    <b>{t}Filter By Usertype{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_usertype" name="filter_usertype">
+                                                                        <option value=""{if $filter_usertype == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="employee"{if $filter_usertype == 'employee'} selected{/if}>{t}Employee{/t}</option>
+                                                                        <option value="customer"{if $filter_usertype == 'customer'} selected{/if}>{t}Customer{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             <tr>

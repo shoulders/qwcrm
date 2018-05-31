@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display refunds       #
 #############################
 
-function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_type = null, $filter_payment_method = null) {
+function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
     
     global $smarty;
     
@@ -43,10 +43,10 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
     /* Filter the Records */  
     
     // Restrict by Type
-    if($filter_type) { $whereTheseRecords .= " AND ".PRFX."refund.type= ".$db->qstr($filter_type);}
+    if($type) { $whereTheseRecords .= " AND ".PRFX."refund.type= ".$db->qstr($type);}
         
     // Restrict by Method
-    if($filter_payment_method) { $whereTheseRecords .= " AND ".PRFX."refund.payment_method= ".$db->qstr($filter_payment_method);} 
+    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."refund.payment_method= ".$db->qstr($payment_method);} 
     
     /* The SQL code */
     

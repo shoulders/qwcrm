@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 # Display all Work orders for the given status      #
 #####################################################
 
-function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_status = null, $employee_id = null, $customer_id = null) {
+function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
     
     global $smarty;
    
@@ -49,22 +49,22 @@ function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC'
     /* Filter the Records */
     
     // Restrict by Status
-    if($filter_status) {
+    if($status) {
         
         // All Open workorders
-        if($filter_status == 'open') {
+        if($status == 'open') {
             
             $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
         
         // All Closed workorders
-        } elseif($filter_status == 'closed') {
+        } elseif($status == 'closed') {
             
             $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
         
         // Return Workorders for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($filter_status);
+            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);
             
         }
         

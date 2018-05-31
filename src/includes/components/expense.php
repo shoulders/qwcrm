@@ -29,7 +29,7 @@ defined('_QWEXEC') or die;
 #         Display expenses                          #
 #####################################################
 
-function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $filter_type = null, $filter_payment_method = null) {
+function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
     
     global $smarty;
 
@@ -44,10 +44,10 @@ function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $u
     /* Filter the Records */  
     
     // Restrict by Type
-    if($filter_type) { $whereTheseRecords .= " AND ".PRFX."expense.type= ".$db->qstr($filter_type);}
+    if($type) { $whereTheseRecords .= " AND ".PRFX."expense.type= ".$db->qstr($type);}
         
     // Restrict by Method
-    if($filter_payment_method) { $whereTheseRecords .= " AND ".PRFX."expense.payment_method= ".$db->qstr($filter_payment_method);} 
+    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."expense.payment_method= ".$db->qstr($payment_method);} 
         
     /* The SQL code */
     
