@@ -147,23 +147,28 @@
                 <!-- Menu limited to Administrators and Manager -->
                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div>
-                        <span>{t}Company{/t}</span>
-                        
-                        <a href="index.php?component=company&page_tpl=settings"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Settings{/t}</a>
-                        
-                        <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>                        
-                        <a href="index.php?component=payment&page_tpl=options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Payment Options{/t}</a>
-                        
-                        <a href="index.php?component=payment&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Payment Search{/t}</a>
-                        
+                        <span>{t}Company{/t}</span>                        
+                        <a href="index.php?component=company&page_tpl=settings"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Settings{/t}</a>                        
+                        <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
                         <a href="index.php?component=invoice&page_tpl=prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>
                         
-                        <!-- Stats -->                        
-                        <a href="index.php?component=report&page_tpl=basic_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Basic Stats{/t}</a>
-                        <a href="index.php?component=report&page_tpl=financial"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Financial Report{/t}</a>
-                    
+        
                     </div>
                 {/if}
+                
+                <!-- Finance -->
+                <div>
+                    <span>{t}Finance{/t}</span>
+                    
+                    <!-- Stats -->                        
+                    <a href="index.php?component=report&page_tpl=basic_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Basic Stats{/t}</a>
+                    <a href="index.php?component=report&page_tpl=financial"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Financial Report{/t}</a>
+            
+                    <!-- Payments -->
+                    <a href="index.php?component=payment&page_tpl=options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Payment Options{/t}</a>
+                    <a href="index.php?component=payment&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Payment Search{/t}</a>
+                
+                </div>
 
                 <!-- Administration -->
                 <!-- Menu limited to Administrators and Managers -->

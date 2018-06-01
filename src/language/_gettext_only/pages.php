@@ -305,6 +305,20 @@ _gettext("INVOICE_STATUS_HELP_CONTENT");
 
 /* Payment */
 
+// payment:details
+_gettext("PAYMENT_DETAILS_PAGE_TITLE");
+_gettext("PAYMENT_DETAILS_META_DESCRIPTION");
+_gettext("PAYMENT_DETAILS_META_KEYWORDS");
+_gettext("PAYMENT_DETAILS_HELP_TITLE");
+_gettext("PAYMENT_DETAILS_HELP_CONTENT");
+
+// payment:edit
+_gettext("PAYMENT_EDIT_PAGE_TITLE");
+_gettext("PAYMENT_EDIT_META_DESCRIPTION");
+_gettext("PAYMENT_EDIT_META_KEYWORDS");
+_gettext("PAYMENT_EDIT_HELP_TITLE");
+_gettext("PAYMENT_EDIT_HELP_CONTENT");
+
 // payment:new
 _gettext("PAYMENT_NEW_PAGE_TITLE");
 _gettext("PAYMENT_NEW_META_DESCRIPTION");

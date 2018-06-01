@@ -294,6 +294,33 @@ function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $me
 
 /** Get Functions **/
 
+#############################
+#  Get transaction details  # // this gets payment details like bank details (not transactions)
+#############################
+
+function get_transaction_details($db, $transaction_id, $item = null){
+    
+    $sql = "SELECT * FROM ".PRFX."payment_transactions  WHERE transaction_id=".$db->qstr($transaction_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get transaction details."));
+        exit;
+    } else {
+        
+        if($item === null){
+            
+            return $rs->GetRowAssoc();            
+            
+        } else {
+            
+            return $rs->fields[$item];   
+            
+        } 
+        
+    }
+    
+}
+
 ##########################
 #  Get payment details   # // this gets payment details like bank details (not transactions)
 ##########################
