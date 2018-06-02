@@ -40,10 +40,10 @@ if(!$VAR['giftcert_id'] = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_co
             // Live processing goes here
 
             // Create a specific note string (if applicable)
-            $method_note = _gettext("Gift Certificate Code").': '.$VAR['giftcert_code'];    
+            $VAR['note'] = _gettext("Gift Certificate Code").': '.$VAR['giftcert_code'].' - '.$VAR['note'];    
 
             // Insert the transaction with the calculated information
-            insert_payment_method_transaction($db, $VAR['invoice_id'], $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['method_type'], $method_note, $VAR['note']);
+            insert_payment($db, $VAR);
 
             // Assign Success message
             $smarty->assign('information_msg', _gettext("Gift Certificate applied successfully"));

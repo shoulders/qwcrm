@@ -581,7 +581,7 @@ function get_invoice_status_display_name($db, $status_key) {
 /** Update Functions **/
 
 ######################
-#   update invoice   #  // this is used when a user updates an invoice .e. invoice:edit
+#   update invoice   #  // this is used when a user updates an invoice before any payments
 ######################
 
 function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
@@ -613,78 +613,6 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
         update_invoice_last_active($db, $invoice_id);
         
     }
-    
-}
-
-########################################################
-#   update invoice after a transaction has been added  #
-########################################################
-
-function update_invoice_transaction_only($db, $invoice_id, $paid_amount, $balance, $paid_status, $paid_date = '') {
-    
-    $sql = "UPDATE ".PRFX."invoice SET
-            paid_amount         =". $db->qstr( $paid_amount ).",
-            balance             =". $db->qstr( $balance     ).",
-            is_closed           =". $db->qstr( $paid_status ).",
-            paid_date           =". $db->qstr( $paid_date   )."                       
-            WHERE invoice_id    =". $db->qstr( $invoice_id  );
-
-    if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice's financial totals."));
-        exit;
-    }
-    
-}
-
-#####################################
-#     update invoice (full)         # // not used anywhere
-#####################################
-
-function update_invoice_full($db, $VAR) {
-    
-    $sql = "UPDATE ".PRFX."invoice SET     
-            employee_id         =". $db->qstr( $VAR['employee_id']     ).", 
-            customer_id         =". $db->qstr( $VAR['customer_id']     ).",
-            workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",
-            date                =". $db->qstr( $VAR['date']            ).",
-            due_date            =". $db->qstr( $VAR['due_date']        ).", 
-            discount_rate       =". $db->qstr( $VAR['discount_rate']   ).",
-            tax_type            =". $db->qstr( $VAR['tax_type']        ).",   
-            tax_rate            =". $db->qstr( $VAR['tax_rate']        ).",   
-            sub_total           =". $db->qstr( $VAR['sub_total']       ).",    
-            discount_amount     =". $db->qstr( $VAR['discount_amount'] ).",   
-            net_amount          =". $db->qstr( $VAR['net_amount']      ).",
-            tax_amount          =". $db->qstr( $VAR['tax_amount']      ).",             
-            gross_amount        =". $db->qstr( $VAR['gross_amount']    ).", 
-            paid_amount         =". $db->qstr( $VAR['paid_amount']     ).",
-            balance             =". $db->qstr( $VAR['balance']         ).",
-            open_date           =". $db->qstr( $VAR['open_date']       ).",
-            close_date          =". $db->qstr( $VAR['close_date']      ).",
-            last_active         =". $db->qstr( $VAR['last_Active']     ).",
-            status              =". $db->qstr( $VAR['status ']         ).",
-            is_closed           =". $db->qstr( $VAR['is_closed']       ).",
-            paid_date           =". $db->qstr( $VAR['paid_date']       )."
-            WHERE invoice_id    =". $db->qstr( $VAR['invoice_id']      );
-
-    if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice."));
-        exit;
-        
-    } else {
-    
-        // Create a Workorder History Note  
-        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
-        
-        // Log activity        
-        $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
-
-        // Update last active record    
-        update_customer_last_active($db, $VAR['customer_id']);
-        update_workorder_last_active($db, $VAR['workorder_id']);
-        update_invoice_last_active($db, $VAR['invoice_id']);
-        
-    } 
     
 }
 
@@ -1049,35 +977,37 @@ function parts_sub_total($db, $invoice_id) {
 #   Recalculate Invoice Totals      #
 #####################################
 
-function recalculate_invoice_totals($db, $invoice_id) {
+function recalculate_invoice($db, $invoice_id) {
     
-    $invoice_details = get_invoice_details($db, $invoice_id);
+    $invoice_details        = get_invoice_details($db, $invoice_id);
     
-    $sub_total          = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);    
-    $discount_amount    = $sub_total  * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
-    $net_amount         = $sub_total  - $discount_amount;
-    $tax_amount         = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
-    $gross_amount       = $net_amount + $tax_amount;
+    $items_sub_total        = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);
+    $transactions_sub_total = transactions_sub_total($db, $invoice_id);
+    $discount_amount        = $items_sub_total  * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
+    $net_amount             = $items_sub_total  - $discount_amount;
+    $tax_amount             = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
+    $gross_amount           = $net_amount + $tax_amount;
     
-    $balance = $gross_amount - $invoice_details['paid_amount'];
+    $balance = $gross_amount - $transactions_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice SET
-            sub_total           =". $db->qstr( $sub_total       ).",
-            discount_amount     =". $db->qstr( $discount_amount ).",
-            net_amount          =". $db->qstr( $net_amount      ).",
-            tax_amount          =". $db->qstr( $tax_amount      ).",             
-            gross_amount        =". $db->qstr( $gross_amount    ).",
-            balance             =". $db->qstr( $balance         )."                
-            WHERE invoice_id    =". $db->qstr( $invoice_id      );
+            sub_total           =". $db->qstr( $items_sub_total         ).",
+            discount_amount     =". $db->qstr( $discount_amount         ).",
+            net_amount          =". $db->qstr( $net_amount              ).",
+            tax_amount          =". $db->qstr( $tax_amount              ).",
+            gross_amount        =". $db->qstr( $gross_amount            ).",
+            paid_amount         =". $db->qstr( $transactions_sub_total  ).",
+            balance             =". $db->qstr( $balance                 )."
+            WHERE invoice_id    =". $db->qstr( $invoice_id              );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed update the invoice totals."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the invoice totals."));
         exit;
     } else {
      
-        /* update invoice status */
+        /* update invoice status - only change if there is a change in status */
         
-        // if no invoiceable amount, set to pending
+        // if no invoiceable amount, set to pending (if not already)
         if($gross_amount == 0 && $invoice_details['status'] != 'pending') {
             update_invoice_status($db, $invoice_id, 'pending');
         }
@@ -1085,8 +1015,23 @@ function recalculate_invoice_totals($db, $invoice_id) {
         // if there is an invoiceable amount, and status is pending, set to unpaid
         if($gross_amount > 0 && $invoice_details['status'] == 'pending') {
             update_invoice_status($db, $invoice_id, 'unpaid');            
+        }               
+        
+        // If there are no payments, set to unpaid (if not already)
+        if($balance == $gross_amount && $invoice_details['status'] != 'unpaid') {
+            update_invoice_status($db, $invoice_id, 'unpaid');
         }
-
+        
+        // if there is an outstanding balance and there are some payments, set to partially paid (if not already)
+        if($balance != 0 && $transactions_sub_total != 0 && $invoice_details['status'] != 'partially_paid') {            
+            update_invoice_status($db, $invoice_id, 'partially_paid');
+        }
+        
+        // if there is no balance, balance is the sames as payments made, set to paid (if not already)
+        if($balance == 0 && $invoice_details['status'] != 'paid') {            
+            update_invoice_status($db, $invoice_id, 'paid');
+        }        
+        
         return;        
         
     }

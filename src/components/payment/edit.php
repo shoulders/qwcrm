@@ -8,28 +8,26 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/expense.php');
 require(INCLUDES_DIR.'components/payment.php');
 
 // Check if we have an expense_id
-if($VAR['expense_id'] == '') {
-    force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
+if($VAR['transaction_id'] == '') {
+    force_page('payment', 'search', 'warning_msg='._gettext("No Transaction ID supplied."));
     exit;
 }
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-        update_expense($db, $VAR['expense_id'], $VAR);        
-        force_page('expense', 'details&expense_id='.$VAR['expense_id'], 'information_msg='._gettext("Expense updated successfully.")); 
+        update_transaction($db, $VAR);        
+        force_page('payment', 'details', 'transaction_id='.$VAR['transaction_id'].'&information_msg='._gettext("Transaction updated successfully.")); 
         exit;    
 
 } else {
     
-    // Build the page
-    $smarty->assign('expense_types', get_expense_types($db));
+    // Build the page    
     $smarty->assign('payment_methods', get_payment_manual_methods($db));
-    $smarty->assign('expense_details', get_expense_details($db, $VAR['expense_id']));
+    $smarty->assign('transaction_details', get_transaction_details($db, $VAR['transaction_id']));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');
     
 }

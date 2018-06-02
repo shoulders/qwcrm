@@ -38,7 +38,7 @@ if(isset($VAR['submit'])) {
     
     // update and recalculate the invoice
     update_invoice($db, $VAR['invoice_id'], $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
-    recalculate_invoice_totals($db, $VAR['invoice_id']);
+    recalculate_invoice($db, $VAR['invoice_id']);
     
 }
     

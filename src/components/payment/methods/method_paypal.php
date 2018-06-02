@@ -25,10 +25,10 @@ if(!$new_invoice_totals = validate_payment_method_totals($db, $VAR['invoice_id']
     // Live processing goes here
 
     // Create a specific note string (if applicable)
-    $method_note = _gettext("PayPal Transaction ID").' '.$VAR['amount'];
+    $VAR['note'] = _gettext("PayPal Transaction ID").' '.$VAR['amount'].' - '.$VAR['note'];
 
     // Insert the transaction with the calculated information
-    insert_payment_method_transaction($db, $VAR['invoice_id'], $VAR['date'], $VAR['amount'], $VAR['method_name'], $VAR['method_type'], $method_note, $VAR['note']);
+    insert_payment($db, $VAR);
     
     // Assign Success message
     $smarty->assign('information_msg', _gettext("PayPal payment added successfully"));

@@ -30,7 +30,7 @@ $VAR['invoice_id'] = get_invoice_labour_item_details($db, $VAR['labour_id'], 'in
 delete_invoice_labour_item($db, $VAR['labour_id']);
 
 // recalculate the invoice totals and update them
-recalculate_invoice_totals($db, $VAR['invoice_id']);
+recalculate_invoice($db, $VAR['invoice_id']);
 
 // load the edit invoice page
 force_page('invoice' , 'edit&invoice_id='.$VAR['invoice_id']);

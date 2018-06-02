@@ -20,7 +20,7 @@
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=p loop=$display_payments}        
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=payment&page_tpl=details&workorder_id={$display_payments[p].workorder_id}';" class="row1">
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=payment&page_tpl=details&transaction_id={$display_payments[p].transaction_id}';" class="row1">
 
             <!-- Transaction ID -->
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&transaction_id={$display_payments[p].transaction_id}">{$display_payments[p].transaction_id}</a></td>
@@ -65,7 +65,10 @@
             <td class="olotd4" align="center" nowrap>
                 <a href="index.php?component=payment&page_tpl=details&transaction_id={$display_payments[p].transaction_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View the transaction.{/t}');" onMouseOut="hideddrivetip();">
-                </a>    
+                </a>
+                <a href="index.php?component=payment&page_tpl=delete&transaction_id={$display_payments[p].transaction_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Transaction Record? This will permanently remove the record from the database.{/t}');">
+                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Transaction Record{/t}</b>');" onMouseOut="hideddrivetip();">
+                 </a>
             </td>            
 
         </tr>

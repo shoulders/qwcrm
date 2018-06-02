@@ -172,124 +172,46 @@ function display_transactions($db, $invoice_id){
 /** Insert Functions **/
 
 ############################
-#   insert transaction     #
+#   insert payment         #
 ############################
 
-function insert_transaction($db, $customer_id, $workorder_id, $invoice_id,  $date, $method, $amount, $note) {
+function insert_payment($db, $VAR) {
+
+    $invoice_details = get_invoice_details($db, $VAR['invoice_id']);
     
     $sql = "INSERT INTO ".PRFX."payment_transactions SET            
-            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id   ).",
-            customer_id     = ".$db->qstr( $customer_id                         ).",
-            workorder_id    = ".$db->qstr( $workorder_id                        ).",
-            invoice_id      = ".$db->qstr( $invoice_id                          ).",
-            date            = ".$db->qstr( $date                                ).",
-            method          = ".$db->qstr( $method                              ).",
-            amount          = ".$db->qstr( $amount                              ).",
-            note            = ".$db->qstr( $note                                );
+            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
+            customer_id     = ".$db->qstr( $invoice_details['customer_id']             ).",
+            workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
+            invoice_id      = ".$db->qstr( $VAR['invoice_id']                          ).",
+            date            = ".$db->qstr( date_to_timestamp($VAR['date'])             ).",
+            method          = ".$db->qstr( $VAR['method_type']                         ).",
+            amount          = ".$db->qstr( $VAR['amount']                              ).",
+            note            = ".$db->qstr( $VAR['note']                                );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert transaction into the database."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
         exit;
         
     } else {
         
-        // Log activity 
-        $record = _gettext("Payment made on Invoice").' '.$invoice_id.' '._gettext("with transaction").' '.$db->Insert_ID().'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
+        // Recalculate invoice totals
+        recalculate_invoice($db, $VAR['invoice_id']);
+        
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Transaction").' '.$VAR['transaction_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);
+        
+        // Log activity        
+        $record = _gettext("Payment made on Invoice").' '.$VAR['invoice_id'].' '._gettext("with transaction").' '.$db->Insert_ID().'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+        
+        // Update last active record    
+        update_customer_last_active($db, $VAR['customer_id']);
+        update_workorder_last_active($db, $VAR['workorder_id']);
+        update_invoice_last_active($db, $VAR['invoice_id']);        
                 
     }    
     
-}
-
-#####################################################
-#   Insert transaction created by a payment method  #
-#####################################################
-
-function insert_payment_method_transaction($db, $invoice_id, $date, $amount, $method_name, $method_type, $method_note, $note) {
-    
-    // Get invoice details
-    $invoice_details = get_invoice_details($db, $invoice_id);
-    
-    // Convert date into timestamp
-    $date =  date_to_timestamp($date);
-            
-    // Make amount into the correct format for the logs
-    $formatted_amount = sprintf( "%.2f", $amount);
-           
-    // Other Variables
-    $currency_sym               = get_company_details($db, 'currency_symbol');    
-    $customer_id                = $invoice_details['customer_id'];
-    $workorder_id               = $invoice_details['workorder_id'];
-    
-    // Calculate the new balance and paid amount    
-    $new_invoice_paid_amount    = $invoice_details['paid_amount'] + $amount;
-    $new_invoice_balance        = $invoice_details['balance'] - $amount;
-            
-    /* Partial Payment Transaction */
-    
-    if($new_invoice_balance != 0 ) {
-        
-        // Set the new invoice status
-        $new_status = 'partially_paid';
-
-        // Update the invoice        
-        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, '0');
-
-        // Transaction log        
-        $log_msg = _gettext("Partial Payment made by")." $method_name "._gettext("for")." $currency_sym$formatted_amount, "._gettext("Balance due").": $currency_sym$new_invoice_balance, $method_note, "._gettext("Note").": $note";
-        
-        // Insert Transaction into log       
-        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
-        
-        // Create a Workorder History Note       
-        insert_workorder_history_note($db, $workorder_id, _gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);           
-
-    }
-
-    /* Full payment or the new Balance is 0.00 */
-    
-    if($new_invoice_balance == 0 ) {
-        
-        // Set the new invoice status
-        $new_status = 'paid';   
-
-        // Update the invoice
-        update_invoice_transaction_only($db, $invoice_id, $new_invoice_paid_amount, $new_invoice_balance, '1', time());   
-
-        // log message   
-        if($amount < $invoice_details['total']) {
-            
-            // Transaction is a partial payment
-            $log_msg = _gettext("Partial Payment made by")." $method_name "._gettext("for")." $currency_sym$formatted_amount, "._gettext("closing the invoice.")." $method_note, "._gettext("Note").": $note";
-        
-            
-        } else {
-            
-            // Transaction is payment for the full amount
-            $log_msg = _gettext("Full Payment made by")." $method_name "._gettext("for")." $currency_sym$formatted_amount, "._gettext("closing the invoice.")." $method_note, "._gettext("Note").": $note";
-                    
-        }
-
-        // Insert Transaction into log       
-        insert_transaction($db, $customer_id, $workorder_id, $invoice_id, $date, $method_type, $amount, $log_msg);
-        
-        // Create a Workorder History Note
-        insert_workorder_history_note($db, $workorder_id, _gettext("Transaction inserted by").' '.QFactory::getUser()->login_display_name.' - '.$log_msg);            
-
-    }
-    
-    // Update invoice status only if it is different from the current status
-    if($invoice_details['status'] != $new_status) {
-        update_invoice_status($db, $invoice_id, $new_status);        
-    }
-    
-    // Update last active record    
-    update_customer_last_active($db, $invoice_details['customer_id']);
-    update_workorder_last_active($db, $invoice_details['workorder_id']);
-    update_invoice_last_active($db, $invoice_id);
-    
-    return;
-        
 }
 
 /** Get Functions **/
@@ -459,6 +381,50 @@ function get_credit_card_display_name_from_key($db, $card_key) {
 
 /** Update Functions **/
 
+#####################################################
+#   update transaction created by a payment method  #
+#####################################################
+
+function update_transaction($db, $VAR) {    
+    
+    $sql = "UPDATE ".PRFX."payment_transactions SET        
+            employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
+            customer_id     = ".$db->qstr( $VAR['customer_id']              ).",
+            workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
+            invoice_id      = ".$db->qstr( $VAR['invoice_id']               ).",
+            date            = ".$db->qstr( date_to_timestamp($VAR['date'])  ).",
+            method          = ".$db->qstr( $VAR['method']                   ).",
+            amount          = ".$db->qstr( $VAR['amount']                   ).",
+            note            = ".$db->qstr( $VAR['note']                     )."
+            WHERE transaction_id =". $db->qstr( $VAR['transaction_id']      );
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the transaction details."));
+        exit;
+        
+    } else {
+                
+        // Recalculate invoice totals
+        recalculate_invoice($db, $VAR['invoice_id']);       
+
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Transaction").' '.$VAR['transaction_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
+
+        // Log activity 
+        $record = _gettext("Payement Record").' '.$VAR['transaction_id'].' '._gettext("updated.");
+        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+        
+        // Update last active record    
+        update_customer_last_active($db, $VAR['customer_id']);
+        update_workorder_last_active($db, $VAR['workorder_id']);
+        update_invoice_last_active($db, $VAR['invoice_id']);
+    
+    }
+    
+    return;
+        
+}
+
 #####################################
 #    Update Payment details         #
 #####################################
@@ -533,6 +499,35 @@ function update_active_payment_system_methods($db, $VAR) {
 
 /** Delete Functions **/
 
+#####################################
+#    Delete Payement                #
+#####################################
+
+function delete_payment($db, $transaction_id) {
+    
+    // Get invoice_id before deleting the record
+    $invoice_id = get_transaction_details($db, $transaction_id, 'invoice_id');
+    
+    $sql = "DELETE FROM ".PRFX."payment_transactions WHERE transaction_id=".$db->qstr($transaction_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
+        exit;
+    } else {
+        
+        // Recalculate invoice totals
+        recalculate_invoice($db, $invoice_id); 
+        
+        // Log activity        
+        $record = _gettext("Payment Record").' '.$transaction_id.' '._gettext("deleted.");
+        write_record_to_activity_log($record, null, null, null, $invoice_id);
+        
+        return true;
+        
+    } 
+    
+}
+
 /** Other Functions **/
 
 ####################################################
@@ -588,4 +583,23 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     
     return true;
    
+}
+
+#########################################
+#  Sum Payments Sub Total (ny inovice)  #
+#########################################
+
+function transactions_sub_total($db, $invoice_id) {
+    
+    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."payment_transactions WHERE invoice_id=". $db->qstr($invoice_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the payments sub total."));
+        exit;
+    } else {
+        
+        return $rs->fields['sub_total_sum'];
+        
+    }    
+    
 }
