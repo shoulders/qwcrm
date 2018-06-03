@@ -32,8 +32,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Transaction ID{/t}</b></td>
-                                            <td class="menutd">{$transaction_details.transaction_id}</td>
+                                            <td class="menutd"><b>{t}Payment ID{/t}</b></td>
+                                            <td class="menutd">{$transaction_details.payment_id}</td>
                                             <td class="menutd"><b>{t}Employee{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=user&page_tpl=details&user_id={$transaction_details.employee_id}">{$employee_display_name}</a></td>
                                         </tr>

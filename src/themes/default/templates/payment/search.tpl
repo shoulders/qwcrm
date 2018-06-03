@@ -34,7 +34,7 @@
                                                                 <td align="left" valign="top"><b>{t}Search{/t}</b>
                                                                    <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
-                                                                        <option value="transaction_id"{if $search_category == 'transaction_id'} selected{/if}>{t}Transaction ID{/t}</option>
+                                                                        <option value="payment_id"{if $search_category == 'payment_id'} selected{/if}>{t}Payment ID{/t}</option>
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
                                                                         <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>                                                                        
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>

@@ -11,8 +11,8 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/payment.php');
 
 // Check if we have an expense_id
-if($VAR['transaction_id'] == '') {
-    force_page('payment', 'search', 'warning_msg='._gettext("No Transaction ID supplied."));
+if($VAR['payment_id'] == '') {
+    force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
     exit;
 }
 
@@ -20,14 +20,14 @@ if($VAR['transaction_id'] == '') {
 if(isset($VAR['submit'])) {    
         
         update_transaction($db, $VAR);        
-        force_page('payment', 'details', 'transaction_id='.$VAR['transaction_id'].'&information_msg='._gettext("Transaction updated successfully.")); 
+        force_page('payment', 'details', 'payment_id='.$VAR['payment_id'].'&information_msg='._gettext("Payment updated successfully.")); 
         exit;    
 
 } else {
     
     // Build the page    
     $smarty->assign('payment_methods', get_payment_manual_methods($db));
-    $smarty->assign('transaction_details', get_transaction_details($db, $VAR['transaction_id']));
+    $smarty->assign('transaction_details', get_transaction_details($db, $VAR['payment_id']));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');
     
 }

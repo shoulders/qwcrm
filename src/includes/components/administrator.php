@@ -562,7 +562,7 @@ function reset_acl_permissions($db) {
                 ('invoice:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('invoice:search', 1, 1, 1, 0, 1, 1, 0, 0, 0),
                 ('invoice:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-                ('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+                ('payment:delete', 1, 1, 0, 0, 0, 0, 0, 0, 0),
                 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),                
                 ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),                

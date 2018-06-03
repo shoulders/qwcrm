@@ -28,14 +28,14 @@ defined('_QWEXEC') or die;
 #  Display all payments the given status            #
 #####################################################
 
-function display_payments($db, $order_by = 'transaction_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $method = null, $employee_id = null, $customer_id = null) {
+function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $method = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
     
     global $smarty;
    
     /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."payment_transactions.transaction_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."payment_transactions.payment_id\n";
     
     // Restrict results by search category (customer) and search term
     if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
@@ -52,17 +52,20 @@ function display_payments($db, $order_by = 'transaction_id', $direction = 'DESC'
     if($method) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.method= ".$db->qstr($method);}        
 
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.employee_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.customer_id=".$db->qstr($customer_id);}
+    
+    // Restrict by Invoice
+    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.invoice_id=".$db->qstr($invoice_id);}    
     
     /* The SQL code */
     
     $sql =  "SELECT                
             ".PRFX."customer.display_name AS customer_display_name,
                 
-            ".PRFX."payment_transactions.transaction_id,
+            ".PRFX."payment_transactions.payment_id,
             ".PRFX."payment_transactions.employee_id,
             ".PRFX."payment_transactions.customer_id,
             ".PRFX."payment_transactions.workorder_id,
@@ -151,24 +154,6 @@ function display_payments($db, $order_by = 'transaction_id', $direction = 'DESC'
     
 }
 
-####################################################
-#   Display transactions for the given invoice_id  #  // Only basic return needed for now
-####################################################
-
-function display_transactions($db, $invoice_id){
-    
-    $sql ="SELECT * FROM ".PRFX."payment_transactions WHERE invoice_id =".$db->qstr($invoice_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice's transactions."));
-        exit;
-    } else {      
-        
-        return $rs->GetArray();
-    }
-    
-}
-
 /** Insert Functions **/
 
 ############################
@@ -199,7 +184,7 @@ function insert_payment($db, $VAR) {
         recalculate_invoice($db, $VAR['invoice_id']);
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Transaction").' '.$VAR['transaction_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);
+        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         $record = _gettext("Payment made on Invoice").' '.$VAR['invoice_id'].' '._gettext("with transaction").' '.$db->Insert_ID().'.';
@@ -220,9 +205,9 @@ function insert_payment($db, $VAR) {
 #  Get transaction details  # // this gets payment details like bank details (not transactions)
 #############################
 
-function get_transaction_details($db, $transaction_id, $item = null){
+function get_transaction_details($db, $payment_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."payment_transactions  WHERE transaction_id=".$db->qstr($transaction_id);
+    $sql = "SELECT * FROM ".PRFX."payment_transactions  WHERE payment_id=".$db->qstr($payment_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get transaction details."));
@@ -396,7 +381,7 @@ function update_transaction($db, $VAR) {
             method          = ".$db->qstr( $VAR['method']                   ).",
             amount          = ".$db->qstr( $VAR['amount']                   ).",
             note            = ".$db->qstr( $VAR['note']                     )."
-            WHERE transaction_id =". $db->qstr( $VAR['transaction_id']      );
+            WHERE payment_id =". $db->qstr( $VAR['payment_id']      );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the transaction details."));
@@ -408,10 +393,10 @@ function update_transaction($db, $VAR) {
         recalculate_invoice($db, $VAR['invoice_id']);       
 
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Transaction").' '.$VAR['transaction_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
+        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
 
         // Log activity 
-        $record = _gettext("Payement Record").' '.$VAR['transaction_id'].' '._gettext("updated.");
+        $record = _gettext("Payement Record").' '.$VAR['payment_id'].' '._gettext("updated.");
         write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
@@ -503,12 +488,12 @@ function update_active_payment_system_methods($db, $VAR) {
 #    Delete Payement                #
 #####################################
 
-function delete_payment($db, $transaction_id) {
+function delete_payment($db, $payment_id) {
     
     // Get invoice_id before deleting the record
-    $invoice_id = get_transaction_details($db, $transaction_id, 'invoice_id');
+    $invoice_id = get_transaction_details($db, $payment_id, 'invoice_id');
     
-    $sql = "DELETE FROM ".PRFX."payment_transactions WHERE transaction_id=".$db->qstr($transaction_id);
+    $sql = "DELETE FROM ".PRFX."payment_transactions WHERE payment_id=".$db->qstr($payment_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
@@ -519,7 +504,7 @@ function delete_payment($db, $transaction_id) {
         recalculate_invoice($db, $invoice_id); 
         
         // Log activity        
-        $record = _gettext("Payment Record").' '.$transaction_id.' '._gettext("deleted.");
+        $record = _gettext("Payment Record").' '.$payment_id.' '._gettext("deleted.");
         write_record_to_activity_log($record, null, null, null, $invoice_id);
         
         return true;

@@ -8,7 +8,9 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>
-            <table width="700" cellpadding="4" cellspacing="0" border="0" >
+            <table width="700" cellpadding="4" cellspacing="0" border="0">
+                
+                <!-- tile -->
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Details for{/t} {t}Invoice ID{/t} {$invoice_details.invoice_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
@@ -17,27 +19,34 @@
                         </a>
                     </td>
                 </tr>
+                
+                <!-- Content -->
                 <tr>
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
+                            
+                            <!-- Invoice Details Block -->
                             <tr>
-                                <td class="menutd">                                   
+                                <td class="menutd">
                                     
+                                    <!-- Invoice Information -->
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                         
-                                        <!-- Invoice Information -->
                                         <tr class="olotd4">
+                                            
                                             <td class="row2"><b>{t}Invoice ID{/t}</b></td>
                                             <td class="row2"><b>{t}Work Order{/t}</b></td>
                                             <td class="row2"><b>{t}Employee{/t}</b></td> 
                                             <td class="row2"><b>{t}Date{/t}</b></td>
                                             <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
                                             <td class="row2"><b>{t}Status{/t}</b></td>
-                                            <td class="row2"><b>{t}Amount Paid{/t}</b></td>
-                                            <td class="row2"><b>{t}Balance{/t}</b></td>
+                                            <td class="row2"><b>{t}Gross{/t}</b></td>
+                                            <td class="row2"><b>{t}Balance{/t}</b></td>                                            
                                             <td class="row2"><b>{t}Date Paid{/t}</b></td>
+                                            
                                         </tr>
                                         <tr class="olotd4">
+                                            
                                             <td>{$invoice_id}</td>
                                             <td>
                                                 {if {$invoice_details.workorder_id} > 0}
@@ -54,17 +63,18 @@
                                                     {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
                                                 {/section}              
                                             </td>
-                                            <td>{$currency_sym}{$invoice_details.paid_amount|string_format:"%.2f"}</td>
-                                            <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
+                                            <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
+                                            <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>                                            
                                             <td>{$invoice_details.paid_date|date_format:$date_format}</td>
-                                        </tr>
-                                        
-                                        <!-- Scope -->
+                                            
+                                        </tr>                                        
                                         <tr class="olotd4">
+                                            
+                                            <!-- Scope -->
                                             <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
                                             <td colspan="7">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
+                                            
                                         </tr>
-
                                         <tr>
 
                                             <!-- Customer Details -->
@@ -115,42 +125,45 @@
                                         </tr>
 
                                     </table>                                                         
-                                    <br>                                            
+                                </td>
+                            </tr>
 
-                                    <!-- if invoice has an amount -->
-                                    {if $invoice_details.gross_amount > 0 }
+                            <!-- Function Buttons -->
+                            <tr>
+                                <td>
+                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
+                                        <tr>
+                                            <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd2">
 
-                                        <!-- Function Buttons -->
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" id="transaction_log">
-                                            <tr>
-                                                <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2">
+                                                <!-- if invoice has an amount -->
+                                                {if $invoice_details.gross_amount > 0 }                                                
 
                                                     <!-- Print Buttons -->   
                                                     <button type="button" onClick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
                                                     <button type="button" onClick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                     <button type="button" onClick="confirmChoice('Are you sure you want to email this invoice to the customer?') && $.ajax( { url:'index.php?component=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success&page_tpl= function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
-                                                    <button type="button" onClick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=customer_envelope&theme=print');">{t}Print Customer Envelope{/t}</button>                                            
+                                                    <button type="button" onClick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=customer_envelope&theme=print');">{t}Print Customer Envelope{/t}</button>                                              
 
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <br>
-                                        
-                                    {/if} 
-
-                                    <!-- Transactions -->
-                                    {if $display_transactions}
-                                        <tr>
-                                            <td>                                                
-                                                {include file='payment/blocks/display_transactions_block.tpl'}
+                                                {/if} 
                                             </td>
-                                        </tr>                                    
-                                    {/if}                                            
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            
+                            <!-- Payments -->                                    
+                            <tr>
+                                <td>                                                
+                                    {include file='payment/blocks/display_invoice_payments_block.tpl'}
+                                </td>
+                            </tr>
 
-                                    <!-- Labour Items -->
+                            <!-- Labour Items -->
+                            <tr>
+                                <td>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>
                                             <td class="menuhead2">&nbsp;{t}Labour{/t}</td>
@@ -186,10 +199,13 @@
                                                 <br>
                                             </td>
                                         </tr>
-                                    </table>
-                                    <br>
+                                    </table>                                    
+                                </td>
+                            </tr>
 
-                                    <!-- Parts Items -->
+                            <!-- Parts Items -->
+                            <tr>
+                                <td>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>
                                             <td class="menuhead2">&nbsp;{t}Parts{/t}</td>
@@ -225,9 +241,12 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <br>
+                                </td>
+                            </tr>
 
-                                    <!-- Totals Section -->
+                            <!-- Totals Section -->
+                            <tr>
+                                <td>
                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                         <tr>
                                             <td class="menuhead2">&nbsp;{t}Invoice Total{/t}</td>
@@ -261,9 +280,9 @@
                                             </td>
                                         </tr>
                                     </table>
+                                </td>
+                            </tr>                        
 
-                                 </td>
-                            </tr>
                         </table>
                     </td>
                 </tr>

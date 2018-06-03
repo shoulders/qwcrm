@@ -24,6 +24,6 @@ $smarty->assign('search_category',  $VAR['search_category']                     
 $smarty->assign('search_term',      $VAR['search_term']                                                                                 );
 $smarty->assign('filter_method',    $VAR['filter_method']                                                                               );
 $smarty->assign('payment_methods',  get_payment_system_methods($db)                                                                     );
-$smarty->assign('display_payments', display_payments($db, 'transaction_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_method'])   );
+$smarty->assign('display_payments', display_payments($db, 'payment_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_method'])   );
 
 $BuildPage .= $smarty->fetch('payment/search.tpl');

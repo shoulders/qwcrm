@@ -32,7 +32,7 @@
                                 } );                                                        
                             </script>                                                    
                         </td>
-                        <td><input name="paypal_transaction_id" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                        <td><input name="paypal_payment_id" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                         <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                     </tr>
                     <tr>

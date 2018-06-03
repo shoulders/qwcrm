@@ -820,6 +820,9 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
         exit;
     } else {
         
+        // Recalculate the invoice totals and update them
+        recalculate_invoice($db, $invoice_details['invoice_id']);
+
         // Create a Workorder History Note 
         // not currently needed
         
@@ -872,6 +875,9 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
         exit;
         
     } else {
+        
+        // Recalculate the invoice totals and update them
+        recalculate_invoice($db, $invoice_details['invoice_id']);
         
         // Create a Workorder History Note 
         // not currently needed
@@ -1194,7 +1200,7 @@ function export_invoice_prefill_items_csv($db) {
     }
         
     // Has transactions
-    if(!empty(display_transactions($db, $invoice_id))) {
+    if(!empty(display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions."));
         return false;        
     }
@@ -1232,7 +1238,7 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     }    
     
     // Has transactions
-    if(!empty(display_transactions($db, $invoice_id))) {
+    if(!empty(display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions."));
         return false;        
     }

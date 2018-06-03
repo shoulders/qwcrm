@@ -13,13 +13,13 @@ require(INCLUDES_DIR.'components/payment.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Check if we have an expense_id
-if($VAR['transaction_id'] == '') {
-    force_page('payment', 'search', 'warning_msg='._gettext("No Transaction ID supplied."));
+if($VAR['payment_id'] == '') {
+    force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
     exit;
 }
 
 // Build the page
-$transaction_details = get_transaction_details($db, $VAR['transaction_id']);
+$transaction_details = get_transaction_details($db, $VAR['payment_id']);
 $smarty->assign('employee_display_name', get_user_details($db, $transaction_details['employee_id'], 'display_name'));
 $smarty->assign('customer_display_name', get_customer_details($db, $transaction_details['customer_id'], 'display_name'));
 $smarty->assign('payment_methods', get_payment_manual_methods($db));

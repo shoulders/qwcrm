@@ -440,7 +440,7 @@ INSERT INTO `#__payment_system_methods` (`system_method_id`, `display_name`, `ac
 --
 
 CREATE TABLE `#__payment_transactions` (
-  `transaction_id` int(10) NOT NULL,
+  `payment_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -688,7 +688,7 @@ INSERT INTO `#__user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Te
 ('invoice:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('invoice:search', 1, 1, 1, 0, 1, 1, 0, 0, 0),
 ('invoice:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:delete', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
@@ -997,7 +997,7 @@ ALTER TABLE `#__payment_system_methods`
 -- Indexes for table `#__payment_transactions`
 --
 ALTER TABLE `#__payment_transactions`
-  ADD PRIMARY KEY (`transaction_id`);
+  ADD PRIMARY KEY (`payment_id`);
 
 --
 -- Indexes for table `#__refund`
@@ -1149,7 +1149,7 @@ ALTER TABLE `#__invoice_prefill_items`
 -- AUTO_INCREMENT for table `#__payment_transactions`
 --
 ALTER TABLE `#__payment_transactions`
-  MODIFY `transaction_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__refund`
 --

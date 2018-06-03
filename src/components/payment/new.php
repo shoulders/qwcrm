@@ -63,8 +63,8 @@ if(get_invoice_details($db, $VAR['invoice_id'], 'is_closed')) {
 $smarty->assign('customer_details',                 get_customer_details($db, get_invoice_details($db, $VAR['invoice_id'] , 'customer_id'))     );
 $smarty->assign('invoice_details',                  get_invoice_details($db, $VAR['invoice_id'])                                                );
 $smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                                                   );
-$smarty->assign('display_transactions',             display_transactions($db, $VAR['invoice_id'])                                           );
-$smarty->assign('transaction_statuses',             get_payment_system_methods($db)                                                             );
+$smarty->assign('display_payments',         display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );
+$smarty->assign('payment_statuses',             get_payment_system_methods($db)                                                             );
 $smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                                                      );
 $smarty->assign('active_credit_cards',              get_active_credit_cards($db)                                                                );
 

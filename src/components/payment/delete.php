@@ -18,18 +18,18 @@ if(!check_page_accessed_via_qwcrm()) {
     die(_gettext("No Direct Access Allowed."));
 }
 
-// Check if we have an expense_id
-if($VAR['transaction_id'] == '') {
-    force_page('payment', 'search', 'warning_msg='._gettext("No Transaction ID supplied."));
+// Check if we have an payment_id
+if($VAR['payment_id'] == '') {
+    force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
     exit;
 }   
 
-// get invoice_id
-$invoice_id = get_transaction_details($db, $VAR['transaction_id'], 'invoice_id');
+// Get invoice_id
+$invoice_id = get_transaction_details($db, $VAR['payment_id'], 'invoice_id');
 
 // Delete the transaction
-delete_payment($db, $VAR['transaction_id']);
+delete_payment($db, $VAR['payment_id']);
 
 // Load the transaction search page
-force_page('payment', 'search', 'information_msg='._gettext("Transaction deleted successfully and invoice").' '.$invoice_id.' '._gettext("has been updated to reflect this change."));
+force_page('payment', 'search', 'information_msg='._gettext("Payment deleted successfully and invoice").' '.$invoice_id.' '._gettext("has been updated to reflect this change."));
 exit;

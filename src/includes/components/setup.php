@@ -786,7 +786,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     
     // payment_transactions
     $column_mappings = array(
-        'transaction_id'    => 'TRANSACTION_ID',
+        'payment_id'    => 'TRANSACTION_ID',
         'employee_id'       => '',
         'customer_id'       => 'CUSTOMER_ID',
         'workorder_id'      => 'WORKORDER_ID',

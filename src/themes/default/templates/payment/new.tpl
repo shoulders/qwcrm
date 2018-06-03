@@ -37,18 +37,16 @@
                                 <td>                                                
                                     <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';" type="button">
                                 </td>
-                            </tr>
-                            
+                            </tr>                            
 
-                            <!-- Transactions -->
-                            {if $display_transactions}
-                                <tr>
-                                    <td>                                                
-                                        {include file='payment/blocks/display_transactions_block.tpl'}
-                                    </td>
-                                </tr>
-                            {/if}
+                            <!-- Payments -->                           
+                            <tr>
+                                <td>                                                
+                                    {include file='payment/blocks/display_invoice_payments_block.tpl'}
+                                </td>
+                            </tr>                            
                                 
+                            <!-- Active Payment Methods -->
                             {if $invoice_details.is_closed == 0 && $invoice_details.balance > 0}
                                 
                                 <!-- Cash -->
@@ -96,7 +94,7 @@
                                     </tr>
                                 {/if}
                                 
-                                <!-- Paypal -->
+                                <!-- PayPal -->
                                 {if $active_payment_system_methods.paypal}
                                     <tr>
                                         <td>                                    

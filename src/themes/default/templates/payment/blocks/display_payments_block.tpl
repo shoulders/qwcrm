@@ -8,7 +8,7 @@
 <b>{$block_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
-        <td class="olohead"><b>{t}Transaction ID{/t}</b></td>
+        <td class="olohead"><b>{t}Payment ID{/t}</b></td>
         <td class="olohead"><b>{t}WO ID{/t}</b></td>
         <td class="olohead"><b>{t}INV ID{/t}</b></td>        
         <td class="olohead"><b>{t}Employee{/t}</b></td>
@@ -20,10 +20,10 @@
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=p loop=$display_payments}        
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=payment&page_tpl=details&transaction_id={$display_payments[p].transaction_id}';" class="row1">
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}';" class="row1">
 
-            <!-- Transaction ID -->
-            <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&transaction_id={$display_payments[p].transaction_id}">{$display_payments[p].transaction_id}</a></td>
+            <!-- Payment ID -->
+            <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}">{$display_payments[p].payment_id}</a></td>
             
             <!-- WO ID -->
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&workorder_id={$display_payments[p].workorder_id}">{$display_payments[p].workorder_id}</a></td>
@@ -57,24 +57,24 @@
             <!-- Note -->            
             <td class="olotd4" nowrap>
                 {if $display_payments[p].note}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_payments[p].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_payments[p].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
              </td>            
 
             <!-- Action -->
             <td class="olotd4" align="center" nowrap>
-                <a href="index.php?component=payment&page_tpl=details&transaction_id={$display_payments[p].transaction_id}">
+                <a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View the transaction.{/t}');" onMouseOut="hideddrivetip();">
                 </a>
-                <a href="index.php?component=payment&page_tpl=delete&transaction_id={$display_payments[p].transaction_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Transaction Record? This will permanently remove the record from the database.{/t}');">
-                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Transaction Record{/t}</b>');" onMouseOut="hideddrivetip();">
+                <a href="index.php?component=payment&page_tpl=delete&payment_id={$display_payments[p].payment_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Payment Record? This will permanently remove the record from the database.{/t}');">
+                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Payment Record{/t}</b>');" onMouseOut="hideddrivetip();">
                  </a>
             </td>            
 
         </tr>
-    {sectionelse}
-        <tr>
-            <td colspan="9" class="error">{t}There are no payments.{/t}</td>
-        </tr>        
-    {/section}
+        {sectionelse}
+            <tr>
+                <td colspan="10" class="error">{t}There are no payments.{/t}</td>
+            </tr>        
+        {/section}
 </table>
