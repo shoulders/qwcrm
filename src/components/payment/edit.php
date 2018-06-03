@@ -19,7 +19,7 @@ if($VAR['payment_id'] == '') {
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-        update_transaction($db, $VAR);        
+        update_payment($db, $VAR);        
         force_page('payment', 'details', 'payment_id='.$VAR['payment_id'].'&information_msg='._gettext("Payment updated successfully.")); 
         exit;    
 
@@ -27,7 +27,7 @@ if(isset($VAR['submit'])) {
     
     // Build the page    
     $smarty->assign('payment_methods', get_payment_manual_methods($db));
-    $smarty->assign('transaction_details', get_transaction_details($db, $VAR['payment_id']));
+    $smarty->assign('payment_details', get_payment_details($db, $VAR['payment_id']));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');
     
 }

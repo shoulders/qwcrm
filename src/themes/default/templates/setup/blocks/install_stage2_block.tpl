@@ -439,7 +439,7 @@
                                 <option value="0"{if $qwcrm_config.qwcrm_email_transport_log == '0'} selected{/if}>{t}No{/t}</option>
                                 <option value="1"{if $qwcrm_config.qwcrm_email_transport_log == '1'} selected{/if}>{t}Yes{/t}</option>
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Email Transport Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable email transport logging for QWcrm. This will log all email trasnsport transactions from within QWcrm and store the data in the Email Transport Log. This log file can be found in the logs folder.<br>The log will show you the SMTP handshakes and other relevant information.<br>This should only be used for diagnosing problems because the log file will grow in size quicky.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}QWcrm Email Transport Log{/t}</strong></div><hr><div>{t escape=tooltip}Enable email transport logging for QWcrm. This will log all email transport transactions from within QWcrm and store the data in the Email Transport Log. This log file can be found in the logs folder.<br>The log will show you the SMTP handshakes and other relevant information.<br>This should only be used for diagnosing problems because the log file will grow in size quicky.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr> 
 

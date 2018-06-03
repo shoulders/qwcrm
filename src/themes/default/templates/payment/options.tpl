@@ -47,23 +47,23 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Account Name{/t}:</b></td>
-                                                <td><input name="bank_account_name" class="olotd5" value="{$payment_settings.bank_account_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="bank_account_name" class="olotd5" value="{$payment_options.bank_account_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Name{/t}:</b></td>
-                                                <td><input name="bank_name" class="olotd5" value="{$payment_settings.bank_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="bank_name" class="olotd5" value="{$payment_options.bank_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Account Number{/t}:</b></td>
-                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_settings.bank_account_number}" type="text" maxlength="15" onkeydown="return onlyNumber(event);"></td>
+                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_options.bank_account_number}" type="text" maxlength="15" onkeydown="return onlyNumber(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Sort Code{/t}</b></td>
-                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_settings.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlySortcode(event);"></td>
+                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_options.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlySortcode(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank IBAN{/t}</b></td>
-                                                <td><input name="bank_iban" class="olotd5" value="{$payment_settings.bank_iban}" type="text" maxlength="34" placeholder="GB15MIDL40051512345678" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="bank_iban" class="olotd5" value="{$payment_options.bank_iban}" type="text" maxlength="34" placeholder="GB15MIDL40051512345678" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
 
                                             <!-- PayPal -->
@@ -75,7 +75,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Paypal Email{/t}</b></td>
-                                                <td><input name="paypal_email" class="olotd5" value="{$payment_settings.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                <td><input name="paypal_email" class="olotd5" value="{$payment_options.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
 
                                             <!-- Invoice Messages -->
                                             <tr>
@@ -83,15 +83,15 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Transaction Message{/t}</b></td>
-                                                <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_settings.bank_transaction_msg}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_options.bank_transaction_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Cheques payable to{/t}:</b></td>
-                                                <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_settings.cheque_payable_to_msg}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_options.cheque_payable_to_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Invoice Footer Message{/t}:</b></td>
-                                                <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_settings.invoice_footer_msg}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_options.invoice_footer_msg}</textarea><br></td>
                                             </tr>
 
                                         </table>                                            

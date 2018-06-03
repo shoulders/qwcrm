@@ -19,9 +19,9 @@ if($VAR['payment_id'] == '') {
 }
 
 // Build the page
-$transaction_details = get_transaction_details($db, $VAR['payment_id']);
-$smarty->assign('employee_display_name', get_user_details($db, $transaction_details['employee_id'], 'display_name'));
-$smarty->assign('customer_display_name', get_customer_details($db, $transaction_details['customer_id'], 'display_name'));
+$payment_details = get_payment_details($db, $VAR['payment_id']);
+$smarty->assign('employee_display_name', get_user_details($db, $payment_details['employee_id'], 'display_name'));
+$smarty->assign('customer_display_name', get_customer_details($db, $payment_details['customer_id'], 'display_name'));
 $smarty->assign('payment_methods', get_payment_manual_methods($db));
-$smarty->assign('transaction_details', $transaction_details);
+$smarty->assign('payment_details', $payment_details);
 $BuildPage .= $smarty->fetch('payment/details.tpl');

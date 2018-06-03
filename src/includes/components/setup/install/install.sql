@@ -339,23 +339,16 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 CREATE TABLE `#__payment` (
-  `bank_account_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_account_number` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_sort_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_iban` varchar(34) COLLATE utf8_unicode_ci NOT NULL,
-  `paypal_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_transaction_msg` text COLLATE utf8_unicode_ci NOT NULL,
-  `cheque_payable_to_msg` text COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_footer_msg` text COLLATE utf8_unicode_ci NOT NULL
+  `payment_id` int(10) NOT NULL,
+  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__payment`
---
-
-INSERT INTO `#__payment` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `bank_transaction_msg`, `cheque_payable_to_msg`, `invoice_footer_msg`) VALUES
-('', '', '', '', '', '', '<p>This is a bank transaction message and can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message and can be edited in payment options.</p>');
 
 -- --------------------------------------------------------
 
@@ -412,6 +405,31 @@ INSERT INTO `#__payment_manual_methods` (`manual_method_id`, `display_name`) VAL
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__payment_options`
+--
+
+CREATE TABLE `#__payment_options` (
+  `bank_account_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_account_number` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_sort_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_iban` varchar(34) COLLATE utf8_unicode_ci NOT NULL,
+  `paypal_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `bank_transaction_msg` text COLLATE utf8_unicode_ci NOT NULL,
+  `cheque_payable_to_msg` text COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_footer_msg` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__payment_options`
+--
+
+INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `bank_transaction_msg`, `cheque_payable_to_msg`, `invoice_footer_msg`) VALUES
+('', '', '', '', '', '', '<p>This is a bank transaction message and can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message and can be edited in payment options.</p>');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__payment_system_methods`
 --
 
@@ -432,24 +450,6 @@ INSERT INTO `#__payment_system_methods` (`system_method_id`, `display_name`, `ac
 ('direct_deposit', 'Direct Deposit', 1),
 ('gift_certificate', 'Gift Certificate', 1),
 ('paypal', 'PayPal', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__payment_transactions`
---
-
-CREATE TABLE `#__payment_transactions` (
-  `payment_id` int(10) NOT NULL,
-  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -973,7 +973,7 @@ ALTER TABLE `#__invoice_statuses`
 -- Indexes for table `#__payment`
 --
 ALTER TABLE `#__payment`
-  ADD PRIMARY KEY (`bank_account_name`);
+  ADD PRIMARY KEY (`payment_id`);
 
 --
 -- Indexes for table `#__payment_credit_cards`
@@ -988,16 +988,16 @@ ALTER TABLE `#__payment_manual_methods`
   ADD PRIMARY KEY (`manual_method_id`);
 
 --
+-- Indexes for table `#__payment_options`
+--
+ALTER TABLE `#__payment_options`
+  ADD PRIMARY KEY (`bank_account_name`);
+
+--
 -- Indexes for table `#__payment_system_methods`
 --
 ALTER TABLE `#__payment_system_methods`
   ADD PRIMARY KEY (`system_method_id`);
-
---
--- Indexes for table `#__payment_transactions`
---
-ALTER TABLE `#__payment_transactions`
-  ADD PRIMARY KEY (`payment_id`);
 
 --
 -- Indexes for table `#__refund`
@@ -1146,9 +1146,9 @@ ALTER TABLE `#__invoice_parts`
 ALTER TABLE `#__invoice_prefill_items`
   MODIFY `invoice_prefill_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
--- AUTO_INCREMENT for table `#__payment_transactions`
+-- AUTO_INCREMENT for table `#__payment`
 --
-ALTER TABLE `#__payment_transactions`
+ALTER TABLE `#__payment`
   MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__refund`

@@ -26,45 +26,45 @@
                                             <td class="olohead" colspan="4">
                                                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                                                     <tr>
-                                                        <td class="menuhead2">&nbsp;{t}Payment ID{/t} {$transaction_details.payment_id}</td>
+                                                        <td class="menuhead2">&nbsp;{t}Payment ID{/t} {$payment_details.payment_id}</td>
                                                     </tr>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payment ID{/t}</b></td>
-                                            <td class="menutd">{$transaction_details.payment_id}</td>
+                                            <td class="menutd">{$payment_details.payment_id}</td>
                                             <td class="menutd"><b>{t}Employee{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=user&page_tpl=details&user_id={$transaction_details.employee_id}">{$employee_display_name}</a></td>
+                                            <td class="menutd"><a href="index.php?component=user&page_tpl=details&user_id={$payment_details.employee_id}">{$employee_display_name}</a></td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Customer{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=customer&page_tpl=details&customer_id={$transaction_details.customer_id}">{$customer_display_name}</a></td>
+                                            <td class="menutd"><a href="index.php?component=customer&page_tpl=details&customer_id={$payment_details.customer_id}">{$customer_display_name}</a></td>
                                             <td class="menutd" ><b>{t}Work Order ID{/t}</b></td>
-                                            <td class="menutd">{if $transaction_details.workorder_id}<a href="index.php?component=workorder&page_tpl=details&workorder_id={$transaction_details.workorder_id}">{$transaction_details.workorder_id}</a>{else}{t}n/a{/t}{/if}</td>
+                                            <td class="menutd">{if $payment_details.workorder_id}<a href="index.php?component=workorder&page_tpl=details&workorder_id={$payment_details.workorder_id}">{$payment_details.workorder_id}</a>{else}{t}n/a{/t}{/if}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd" ><b>{t}Invoice ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$transaction_details.invoice_id}">{$transaction_details.invoice_id}</a></td>
+                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a></td>
                                             <td class="menutd" ><b>{t}Date{/t}</b></td>
-                                            <td class="menutd">{$transaction_details.date|date_format:$date_format}</td>
+                                            <td class="menutd">{$payment_details.date|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$payment_methods}    
-                                                    {if $transaction_details.method == $payment_methods[s].manual_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}   
+                                                    {if $payment_details.method == $payment_methods[s].manual_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}   
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$transaction_details.amount}</td>
+                                            <td class="menutd">{$currency_sym} {$payment_details.amount}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Note{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd" colspan="3">{$transaction_details.note}</td>
+                                            <td class="menutd" colspan="3">{$payment_details.note}</td>
                                             <td class="menutd"></td>
                                         </tr>                                        
                                     </table>

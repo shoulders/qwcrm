@@ -20,10 +20,9 @@ if($VAR['invoice_id'] == '') {
     exit;
 }
 
-// Enter the transaction in to the database - not currently using
-if(isset($VAR['submit'])) { 
+// Load the method specific processor upon form submission
+if(isset($VAR['submit'])) {     
     
-    // Load the method specific processor
     switch($VAR['method_type']) {
 
         case 'credit_card':

@@ -35,7 +35,7 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
     /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."payment_transactions.payment_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."payment.payment_id\n";
     
     // Restrict results by search category (customer) and search term
     if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
@@ -44,45 +44,45 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
     elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment.$search_category LIKE '%$search_term%'";} 
     
     /* Filter the Records */
     
     // Restrict by Status
-    if($method) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.method= ".$db->qstr($method);}        
+    if($method) {$whereTheseRecords .= " AND ".PRFX."payment.method= ".$db->qstr($method);}        
 
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.employee_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment.employee_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."payment.customer_id=".$db->qstr($customer_id);}
     
     // Restrict by Invoice
-    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_transactions.invoice_id=".$db->qstr($invoice_id);}    
+    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment.invoice_id=".$db->qstr($invoice_id);}    
     
     /* The SQL code */
     
     $sql =  "SELECT                
             ".PRFX."customer.display_name AS customer_display_name,
                 
-            ".PRFX."payment_transactions.payment_id,
-            ".PRFX."payment_transactions.employee_id,
-            ".PRFX."payment_transactions.customer_id,
-            ".PRFX."payment_transactions.workorder_id,
-            ".PRFX."payment_transactions.invoice_id,
-            ".PRFX."payment_transactions.date,
-            ".PRFX."payment_transactions.method,
-            ".PRFX."payment_transactions.amount,
-            ".PRFX."payment_transactions.note,
+            ".PRFX."payment.payment_id,
+            ".PRFX."payment.employee_id,
+            ".PRFX."payment.customer_id,
+            ".PRFX."payment.workorder_id,
+            ".PRFX."payment.invoice_id,
+            ".PRFX."payment.date,
+            ".PRFX."payment.method,
+            ".PRFX."payment.amount,
+            ".PRFX."payment.note,
                 
             ".PRFX."user.display_name AS employee_display_name
                
-            FROM ".PRFX."payment_transactions
-            LEFT JOIN ".PRFX."user ON ".PRFX."payment_transactions.employee_id   = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."payment_transactions.customer_id = ".PRFX."customer.customer_id                 
+            FROM ".PRFX."payment
+            LEFT JOIN ".PRFX."user ON ".PRFX."payment.employee_id   = ".PRFX."user.user_id
+            LEFT JOIN ".PRFX."customer ON ".PRFX."payment.customer_id = ".PRFX."customer.customer_id                 
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."payment_transactions.".$order_by."
-            ORDER BY ".PRFX."payment_transactions.".$order_by."
+            GROUP BY ".PRFX."payment.".$order_by."
+            ORDER BY ".PRFX."payment.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
@@ -164,7 +164,7 @@ function insert_payment($db, $VAR) {
 
     $invoice_details = get_invoice_details($db, $VAR['invoice_id']);
     
-    $sql = "INSERT INTO ".PRFX."payment_transactions SET            
+    $sql = "INSERT INTO ".PRFX."payment SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
             customer_id     = ".$db->qstr( $invoice_details['customer_id']             ).",
             workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
@@ -187,7 +187,7 @@ function insert_payment($db, $VAR) {
         insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        $record = _gettext("Payment made on Invoice").' '.$VAR['invoice_id'].' '._gettext("with transaction").' '.$db->Insert_ID().'.';
+        $record = _gettext("Payment made on Invoice").' '.$VAR['invoice_id'].' '._gettext("with payment").' '.$db->Insert_ID().'.';
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
@@ -202,15 +202,15 @@ function insert_payment($db, $VAR) {
 /** Get Functions **/
 
 #############################
-#  Get transaction details  # // this gets payment details like bank details (not transactions)
+#  Get payment details      #
 #############################
 
-function get_transaction_details($db, $payment_id, $item = null){
+function get_payment_details($db, $payment_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."payment_transactions  WHERE payment_id=".$db->qstr($payment_id);
+    $sql = "SELECT * FROM ".PRFX."payment  WHERE payment_id=".$db->qstr($payment_id);
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get transaction details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
         exit;
     } else {
         
@@ -229,15 +229,15 @@ function get_transaction_details($db, $payment_id, $item = null){
 }
 
 ##########################
-#  Get payment details   # // this gets payment details like bank details (not transactions)
+#  Get payment options   #
 ##########################
 
-function get_payment_details($db, $item = null){
+function get_payment_options($db, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."payment";
+    $sql = "SELECT * FROM ".PRFX."payment_options";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
         exit;
     } else {
         
@@ -366,13 +366,13 @@ function get_credit_card_display_name_from_key($db, $card_key) {
 
 /** Update Functions **/
 
-#####################################################
-#   update transaction created by a payment method  #
-#####################################################
+#####################
+#   update payment  #
+#####################
 
-function update_transaction($db, $VAR) {    
+function update_payment($db, $VAR) {    
     
-    $sql = "UPDATE ".PRFX."payment_transactions SET        
+    $sql = "UPDATE ".PRFX."payment SET        
             employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
             customer_id     = ".$db->qstr( $VAR['customer_id']              ).",
             workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
@@ -384,7 +384,7 @@ function update_transaction($db, $VAR) {
             WHERE payment_id =". $db->qstr( $VAR['payment_id']      );
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the transaction details."));
+        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
         exit;
         
     } else {
@@ -411,12 +411,12 @@ function update_transaction($db, $VAR) {
 }
 
 #####################################
-#    Update Payment details         #
+#    Update Payment options         #
 #####################################
 
-function update_payment_settings($db, $VAR) {
+function update_payment_options($db, $VAR) {
     
-    $sql = "UPDATE ".PRFX."payment SET            
+    $sql = "UPDATE ".PRFX."payment_options SET            
             bank_account_name       =". $db->qstr( $VAR['bank_account_name']        ).",
             bank_name               =". $db->qstr( $VAR['bank_name']                ).",
             bank_account_number     =". $db->qstr( $VAR['bank_account_number']      ).",
@@ -491,9 +491,9 @@ function update_active_payment_system_methods($db, $VAR) {
 function delete_payment($db, $payment_id) {
     
     // Get invoice_id before deleting the record
-    $invoice_id = get_transaction_details($db, $payment_id, 'invoice_id');
+    $invoice_id = get_payment_details($db, $payment_id, 'invoice_id');
     
-    $sql = "DELETE FROM ".PRFX."payment_transactions WHERE payment_id=".$db->qstr($payment_id);
+    $sql = "DELETE FROM ".PRFX."payment WHERE payment_id=".$db->qstr($payment_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
@@ -551,13 +551,13 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     // Has a zero amount been submitted, this is not allowed
     if($amount == 0){
         
-        $smarty->assign('warning_msg', _gettext("You can not enter a transaction with a zero (0.00) amount."));
+        $smarty->assign('warning_msg', _gettext("You can not enter a payment with a zero (0.00) amount."));
         
         return false;
         
     }
 
-    // Is the transaction larger than the outstanding invoice balance, this is not allowed
+    // Is the payment larger than the outstanding invoice balance, this is not allowed
     if($amount > get_invoice_details($db, $invoice_id, 'balance')){
         
         $smarty->assign('warning_msg', _gettext("You can not enter more than the outstanding balance of the invoice."));
@@ -574,9 +574,9 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
 #  Sum Payments Sub Total (ny inovice)  #
 #########################################
 
-function transactions_sub_total($db, $invoice_id) {
+function payments_sub_total($db, $invoice_id) {
     
-    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."payment_transactions WHERE invoice_id=". $db->qstr($invoice_id);
+    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."payment WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the payments sub total."));

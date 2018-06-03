@@ -28,7 +28,7 @@ if(!$VAR['giftcert_id'] = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_co
         
         /* Invoice Processing */
 
-        // Validate the basic invoice totals after the transaction is applied, then if successful return the results
+        // Validate the basic invoice totals after the payment is applied, then if successful return the results
         if(!$new_invoice_totals = validate_payment_method_totals($db, $VAR['invoice_id'], $VAR['amount'])) {
 
             // Do nothing - Specific Error information has already been set via postEmulation    
@@ -42,7 +42,7 @@ if(!$VAR['giftcert_id'] = get_giftcert_id_by_gifcert_code($db, $VAR['giftcert_co
             // Create a specific note string (if applicable)
             $VAR['note'] = _gettext("Gift Certificate Code").': '.$VAR['giftcert_code'].' - '.$VAR['note'];    
 
-            // Insert the transaction with the calculated information
+            // Insert the payment with the calculated information
             insert_payment($db, $VAR);
 
             // Assign Success message

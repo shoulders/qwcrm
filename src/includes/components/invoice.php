@@ -988,13 +988,13 @@ function recalculate_invoice($db, $invoice_id) {
     $invoice_details        = get_invoice_details($db, $invoice_id);
     
     $items_sub_total        = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);
-    $transactions_sub_total = transactions_sub_total($db, $invoice_id);
+    $payments_sub_total     = payments_sub_total($db, $invoice_id);
     $discount_amount        = $items_sub_total  * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
     $net_amount             = $items_sub_total  - $discount_amount;
     $tax_amount             = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
     $gross_amount           = $net_amount + $tax_amount;
     
-    $balance = $gross_amount - $transactions_sub_total;
+    $balance = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice SET
             sub_total           =". $db->qstr( $items_sub_total         ).",
@@ -1002,7 +1002,7 @@ function recalculate_invoice($db, $invoice_id) {
             net_amount          =". $db->qstr( $net_amount              ).",
             tax_amount          =". $db->qstr( $tax_amount              ).",
             gross_amount        =". $db->qstr( $gross_amount            ).",
-            paid_amount         =". $db->qstr( $transactions_sub_total  ).",
+            paid_amount         =". $db->qstr( $payments_sub_total  ).",
             balance             =". $db->qstr( $balance                 )."
             WHERE invoice_id    =". $db->qstr( $invoice_id              );
 
@@ -1029,7 +1029,7 @@ function recalculate_invoice($db, $invoice_id) {
         }
         
         // if there is an outstanding balance and there are some payments, set to partially paid (if not already)
-        if($balance != 0 && $transactions_sub_total != 0 && $invoice_details['status'] != 'partially_paid') {            
+        if($balance != 0 && $payments_sub_total != 0 && $invoice_details['status'] != 'partially_paid') {            
             update_invoice_status($db, $invoice_id, 'partially_paid');
         }
         
@@ -1189,19 +1189,19 @@ function export_invoice_prefill_items_csv($db) {
     
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions and is partially paid."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($invoice_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions and is paid."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has payments and is paid."));
         return false;        
     }
         
-    // Has transactions
+    // Has payments
     if(!empty(display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has transactions."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has payments."));
         return false;        
     }
 
@@ -1227,19 +1227,19 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is partially paid."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($invoice_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions and is paid."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments and is paid."));
         return false;        
     }    
     
-    // Has transactions
+    // Has payments
     if(!empty(display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has transactions."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments."));
         return false;        
     }
 

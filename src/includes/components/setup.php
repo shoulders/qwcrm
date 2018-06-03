@@ -782,9 +782,9 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         );
     migrate_table($db, $qwcrm_prefix.'invoice_parts', $myitcrm_prefix.'TABLE_INVOICE_PARTS', $column_mappings);        
     
-    /* Payment / transactions */
+    /* Payment */
     
-    // payment_transactions
+    // payment
     $column_mappings = array(
         'payment_id'    => 'TRANSACTION_ID',
         'employee_id'       => '',
@@ -796,14 +796,14 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'amount'            => 'AMOUNT',
         'note'              => 'MEMO'  
         );
-    migrate_table($db, $qwcrm_prefix.'payment_transactions', $myitcrm_prefix.'TABLE_TRANSACTION', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'payment', $myitcrm_prefix.'TABLE_TRANSACTION', $column_mappings);
     
     // update payment types
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '1', 'credit_card');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '2', 'cheque');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '3', 'cash');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '4', 'gift_certificate');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '5', 'paypal');    
+    update_column_values($db, $qwcrm_prefix.'payment', 'method', '1', 'credit_card');
+    update_column_values($db, $qwcrm_prefix.'payment', 'method', '2', 'cheque');
+    update_column_values($db, $qwcrm_prefix.'payment', 'method', '3', 'cash');
+    update_column_values($db, $qwcrm_prefix.'payment', 'method', '4', 'gift_certificate');
+    update_column_values($db, $qwcrm_prefix.'payment', 'method', '5', 'paypal');    
     
     /* Refund */
     
