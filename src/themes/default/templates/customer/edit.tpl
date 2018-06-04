@@ -45,7 +45,7 @@
                                                                             <td><input name="last_name" class="olotd5" value="{$customer_details.last_name}" size="20" type="text" maxlength="20" onkeydown="return onlyName(event);"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}Website{/t}</b></td>
+                                                                            <td align="right"><b>{t}Website{/t}</b></td>
                                                                             <td><input name="website" class="olotd5" value="{$customer_details.website}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
                                                                         </tr>
                                                                         <tr>

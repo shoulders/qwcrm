@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'components/payment.php');
 if(isset($VAR['submit'])) {
     
     // Log activity
-    $record = _gettext("A search of workorders has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    $record = _gettext("A search of payments has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
     write_record_to_activity_log($record);
     
 }

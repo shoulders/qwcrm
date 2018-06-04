@@ -8,9 +8,13 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'components/customer.php');
+require(INCLUDES_DIR.'components/invoice.php');
+require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'components/payment.php');
 
-// Check if we have an expense_id
+// Check if we have a payment_id
 if($VAR['payment_id'] == '') {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
     exit;
@@ -25,9 +29,14 @@ if(isset($VAR['submit'])) {
 
 } else {
     
-    // Build the page    
-    $smarty->assign('payment_methods', get_payment_manual_methods($db));
-    $smarty->assign('payment_details', get_payment_details($db, $VAR['payment_id']));
-    $BuildPage .= $smarty->fetch('expense/edit.tpl');
+    $payment_details = get_payment_details($db, $VAR['payment_id']);
+    
+    
+    // Build the page
+    $smarty->assign('customer_display_name', get_customer_details($db, $payment_details['customer_id'], 'display_name'));
+    $smarty->assign('employee_display_name', get_user_details($db, $payment_details['employee_id'], 'display_name'));
+    $smarty->assign('payment_methods', get_payment_system_methods($db));
+    $smarty->assign('payment_details', $payment_details);
+    $BuildPage .= $smarty->fetch('payment/edit.tpl');
     
 }

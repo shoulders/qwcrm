@@ -18,10 +18,10 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Expense Edit Page{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Payment Edit Page{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}EXPENSE_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}EXPENSE_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}PAYMENT_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}PAYMENT_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>
@@ -33,19 +33,32 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                      <tr>
                                          <td>                                                                                           
-                                            <form method="post" action="index.php?component=expense&page_tpl=edit" name="edit_expense" id="edit_expense">                                                
+                                            <form method="post" action="index.php?component=payment&page_tpl=edit" name="edit_payment" id="edit_payment">                                                
                                                 <table width="100%" cellpadding="2" cellspacing="2" border="0">                                                    
                                                     <tr>
-                                                        <td align="right"><b>{t}Expense ID{/t}</b></td>
-                                                        <td colspan="3"><input name="expense_id" value="{$expense_details.expense_id}" type="hidden">{$expense_details.expense_id}</td>
+                                                        <td align="right"><b>{t}Payment ID{/t}</b></td>
+                                                        <td colspan="3"><input name="payment_id" value="{$payment_details.payment_id}" type="hidden">{$payment_details.payment_id}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        <td colspan="3"><input name="payee" class="olotd5" size="50" value="{$expense_details.payee}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
-                                                    </tr><tr>
+                                                        <td align="right"><b>{t}Employee{/t}</b></td>
+                                                        <td colspan="3"><input name="employee_id" value="{$payment_details.employee_id}" type="hidden">{$employee_display_name}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{t}Customer{/t}</b></td>
+                                                        <td colspan="3"><input name="customer_id" value="{$payment_details.customer_id}" type="hidden">{$customer_display_name}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{t}Workorder ID{/t}</b></td>
+                                                        <td colspan="3"><input name="workorder_id" value="{$payment_details.workorder_id}" type="hidden">{$payment_details.workorder_id}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{t}Invoice ID{/t}</b></td>
+                                                        <td colspan="3"><input name="invoice_id" value="{$payment_details.invoice_id}" type="hidden">{$payment_details.invoice_id}</td>
+                                                    </tr>
+                                                    <tr>
                                                         <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>
-                                                            <input id="date" name="date" class="olotd5" size="10" value="{$expense_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                            <input id="date" name="date" class="olotd5" size="10" value="{$payment_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
                                                             <input id="date_button" value="+" type="button">                                                            
                                                             <script>                                                                
                                                                 Calendar.setup( {
@@ -57,57 +70,27 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Invoice ID{/t}</b></td>
-                                                        <td colspan="3"><input id="invoice_id" name="invoice_id" class="olotd5" size="5" value="{$expense_details.invoice_id}" type="text" maxlength="10" onkeydown="return onlyNumber(event);"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        <td>
-                                                            <select id="type" name="type" class="olotd5">
-                                                                {section name=s loop=$expense_types}    
-                                                                    <option value="{$expense_types[s].expense_type_id}"{if $expense_details.type == $expense_types[s].expense_type_id} selected{/if}>{t}{$expense_types[s].display_name}{/t}</option>
-                                                                {/section} 
-                                                            </select>
-                                                        </td>                                                            
-                                                    </tr>
-                                                    <tr>
                                                         <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>
                                                             <select id="payment_method" name="payment_method" class="olotd5">
                                                                 {section name=s loop=$payment_methods}    
-                                                                    <option value="{$payment_methods[s].manual_method_id}"{if $expense_details.payment_method == $payment_methods[s].manual_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                    <option value="{$payment_methods[s].system_method_id}"{if $payment_details.payment_method == $payment_methods[s].system_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
                                                                 {/section} 
                                                             </select>
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        <td><input name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$expense_details.net_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right"><span style="color: #ff0000"></span><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                                        <td><input name="vat_rate" class="olotd5" size="4" value="{$expense_details.vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                                        <td><input name="vat_amount" class="olotd5" size="10" value="{$expense_details.vat_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        <td><input name="gross_amount" class="olotd5" size="10" value="{$expense_details.gross_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        <td><textarea name="items" class="olotd5 mceCheckForContent" cols="50" rows="15">{$expense_details.items}</textarea></td>
+                                                        <td align="right"><b>{t}Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                        <td><input name="amount" class="olotd5" size="10" value="{$payment_details.amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Notes{/t}</b></td>
-                                                        <td><textarea name="notes" class="olotd5" cols="50" rows="15">{$expense_details.notes}</textarea></td>
+                                                        <td><textarea name="note" class="olotd5" cols="50" rows="15">{$payment_details.note}</textarea></td>
                                                     </tr>                                                    
                                                     <tr>
                                                         <td colspan="2">
                                                             <input name="submit" class="olotd5" value="{t}Update{/t}" type="submit">
-                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=expense&page_tpl=details&expense_id={$expense_id}';" type="button">
+                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=payment&page_tpl=details&payment_id={$payment_id}';" type="button">
                                                         </td>
                                                     </tr>                                        
                                                 </table>

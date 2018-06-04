@@ -55,17 +55,18 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 }
 
 // These are used globally and also a workaround for undefined indexes
-$VAR['workorder_id']   =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
-$VAR['customer_id']    =   isset($VAR['customer_id'])  ? $VAR['customer_id']   : null;
-$VAR['expense_id']     =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
-$VAR['refund_id']     =   isset($VAR['refund_id'])    ? $VAR['refund_id']     : null;
-$VAR['supplier_id']    =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   : null;
-$VAR['invoice_id']    =   isset($VAR['invoice_id'])   ? $VAR['invoice_id']    : null;
-$VAR['schedule_id']    =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
-$VAR['giftcert_id']    =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
-$VAR['user_id']       =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
-$VAR['employee_id']    =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
-$VAR['page_no']        =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
+$VAR['workorder_id']    =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
+$VAR['customer_id']     =   isset($VAR['customer_id'])  ? $VAR['customer_id']   : null;
+$VAR['expense_id']      =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
+$VAR['refund_id']       =   isset($VAR['refund_id'])    ? $VAR['refund_id']     : null;
+$VAR['supplier_id']     =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   : null;
+$VAR['invoice_id']      =   isset($VAR['invoice_id'])   ? $VAR['invoice_id']    : null;
+$VAR['schedule_id']     =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
+$VAR['giftcert_id']     =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
+$VAR['user_id']         =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
+$VAR['employee_id']     =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
+$VAR['payment']         =   isset($VAR['payment_id'])   ? $VAR['payment_id']    : null;
+$VAR['page_no']         =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
 
 // These are used globally and also a workaround for undefined indexes
 $workorder_id   =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
@@ -78,6 +79,7 @@ $schedule_id    =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
 $giftcert_id    =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
 $user_id        =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
 $employee_id    =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
+$payment_id     =   isset($VAR['payment_id'])   ? $VAR['payment_id']    : null;
 $page_no        =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
 
 $skip_logging   =   isset($skip_logging)        ? $skip_logging         : null;
@@ -121,11 +123,12 @@ $smarty->assign('start_year',               $start_year                 );
 $smarty->assign('start_month',              $start_month                );
 $smarty->assign('start_day',                $start_day                  );
 $smarty->assign('user_id',                  $user_id                    );
+$smarty->assign('payment_id',               $payment_id                 );
 
 // Used throughout the site
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $smarty->assign('currency_sym', get_company_details($db, 'currency_symbol')     );
-    $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details($db, 'logo')    );
+    $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details($db, 'logo') );
     $smarty->assign('date_format',  DATE_FORMAT                                     );
 }
 

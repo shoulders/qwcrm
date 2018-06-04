@@ -121,7 +121,7 @@
                                                                             <td><input id="net_amount" name="net_amount" class="olotd5" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('net_amount');"></b></a></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}VAT{/t} {t}Rate{/t}</td>
+                                                                            <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</td>
                                                                             <td><input id="vat_rate" name="vat_rate" class="olotd5" size="5" value="{$vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('vat_rate');"/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>

@@ -47,15 +47,15 @@
                                                                             <td><input name="last_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}Website{/t}</b></td>
+                                                                            <td align="right"><b>{t}Website{/t}</b></td>
                                                                             <td><input name="website" class="olotd5" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^^https?://.+" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}Email{/t}</b></td>
+                                                                            <td align="right"><b>{t}Email{/t}</b></td>
                                                                             <td><input class="olotd5" name="email" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><span style="color: #ff0000"></span><b>{t}Credit Terms{/t}</b></td>
+                                                                            <td align="right"><b>{t}Credit Terms{/t}</b></td>
                                                                             <td><input name="credit_terms" class="olotd5" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                         </tr>
                                                                         <tr>
