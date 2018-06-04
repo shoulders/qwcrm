@@ -16,7 +16,6 @@ require(INCLUDES_DIR.'components/user.php');
 // Check if we have a workorder_id
 if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
-    exit;
 }
 
 // Build the page with the workorder details from the database

@@ -275,7 +275,8 @@ function perform_redirect($url, $type = 'header') {
                 <script>
                     window.location = "'.$url.'"
                 </script>
-            ');         
+            ');
+        exit;
     }
     
 }
