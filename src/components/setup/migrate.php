@@ -283,7 +283,6 @@ if($VAR['stage'] == '8') {
 
             // The migration is now finished, load an appropriate page
             force_page('user', 'login', 'setup=finished&information_msg='._gettext("The QWcrm installation and MyITCRM migration process has completed successfully.").' '._gettext("Please login with the administrator account you have just created."), 'get');        
-            exit;
 
         }
         

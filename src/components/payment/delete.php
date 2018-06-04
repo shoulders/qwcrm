@@ -21,7 +21,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have an payment_id
 if($VAR['payment_id'] == '') {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
-    exit;
 }   
 
 // Get invoice_id

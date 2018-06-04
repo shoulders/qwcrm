@@ -14,7 +14,6 @@ require(INCLUDES_DIR.'components/payment.php');
 // Check if we have an expense_id
 if($VAR['expense_id'] == '') {
     force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
-    exit;
 }
 
 // Build the page

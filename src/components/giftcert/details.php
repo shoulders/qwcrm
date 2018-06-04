@@ -15,7 +15,6 @@ require(INCLUDES_DIR.'components/user.php');
 // Check if we have an giftcert_id
 if($VAR['giftcert_id'] == '') {
     force_page('giftcert', 'search', 'warning_msg='._gettext("No Gift Certificate ID supplied."));
-    exit;
 }
 
 // Build the page

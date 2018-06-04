@@ -17,13 +17,11 @@ require(INCLUDES_DIR.'components/workorder.php');
 // Check if we have an invoice_id
 if($VAR['invoice_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
-    exit;
 }
 
 // Check if the invoice is closed
 if(get_invoice_details($db, $VAR['invoice_id'], 'is_closed')) {
     force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("You cannot edit the invoice because it is closed."));
-    exit;
 }
 
 ##################################

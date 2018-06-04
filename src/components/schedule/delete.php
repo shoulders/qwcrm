@@ -20,7 +20,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have a schedule_id
 if($VAR['schedule_id'] == '') {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
-    exit;
 }
 
 // get workorder_id
@@ -31,4 +30,3 @@ delete_schedule($db, $VAR['schedule_id']);
 
 // load schedule search page
 force_page('workorder', 'details&workorder_id='.$VAR['workorder_id']);
-exit;

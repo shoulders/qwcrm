@@ -14,7 +14,6 @@ require(INCLUDES_DIR.'components/workorder.php');
 // Check if we have a workorder_note_id
 if($VAR['workorder_note_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Work Order Note ID supplied."));
-    exit;
 }
 
 // If record submitted for updating
@@ -25,7 +24,6 @@ if(isset($VAR['submit'])) {
     
     // load the workorder details page
     force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("The note has been updated."));
-    exit;
     
 }   
     

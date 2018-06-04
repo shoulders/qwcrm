@@ -67,7 +67,6 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching refund records."));
-            exit;
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -107,7 +106,6 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
          
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching refund records."));
-        exit;
     } else {
         
         $records = $rs->GetArray();   // do i need to add the check empty
@@ -149,7 +147,6 @@ function insert_refund($db, $VAR) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
-        exit;
     } else {
         
         // Log activity        
@@ -174,7 +171,6 @@ function get_refund_details($db, $refund_id, $item = null){
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
-        exit;
     } else {
         
         if($item === null){
@@ -201,7 +197,6 @@ function get_refund_types($db) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get refund types."));
-        exit;
     } else {
         
         return $rs->GetArray();
@@ -234,7 +229,6 @@ function update_refund($db, $refund_id, $VAR) {
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
-        exit;
     } else {
         
         // Log activity        
@@ -264,7 +258,6 @@ function delete_refund($db, $refund_id) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
-        exit;
     } else {
         
         // Log activity        
@@ -289,7 +282,6 @@ function last_refund_id_lookup($db) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
-        exit;
     } else {
         
         return $rs->fields['refund_id'];

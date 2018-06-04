@@ -35,7 +35,6 @@ function menu_get_single_workorder_is_closed($db, $workorder_id){
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to a get a single workorder status."));
-        exit;
     } else {
         
         return $rs->fields['is_closed'];

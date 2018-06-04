@@ -32,7 +32,6 @@ if($VAR['action'] === 'login') {
         if(login($VAR, $credentials, $options)) {
 
             force_page('index.php');
-            exit;    
 
         } else {
             // do nothing reload login page

@@ -44,7 +44,6 @@ function get_company_start_end_times($db, $time_event) {
 
    if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
-        exit;
     } else {        
     
         $companyTime = $rs->GetRowAssoc();
@@ -183,7 +182,6 @@ function update_company_details($db, $VAR) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
-        exit;
     } else {
         
             
@@ -218,7 +216,6 @@ function update_company_hours($db, $openingTime, $closingTime) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
-        exit;
     } else {
         
         // Assign success message

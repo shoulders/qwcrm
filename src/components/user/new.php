@@ -53,7 +53,6 @@ if(isset($VAR['submit'])) {
             
             // Redirect to the new user's details page
             force_page('user', 'details&user_id='.$VAR['user_id']);
-            exit;
             
         }
 

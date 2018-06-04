@@ -14,7 +14,6 @@ require(INCLUDES_DIR.'components/user.php');
 // Check if we have an user_id
 if($VAR['user_id'] == '') {
     force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
-    exit;
 }
 
 // Set the template for the correct user type (customer/employee)
@@ -48,7 +47,6 @@ if(isset($VAR['submit'])) {
 
         // Redirect to the new users's details page
         force_page('user', 'details&user_id='.$VAR['user_id']);
-        exit;
             
     }
 

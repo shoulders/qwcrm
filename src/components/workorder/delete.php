@@ -19,7 +19,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have a workorder_id
 if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
-    exit;
 }
 
 // Delete the Workorder
@@ -27,14 +26,12 @@ if(!delete_workorder($db, $VAR['workorder_id'])) {
     
     // load the staus page
     force_page('workorder', 'status', 'workorder_id='.$VAR['workorder_id']);
-    exit;
     
 } else {
     
     
     // load the workorder overview page
     force_page('workorder', 'overview', 'information_msg='._gettext("Work Order has been deleted."));
-    exit;
     
 }
     

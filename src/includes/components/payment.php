@@ -95,7 +95,6 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
-            exit;
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -135,7 +134,6 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
-        exit;
     } else {
         
         $records = $rs->GetArray();   // do i need to add the check empty
@@ -176,7 +174,6 @@ function insert_payment($db, $VAR) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
-        exit;
         
     } else {
         
@@ -211,7 +208,6 @@ function get_payment_details($db, $payment_id, $item = null){
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
-        exit;
     } else {
         
         if($item === null){
@@ -238,7 +234,6 @@ function get_payment_options($db, $item = null){
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
-        exit;
     } else {
         
         if($item === null){
@@ -268,7 +263,6 @@ function get_active_payment_system_methods($db) {
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get active payment methods."));
-        exit;
     } else {
         
         return $rs->GetAssoc();
@@ -287,7 +281,6 @@ function get_payment_system_methods($db) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment system methods."));
-        exit;
     } else {
         
         return $rs->GetArray();
@@ -306,7 +299,6 @@ function get_payment_manual_methods($db) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment manual methods."));
-        exit;
     } else {
         
         //return $rs->GetRowAssoc();
@@ -326,7 +318,6 @@ function get_active_credit_cards($db) {
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active credit cards."));
-        exit;
     } else {
         
         $records = $rs->GetArray();
@@ -355,7 +346,6 @@ function get_credit_card_display_name_from_key($db, $card_key) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
-        exit;
     } else {
         
         return $rs->fields['display_name'];
@@ -385,7 +375,6 @@ function update_payment($db, $VAR) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
-        exit;
         
     } else {
                 
@@ -429,7 +418,6 @@ function update_payment_options($db, $VAR) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
-        exit;
     } else {
         
         // Log activity        
@@ -470,7 +458,6 @@ function update_active_payment_system_methods($db, $VAR) {
         
         if(!$rs = $db->execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method active state."));
-            exit;
         }
         
     }
@@ -497,7 +484,6 @@ function delete_payment($db, $payment_id) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
-        exit;
     } else {
         
         // Recalculate invoice totals
@@ -525,7 +511,6 @@ function check_payment_method_is_active($db, $method) {
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));
-        exit;
     }
     
     if($rs->fields['active'] != 1) {
@@ -580,7 +565,6 @@ function payments_sub_total($db, $invoice_id) {
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the payments sub total."));
-        exit;
     } else {
         
         return $rs->fields['sub_total_sum'];

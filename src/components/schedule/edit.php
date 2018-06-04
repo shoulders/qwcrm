@@ -16,7 +16,6 @@ require(INCLUDES_DIR.'components/workorder.php');
 // Check if we have a schedule_id
 if($VAR['schedule_id'] == '') {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
-    exit;
 }
 
 // If new schedule item submitted
@@ -41,7 +40,6 @@ if(isset($VAR['submit'])) {
     
         // Load the schedule day with the updated schedule item
         force_page('schedule', 'day', 'start_year='.$VAR['start_year'].'&start_month='.$VAR['start_month'].'&start_day='.$VAR['start_day'].'&employee_id='.$VAR['employee_id'].'&workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Updated"));
-        exit;
         
     }
 

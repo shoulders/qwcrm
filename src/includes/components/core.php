@@ -28,7 +28,6 @@ function display_welcome_msg($db){
        
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
-        exit;
     } else { 
         
         return $rs->fields['welcome_msg'];

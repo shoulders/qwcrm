@@ -14,7 +14,6 @@ require(INCLUDES_DIR.'components/payment.php');
 // Check if we have a refund_id
 if($VAR['refund_id'] == '') {
     force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
-    exit;
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -25,7 +24,6 @@ if(isset($VAR['submit'])) {
     
     // load details page
     force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'information_msg='._gettext("Refund updated successfully.")); 
-    exit;
 }   
 
 // Build the page

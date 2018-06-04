@@ -16,13 +16,11 @@ require(INCLUDES_DIR.'components/workorder.php');
 // Check if we have an employee_id
 if($VAR['employee_id'] == '') {
     force_page('user', 'search', 'warning_msg='._gettext("No Employee ID supplied."));
-    exit;
 }
 
 // Check if we have a workorder_id
 if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
-    exit;
 }
 
 // Get customer_id
@@ -49,7 +47,6 @@ if(isset($VAR['submit'])) {
     
         // Load the schedule day with the newly submitted schedule item
         force_page('schedule', 'day', 'start_year='.$VAR['start_year'].'&start_month='.$VAR['start_month'].'&start_day='.$VAR['start_day'].'&employee_id='.$VAR['employee_id'].'&workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Created"));
-        exit;
     }
 
 // If new schedule form is intially loaded, load schedule item from the database and assign

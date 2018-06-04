@@ -681,7 +681,6 @@ class JUser
             $this->guest = 1;
             
             //force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load an Employee."));
-            //exit;
             
             return false;
             

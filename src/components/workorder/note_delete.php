@@ -19,7 +19,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have a workorder_note_id
 if($VAR['workorder_note_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Work Order Note ID supplied."));
-    exit;
 }
 
 // Get the workorder_id before we delete the record

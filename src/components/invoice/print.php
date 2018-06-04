@@ -19,13 +19,11 @@ require(INCLUDES_DIR.'mpdf.php');
 // Check if we have an invoice_id
 if($VAR['invoice_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
-    exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
     force_page('workorder', 'overview', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
-    exit;
 }
 
 // Get Record Details

@@ -26,7 +26,6 @@ if($VAR['workorder_id'] && !get_workorder_details($db, $VAR['workorder_id'], 'in
 
     // Load the newly created invoice edit page
     force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
-    exit;
     
 } 
 
@@ -38,9 +37,7 @@ if(($VAR['customer_id'] != '' && $VAR['invoice_type'] == 'invoice-only')) {
 
     // Load the newly created invoice edit page
     force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
-    exit;    
 }    
   
 // Fallback Error Control 
 force_page('workorder', 'search', 'warning_msg='._gettext("You cannot create an invoice by the method you just tried, report to admins."));
-exit;

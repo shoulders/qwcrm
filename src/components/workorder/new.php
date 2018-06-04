@@ -15,7 +15,6 @@ require(INCLUDES_DIR.'components/user.php');
 // Check if we have a customer_id
 if($VAR['customer_id'] == '') {
     force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
-    exit;
 }
 
 // If a workorder is submitted
@@ -31,7 +30,6 @@ if(isset($VAR['submit'])){
     
     // load the workorder details page
     force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("New Work Order created."));
-    exit;
         
 }
 

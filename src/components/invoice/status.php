@@ -18,7 +18,6 @@ require(INCLUDES_DIR.'components/workorder.php');
 // Check if we have a invoice_id
 if($VAR['invoice_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
-    exit;
 }
 
 // Get the Id of the employee assigned to the invoice
@@ -28,20 +27,17 @@ $assigned_employee_id = get_invoice_details($db, $VAR['invoice_id'], 'employee_i
 if(isset($VAR['change_status'])){
     update_invoice_status($db, $VAR['invoice_id'], $VAR['assign_status']);    
     force_page('invoice', 'status&invoice_id='.$VAR['invoice_id']);
-    exit; 
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
     assign_invoice_to_employee($db, $VAR['invoice_id'], $VAR['target_employee_id']);    
     force_page('invoice', 'status&invoice_id='.$VAR['invoice_id']);
-    exit; 
 }
 
 // Delete a Work Order
 if(isset($VAR['delete'])) {    
     force_page('invoice', 'delete', 'invoice_id='.$VAR['invoice_id']);
-    exit;
 }
 
 /* Remove dormant invoice statuses (for now) */

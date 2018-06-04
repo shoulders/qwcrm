@@ -83,7 +83,6 @@ function update_acl($db, $permissions) {
           
         if(!$rs = $db->execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
-            exit;    
         }                 
 
     }
@@ -134,7 +133,6 @@ function update_acl($db, $permissions) {
 
          if(!$rs = $db->execute($sql)) {
              force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
-             exit;    
         }               
         
     }
@@ -309,7 +307,6 @@ function load_acl($db) {
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
-        exit;
     }
     
     return $rs->GetArray(); 
@@ -402,7 +399,6 @@ function prepare_config_data($new_config) {
 
             if(!$rs = $db->Execute($sql)) {
                 force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
-                exit;
 
             }
 
@@ -510,7 +506,6 @@ function reset_acl_permissions($db) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
-        exit;
         
     } else {
     
@@ -617,7 +612,6 @@ function reset_acl_permissions($db) {
 
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
-            exit;
 
         }
         

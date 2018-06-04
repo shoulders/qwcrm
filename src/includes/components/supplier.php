@@ -64,7 +64,6 @@ function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', 
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching supplier records."));
-            exit;
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -104,7 +103,6 @@ function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', 
          
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching supplier records."));
-        exit;
     } else {
         
         $records = $rs->GetArray();
@@ -151,7 +149,6 @@ function insert_supplier($db, $VAR) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
-        exit;
     } else {
         
         // Log activity        
@@ -175,7 +172,6 @@ function get_supplier_details($db, $supplier_id, $item = null){
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the supplier details."));
-        exit;
     } else {
         
         if($item === null){
@@ -202,7 +198,6 @@ function get_supplier_types($db) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get supplier types."));
-        exit;
     } else {
         
         return $rs->GetArray();
@@ -240,7 +235,6 @@ function update_supplier($db, $supplier_id, $VAR) {
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
-        exit;
     } else {
         
         // Log activity        
@@ -268,7 +262,6 @@ function delete_supplier($db, $supplier_id) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
-        exit;
     } else {
         
         // Log activity        
@@ -292,7 +285,6 @@ function last_supplier_id_lookup($db) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
-        exit;
     } else {
         
         return $rs->fields['supplier_id'];

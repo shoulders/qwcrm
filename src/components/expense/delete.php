@@ -18,7 +18,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have an expense_id
 if($VAR['expense_id'] == '') {
     force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
-    exit;
 }   
 
 // Delete the expense

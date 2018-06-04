@@ -19,7 +19,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have an user_id
 if($VAR['user_id'] == '') {
     force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
-    exit;
 }
 
 // Run the delete function
@@ -27,12 +26,10 @@ if(!delete_user($db, $VAR['user_id'])) {
     
     // load the user details page
     force_page('user', 'details&user_id='.$VAR['user_id']);    
-    exit;
     
 } else {
     
     // load the user search page
     force_page('user', 'search');
-    exit;
     
 }

@@ -19,13 +19,11 @@ $barcode = $bc_generator->getBarcode(get_giftcert_details($db, $VAR['giftcert_id
 // Check if we have an giftcert_id
 if($VAR['giftcert_id'] == '') {
     force_page('giftcert', 'search', 'warning_msg='._gettext("No Gift Certificate ID supplied."));
-    exit;
 }
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
     force_page('giftcert', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
-    exit;
 }
 
 // Get Gift Certificate details

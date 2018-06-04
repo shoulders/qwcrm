@@ -14,13 +14,11 @@ require(INCLUDES_DIR.'components/workorder.php');
 // Check if we have a workorder_id
 if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
-    exit;
 }
 
 // Check if we can edit the workorder resolution
 if(get_workorder_details($db, $VAR['workorder_id'], 'is_closed')) {
     force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'warning_msg='._gettext("Cannot edit the resolution of a closed Work Order."));
-    exit;
 }
 
 if(isset($VAR['submit'])) {
@@ -29,14 +27,12 @@ if(isset($VAR['submit'])) {
     if($VAR['submit'] == 'submitchangesonly') {
         update_workorder_resolution($db, $VAR['workorder_id'], $VAR['resolution']);
         force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("Resolution has been updated."));
-        exit;
     }
 
     // Close without invoice
     if($VAR['submit'] == 'closewithoutinvoice') {
         close_workorder_without_invoice($db, $VAR['workorder_id'], $VAR['resolution']);
         force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("Work Order has been closed without an invoice."));
-        exit; 
     }
 
     // Close with invoice
@@ -45,7 +41,6 @@ if(isset($VAR['submit'])) {
         
         // Create a new invoice attached to this work order
         force_page('invoice', 'new&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("Work Order has been closed with an invoice."));
-        exit;
     }
 
 }

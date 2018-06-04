@@ -15,7 +15,6 @@ require(INCLUDES_DIR.'components/user.php');
 // Check if we have a workorder_id
 if($VAR['workorder_id'] == '') {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
-    exit;
 }
 
 // Get the Id of the employee assigned to the workorder
@@ -25,20 +24,17 @@ $assigned_employee_id = get_workorder_details($db, $VAR['workorder_id'], 'employ
 if(isset($VAR['change_status'])){
     update_workorder_status($db, $VAR['workorder_id'], $VAR['assign_status']);    
     force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
-    exit; 
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
     assign_workorder_to_employee($db, $VAR['workorder_id'], $VAR['target_employee_id']);    
     force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
-    exit; 
 }
 
 // Delete a Work Order
 if(isset($VAR['delete'])) {    
     force_page('workorder', 'delete', 'workorder_id='.$VAR['workorder_id']);
-    exit;
 }
 
 /* Remove unallowed status for manual change */

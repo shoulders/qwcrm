@@ -68,7 +68,6 @@ function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $u
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching expense records."));
-            exit;
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -108,7 +107,6 @@ function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $u
          
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
-        exit;
     } else {
         
         $records = $rs->GetArray();   // do i need to add the check empty
@@ -152,7 +150,6 @@ function insert_expense($db, $VAR) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
-        exit;
     } else {
         
         // Log activity        
@@ -177,7 +174,6 @@ function get_expense_details($db, $expense_id, $item = null){
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the expense details."));
-        exit;
     } else {
         
         if($item === null){
@@ -204,7 +200,6 @@ function get_expense_types($db) {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get expense types."));
-        exit;
     } else {
         
         return $rs->GetArray();
@@ -237,7 +232,6 @@ function update_expense($db, $expense_id, $VAR) {
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
-        exit;
     } else {
         
         // Log activity
@@ -267,7 +261,6 @@ function delete_expense($db, $expense_id) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
-        exit;
     } else {
         
         // Log activity        
@@ -292,7 +285,6 @@ function last_expense_id_lookup($db){
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));
-        exit;
     } else {
         
         return $rs->fields['expense_id'];

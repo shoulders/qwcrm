@@ -52,7 +52,7 @@ function get_qwcrm_database_version_number($db) {
         if($rs = $db->execute($sql)) {
             
             //force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
-            //exit;
+
             
             return $rs->fields['database_version'];
             
@@ -90,7 +90,6 @@ function get_company_details($db, $item = null) {
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
-        exit;
     } else {
         
         if($item === null) {
@@ -123,7 +122,6 @@ function update_user_last_active($db, $user_id = null) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
-        exit;
     }
     
 }
@@ -266,7 +264,6 @@ function perform_redirect($url, $type = 'header') {
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {        
         header('Location: ' . $url);
-        exit;        
     }
     
     // Redirect using Javascript
@@ -276,7 +273,6 @@ function perform_redirect($url, $type = 'header') {
                     window.location = "'.$url.'"
                 </script>
             ');
-        exit;
     }
     
 }
@@ -316,14 +312,12 @@ function force_error_page($error_component, $error_page_tpl, $error_type, $error
 
         // output the error page
         echo $BuildPage;
-        exit;
     
     // This will show errors within the template as normal - but occassionaly can cause boot loops during development
     } else {  
 
         // Load Error Page
         force_page('core', 'error', $variables, 'post', 'auto');
-        exit;
         
     }
     
@@ -640,7 +634,6 @@ function verify_qwcrm_install_state($db) {
         /* Never installed - run install
         if($qwcrm_database_version == '') { 
             force_page('setup', 'install');
-            exit;
         }*/
         
         // Setup failed / Invalid configuration.php
@@ -979,7 +972,6 @@ function write_record_to_access_log() {
     // Write log entry   
     if(!$fp = fopen(ACCESS_LOG, 'a')) {        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
-        exit;
     }
     
     fwrite($fp, $log_entry);
@@ -1017,7 +1009,6 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
-        exit;
     }
     
     fwrite($fp, $log_entry);
@@ -1048,7 +1039,6 @@ function write_record_to_error_log($error_page, $error_type, $error_location, $p
     // Write log entry  
     if(!$fp = fopen(ERROR_LOG, 'a')) {        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
-        exit;
     }
     
     fwrite($fp, $log_entry);

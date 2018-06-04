@@ -13,7 +13,6 @@ require(INCLUDES_DIR.'components/supplier.php');
 // Check if we have a supplier_id
 if($VAR['supplier_id'] == '') {
     force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
-    exit;
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -24,7 +23,6 @@ if(isset($VAR['submit'])) {
     
     // load the supplier details apge
     force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier updated successfully."));     
-    exit;
     
 }
 

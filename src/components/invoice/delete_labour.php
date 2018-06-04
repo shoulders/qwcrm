@@ -20,7 +20,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have an invoice labour_id
 if($VAR['labour_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice Labour ID supplied."));
-    exit;
 }
 
 // Get invoice ID before deletion
@@ -31,4 +30,3 @@ delete_invoice_labour_item($db, $VAR['labour_id']);
 
 // Load the edit invoice page
 force_page('invoice' , 'edit&invoice_id='.$VAR['invoice_id']);
-exit;

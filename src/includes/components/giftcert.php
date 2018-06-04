@@ -81,7 +81,6 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Gift Certificate records."));
-            exit;
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -119,7 +118,6 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
          
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificate records."));
-        exit;
         
     } else {        
         
@@ -159,7 +157,6 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the Gift Certificate into the database."));
-        exit;
 
     } else {
         
@@ -190,7 +187,6 @@ function get_giftcert_details($db, $giftcert_id, $item = null){
     
     if(!$rs = $db->execute($sql)){        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate details."));
-        exit;
     } else {
         
         if($item === null){
@@ -217,7 +213,6 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate ID by the Gift Certificate code."));
-        exit;
     }
     
     if($rs->fields['giftcert_id'] != '') {
@@ -245,7 +240,6 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate record in the database."));
-        exit;
 
     } else {
         
@@ -280,7 +274,6 @@ function delete_giftcert($db, $giftcert_id) {
 
     if(!$db->execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Gift Certificate."));
-        exit;
         
     } else {
         
@@ -310,14 +303,14 @@ function validate_giftcert_for_payment($db, $giftcert_id) {
     // check is active
     if(get_giftcert_details($db, $giftcert_id, 'active') != 1) {
         //force_page('core','error', 'error_msg='._gettext("This gift certificate is not active"));
-        //exit;
+
         return false;
     }
 
     // check if expired
     if(get_giftcert_details($db, $giftcert_id, 'date_expires') < time()) {
         //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is expired."));
-        //exit;
+
         return false;
     }
     
@@ -334,7 +327,7 @@ function check_giftcert_redeemed($db, $giftcert_id) {
     // check if redeemed
     if(get_giftcert_details($db, $giftcert_id, 'is_redeemed') == 1) {
         //force_page('core','error', 'error_msg=This gift certificate has been redeemed');
-        //exit;
+
         return true;
     }
     
@@ -377,7 +370,6 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
     
     if(!$rs = $db->execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
-        exit;
     } else {
         
         $customer_details = get_customer_details($db, get_giftcert_details($db, $giftcert_id, 'customer_id'));

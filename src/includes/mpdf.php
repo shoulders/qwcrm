@@ -34,7 +34,6 @@ function mpdf_output_in_browser($pdf_filename, $pdf_template) {
     $mpdf->Output($pdf_filename, 'I');
 
     // I think this exit prevents issues
-    exit;
     
 }
 

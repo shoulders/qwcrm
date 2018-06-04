@@ -25,7 +25,7 @@ function prepare_page_routing($QConfig, &$VAR = null) {
         $VAR['theme']       = 'off'; 
 
         //force_error_page($_GET['component'], $_GET['page_tpl'], 'url', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Malformed URL."));
-        //exit;
+
 
     } else {    
 
@@ -115,7 +115,7 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
 
         //force_error_page($_GET['component'], $_GET['page_tpl'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$component.':'.$page_tpl);
         //force_page('index.php', null, 'warning_msg='._gettext("You do not have permission to access this resource or your session has expired.").' ('.$component.':'.$page_tpl.')');
-        //exit;
+
 
     }
 
@@ -247,7 +247,6 @@ function check_page_exists($db, $component = null, $page_tpl = null) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
-        exit;
     } else {
         
         if($rs->RecordCount() == 1) {
@@ -377,7 +376,6 @@ function check_page_acl($db, $component, $page_tpl, $user = null) {
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
-        exit;
     } else {
         $usergroup_display_name = $rs->fields['usergroup_display_name'];
     } 
@@ -391,7 +389,6 @@ function check_page_acl($db, $component, $page_tpl, $user = null) {
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page($_GET['component'], $_GET['page_tpl'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
-        exit;
     } else {
         
         $acl = $rs->fields['acl'];

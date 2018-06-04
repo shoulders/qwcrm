@@ -20,7 +20,6 @@ if(!check_page_accessed_via_qwcrm()) {
 // Check if we have an invoice parts_id
 if($VAR['parts_id'] == '') {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice Parts ID supplied."));
-    exit;
 }
 
 // Get Invoice ID before deletion

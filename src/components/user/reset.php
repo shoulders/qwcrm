@@ -160,7 +160,6 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 
         // Redirect to login page with success or failed mess
         force_page('user', 'login', 'information_msg='._gettext("Password reset successfully."));
-        exit;
         
     }
     

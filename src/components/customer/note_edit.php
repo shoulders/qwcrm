@@ -13,7 +13,6 @@ require(INCLUDES_DIR.'components/customer.php');
 // check if we have a customer_note_id
 if($VAR['customer_note_id'] == '') {
     force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
-    exit;
 }
 
 // If record submitted for updating
@@ -21,7 +20,6 @@ if(isset($VAR['submit'])) {
                
     update_customer_note($db, $VAR['customer_note_id'], $VAR['note']);
     force_page('customer', 'details&customer_id='.$VAR['customer_id']);   
-    exit;
     
 } else {    
     

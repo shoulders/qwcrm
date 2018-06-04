@@ -13,7 +13,6 @@ require(INCLUDES_DIR.'components/customer.php');
 // Check if we have a customer_id
 if($VAR['customer_id'] == '') {
     force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
-    exit;
 }
 
 if(isset($VAR['submit'])) {    
@@ -23,7 +22,6 @@ if(isset($VAR['submit'])) {
     
     // Load the customer's details page
     force_page('customer', 'details&customer_id='.$VAR['customer_id'], 'information_msg='._gettext("The Customer's information was updated."));
-    exit;    
 
 } else {    
 

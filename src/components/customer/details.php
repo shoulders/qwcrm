@@ -18,7 +18,6 @@ require(INCLUDES_DIR.'components/workorder.php');
 // Check if we have a customer_id
 if($VAR['customer_id'] == '') {
     force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
-    exit;
 }
 
 // Build the page
