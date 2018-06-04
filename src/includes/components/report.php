@@ -65,7 +65,7 @@ function count_customers($db, $status, $start_date = null, $end_date = null) {
             ".$whereTheseRecords;                
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of customers."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of customers."));
     } else {
         
        return $rs->fields['count']; 
@@ -144,7 +144,7 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
             ".$whereTheseRecords;    
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Work Orders for the defined status."));
         
     } else {      
         
@@ -230,7 +230,7 @@ function count_invoices($db, $status = null, $user_id = null, $start_date = null
             ".$whereTheseRecords;                
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of Invoices."));
     } else {
         
        return $rs->fields['count']; 
@@ -285,7 +285,7 @@ function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_
             ".$whereTheseRecords;                
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the invoice discount amounts."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the invoice discount amounts."));
     } else {
         
        return $rs->fields['sum']; 
@@ -308,7 +308,7 @@ function count_labour_items($db, $start_date, $end_date) {
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
     } else {
         
         return $rs->fields['count']; 
@@ -329,7 +329,7 @@ function count_labour_different_items($db, $start_date, $end_date) {
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
     } else {
         
         return $rs->fields['count']; 
@@ -350,7 +350,7 @@ function sum_labour_items($db, $value_name, $start_date, $end_date) {
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items ordered."));
     } else {
         
         return $rs->fields['sum'];
@@ -373,7 +373,7 @@ function count_parts_items($db, $start_date, $end_date) {
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of different parts items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of different parts items ordered."));
     } else {
         
         return $rs->fields['count']; 
@@ -394,7 +394,7 @@ function count_parts_different_items($db, $start_date, $end_date) {
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of parts items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of parts items ordered."));
     } else {
         
         return $rs->fields['count']; 
@@ -415,7 +415,7 @@ function sum_parts_value($db, $value_name, $start_date, $end_date) {
             WHERE ".PRFX."invoice.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice.date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the total number of parts items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the total number of parts items ordered."));
     } else {
         
         return $rs->fields['sum'];
@@ -453,7 +453,7 @@ function count_expenses($db, $invoice_id = null, $start_date = null, $end_date =
             ".$whereTheseRecords;    
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Expenses."));
         
     } else {      
         
@@ -474,7 +474,7 @@ function sum_expenses_value($db, $value_name, $start_date, $end_date) {
             WHERE date  >= ".$db->qstr($start_date)." AND date  <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
     } else {
         
         return $rs->fields['sum'];
@@ -510,7 +510,7 @@ function count_refunds($db, $invoice_id = null, $start_date = null, $end_date = 
             ".$whereTheseRecords;    
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
         
     } else {      
         
@@ -531,7 +531,7 @@ function sum_refunds_value($db, $value_name, $start_date, $end_date) {
             WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected refunds."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected refunds."));
     } else {
         
         return $rs->fields['sum'];

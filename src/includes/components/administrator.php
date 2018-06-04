@@ -82,7 +82,7 @@ function update_acl($db, $permissions) {
                 WHERE `page`    ='". $page_name."';";
           
         if(!$rs = $db->execute($sql)) {
-            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
         }                 
 
     }
@@ -132,7 +132,7 @@ function update_acl($db, $permissions) {
                 WHERE `page`    ='". $page_name."';";
 
          if(!$rs = $db->execute($sql)) {
-             force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
+             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
         }               
         
     }
@@ -306,7 +306,7 @@ function load_acl($db) {
     $sql = "SELECT * FROM ".PRFX."user_acl ORDER BY page";
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
     }
     
     return $rs->GetArray(); 
@@ -398,7 +398,7 @@ function prepare_config_data($new_config) {
             $sql = "TRUNCATE ".PRFX."session";                    
 
             if(!$rs = $db->Execute($sql)) {
-                force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
 
             }
 
@@ -505,7 +505,7 @@ function reset_acl_permissions($db) {
     $sql = "TRUNCATE ".PRFX."user_acl";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
         
     } else {
     
@@ -611,7 +611,7 @@ function reset_acl_permissions($db) {
                 ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
         }
         

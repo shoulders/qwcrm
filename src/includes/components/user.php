@@ -90,7 +90,7 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching user records."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching user records."));
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -127,7 +127,7 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching user records."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching user records."));
         
     } else {        
         
@@ -183,7 +183,7 @@ function insert_user($db, $VAR){
             notes               =". $db->qstr( $VAR['notes']                                );                     
           
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
     } else {
         
         // Get user_id
@@ -226,7 +226,7 @@ function get_user_details($db, $user_id = null, $item = null) {
     $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$user_id;
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
     } else {
         
         if($item === null){
@@ -260,7 +260,7 @@ function get_user_id_by_username($db, $username){
     
     $sql = "SELECT user_id FROM ".PRFX."user WHERE username =".$db->qstr($username);    
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
     } else {
         
         return $rs->fields['user_id'];
@@ -278,7 +278,7 @@ function get_user_id_by_email($db, $email) {
     $sql = "SELECT user_id FROM ".PRFX."user WHERE email =".$db->qstr($email);
     
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their email."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their email."));
     } else {
         
         $result_count = $rs->RecordCount();
@@ -311,7 +311,7 @@ function get_usergroups($db, $user_type = null) {
     if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the usergroups."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the usergroups."));
     } else {
         
         return $rs->GetArray();
@@ -333,7 +333,7 @@ function get_active_users($db, $user_type = null) {
     if($user_type === 'employees') {$sql .= " AND is_employee='1'";}
        
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active users."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active users."));
     } else {    
         
         return $rs->GetArray();    
@@ -377,7 +377,7 @@ function update_user($db, $user_id, $VAR) {
         WHERE user_id= ".$db->qstr($user_id);
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
     } else{
         
         // Reset user password if required
@@ -413,7 +413,7 @@ function update_user($db, $user_id, $VAR) {
     $sql = "UPDATE ".PRFX."user SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
     }
     
 }*/
@@ -442,7 +442,7 @@ function delete_user($db, $user_id) {
         
         $sql = "SELECT count(*) as count FROM ".PRFX."user WHERE usergroup = '7'";    
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
         }  
         if($rs->fields['count'] <= 1 ) {
             postEmulationWrite('warning_msg', _gettext("You can not delete the last administrator user account."));        
@@ -453,7 +453,7 @@ function delete_user($db, $user_id) {
     // Check if user has created any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE created_by=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
         postEmulationWrite('warning_msg', _gettext("You can not delete a user who has created work orders."));        
@@ -463,7 +463,7 @@ function delete_user($db, $user_id) {
     // Check if user has any assigned workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
         postEmulationWrite('warning_msg', _gettext("You can not delete a user who has assigned work orders."));
@@ -473,7 +473,7 @@ function delete_user($db, $user_id) {
     // Check if user has any invoices
     $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
         postEmulationWrite('warning_msg', _gettext("You can not delete a user who has invoices."));
@@ -483,7 +483,7 @@ function delete_user($db, $user_id) {
     // Check if user is assigned to any gift certificates
     $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE employee_id=".$db->qstr($user_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Gift Certificates in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Gift Certificates in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
         postEmulationWrite('warning_msg', _gettext("You can not delete a user who has gift certificates."));
@@ -495,7 +495,7 @@ function delete_user($db, $user_id) {
     // Delete User account
     $sql = "DELETE FROM ".PRFX."user WHERE user_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
     }
     
     // Log activity        
@@ -534,7 +534,7 @@ function build_active_employee_form_option_list($db, $assigned_user_id){
     $sql = "SELECT display_name, user_id FROM ".PRFX."user WHERE active=1 AND is_employee=1";
     
     if(!$rs = $db->execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
     } else {
         
         // Get ADODB to build the form using the loaded dataset
@@ -558,7 +558,7 @@ function check_user_username_exists($db, $username, $current_username = null){
     $sql = "SELECT username FROM ".PRFX."user WHERE username =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
     } else {
         
         $result_count = $rs->RecordCount();
@@ -594,7 +594,7 @@ function check_user_email_exists($db, $email, $current_email = null){
     
     if(!$rs = $db->Execute($sql)) {
         
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
         
     } else {
         
@@ -641,7 +641,7 @@ function check_customer_already_has_login($db, $customer_id) {
     $sql = "SELECT user_id FROM ".PRFX."user WHERE customer_id =". $db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the customer already has a login."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the customer already has a login."));
     } else {
         
         $result_count = $rs->RecordCount();
@@ -694,7 +694,7 @@ function reset_user_password($db, $user_id, $password = null) {
             WHERE user_id   =". $db->qstr( $user_id                             );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
         
     } else {
         
@@ -723,7 +723,7 @@ function reset_all_user_passwords($db) {
     $sql = "SELECT user_id FROM ".PRFX."user";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
         
     } else {
         
@@ -1009,7 +1009,7 @@ function authorise_password_reset($db, $token) {
             WHERE token= ".$db->qstr($token);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
     } else{
         
         return $reset_code;
@@ -1028,7 +1028,7 @@ function create_reset_token($db, $user_id) {
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
     } else {        
         $result_count = $rs->RecordCount();       
     } 
@@ -1050,7 +1050,7 @@ function create_reset_token($db, $user_id) {
             token           =". $db->qstr( $token       );                     
           
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
     }
     
     // Return the token
@@ -1067,7 +1067,7 @@ function get_user_id_by_reset_code($db, $reset_code) {
     $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
     
     if(!$rs = $db->execute($sql)){
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
     } else {
         
         return $rs->fields['user_id'];
@@ -1088,7 +1088,7 @@ function validate_reset_token($db, $token) {
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE token=".$db->qstr($token);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
     } else {
         
         // Check there is only 1 record
@@ -1130,7 +1130,7 @@ function validate_reset_code($db, $reset_code) {
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code=".$db->qstr($reset_code);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
     } else {
         
         // Check there is only 1 record
@@ -1163,7 +1163,7 @@ function delete_user_reset_code($db, $user_id) {
     $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
     }
     
 }
@@ -1177,7 +1177,7 @@ function delete_expired_reset_codes($db) {
     $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$db->qstr(time());
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
     }
     
 }
@@ -1194,7 +1194,7 @@ function delete_expired_reset_codes($db) {
             WHERE user_id   =". $db->qstr( $user_id  );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
         
     } else{
         

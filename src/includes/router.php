@@ -24,7 +24,7 @@ function prepare_page_routing($QConfig, &$VAR = null) {
         $VAR['page_tpl']    = 'error';        
         $VAR['theme']       = 'off'; 
 
-        //force_error_page($_GET['component'], $_GET['page_tpl'], 'url', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Malformed URL."));
+        //force_error_page('url', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Malformed URL."));
 
 
     } else {    
@@ -36,7 +36,7 @@ function prepare_page_routing($QConfig, &$VAR = null) {
             if (check_link_is_sef($_SERVER['REQUEST_URI'])) {
 
                 // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
-                parseSEF($_SERVER['REQUEST_URI'], $VAR, true);
+                parseSEF($_SERVER['REQUEST_URI'], 'set_var', $VAR);
 
             }
 
@@ -113,7 +113,7 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
         $VAR['theme']       = 'off';
         $smarty->assign('warning_msg', _gettext("You do not have permission to access this resource or your session has expired.").' ('.$VAR['component'].':'.$VAR['page_tpl'].')');
 
-        //force_error_page($_GET['component'], $_GET['page_tpl'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$component.':'.$page_tpl);
+        //force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$component.':'.$page_tpl);
         //force_page('index.php', null, 'warning_msg='._gettext("You do not have permission to access this resource or your session has expired.").' ('.$component.':'.$page_tpl.')');
 
 
@@ -125,9 +125,9 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
 }
 
 
-###############################################################
-#  Build SEF URL from Non-SEF URL //or return $VAR variables  #
-###############################################################
+#####################################
+#  Build SEF URL from Non-SEF URL   #
+#####################################
 
 function buildSEF($non_sef_url) {
     
@@ -170,11 +170,11 @@ function buildSEF($non_sef_url) {
     
 }
 
-#################################################################################
-#  Convert a SEF url into a standard url and inject routing varibles into $VAR  #
-#################################################################################
+#########################################################################################################################
+#  Convert a SEF url into a standard url and (optionally) inject routing varibles into $VAR or return routing variables #
+#########################################################################################################################
 
-function parseSEF($sef_url, &$VAR = null, $setOnlyVAR = false) {    
+function parseSEF($sef_url, $mode = null, &$VAR = null) {    
     
     // Remove base path from URI
     $sef_url = str_replace(QWCRM_BASE_PATH, '', $sef_url);
@@ -185,6 +185,9 @@ function parseSEF($sef_url, &$VAR = null, $setOnlyVAR = false) {
     // Get Variables from path
     $url_segments = array_filter(explode('/', $parsed_url['path']));
     
+    // Create a holding variable because page is index.php
+    if($mode == 'get_var') { $onlyVar = array(); }
+    
     // If there are routing variables
     if ($url_segments) {
         
@@ -192,17 +195,26 @@ function parseSEF($sef_url, &$VAR = null, $setOnlyVAR = false) {
         $nonsef_url_path_variables .= '?';
         $nonsef_url_path_variables .= 'component='.$url_segments['0'];
         $nonsef_url_path_variables .= '&page_tpl='.$url_segments['1'];       
-
+        
         // Sets the following routing values into $VAR for routing
-        if ($setOnlyVAR) {
+        if ($mode == 'get_var') {
+            if($url_segments['0'] != '') { $onlyVar['component'] = $url_segments['0']; }
+            if($url_segments['1'] != '') { $onlyVar['page_tpl'] = $url_segments['1']; }
+        }
+        
+        // Sets the following routing values into $VAR for routing
+        if ($mode == 'set_var') {
             if($url_segments['0'] != '') { $VAR['component'] = $url_segments['0']; }
             if($url_segments['1'] != '') { $VAR['page_tpl'] = $url_segments['1']; }
         }
     
     }
     
-    // No further processing when $setOnlyVAR set
-    if ($setOnlyVAR) { return; }
+    // No further processing needed with 'only_get_var'
+    if ($mode == 'get_var') { return $onlyVar; }
+    
+    // No further processing needed with 'only_set_var'
+    if ($mode == 'set_var') { return; }
     
     // Get URL Query Variables (if present)
     if(parse_str($parsed_url['query'], $parsed_url_query_variables)) {
@@ -228,8 +240,6 @@ function parseSEF($sef_url, &$VAR = null, $setOnlyVAR = false) {
     
 }
 
-
-
 #######################
 #  Check page exists  #
 #######################
@@ -246,7 +256,7 @@ function check_page_exists($db, $component = null, $page_tpl = null) {
     $sql = "SELECT page FROM ".PRFX."user_acl WHERE page = ".$db->qstr($component.':'.$page_tpl);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
     } else {
         
         if($rs->RecordCount() == 1) {
@@ -349,6 +359,63 @@ function build_url_from_variables($component, $page_tpl, $url_length = 'basic', 
     
 }
 
+############################################
+#  Validate links and prep SEF enviroment  #
+############################################
+
+function get_routing_variables_from_url($url) {
+    
+    $user = QFactory::getUser();
+    
+    // Check if URL is valid
+    if(!check_link_is_valid($_SERVER['REQUEST_URI'])) {
+        
+        return false;
+
+    } else {    
+
+        // Running parseSEF only when the link is a SEF allows the use of Non-SEF URLS aswell
+        if (check_link_is_sef($url)) {
+
+            // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF           
+            $VAR = parseSEF($url, 'get_var');
+
+        // non-sef url
+        } else {
+            
+            // Move URL into an array
+            $parsed_url = parse_url($url, PHP_URL_QUERY);
+    
+            // copy only required variables
+            $VAR['component'] = $parsed_url['component'];
+            $VAR['component'] = $parsed_url['page_tpl'];
+            
+        }
+        
+        // If $VAR is empty it is because page is index.php, set required
+        if(empty($VAR)) {
+            
+            if(isset($user->login_token)) {
+
+                // If logged in
+                $VAR['component']           = 'core';
+                $VAR['page_tpl']            = 'dashboard';
+
+            } else {
+
+                // If NOT logged in
+                $VAR['component']           = 'core';
+                $VAR['page_tpl']            = 'home';
+
+            }
+            
+        }        
+
+    }
+    
+    return $VAR;
+
+}
 
 /** Other Functions **/
 
@@ -375,7 +442,7 @@ function check_page_acl($db, $component, $page_tpl, $user = null) {
             WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
     } else {
         $usergroup_display_name = $rs->fields['usergroup_display_name'];
     } 
@@ -388,7 +455,7 @@ function check_page_acl($db, $component, $page_tpl, $user = null) {
     $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($page_name);
 
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
+        force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
     } else {
         
         $acl = $rs->fields['acl'];

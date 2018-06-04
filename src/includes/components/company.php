@@ -43,7 +43,7 @@ function get_company_start_end_times($db, $time_event) {
     $sql = "SELECT opening_hour, opening_minute, closing_hour, closing_minute FROM ".PRFX."company";
 
    if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
     } else {        
     
         $companyTime = $rs->GetRowAssoc();
@@ -181,7 +181,7 @@ function update_company_details($db, $VAR) {
 
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
     } else {
         
             
@@ -215,7 +215,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
             closing_minute  =". $db->qstr( $closingTime['Time_Minute']   );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
     } else {
         
         // Assign success message
@@ -330,7 +330,7 @@ function upload_logo($db) {
             echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
              */   
             
-            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
             
         }
         

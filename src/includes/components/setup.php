@@ -382,7 +382,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
     
     // Write log entry  
     if(!$fp = fopen(SETUP_LOG, 'a')) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
+        force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
     }
     
     fwrite($fp, $log_entry);
@@ -1105,7 +1105,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Work Orders."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Work Orders."));
 
     } else {
 
@@ -1207,7 +1207,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoices."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Invoices."));
 
     } else {
 
@@ -1301,7 +1301,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
 
     } else {
 
@@ -1378,7 +1378,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Schedules."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Schedules."));
 
     } else {
 
@@ -1439,7 +1439,7 @@ function migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix) {
     /* Processs the records */
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Users."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Users."));
 
     } else {
 
@@ -1492,7 +1492,7 @@ function get_myitcrm_company_details($db, $item = null) {
     $sql = "SELECT * FROM ".$config->myitcrm_prefix."TABLE_COMPANY";
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
     } else {
         
         if($item === null) {

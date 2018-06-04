@@ -51,7 +51,7 @@ function get_qwcrm_database_version_number($db) {
     {        
         if($rs = $db->execute($sql)) {
             
-            //force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
+            //force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
 
             
             return $rs->fields['database_version'];
@@ -89,7 +89,7 @@ function get_company_details($db, $item = null) {
     $sql = "SELECT * FROM ".PRFX."company";
     
     if(!$rs = $db->execute($sql)) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
     } else {
         
         if($item === null) {
@@ -121,7 +121,7 @@ function update_user_last_active($db, $user_id = null) {
     $sql = "UPDATE ".PRFX."user SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
     }
     
 }
@@ -283,14 +283,17 @@ function perform_redirect($url, $type = 'header') {
 
 // Example to use
 // If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
-// old - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
-// new - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
+// old - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
+// new - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
 
-function force_error_page($error_component, $error_page_tpl, $error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
+function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
+    
+    // Get routing variables
+    $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
     
     // Prepare Variables
-    $variables['error_component']     = prepare_error_data('error_component', $error_component);
-    $variables['error_page_tpl']      = prepare_error_data('error_page_tpl', $error_page_tpl);
+    $variables['error_component']     = prepare_error_data('error_component', $routing_variables['component']);
+    $variables['error_page_tpl']      = prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
     $variables['error_type']          = $error_type;
     $variables['error_location']      = prepare_error_data('error_location', $error_location);
     $variables['error_php_function']  = prepare_error_data('error_php_function', $error_php_function);
@@ -971,7 +974,7 @@ function write_record_to_access_log() {
     
     // Write log entry   
     if(!$fp = fopen(ACCESS_LOG, 'a')) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
+        force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
     }
     
     fwrite($fp, $log_entry);
@@ -1008,7 +1011,7 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
     
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
+        force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
     }
     
     fwrite($fp, $log_entry);
@@ -1024,7 +1027,7 @@ function write_record_to_activity_log($record, $employee_id = null, $customer_id
 
 function write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
     
-    // it is not - force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
+    // it is not - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
     
     // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
     if(!QFactory::getUser()->login_username) {
@@ -1038,7 +1041,7 @@ function write_record_to_error_log($error_page, $error_type, $error_location, $p
 
     // Write log entry  
     if(!$fp = fopen(ERROR_LOG, 'a')) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
+        force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
     }
     
     fwrite($fp, $log_entry);

@@ -680,7 +680,7 @@ class JUser
             // Reset to guest user
             $this->guest = 1;
             
-            //force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load an Employee."));
+            //force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load an Employee."));
             
             return false;
             

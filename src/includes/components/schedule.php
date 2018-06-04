@@ -112,7 +112,7 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -151,7 +151,7 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
     /* Return the records */
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
     } else {
         
         $records = $rs->GetArray();
@@ -184,7 +184,7 @@ function display_workorder_schedules($db, $workorder_id){
     $sql = "SELECT * FROM ".PRFX."schedule WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the work order schedules."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the work order schedules."));
     } else {
         
         return $rs->GetArray();  
@@ -225,7 +225,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
             notes           =". $db->qstr( $notes           );            
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
     } else {
         
         // Get work order details
@@ -272,7 +272,7 @@ function get_schedule_details($db, $schedule_id, $item = null){
     $sql = "SELECT * FROM ".PRFX."schedule WHERE schedule_id=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
     } else { 
         
         if($item === null){
@@ -308,7 +308,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $
             ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
     } else {
         
         return $rs->GetArray();  
@@ -350,7 +350,7 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         WHERE schedule_id   =". $db->qstr( $schedule_id         );
    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
     } else {       
          
         // Insert Work Order History Note
@@ -386,7 +386,7 @@ function delete_schedule($db, $schedule_id) {
     $sql = "DELETE FROM ".PRFX."schedule WHERE schedule_id =".$db->qstr($schedule_id);
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
         
     } else {
         
@@ -749,7 +749,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
         ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
     }
 
     // Add any scheduled events found into the $scheduleObject for any employee
@@ -930,7 +930,7 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
             ASC";
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
     }   
     
     // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
@@ -972,7 +972,7 @@ function count_workorder_schedule_items($db, $workorder_id) {
             WHERE workorder_id=".$db->qstr($workorder_id);         
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
         
     } else {      
         

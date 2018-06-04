@@ -287,7 +287,7 @@ function write_record_to_email_error_log($record) {
     
     // Write log entry
     if(!$fp = fopen(EMAIL_ERROR_LOG, 'a')) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
+        force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
     }
     
     fwrite($fp, $log_entry);
@@ -313,7 +313,7 @@ function write_record_to_email_transport_log($record) {
     
     // Write log entry  
     if(!$fp = fopen(EMAIL_TRANSPORT_LOG, 'a')) {        
-        force_error_page($_GET['component'], $_GET['page_tpl'], 'file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
+        force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
     }
     
     fwrite($fp, $log_entry);
