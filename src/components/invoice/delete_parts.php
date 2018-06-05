@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/invoice.php');
+require(INCLUDES_DIR.'components/payment.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Prevent direct access to this page
