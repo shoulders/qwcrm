@@ -91,18 +91,7 @@
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
-                                        </tr>                                       
-                                        <tr>
-                                            <td class="menutd"><b>{t}Notes{/t}</b></td>
-                                            <td class="menutd" colspan="3"></td>
                                         </tr>
-                                        <tr>
-                                            <td class="menutd" colspan="3">{$supplier_details.notes}</td>
-                                            <td class="menutd"></td>
-                                        </tr>
-                                        <tr class="row2">
-                                            <td class="menutd" colspan="4"></td>
-                                        </tr>                                          
                                         <tr>
                                             <td class="menutd"><b>{t}Description{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
@@ -110,7 +99,18 @@
                                         <tr>
                                             <td class="menutd" colspan="3">{$supplier_details.description}</td>
                                             <td class="menutd"></td>
-                                        </tr>                                                                                   
+                                        </tr>
+                                        <tr class="row2">
+                                            <td class="menutd" colspan="4"></td>
+                                        </tr>  
+                                        <tr>
+                                            <td class="menutd"><b>{t}Notes{/t}</b></td>
+                                            <td class="menutd" colspan="3"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd" colspan="3">{$supplier_details.notes}</td>
+                                            <td class="menutd"></td>
+                                        </tr>                                                                                                                                                                
                                     </table>
                                 </td>
                             </tr>

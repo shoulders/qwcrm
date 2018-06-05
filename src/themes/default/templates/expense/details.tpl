@@ -68,6 +68,17 @@
                                             <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$expense_details.invoice_id}">{$expense_details.invoice_id}</a></td>
                                             <td></td>
                                             <td></td>
+                                        </tr>                                        
+                                        <tr class="row2">
+                                            <td class="menutd" colspan="4"></td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td class="menutd"><b>{t}Items{/t}</b></td>
+                                            <td class="menutd" colspan="3"></td>
+                                         </tr>
+                                        <tr>
+                                            <td class="menutd" colspan="3">{$expense_details.items}</td>
+                                            <td class="menutd"></td>
                                         </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
@@ -78,17 +89,6 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd" colspan="3">{$expense_details.notes}</td>
-                                            <td class="menutd"></td>
-                                        </tr>
-                                        <tr class="row2">
-                                            <td class="menutd" colspan="4"></td>
-                                        </tr>                                        
-                                        <tr>
-                                            <td class="menutd"><b>{t}Items{/t}</b></td>
-                                            <td class="menutd" colspan="3"></td>
-                                         </tr>
-                                        <tr>
-                                            <td class="menutd" colspan="3">{$expense_details.items}</td>
                                             <td class="menutd"></td>
                                         </tr>
                                     </table>
