@@ -111,11 +111,6 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
         $VAR['component']   = 'core';
         $VAR['page_tpl']    = '403';        
         $VAR['theme']       = 'off';
-        $smarty->assign('warning_msg', _gettext("You do not have permission to access this resource or your session has expired.").' ('.$VAR['component'].':'.$VAR['page_tpl'].')');
-
-        //force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("You do not have permission to access the resource - ").' '.$component.':'.$page_tpl);
-        //force_page('index.php', null, 'warning_msg='._gettext("You do not have permission to access this resource or your session has expired.").' ('.$component.':'.$page_tpl.')');
-
 
     }
 

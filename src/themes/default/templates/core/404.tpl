@@ -13,7 +13,7 @@
             <font size="+1">{t}404 - The requested page was not found on our system.{/t}</font>            
             <p>&nbsp;</p>
             <p>&nbsp;</p>
-            <p>&nbsp;</p>
+            <p style="margin-left: 200px;"><button type="button" onClick="window.location.href='index.php';">{t}Home{/t}</button></p>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
