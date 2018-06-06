@@ -33,6 +33,7 @@ tinymce.init( {
         } );
     } ,
     
+    skin: 'qwcrm',
     elementpath: false,
     branding: false,
     menubar: false,    
