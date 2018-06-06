@@ -19,7 +19,7 @@ function prepare_page_routing($QConfig, &$VAR = null) {
     // Check if URL is valid
     if(!check_link_is_valid($_SERVER['REQUEST_URI'])) {
 
-        // Set to the maintenance page    
+        // Set the error page    
         $VAR['component']   = 'core';
         $VAR['page_tpl']    = 'error';        
         $VAR['theme']       = 'off'; 
@@ -27,12 +27,12 @@ function prepare_page_routing($QConfig, &$VAR = null) {
         //force_error_page('url', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Malformed URL."));
 
 
-    } else {    
-
+    } else { 
+        
         // If SEF routing is enabled
         if ($QConfig->sef) {
 
-            // Running parseSEF only when the link is a SEF allows the use of Non-SEF URLS aswell
+            // This allows the use of Non-SEF URLS in the SEF enviroment
             if (check_link_is_sef($_SERVER['REQUEST_URI'])) {
 
                 // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
@@ -40,6 +40,14 @@ function prepare_page_routing($QConfig, &$VAR = null) {
 
             }
 
+        // If trying to use SEF when it is disabled
+        } elseif(check_link_is_sef($_SERVER['REQUEST_URI']) && !$QConfig->sef) {
+        
+            // Set the 404 page    
+            $VAR['component']   = 'core';
+            $VAR['page_tpl']    = '404';        
+            $VAR['theme']       = 'off';
+            
         }
 
     }
