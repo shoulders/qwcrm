@@ -9,53 +9,7 @@
 defined('_QWEXEC') or die;
 
 /* Mandatory */
-
-############################################
-#  Validate links and prep SEF enviroment  #
-############################################
-
-function prepare_page_routing($QConfig, &$VAR = null) {
-    
-    // Check if URL is valid
-    if(!check_link_is_valid($_SERVER['REQUEST_URI'])) {
-
-        // Set the error page    
-        $VAR['component']   = 'core';
-        $VAR['page_tpl']    = 'error';        
-        $VAR['theme']       = 'off'; 
-
-        //force_error_page('url', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Malformed URL."));
-
-
-    } else { 
-        
-        // If SEF routing is enabled
-        if ($QConfig->sef) {
-
-            // This allows the use of Non-SEF URLS in the SEF enviroment
-            if (check_link_is_sef($_SERVER['REQUEST_URI'])) {
-
-                // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
-                parseSEF($_SERVER['REQUEST_URI'], 'set_var', $VAR);
-
-            }
-
-        // If trying to use SEF when it is disabled
-        } elseif(check_link_is_sef($_SERVER['REQUEST_URI']) && !$QConfig->sef) {
-        
-            // Set the 404 page    
-            $VAR['component']   = 'core';
-            $VAR['page_tpl']    = '404';        
-            $VAR['theme']       = 'off';
-            
-        }
-
-    }
-    
-    return;
-
-}
-    
+  
 ############################################
 #  Build path to relevant Page Controller  #
 ############################################
@@ -63,7 +17,7 @@ function prepare_page_routing($QConfig, &$VAR = null) {
 function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
     
     global $smarty;
-
+    
     // Maintenance Mode
     if($QConfig->maintenance) {
 
@@ -75,10 +29,51 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
         // If user logged in, then log user off (Hard logout, no logging)
         if(isset($user->login_token)) {    
             QFactory::getAuth()->logout(); 
-        }    
+        }
+        
+        goto page_controller_check;
+        
+    }    
+    
+    // Check if URL is valid
+    if(!check_link_is_valid($_SERVER['REQUEST_URI'])) {
+
+        // Set the error page    
+        $VAR['component']   = 'core';
+        $VAR['page_tpl']    = 'error';        
+        $VAR['theme']       = 'off'; 
+
+        goto page_controller_check;
+        
+        //force_error_page('url', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Malformed URL."));
+
+    }
+
+    // If SEF routing is enabled parse the link - This allows the use of Non-SEF URLS in the SEF enviroment
+    if ($QConfig->sef && check_link_is_sef($_SERVER['REQUEST_URI'])) {
+
+        // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
+        parseSEF($_SERVER['REQUEST_URI'], 'set_var', $VAR);
+
+        goto page_controller_check;
+
+    
+    }
+    
+    // Check to see if the page exists otherwise send to the 404 page
+    if (isset($VAR['component']) && !isset($VAR['page_tpl']) && !check_page_exists($db, $VAR['component'], $VAR['page_tpl'])) {
+
+        // Set to the 404 error page       
+        $VAR['component']   = 'core';
+        $VAR['page_tpl']    = '404';            
+        $VAR['theme']       = 'off';
+        
+        goto page_controller_check;
+
+    }  
 
     // If no page specified set page based on login status
-    } elseif(!isset($VAR['component']) && !isset($VAR['page_tpl']) ) {    
+    if(!isset($VAR['component']) && !isset($VAR['page_tpl']) ) {    
 
         if(isset($user->login_token)) {
 
@@ -92,21 +87,11 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
             $VAR['component']           = 'core';
             $VAR['page_tpl']            = 'home';
 
-        }     
-
-    // Check to see if the page exists otherwise send to the 404 page
-    } else {
-        
-        if (!check_page_exists($db, $VAR['component'], $VAR['page_tpl'])) {
-
-            // Set to the 404 error page       
-            $VAR['component']   = 'core';
-            $VAR['page_tpl']    = '404';            
-            $VAR['theme']       = 'off';
-
         }
-       
+        
     }
+
+    page_controller_check:    
     
     // Check the requested page with the current usergroup against the ACL for authorisation, if it fails set page 403
     if(!check_page_acl($db, $VAR['component'], $VAR['page_tpl'])) {
@@ -119,9 +104,9 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
         $VAR['component']   = 'core';
         $VAR['page_tpl']    = '403';        
         $VAR['theme']       = 'off';
-
-    }
-
+        
+    }    
+        
     // Return the page display controller for the requested page    
     return COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
     
@@ -313,18 +298,18 @@ function check_link_is_sef($url) {
     // Remove base path from URL path
     $url = str_replace(QWCRM_BASE_PATH, '', $url);
 
-    // Check to see if what remains start with index.php    
+    // If start with index.php == Non SEF
     if (preg_match('|^index\.php|U', $url)) {
-        
-        // is Non-SEF
+        return false;        
+    }
+    
+    // if root '/' - This can be either SEF or Non SEF so return Non SEF
+    if($url == '') {        
         return false;
-        
-    } else {
+    }
 
-        // is SEF
-        return true;
-        
-    }   
+    // Is SEF
+    return true;       
     
 }
 
@@ -386,17 +371,17 @@ function get_routing_variables_from_url($url) {
         // non-sef url
         } else {
             
-            // Move URL into an array
-            $parsed_url = parse_url($url, PHP_URL_QUERY);
-    
-            // copy only required variables
-            $VAR['component'] = $parsed_url['component'];
-            $VAR['component'] = $parsed_url['page_tpl'];
+            // Get URL Query Variables
+            parse_str(parse_url($url, PHP_URL_QUERY), $parsed_url_query);            
+            
+            // Set only routing variables if they exist
+            if(isset($parsed_url_query['component'])) { $VAR['component'] = $parsed_url_query['component']; }
+            if(isset($parsed_url_query['page_tpl'])) { $VAR['page_tpl'] = $parsed_url_query['page_tpl']; }
             
         }
         
         // If $VAR is empty it is because page is index.php, set required
-        if(empty($VAR)) {
+        if($VAR['component'] == '' && $VAR['page_tpl'] == '') {
             
             if(isset($user->login_token)) {
 
@@ -412,7 +397,7 @@ function get_routing_variables_from_url($url) {
 
             }
             
-        }        
+        }   
 
     }
     

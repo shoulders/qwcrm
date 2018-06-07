@@ -119,9 +119,6 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 // Configure variables to be used by QWcrm
 require(INCLUDES_DIR.'variables.php');
 
-// Process the URL for page routing
-prepare_page_routing($QConfig, $VAR);
-
 // Get the page controller - no user has been set to calculate what page to load
 $page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
 

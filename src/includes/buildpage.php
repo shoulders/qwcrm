@@ -70,20 +70,62 @@ function get_page_content($db, $startTime, $page_controller, $VAR, $QConfig = nu
 
     page_build_end:
     
-    // Process page links
-    if ($QConfig->sef) { page_links_to_sef($BuildPage); }
+    // Remove non-allowed links
+    page_links_permissions($BuildPage);
+    
+    // Convert to SEF
+    if ($QConfig->sef) { page_links_to_sef($BuildPage); }    
         
     return $BuildPage;
     
 }
 
-####################################################################
-#  Cycle through the built HTML and pass matches to link_parser()  #
-####################################################################
+###################################################################
+#  Check all page links for permission for the user to view them  #
+###################################################################
 
-function page_links_parser(&$BuildPage) {
+function page_links_permissions(&$BuildPage) {
     
-    // i.e. permissions and convert to sef - unless i have a lot they dont need to be in a wrapper function
+    // Replace nonsef links within "" and ''
+    $BuildPage = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
+        function($matches) {
+        
+            // Check to see if user is allowed to use the link
+            if(link_permission($matches[2])) { 
+                
+                // Return un-modified link
+                return $matches[0];
+                
+            } else {
+                
+                // Return modifed link
+                return $matches[1].'#'.$matches[3];  
+            }
+
+        }, $BuildPage);
+
+}
+
+############################################################
+#  Does the current user have permission to see this link  #
+############################################################
+
+function link_permission($url) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get routing variables from URL
+    $url_routing = get_routing_variables_from_url($url);
+    
+    // Check to see if user is allowed to use the asset
+    if(check_page_acl($db, $url_routing['component'], $url_routing['page_tpl'])) {
+        
+        return true;
+        
+    } else {
+    
+        return false;
+    }
 }
 
 ###########################################
@@ -92,60 +134,12 @@ function page_links_parser(&$BuildPage) {
 
 function page_links_to_sef(&$BuildPage) {
     
-    // Replace nonsef links within ""
-    $BuildPage = preg_replace_callback('|"(index\.php.*)"|U',
+    // Replace nonsef links within "" and ''
+    $BuildPage = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
         function($matches) {
             
-            return '"'.buildSEF($matches[1]).'"';
+            return $matches[1].buildSEF($matches[2]).$matches[3];
 
         }, $BuildPage);
-        
-    // Replace nonsef links within '' (i.e. javascript)
-    $BuildPage = preg_replace_callback("|'(index\.php.*)'|U",
-        function($matches) {
-        
-            return "'".buildSEF($matches[1])."'";
-
-        }, $BuildPage);
-        
-    return $BuildPage;
-    
-}
-
-
-
-################################################################################
-#  The is the wrapping function for the callback method from preg_match_all()  #
-################################################################################
-
-function link_parser($url) {
-       
-}
-
-#################################################################################
-#  Does the user have permission to use/see the link - if not remove/modify it  #
-#################################################################################
-
-function link_permission($non_sef_url) {
-    
-    $db = QFactory::getDbo();
-    $user = QFactory::getUser();
-    
-    // Move URL into an array
-    $parsed_url = parse_url($non_sef_url);
-    
-    // Get URL Query Variables
-    parse_str($parsed_url['query'], $parsed_url_query);
-    
-    // Check to see if user is allowed to use the asset
-    if(check_page_acl($db, $parsed_url_query['component'], $parsed_url_query['page_tpl'])) {
-        
-        
-        // if permission denied - modify the link by removing the href="" as per HTML spec to disable the link
-        $non_sef_url = preg_replace('|<a( href="index\.php.*")(.*)>(.*)<\/a>|u', "", $non_sef_url);
-        
-    }
-    
-    return $non_sef_url;
     
 }
