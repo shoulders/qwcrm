@@ -145,8 +145,7 @@ function buildSEF($non_sef_url) {
         }
         
         // Remove the first & and prepend a ?
-        $sef_url_query = '?'.ltrim($sef_url_query, '&');
-        
+        $sef_url_query = '?'.ltrim($sef_url_query, '&');        
             
     }
     
