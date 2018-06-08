@@ -50,7 +50,7 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 
 function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     $config = new QConfig;
     $db = QFactory::getDbo();

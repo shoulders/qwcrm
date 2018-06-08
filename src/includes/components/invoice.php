@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
 
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     /* Records Search */
     

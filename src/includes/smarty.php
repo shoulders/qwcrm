@@ -16,7 +16,33 @@ set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'smarty/');
 require_once('Smarty.class.php');
  */
 
-$smarty = new Smarty();
+class QSmarty extends Smarty {
+    
+  static $instance = null;
+
+  public static function getInstance($newInstance = null)
+  {
+    if(!is_null($newInstance)) {
+        self::$instance = $newInstance;    
+    }
+    if(is_null(self::$instance)) {
+        self::$instance = new QSmarty();        
+    }
+    return self::$instance;
+  }
+
+  public function __construct()
+  {    
+    parent::__construct();
+    // initialize smarty here    
+  }
+  
+} 
+
+// Create Smarty
+$smarty = QSmarty::getInstance();
+
+/* Configure Smarty */
 
 // Smarty Class Variables - https://www.smarty.net/docs/en/api.variables.tpl
 
@@ -35,16 +61,13 @@ $smarty->cache_lifetime         = $QConfig->smarty_cache_lifetime;
 $smarty->cache_modified_check   = $QConfig->smarty_cache_modified_check;
 $smarty->cache_locking          = $QConfig->smarty_cache_locking;
 
-
 // Debugging
-
 $smarty->debugging              = $QConfig->smarty_debugging;                                     // Does not work with fetch()
 $smarty->debugging_ctrl         = $QConfig->smarty_debugging_ctrl;
 //$smarty->debugging_ctrl         = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';    // Restrict debugging URL to work only on localhost
 //$smarty->debug_tpl              = LIBRARIES_DIR.'smarty/debug.tpl';                             // By default it is in the Smarty directory
 
 // Other Settings
-
 //$smarty->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads
 //$smarty->error_unassigned = true;                 // to enable notices.
 //$smarty->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
@@ -52,3 +75,4 @@ $smarty->debugging_ctrl         = $QConfig->smarty_debugging_ctrl;
 //$smarty->clearAllCache();                         // clears all of the cache
 //$smarty->clear_cache()();                         // clear individual cache files (or groups)
 //$smarty->clearCompiledTemplate();                 // Clears the compile dirctory
+

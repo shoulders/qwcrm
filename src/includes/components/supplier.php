@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     /* Records Search */ 
     

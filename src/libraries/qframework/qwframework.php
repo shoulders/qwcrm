@@ -59,9 +59,8 @@ class QFactory {
 
     public function __construct()
     {
-        $this->conf     = self::getConfig();       
-        global $smarty;
-        $this->smarty   = $smarty;
+        $this->conf     = self::getConfig();
+        $this->smarty   = QSmarty::getInstance();
         
         // Enable sessions by default.
         if (is_null($this->conf->get('session')))

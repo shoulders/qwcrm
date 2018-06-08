@@ -32,7 +32,7 @@ defined('_QWEXEC') or die;
 
 function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $usertype = null, $usergroup = null) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
 
     /* Records Search */
         
@@ -550,7 +550,7 @@ function build_active_employee_form_option_list($db, $assigned_user_id){
 
 function check_user_username_exists($db, $username, $current_username = null){
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // This prevents self-checking of the current username of the record being edited
     if ($current_username != null && $username === $current_username) {return false;}
@@ -585,7 +585,7 @@ function check_user_username_exists($db, $username, $current_username = null){
 
 function check_user_email_exists($db, $email, $current_email = null){
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // This prevents self-checking of the current username of the record being edited
     if ($current_email != null && $email === $current_email) {return false;}
@@ -636,7 +636,7 @@ function check_user_is_employee($db, $user_id) {
 
 function check_customer_already_has_login($db, $customer_id) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     $sql = "SELECT user_id FROM ".PRFX."user WHERE customer_id =". $db->qstr($customer_id);
     
@@ -755,7 +755,7 @@ function reset_all_user_passwords($db) {
 
 function login($VAR, $credentials, $options = array())
 {       
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     $db = QFactory::getDbo();
     
@@ -897,7 +897,7 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
         
     } else {
         
-        global $smarty;        
+        $smarty = QSmarty::getInstance();        
         
         /* If it's not successful, then one or more error codes will be returned.      
         $error_msg .= '<h2>Something went wrong</h2>';
@@ -1082,7 +1082,7 @@ function get_user_id_by_reset_code($db, $reset_code) {
 
 function validate_reset_token($db, $token) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // check for previous tokens for this user and delete them
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE token=".$db->qstr($token);
@@ -1124,7 +1124,7 @@ function validate_reset_token($db, $token) {
 
 function validate_reset_code($db, $reset_code) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // Check for previous tokens for this user and delete them
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code=".$db->qstr($reset_code);

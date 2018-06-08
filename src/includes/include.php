@@ -43,7 +43,7 @@ function get_mysql_version($db) {
 
 function get_qwcrm_database_version_number($db) {
     
-    //global $smarty;
+    //$smarty = QSmarty::getInstance();
     
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
@@ -139,13 +139,11 @@ function update_user_last_active($db, $user_id = null) {
 
 function force_page($component, $page_tpl = null, $variables = null, $method = 'post', $url_type = 'auto') {
     
-    //http_build_query ()
-    // parse_str()
-    
     // Set URL type to be used
     if ($url_type == 'sef') { $makeSEF = true; }
     elseif ($url_type == 'nonsef') { $makeSEF = false; }
-    else { $makeSEF = QFactory::getConfig()->get('sef'); } 
+    elseif(class_exists(QFactory)) { $makeSEF = QFactory::getConfig()->get('sef'); }
+    else { $makeSEF = false; }
     
     /* Standard URL Redirect */
     
@@ -264,6 +262,7 @@ function perform_redirect($url, $type = 'header') {
     // Redirect using Headers (cant always use this method in QWcrm)
     if($type == 'header') {        
         header('Location: ' . $url);
+        exit;
     }
     
     // Redirect using Javascript
@@ -273,6 +272,7 @@ function perform_redirect($url, $type = 'header') {
                     window.location = "'.$url.'"
                 </script>
             ');
+        exit;
     }
     
 }
@@ -564,7 +564,7 @@ function prepare_error_data($type, $data = null) {
 
 function set_page_header_and_meta_data($component, $page_tpl) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // Page Title
     $smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    

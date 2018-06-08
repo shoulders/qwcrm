@@ -40,7 +40,7 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 
 function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
    
     /* Records Search */
     
@@ -893,7 +893,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
 
 function validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id = null) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     $company_day_start = datetime_to_timestamp($start_date, get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), '0', '24');
     $company_day_end   = datetime_to_timestamp($start_date, get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), '0', '24');

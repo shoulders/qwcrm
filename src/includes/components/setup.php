@@ -398,7 +398,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 
 function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // Get current PHP error reporting level
     $reporting_level = error_reporting();
@@ -527,7 +527,7 @@ function install_database($db) {
     
     global $executed_sql_results;
     global $setup_error_flag;
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // Run the install.sql
     execute_sql_file($db, SETUP_DIR.'install/install.sql');
@@ -592,7 +592,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     
     global $executed_sql_results;
     global $setup_error_flag;
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     /* Customer */
     

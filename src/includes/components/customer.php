@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $type = null) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
 
     /* Records Search */
     

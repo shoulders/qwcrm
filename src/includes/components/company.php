@@ -125,7 +125,7 @@ function get_email_message_body($db, $message_name, $customer_details = null) {
 
 function update_company_details($db, $VAR) {
 
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // compensate for installation and migration
     if(!defined(DATE_FORMAT)) {
@@ -206,7 +206,7 @@ function update_company_details($db, $VAR) {
 
 function update_company_hours($db, $openingTime, $closingTime) {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     $sql = "UPDATE ".PRFX."company SET
             opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
@@ -242,7 +242,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
 
 function check_start_end_times($start_time, $end_time) {
     
-    global $smarty; 
+    $smarty = QSmarty::getInstance(); 
     
     // If start time is before end time
     if($start_time > $end_time) {        

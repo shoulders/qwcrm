@@ -236,7 +236,7 @@ function getPHPInfo()
 
 function check_for_qwcrm_update() {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // Get curent version and check against quantumwarp.com
     $update_page    = 'https://quantumwarp.com/ext/updates/qwcrm/qwcrm.xml';
@@ -451,7 +451,7 @@ function send_test_mail($db) {
 
 function clear_smarty_cache() {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
     clear_onscreen_notifications();
@@ -476,7 +476,7 @@ function clear_smarty_cache() {
 
 function clear_smarty_compile() {
     
-    global $smarty;
+    $smarty = QSmarty::getInstance();
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
     clear_onscreen_notifications();

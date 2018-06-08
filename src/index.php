@@ -100,6 +100,9 @@ require(QFRAMEWORK_DIR.'qwframework.php');
 // Route the page request
 require(INCLUDES_DIR.'router.php');
 
+// Build the page content payload
+require(INCLUDES_DIR.'buildpage.php');
+
 ################################################
 #         Test QWCRM Enviroment                #
 ################################################
@@ -119,14 +122,19 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 // Configure variables to be used by QWcrm
 require(INCLUDES_DIR.'variables.php');
 
+################################################
+#         Build Page and Content               #
+################################################
+
 // Get the page controller - no user has been set to calculate what page to load
 $page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
 
-// Build the page content payload
-require(INCLUDES_DIR.'buildpage.php');
-
 // Build the page
 $BuildPage = get_page_content($db, $startTime, $page_controller, $VAR, $QConfig, $user);
+
+################################################
+#         Logging                              #
+################################################
 
 // Access Logging
 if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {

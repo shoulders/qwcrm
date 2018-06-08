@@ -16,7 +16,8 @@ defined('_QWEXEC') or die;
 
 function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
     
-    global $smarty;
+    // This is required for the required files/templates
+    $smarty = QSmarty::getInstance();
     
     // Maintenance Mode
     if($QConfig->maintenance) {
