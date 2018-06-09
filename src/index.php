@@ -65,43 +65,43 @@ if(is_file('configuration.php')) {
 }
 
 // Load System Constants
-require('includes/defines.php');
+require('includes/system/defines.php');
 
 // Configure PHP error reporting
-require(INCLUDES_DIR.'error.php');
+require(INCLUDES_DIR.'system/error.php');
 
 // Load dependencies via composer
 require(VENDOR_DIR.'autoload.php');
 
+// Load System Include
+require(INCLUDES_DIR.'system/include.php');
+
 // Load Language
-require(INCLUDES_DIR.'language.php');
+require(INCLUDES_DIR.'system/language.php');
 
-// Load Libraries, Includes and QWFramework
-require(INCLUDES_DIR.'include.php');
-
-// Load database abstraction layer
-require(INCLUDES_DIR.'adodb.php');
+// Load Database Abstraction Layer
+require(INCLUDES_DIR.'system/adodb.php');
 
 // Load QWcrm Security including mandatory security code
-require(INCLUDES_DIR.'security.php');
+require(INCLUDES_DIR.'system/security.php');
 
 // Load PDF creation library
-//require(INCLUDES_DIR.'mpdf.php');
+//require(INCLUDES_DIR.'system/mpdf.php');
 
 // Load email transport
-require(INCLUDES_DIR.'email.php');
+require(INCLUDES_DIR.'system/email.php');
 
-// Load template engine
-require(INCLUDES_DIR.'smarty.php');
+// Load Template Engine
+require(INCLUDES_DIR.'system/smarty.php');
+
+// Route the page request
+require(INCLUDES_DIR.'system/router.php');
+
+// Build the page content payload
+require(INCLUDES_DIR.'system/buildpage.php');
 
 // Load the session and user framework
 require(QFRAMEWORK_DIR.'qwframework.php');
-
-// Route the page request
-require(INCLUDES_DIR.'router.php');
-
-// Build the page content payload
-require(INCLUDES_DIR.'buildpage.php');
 
 ################################################
 #         Test QWCRM Enviroment                #
@@ -120,7 +120,7 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 }
 
 // Configure variables to be used by QWcrm
-require(INCLUDES_DIR.'variables.php');
+require(INCLUDES_DIR.'system/variables.php');
 
 ################################################
 #         Build Page and Content               #
