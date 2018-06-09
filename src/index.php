@@ -133,6 +133,12 @@ $page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id,
 $BuildPage = get_page_content($db, $startTime, $page_controller, $VAR, $QConfig, $user);
 
 ################################################
+#         Content Plugins                      #
+################################################
+
+// You can add plugins here that parse and change the page content
+
+################################################
 #         Logging                              #
 ################################################
 
@@ -145,12 +151,6 @@ if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
     }
     
 }
-
-################################################
-#         Content Plugins                      #
-################################################
-
-// Plugins You can add plugins here that parse and change the page content
 
 ################################################
 #         Headers                              #
