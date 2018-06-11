@@ -36,8 +36,8 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
-                                                    <input type="submit" name="submit" value="Submit">&nbsp;
-                                                    <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php';" type="button">
+                                                    <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>&nbsp;                                                    
+                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
                                                 </td>
                                             </tr>    
                                         </table>

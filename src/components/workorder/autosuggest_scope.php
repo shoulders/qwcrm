@@ -28,7 +28,7 @@ if(isset($VAR['posted_scope_string']) && strlen($VAR['posted_scope_string']) > 0
 
         // loop over the rows, outputting them to the page object in the required format
         foreach($autosuggest_items as $key => $value) {
-            $BuildPage .= '<li onClick="fill(\''.$value['scope'].'\');">'.$value['scope'].'</li>';
+            $BuildPage .= '<li onclick="fill(\''.$value['scope'].'\');">'.$value['scope'].'</li>';
         } 
 
     } else {

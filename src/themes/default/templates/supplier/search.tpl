@@ -44,8 +44,8 @@
                                                                 <b>{t}for{/t}</b>
                                                                 <br />
                                                                 <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="20" onkeydown="return onlySearch(event);" />
-                                                                <input name="submit" class="olotd4" value="{t}Search{/t}" type="submit" />
-                                                                <input type="button" class="olotd4" value="{t}Reset{/t}" onclick="window.location.href='index.php?component=supplier&page_tpl=search';">
+                                                                <button type="submit" name="submit" value="search">{t}Search{/t}</button>
+                                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=supplier&page_tpl=search';">{t}reset{/t}</button>
                                                             </td>
                                                         </tr>
                                                         <tr>

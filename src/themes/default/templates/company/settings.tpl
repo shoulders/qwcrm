@@ -142,7 +142,7 @@
                                                                                     <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                     <td>
                                                                                         <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                                        <input id="year_start_button" value="+" type="button">                                                    
+                                                                                        <button type="button" id="year_start_button">+</button>
                                                                                         <script>                                                        
                                                                                             Calendar.setup( {
                                                                                                 trigger     : "year_start_button",
@@ -156,7 +156,7 @@
                                                                                     <td align="right"><b>{t}Financial Year End{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                     <td>
                                                                                         <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                                        <input id="year_end_button" value="+" type="button">                                                    
+                                                                                        <button type="button" id="year_end_button">+</button>
                                                                                         <script>                                                        
                                                                                             Calendar.setup( {
                                                                                                 trigger     : "year_end_button",
@@ -341,7 +341,7 @@
                                 <tr>
                                     <td>
                                         <input class="olotd5" type="submit" name="submit" value="Submit">&nbsp;
-                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php';" type="button">
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
                                     </td>
                                 </tr>  
 

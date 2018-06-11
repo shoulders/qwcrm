@@ -43,7 +43,7 @@
                                         <br>
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';" type="button">
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>
                                     </form>
                                     <br>
                                 </td>

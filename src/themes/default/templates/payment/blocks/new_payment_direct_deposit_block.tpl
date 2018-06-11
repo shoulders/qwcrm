@@ -23,7 +23,7 @@
                         <td></td>
                         <td>
                             <input id="direct_deposit_date" name="date" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                            <input id="direct_deposit_date_button" value="+" type="button">                                                    
+                            <button type="button" id="direct_deposit_date_button">+</button>
                             <script>                                                        
                                 Calendar.setup( {
                                     trigger     : "direct_deposit_date_button",

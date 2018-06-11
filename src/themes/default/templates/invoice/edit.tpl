@@ -372,7 +372,7 @@
                                                 <td>
                                                     {if !$display_payments}
                                                         <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                        <input id="date_button" value="+" type="button">                                                    
+                                                        <button type="button" id="date_button">+</button>
                                                         <script>                                                        
                                                             Calendar.setup( {
                                                                 trigger     : "date_button",
@@ -387,7 +387,7 @@
                                                 <td>
                                                     {if !$display_payments}
                                                         <input id="due_date" name="due_date" class="olotd4" size="10" value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                        <input id="due_date_button" value="+" type="button">                                                    
+                                                        <button type="button" id="due_date_button">+</button>
                                                         <script>                                                        
                                                            Calendar.setup({
                                                                trigger     : "due_date_button",
@@ -490,14 +490,14 @@
                                                     {if $invoice_details.gross_amount > 0 }
 
                                                         <!-- Print Buttons -->   
-                                                        <button type="button" onClick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
-                                                        <button type="button" onClick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                        <button type="button" onClick="confirmChoice('Are you sure you want to email this invoice to the customer?') && $.ajax( { url:'index.php?component=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success&page_tpl= function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
-                                                        <button type="button" onClick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=customer_envelope&theme=print');">{t}Print Customer Envelope{/t}</button>                                            
+                                                        <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
+                                                        <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
+                                                        <button type="button" onclick="confirmChoice('Are you sure you want to email this invoice to the customer?') && $.ajax( { url:'index.php?component=invoice:print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success&page_tpl= function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                        <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=customer_envelope&theme=print');">{t}Print Customer Envelope{/t}</button>                                            
 
                                                         {if $invoice_details.balance > 0}
                                                             <!-- Receive Payment Button -->
-                                                            <button type="button" onClick="location.href='index.php?component=payment&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                            <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                         {/if}
 
                                                     {/if}
@@ -572,8 +572,8 @@
                                                             <!-- Additional Rows are added here -->
                                                         </table>
                                                         <p>
-                                                            <input type="button" value="{t}Add{/t}" onclick="addRowToTableLabour();" />
-                                                            <input type="button" value="{t}Remove{/t}" onclick="removeRowFromTableLabour();" />
+                                                            <button type="button" onclick="addRowToTableLabour();">{t}Add{/t}</button>
+                                                            <button type="button" onclick="removeRowFromTableLabour();">{t}Remove{/t}</button>
                                                         </p>
                                                     {/if}
 
@@ -640,8 +640,8 @@
                                                             <!-- Additional Rows are added here -->
                                                         </table>
                                                         <p>
-                                                            <input type="button" value="{t}Add{/t}" onclick="addRowToTableParts();" />
-                                                            <input type="button" value="{t}Remove{/t}" onclick="removeRowFromTableParts();" />
+                                                            <button type="button" onclick="addRowToTableParts();">{t}Add{/t}</button>
+                                                            <button type="button" onclick="removeRowFromTableParts();">{t}Remove{/t}</button>
                                                         </p>
                                                     {/if}
 
@@ -700,7 +700,7 @@
                                                     <input type="hidden" name="sub_total" value="{$invoice_details.sub_total|string_format:"%.2f"}">
                                                     {if !$display_payments}
                                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=invoice&page_tpl=search';" type="button">
+                                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=search';">{t}Cancel{/t}</button>
                                                     {/if}
                                                 </td>
                                                 <td align="right" width="75%"></td>

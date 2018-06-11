@@ -33,7 +33,7 @@
                                         <button name="submit" value="submitchangesonly" type="submit">{t}Submit Changes Only{/t}</button>
                                         <button name="submit" value="closewithoutinvoice" type="submit">{t}Close Without Invoice{/t}</button>
                                         <button name="submit" value="closewithinvoice" type="submit">{t}Close With Invoice{/t}</button>
-                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';" type="button">
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>
                                     </form>
                                     <br>
                                 </td>

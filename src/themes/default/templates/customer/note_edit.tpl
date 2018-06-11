@@ -35,7 +35,7 @@
                                         {*<div>
                                             <b>{t}Date{/t}:<b><br>
                                             <input id="date" name="date" class="olotd4" size="10" value="{$customer_note.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                            <input id="date_button" value="+" type="button">                                                    
+                                            <button type="button" id="date_button">+</button>
                                             <script>                                            
                                                 Calendar.setup( {
                                                     trigger     : "date_button",
@@ -48,8 +48,8 @@
                                         <textarea class="olotd4" rows="15" cols="70" name="note">{$customer_note.note}</textarea>
                                         <br>
                                         <input type="hidden" name="customer_id" value="{$customer_note.customer_id}">
-                                        <input class="olotd4" name="submit" value="{t}Submit{/t}" type="submit">
-                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_note.customer_id}';" type="button">                                        
+                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_note.customer_id}';">{t}Cancel{/t}</button>
                                     </form>
                                     <br>
                                 </td>

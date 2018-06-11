@@ -44,7 +44,7 @@
                                                         <tr>
                                                             <td align="left">
                                                                 <input id="start_date" name="start_date" class="olotd5" size="10" value="{$start_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                <input id="start_date_button" value="+" type="button" >
+                                                                <button type="button" id="start_date_button">+</button>
                                                                 <script>                            
                                                                     Calendar.setup( {
                                                                         trigger     : "start_date_button",
@@ -55,7 +55,7 @@
                                                             </td>
                                                             <td>
                                                                 <input id="end_date" name="end_date" class="olotd5" size="10" value="{$end_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                <input id="end_date_button" value="+" type="button">                    
+                                                                <button type="button" id="end_date_button">+</button>
                                                                 <script>                            
                                                                     Calendar.setup( {
                                                                         trigger     : "end_date_button",

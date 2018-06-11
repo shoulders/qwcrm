@@ -78,7 +78,7 @@
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=invoice&page_tpl=status">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onClick="return confirmChoice('{t}Are you sure you want to delete this invoice?{/t}');">
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this invoice?{/t}');">
                                             <input type="hidden" name="invoice_id" value="{$invoice_id}">
                                         </form>                                            
                                     {else}

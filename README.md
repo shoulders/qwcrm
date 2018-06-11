@@ -55,7 +55,7 @@ QWcrm has many features, not all can be listed here:
 
 ## Support
 
-There is a [forum](http://quantumwarp.com/forum/) available for support over at [QuantumWarp](http://quantumwarp.com/forum/)
+There is a [forum](https://quantumwarp.com/forum/) available for support over at [QuantumWarp](https://quantumwarp.com/forum/)
 with new features and bugs being actively reported and resolved. It’s also a great way to get personal involvement from all
 our end users to help build on this software. 
 

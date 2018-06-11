@@ -58,7 +58,7 @@
                                                                     <tr>
                                                                         <td>
                                                                             <input id="start_date" name="start_date" size="10" value="{$start_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                            <input id="start_date_button" value="+" type="button">                                                                                
+                                                                            <button type="button" id="start_date_button">+</button>
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {
                                                                                     trigger     : "start_date_button",
@@ -70,7 +70,7 @@
                                                                         </td>
                                                                         <td>
                                                                             <input id="end_date" name="end_date" size="10" value="{$end_date}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                            <input id="end_date_button" value="+" type="button">                                                                                
+                                                                            <button type="button" id="end_date_button">+</button>
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {
                                                                                     trigger     : "end_date_button",
@@ -93,8 +93,8 @@
                                                                         <td colspan="2">
                                                                             <input type="hidden" name="customer_id" value="{$customer_id}"> 
                                                                             <input type="hidden" name="workorder_id" value="{$workorder_id}"> 
-                                                                            <input type="submit" name="submit" value="{t}Submit{/t}">
-                                                                            <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=schedule&page_tpl=details&schedule_id={$schedule_id}';" type="button">
+                                                                            <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                                            <button type="button" class="olotd4" onclick="window.location.href='index.php?component=schedule&page_tpl=details&schedule_id={$schedule_id}';">{t}Cancel{/t}</button>
                                                                         </td>
                                                                     </tr>
                                                                 </table>

@@ -35,7 +35,7 @@
                                         {*<div>
                                             <b>{t}Date{/t}:<b><br>
                                             <input id="date" name="date" class="olotd4" size="10" value="{$workorder_note_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                            <input id="date_button" value="+" type="button">                                                    
+                                            <button type="button" id="date_button">+</button>
                                             <script>                                            
                                                 Calendar.setup( {
                                                     trigger     : "date_button",
@@ -49,7 +49,7 @@
                                         <br>                                        
                                         <input type="hidden" name="workorder_id" value="{$workorder_note_details.workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_note_details.workorder_id}';" type="button">
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_note_details.workorder_id}';">{t}Cancel{/t}</button>
                                     </form>
                                     <br>
                                 </td>

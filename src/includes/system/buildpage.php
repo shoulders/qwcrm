@@ -70,9 +70,16 @@ function get_page_content($db, $startTime, $page_controller, $VAR, $QConfig = nu
 
     page_build_end:
     
-    // Remove non-allowed links
-    page_links_permissions($BuildPage);
-    
+    // Process Page links
+    //page_links_acl_modify($BuildPage);
+    page_links_acl_removal($BuildPage);
+    page_links_sdmenu_cleanup($BuildPage);        
+        
+    // Will error out if there are any issues with content replacement
+    if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
+        echo __gettext("Backtrack limit was exhausted!");
+    }
+
     // Convert to SEF
     if ($QConfig->sef) { page_links_to_sef($BuildPage); }    
         
@@ -84,10 +91,10 @@ function get_page_content($db, $startTime, $page_controller, $VAR, $QConfig = nu
 #  Check all page links for permission for the user to view them  #
 ###################################################################
 
-function page_links_permissions(&$BuildPage) {
+// Swap out the link in href="" for a hash
+function page_links_acl_modify(&$BuildPage) {
     
-    // Replace nonsef links within "" and ''
-    $BuildPage = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
+    $BuildPage = preg_replace_callback('/(["\'])(index\.php.*)(["\'])/U',
         function($matches) {
         
             // Check to see if user is allowed to use the link
@@ -98,12 +105,57 @@ function page_links_permissions(&$BuildPage) {
                 
             } else {
                 
-                // Return modifed link
+                // Return modifed link (or use &nbsp; )
                 return $matches[1].'#'.$matches[3];  
             }
 
         }, $BuildPage);
 
+}
+
+// Remove links altogether
+function page_links_acl_removal(&$BuildPage) {
+    
+    // This allows for <a>...</a> being split over several lines. The opening <a .....> must be on one line - This is also optimized with atomic groups
+    $BuildPage = preg_replace_callback('/<(?>a|button|input)[^\r\n]*["\'](index\.php[^\r\n]*)["\'][^\r\n]*>.*<\/(?>a|button|input)>/Us',
+        function($matches) {
+            
+            // Check to see if user is allowed to use the link
+            if(link_permission($matches[1])) { 
+                
+                // Return un-modified link
+                return $matches[0];
+                
+            } else {
+
+                // Return modifed link (i.e. removed)           
+                return '';
+            }
+
+        }, $BuildPage);
+       
+}
+
+// Remove unpopulated main menu groups
+function page_links_sdmenu_cleanup(&$BuildPage) {
+    
+    $BuildPage = preg_replace_callback('/<div class="menugroup">.*<\/div>/Us',
+        function($matches) {
+        
+            if(preg_match('/<a.*<\/a>/Us', $matches[0])) {
+                
+                // leave the group as is because there are menu item(s)
+                return $matches[0];
+                
+            } else {
+
+                // remove the menu group because there are no menu item(s)
+                return '';
+                
+            }
+
+        }, $BuildPage);
+    
 }
 
 ############################################################

@@ -35,7 +35,7 @@
                             <!-- Cancel Button -->
                             <tr>
                                 <td>                                                
-                                    <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';" type="button">
+                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>
                                 </td>
                             </tr>                            
 

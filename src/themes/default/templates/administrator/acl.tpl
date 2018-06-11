@@ -114,16 +114,17 @@
                         </td>
                     </tr>
 
-                    <!-- Butons -->                
+                    <!-- Buttons -->                
                     <tr>
                         <td colspan="2">
                             <table>
                                 <tr>
-                                    <td width="50%">
+                                    <td width="75%">
                                         <button type="submit" name="submit" value="update">{t}Submit{/t}</button>&nbsp;
-                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php';" type="button">
+                                        <button type="reset" name="reset" value="reset">{t}Reset{/t}</button>&nbsp;
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
                                     </td>
-                                    <td width="50%"><button type="submit" name="submit" value="reset_default" onclick="return confirmChoice('{t}Are you sure you want to reset the permissions to their defaults?{/t}');">{t}Reset to default Permissions{/t}</button></td>    
+                                    <td width="25%"><button type="submit" name="submit" value="reset_default" onclick="return confirmChoice('{t}Are you sure you want to reset the permissions to their defaults?{/t}');">{t}Reset to default Permissions{/t}</button></td>    
                                 </tr>
                             </table>
                         </td>

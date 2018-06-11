@@ -54,8 +54,8 @@
                                                                     </td>
                                                                     <td class="olotd4" nowrap>
                                                                         <input type="hidden" name="invoice_prefill_id" value="{$invoice_prefill_items[q].invoice_prefill_id}">
-                                                                        <button type="submit" name="submit" value="delete" onClick="return confirmChoice('{t}Are You sure you want to delete this labour rate item.{/t}');">{t}Delete{/t}</button>
-                                                                        <button type="submit" name="submit" value="update" onClick="return confirmChoice('{t}Are You sure you want to update this labour rate item.{/t}');">{t}Update{/t}</button>
+                                                                        <button type="submit" name="submit" value="delete" onclick="return confirmChoice('{t}Are You sure you want to delete this labour rate item.{/t}');">{t}Delete{/t}</button>
+                                                                        <button type="submit" name="submit" value="update" onclick="return confirmChoice('{t}Are You sure you want to update this labour rate item.{/t}');">{t}Update{/t}</button>
                                                                     </td>
                                                                 </tr>
                                                             </form>
@@ -128,7 +128,7 @@
                                                                                 <td width="246">                                                                                    
                                                                                     <input name="invoice_prefill_csv" type="file" accept=".csv">
                                                                                 </td>
-                                                                                <td width="80"><button id="csv_upload" name="submit" type="submit" class="box" value="csv_upload" onClick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}CSV Upload{/t}</button></td>
+                                                                                <td width="80"><button id="csv_upload" name="submit" type="submit" class="box" value="csv_upload" onclick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}CSV Upload{/t}</button></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td width="246"><input id="empty_prefill_items_table" name="empty_prefill_items_table" type="checkbox" value="1">{t}Empty Prefill Table{/t}</td>                                                                                

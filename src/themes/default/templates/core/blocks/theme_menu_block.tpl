@@ -11,14 +11,14 @@
             <div style="float: left" id="main_menu" class="sdmenu">
 
                 <!-- Main -->
-                <div>                
+                <div class="menugroup">
                     <span>{t}Main Menu{/t}</span>
                     <a href="index.php"><img src="{$theme_images_dir}icons/home.gif" alt="" border="0" height="14" width="14" /> {t}Home{/t}</a>
                     <a href="index.php?component=user&page_tpl=login&action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {t}Logout{/t}</a>                
                 </div>
 
                 <!-- Customers -->
-                <div>
+                <div class="menugroup">
                     <span>{t}Customers{/t}</span>
                     <a href="index.php?component=customer&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
                     <a href="index.php?component=customer&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
@@ -30,7 +30,7 @@
                 </div>
                 
                 <!-- Work Orders -->
-                <div>
+                <div class="menugroup">
                     <span>{t}Work Orders{/t}</span>
                     
                     <!-- Single workorders -->
@@ -58,7 +58,7 @@
                 </div>
                     
                 <!-- Schedules -->
-                <div>
+                <div class="menugroup">
                     <span>{t}Schedules{/t}</span>
                     
                     <a href="index.php?component=schedule&page_tpl=day"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" /> {t}Daily{/t}</a>
@@ -67,7 +67,7 @@
                 </div>
 
                 <!-- Invoices -->
-                <div>
+                <div class="menugroup">
                     <span>{t}Invoices{/t}</span>
                     {if $customer_id != ''}                        
                         <a href="index.php?component=invoice&page_tpl=new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
@@ -87,7 +87,7 @@
                 </div>
                 
                 <!-- Gift Certificates -->
-                <div>
+                <div class="menugroup">
                     <span>{t}Gift Certificates{/t}</span>
                     {if $customer_id > 0}
                         <a href="index.php?component=giftcert&page_tpl=new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
@@ -101,10 +101,12 @@
                 <!-- Expenses -->
                 <!-- Menu limited to Administrators and Managers -->
                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
-                    <div>
+                    <div class="menugroup">
                         <span>{t}Expenses{/t}</span>
                         <a href="index.php?component=expense&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
-                        <a href="index.php?component=expense&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
+                        <a href="index.php?component=expense&page_tpl=search">
+                            <img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}
+                        </a>
                         {if $expense_id > 0 }
                             <a href="index.php?component=expense&page_tpl=details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                             <a href="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
@@ -116,7 +118,7 @@
                 <!-- Refunds -->
                 <!-- Menu limited to Administrators and Managers -->
                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
-                    <div>
+                    <div class="menugroup">
                         <span>{t}Refunds{/t}</span>                        
                         <a href="index.php?component=refund&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
                         <a href="index.php?component=refund&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
@@ -131,7 +133,7 @@
                 <!-- Suppliers -->
                 <!-- Menu limited to Administrators and Managers -->
                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
-                    <div>
+                    <div class="menugroup">
                         <span>{t}Suppliers{/t}</span> 
                         <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
                         <a href="index.php?component=supplier&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
@@ -146,7 +148,7 @@
                 <!-- Company -->
                 <!-- Menu limited to Administrators and Manager -->
                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
-                    <div>
+                    <div class="menugroup">
                         <span>{t}Company{/t}</span>                        
                         <a href="index.php?component=company&page_tpl=settings"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Settings{/t}</a>                        
                         <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
@@ -157,7 +159,7 @@
                 {/if}
                 
                 <!-- Finance -->
-                <div>
+                <div class="menugroup">
                     <span>{t}Finance{/t}</span>
                     
                     <!-- Stats -->                        
@@ -173,7 +175,7 @@
                 <!-- Administration -->
                 <!-- Menu limited to Administrators and Managers -->
                 {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
-                    <div>
+                    <div class="menugroup">
                         <span>{t}Administration{/t}</span>
                         
                         <!-- Users -->
@@ -194,15 +196,15 @@
                 {/if}                
 
                 <!-- Help -->
-                <div>
+                <div class="menugroup">
                     <span>{t}Help{/t}</span>
                     <a href="index.php?component=help&page_tpl=about"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}About{/t}</a>
                     <a href="index.php?component=help&page_tpl=attribution"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Attribution{/t}</a>
                     <a href="index.php?component=help&page_tpl=license"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}License{/t}</a>
-                    <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Website{/t}</a>
-                    <a href="http://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Documentation{/t}</a>
+                    <a href="https://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Website{/t}</a>
+                    <a href="https://quantumwarp.com/" target="_blank"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Documentation{/t}</a>
                     <a href="https://github.com/shoulders/qwcrm/issues" target="_blank"><img src="{$theme_images_dir}icons/bug.png" alt="" border="0" height="14" width="14" /> {t}Bug Tracker{/t}</a>
-                    <a href="http://quantumwarp.com/forum/" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> {t}Forum{/t}</a>            
+                    <a href="https://quantumwarp.com/forum/" target="_blank"><img src="{$theme_images_dir}icons/comment.png" alt="" border="0" height="14" width="14" /> {t}Forum{/t}</a>            
                     <a style="text-align: center;">{t}Support this Software!{/t}</a>                
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="text-align: center;" >
                         <input type="hidden" name="cmd" value="_s-xclick">

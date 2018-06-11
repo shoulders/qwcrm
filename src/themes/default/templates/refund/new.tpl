@@ -82,7 +82,7 @@
                                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
                                                                                 <input id="date" name="date" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                                <input id="date_button" value="+" type="button">                                                                                
+                                                                                <button type="button" id="date_button">+</button>
                                                                                 <script>                                                                                
                                                                                     Calendar.setup( {
                                                                                         trigger     : "date_button",
@@ -154,9 +154,9 @@
                                                                     </tbody>
                                                                         <tr>
                                                                             <td colspan="2">
-                                                                                <input name="submit" class="olotd5" value="{t}Submit{/t}" type="submit">
-                                                                                <input name="submitandnew" class="olotd5" value="{t}Submit and New{/t}" type="submit">
-                                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=refund&page_tpl=search';" type="button">
+                                                                                <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                                                <button type="submit" name="submitandnew" value="submitandnew">{t}Submit and New{/t}</button>
+                                                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=refund&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>
                                                                         </tr>
                                                                 </table>

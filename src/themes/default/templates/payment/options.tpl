@@ -95,8 +95,8 @@
                                             </tr>
 
                                         </table>                                            
-                                        <input type="submit" name="submit" value="Submit">
-                                        <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php';" type="button">
+                                        <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
                                     </form>   
                                 </td>
                             </tr>

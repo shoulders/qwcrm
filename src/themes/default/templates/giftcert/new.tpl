@@ -38,7 +38,7 @@
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
                                                     <input id="date_expires" name="date_expires" class="olotd4" size="10" value="{$giftcert_details.date_expires|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                    <input type="button" id="date_expires_button" value="+">
+                                                    <button type="button" id="date_expires_button">+</button>
                                                     <script>                                                       
                                                         Calendar.setup( {
                                                             trigger     : "date_expires_button",
@@ -70,8 +70,8 @@
                                             <tr>
                                                 <td colspan="2">
                                                     <input name="customer_id" value="{$customer_id}" type="hidden" />
-                                                    <input type="submit" name="submit" value="Submit">
-                                                    <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_id}';" type="button">
+                                                    <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_id}';">{t}Cancel{/t}</button>
                                                 </td>
                                             </tr>
                                         </table>

@@ -24,7 +24,7 @@
                         <td></td>
                         <td>
                             <input id="credit_card_date" name="date" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                            <input id="credit_card_date_button" value="+" type="button">                                                    
+                            <button type="button" id="credit_card_date_button">+</button>
                             <script>                                                        
                                 Calendar.setup( {
                                     trigger     : "credit_card_date_button",

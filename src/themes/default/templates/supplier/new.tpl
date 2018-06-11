@@ -130,8 +130,8 @@
                                                                             <td></td>
                                                                             <td>
                                                                                 <input class="olotd5" name="submit" value="{t}Submit{/t}" type="submit">
-                                                                                <input class="olotd5" name="submitandnew" value="{t}Submit and New{/t}" type="submit">
-                                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=supplier&page_tpl=search';" type="button">
+                                                                                <button type="submit" name="submitandnew" value="submitandnew">{t}Submit and New{/t}</button>
+                                                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=supplier&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>
                                                                         </tr>
                                                                 </table>

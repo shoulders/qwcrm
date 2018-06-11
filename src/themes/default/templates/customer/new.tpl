@@ -151,8 +151,8 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="2">
-                                                                                <input class="olotd5" name="submit" value="Submit" type="submit" />
-                                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=customer&page_tpl=search';" type="button">
+                                                                                <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=customer&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>

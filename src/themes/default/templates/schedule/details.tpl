@@ -32,10 +32,10 @@
                                                 <p><b>{t}Employee{/t}: </b><a href="index.php?component=user&page_tpl=details&user_id={$schedule_details.employee_id}">{$employee_display_name}</a></p>
                                                 <b>{t}Notes{/t}:</b><br />
                                                 <div>{$schedule_details.notes}</div><br>
-                                                <button type="button" onClick="window.location='index.php?component=schedule&page_tpl=edit&schedule_id={$schedule_details.schedule_id}';">{t}Edit{/t}</button>
+                                                <button type="button" onclick="window.location='index.php?component=schedule&page_tpl=edit&schedule_id={$schedule_details.schedule_id}';">{t}Edit{/t}</button>
                                                 <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$workorder_schedule[a].schedule_id}" onclick="return confirmChoice('Are you sure you want to delete the schedule item?');"><button type="button">{t}Delete{/t}</button></a>                                                    
-                                                <button type="button" onClick="window.location='index.php?component=schedule&page_tpl=icalendar&schedule_id={$schedule_details.schedule_id}&theme=print';">{t}Export{/t}</button>                                         
-                                                <button type="button" onClick="window.location='index.php?component=workorder&page_tpl=details&workorder_id={$schedule_details.workorder_id}';">{t}Work Order Details{/t}</button>
+                                                <button type="button" onclick="window.location='index.php?component=schedule&page_tpl=icalendar&schedule_id={$schedule_details.schedule_id}&theme=print';">{t}Export{/t}</button>                                         
+                                                <button type="button" onclick="window.location='index.php?component=workorder&page_tpl=details&workorder_id={$schedule_details.workorder_id}';">{t}Work Order Details{/t}</button>
                                             </td>
                                         </tr>
                                     </table>

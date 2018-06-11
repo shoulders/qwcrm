@@ -62,7 +62,7 @@
                                             <td>
                                                 <button type="submit" name="{t}Print{/t}" OnClick=location.href="index.php?component=schedule&page_tpl=day&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&theme=off";>{t}Print{/t}</button>
                                                 <button type="submit" name="ics-schedule" OnClick=location.href="index.php?component=schedule&page_tpl=icalendar&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&employee_id={$selected_employee}&ics_type=day&theme=print";>{t}Export{/t} {t}Day Schedule{/t}</button>
-                                                {if $workorder_id}<input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';" type="button">{/if}
+                                                {if $workorder_id}<button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>{/if}
                                             </td>
                                             <td valign="top" align="right" valign="middle">
                                                 {if $login_usergroup_id <= 3 && !$workorder_id}

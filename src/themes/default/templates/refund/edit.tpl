@@ -48,7 +48,7 @@
                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
                                                                 <input id="date" name="date" class="olotd5" size="10" value="{$refund_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
-                                                                <input id="date_button" type="button" value="+">                                                                    
+                                                                <button type="button" id="date_button">+</button>
                                                                 <script>                                                                    
                                                                     Calendar.setup( {
                                                                         trigger     : "date_button",
@@ -109,7 +109,7 @@
                                                         <tr>
                                                             <td colspan="2">
                                                                 <button type="submit" name="submit" value="update">{t}Update{/t}</button>
-                                                                <input class="olotd4" value="{t}Cancel{/t}" onclick="window.location.href='index.php?component=refund&page_tpl=details&refund_id={$refund_id}';" type="button">
+                                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=refund&page_tpl=details&refund_id={$refund_id}';">{t}Cancel{/t}</button>
                                                             </td>                                                            
                                                         </tr>
                                                     </form>
