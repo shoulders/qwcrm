@@ -820,7 +820,7 @@ function encrypt($strString, $secret_key) {
 function decrypt($strString, $secret_key) {
      
     $deresult = '';
-    base64_decode($strstring);
+    base64_decode($strString);
     
     for($i=0; $i<strlen($strString); $i++) {
         $char       =   substr($strString, $i, 1);

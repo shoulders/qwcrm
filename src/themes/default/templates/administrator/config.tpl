@@ -287,7 +287,7 @@
                             <select class="olotd5" id="force_ssl" name="qwconfig[force_ssl]">                                                       
                                 <option value="0"{if $qwcrm_config.force_ssl == '0'} selected{/if}>{t}None{/t}</option>
                                 {*<option value="1"{if $qwcrm_config.force_ssl == '1'} selected{/if}>{t}Administrator Only{/t}</option>*}
-                                <option value="1"{if $qwcrm_config.force_ssl == '2'} selected{/if}>{t}Entire Site{/t}</option>
+                                <option value="2"{if $qwcrm_config.force_ssl == '2'} selected{/if}>{t}Entire Site{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Force SSL/HTTPS{/t}</strong></div><hr><div>{t escape=tooltip}Force site access in the selected areas to occur only with HTTPS (encrypted HTTP connections with the https:// protocol prefix) and also force the use of secure cookies. Note, you must have HTTPS enabled on your server to utilise this option.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
