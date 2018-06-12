@@ -564,6 +564,28 @@ function get_invoice_status_display_name($db, $status_key) {
     
 }
 
+#####################################
+#   Get All invoices stats          #
+#####################################
+
+function get_invoices_stats($db) {
+    
+    return array(
+        "open_count"            =>  count_invoices($db, 'open'),
+        "pending_count"         =>  count_invoices($db, 'pending'),
+        "unpaid_count"          =>  count_invoices($db, 'unpaid'),
+        "partially_paid_count"  =>  count_invoices($db, 'partially_paid'),
+        "paid_count"            =>  count_invoices($db, 'paid'),
+        "in_dispute_count"      =>  count_invoices($db, 'in_dispute'),
+        "overdue_count"         =>  count_invoices($db, 'overdue'),
+        "cancelled_count"       =>  count_invoices($db, 'cancelled'),
+        "refunded_count"        =>  count_invoices($db, 'refunded'),
+        "collections_count"     =>  count_invoices($db, 'collections')
+    );
+    
+}
+
+
 /** Update Functions **/
 
 ######################

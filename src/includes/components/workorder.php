@@ -466,6 +466,24 @@ function get_workorder_status_display_name($db, $status_key) {
     
 }
 
+#####################################
+#    Get Workorders Stats           #
+#####################################
+
+function get_workorder_stats($db) {
+    
+    return array(
+        "open_count"                =>  count_workorders($db, 'open'),
+        "assigned_count"            =>  count_workorders($db, 'assigned'),
+        "waiting_for_parts_count"   =>  count_workorders($db, 'waiting_for_parts'),
+        "scheduled_count"           =>  count_workorders($db, 'scheduled'),
+        "with_client_count"         =>  count_workorders($db, 'with_client'),
+        "on_hold_count"             =>  count_workorders($db, 'on_hold'),
+        "management_count"          =>  count_workorders($db, 'management')
+    );
+    
+}
+
 /** Update Functions **/
 
 ###########################################

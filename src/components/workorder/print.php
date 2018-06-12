@@ -21,7 +21,7 @@ if($VAR['workorder_id'] == '') {
 
 // Check there is a print content and print type set
 if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
-    force_page('workorder', 'overview', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
+    force_page('workorder', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
 }
 
 // Get Record Details

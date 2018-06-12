@@ -684,6 +684,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('invoice:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('invoice:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('invoice:open', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('invoice:overview', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:prefill_items', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('invoice:search', 1, 1, 1, 0, 1, 1, 0, 0, 0),

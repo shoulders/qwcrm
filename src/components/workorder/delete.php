@@ -30,8 +30,8 @@ if(!delete_workorder($db, $VAR['workorder_id'])) {
 } else {
     
     
-    // load the workorder overview page
-    force_page('workorder', 'overview', 'information_msg='._gettext("Work Order has been deleted."));
+    // load the workorder search page
+    force_page('workorder', 'search', 'information_msg='._gettext("Work Order has been deleted."));
     
 }
     
