@@ -25,9 +25,10 @@
                                         <ul class="tabs">
                                             <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Customer Details{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Works Orders{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab">{t}Gift Certificates{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Notes{/t}</a></li>                    
+                                            <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab">{t}Schedules{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Gift Certificates{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Notes{/t}</a></li>                    
                                         </ul>
 
                                         <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -47,9 +48,14 @@
                                                 <br>
                                                 {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$workorders_closed block_title=_gettext("Closed")}
                                             </div>
-
-                                            <!-- Tab 3 Contents (Invoices) -->
+                                            
+                                            <!-- Tab 3 Contents (Schedules) -->
                                             <div id="tab_3_contents" class="tab_contents">
+                                                {include file='schedule/blocks/display_schedules_block.tpl' display_schedules=$display_schedules block_title=_gettext("All Schedules")}                                                
+                                            </div>                                            
+
+                                            <!-- Tab 4 Contents (Invoices) -->
+                                            <div id="tab_4_contents" class="tab_contents">
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_pending block_title=_gettext("Pending")}
                                                 <br>
                                                 <br>
@@ -62,15 +68,15 @@
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_paid block_title=_gettext("Paid")}
                                             </div>
 
-                                            <!-- Tab 4 Contents (Gift Certificates) -->
-                                            <div id="tab_4_contents" class="tab_contents">
+                                            <!-- Tab 5 Contents (Gift Certificates) -->
+                                            <div id="tab_5_contents" class="tab_contents">
                                                 {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_active block_title=_gettext("Active Gift Certificates")}
                                                 <br>
                                                 {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed Gift Certificates")}
                                             </div>
 
-                                            <!-- Tab 5 Contents (Customer Notes) -->
-                                            <div id="tab_5_contents" class="tab_contents">                        
+                                            <!-- Tab 6 Contents (Customer Notes) -->
+                                            <div id="tab_6_contents" class="tab_contents">                        
                                                 {include file='customer/blocks/details_notes_block.tpl'}   
                                             </div>
 

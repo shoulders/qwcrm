@@ -33,13 +33,17 @@ if(isset($VAR['submit'])) {
             
     } else {       
         
-        // Load the schedule day with the updated schedule item        
+        /* Load the schedule day with the updated schedule item        
         $VAR['start_year']            = date('Y', date_to_timestamp($VAR['start_date'])  );
         $VAR['start_month']           = date('m', date_to_timestamp($VAR['start_date'])  );
         $VAR['start_day']             = date('d', date_to_timestamp($VAR['start_date'])  );    
     
         // Load the schedule day with the updated schedule item
         force_page('schedule', 'day', 'start_year='.$VAR['start_year'].'&start_month='.$VAR['start_month'].'&start_day='.$VAR['start_day'].'&employee_id='.$VAR['employee_id'].'&workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Updated"));
+        */
+        
+        // Load the workorder page
+        force_page('workorder', 'details&workorder_id='.$VAR['workorder_id']);
         
     }
 

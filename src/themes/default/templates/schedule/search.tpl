@@ -113,7 +113,7 @@
                                         <!-- Results Block -->
                                         <tr>
                                             <td valign="top" colspan="2">
-                                                {include file='schedule/blocks/display_schedules_block.tpl' display_scheduless=$display_schedules block_title=''}
+                                                {include file='schedule/blocks/display_schedules_block.tpl' display_schedules=$display_schedules block_title=''}
                                             </td>
                                         </tr>
                                         

@@ -17,43 +17,44 @@
         <td class="olohead"><b>{t}Notes{/t}</b></td>
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
-    {section name=a loop=$display_schedules}        
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[a].schedule_id}';" class="row1">
+    {section name=s loop=$display_schedules}
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}';" class="row1">
 
             <!-- Schedule ID -->
-            <td class="olotd4"><a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[a].schedule_id}">{$display_schedules[a].schedule_id}</a></td>
+            <td class="olotd4"><a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}">{$display_schedules[s].schedule_id}</a></td>
             
             <!-- WO ID -->
-            <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_schedules[a].workorder_id}">{$display_schedules[a].workorder_id}</a></td>
+            <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_schedules[s].workorder_id}">{$display_schedules[s].workorder_id}</a></td>
             
             <!-- Employee -->
             <td class="olotd4" nowrap>                
-                <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_schedules[a].employee_id}">{$display_schedules[a].employee_display_name}</a>
+                <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_schedules[s].employee_id}">{$display_schedules[s].employee_display_name}</a>
             </td> 
             
             <!-- Customer -->
             <td class="olotd4" nowrap>                
-                <a class="link1" href="index.php?component=customer&page_tpl=details&customer_id={$display_schedules[a].customer_id}">{$display_schedules[a].customer_display_name}</a>
+                <a class="link1" href="index.php?component=customer&page_tpl=details&customer_id={$display_schedules[s].customer_id}">{$display_schedules[s].customer_display_name}</a>
             </td>            
 
             <!-- Start Time -->
-            <td class="olotd4"> {$display_schedules[a].start_time|date_format:$date_format}</td>
+            <td class="olotd4"> {$display_schedules[s].start_time|date_format:$date_format}</td>
 
             <!-- End time -->
-            <td class="olotd4">{$display_schedules[a].end_time|date_format:$date_format}</td>
+            <td class="olotd4">{$display_schedules[s].end_time|date_format:$date_format}</td>
             
             <!-- Notes -->            
             <td class="olotd4" nowrap>
-                {if $display_schedules[a].notes}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_schedules[a].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {if $display_schedules[s].notes}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_schedules[s].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
              </td>
 
             <!-- Action -->
             <td class="olotd4" align="center" nowrap>
-                <a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[a].schedule_id}&customer_id={$display_schedules[a].customer_id}">
-                    <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View The Schedule{/t}');" onMouseOut="hideddrivetip();">
-                </a>    
+                <a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}&customer_id={$display_schedules[s].customer_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?component=schedule&page_tpl=edit&schedule_id={$display_schedules[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                <a href="index.php?component=schedule&page_tpl=icalendar&schedule_id={$display_schedules[s].schedule_id}&theme=print" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Export{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$display_schedules[s].schedule_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Schedule?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete{/t}</b>');" onMouseOut="hideddrivetip();"></a>                 
             </td>            
 
         </tr>

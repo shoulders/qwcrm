@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'components/schedule.php');
 require(INCLUDES_DIR.'components/user.php');
-require(INCLUDES_DIR.'mpdf.php');
+require(INCLUDES_DIR.'system/mpdf.php');
 
 // Check if we have a workorder_id
 if($VAR['workorder_id'] == '') {
@@ -36,7 +36,7 @@ $smarty->assign('workorder_details',    $workorder_details                      
 $smarty->assign('customer_types',       get_customer_types($db)                                         );
 $smarty->assign('workorder_statuses',   get_workorder_statuses($db)                                     );
 $smarty->assign('workorder_notes',      display_workorder_notes($db, $VAR['workorder_id'])                     );
-$smarty->assign('workorder_schedules',  display_workorder_schedules($db, $VAR['workorder_id'])                 );
+$smarty->assign('workorder_schedules',  display_schedules($db, $order_by = 'schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
 
 // Technician Workorder Slip Print Routine
 if($VAR['print_content'] == 'technician_workorder_slip') {    

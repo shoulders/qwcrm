@@ -38,7 +38,7 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 # Display all Work orders for the given status      # // Status is not currently used but it will be
 #####################################################
 
-function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null) {
     
     $smarty = QSmarty::getInstance();
    
@@ -81,10 +81,13 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
     }        
 
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule.user_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."schedule.customer_id=".$db->qstr($customer_id);}
+    
+    // Restrict by Work Order
+    if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule.workorder_id=".$db->qstr($workorder_id);}    
     
     /* The SQL code */
     
@@ -165,29 +168,6 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
             return $records;
             
         }
-        
-    }
-    
-}
-
-
-
-
-
-
-###############################
-# Display Workorder Schedules #
-###############################
-
-function display_workorder_schedules($db, $workorder_id){
-    
-    $sql = "SELECT * FROM ".PRFX."schedule WHERE workorder_id=".$db->qstr($workorder_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the work order schedules."));
-    } else {
-        
-        return $rs->GetArray();  
         
     }
     

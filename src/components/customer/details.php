@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/invoice.php');
 require(INCLUDES_DIR.'components/giftcert.php');
+require(INCLUDES_DIR.'components/schedule.php');
 require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
@@ -26,7 +27,9 @@ $smarty->assign('customer_details',         get_customer_details($db, $VAR['cust
 
 $smarty->assign('workorder_statuses',       get_workorder_statuses($db)                                                                                             );
 $smarty->assign('workorders_open',          display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'open', null, $VAR['customer_id'])          );
-$smarty->assign('workorders_closed',        display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'closed', null, $VAR['customer_id'])        );
+$smarty->assign('workorders_closed',        display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'closed', null, $VAR['customer_id'])       );
+
+$smarty->assign('display_schedules',        display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', false, null, null, null, null, null, null, $VAR['customer_id'])  );
 
 $smarty->assign('invoices_pending',         display_invoices($db, 'invoice_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'pending', null, $VAR['customer_id'])           );
 $smarty->assign('invoices_unpaid',          display_invoices($db, 'invoice_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'unpaid', null, $VAR['customer_id'])            );

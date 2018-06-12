@@ -129,12 +129,15 @@
                                                 </form>
                                             </td>
                                             
-                                        </tr>                                       
+                                        </tr>
+                                        
+                                        <!-- Search Results Table -->
                                         <tr>
                                             <td valign="top" colspan="2">
                                                 {include file='customer/blocks/display_customers_block.tpl' display_customers=$display_customers block_title=''}
                                             </td>
                                         </tr>
+                                        
                                     </table>                        
                                 </td>
                             </tr>
