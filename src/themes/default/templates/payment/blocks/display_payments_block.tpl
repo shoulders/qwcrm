@@ -26,7 +26,7 @@
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}">{$display_payments[p].payment_id}</a></td>
             
             <!-- WO ID -->
-            <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&workorder_id={$display_payments[p].workorder_id}">{$display_payments[p].workorder_id}</a></td>
+            <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_payments[p].workorder_id}">{$display_payments[p].workorder_id}</a></td>
 
             <!-- INV ID -->
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_payments[p].invoice_id}">{$display_payments[p].invoice_id}</a></td>

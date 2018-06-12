@@ -155,7 +155,7 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
 /** Insert Functions **/
 
 ############################
-#   insert payment         #
+#   Insert Payment         #
 ############################
 
 function insert_payment($db, $VAR) {
@@ -177,19 +177,22 @@ function insert_payment($db, $VAR) {
         
     } else {
         
+        // Get Payment Record ID
+        $insert_id = $db->Insert_ID();
+        
         // Recalculate invoice totals
         recalculate_invoice($db, $VAR['invoice_id']);
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);
+        insert_workorder_history_note($db, $invoice_details['workorder_id'], _gettext("Payment").' '.$insert_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        $record = _gettext("Payment made on Invoice").' '.$VAR['invoice_id'].' '._gettext("with payment").' '.$db->Insert_ID().'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+        $record = _gettext("Payment").' '.$insert_id.' '._gettext("added.");
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['customer_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
-        update_customer_last_active($db, $VAR['customer_id']);
-        update_workorder_last_active($db, $VAR['workorder_id']);
+        update_customer_last_active($db, $invoice_details['customer_id']);
+        update_workorder_last_active($db, $invoice_details['workorder_id']);
         update_invoice_last_active($db, $VAR['invoice_id']);        
                 
     }    
@@ -371,7 +374,7 @@ function update_payment($db, $VAR) {
             method          = ".$db->qstr( $VAR['method']                   ).",
             amount          = ".$db->qstr( $VAR['amount']                   ).",
             note            = ".$db->qstr( $VAR['note']                     )."
-            WHERE payment_id =". $db->qstr( $VAR['payment_id']      );
+            WHERE payment_id =". $db->qstr( $VAR['payment_id']              );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
@@ -385,7 +388,7 @@ function update_payment($db, $VAR) {
         insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
 
         // Log activity 
-        $record = _gettext("Payement Record").' '.$VAR['payment_id'].' '._gettext("updated.");
+        $record = _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated.");
         write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
@@ -477,8 +480,8 @@ function update_active_payment_accepted_methods($db, $VAR) {
 
 function delete_payment($db, $payment_id) {
     
-    // Get invoice_id before deleting the record
-    $invoice_id = get_payment_details($db, $payment_id, 'invoice_id');
+    // Get payment details before deleting the record
+    $payment_details = get_payment_details($db, $payment_id);
     
     $sql = "DELETE FROM ".PRFX."payment WHERE payment_id=".$db->qstr($payment_id);
     
@@ -487,13 +490,21 @@ function delete_payment($db, $payment_id) {
     } else {
         
         // Recalculate invoice totals
-        recalculate_invoice($db, $invoice_id); 
+        recalculate_invoice($db, $payment_details['invoice_id']);
+        
+        // Create a Workorder History Note       
+        insert_workorder_history_note($db, $payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);           
         
         // Log activity        
-        $record = _gettext("Payment Record").' '.$payment_id.' '._gettext("deleted.");
-        write_record_to_activity_log($record, null, null, null, $invoice_id);
+        $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $payment_details['customer_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+                
+        // Update last active record    
+        update_customer_last_active($db, $payment_details['customer_id']);
+        update_workorder_last_active($db, $payment_details['workorder_id']);
+        update_invoice_last_active($db, $payment_details['invoice_id']);
         
-        return true;
+        return true;        
         
     } 
     
