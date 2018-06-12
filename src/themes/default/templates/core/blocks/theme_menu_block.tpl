@@ -33,7 +33,7 @@
                 <div class="menugroup">
                     <span>{t}Work Orders{/t}</span>
                     
-                    <!-- Single workorders -->
+                    <!-- Single Work Orders -->
                     {if $customer_id != ''}
                         <a href="index.php?component=workorder&page_tpl=new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>                        
                     {/if}                    
@@ -43,15 +43,13 @@
                         {/if}                       
                     {/if *}                    
                     
-                    <!-- workorders admin -->
-                    {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 3}
-                        <a href="index.php?component=workorder&page_tpl=overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>                    
-                        <a href="index.php?component=workorder&page_tpl=open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t}</a>
-                        <a href="index.php?component=workorder&page_tpl=closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>
-                        {if $workorder_id != ''}
-                            <a href="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
-                        {/if}    
-                    {/if}                
+                    <!-- Eork Orders admin -->
+                    <a href="index.php?component=workorder&page_tpl=overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>                    
+                    <a href="index.php?component=workorder&page_tpl=open"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Open{/t}</a>
+                    <a href="index.php?component=workorder&page_tpl=closed"><img src="{$theme_images_dir}icons/close.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>
+                    {if $workorder_id != ''}
+                        <a href="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if}           
                 
                     <a href="index.php?component=workorder&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
 
@@ -75,12 +73,10 @@
                     <a href="index.php?component=invoice&page_tpl=open"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Open{/t}</a> 
                     <a href="index.php?component=invoice&page_tpl=closed"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>                                       
                                         
-                    <!-- invoice admin -->
-                    {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
-                       {if $invoice_id != ''}
-                            <a href="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
-                        {/if}                        
-                    {/if}
+                    <!-- Invoice Admin -->                    
+                    {if $invoice_id != ''}
+                        <a href="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if}                    
                     
                     <a href="index.php?component=invoice&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
                 
@@ -99,64 +95,52 @@
                 </div>
 
                 <!-- Expenses -->
-                <!-- Menu limited to Administrators and Managers -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
-                    <div class="menugroup">
-                        <span>{t}Expenses{/t}</span>
-                        <a href="index.php?component=expense&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
-                        <a href="index.php?component=expense&page_tpl=search">
-                            <img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}
-                        </a>
-                        {if $expense_id > 0 }
-                            <a href="index.php?component=expense&page_tpl=details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
-                            <a href="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                            <a href="index.php?component=expense&page_tpl=delete&expense_id={$expense_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                        {/if}                        
-                    </div>
-                {/if}
+                <div class="menugroup">
+                    <span>{t}Expenses{/t}</span>
+                    <a href="index.php?component=expense&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
+                    <a href="index.php?component=expense&page_tpl=search">
+                        <img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}
+                    </a>
+                    {if $expense_id > 0 }
+                        <a href="index.php?component=expense&page_tpl=details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                        <a href="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
+                        <a href="index.php?component=expense&page_tpl=delete&expense_id={$expense_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                    {/if}                        
+                </div>
+
                 
                 <!-- Refunds -->
-                <!-- Menu limited to Administrators and Managers -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
-                    <div class="menugroup">
-                        <span>{t}Refunds{/t}</span>                        
-                        <a href="index.php?component=refund&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
-                        <a href="index.php?component=refund&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
-                        {if $refund_id > 0 }
-                            <a href="index.php?component=refund&page_tpl=details&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
-                            <a href="index.php?component=refund&page_tpl=edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                            <a href="index.php?component=refund&page_tpl=delete&refund_id={$refund_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Refund Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                        {/if}                        
-                    </div>
-                {/if}
+                <div class="menugroup">
+                    <span>{t}Refunds{/t}</span>                        
+                    <a href="index.php?component=refund&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
+                    <a href="index.php?component=refund&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
+                    {if $refund_id > 0 }
+                        <a href="index.php?component=refund&page_tpl=details&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                        <a href="index.php?component=refund&page_tpl=edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
+                        <a href="index.php?component=refund&page_tpl=delete&refund_id={$refund_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Refund Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                    {/if}                        
+                </div>
 
                 <!-- Suppliers -->
-                <!-- Menu limited to Administrators and Managers -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 2 || $login_usergroup_id == 5}
-                    <div class="menugroup">
-                        <span>{t}Suppliers{/t}</span> 
-                        <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
-                        <a href="index.php?component=supplier&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
-                        {if $supplier_id > 0 }
-                            <a href="index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
-                            <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                            <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                        {/if}
-                    </div>
-                {/if}
+                <div class="menugroup">
+                    <span>{t}Suppliers{/t}</span> 
+                    <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
+                    <a href="index.php?component=supplier&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
+                    {if $supplier_id > 0 }
+                        <a href="index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                        <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
+                        <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                    {/if}
+                </div>
+
 
                 <!-- Company -->
-                <!-- Menu limited to Administrators and Manager -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div class="menugroup">
                         <span>{t}Company{/t}</span>                        
                         <a href="index.php?component=company&page_tpl=settings"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Settings{/t}</a>                        
                         <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
-                        <a href="index.php?component=invoice&page_tpl=prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>
-                        
-        
+                        <a href="index.php?component=invoice&page_tpl=prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>                                
                     </div>
-                {/if}
                 
                 <!-- Finance -->
                 <div class="menugroup">
@@ -173,8 +157,6 @@
                 </div>
 
                 <!-- Administration -->
-                <!-- Menu limited to Administrators and Managers -->
-                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}
                     <div class="menugroup">
                         <span>{t}Administration{/t}</span>
                         
@@ -193,7 +175,6 @@
                         <a href="index.php?component=administrator&page_tpl=config"><img src="{$theme_images_dir}icons/web.png" alt="" border="0" height="14" width="14" /> {t}Config{/t}</a>
                         
                     </div>
-                {/if}                
 
                 <!-- Help -->
                 <div class="menugroup">
