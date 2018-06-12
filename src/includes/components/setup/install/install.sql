@@ -621,10 +621,10 @@ CREATE TABLE `#__user` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__user_acl`
+-- Table structure for table `#__user_acl_page`
 --
 
-CREATE TABLE `#__user_acl` (
+CREATE TABLE `#__user_acl_page` (
   `page` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `Administrator` int(1) NOT NULL DEFAULT '1',
   `Manager` int(1) NOT NULL DEFAULT '0',
@@ -638,10 +638,10 @@ CREATE TABLE `#__user_acl` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `#__user_acl`
+-- Dumping data for table `#__user_acl_page`
 --
 
-INSERT INTO `#__user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
 ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -1044,9 +1044,9 @@ ALTER TABLE `#__user`
   ADD PRIMARY KEY (`user_id`);
 
 --
--- Indexes for table `#__user_acl`
+-- Indexes for table `#__user_acl_page`
 --
-ALTER TABLE `#__user_acl`
+ALTER TABLE `#__user_acl_page`
   ADD PRIMARY KEY (`page`);
 
 --

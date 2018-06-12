@@ -241,7 +241,7 @@ function check_page_exists($db, $component = null, $page_tpl = null) {
     if (!file_exists(COMPONENTS_DIR.$component.'/'.$page_tpl.'.php')) { return false;  }
     
     // Check to see if the page exists in the ACL
-    $sql = "SELECT page FROM ".PRFX."user_acl WHERE page = ".$db->qstr($component.':'.$page_tpl);
+    $sql = "SELECT page FROM ".PRFX."user_acl_page WHERE page = ".$db->qstr($component.':'.$page_tpl);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
@@ -440,7 +440,7 @@ function check_page_acl($db, $component, $page_tpl, $user = null) {
     
     /* Check Page to see if we have access */
     
-    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl WHERE page=".$db->qstr($page_name);
+    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));

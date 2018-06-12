@@ -69,7 +69,7 @@ function update_acl($db, $permissions) {
         // Enforce Administrators always have access to everything
         $page_permission['Administrator'] = '1';
 
-        $sql = "UPDATE `".PRFX."user_acl` SET
+        $sql = "UPDATE `".PRFX."user_acl_page` SET
                 `Administrator` ='". $page_permission['Administrator']  ."',
                 `Manager`       ='". $page_permission['Manager']        ."',
                 `Supervisor`    ='". $page_permission['Supervisor']     ."',
@@ -119,7 +119,7 @@ function update_acl($db, $permissions) {
     // Cycle through mandatory permissions and update the database
     foreach($mandatory_permissions as $page_name => $page_permission) {
                  
-        $sql = "UPDATE `".PRFX."user_acl` SET
+        $sql = "UPDATE `".PRFX."user_acl_page` SET
                 `Administrator` ='". $page_permission['Administrator']  ."',
                 `Manager`       ='". $page_permission['Manager']        ."',
                 `Supervisor`    ='". $page_permission['Supervisor']     ."',
@@ -303,7 +303,7 @@ function check_for_qwcrm_update() {
 
 function load_acl($db) {
     
-    $sql = "SELECT * FROM ".PRFX."user_acl ORDER BY page";
+    $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
@@ -502,7 +502,7 @@ function clear_smarty_compile() {
 function reset_acl_permissions($db) {
  
     // Remove current permissions
-    $sql = "TRUNCATE ".PRFX."user_acl";
+    $sql = "TRUNCATE ".PRFX."user_acl_page";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
@@ -510,7 +510,7 @@ function reset_acl_permissions($db) {
     } else {
     
         // Insert default permissions 
-        $sql = "INSERT INTO `".PRFX."user_acl` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
+        $sql = "INSERT INTO `".PRFX."user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
                 ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
