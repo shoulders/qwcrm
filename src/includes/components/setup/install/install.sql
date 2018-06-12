@@ -377,19 +377,19 @@ INSERT INTO `#__payment_credit_cards` (`id`, `card_key`, `display_name`, `active
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__payment_manual_methods`
+-- Table structure for table `#__payment_purchase_methods`
 --
 
-CREATE TABLE `#__payment_manual_methods` (
+CREATE TABLE `#__payment_purchase_methods` (
   `manual_method_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `#__payment_manual_methods`
+-- Dumping data for table `#__payment_purchase_methods`
 --
 
-INSERT INTO `#__payment_manual_methods` (`manual_method_id`, `display_name`) VALUES
+INSERT INTO `#__payment_purchase_methods` (`manual_method_id`, `display_name`) VALUES
 ('bank_transfer', 'Bank Transfer'),
 ('card', 'Card'),
 ('cash', 'Cash'),
@@ -430,20 +430,20 @@ INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_accoun
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__payment_system_methods`
+-- Table structure for table `#__payment_accepted_methods`
 --
 
-CREATE TABLE `#__payment_system_methods` (
-  `system_method_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+CREATE TABLE `#__payment_accepted_methods` (
+  `accepted_method_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `#__payment_system_methods`
+-- Dumping data for table `#__payment_accepted_methods`
 --
 
-INSERT INTO `#__payment_system_methods` (`system_method_id`, `display_name`, `active`) VALUES
+INSERT INTO `#__payment_accepted_methods` (`accepted_method_id`, `display_name`, `active`) VALUES
 ('cash', 'Cash', 1),
 ('cheque', 'Cheque', 1),
 ('credit_card', 'Credit Card', 1),
@@ -982,9 +982,9 @@ ALTER TABLE `#__payment_credit_cards`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `#__payment_manual_methods`
+-- Indexes for table `#__payment_purchase_methods`
 --
-ALTER TABLE `#__payment_manual_methods`
+ALTER TABLE `#__payment_purchase_methods`
   ADD PRIMARY KEY (`manual_method_id`);
 
 --
@@ -994,10 +994,10 @@ ALTER TABLE `#__payment_options`
   ADD PRIMARY KEY (`bank_account_name`);
 
 --
--- Indexes for table `#__payment_system_methods`
+-- Indexes for table `#__payment_accepted_methods`
 --
-ALTER TABLE `#__payment_system_methods`
-  ADD PRIMARY KEY (`system_method_id`);
+ALTER TABLE `#__payment_accepted_methods`
+  ADD PRIMARY KEY (`accepted_method_id`);
 
 --
 -- Indexes for table `#__refund`

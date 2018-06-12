@@ -31,10 +31,10 @@
                                                 <td colspan="2">
                                                     <table>
                                                         <caption><b><font color="red">{t}Available Payment Types{/t}</font></b></caption>
-                                                        {section name=q loop=$payment_system_methods}
+                                                        {section name=q loop=$payment_accepted_methods}
                                                             <tr>
-                                                                <td colspan="2"><b>{t}{$payment_system_methods[q].display_name}{/t}</b></td>
-                                                                <td><input type="checkbox" name="{$payment_system_methods[q].system_method_id}" {if $payment_system_methods[q].active == 1} checked{/if} value="1" class="olotd5"></td>
+                                                                <td colspan="2"><b>{t}{$payment_accepted_methods[q].display_name}{/t}</b></td>
+                                                                <td><input type="checkbox" name="{$payment_accepted_methods[q].accepted_method_id}" {if $payment_accepted_methods[q].active == 1} checked{/if} value="1" class="olotd5"></td>
                                                             </tr>
                                                         {/section}
                                                     </table>

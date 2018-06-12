@@ -36,7 +36,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     
     // Build the page
     $smarty->assign('expense_types', get_expense_types($db));
-    $smarty->assign('payment_methods', get_payment_manual_methods($db));
+    $smarty->assign('payment_methods', get_payment_purchase_methods($db));
     $smarty->assign('new_record_id', $new_record_id);
     $smarty->assign('vat_rate', get_company_details($db, 'tax_rate'));
     $BuildPage .= $smarty->fetch('expense/new.tpl');

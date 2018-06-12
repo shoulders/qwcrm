@@ -47,8 +47,8 @@
             <!-- Method -->
             <td class="olotd4" align="center">
                 {section name=m loop=$payment_methods}    
-                    {if $display_payments[p].method == $payment_methods[m].system_method_id}{t}{$payment_methods[m].display_name}{/t}{/if}        
-                {/section}                                                                     
+                    {if $display_payments[p].method == $payment_methods[m].accepted_method_id}{t}{$payment_methods[m].display_name}{/t}{/if}                         
+                {/section}
             </td>            
 
             <!-- Amount -->

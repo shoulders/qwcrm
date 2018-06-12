@@ -251,14 +251,14 @@ function get_payment_options($db, $item = null){
 }
 
 ################################################
-#   Get get active system payment methods      # // If i dont have 'system_method_id' and 'active' in the select, the array is not built correctly
+#   Get get active accepted payment methods    # // If i dont have 'accepted_method_id' and 'active' in the select, the array is not built correctly
 ################################################
 
-function get_active_payment_system_methods($db) {
+function get_payment_active_accepted_methods($db) {
     
     $sql = "SELECT
-            system_method_id, active
-            FROM ".PRFX."payment_system_methods
+            accepted_method_id, active
+            FROM ".PRFX."payment_accepted_methods
             WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
@@ -272,12 +272,12 @@ function get_active_payment_system_methods($db) {
 }
 
 #####################################
-#    Get system Payment methods     #  // These are the payment methods that QWcrm can accept for invoices
+#    Get Accepted Payment methods   #  // These are the payment methods that QWcrm can accept for invoices
 #####################################
 
-function get_payment_system_methods($db) {
+function get_payment_accepted_methods($db) {
     
-    $sql = "SELECT * FROM ".PRFX."payment_system_methods";
+    $sql = "SELECT * FROM ".PRFX."payment_accepted_methods";
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment system methods."));
@@ -290,12 +290,12 @@ function get_payment_system_methods($db) {
 }
 
 #####################################
-#    Get manual Payment methods     #  // These are the payment methods that are used to purchase things (i.e. expenses)
+#    Get Purchase Payment methods   #  // These are the payment methods that are used to purchase things (i.e. expenses)
 #####################################
 
-function get_payment_manual_methods($db) {
+function get_payment_purchase_methods($db) {
     
-    $sql = "SELECT * FROM ".PRFX."payment_manual_methods";
+    $sql = "SELECT * FROM ".PRFX."payment_purchase_methods";
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment manual methods."));
@@ -433,28 +433,28 @@ function update_payment_options($db, $VAR) {
 #   Update Payment Methods status   #
 #####################################
 
-function update_active_payment_system_methods($db, $VAR) {
+function update_active_payment_accepted_methods($db, $VAR) {
     
     // Array of all valid payment methods (name / active state)
-    $payment_system_methods =
+    $payment_accepted_methods =
             array(
-                array('system_method_id'=>'credit_card',       'active'=>$VAR['credit_card']      ),
-                array('system_method_id'=>'cheque',            'active'=>$VAR['cheque']           ),
-                array('system_method_id'=>'cash',              'active'=>$VAR['cash']             ),
-                array('system_method_id'=>'gift_certificate',  'active'=>$VAR['gift_certificate'] ),
-                array('system_method_id'=>'paypal',            'active'=>$VAR['paypal']           ),
-                array('system_method_id'=>'direct_deposit',    'active'=>$VAR['direct_deposit']   )    
+                array('accepted_method_id'=>'credit_card',       'active'=>$VAR['credit_card']      ),
+                array('accepted_method_id'=>'cheque',            'active'=>$VAR['cheque']           ),
+                array('accepted_method_id'=>'cash',              'active'=>$VAR['cash']             ),
+                array('accepted_method_id'=>'gift_certificate',  'active'=>$VAR['gift_certificate'] ),
+                array('accepted_method_id'=>'paypal',            'active'=>$VAR['paypal']           ),
+                array('accepted_method_id'=>'direct_deposit',    'active'=>$VAR['direct_deposit']   )    
             );
    
     // Loop throught the various payment system methods and update the database
-    foreach($payment_system_methods as $payment_method) {
+    foreach($payment_accepted_methods as $payment_method) {
         
         // When not selected no value is sent - this set zero for those
         if($payment_method['active'] == ''){$payment_method['active'] = '0';}
         
-        $sql = "UPDATE ".PRFX."payment_system_methods
+        $sql = "UPDATE ".PRFX."payment_accepted_methods
                 SET active=". $db->qstr( $payment_method['active'] )."
-                WHERE system_method_id=". $db->qstr( $payment_method['system_method_id'] ); 
+                WHERE accepted_method_id=". $db->qstr( $payment_method['accepted_method_id'] ); 
         
         if(!$rs = $db->execute($sql)) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method active state."));
@@ -507,7 +507,7 @@ function delete_payment($db, $payment_id) {
 
 function check_payment_method_is_active($db, $method) {
     
-    $sql = "SELECT active FROM ".PRFX."payment_system_methods WHERE system_method_id=".$db->qstr($method);   
+    $sql = "SELECT active FROM ".PRFX."payment_accepted_methods WHERE accepted_method_id=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));

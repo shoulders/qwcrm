@@ -64,7 +64,7 @@ $smarty->assign('parts_sub_total',          parts_sub_total($db, $VAR['invoice_i
 
 // Misc
 $smarty->assign('display_payments',         display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );
-$smarty->assign('payment_statuses',         get_payment_system_methods($db)                                                             );
+$smarty->assign('payment_methods',                  get_payment_accepted_methods($db)                                                             );
 $smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $VAR['invoice_id'], 'employee_id'), 'display_name') );
 $smarty->assign('invoice_statuses',         get_invoice_statuses($db)                                                                   );
 

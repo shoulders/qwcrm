@@ -26,7 +26,7 @@ if(isset($VAR['submit'])) {
     
     // Build the page
     $smarty->assign('expense_types', get_expense_types($db));
-    $smarty->assign('payment_methods', get_payment_manual_methods($db));
+    $smarty->assign('payment_methods', get_payment_purchase_methods($db));
     $smarty->assign('expense_details', get_expense_details($db, $VAR['expense_id']));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');
     

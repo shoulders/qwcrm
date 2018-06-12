@@ -42,7 +42,7 @@
                             <!-- Payments -->                           
                             <tr>
                                 <td>                                                
-                                    {include file='payment/blocks/display_invoice_payments_block.tpl'}
+                                    {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
                                 </td>
                             </tr>                            
                                 
@@ -50,7 +50,7 @@
                             {if $invoice_details.is_closed == 0 && $invoice_details.balance > 0}
                                 
                                 <!-- Cash -->
-                                {if $active_payment_system_methods.cash}
+                                {if $active_payment_accepted_methods.cash}
                                     <tr>
                                         <td>                           
                                             {include file='payment/blocks/new_payment_cash_block.tpl'}                                    
@@ -59,7 +59,7 @@
                                 {/if}                            
 
                                 <!-- Cheques -->
-                                {if $active_payment_system_methods.cheque}  
+                                {if $active_payment_accepted_methods.cheque}  
                                     <tr>
                                         <td>                                                                              
                                             {include file='payment/blocks/new_payment_cheque_block.tpl'}                                    
@@ -68,7 +68,7 @@
                                 {/if}                            
 
                                 <!-- Credit Cards -->
-                                {if $active_payment_system_methods.credit_card && $active_credit_cards}
+                                {if $active_payment_accepted_methods.credit_card && $active_credit_cards}
                                     <tr>
                                         <td>
                                             {include file='payment/blocks/new_payment_credit_card_block.tpl'}
@@ -77,7 +77,7 @@
                                 {/if}                            
 
                                 <!-- Direct Deposit -->
-                                {if $active_payment_system_methods.direct_deposit}
+                                {if $active_payment_accepted_methods.direct_deposit}
                                     <tr>
                                         <td>                                    
                                             {include file='payment/blocks/new_payment_direct_deposit_block.tpl'}                                    
@@ -86,7 +86,7 @@
                                 {/if}                            
 
                                 <!-- Gift Certificates -->
-                                {if $active_payment_system_methods.gift_certificate}
+                                {if $active_payment_accepted_methods.gift_certificate}
                                     <tr>
                                         <td>
                                             {include file='payment/blocks/new_payment_gift_certificate_block.tpl'}
@@ -95,7 +95,7 @@
                                 {/if}
                                 
                                 <!-- PayPal -->
-                                {if $active_payment_system_methods.paypal}
+                                {if $active_payment_accepted_methods.paypal}
                                     <tr>
                                         <td>                                    
                                             {include file='payment/blocks/new_payment_paypal_block.tpl'}                                    

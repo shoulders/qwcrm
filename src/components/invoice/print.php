@@ -37,7 +37,7 @@ $smarty->assign('customer_details',                 $customer_details           
 $smarty->assign('invoice_details',                  $invoice_details                                                );
 $smarty->assign('workorder_details',                get_workorder_details($db, $invoice_details['workorder_id'])    );
 $smarty->assign('payment_details',                  get_payment_details($db)                                        );
-$smarty->assign('active_payment_system_methods',    get_active_payment_system_methods($db)                          );
+$smarty->assign('active_payment_accepted_methods',    get_payment_active_accepted_methods($db)                          );
 $smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                       );
 $smarty->assign('labour_items',                     get_invoice_labour_items($db, $VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($db, $VAR['invoice_id'])                );
