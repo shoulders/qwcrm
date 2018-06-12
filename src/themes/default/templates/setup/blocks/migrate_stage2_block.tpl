@@ -32,6 +32,16 @@
                     </tr>
 
                     <tr>
+                        <td align="right"><b>{t}Search Engine Friendly URLs{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="sef" name="qwconfig[sef]">                                                       
+                                <option value="0"{if $qwcrm_config.sef == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.sef == '1'} selected{/if}>{t}Yes{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Gzip Page Compression{/t}</strong></div><hr><div>{t escape=tooltip}Select if the URLs are optimised for Search Engines.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>                        
+                    </tr>
+                    <tr>
                         <td align="right"><b>{t}Gzip Page Compression{/t}</b></td>
                         <td>
                             <select class="olotd5" id="gzip" name="gzip">                                                       
