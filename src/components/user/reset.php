@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Delete any expired resets (CRON is better)
-delete_expired_reset_codes($db);
+delete_expired_reset_codes();
 
 
 
@@ -40,7 +40,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
             /* Allowed to submit */
             
             // make sure user account exists and is not blocked
-            if(!$VAR['user_id'] = validate_reset_email($db, $VAR['email'])) {
+            if(!$VAR['user_id'] = validate_reset_email($VAR['email'])) {
                 
                 // Display error message
                 $smarty->assign('warning_msg', _gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
@@ -52,10 +52,10 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
             } else {
                 
                 // update reset count for the user
-                update_user_reset_count($db, $VAR['user_id']);
+                update_user_reset_count($VAR['user_id']);
                 
                 // build the email and send it
-                send_reset_email($db, $VAR['user_id']);
+                send_reset_email($VAR['user_id']);
                     
                 // Load the enter_token page            
                 $stage = 'enter_token';                
@@ -96,10 +96,10 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
         /* Allowed to submit */
         
         // Process the token and reset the password for the account - function sets response messages
-        if(validate_reset_token($db, $VAR['token'])) {
+        if(validate_reset_token($VAR['token'])) {
 
             // Authorise the actual password change and return the secret code
-            $reset_code = authorise_password_reset($db, $VAR['token']);
+            $reset_code = authorise_password_reset($VAR['token']);
 
             // Load the enter_password page         
             $smarty->assign('reset_code', $reset_code);
@@ -133,10 +133,10 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     }
     
     // validate the reset code
-    if(!validate_reset_code($db, $VAR['reset_code'])) {
+    if(!validate_reset_code($VAR['reset_code'])) {
         
         // delete reset code for this user
-        delete_user_reset_code($db, $VAR['user_id']);
+        delete_user_reset_code($VAR['user_id']);
         
         // Display an error message
         $smarty->assign('warning_msg', _gettext("The submitted reset code was invalid."));
@@ -147,13 +147,13 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     } else {
         
         // Get the user_id by the reset_code
-        $VAR['user_id'] = get_user_id_by_reset_code($db, $VAR['reset_code']);
+        $VAR['user_id'] = get_user_id_by_reset_code($VAR['reset_code']);
 
         // Delete reset_code for this user
-        delete_user_reset_code($db, $VAR['user_id']);
+        delete_user_reset_code($VAR['user_id']);
         
         // Reset the password
-        reset_user_password($db, $VAR['user_id'], $VAR['password']);
+        reset_user_password($VAR['user_id'], $VAR['password']);
 
         // Logout the user out silently (if logged in)
         logout(true);

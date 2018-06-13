@@ -21,17 +21,17 @@ if($VAR['invoice_id'] == '') {
 }
 
 // Get the Id of the employee assigned to the invoice
-$assigned_employee_id = get_invoice_details($db, $VAR['invoice_id'], 'employee_id');
+$assigned_employee_id = get_invoice_details($VAR['invoice_id'], 'employee_id');
 
 // Update invoice Status
 if(isset($VAR['change_status'])){
-    update_invoice_status($db, $VAR['invoice_id'], $VAR['assign_status']);    
+    update_invoice_status($VAR['invoice_id'], $VAR['assign_status']);    
     force_page('invoice', 'status&invoice_id='.$VAR['invoice_id']);
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
-    assign_invoice_to_employee($db, $VAR['invoice_id'], $VAR['target_employee_id']);    
+    assign_invoice_to_employee($VAR['invoice_id'], $VAR['target_employee_id']);    
     force_page('invoice', 'status&invoice_id='.$VAR['invoice_id']);
 }
 
@@ -43,7 +43,7 @@ if(isset($VAR['delete'])) {
 /* Remove dormant invoice statuses (for now) */
 
 // Get status list
-$statuses = get_invoice_statuses($db);
+$statuses = get_invoice_statuses();
 
 // Unset unwanted status
 //unset($statuses[0]);  // 'pending'  
@@ -65,13 +65,13 @@ foreach($statuses as $status) {
 
 // Build the page with the current status from the database
 
-$smarty->assign('allowed_to_change_status',     check_invoice_status_can_be_changed($db, $VAR['invoice_id'])       );
-$smarty->assign('allowed_to_change_employee',   !get_invoice_details($db, $VAR['invoice_id'], 'is_closed')         );
-$smarty->assign('allowed_to_delete',            check_invoice_can_be_deleted($db, $VAR['invoice_id'])              );
-$smarty->assign('active_employees',             get_active_users($db, 'employees')                          );
+$smarty->assign('allowed_to_change_status',     check_invoice_status_can_be_changed($VAR['invoice_id'])       );
+$smarty->assign('allowed_to_change_employee',   !get_invoice_details($VAR['invoice_id'], 'is_closed')         );
+$smarty->assign('allowed_to_delete',            check_invoice_can_be_deleted($VAR['invoice_id'])              );
+$smarty->assign('active_employees',             get_active_users('employees')                          );
 $smarty->assign('invoice_statuses',             $edited_statuses                                            );
-$smarty->assign('invoice_status',               get_invoice_details($db, $VAR['invoice_id'], 'status')             );
+$smarty->assign('invoice_status',               get_invoice_details($VAR['invoice_id'], 'status')             );
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                       );
-$smarty->assign('assigned_employee_details',    get_user_details($db, $assigned_employee_id)                );
+$smarty->assign('assigned_employee_details',    get_user_details($assigned_employee_id)                );
 
 $BuildPage .= $smarty->fetch('invoice/status.tpl');

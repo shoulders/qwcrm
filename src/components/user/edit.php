@@ -17,21 +17,21 @@ if($VAR['user_id'] == '') {
 }
 
 // Set the template for the correct user type (customer/employee)
-if(get_user_details($db, $VAR['user_id'], 'is_employee')) {
+if(get_user_details($VAR['user_id'], 'is_employee')) {
     $smarty->assign('is_employee', '1');
-    $smarty->assign('usergroups', get_usergroups($db, 'employees'));
+    $smarty->assign('usergroups', get_usergroups('employees'));
 } else {    
     $smarty->assign('is_employee', '0');
-    $smarty->assign('customer_display_name', get_customer_details($db, get_user_details($db, $VAR['user_id'], 'customer_id'), 'customer_display_name'));
-    $smarty->assign('usergroups', get_usergroups($db, 'customers')); 
+    $smarty->assign('customer_display_name', get_customer_details(get_user_details($VAR['user_id'], 'customer_id'), 'customer_display_name'));
+    $smarty->assign('usergroups', get_usergroups('customers')); 
 }
 
 // If user data has been submitted
 if(isset($VAR['submit'])) {
 
     // Update the record - if the username or email have not been used
-    if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $VAR['user_id'], 'username')) ||
-        check_user_email_exists($db, $VAR['email'], get_user_details($db, $VAR['user_id'], 'email'))) {        
+    if (check_user_username_exists($VAR['username'], get_user_details($VAR['user_id'], 'username')) ||
+        check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))) {        
 
         // Send the posted data back to smarty
         $user_details = $VAR;
@@ -43,7 +43,7 @@ if(isset($VAR['submit'])) {
     } else {    
             
         // Insert user record
-        update_user($db, $VAR['user_id'], $VAR);
+        update_user($VAR['user_id'], $VAR);
 
         // Redirect to the new users's details page
         force_page('user', 'details&user_id='.$VAR['user_id']);
@@ -53,7 +53,7 @@ if(isset($VAR['submit'])) {
 } else { 
     
     // Build the page from the database    
-    $smarty->assign('user_details', get_user_details($db, $VAR['user_id']));    
+    $smarty->assign('user_details', get_user_details($VAR['user_id']));    
     $BuildPage .= $smarty->fetch('user/edit.tpl');
     
 }

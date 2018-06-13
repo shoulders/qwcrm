@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 #    Display Users                  #
 #####################################
 
-function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $usertype = null, $usergroup = null) {
+function display_users($order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $usertype = null, $usergroup = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -154,7 +154,7 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
 #    insert new user                #
 #####################################
 
-function insert_user($db, $VAR) {
+function insert_user($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -193,9 +193,9 @@ function insert_user($db, $VAR) {
         $user_id = $db->Insert_ID();
         
         // Update last active record
-        // - update_user_last_active($db, $user_id);
+        // - update_user_last_active($user_id);
         if($VAR['customer_id']) {
-            update_customer_last_active($db, $VAR['customer_id']);
+            update_customer_last_active($VAR['customer_id']);
         }
         
         // Log activity
@@ -219,7 +219,7 @@ function insert_user($db, $VAR) {
 #     Get User Details              #
 #####################################
 
-function get_user_details($db, $user_id = null, $item = null) {
+function get_user_details($user_id = null, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -261,7 +261,7 @@ function get_user_details($db, $user_id = null, $item = null) {
  * 
  */
 
-function get_user_id_by_username($db, $username) {
+function get_user_id_by_username($username) {
     
     $db = QFactory::getDbo();
     
@@ -280,7 +280,7 @@ function get_user_id_by_username($db, $username) {
 # Get User ID by username               # // moved from core
 #########################################
 
-function get_user_id_by_email($db, $email) {
+function get_user_id_by_email($email) {
     
     $db = QFactory::getDbo();
     
@@ -310,7 +310,7 @@ function get_user_id_by_email($db, $email) {
 # Get the usergroups             #
 ##################################
 
-function get_usergroups($db, $user_type = null) {
+function get_usergroups($user_type = null) {
     
     $db = QFactory::getDbo();
     
@@ -335,7 +335,7 @@ function get_usergroups($db, $user_type = null) {
 # Get all active users display name and ID       #
 ##################################################
     
-function get_active_users($db, $user_type = null) {  
+function get_active_users($user_type = null) {  
     
     $db = QFactory::getDbo();
     
@@ -361,7 +361,7 @@ function get_active_users($db, $user_type = null) {
 #   Update Employee     #
 #########################
 
-function update_user($db, $user_id, $VAR) {
+function update_user($user_id, $VAR) {
     
     $db = QFactory::getDbo();
     
@@ -397,13 +397,13 @@ function update_user($db, $user_id, $VAR) {
         
         // Reset user password if required
         if($VAR['password'] != '') {
-            reset_user_password($db, $user_id, $VAR['password']);
+            reset_user_password($user_id, $VAR['password']);
         }
         
         // Update last active record
-        // - update_user_last_active($db, $user_id);
+        // - update_user_last_active($user_id);
         if($VAR['customer_id']) {
-            update_customer_last_active($db, $VAR['customer_id']);
+            update_customer_last_active($VAR['customer_id']);
         }
         
         // Log activity        
@@ -420,7 +420,7 @@ function update_user($db, $user_id, $VAR) {
 #    Update User's Last Active Date   #  // This is in include.php
 #######################################
 
-/*function update_user_last_active($db, $user_id = null) {
+/*function update_user_last_active($user_id = null) {
  * 
 
     $db = QFactory::getDbo(); 
@@ -444,12 +444,12 @@ function update_user($db, $user_id, $VAR) {
 #    Delete User                    #
 #####################################
 
-function delete_user($db, $user_id) {
+function delete_user($user_id) {
     
     $db = QFactory::getDbo();
     
     // get user details before deleting
-    $user_details = get_user_details($db, $user_id);
+    $user_details = get_user_details($user_id);
     
     // User cannot delete their own account
     if($user_id == QFactory::getUser()->login_user_id) {
@@ -524,7 +524,7 @@ function delete_user($db, $user_id) {
 
     // Update last active record
     if($user_details['customer_id']) {
-        update_customer_last_active($db, $user_details['customer_id']);
+        update_customer_last_active($user_details['customer_id']);
     }
         
     return true;
@@ -548,7 +548,7 @@ function delete_user($db, $user_id) {
  * 
  */
 
-function build_active_employee_form_option_list($db, $assigned_user_id) {
+function build_active_employee_form_option_list($assigned_user_id) {
     
     $db = QFactory::getDbo();
     
@@ -570,7 +570,7 @@ function build_active_employee_form_option_list($db, $assigned_user_id) {
 #    Check if username already exists           #
 #################################################
 
-function check_user_username_exists($db, $username, $current_username = null) {
+function check_user_username_exists($username, $current_username = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -606,7 +606,7 @@ function check_user_username_exists($db, $username, $current_username = null) {
 #  Check if an email address has already been used   #
 ######################################################
 
-function check_user_email_exists($db, $email, $current_email = null) {
+function check_user_email_exists($email, $current_email = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -644,11 +644,11 @@ function check_user_email_exists($db, $email, $current_email = null) {
 #    Check if user is an employee or customer   #  // is this needed as it is just a boolean
 #################################################
 
-function check_user_is_employee($db, $user_id) {
+function check_user_is_employee($user_id) {
     
     $db = QFactory::getDbo();
     
-    if(get_user_details($db, $user_id, 'is_employee')) {
+    if(get_user_details($user_id, 'is_employee')) {
         return true;
     } else {
         return false;
@@ -660,7 +660,7 @@ function check_user_is_employee($db, $user_id) {
 #    Check if user already has login            #
 #################################################
 
-function check_customer_already_has_login($db, $customer_id) {
+function check_customer_already_has_login($customer_id) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -694,11 +694,11 @@ function check_customer_already_has_login($db, $customer_id) {
 #    Check if user is active/enabled            #  // If user does nto exist it will return false
 #################################################
 
-function is_user_active($db, $user_id) {   
+function is_user_active($user_id) {   
     
     $db = QFactory::getDbo();
         
-    if(get_user_details($db, $user_id, 'active')) {        
+    if(get_user_details($user_id, 'active')) {        
         return true;
     } else {        
         return false;
@@ -710,7 +710,7 @@ function is_user_active($db, $user_id) {
 #    Reset a user's password        #    
 #####################################
 
-function reset_user_password($db, $user_id, $password = null) { 
+function reset_user_password($user_id, $password = null) { 
     
     $db = QFactory::getDbo();
     
@@ -730,13 +730,13 @@ function reset_user_password($db, $user_id, $password = null) {
     } else {
         
         // Log activity        
-        $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("password has been reset.");
+        $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($user_id, 'display_name').') '._gettext("password has been reset.");
         write_record_to_activity_log($record, $user_id);
         
         // Update last active record
-        // - update_user_last_active($db, $user_id);
-        if(get_user_details($db, $user_id, 'customer_id')) {
-            update_customer_last_active($db, get_user_details($db, $user_id, 'customer_id'));
+        // - update_user_last_active($user_id);
+        if(get_user_details($user_id, 'customer_id')) {
+            update_customer_last_active(get_user_details($user_id, 'customer_id'));
         }
         
         return;
@@ -749,7 +749,7 @@ function reset_user_password($db, $user_id, $password = null) {
 #    Reset all user's passwords     #   // used for migrations or security
 #####################################
 
-function reset_all_user_passwords($db) { 
+function reset_all_user_passwords() { 
     
     $db = QFactory::getDbo();
     
@@ -764,7 +764,7 @@ function reset_all_user_passwords($db) {
         while(!$rs->EOF) { 
             
             // Reset User's password
-            reset_user_password($db, $rs->fields['user_id']);
+            reset_user_password($rs->fields['user_id']);
             
             // Advance the INSERT loop to the next record            
             $rs->MoveNext();            
@@ -802,7 +802,7 @@ function login($VAR, $credentials, $options = array())
     } 
     
     // Does the account require the password to be reset, if so force it
-    if(get_user_details($db, get_user_id_by_username($db, $VAR['login_username']), 'require_reset')) {
+    if(get_user_details(get_user_id_by_username($VAR['login_username']), 'require_reset')) {
         
         // Set error message
         $smarty->assign('warning_msg', _gettext("You must reset your password before you are allowed to login."));
@@ -812,7 +812,7 @@ function login($VAR, $credentials, $options = array())
     }
     
     // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
-    if(get_user_details($db, get_user_id_by_username($db, $VAR['login_username']), 'active') === '0') {  
+    if(get_user_details(get_user_id_by_username($VAR['login_username']), 'active') === '0') {  
 
         // Set error message
         $smarty->assign('warning_msg', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
@@ -837,10 +837,10 @@ function login($VAR, $credentials, $options = array())
         
         // Update last active record
         /*if($user->login_user_id) {            
-            update_user_last_active($db, $user->login_user_id);
+            update_user_last_active($user->login_user_id);
         }*/   
         if($user->login_customer_id) {            
-            update_customer_last_active($db, $user->login_customer_id);
+            update_customer_last_active($user->login_customer_id);
         }
 
         // set success message to survice the login event
@@ -882,10 +882,10 @@ function logout($silent = null)
     
     // Update last active record 
     /*if($user->login_user_id) {            
-        update_user_last_active($db, $user->login_user_id);
+        update_user_last_active($user->login_user_id);
     }*/
     if($user->login_customer_id) {            
-        update_customer_last_active($db, $user->login_customer_id);
+        update_customer_last_active($user->login_customer_id);
     }
 
     // Action after logout
@@ -953,17 +953,17 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
 #    Validate that the email submitted belongs to a valid account and can be reset   #    
 ######################################################################################
 
-function validate_reset_email($db, $email) {
+function validate_reset_email($email) {
     
     $db = QFactory::getDbo();
     
     // get the user_id if the user exists
-    if(!$user_id = get_user_id_by_email($db, $email)) {
+    if(!$user_id = get_user_id_by_email($email)) {
         return false;        
     }
     
     // is the user active
-    if(!is_user_active($db, $user_id)) {
+    if(!is_user_active($user_id)) {
         return false;
     }
     
@@ -975,18 +975,18 @@ function validate_reset_email($db, $email) {
 #    Build and send a reset email   #    
 #####################################
 
-function send_reset_email($db, $user_id) {
+function send_reset_email($user_id) {
     
     $db = QFactory::getDbo();
     
     // Get recipient email
-    $recipient_email = get_user_details($db, $user_id, 'email');
+    $recipient_email = get_user_details($user_id, 'email');
             
     // Set subject  
     $subject = _gettext("Your QWcrm password reset request");    
         
     // Create Token
-    $token = create_reset_token($db, $user_id);
+    $token = create_reset_token($user_id);
     
     /* Build Email body
     $body .= _gettext("Hello").','."\r\n\r\n";
@@ -1021,7 +1021,7 @@ function send_reset_email($db, $user_id) {
     send_email($recipient_email, $subject, $body);
     
     // Log activity        
-    $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($db, $user_id, 'display_name').') '._gettext("reset email has been sent.");
+    $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($user_id, 'display_name').') '._gettext("reset email has been sent.");
     write_record_to_activity_log($record, $user_id);
     
     return;
@@ -1032,7 +1032,7 @@ function send_reset_email($db, $user_id) {
 #   Set time limited reset code to allow new passwords to be submitted securely   #
 ###################################################################################
 
-function authorise_password_reset($db, $token) {
+function authorise_password_reset($token) {
     
     $db = QFactory::getDbo();
           
@@ -1060,7 +1060,7 @@ function authorise_password_reset($db, $token) {
 #    create a reset user token      #    
 #####################################
 
-function create_reset_token($db, $user_id) {
+function create_reset_token($user_id) {
     
     $db = QFactory::getDbo();
     
@@ -1076,7 +1076,7 @@ function create_reset_token($db, $user_id) {
     // Delete any reset tokens for this user
     if($result_count >= 1) {
         
-        delete_user_reset_code($db, $user_id);
+        delete_user_reset_code($user_id);
         
     }
     
@@ -1102,7 +1102,7 @@ function create_reset_token($db, $user_id) {
 # Get User ID by reset code             #
 #########################################
 
-function get_user_id_by_reset_code($db, $reset_code) {
+function get_user_id_by_reset_code($reset_code) {
     
     $db = QFactory::getDbo();
     
@@ -1122,7 +1122,7 @@ function get_user_id_by_reset_code($db, $reset_code) {
 #    validate the reset token can be used    #    
 ##############################################
 
-function validate_reset_token($db, $token) {
+function validate_reset_token($token) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -1141,7 +1141,7 @@ function validate_reset_token($db, $token) {
         }
         
         // check if user is block
-        if(!is_user_active($db, $rs->fields['user_id'])){
+        if(!is_user_active($rs->fields['user_id'])){
             $smarty->assign('warning_msg', _gettext("The user is blocked."));
             return false;
         }
@@ -1165,7 +1165,7 @@ function validate_reset_token($db, $token) {
 #   validate reset code - submitted with password form  #
 #########################################################
 
-function validate_reset_code($db, $reset_code) {
+function validate_reset_code($reset_code) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -1202,7 +1202,7 @@ function validate_reset_code($db, $reset_code) {
 #    Delete user reset codes             #
 ##########################################
 
-function delete_user_reset_code($db, $user_id) {  
+function delete_user_reset_code($user_id) {  
     
     $db = QFactory::getDbo();
 
@@ -1218,7 +1218,7 @@ function delete_user_reset_code($db, $user_id) {
 #    Delete all expired reset codes      #
 ##########################################
 
-function delete_expired_reset_codes($db) {   
+function delete_expired_reset_codes() {   
     
     $db = QFactory::getDbo();
 
@@ -1235,7 +1235,7 @@ function delete_expired_reset_codes($db) {
 #    Update users reset count       #    
 #####################################
 
- function update_user_reset_count($db, $user_id) {
+ function update_user_reset_count($user_id) {
      
     $db = QFactory::getDbo();
      

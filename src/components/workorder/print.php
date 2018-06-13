@@ -25,18 +25,18 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Get Record Details
-$workorder_details  = get_workorder_details($db, $VAR['workorder_id']);
-$customer_details   = get_customer_details($db, $workorder_details['customer_id']);
+$workorder_details  = get_workorder_details($VAR['workorder_id']);
+$customer_details   = get_customer_details($workorder_details['customer_id']);
 
 /// Assign Variables
-$smarty->assign('company_details',      get_company_details($db)                                        );
-$smarty->assign('employee_details',     get_user_details($db, $workorder_details['employee_id'])        );
+$smarty->assign('company_details',      get_company_details()                                        );
+$smarty->assign('employee_details',     get_user_details($workorder_details['employee_id'])        );
 $smarty->assign('customer_details',     $customer_details                                               );
 $smarty->assign('workorder_details',    $workorder_details                                              );
-$smarty->assign('customer_types',       get_customer_types($db)                                         );
-$smarty->assign('workorder_statuses',   get_workorder_statuses($db)                                     );
-$smarty->assign('workorder_notes',      display_workorder_notes($db, $VAR['workorder_id'])                     );
-$smarty->assign('workorder_schedules',  display_schedules($db, $order_by = 'schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
+$smarty->assign('customer_types',       get_customer_types()                                         );
+$smarty->assign('workorder_statuses',   get_workorder_statuses()                                     );
+$smarty->assign('workorder_notes',      display_workorder_notes($VAR['workorder_id'])                     );
+$smarty->assign('workorder_schedules',  display_schedules($order_by = 'schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
 
 // Technician Workorder Slip Print Routine
 if($VAR['print_content'] == 'technician_workorder_slip') {    
@@ -82,7 +82,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
         $attachment['filetype'] = 'application/pdf';
         
         // Build the message body        
-        $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
+        $body = get_email_message_body('email_msg_workorder', $customer_details);
         
         // Log activity
         $record = _gettext("Technician Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
@@ -141,7 +141,7 @@ if($VAR['print_content'] == 'customer_workorder_slip') {
         $attachment['filetype'] = 'application/pdf';
         
         // Build the message body        
-        $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
+        $body = get_email_message_body('email_msg_workorder', $customer_details);
         
         // Log activity
         $record = _gettext("Customer Workorder Slip").' '.$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
@@ -200,7 +200,7 @@ if($VAR['print_content'] == 'technician_job_sheet') {
         $attachment['filetype'] = 'application/pdf';
         
         // Build the message body        
-        $body = get_email_message_body($db, 'email_msg_workorder', $customer_details);
+        $body = get_email_message_body('email_msg_workorder', $customer_details);
         
         // Log activity
         $record = _gettext("Technician Job Sheet").' '.$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");

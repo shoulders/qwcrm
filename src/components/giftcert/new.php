@@ -18,7 +18,7 @@ if($VAR['customer_id'] == '') {
 }
 
 // Check if giftcert payment method is enabled
-if(!check_payment_method_is_active($db, 'gift_certificate')) {
+if(!check_payment_method_is_active('gift_certificate')) {
     force_page('index.php', null, 'warning_msg='._gettext("Gift Certificate payment method is not enabled. Goto Payment Options and enable Gift Certificates there."));
 }
 
@@ -26,7 +26,7 @@ if(!check_payment_method_is_active($db, 'gift_certificate')) {
 if(isset($VAR['submit'])) {   
         
     // Create a new gift certificate
-    $VAR['giftcert_id'] = insert_giftcert($db, $VAR['customer_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['status'], $VAR['note']);
+    $VAR['giftcert_id'] = insert_giftcert($VAR['customer_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['status'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id']);
@@ -34,6 +34,6 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page
-    $smarty->assign('customer_details', get_customer_details($db, $VAR['customer_id']));
+    $smarty->assign('customer_details', get_customer_details($VAR['customer_id']));
     $BuildPage .= $smarty->fetch('giftcert/new.tpl');
 }

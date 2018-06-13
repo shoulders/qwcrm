@@ -21,7 +21,7 @@ if($VAR['customer_id'] == '') {
 }
 
 // Run the delete function and return the results
-if(!delete_customer($db, $VAR['customer_id'])) {
+if(!delete_customer($VAR['customer_id'])) {
     
     // Reload customer details apge with error message
     force_page('customer', 'details&customer_id='.$VAR['customer_id']);

@@ -18,7 +18,7 @@ if($VAR['giftcert_id'] == '') {
 }
 
 // Build the page
-$smarty->assign('customer_details',         get_customer_details($db, get_giftcert_details($db, $VAR['giftcert_id'], 'customer_id'))               );
-$smarty->assign('employee_display_name',    get_user_details($db, get_giftcert_details($db, $VAR['giftcert_id'], 'employee_id'), 'display_name')   );
-$smarty->assign('giftcert_details',         get_giftcert_details($db, $VAR['giftcert_id'])                                                         );
+$smarty->assign('customer_details',         get_customer_details(get_giftcert_details($VAR['giftcert_id'], 'customer_id'))               );
+$smarty->assign('employee_display_name',    get_user_details(get_giftcert_details($VAR['giftcert_id'], 'employee_id'), 'display_name')   );
+$smarty->assign('giftcert_details',         get_giftcert_details($VAR['giftcert_id'])                                                         );
 $BuildPage .= $smarty->fetch('giftcert/details.tpl');

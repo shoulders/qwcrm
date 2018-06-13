@@ -21,11 +21,11 @@ if($VAR['customer_id'] == '') {
 if(isset($VAR['submit'])){
     
     // insert the submitted workorder and return it's id
-    $VAR['workorder_id'] = insert_workorder($db, $VAR['customer_id'], $VAR['scope'], $VAR['description'], $VAR['comment']);
+    $VAR['workorder_id'] = insert_workorder($VAR['customer_id'], $VAR['scope'], $VAR['description'], $VAR['comment']);
 
     // If workorder is to be assigned to an employee
     if($VAR['assign_to_employee'] === '1') {       
-        assign_workorder_to_employee($db, $VAR['workorder_id'], $user->login_user_id);  
+        assign_workorder_to_employee($VAR['workorder_id'], $user->login_user_id);  
     }
     
     // load the workorder details page
@@ -34,5 +34,5 @@ if(isset($VAR['submit'])){
 }
 
 // Build the page
-$smarty->assign('customer_details', get_customer_details($db, $VAR['customer_id']));
+$smarty->assign('customer_details', get_customer_details($VAR['customer_id']));
 $BuildPage .= $smarty->fetch('workorder/new.tpl');

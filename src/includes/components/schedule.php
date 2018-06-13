@@ -38,7 +38,7 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 # Display all Work orders for the given status      # // Status is not currently used but it will be
 #####################################################
 
-function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null) {
+function display_schedules($order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -180,7 +180,7 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
 #  Insert schedule                   #
 ######################################
 
-function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $note, $employee_id, $customer_id, $workorder_id) {
+function insert_schedule($start_date, $StartTime, $end_date, $EndTime, $note, $employee_id, $customer_id, $workorder_id) {
     
     $db = QFactory::getDbo();
 
@@ -196,7 +196,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
     $end_timestamp -= 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id)) {return false;}        
+    if(!validate_schedule_times($start_date, $start_timestamp, $end_timestamp, $employee_id)) {return false;}        
 
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."schedule_records SET
@@ -212,31 +212,31 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
     } else {
         
         // Get work order details
-        $workorder_details = get_workorder_details($db, $workorder_id);
+        $workorder_details = get_workorder_details($workorder_id);
         
         // Get the new Schedule ID
         $schedule_id = $db->Insert_ID();
         
         // Assign the work order to the scheduled employee (if not already)
         if($employee_id != $workorder_details['employee_id']) {
-            assign_workorder_to_employee($db, $workorder_id, $employee_id);
+            assign_workorder_to_employee($workorder_id, $employee_id);
         }
     
         // Change the Workorders Status to scheduled (if not already)
         if($workorder_details['status'] != 'scheduled') {
-            update_workorder_status($db, $workorder_id, 'scheduled');
+            update_workorder_status($workorder_id, 'scheduled');
         }
         
         // Insert Work Order History Note
-        insert_workorder_history_note($db, $workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
         $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$workorder_id.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id);
         
         // Update last active record
-        update_workorder_last_active($db, $workorder_id);
-        update_customer_last_active($db, $customer_id);
+        update_workorder_last_active($workorder_id);
+        update_customer_last_active($customer_id);
     
         return true;
         
@@ -250,7 +250,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
 #  Get Schedule Details        #
 ################################
 
-function get_schedule_details($db, $schedule_id, $item = null) {
+function get_schedule_details($schedule_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -278,13 +278,13 @@ function get_schedule_details($db, $schedule_id, $item = null) {
 #    Get all schedule IDs for an employee for a date     #
 ##########################################################
 
-function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $start_month, $start_day) {
+function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day) {
     
     $db = QFactory::getDbo();
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $start_month, $start_day, $start_year);
-    $company_day_end   = mktime(get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), 59, $start_month, $start_day, $start_year);    
+    $company_day_start = mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, $start_month, $start_day, $start_year);
+    $company_day_end   = mktime(get_company_details('closing_hour'), get_company_details('closing_minute'), 59, $start_month, $start_day, $start_year);    
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT schedule_id
@@ -310,7 +310,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $
 #      Update Schedule               #
 ######################################
 
-function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $note, $schedule_id, $employee_id, $customer_id, $workorder_id) {
+function update_schedule($start_date, $StartTime, $end_date, $EndTime, $note, $schedule_id, $employee_id, $customer_id, $workorder_id) {
     
     $db = QFactory::getDbo();
     
@@ -326,7 +326,7 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
     $end_timestamp -= 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id)) { return false; }        
+    if(!validate_schedule_times($start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id)) { return false; }        
     
     $sql = "UPDATE ".PRFX."schedule_records SET
         schedule_id         =". $db->qstr( $schedule_id         ).",
@@ -343,15 +343,15 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
     } else {       
          
         // Insert Work Order History Note
-        insert_workorder_history_note($db, $workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
         $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id);
         
         // Update last active record
-        update_workorder_last_active($db, $workorder_id);
-        update_customer_last_active($db, $customer_id);        
+        update_workorder_last_active($workorder_id);
+        update_customer_last_active($customer_id);        
         
         return true;
         
@@ -367,12 +367,12 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
 #        Delete Schedule         #
 ##################################
 
-function delete_schedule($db, $schedule_id) {
+function delete_schedule($schedule_id) {
     
     $db = QFactory::getDbo();
     
     // Get schedule details before deleting
-    $schedule_details = get_schedule_details($db, $schedule_id);
+    $schedule_details = get_schedule_details($schedule_id);
     
     $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$db->qstr($schedule_id);
 
@@ -382,25 +382,25 @@ function delete_schedule($db, $schedule_id) {
     } else {
         
         // If there are no schedules left for this workorder
-        if(count_workorder_schedule_items($db, $schedule_details['workorder_id']) == 0) {
+        if(count_workorder_schedule_items($schedule_details['workorder_id']) == 0) {
             
             // if the workorder status is 'scheduled', change the status to 'assigned'
-            if(get_workorder_details($db, $schedule_details['workorder_id'], 'status') == 'scheduled') {
-                update_workorder_status($db, $schedule_details['workorder_id'], 'assigned');
+            if(get_workorder_details($schedule_details['workorder_id'], 'status') == 'scheduled') {
+                update_workorder_status($schedule_details['workorder_id'], 'assigned');
             }
             
         }
         
         // Create a Workorder History Note        
-        insert_workorder_history_note($db, $schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
         $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['customer_id'], $schedule_details['workorder_id']);
         
         // Update last active record
-        update_workorder_last_active($db, $schedule_details['workorder_id']);
-        update_customer_last_active($db, $schedule_details['customer_id']);
+        update_workorder_last_active($schedule_details['workorder_id']);
+        update_customer_last_active($schedule_details['customer_id']);
         
         return true;
         
@@ -431,14 +431,14 @@ function ics_header_settings() {
 #        This is the schedule .ics builder          #
 #####################################################
 
-function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
+function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
     
     $db = QFactory::getDbo();
     
     // Get the schedule information
-    $schedule_details   = get_schedule_details($db, $schedule_id);
-    $workorder          = get_workorder_details($db, $schedule_details['workorder_id']);
-    $customer           = get_customer_details($db, $workorder['customer_id']);
+    $schedule_details   = get_schedule_details($schedule_id);
+    $workorder          = get_workorder_details($schedule_details['workorder_id']);
+    $customer           = get_customer_details($workorder['customer_id']);
     
     $start_datetime     = timestamp_to_ics_datetime($schedule_details['start_time']);
     $end_datetime       = timestamp_to_ics_datetime($schedule_details['end_time']);
@@ -480,17 +480,17 @@ function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
 #    Build a multi .ics - the employees schedule items for that day     #
 #########################################################################
 
-function build_ics_schedule_day($db, $employee_id, $start_year, $start_month, $start_day) {
+function build_ics_schedule_day($employee_id, $start_year, $start_month, $start_day) {
     
     $db = QFactory::getDbo();
     
     // fetch all schdule items for this setup
     $schedule_multi_ics = ics_header_settings();
     
-    $schedule_multi_id = get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $start_month, $start_day);    
+    $schedule_multi_id = get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day);    
     
     foreach($schedule_multi_id as $schedule_id) {
-        $schedule_multi_ics .= build_single_schedule_ics($db, $schedule_id['schedule_id'], $type = 'multi');
+        $schedule_multi_ics .= build_single_schedule_ics($schedule_id['schedule_id'], $type = 'multi');
     }
    
     $schedule_multi_ics .= 'END:VCALENDAR'."\r\n";
@@ -719,16 +719,16 @@ function ics_string_octet_split($ics_keyname, $ics_string) {
 #        Build Calendar Matrix                      #
 #####################################################
 
-function build_calendar_matrix($db, $start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
+function build_calendar_matrix($start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
     
     $db = QFactory::getDbo();
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $start_month, $start_day, $start_year);
-    $company_day_end   = mktime(get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), 59, $start_month, $start_day, $start_year);    
+    $company_day_start = mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, $start_month, $start_day, $start_year);
+    $company_day_end   = mktime(get_company_details('closing_hour'), get_company_details('closing_minute'), 59, $start_month, $start_day, $start_year);    
     /* Same as above but my code - Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'opening_hour'), 0, 0, $clock = '24');
-    $company_day_end   = datetime_to_timestamp($current_schedule_date, get_company_details($db, 'closing_hour'), 59, 0, $clock = '24');*/
+    $company_day_start = datetime_to_timestamp($current_schedule_date, get_company_details('opening_hour'), 0, 0, $clock = '24');
+    $company_day_end   = datetime_to_timestamp($current_schedule_date, get_company_details('closing_hour'), 59, 0, $clock = '24');*/
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql ="SELECT 
@@ -825,7 +825,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
                 // Links for schedule
                 $calendar .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
                 $calendar .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
-                if(!get_workorder_details($db, $scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
+                if(!get_workorder_details($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
                     $calendar .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ".
                                     "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("Export")."</a></b> - ".
                                     "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
@@ -888,13 +888,13 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
 #   validate schedule start and end time   #
 ############################################
 
-function validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id = null) {    
+function validate_schedule_times($start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id = null) {    
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();    
     
-    $company_day_start = datetime_to_timestamp($start_date, get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), '0', '24');
-    $company_day_end   = datetime_to_timestamp($start_date, get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), '0', '24');
+    $company_day_start = datetime_to_timestamp($start_date, get_company_details('opening_hour'), get_company_details('opening_minute'), '0', '24');
+    $company_day_end   = datetime_to_timestamp($start_date, get_company_details('closing_hour'), get_company_details('closing_minute'), '0', '24');
     
     // Add the second I removed to correct extra segment issue
     $end_timestamp += 1;
@@ -963,7 +963,7 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
 #   count schedule items for a workorder   #
 ############################################
 
-function count_workorder_schedule_items($db, $workorder_id) {
+function count_workorder_schedule_items($workorder_id) {
     
     $db = QFactory::getDbo();
     

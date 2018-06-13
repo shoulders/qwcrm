@@ -22,7 +22,7 @@ if($VAR['workorder_id'] == '') {
 }
 
 // Delete the Workorder
-if(!delete_workorder($db, $VAR['workorder_id'])) {
+if(!delete_workorder($VAR['workorder_id'])) {
     
     // load the staus page
     force_page('workorder', 'status', 'workorder_id='.$VAR['workorder_id']);

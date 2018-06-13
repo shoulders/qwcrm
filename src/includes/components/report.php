@@ -45,7 +45,7 @@ defined('_QWEXEC') or die;
 #    Count Customers                        #
 #############################################
 
-function count_customers($db, $status, $start_date = null, $end_date = null) { 
+function count_customers($status, $start_date = null, $end_date = null) { 
     
     $db = QFactory::getDbo();
     
@@ -82,7 +82,7 @@ function count_customers($db, $status, $start_date = null, $end_date = null) {
 #     Count Work Orders                 #
 #########################################
 
-function count_workorders($db, $status, $user_id = null, $start_date = null, $end_date = null) {
+function count_workorders($status, $user_id = null, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
@@ -164,7 +164,7 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($db, $status = null, $user_id = null, $start_date = null, $end_date = null, $tax_type = null) {   
+function count_invoices($status = null, $user_id = null, $start_date = null, $end_date = null, $tax_type = null) {   
     
     $db = QFactory::getDbo();
     
@@ -249,7 +249,7 @@ function count_invoices($db, $status = null, $user_id = null, $start_date = null
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_date = null, $tax_type = null) {
+function sum_invoices_value($status, $value_name, $start_date = null, $end_date = null, $tax_type = null) {
     
     $db = QFactory::getDbo();
         
@@ -308,7 +308,7 @@ function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_
 #  Count labour items   #
 #########################
 
-function count_labour_items($db, $start_date, $end_date) {
+function count_labour_items($start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
@@ -331,7 +331,7 @@ function count_labour_items($db, $start_date, $end_date) {
 #  Count different labour items   #
 ###################################
 
-function count_labour_different_items($db, $start_date, $end_date) {
+function count_labour_different_items($start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
@@ -354,7 +354,7 @@ function count_labour_different_items($db, $start_date, $end_date) {
 #  Sum selected value of labour items   #
 #########################################
 
-function sum_labour_items($db, $value_name, $start_date, $end_date) {
+function sum_labour_items($value_name, $start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
@@ -379,7 +379,7 @@ function sum_labour_items($db, $value_name, $start_date, $end_date) {
 #  Count parts items   #
 ########################
 
-function count_parts_items($db, $start_date, $end_date) {
+function count_parts_items($start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
@@ -402,7 +402,7 @@ function count_parts_items($db, $start_date, $end_date) {
 #  Count different parts items   #
 ##################################
 
-function count_parts_different_items($db, $start_date, $end_date) {
+function count_parts_different_items($start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
@@ -425,7 +425,7 @@ function count_parts_different_items($db, $start_date, $end_date) {
 #  Sum selected value of Parts    #
 ###################################
 
-function sum_parts_value($db, $value_name, $start_date, $end_date) {
+function sum_parts_value($value_name, $start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
@@ -450,9 +450,9 @@ function sum_parts_value($db, $value_name, $start_date, $end_date) {
 #     Count Expenses                    #  // Currently only used in invoice delete check
 #########################################
 
-//function count_expenses($db, $status, $user_id = null, $start_date = null, $end_date = null) {
+//function count_expenses($status, $user_id = null, $start_date = null, $end_date = null) {
 
-function count_expenses($db, $invoice_id = null, $start_date = null, $end_date = null) {
+function count_expenses($invoice_id = null, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
@@ -489,7 +489,7 @@ function count_expenses($db, $invoice_id = null, $start_date = null, $end_date =
 #  Sum selected value of expenses #
 ###################################
 
-function sum_expenses_value($db, $value_name, $start_date, $end_date) {
+function sum_expenses_value($value_name, $start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
@@ -513,7 +513,7 @@ function sum_expenses_value($db, $value_name, $start_date, $end_date) {
 #     Count Refunds                   #  // Currently only used in invoice delete check
 #########################################
 
-function count_refunds($db, $invoice_id = null, $start_date = null, $end_date = null) {
+function count_refunds($invoice_id = null, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
@@ -550,7 +550,7 @@ function count_refunds($db, $invoice_id = null, $start_date = null, $end_date = 
 #  Sum selected value of Refunds  #
 ###################################
 
-function sum_refunds_value($db, $value_name, $start_date, $end_date) {
+function sum_refunds_value($value_name, $start_date, $end_date) {
     
     $db = QFactory::getDbo();
     

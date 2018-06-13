@@ -22,14 +22,14 @@ if($VAR['schedule_id'] == '') {
 if(isset($VAR['submit'])) {    
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!update_schedule($db, $VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $VAR['schedule_id'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
+    if (!update_schedule($VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $VAR['schedule_id'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
         
         $smarty->assign('start_date',       $VAR['start_date']                                                  );       
         $smarty->assign('start_time',       $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );                
         $smarty->assign('end_date',         $VAR['end_date']                                                    );        
         $smarty->assign('end_time',         $VAR['EndTime']['Time_Hour'].":".$VAR['EndTime']['Time_Minute']     );
         $smarty->assign('note',             $VAR['note']                                                       );        
-        $smarty->assign('active_employees', get_active_users($db, 'employees')                                  );                      
+        $smarty->assign('active_employees', get_active_users('employees')                                  );                      
             
     } else {       
         
@@ -51,7 +51,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Get the Schedule Record
-    $schedule_item = get_schedule_details($db, $VAR['schedule_id']);
+    $schedule_item = get_schedule_details($VAR['schedule_id']);
     
     // Corrects the extra time segment issue    
     $end_time = $schedule_item['end_time'] + 1;
@@ -64,7 +64,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('end_date',         timestamp_to_date($schedule_item['end_time'])           );         
     $smarty->assign('end_time',         date('H:i', $end_time)                                  );   
     $smarty->assign('note',             $schedule_item['note']                                 );
-    $smarty->assign('active_employees', get_active_users($db, 'employees')                      );
+    $smarty->assign('active_employees', get_active_users('employees')                      );
     
 }
 

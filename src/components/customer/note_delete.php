@@ -16,10 +16,10 @@ if($VAR['customer_note_id'] == '') {
 }
 
 // Get the customer_id before we delete the record
-$VAR['customer_id'] = get_customer_note($db, $VAR['customer_note_id'], 'customer_id');
+$VAR['customer_id'] = get_customer_note($VAR['customer_note_id'], 'customer_id');
 
 // Delete the customer note
-delete_customer_note($db, $VAR['customer_note_id']);
+delete_customer_note($VAR['customer_note_id']);
 
 // Reload the customers details page
 force_page('customer', 'details&customer_id='.$VAR['customer_id']);

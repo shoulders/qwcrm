@@ -38,7 +38,7 @@ $smarty->assign('login_customer_id',        $user->login_customer_id      );
 ################################################
 
 // Logged in Users
-if($user->login_user_id) { update_user_last_active($db, $user->login_user_id); }
+if($user->login_user_id) { update_user_last_active($user->login_user_id); }
 
 ################################
 #   Set Global PHP Values      #
@@ -90,7 +90,7 @@ $skip_logging   =   isset($skip_logging)        ? $skip_logging         : null;
 
 // Set Date Format
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    define('DATE_FORMAT', get_company_details($db, 'date_format'));
+    define('DATE_FORMAT', get_company_details('date_format'));
 }
 
 ##########################################################################
@@ -127,8 +127,8 @@ $smarty->assign('payment_id',               $payment_id                 );
 
 // Used throughout the site
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    $smarty->assign('currency_sym', get_company_details($db, 'currency_symbol')     );
-    $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details($db, 'logo') );
+    $smarty->assign('currency_sym', get_company_details('currency_symbol')     );
+    $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
     $smarty->assign('date_format',  DATE_FORMAT                                     );
 }
 

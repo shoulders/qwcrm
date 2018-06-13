@@ -29,7 +29,7 @@ if($VAR['stage'] == '1') {
     if($VAR['submit'] == 'stage1') {
         
         // test the supplied database connection details
-        if(check_database_connection($db, $VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
+        if(check_database_connection($VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
             
             // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);
@@ -96,7 +96,7 @@ if($VAR['stage'] == '3') {
         write_record_to_setup_log('install', _gettext("Starting Database installation."));
         
         // install the database file and load the next page
-        if(install_database($db)) {
+        if(install_database()) {
             
             $record = _gettext("The database installed successfully.");
             write_record_to_setup_log('install', $record);
@@ -145,15 +145,15 @@ if($VAR['stage'] == '5') {
     if($VAR['submit'] == 'stage5') {
         
         // upload_company details
-        update_company_details($db, $VAR);
+        update_company_details($VAR);
         write_record_to_setup_log('install', _gettext("Company details inserted."));
         $VAR['stage'] = '6';
         
     // load the page    
     } else {
         
-        $smarty->assign('date_format', get_company_details($db, 'date_format'));
-        $smarty->assign('company_details', get_company_details($db));
+        $smarty->assign('date_format', get_company_details('date_format'));
+        $smarty->assign('company_details', get_company_details());
         $smarty->assign('stage', '5');
         
     }
@@ -166,12 +166,12 @@ if($VAR['stage'] == '6') {
     if($VAR['submit'] == 'stage6') {
         
         if($VAR['workorder_start_number'] != '') {
-            set_workorder_start_number($db, $VAR['workorder_start_number']);
+            set_workorder_start_number($VAR['workorder_start_number']);
             write_record_to_setup_log('install', _gettext("Starting Work Order number has been set."));
         }
         
         if($VAR['invoice_start_number'] != '') {
-            set_invoice_start_number($db, $VAR['invoice_start_number']);
+            set_invoice_start_number($VAR['invoice_start_number']);
             write_record_to_setup_log('install', _gettext("Starting Invoice number has been set."));
         }
         
@@ -190,7 +190,7 @@ if($VAR['stage'] == '7') {
     // create the administrator and load the next page
     if($VAR['submit'] == 'stage7') {  
        
-        insert_user($db, $VAR);
+        insert_user($VAR);
         write_record_to_setup_log('install', _gettext("The administrator account has been created."));
         write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
         //$VAR['stage'] = '8';

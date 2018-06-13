@@ -19,43 +19,43 @@ if(isset($VAR['submit'])) {
     $end_date = date_to_timestamp($VAR['end_date']);    
     
     // Customers
-    $smarty->assign('new_customers',                count_customers($db, 'all', $start_date, $end_date)                         );      
+    $smarty->assign('new_customers',                count_customers('all', $start_date, $end_date)                         );      
     
     // Workorders   
-    $smarty->assign('wo_opened',                    count_workorders($db, 'opened', null, $start_date, $end_date)               );   
-    $smarty->assign('wo_closed',                    count_workorders($db, 'closed', null, $start_date, $end_date)               );    
+    $smarty->assign('wo_opened',                    count_workorders('opened', null, $start_date, $end_date)               );   
+    $smarty->assign('wo_closed',                    count_workorders('closed', null, $start_date, $end_date)               );    
          
     // Invoices
-    $smarty->assign('opened_invoices',              count_invoices($db, 'opened', null, $start_date, $end_date)                 );    
-    $smarty->assign('pending_invoices',             count_invoices($db, 'pending', null, $start_date, $end_date)                );
-    $smarty->assign('unpaid_invoices',              count_invoices($db, 'unpaid', null, $start_date, $end_date)                 );
-    $smarty->assign('partially_paid_invoices',      count_invoices($db, 'partially_paid', null, $start_date, $end_date)         );
-    $smarty->assign('paid_invoices',                count_invoices($db, 'paid', null, $start_date, $end_date)                   );
+    $smarty->assign('opened_invoices',              count_invoices('opened', null, $start_date, $end_date)                 );    
+    $smarty->assign('pending_invoices',             count_invoices('pending', null, $start_date, $end_date)                );
+    $smarty->assign('unpaid_invoices',              count_invoices('unpaid', null, $start_date, $end_date)                 );
+    $smarty->assign('partially_paid_invoices',      count_invoices('partially_paid', null, $start_date, $end_date)         );
+    $smarty->assign('paid_invoices',                count_invoices('paid', null, $start_date, $end_date)                   );
     
     /* Advanced Statistics */
     
     // Labour
-    $smarty->assign('labour_different_items_count', count_labour_different_items($db, $start_date, $end_date)                   );     
-    $smarty->assign('labour_items_count',           sum_labour_items($db, 'qty', $start_date, $end_date)                        );     
-    $smarty->assign('labour_sub_total',             sum_labour_items($db, 'sub_total', $start_date, $end_date)                  );   
+    $smarty->assign('labour_different_items_count', count_labour_different_items($start_date, $end_date)                   );     
+    $smarty->assign('labour_items_count',           sum_labour_items('qty', $start_date, $end_date)                        );     
+    $smarty->assign('labour_sub_total',             sum_labour_items('sub_total', $start_date, $end_date)                  );   
    
     // Parts
-    $smarty->assign('parts_different_items_count',  count_parts_different_items($db, $start_date, $end_date)                    );    
-    $smarty->assign('parts_items_count',            sum_parts_value($db, 'qty', $start_date, $end_date)                         );    
-    $smarty->assign('parts_sub_total',              sum_parts_value($db, 'sub_total', $start_date, $end_date)                   );
+    $smarty->assign('parts_different_items_count',  count_parts_different_items($start_date, $end_date)                    );    
+    $smarty->assign('parts_items_count',            sum_parts_value('qty', $start_date, $end_date)                         );    
+    $smarty->assign('parts_sub_total',              sum_parts_value('sub_total', $start_date, $end_date)                   );
 
     // Expense    
-    $expense_net_amount     = sum_expenses_value($db, 'net_amount', $start_date, $end_date      );
-    $expense_vat_amount     = sum_expenses_value($db, 'vat_amount', $start_date, $end_date      );
-    $expense_gross_amount   = sum_expenses_value($db, 'gross_amount', $start_date, $end_date    );            
+    $expense_net_amount     = sum_expenses_value('net_amount', $start_date, $end_date      );
+    $expense_vat_amount     = sum_expenses_value('vat_amount', $start_date, $end_date      );
+    $expense_gross_amount   = sum_expenses_value('gross_amount', $start_date, $end_date    );            
     $smarty->assign('expense_net_amount',   $expense_net_amount     );
     $smarty->assign('expense_vat_amount',   $expense_vat_amount     );
     $smarty->assign('expense_gross_amount', $expense_gross_amount   );
 
     // Refunds
-    $refund_net_amount      = sum_refunds_value($db, 'net_amount', $start_date, $end_date       );
-    $refund_vat_amount      = sum_refunds_value($db, 'vat_amount', $start_date, $end_date       );
-    $refund_gross_amount    = sum_refunds_value($db, 'gross_amount', $start_date, $end_date     );    
+    $refund_net_amount      = sum_refunds_value('net_amount', $start_date, $end_date       );
+    $refund_vat_amount      = sum_refunds_value('vat_amount', $start_date, $end_date       );
+    $refund_gross_amount    = sum_refunds_value('gross_amount', $start_date, $end_date     );    
     $smarty->assign('refund_net_amount',    $refund_net_amount      );
     $smarty->assign('refund_vat_amount',    $refund_vat_amount      );
     $smarty->assign('refund_gross_amount',  $refund_gross_amount    );
@@ -63,13 +63,13 @@ if(isset($VAR['submit'])) {
     /* Revenue Calculations */
     
     // Invoiced
-    $invoice_sub_total          = sum_invoices_value($db, 'all', 'sub_total', $start_date, $end_date        );
-    $invoice_discount_amount    = sum_invoices_value($db, 'all', 'discount_amount', $start_date, $end_date  );
-    $invoice_net_amount         = sum_invoices_value($db, 'all', 'net_amount', $start_date, $end_date       );
-    $invoice_tax_amount         = sum_invoices_value($db, 'all', 'tax_amount', $start_date, $end_date       );
-    $invoice_gross_amount       = sum_invoices_value($db, 'all', 'gross_amount', $start_date, $end_date     );
-    $received_monies            = sum_invoices_value($db, 'all', 'paid_amount', $start_date, $end_date      );
-    $outstanding_balance        = sum_invoices_value($db, 'all', 'balance', $start_date, $end_date          );    
+    $invoice_sub_total          = sum_invoices_value('all', 'sub_total', $start_date, $end_date        );
+    $invoice_discount_amount    = sum_invoices_value('all', 'discount_amount', $start_date, $end_date  );
+    $invoice_net_amount         = sum_invoices_value('all', 'net_amount', $start_date, $end_date       );
+    $invoice_tax_amount         = sum_invoices_value('all', 'tax_amount', $start_date, $end_date       );
+    $invoice_gross_amount       = sum_invoices_value('all', 'gross_amount', $start_date, $end_date     );
+    $received_monies            = sum_invoices_value('all', 'paid_amount', $start_date, $end_date      );
+    $outstanding_balance        = sum_invoices_value('all', 'balance', $start_date, $end_date          );    
     $smarty->assign('invoice_sub_total',        $invoice_sub_total          );       
     $smarty->assign('invoice_discount_amount',  $invoice_discount_amount    ); 
     $smarty->assign('invoice_net_amount',       $invoice_net_amount         );
@@ -99,8 +99,8 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Load company finacial year dates
-    $start_date = get_company_details($db, 'year_start'); 
-    $end_date   = get_company_details($db, 'year_end'); 
+    $start_date = get_company_details('year_start'); 
+    $end_date   = get_company_details('year_end'); 
     
 }
 

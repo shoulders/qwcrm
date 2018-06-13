@@ -24,10 +24,10 @@ if($VAR['labour_id'] == '') {
 }
 
 // Get invoice ID before deletion
-$VAR['invoice_id'] = get_invoice_labour_item_details($db, $VAR['labour_id'], 'invoice_id');
+$VAR['invoice_id'] = get_invoice_labour_item_details($VAR['labour_id'], 'invoice_id');
 
 // Delete Invoice Labour item
-delete_invoice_labour_item($db, $VAR['labour_id']);
+delete_invoice_labour_item($VAR['labour_id']);
 
 // Load the edit invoice page
 force_page('invoice' , 'edit&invoice_id='.$VAR['invoice_id']);

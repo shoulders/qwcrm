@@ -19,13 +19,13 @@ if($VAR['workorder_id'] == '') {
 }
 
 // Build the page with the workorder details from the database
-$smarty->assign('employee_details',     get_user_details($db, get_workorder_details($db, $VAR['workorder_id'], 'employee_id'))     );
-$smarty->assign('customer_details',     get_customer_details($db, get_workorder_details($db, $VAR['workorder_id'], 'customer_id')) );
-$smarty->assign('workorder_statuses',   get_workorder_statuses($db)                                                         );
-$smarty->assign('workorder_details',    get_workorder_details($db, $VAR['workorder_id'])                                           );
-$smarty->assign('workorder_schedules',  display_schedules($db, $order_by = 'schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
-$smarty->assign('workorder_notes',      display_workorder_notes($db, $VAR['workorder_id'])                                         ); 
-$smarty->assign('workorder_history',    display_workorder_history($db, $VAR['workorder_id'])                                       );
+$smarty->assign('employee_details',     get_user_details(get_workorder_details($VAR['workorder_id'], 'employee_id'))     );
+$smarty->assign('customer_details',     get_customer_details(get_workorder_details($VAR['workorder_id'], 'customer_id')) );
+$smarty->assign('workorder_statuses',   get_workorder_statuses()                                                         );
+$smarty->assign('workorder_details',    get_workorder_details($VAR['workorder_id'])                                           );
+$smarty->assign('workorder_schedules',  display_schedules($order_by = 'schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
+$smarty->assign('workorder_notes',      display_workorder_notes($VAR['workorder_id'])                                         ); 
+$smarty->assign('workorder_history',    display_workorder_history($VAR['workorder_id'])                                       );
 $smarty->assign('selected_date',        timestamp_to_calendar_format(time())                                                );
 
 $BuildPage .= $smarty->fetch('workorder/details.tpl');

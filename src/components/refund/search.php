@@ -27,7 +27,7 @@ $smarty->assign('search_category',          $VAR['search_category']             
 $smarty->assign('search_term',              $VAR['search_term']                                                                                             );
 $smarty->assign('filter_type',              $VAR['filter_type']                                                                                             );
 $smarty->assign('filter_payment_method',    $VAR['filter_payment_method']                                                                                   );
-$smarty->assign('refund_types',             get_refund_types($db)                                                                                           );
-$smarty->assign('payment_methods',          get_payment_purchase_methods($db)                                                                                 );
-$smarty->assign('display_refunds',  display_refunds($db, 'refund_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_type'], $VAR['filter_payment_method'])   );
+$smarty->assign('refund_types',             get_refund_types()                                                                                           );
+$smarty->assign('payment_methods',          get_payment_purchase_methods()                                                                                 );
+$smarty->assign('display_refunds',  display_refunds('refund_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_type'], $VAR['filter_payment_method'])   );
 $BuildPage .= $smarty->fetch('refund/search.tpl');

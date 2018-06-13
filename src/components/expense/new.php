@@ -12,13 +12,13 @@ require(INCLUDES_DIR.'components/expense.php');
 require(INCLUDES_DIR.'components/payment.php');
 
 // Predict the next expense_id
-$new_record_id = last_expense_id_lookup($db) +1;
+$new_record_id = last_expense_id_lookup() +1;
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
     // Insert the Expense into the databse
-    $VAR['expense_id'] = insert_expense($db, $VAR);
+    $VAR['expense_id'] = insert_expense($VAR);
 
     if (isset($VAR['submitandnew'])){
 
@@ -35,10 +35,10 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 } else {
     
     // Build the page
-    $smarty->assign('expense_types', get_expense_types($db));
-    $smarty->assign('payment_methods', get_payment_purchase_methods($db));
+    $smarty->assign('expense_types', get_expense_types());
+    $smarty->assign('payment_methods', get_payment_purchase_methods());
     $smarty->assign('new_record_id', $new_record_id);
-    $smarty->assign('vat_rate', get_company_details($db, 'tax_rate'));
+    $smarty->assign('vat_rate', get_company_details('tax_rate'));
     $BuildPage .= $smarty->fetch('expense/new.tpl');
 
 }

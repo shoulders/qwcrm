@@ -12,16 +12,16 @@ require(INCLUDES_DIR.'components/administrator.php');
 
 // Update the ACL permissions if submitted
 if($VAR['submit'] == 'reset_default') {
-    reset_acl_permissions($db);    
+    reset_acl_permissions();    
     $smarty->assign('information_msg', _gettext("Permissions reset to default."));    
 }
 
 // Update the ACL permissions if submitted
 if($VAR['submit'] == 'update') {
-    update_acl($db, $VAR['qwpermissions']);    
+    update_acl($VAR['qwpermissions']);    
     $smarty->assign('information_msg', _gettext("Permissions Updated."));    
 }
     
 // Build the page with the permissions from the database 
-$smarty->assign('acl', load_acl($db));
+$smarty->assign('acl', load_acl());
 $BuildPage .= $smarty->fetch('administrator/acl.tpl');

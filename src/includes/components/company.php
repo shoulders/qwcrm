@@ -38,7 +38,7 @@ defined('_QWEXEC') or die;
 #      Get Start and End Times           #
 ##########################################
 
-function get_company_start_end_times($db, $time_event) {
+function get_company_start_end_times($time_event) {
     
     $db = QFactory::getDbo();
     
@@ -68,24 +68,24 @@ function get_company_start_end_times($db, $time_event) {
 #  Get email signature                   #
 ##########################################
 
-function get_email_signature($db, $swift_emailer = null) {
+function get_email_signature($swift_emailer = null) {
     
     $db = QFactory::getDbo();
     
     // only add email signature if enabled
-    if(!get_company_details($db, 'email_signature_active')) { return; }
+    if(!get_company_details('email_signature_active')) { return; }
     
     // Load the signature from the database
-    $email_signature = get_company_details($db, 'email_signature');
+    $email_signature = get_company_details('email_signature');
     
     // If swiftmailer is going to be used to add image via CID
     if($swift_emailer != null) {         
-        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'display_name').'" width="150">'; 
+        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath(get_company_details('logo'))).'" alt="'.get_company_details('display_name').'" width="150">'; 
         
         
     // Load the logo as a standard base64 string image
     } else {        
-        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents(get_company_details($db, 'logo'))).'" alt="'.get_company_details($db, 'display_name').'" width="150">'; 
+        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents(get_company_details('logo'))).'" alt="'.get_company_details('display_name').'" width="150">'; 
     }    
         
     // Swap the logo placeholders with the new logo string
@@ -100,12 +100,12 @@ function get_email_signature($db, $swift_emailer = null) {
 #  Get email message body                #
 ##########################################
 
-function get_email_message_body($db, $message_name, $customer_details = null) {
+function get_email_message_body($message_name, $customer_details = null) {
     
     $db = QFactory::getDbo();
     
     // get the message from the database
-    $content = get_company_details($db, $message_name);
+    $content = get_company_details($message_name);
     
     // Process placeholders
     if($message_name == 'email_msg_invoice') {        
@@ -129,25 +129,25 @@ function get_email_message_body($db, $message_name, $customer_details = null) {
 #  Update Company details   #
 #############################
 
-function update_company_details($db, $VAR) {
+function update_company_details($VAR) {
 
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     // compensate for installation and migration
     if(!defined(DATE_FORMAT)) {
-        define('DATE_FORMAT', get_company_details($db, 'date_format'));
+        define('DATE_FORMAT', get_company_details('date_format'));
     } 
            
     // Delete logo if selected and no new logo is presented
     if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
-        delete_logo($db);        
+        delete_logo();        
     }
     
     // A new logo is supplied, delete old and upload new
     if($_FILES['logo']['name']) {
-        delete_logo($db);
-        $new_logo_filepath = upload_logo($db);
+        delete_logo();
+        $new_logo_filepath = upload_logo();
     }
     
     $sql .= "UPDATE ".PRFX."company_options SET
@@ -193,7 +193,7 @@ function update_company_details($db, $VAR) {
         
             
         // Refresh company logo
-        $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details($db, 'logo'));
+        $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
         
         // Assign success message
         $smarty->assign('information_msg', _gettext("Company details updated."));
@@ -211,7 +211,7 @@ function update_company_details($db, $VAR) {
 #        Update Company Hours            #
 ##########################################
 
-function update_company_hours($db, $openingTime, $closingTime) {
+function update_company_hours($openingTime, $closingTime) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -272,15 +272,15 @@ function check_start_end_times($start_time, $end_time) {
 #  Delete Company Logo   #
 ##########################
 
-function delete_logo($db) {
+function delete_logo() {
     
     $db = QFactory::getDbo();
     
     // Only delete a logo if there is one set
-    if(get_company_details($db, 'logo')) {
+    if(get_company_details('logo')) {
         
         // Prepare the correct file name from the entry in the database
-        $logo_file = parse_url(MEDIA_DIR . get_company_details($db, 'logo'), PHP_URL_PATH);
+        $logo_file = parse_url(MEDIA_DIR . get_company_details('logo'), PHP_URL_PATH);
         
         // Perform the deletion
         unlink($logo_file);
@@ -292,7 +292,7 @@ function delete_logo($db) {
 #  Upload Company Logo   #
 ##########################
 
-function upload_logo($db) {
+function upload_logo() {
     
     $db = QFactory::getDbo();
     

@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #   Display Customers               #
 #####################################
 
-function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $type = null) {
+function display_customers($order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $type = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -138,7 +138,7 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
 #    Insert new customer            #
 #####################################
 
-function insert_customer($db, $VAR) {
+function insert_customer($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -181,7 +181,7 @@ function insert_customer($db, $VAR) {
 #    Insert customer note   #
 #############################
 
-function insert_customer_note($db, $customer_id, $note) {
+function insert_customer_note($customer_id, $note) {
     
     $db = QFactory::getDbo();
     
@@ -197,11 +197,11 @@ function insert_customer_note($db, $customer_id, $note) {
     } else {
         
         // Log activity        
-        $record = _gettext("A new customer note was added to the customer").' '.get_customer_details($db, $customer_id, 'display_name').' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("A new customer note was added to the customer").' '.get_customer_details($customer_id, 'display_name').' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id);
         
         // Update last active record      
-        update_customer_last_active($db, $customer_id);
+        update_customer_last_active($customer_id);
         
         return true;
         
@@ -215,7 +215,7 @@ function insert_customer_note($db, $customer_id, $note) {
 #  Get Customer Details        #
 ################################
 
-function get_customer_details($db, $customer_id, $item = null) {
+function get_customer_details($customer_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -243,7 +243,7 @@ function get_customer_details($db, $customer_id, $item = null) {
 #  Get a single customer note       #
 #####################################
 
-function get_customer_note($db, $customer_note_id, $item = null) {
+function get_customer_note($customer_note_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -271,7 +271,7 @@ function get_customer_note($db, $customer_note_id, $item = null) {
 #  Get ALL of a customer's notes    #
 #####################################
 
-function get_customer_notes($db, $customer_id) {
+function get_customer_notes($customer_id) {
     
     $db = QFactory::getDbo();
     
@@ -291,7 +291,7 @@ function get_customer_notes($db, $customer_id) {
 #    Get Customer Types             #
 #####################################
 
-function get_customer_types($db) {
+function get_customer_types() {
     
     $db = QFactory::getDbo();
     
@@ -313,7 +313,7 @@ function get_customer_types($db) {
 #    Update Customer                #
 #####################################
 
-function update_customer($db, $customer_id, $VAR) {
+function update_customer($customer_id, $VAR) {
     
     $db = QFactory::getDbo();
     
@@ -347,7 +347,7 @@ function update_customer($db, $customer_id, $VAR) {
         write_record_to_activity_log($record, null, $customer_id);
         
         // Update last active record      
-        update_customer_last_active($db, $customer_id);
+        update_customer_last_active($customer_id);
         
       return true;
       
@@ -359,7 +359,7 @@ function update_customer($db, $customer_id, $VAR) {
 #    update customer note   #
 #############################
 
-function update_customer_note($db, $customer_note_id, $note) {
+function update_customer_note($customer_note_id, $note) {
     
     $db = QFactory::getDbo();
     
@@ -374,14 +374,14 @@ function update_customer_note($db, $customer_note_id, $note) {
     } else {
         
         // get customer_id
-        $customer_id = get_customer_note($db, $customer_note_id, 'customer_id');
+        $customer_id = get_customer_note($customer_note_id, 'customer_id');
         
         // Log activity        
-        $record = _gettext("Customer Note").' '.$customer_note_id.' '._gettext("for").' '.get_customer_details($db, $customer_id, 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("Customer Note").' '.$customer_note_id.' '._gettext("for").' '.get_customer_details($customer_id, 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id);
         
         // Update last active record        
-        update_customer_last_active($db, $customer_id);
+        update_customer_last_active($customer_id);
         
     }
     
@@ -391,7 +391,7 @@ function update_customer_note($db, $customer_note_id, $note) {
 #    Update Last Active         #
 #################################
 
-function update_customer_last_active($db, $customer_id = null) {
+function update_customer_last_active($customer_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -416,7 +416,7 @@ function update_customer_last_active($db, $customer_id = null) {
 #    Delete Customer                #
 #####################################
 
-function delete_customer($db, $customer_id) {
+function delete_customer($customer_id) {
     
     $db = QFactory::getDbo();
     
@@ -463,7 +463,7 @@ function delete_customer($db, $customer_id) {
     /* We can now delete the customer */
     
     // Get customer details foe loggin before we delete anything
-    $customer_details = get_customer_details($db, $customer_id);
+    $customer_details = get_customer_details($customer_id);
     
     // Delete any Customer user accounts
     $sql = "DELETE FROM ".PRFX."user_records WHERE customer_id=".$db->qstr($customer_id);    
@@ -489,12 +489,12 @@ function delete_customer($db, $customer_id) {
 #    delete a customer's note    #
 ##################################
 
-function delete_customer_note($db, $customer_note_id) {
+function delete_customer_note($customer_note_id) {
     
     $db = QFactory::getDbo();
     
     // get customer_id before deleting the record
-    $customer_id = get_customer_note($db, $customer_note_id, 'customer_id');
+    $customer_id = get_customer_note($customer_note_id, 'customer_id');
     
     $sql = "DELETE FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );
 
@@ -503,14 +503,14 @@ function delete_customer_note($db, $customer_note_id) {
         
     } else {        
         
-        $customer_details = get_customer_details($db, $customer_id);
+        $customer_details = get_customer_details($customer_id);
         
         // Log activity        
         $record = _gettext("Customer Note").' '.$customer_note_id.' '._gettext("for Customer").' '.$customer_details['display_name'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $customer_details['employee_id'], $customer_id);
         
         // Update last active record        
-        update_customer_last_active($db, $customer_id);
+        update_customer_last_active($customer_id);
         
     }
     
@@ -522,7 +522,7 @@ function delete_customer_note($db, $customer_note_id) {
 #    check for Duplicate display name   #  // is not currently used
 #########################################
     
-function check_customer_display_name_exists($db, $display_name) {
+function check_customer_display_name_exists($display_name) {
     
     $db = QFactory::getDbo();
     
@@ -550,13 +550,13 @@ function check_customer_display_name_exists($db, $display_name) {
 #    Build a Google map string      #
 #####################################
 
-function build_googlemap_directions_string($db, $customer_id, $employee_id) {
+function build_googlemap_directions_string($customer_id, $employee_id) {
     
     $db = QFactory::getDbo();
     
-    $company_details    = get_company_details($db);
-    $customer_details   = get_customer_details($db, $customer_id);
-    $employee_details   = get_user_details($db, $employee_id);
+    $company_details    = get_company_details();
+    $customer_details   = get_customer_details($customer_id);
+    $employee_details   = get_user_details($employee_id);
     
     // Get google server or use default value, then removes a trailing slash if present
     $google_server = rtrim(QFactory::getConfig()->get('google_server', 'https://www.google.com/'), '/');

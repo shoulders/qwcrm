@@ -21,7 +21,7 @@ if($VAR['refund_id'] == '') {
 } 
 
 // Delete the refund function call
-delete_refund($db, $VAR['refund_id']);
+delete_refund($VAR['refund_id']);
 
 // Load the refund search page
 force_page('refund', 'search', 'information_msg='._gettext("Refund deleted successfully."));

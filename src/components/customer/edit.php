@@ -18,7 +18,7 @@ if($VAR['customer_id'] == '') {
 if(isset($VAR['submit'])) {    
         
     // Update the Customer's Details
-    update_customer($db, $VAR['customer_id'], $VAR);
+    update_customer($VAR['customer_id'], $VAR);
     
     // Load the customer's details page
     force_page('customer', 'details&customer_id='.$VAR['customer_id'], 'information_msg='._gettext("The Customer's information was updated."));
@@ -26,8 +26,8 @@ if(isset($VAR['submit'])) {
 } else {    
 
     // Build the page
-    $smarty->assign('customer_types',   get_customer_types($db));
-    $smarty->assign('customer_details', get_customer_details($db, $VAR['customer_id']));
+    $smarty->assign('customer_types',   get_customer_types());
+    $smarty->assign('customer_details', get_customer_details($VAR['customer_id']));
     $BuildPage .= $smarty->fetch('customer/edit.tpl');
     
 }

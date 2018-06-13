@@ -18,8 +18,8 @@ if($VAR['user_id'] == '') {
 }
 
 // Build the page
-$smarty->assign('user_workorders',          display_workorders($db, 'workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'open', $VAR['user_id'])    );
-$smarty->assign('user_details',             get_user_details($db, $VAR['user_id'])                                                                         );
-$smarty->assign('customer_display_name',    get_customer_details($db, get_user_details($db, $VAR['user_id'], 'customer_id'), 'customer_display_name')      );
-$smarty->assign('usergroups',               get_usergroups($db)                                                                                     );
+$smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'open', $VAR['user_id'])    );
+$smarty->assign('user_details',             get_user_details($VAR['user_id'])                                                                         );
+$smarty->assign('customer_display_name',    get_customer_details(get_user_details($VAR['user_id'], 'customer_id'), 'customer_display_name')      );
+$smarty->assign('usergroups',               get_usergroups()                                                                                     );
 $BuildPage .= $smarty->fetch('user/details.tpl');

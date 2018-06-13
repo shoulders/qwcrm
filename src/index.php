@@ -108,7 +108,7 @@ require(QFRAMEWORK_DIR.'qwframework.php');
 ################################################
 
 // Verify QWcrm is installed correctly
-verify_qwcrm_install_state($db);
+verify_qwcrm_install_state();
 
 ################################################
 #         Initialise QWCRM                     #
@@ -127,10 +127,10 @@ require(INCLUDES_DIR.'system/variables.php');
 ################################################
 
 // Get the page controller - no user has been set to calculate what page to load
-$page_controller = get_page_controller($db, $VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
+$page_controller = get_page_controller($VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
 
 // Build the page
-$BuildPage = get_page_content($db, $startTime, $page_controller, $VAR, $QConfig, $user);
+$BuildPage = get_page_content($startTime, $page_controller, $VAR, $QConfig, $user);
 
 ################################################
 #         Content Plugins                      #

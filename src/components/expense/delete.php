@@ -21,7 +21,7 @@ if($VAR['expense_id'] == '') {
 }   
 
 // Delete the expense
-delete_expense($db, $VAR['expense_id']);
+delete_expense($VAR['expense_id']);
 
 // Load the expense search page
 force_page('expense', 'search', 'information_msg='._gettext("Expense deleted successfully."));

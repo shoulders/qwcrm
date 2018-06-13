@@ -22,7 +22,7 @@ if($VAR['user_id'] == '') {
 }
 
 // Run the delete function
-if(!delete_user($db, $VAR['user_id'])) {
+if(!delete_user($VAR['user_id'])) {
     
     // load the user details page
     force_page('user', 'details&user_id='.$VAR['user_id']);    

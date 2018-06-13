@@ -18,13 +18,13 @@ if($VAR['customer_note_id'] == '') {
 // If record submitted for updating
 if(isset($VAR['submit'])) {
                
-    update_customer_note($db, $VAR['customer_note_id'], $VAR['note']);
+    update_customer_note($VAR['customer_note_id'], $VAR['note']);
     force_page('customer', 'details&customer_id='.$VAR['customer_id']);   
     
 } else {    
     
     // Fetch and load the page
-    $smarty->assign('customer_note', get_customer_note($db, $VAR['customer_note_id']));
+    $smarty->assign('customer_note', get_customer_note($VAR['customer_note_id']));
     $BuildPage .= $smarty->fetch('customer/note_edit.tpl');
     
 }

@@ -23,10 +23,10 @@ if($VAR['schedule_id'] == '') {
 }
 
 // get workorder_id
-$VAR['workorder_id'] = get_schedule_details($db, $VAR['schedule_id'], 'workorder_id');
+$VAR['workorder_id'] = get_schedule_details($VAR['schedule_id'], 'workorder_id');
 
 // Delete the schedule
-delete_schedule($db, $VAR['schedule_id']);
+delete_schedule($VAR['schedule_id']);
 
 // load schedule search page
 force_page('workorder', 'details&workorder_id='.$VAR['workorder_id']);

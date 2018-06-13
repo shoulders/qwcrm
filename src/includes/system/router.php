@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 #  Build path to relevant Page Controller  #
 ############################################
 
-function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
+function get_page_controller(&$VAR = null, $QConfig = null, $user = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
         
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();  // This is required for the required files/templates grabbed here
@@ -62,7 +62,7 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
     }
     
     // Check to see if the page exists otherwise send to the 404 page
-    if (isset($VAR['component']) && !isset($VAR['page_tpl']) && !check_page_exists($db, $VAR['component'], $VAR['page_tpl'])) {
+    if (isset($VAR['component']) && !isset($VAR['page_tpl']) && !check_page_exists($VAR['component'], $VAR['page_tpl'])) {
 
         // Set to the 404 error page       
         $VAR['component']   = 'core';
@@ -95,7 +95,7 @@ function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $
     page_controller_check:    
     
     // Check the requested page with the current usergroup against the ACL for authorisation, if it fails set page 403
-    if(!check_page_acl($db, $VAR['component'], $VAR['page_tpl'])) {
+    if(!check_page_acl($VAR['component'], $VAR['page_tpl'])) {
 
         // Log activity
         $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$VAR['component'].':'.$VAR['page_tpl'].')';
@@ -232,7 +232,7 @@ function parseSEF($sef_url, $mode = null, &$VAR = null) {
 #  Check page exists  #
 #######################
 
-function check_page_exists($db, $component = null, $page_tpl = null) {
+function check_page_exists($component = null, $page_tpl = null) {
     
     $db = QFactory::getDbo();
 
@@ -413,7 +413,7 @@ function get_routing_variables_from_url($url) {
 #  Verify User's authorisation for a specific page / operation  #
 #################################################################
 
-function check_page_acl($db, $component, $page_tpl, $user = null) {
+function check_page_acl($component, $page_tpl, $user = null) {
     
     $db = QFactory::getDbo();
     

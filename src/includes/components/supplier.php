@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Suppliers       #
 ###############################
 
-function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null) {
+function display_suppliers($order_by = 'supplier_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -128,7 +128,7 @@ function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', 
 #      Insert New Record                 #
 ##########################################
 
-function insert_supplier($db, $VAR) {
+function insert_supplier($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -169,7 +169,7 @@ function insert_supplier($db, $VAR) {
 #   Get supplier details   #
 ############################
 
-function get_supplier_details($db, $supplier_id, $item = null) {
+function get_supplier_details($supplier_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -197,7 +197,7 @@ function get_supplier_details($db, $supplier_id, $item = null) {
 #    Get Supplier Types             #
 #####################################
 
-function get_supplier_types($db) {
+function get_supplier_types() {
     
     $db = QFactory::getDbo();
     
@@ -219,7 +219,7 @@ function get_supplier_types($db) {
 #     Update Record                 #
 #####################################
 
-function update_supplier($db, $supplier_id, $VAR) {
+function update_supplier($supplier_id, $VAR) {
     
     $db = QFactory::getDbo();
     
@@ -263,11 +263,11 @@ function update_supplier($db, $supplier_id, $VAR) {
 #    Delete Record                  #
 #####################################
 
-function delete_supplier($db, $supplier_id) {
+function delete_supplier($supplier_id) {
     
     $db = QFactory::getDbo();
     
-    $display_name = get_supplier_details($db, $supplier_id, 'display_name');
+    $display_name = get_supplier_details($supplier_id, 'display_name');
     
     $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
     
@@ -290,7 +290,7 @@ function delete_supplier($db, $supplier_id) {
 #      Last supplier Record ID Look Up     #
 ############################################
 
-function last_supplier_id_lookup($db) {
+function last_supplier_id_lookup() {
     
     $db = QFactory::getDbo();
     

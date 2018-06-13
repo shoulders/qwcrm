@@ -14,10 +14,10 @@ require(INCLUDES_DIR.'components/company.php');
 if(isset($VAR['submit'])) {
 
     // Submit data to the database
-    update_company_details($db, $VAR);    
+    update_company_details($VAR);    
     
 }
 
 // Build the page
-$smarty->assign('company_details', get_company_details($db) );
+$smarty->assign('company_details', get_company_details() );
 $BuildPage .= $smarty->fetch('company/options.tpl');

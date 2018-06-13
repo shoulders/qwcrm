@@ -18,17 +18,17 @@ if($VAR['workorder_id'] == '') {
 }
 
 // Get the Id of the employee assigned to the workorder
-$assigned_employee_id = get_workorder_details($db, $VAR['workorder_id'], 'employee_id');
+$assigned_employee_id = get_workorder_details($VAR['workorder_id'], 'employee_id');
 
 // Update Work Order Status
 if(isset($VAR['change_status'])){
-    update_workorder_status($db, $VAR['workorder_id'], $VAR['assign_status']);    
+    update_workorder_status($VAR['workorder_id'], $VAR['assign_status']);    
     force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
 }
 
 // Assign Work Order to another employee
 if(isset($VAR['change_employee'])) {
-    assign_workorder_to_employee($db, $VAR['workorder_id'], $VAR['target_employee_id']);    
+    assign_workorder_to_employee($VAR['workorder_id'], $VAR['target_employee_id']);    
     force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
 }
 
@@ -40,7 +40,7 @@ if(isset($VAR['delete'])) {
 /* Remove unallowed status for manual change */
 
 // Get status list
-$statuses = get_workorder_statuses($db);
+$statuses = get_workorder_statuses();
 
 // Unset unwanted status
 //unset($statuses[0]);  // 'unassigned'  
@@ -61,13 +61,13 @@ foreach($statuses as $status) {
 /* -- */
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',     !get_workorder_details($db, $VAR['workorder_id'], 'invoice_id')        );
-$smarty->assign('allowed_to_change_employee',   !get_workorder_details($db, $VAR['workorder_id'], 'is_closed')         );
-$smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($db, $VAR['workorder_id'])  );
-$smarty->assign('active_employees',             get_active_users($db, 'employees')                              );
+$smarty->assign('allowed_to_change_status',     !get_workorder_details($VAR['workorder_id'], 'invoice_id')        );
+$smarty->assign('allowed_to_change_employee',   !get_workorder_details($VAR['workorder_id'], 'is_closed')         );
+$smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($VAR['workorder_id'])  );
+$smarty->assign('active_employees',             get_active_users('employees')                              );
 $smarty->assign('workorder_statuses',           $edited_statuses                                                );
-$smarty->assign('workorder_status',             get_workorder_details($db, $VAR['workorder_id'], 'status')             );
+$smarty->assign('workorder_status',             get_workorder_details($VAR['workorder_id'], 'status')             );
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                           );
-$smarty->assign('assigned_employee_details',    get_user_details($db, $assigned_employee_id)                    );
+$smarty->assign('assigned_employee_details',    get_user_details($assigned_employee_id)                    );
 
 $BuildPage .= $smarty->fetch('workorder/status.tpl');

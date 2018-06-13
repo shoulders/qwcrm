@@ -20,24 +20,24 @@ if($VAR['invoice_id'] == '') {
 }
 
 // Prefill Items
-$smarty->assign('company_details',          get_company_details($db)                                                                    );
-$smarty->assign('customer_details',         get_customer_details($db, get_invoice_details($db, $VAR['invoice_id'], 'customer_id'))             );
-$smarty->assign('workorder_details',        get_workorder_details($db, get_invoice_details($db, $VAR['invoice_id'], 'workorder_id'))           );
-$smarty->assign('invoice_details',          get_invoice_details($db, $VAR['invoice_id'])                                                       );
+$smarty->assign('company_details',          get_company_details()                                                                    );
+$smarty->assign('customer_details',         get_customer_details(get_invoice_details($VAR['invoice_id'], 'customer_id'))             );
+$smarty->assign('workorder_details',        get_workorder_details(get_invoice_details($VAR['invoice_id'], 'workorder_id'))           );
+$smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id'])                                                       );
 
 // Invoice Items
-$smarty->assign('labour_items',             get_invoice_labour_items($db, $VAR['invoice_id'])                                                  );
-$smarty->assign('parts_items',              get_invoice_parts_items($db, $VAR['invoice_id'])                                                   );
+$smarty->assign('labour_items',             get_invoice_labour_items($VAR['invoice_id'])                                                  );
+$smarty->assign('parts_items',              get_invoice_parts_items($VAR['invoice_id'])                                                   );
 
 // Invoice Totals
-$smarty->assign('labour_sub_total',         labour_sub_total($db, $VAR['invoice_id'])                                                          );
-$smarty->assign('parts_sub_total',          parts_sub_total($db, $VAR['invoice_id'])                                                           );
+$smarty->assign('labour_sub_total',         labour_sub_total($VAR['invoice_id'])                                                          );
+$smarty->assign('parts_sub_total',          parts_sub_total($VAR['invoice_id'])                                                           );
 
 // Misc
-$smarty->assign('display_payments',         display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])                                                  );
-$smarty->assign('payment_methods',          get_payment_accepted_methods($db)                                                             );
-$smarty->assign('employee_display_name',    get_user_details($db, get_invoice_details($db, $VAR['invoice_id'], 'employee_id'),'display_name')  );
-$smarty->assign('invoice_statuses',         get_invoice_statuses($db)                                                                   );
+$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])                                                  );
+$smarty->assign('payment_methods',          get_payment_accepted_methods()                                                             );
+$smarty->assign('employee_display_name',    get_user_details(get_invoice_details($VAR['invoice_id'], 'employee_id'),'display_name')  );
+$smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                   );
 
 // Build the page
 $BuildPage .= $smarty->fetch('invoice/details.tpl');

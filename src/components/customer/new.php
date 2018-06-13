@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'components/customer.php');
 if(isset($VAR['submit'])) {
 
     // Create the new Customer
-    $VAR['customer_id'] = insert_customer($db, $VAR);
+    $VAR['customer_id'] = insert_customer($VAR);
     
     // Load the new Customer's Details page
     force_page('customer', 'details&customer_id='.$VAR['customer_id']);
@@ -21,7 +21,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page
-    $smarty->assign('customer_types', get_customer_types($db));
+    $smarty->assign('customer_types', get_customer_types());
     $BuildPage .= $smarty->fetch('customer/new.tpl');
 
 }

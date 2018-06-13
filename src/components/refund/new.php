@@ -12,13 +12,13 @@ require(INCLUDES_DIR.'components/refund.php');
 require(INCLUDES_DIR.'components/payment.php');
 
 // Predict the next refund_id
-$new_record_id = last_refund_id_lookup($db) +1;
+$new_record_id = last_refund_id_lookup() +1;
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
     // insert the refund and get the refund_id
-    $VAR['refund_id'] = insert_refund($db, $VAR);
+    $VAR['refund_id'] = insert_refund($VAR);
         
     if (isset($VAR['submitandnew'])){
 
@@ -35,8 +35,8 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 }
 
 // Build the page
-$smarty->assign('refund_types', get_refund_types($db));
-$smarty->assign('payment_methods', get_payment_purchase_methods($db));
+$smarty->assign('refund_types', get_refund_types());
+$smarty->assign('payment_methods', get_payment_purchase_methods());
 $smarty->assign('new_record_id', $new_record_id);
-$smarty->assign('vat_rate', get_company_details($db, 'tax_rate'));
+$smarty->assign('vat_rate', get_company_details('tax_rate'));
 $BuildPage .= $smarty->fetch('refund/new.tpl');

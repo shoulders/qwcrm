@@ -22,7 +22,7 @@ if($VAR['giftcert_id'] == '') {
 }
 
 // Delete the Gift Certificate - the giftcert is only deactivated
-delete_giftcert($db, $VAR['giftcert_id']);
+delete_giftcert($VAR['giftcert_id']);
     
 // Reload the customers details page
 force_page('giftcert', 'search', 'information_msg='._gettext("Gift Certificate deleted(blocked) successfully."));

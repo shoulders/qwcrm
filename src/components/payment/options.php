@@ -14,10 +14,10 @@ require(INCLUDES_DIR.'components/payment.php');
 if(isset($VAR['submit'])) {
     
     // Update enabled payment methods (checkboxes)
-    update_active_payment_accepted_methods($db, $VAR);
+    update_active_payment_accepted_methods($VAR);
     
     // Update Payment details
-    update_payment_options($db, $VAR);
+    update_payment_options($VAR);
 
     // Assign success message    
     $smarty->assign('information_msg', _gettext("Payment Options Updated.") );
@@ -28,6 +28,6 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('payment_accepted_methods',   get_payment_accepted_methods($db) );
-$smarty->assign('payment_options',          get_payment_options($db)        );
+$smarty->assign('payment_accepted_methods',   get_payment_accepted_methods() );
+$smarty->assign('payment_options',          get_payment_options()        );
 $BuildPage .= $smarty->fetch('payment/options.tpl');

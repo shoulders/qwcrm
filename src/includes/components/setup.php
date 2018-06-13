@@ -42,7 +42,7 @@ defined('_QWEXEC') or die;
 #       update a value in a specified record            #
 #########################################################
 
-function update_record_value($db, $select_table, $select_column, $record_identifier, $record_column, $record_new_value) {
+function update_record_value($select_table, $select_column, $record_identifier, $record_column, $record_new_value) {
     
     $db = QFactory::getDbo();    
     global $executed_sql_results;
@@ -92,7 +92,7 @@ function update_record_value($db, $select_table, $select_column, $record_identif
 #   update all matching values in a colum to new value  #
 #########################################################
 
-function update_column_values($db, $table, $column, $current_value, $new_value) {
+function update_column_values($table, $column, $current_value, $new_value) {
     
     $db = QFactory::getDbo();    
     global $executed_sql_results;
@@ -156,7 +156,7 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
 
 // https://stackoverflow.com/questions/19751354/how-to-import-sql-file-in-mysql-database-using-php
 
-function execute_sql_file($db, $sql_file) {
+function execute_sql_file($sql_file) {
     
     $db = QFactory::getDbo();    
     global $executed_sql_results;
@@ -254,7 +254,7 @@ function execute_sql_file($db, $sql_file) {
 
 // https://stackoverflow.com/questions/19751354/how-to-import-sql-file-in-mysql-database-using-php
 
-function execute_sql_file_lines($db, $sql_file) {
+function execute_sql_file_lines($sql_file) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -400,7 +400,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 #  Check the database connection works     #
 ############################################
 
-function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) {
+function check_database_connection($db_host, $db_user, $db_pass, $db_name) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -498,7 +498,7 @@ function generate_database_prefix($not_this_prefix = null) {
 #   Set workorder start number             #
 ############################################
 
-function set_workorder_start_number($db, $start_number) {
+function set_workorder_start_number($start_number) {
     
     $db = QFactory::getDbo();
     
@@ -514,7 +514,7 @@ function set_workorder_start_number($db, $start_number) {
 #   Set invoice start number               #
 ############################################
 
-function set_invoice_start_number($db, $start_number) {
+function set_invoice_start_number($start_number) {
     
     $db = QFactory::getDbo();
     
@@ -530,7 +530,7 @@ function set_invoice_start_number($db, $start_number) {
 #   Install database                       # // this imports a phpMyAdmin .sql exported file (preg_match method)
 ############################################
 
-function install_database($db) {
+function install_database() {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -538,7 +538,7 @@ function install_database($db) {
     global $setup_error_flag;    
     
     // Run the install.sql
-    execute_sql_file($db, SETUP_DIR.'install/install.sql');
+    execute_sql_file(SETUP_DIR.'install/install.sql');
     
     /* Final stuff */
     
@@ -596,7 +596,7 @@ function install_database($db) {
 #   Migrate myitcrm database               #
 ############################################
 
-function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
+function migrate_database($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -629,17 +629,17 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'create_date'       => 'CREATE_DATE',
         'last_active'       => 'LAST_ACTIVE'
         );
-    migrate_table($db, $qwcrm_prefix.'customer', $myitcrm_prefix.'TABLE_CUSTOMER', $column_mappings);
+    migrate_table($qwcrm_prefix.'customer', $myitcrm_prefix.'TABLE_CUSTOMER', $column_mappings);
     
     // update customer types
-    update_column_values($db, $qwcrm_prefix.'customer', 'type', '1', 'residential');
-    update_column_values($db, $qwcrm_prefix.'customer', 'type', '2', 'commercial');
-    update_column_values($db, $qwcrm_prefix.'customer', 'type', '3', 'charity');
-    update_column_values($db, $qwcrm_prefix.'customer', 'type', '4', 'educational');
-    update_column_values($db, $qwcrm_prefix.'customer', 'type', '5', 'goverment');
+    update_column_values($qwcrm_prefix.'customer', 'type', '1', 'residential');
+    update_column_values($qwcrm_prefix.'customer', 'type', '2', 'commercial');
+    update_column_values($qwcrm_prefix.'customer', 'type', '3', 'charity');
+    update_column_values($qwcrm_prefix.'customer', 'type', '4', 'educational');
+    update_column_values($qwcrm_prefix.'customer', 'type', '5', 'goverment');
     
     // update active status (all enabled)
-    update_column_values($db, $qwcrm_prefix.'customer', 'active', '*', '1');
+    update_column_values($qwcrm_prefix.'customer', 'active', '*', '1');
     
     // customer_notes
     $column_mappings = array(
@@ -649,7 +649,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'date'              => 'DATE',
         'note'              => 'NOTE'
         );    
-    migrate_table($db, $qwcrm_prefix.'customer_notes', $myitcrm_prefix.'CUSTOMER_NOTES', $column_mappings);    
+    migrate_table($qwcrm_prefix.'customer_notes', $myitcrm_prefix.'CUSTOMER_NOTES', $column_mappings);    
             
     /* Expense */
     
@@ -668,43 +668,43 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'items'             => 'EXPENSE_ITEMS',
         'notes'             => 'EXPENSE_NOTES'        
         );
-    migrate_table($db, $qwcrm_prefix.'expense', $myitcrm_prefix.'TABLE_EXPENSE', $column_mappings);
+    migrate_table($qwcrm_prefix.'expense', $myitcrm_prefix.'TABLE_EXPENSE', $column_mappings);
     
     // update expense types
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '1', 'advertising');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '2', 'bank_charges');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '3', 'broadband');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '4', 'credit');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '5', 'customer_refund');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '6', 'customer_refund');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '7', 'equipment');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '8', 'gift_certificate');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '9', 'landline');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '10', 'mobile_phone');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '11', 'office_supplies');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '12', 'parts');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '13', 'fuel');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '14', 'postage');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '15', 'tax');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '16', 'rent');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '17', 'transport');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '18', 'utilities');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '19', 'voucher');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '20', 'wages');
-    update_column_values($db, $qwcrm_prefix.'expense', 'type', '21', 'other');
+    update_column_values($qwcrm_prefix.'expense', 'type', '1', 'advertising');
+    update_column_values($qwcrm_prefix.'expense', 'type', '2', 'bank_charges');
+    update_column_values($qwcrm_prefix.'expense', 'type', '3', 'broadband');
+    update_column_values($qwcrm_prefix.'expense', 'type', '4', 'credit');
+    update_column_values($qwcrm_prefix.'expense', 'type', '5', 'customer_refund');
+    update_column_values($qwcrm_prefix.'expense', 'type', '6', 'customer_refund');
+    update_column_values($qwcrm_prefix.'expense', 'type', '7', 'equipment');
+    update_column_values($qwcrm_prefix.'expense', 'type', '8', 'gift_certificate');
+    update_column_values($qwcrm_prefix.'expense', 'type', '9', 'landline');
+    update_column_values($qwcrm_prefix.'expense', 'type', '10', 'mobile_phone');
+    update_column_values($qwcrm_prefix.'expense', 'type', '11', 'office_supplies');
+    update_column_values($qwcrm_prefix.'expense', 'type', '12', 'parts');
+    update_column_values($qwcrm_prefix.'expense', 'type', '13', 'fuel');
+    update_column_values($qwcrm_prefix.'expense', 'type', '14', 'postage');
+    update_column_values($qwcrm_prefix.'expense', 'type', '15', 'tax');
+    update_column_values($qwcrm_prefix.'expense', 'type', '16', 'rent');
+    update_column_values($qwcrm_prefix.'expense', 'type', '17', 'transport');
+    update_column_values($qwcrm_prefix.'expense', 'type', '18', 'utilities');
+    update_column_values($qwcrm_prefix.'expense', 'type', '19', 'voucher');
+    update_column_values($qwcrm_prefix.'expense', 'type', '20', 'wages');
+    update_column_values($qwcrm_prefix.'expense', 'type', '21', 'other');
     
     // update expense payment method
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '1', 'bank_transfer');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '2', 'card');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '3', 'cash');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '4', 'cheque');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '5', 'credit');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '6', 'direct_debit');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '7', 'gift_certificate');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '8', 'google_checkout');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '9', 'paypal');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '10', 'voucher');
-    update_column_values($db, $qwcrm_prefix.'expense', 'payment_method', '11', 'other');    
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '1', 'bank_transfer');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '2', 'card');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '3', 'cash');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '4', 'cheque');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '5', 'credit');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '6', 'direct_debit');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '7', 'gift_certificate');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '8', 'google_checkout');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '9', 'paypal');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '10', 'voucher');
+    update_column_values($qwcrm_prefix.'expense', 'payment_method', '11', 'other');    
     
     /* Gifcert */
     
@@ -723,10 +723,10 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'active'            => 'ACTIVE',
         'notes'             => 'MEMO'        
         );
-    migrate_table($db, $qwcrm_prefix.'giftcert', $myitcrm_prefix.'GIFT_CERT', $column_mappings);
+    migrate_table($qwcrm_prefix.'giftcert', $myitcrm_prefix.'GIFT_CERT', $column_mappings);
     
     // update date_redeemed to remove incoreect zero dates
-    update_column_values($db, $qwcrm_prefix.'giftcert', 'date_redeemed', '0', '');
+    update_column_values($qwcrm_prefix.'giftcert', 'date_redeemed', '0', '');
     
     /* Invoice */
     
@@ -755,18 +755,18 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'is_closed'         => 'INVOICE_PAID',
         'paid_date'         => 'PAID_DATE'     
         );
-    migrate_table($db, $qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
+    migrate_table($qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
     
     // Change tax_type to selected Company Tax Type for all migrated invoices - This is an assumption
-    update_column_values($db, $qwcrm_prefix.'invoice', 'tax_type', '', get_company_details($db, 'tax_type'));
+    update_column_values($qwcrm_prefix.'invoice', 'tax_type', '', get_company_details('tax_type'));
     
     // change close dates from zero to ''
-    update_column_values($db, $qwcrm_prefix.'invoice', 'close_date', '0', '');
-    update_column_values($db, $qwcrm_prefix.'invoice', 'paid_date', '0', '');
-    update_column_values($db, $qwcrm_prefix.'invoice', 'last_active', '0', '');
+    update_column_values($qwcrm_prefix.'invoice', 'close_date', '0', '');
+    update_column_values($qwcrm_prefix.'invoice', 'paid_date', '0', '');
+    update_column_values($qwcrm_prefix.'invoice', 'last_active', '0', '');
     
     // correct null workorders
-    update_column_values($db, $qwcrm_prefix.'invoice', 'workorder_id', '0', '');
+    update_column_values($qwcrm_prefix.'invoice', 'workorder_id', '0', '');
     
     // invoice_labour
     $column_mappings = array(
@@ -777,7 +777,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'qty'               => 'INVOICE_LABOR_UNIT',
         'sub_total'         => 'INVOICE_LABOR_SUBTOTAL'    
         );
-    migrate_table($db, $qwcrm_prefix.'invoice_labour', $myitcrm_prefix.'TABLE_INVOICE_LABOR', $column_mappings);
+    migrate_table($qwcrm_prefix.'invoice_labour', $myitcrm_prefix.'TABLE_INVOICE_LABOR', $column_mappings);
     
     // invoice_parts
     $column_mappings = array(
@@ -788,7 +788,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'qty'               => 'INVOICE_PARTS_COUNT',
         'sub_total'         => 'INVOICE_PARTS_SUBTOTAL'    
         );
-    migrate_table($db, $qwcrm_prefix.'invoice_parts', $myitcrm_prefix.'TABLE_INVOICE_PARTS', $column_mappings);        
+    migrate_table($qwcrm_prefix.'invoice_parts', $myitcrm_prefix.'TABLE_INVOICE_PARTS', $column_mappings);        
     
     /* Payment / transactions */
     
@@ -804,14 +804,14 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'amount'            => 'AMOUNT',
         'note'              => 'MEMO'  
         );
-    migrate_table($db, $qwcrm_prefix.'payment_transactions', $myitcrm_prefix.'TABLE_TRANSACTION', $column_mappings);
+    migrate_table($qwcrm_prefix.'payment_transactions', $myitcrm_prefix.'TABLE_TRANSACTION', $column_mappings);
     
     // update payment types
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '1', 'credit_card');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '2', 'cheque');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '3', 'cash');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '4', 'gift_certificate');
-    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '5', 'paypal');    
+    update_column_values($qwcrm_prefix.'payment_transactions', 'method', '1', 'credit_card');
+    update_column_values($qwcrm_prefix.'payment_transactions', 'method', '2', 'cheque');
+    update_column_values($qwcrm_prefix.'payment_transactions', 'method', '3', 'cash');
+    update_column_values($qwcrm_prefix.'payment_transactions', 'method', '4', 'gift_certificate');
+    update_column_values($qwcrm_prefix.'payment_transactions', 'method', '5', 'paypal');    
     
     /* Refund */
     
@@ -829,27 +829,27 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'items'             => 'REFUND_ITEMS',
         'notes'             => 'REFUND_NOTES'        
         );
-    migrate_table($db, $qwcrm_prefix.'refund', $myitcrm_prefix.'TABLE_REFUND', $column_mappings);
+    migrate_table($qwcrm_prefix.'refund', $myitcrm_prefix.'TABLE_REFUND', $column_mappings);
     
     // update refund types
-    update_column_values($db, $qwcrm_prefix.'refund', 'type', '1', 'credit_note');
-    update_column_values($db, $qwcrm_prefix.'refund', 'type', '2', 'proxy_invoice');
-    update_column_values($db, $qwcrm_prefix.'refund', 'type', '3', 'returned_goods');
-    update_column_values($db, $qwcrm_prefix.'refund', 'type', '4', 'returned_services');
-    update_column_values($db, $qwcrm_prefix.'refund', 'type', '5', 'other');
+    update_column_values($qwcrm_prefix.'refund', 'type', '1', 'credit_note');
+    update_column_values($qwcrm_prefix.'refund', 'type', '2', 'proxy_invoice');
+    update_column_values($qwcrm_prefix.'refund', 'type', '3', 'returned_goods');
+    update_column_values($qwcrm_prefix.'refund', 'type', '4', 'returned_services');
+    update_column_values($qwcrm_prefix.'refund', 'type', '5', 'other');
     
     // update refund payment methods
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '1', 'bank_transfer');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '2', 'card');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '3', 'cash');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '4', 'cheque');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '5', 'credit');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '6', 'direct_debit');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '7', 'gift_certificate');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '8', 'google_checkout');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '9', 'paypal');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '10', 'voucher');
-    update_column_values($db, $qwcrm_prefix.'refund', 'payment_method', '11', 'other');    
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '1', 'bank_transfer');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '2', 'card');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '3', 'cash');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '4', 'cheque');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '5', 'credit');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '6', 'direct_debit');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '7', 'gift_certificate');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '8', 'google_checkout');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '9', 'paypal');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '10', 'voucher');
+    update_column_values($qwcrm_prefix.'refund', 'payment_method', '11', 'other');    
     
     /* Schedule */
     
@@ -863,7 +863,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'end_time'          => 'SCHEDULE_END',
         'notes'             => 'SCHEDULE_NOTES'    
         );
-    migrate_table($db, $qwcrm_prefix.'schedule', $myitcrm_prefix.'TABLE_SCHEDULE', $column_mappings);
+    migrate_table($qwcrm_prefix.'schedule', $myitcrm_prefix.'TABLE_SCHEDULE', $column_mappings);
     
     /* Supplier */
     
@@ -887,20 +887,20 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'description'       => 'SUPPLIER_DESCRIPTION',
         'notes'             => 'SUPPLIER_NOTES'           
         );
-    migrate_table($db, $qwcrm_prefix.'supplier', $myitcrm_prefix.'TABLE_SUPPLIER', $column_mappings);
+    migrate_table($qwcrm_prefix.'supplier', $myitcrm_prefix.'TABLE_SUPPLIER', $column_mappings);
     
     // update supplier types
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '1', 'affiliate_marketing');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '2', 'advertising');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '3', 'drop_shipping');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '4', 'courier');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '5', 'general');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '6', 'parts');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '7', 'services');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '8', 'software');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '9', 'wholesale');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '10', 'online');
-    update_column_values($db, $qwcrm_prefix.'supplier', 'type', '11', 'other');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '1', 'affiliate_marketing');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '2', 'advertising');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '3', 'drop_shipping');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '4', 'courier');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '5', 'general');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '6', 'parts');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '7', 'services');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '8', 'software');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '9', 'wholesale');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '10', 'online');
+    update_column_values($qwcrm_prefix.'supplier', 'type', '11', 'other');
     
     /* user / Employee */
     
@@ -936,22 +936,22 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'based'             => 'EMPLOYEE_BASED',
         'notes'             => ''
         );
-    migrate_table($db, $qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
+    migrate_table($qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
     
     // Set all users to have create date of now 
-    update_column_values($db, $qwcrm_prefix.'user', 'register_date', '*', time());
+    update_column_values($qwcrm_prefix.'user', 'register_date', '*', time());
     
     // Set all users to employees
-    update_column_values($db, $qwcrm_prefix.'user', 'is_employee', '*', '1');
+    update_column_values($qwcrm_prefix.'user', 'is_employee', '*', '1');
     
     // Set all users to technicians
-    update_column_values($db, $qwcrm_prefix.'user', 'usergroup', '*', '4');
+    update_column_values($qwcrm_prefix.'user', 'usergroup', '*', '4');
     
     // Set password reset required for all users
-    update_column_values($db, $qwcrm_prefix.'user', 'require_reset', '*', '1');
+    update_column_values($qwcrm_prefix.'user', 'require_reset', '*', '1');
     
     // Reset all user passwords (passwords will all be random and unknown)
-    reset_all_user_passwords($db);
+    reset_all_user_passwords();
     
     /* Workorder */
     
@@ -973,7 +973,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'comments'          => 'WORK_ORDER_COMMENT',
         'resolution'        => 'WORK_ORDER_RESOLUTION'           
         );   // WORK_ORDER_CURRENT_STATUS - WORK_ORDER_STATUS    
-    migrate_table($db, $qwcrm_prefix.'workorder', $myitcrm_prefix.'TABLE_WORK_ORDER', $column_mappings);
+    migrate_table($qwcrm_prefix.'workorder', $myitcrm_prefix.'TABLE_WORK_ORDER', $column_mappings);
     
     // workorder_history
     $column_mappings = array(
@@ -983,7 +983,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'date'              => 'WORK_ORDER_STATUS_DATE',
         'note'              => 'WORK_ORDER_STATUS_NOTES'         
         ); 
-    migrate_table($db, $qwcrm_prefix.'workorder_history', $myitcrm_prefix.'TABLE_WORK_ORDER_STATUS', $column_mappings);    
+    migrate_table($qwcrm_prefix.'workorder_history', $myitcrm_prefix.'TABLE_WORK_ORDER_STATUS', $column_mappings);    
     
     // workorder_notes
     $column_mappings = array(
@@ -993,24 +993,24 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'date'              => 'WORK_ORDER_NOTES_DATE',
         'description'       => 'WORK_ORDER_NOTES_DESCRIPTION'         
         ); 
-    migrate_table($db, $qwcrm_prefix.'workorder_notes', $myitcrm_prefix.'TABLE_WORK_ORDER_NOTES', $column_mappings);
+    migrate_table($qwcrm_prefix.'workorder_notes', $myitcrm_prefix.'TABLE_WORK_ORDER_NOTES', $column_mappings);
     
     /* Corrections */
     
     // Workorder
-    migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefix);
+    migate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix);
     
     // Invoice
-    migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix);
+    migate_database_correction_invoice($qwcrm_prefix, $myitcrm_prefix);
     
     // Giftcert
-    migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix);
+    migate_database_correction_giftcert($qwcrm_prefix, $myitcrm_prefix);
     
     // Schedule
-    migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix);
+    migate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix);
     
     // User
-    migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix);
+    migate_database_correction_user($qwcrm_prefix, $myitcrm_prefix);
     
     /* Final stuff */
 
@@ -1070,7 +1070,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
 #   Correct migrated workorder data        #
 ############################################
 
-function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefix) {
+function migate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1127,44 +1127,44 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
 
             // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 6 (closed)
             if($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '6') {                    
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_without_invoice');
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_without_invoice');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
             }
 
             // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 8 (payment made)
             elseif($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '8') {                    
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_with_invoice');
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_with_invoice');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
             }
 
             // WORK_ORDER_STATUS = 9 (pending), WORK_ORDER_CURRENT_STATUS = 7 (awaiting payment)
             elseif($myitcrm_record['my_work_order_status'] == '9' && $myitcrm_record['my_work_order_current_status'] == '7') {                    
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_with_invoice');
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_with_invoice');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
             }
 
             // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 1 (created)
             elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '1') {                    
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'unassigned');
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'unassigned');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
             }
 
             // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 2 (assigned)
             elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '2') {                    
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'assigned');
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'assigned');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
             }
 
             // Uncaught records / default
             else {                    
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'failed_to_migrate');
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'failed_to_migrate');
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
             }
 
             /* invoice_id */
 
             if($myitcrm_record['my_invoice_id'] != '') {
-                update_record_value($db, $qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'invoice_id', $myitcrm_record['my_invoice_id']);                
+                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'invoice_id', $myitcrm_record['my_invoice_id']);                
             }
 
             // Advance the INSERT loop to the next record
@@ -1196,7 +1196,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
 #   Correct migrated invoice data          #
 ############################################
 
-function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix) {
+function migate_database_correction_invoice($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1228,38 +1228,38 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
             
             /* net_amount */
             $net_amount = $qwcrm_record['sub_total'] - $qwcrm_record['discount'];
-            update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'net_amount', $net_amount);            
+            update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'net_amount', $net_amount);            
 
             /* status and is_closed*/
             
             // no amount on invoice
             if($qwcrm_record['gross_amount'] == '0') {                    
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'pending');
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0'); 
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'pending');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0'); 
             }
             
             // if unpaid
             elseif($qwcrm_record['paid_amount'] == '0') {                    
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'unpaid');
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'unpaid');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
             }
             
             // if there are partial payments
             elseif($qwcrm_record['paid_amount'] < $qwcrm_record['gross_amount'] && $qwcrm_record['paid_amount'] != '0') {                    
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'partially_paid');
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'partially_paid');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
             }
             
             // if fully paid
             elseif($qwcrm_record['paid_amount'] == $qwcrm_record['gross_amount']) {                    
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'paid');
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'paid');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '1');
             }            
 
             // Uncaught records / default
             else {                    
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'failed_to_migrate');
-                update_record_value($db, $qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'failed_to_migrate');
+                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
             }
 
             // Advance the INSERT loop to the next record
@@ -1291,7 +1291,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
 #   Correct migrated giftcert data         #
 ############################################
 
-function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix) {
+function migate_database_correction_giftcert($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1325,9 +1325,9 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
             
             // no amount on invoice
             if($qwcrm_record['date_redeemed'] == '') {                    
-                update_record_value($db, $qwcrm_prefix.'giftcert', 'giftcert_id', $qwcrm_record['giftcert_id'], 'is_redeemed', '0');                               
+                update_record_value($qwcrm_prefix.'giftcert', 'giftcert_id', $qwcrm_record['giftcert_id'], 'is_redeemed', '0');                               
             } else {
-                update_record_value($db, $qwcrm_prefix.'giftcert', 'giftcert_id', $qwcrm_record['giftcert_id'], 'is_redeemed', '1');
+                update_record_value($qwcrm_prefix.'giftcert', 'giftcert_id', $qwcrm_record['giftcert_id'], 'is_redeemed', '1');
             }
             
             // Advance the INSERT loop to the next record
@@ -1359,7 +1359,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
 #   Correct migrated schedule data         #
 ############################################
 
-function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix) {
+function migate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1400,7 +1400,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
             $myitcrm_record = $rs->GetRowAssoc(); 
 
             /* customer_id */
-            update_record_value($db, $qwcrm_prefix.'schedule', 'schedule_id', $myitcrm_record['qw_schedule_id'], 'customer_id', $myitcrm_record['my_customer_id']);
+            update_record_value($qwcrm_prefix.'schedule', 'schedule_id', $myitcrm_record['qw_schedule_id'], 'customer_id', $myitcrm_record['my_customer_id']);
             
             // Advance the INSERT loop to the next record
             $rs->MoveNext();           
@@ -1431,7 +1431,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
 #   Correct migrated user data             #
 ############################################
 
-function migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix) {
+function migate_database_correction_user($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1462,7 +1462,7 @@ function migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix) {
             $qwcrm_record = $rs->GetRowAssoc(); 
 
             // Sanitise user's usernames - remove all spaces
-            update_record_value($db, $qwcrm_prefix.'user', 'user_id', $qwcrm_record['user_id'], 'username', str_replace(' ', '.', $qwcrm_record['username']));            
+            update_record_value($qwcrm_prefix.'user', 'user_id', $qwcrm_record['user_id'], 'username', str_replace(' ', '.', $qwcrm_record['username']));            
             
             // Advance the INSERT loop to the next record
             $rs->MoveNext();           
@@ -1499,7 +1499,7 @@ function migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix) {
  * supply the required field name or all to return all of them as an array
  */
 
-function get_myitcrm_company_details($db, $item = null) {
+function get_myitcrm_company_details($item = null) {
     
     $config = new QConfig;
     $db = QFactory::getDbo();
@@ -1528,7 +1528,7 @@ function get_myitcrm_company_details($db, $item = null) {
 #   migrate data from myitcrm (insert method)  #    // build 1 SQL statement and then execute
 ################################################
 
-function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
+function migrate_table($qwcrm_table, $myitcrm_table, $column_mappings) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1733,7 +1733,7 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
 #   check myitcrm database is accessible and is 2.9.3   #
 #########################################################
 // 
-function check_myitcrm_database_connection($db, $myitcrm_prefix) {
+function check_myitcrm_database_connection($myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     
@@ -1767,12 +1767,12 @@ function check_myitcrm_database_connection($db, $myitcrm_prefix) {
 #  Merge QWcrm and MyITCRM company details   #
 ##############################################
 
-function get_merged_company_details($db) {
+function get_merged_company_details() {
     
     $db = QFactory::getDbo();
     
-    $qwcrm_company_details              = get_company_details($db);
-    $myitcrm_company_details            = get_myitcrm_company_details($db);
+    $qwcrm_company_details              = get_company_details();
+    $myitcrm_company_details            = get_myitcrm_company_details();
     
     $merged['display_name']             = $myitcrm_company_details['COMPANY_NAME'];
     $merged['logo']                     = '';

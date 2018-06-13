@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #  Display all payments the given status            #
 #####################################################
 
-function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $method = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
+function display_payments($order_by = 'payment_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $method = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -159,11 +159,11 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
 #   Insert Payment         #
 ############################
 
-function insert_payment($db, $VAR) {
+function insert_payment($VAR) {
     
     $db = QFactory::getDbo();
 
-    $invoice_details = get_invoice_details($db, $VAR['invoice_id']);
+    $invoice_details = get_invoice_details($VAR['invoice_id']);
     
     $sql = "INSERT INTO ".PRFX."payment_records SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
@@ -184,19 +184,19 @@ function insert_payment($db, $VAR) {
         $insert_id = $db->Insert_ID();
         
         // Recalculate invoice totals
-        recalculate_invoice($db, $VAR['invoice_id']);
+        recalculate_invoice($VAR['invoice_id']);
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $invoice_details['workorder_id'], _gettext("Payment").' '.$insert_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Payment").' '.$insert_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         $record = _gettext("Payment").' '.$insert_id.' '._gettext("added.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['customer_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
-        update_customer_last_active($db, $invoice_details['customer_id']);
-        update_workorder_last_active($db, $invoice_details['workorder_id']);
-        update_invoice_last_active($db, $VAR['invoice_id']);        
+        update_customer_last_active($invoice_details['customer_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($VAR['invoice_id']);        
                 
     }    
     
@@ -208,7 +208,7 @@ function insert_payment($db, $VAR) {
 #  Get payment details      #
 #############################
 
-function get_payment_details($db, $payment_id, $item = null) {
+function get_payment_details($payment_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -236,7 +236,7 @@ function get_payment_details($db, $payment_id, $item = null) {
 #  Get payment options   #
 ##########################
 
-function get_payment_options($db, $item = null) {
+function get_payment_options($item = null) {
     
     $db = QFactory::getDbo();
     
@@ -264,7 +264,7 @@ function get_payment_options($db, $item = null) {
 #   Get get active accepted payment methods    # // If i dont have 'accepted_method_id' and 'active' in the select, the array is not built correctly
 ################################################
 
-function get_payment_active_accepted_methods($db) {
+function get_payment_active_accepted_methods() {
     
     $db = QFactory::getDbo();
     
@@ -287,7 +287,7 @@ function get_payment_active_accepted_methods($db) {
 #    Get Accepted Payment methods   #  // These are the payment methods that QWcrm can accept for invoices
 #####################################
 
-function get_payment_accepted_methods($db) {
+function get_payment_accepted_methods() {
     
     $db = QFactory::getDbo();
     
@@ -307,7 +307,7 @@ function get_payment_accepted_methods($db) {
 #    Get Purchase Payment methods   #  // These are the payment methods that are used to purchase things (i.e. expenses)
 #####################################
 
-function get_payment_purchase_methods($db) {
+function get_payment_purchase_methods() {
     
     $db = QFactory::getDbo();
     
@@ -328,7 +328,7 @@ function get_payment_purchase_methods($db) {
 #   Get get active credit cards         #
 #########################################
 
-function get_active_credit_cards($db) {
+function get_active_credit_cards() {
     
     $db = QFactory::getDbo();
 
@@ -358,7 +358,7 @@ function get_active_credit_cards($db) {
 #  Get Credit card name from type   #
 #####################################
 
-function get_credit_card_display_name_from_key($db, $card_key) {
+function get_credit_card_display_name_from_key($card_key) {
     
     $db = QFactory::getDbo();
     
@@ -380,7 +380,7 @@ function get_credit_card_display_name_from_key($db, $card_key) {
 #   update payment  #
 #####################
 
-function update_payment($db, $VAR) {    
+function update_payment($VAR) {    
     
     $db = QFactory::getDbo();
     
@@ -401,19 +401,19 @@ function update_payment($db, $VAR) {
     } else {
                 
         // Recalculate invoice totals
-        recalculate_invoice($db, $VAR['invoice_id']);       
+        recalculate_invoice($VAR['invoice_id']);       
 
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
+        insert_workorder_history_note($VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
 
         // Log activity 
         $record = _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated.");
         write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
-        update_customer_last_active($db, $VAR['customer_id']);
-        update_workorder_last_active($db, $VAR['workorder_id']);
-        update_invoice_last_active($db, $VAR['invoice_id']);
+        update_customer_last_active($VAR['customer_id']);
+        update_workorder_last_active($VAR['workorder_id']);
+        update_invoice_last_active($VAR['invoice_id']);
     
     }
     
@@ -425,7 +425,7 @@ function update_payment($db, $VAR) {
 #    Update Payment options         #
 #####################################
 
-function update_payment_options($db, $VAR) {
+function update_payment_options($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -457,7 +457,7 @@ function update_payment_options($db, $VAR) {
 #   Update Payment Methods status   #
 #####################################
 
-function update_active_payment_accepted_methods($db, $VAR) {
+function update_active_payment_accepted_methods($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -501,12 +501,12 @@ function update_active_payment_accepted_methods($db, $VAR) {
 #    Delete Payement                #
 #####################################
 
-function delete_payment($db, $payment_id) {
+function delete_payment($payment_id) {
     
     $db = QFactory::getDbo();
     
     // Get payment details before deleting the record
-    $payment_details = get_payment_details($db, $payment_id);
+    $payment_details = get_payment_details($payment_id);
     
     $sql = "DELETE FROM ".PRFX."payment_records WHERE payment_id=".$db->qstr($payment_id);
     
@@ -515,19 +515,19 @@ function delete_payment($db, $payment_id) {
     } else {
         
         // Recalculate invoice totals
-        recalculate_invoice($db, $payment_details['invoice_id']);
+        recalculate_invoice($payment_details['invoice_id']);
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);           
+        insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);           
         
         // Log activity        
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $payment_details['customer_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
                 
         // Update last active record    
-        update_customer_last_active($db, $payment_details['customer_id']);
-        update_workorder_last_active($db, $payment_details['workorder_id']);
-        update_invoice_last_active($db, $payment_details['invoice_id']);
+        update_customer_last_active($payment_details['customer_id']);
+        update_workorder_last_active($payment_details['workorder_id']);
+        update_invoice_last_active($payment_details['invoice_id']);
         
         return true;        
         
@@ -541,7 +541,7 @@ function delete_payment($db, $payment_id) {
 #      Check if a payment method is active         #
 ####################################################
 
-function check_payment_method_is_active($db, $method) {
+function check_payment_method_is_active($method) {
     
     $db = QFactory::getDbo();
     
@@ -567,7 +567,7 @@ function check_payment_method_is_active($db, $method) {
 #   validate and calculate new invoice totals for the payment method    #
 #########################################################################
 
-function validate_payment_method_totals($db, $invoice_id, $amount) {
+function validate_payment_method_totals($invoice_id, $amount) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -582,7 +582,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
     }
 
     // Is the payment larger than the outstanding invoice balance, this is not allowed
-    if($amount > get_invoice_details($db, $invoice_id, 'balance')){
+    if($amount > get_invoice_details($invoice_id, 'balance')){
         
         $smarty->assign('warning_msg', _gettext("You can not enter more than the outstanding balance of the invoice."));
         
@@ -598,7 +598,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
 #  Sum Payments Sub Total (ny inovice)  #
 #########################################
 
-function payments_sub_total($db, $invoice_id) {
+function payments_sub_total($invoice_id) {
     
     $db = QFactory::getDbo();
     

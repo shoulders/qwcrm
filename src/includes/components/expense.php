@@ -29,7 +29,7 @@ defined('_QWEXEC') or die;
 #         Display expenses                          #
 #####################################################
 
-function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
+function display_expenses($order_by = 'expense_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -132,7 +132,7 @@ function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $u
 #      Insert Expense                    #
 ##########################################
 
-function insert_expense($db, $VAR) {
+function insert_expense($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -171,7 +171,7 @@ function insert_expense($db, $VAR) {
 #  Get Expense Details   #
 ##########################
 
-function get_expense_details($db, $expense_id, $item = null) {
+function get_expense_details($expense_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -199,7 +199,7 @@ function get_expense_details($db, $expense_id, $item = null) {
 #    Get Expense Types              #
 #####################################
 
-function get_expense_types($db) {
+function get_expense_types() {
     
     $db = QFactory::getDbo();
     
@@ -221,7 +221,7 @@ function get_expense_types($db) {
 #     Update Expense                #
 #####################################
 
-function update_expense($db, $expense_id, $VAR) {
+function update_expense($expense_id, $VAR) {
     
     $db = QFactory::getDbo();
     
@@ -261,12 +261,12 @@ function update_expense($db, $expense_id, $VAR) {
 #    Delete Record                  #
 #####################################
 
-function delete_expense($db, $expense_id) {
+function delete_expense($expense_id) {
     
     $db = QFactory::getDbo();
     
     // Get invoice_id before deleting the record
-    $invoice_id = get_expense_details($db, $expense_id, 'invoice_id');
+    $invoice_id = get_expense_details($expense_id, 'invoice_id');
     
     $sql = "DELETE FROM ".PRFX."expense_records WHERE expense_id=".$db->qstr($expense_id);
     
@@ -290,7 +290,7 @@ function delete_expense($db, $expense_id) {
 #      Last Record Look Up               #
 ##########################################
 
-function last_expense_id_lookup($db) {
+function last_expense_id_lookup() {
     
     $db = QFactory::getDbo();
     

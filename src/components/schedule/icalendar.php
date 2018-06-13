@@ -34,13 +34,13 @@ if($VAR['start_year'] == '' || $VAR['start_month'] == '' || $VAR['start_day'] ==
 if($VAR['ics_type'] == 'day') {
     
     // Get Employee Display Name
-    $user_display_name = get_user_details($db, $VAR['employee_id'], 'display_name');
+    $user_display_name = get_user_details($VAR['employee_id'], 'display_name');
     
     // Set filename    
     $ics_filename = str_replace(' ', '-', $user_display_name).'_'._gettext("Day").'-'._gettext("Schedule").'_'.$VAR['start_year'].'-'.$VAR['start_month'].'-'.$VAR['start_day'].'.ics';
     
     // Build Day Schedule for the employee as an .ics
-    $ics_content =  build_ics_schedule_day($db, $VAR['employee_id'], $VAR['start_year'], $VAR['start_month'], $VAR['start_day']);
+    $ics_content =  build_ics_schedule_day($VAR['employee_id'], $VAR['start_year'], $VAR['start_month'], $VAR['start_day']);
     
     // Log activity
     $record = 'Day Schedule'.' ('.$VAR['start_year'].'-'.$VAR['start_month'].'-'.$VAR['start_day'].') '._gettext("for").' ' .$user_display_name.' '._gettext("has been exported.");
@@ -50,17 +50,17 @@ if($VAR['ics_type'] == 'day') {
 } else {
     
     // Get Schedule Details
-    $schedule_details = get_schedule_details($db, $VAR['schedule_id']);
+    $schedule_details = get_schedule_details($VAR['schedule_id']);
     
     // Get Customer Display Name
-    $customer_display_name = get_customer_details($db, $schedule_details['workorder_id'], 'display_name');
+    $customer_display_name = get_customer_details($schedule_details['workorder_id'], 'display_name');
     
     // Set filename
     $ics_filename   = _gettext("Schedule").'-'.$VAR['schedule_id'].'_'._gettext("WorkOrder").'-'.$schedule_details['workorder_id'].'_'.str_replace(' ', '-', $customer_display_name).'.ics';
     //$ics_filename   = 'schedule.ics';
     
     // Build a single schedule item as an .ics
-    $ics_content =  build_single_schedule_ics($db, $VAR['schedule_id']);
+    $ics_content =  build_single_schedule_ics($VAR['schedule_id']);
     
     // Log activity
     $record = _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("has been exported.");

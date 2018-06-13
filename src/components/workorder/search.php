@@ -23,7 +23,7 @@ if(isset($VAR['submit'])) {
 $smarty->assign('search_category',  $VAR['search_category']                                                                             );
 $smarty->assign('search_term',      $VAR['search_term']                                                                                 );
 $smarty->assign('filter_status',    $VAR['filter_status']                                                                               );
-$smarty->assign('workorder_statuses', get_workorder_statuses($db)                                                                       );
-$smarty->assign('display_workorders', display_workorders($db, 'workorder_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'])   );
+$smarty->assign('workorder_statuses', get_workorder_statuses()                                                                       );
+$smarty->assign('display_workorders', display_workorders('workorder_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'])   );
 
 $BuildPage .= $smarty->fetch('workorder/search.tpl');

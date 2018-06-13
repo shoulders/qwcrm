@@ -21,7 +21,7 @@ if(isset($VAR['submit'])) {
     if (check_start_end_times($opening_time, $closing_time)) {
         
         // Update opening and closing Times into the database
-        update_company_hours($db, $VAR['openingTime'], $VAR['closingTime']);
+        update_company_hours($VAR['openingTime'], $VAR['closingTime']);
         
     }
     
@@ -31,8 +31,8 @@ if(isset($VAR['submit'])) {
 
 // If page is just loaded get the opening and closing times stored in the database
 } else {    
-    $smarty->assign('opening_time', get_company_start_end_times($db, 'opening_time'));
-    $smarty->assign('closing_time', get_company_start_end_times($db, 'closing_time'));   
+    $smarty->assign('opening_time', get_company_start_end_times('opening_time'));
+    $smarty->assign('closing_time', get_company_start_end_times('closing_time'));   
 }
 
 // Fetch the hours page

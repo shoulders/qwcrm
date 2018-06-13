@@ -17,7 +17,7 @@ if($VAR['refund_id'] == '') {
 } 
 
 // Build the page
-$smarty->assign('refund_types', get_refund_types($db));
-$smarty->assign('payment_methods', get_payment_purchase_methods($db));
-$smarty->assign('refund_details', get_refund_details($db, $VAR['refund_id']));
+$smarty->assign('refund_types', get_refund_types());
+$smarty->assign('payment_methods', get_payment_purchase_methods());
+$smarty->assign('refund_details', get_refund_details($VAR['refund_id']));
 $BuildPage .= $smarty->fetch('refund/details.tpl');

@@ -24,10 +24,10 @@ if($VAR['payment_id'] == '') {
 }   
 
 // Get invoice_id
-$invoice_id = get_payment_details($db, $VAR['payment_id'], 'invoice_id');
+$invoice_id = get_payment_details($VAR['payment_id'], 'invoice_id');
 
 // Delete the payment
-delete_payment($db, $VAR['payment_id']);
+delete_payment($VAR['payment_id']);
 
 // Load the payment search page
 force_page('payment', 'search', 'information_msg='._gettext("Payment deleted successfully and invoice").' '.$invoice_id.' '._gettext("has been updated to reflect this change."));

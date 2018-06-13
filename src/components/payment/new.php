@@ -53,17 +53,17 @@ if(isset($VAR['submit'])) {
 }
 
 // If the invoice has been closed redirect to the invoice details page / redirect after last payment added.
-if(get_invoice_details($db, $VAR['invoice_id'], 'is_closed')) {
+if(get_invoice_details($VAR['invoice_id'], 'is_closed')) {
     force_page('invoice', 'details&invoice_id='.$VAR['invoice_id']);
 }
 
 // Build the page
-$smarty->assign('customer_details',                 get_customer_details($db, get_invoice_details($db, $VAR['invoice_id'] , 'customer_id'))     );
-$smarty->assign('invoice_details',                  get_invoice_details($db, $VAR['invoice_id'])                                                );
-$smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                                                   );
-$smarty->assign('display_payments',                 display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );
-$smarty->assign('payment_methods',                  get_payment_accepted_methods($db)                                                             );
-$smarty->assign('active_payment_accepted_methods',  get_payment_active_accepted_methods($db)                                                      );
-$smarty->assign('active_credit_cards',              get_active_credit_cards($db)                                                                );
+$smarty->assign('customer_details',                 get_customer_details(get_invoice_details($VAR['invoice_id'] , 'customer_id'))     );
+$smarty->assign('invoice_details',                  get_invoice_details($VAR['invoice_id'])                                                );
+$smarty->assign('invoice_statuses',                 get_invoice_statuses()                                                                   );
+$smarty->assign('display_payments',                 display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );
+$smarty->assign('payment_methods',                  get_payment_accepted_methods()                                                             );
+$smarty->assign('active_payment_accepted_methods',  get_payment_active_accepted_methods()                                                      );
+$smarty->assign('active_credit_cards',              get_active_credit_cards()                                                                );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');

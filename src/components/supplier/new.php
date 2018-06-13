@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/supplier.php');
 
 // Predict the next supplier_id
-$new_record_id = last_supplier_id_lookup($db) +1;
+$new_record_id = last_supplier_id_lookup() +1;
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
         
     // insert the supplier record and get the supplier_id
-    $VAR['supplier_id'] = insert_supplier($db, $VAR);
+    $VAR['supplier_id'] = insert_supplier($VAR);
             
     if (isset($VAR['submitandnew'])) {
 
@@ -34,7 +34,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 }
 
 // Build the page
-$smarty->assign('supplier_types', get_supplier_types($db));
+$smarty->assign('supplier_types', get_supplier_types());
 $smarty->assign('new_record_id', $new_record_id);
-$smarty->assign('tax_rate', get_company_details($db, 'tax_rate'));
+$smarty->assign('tax_rate', get_company_details('tax_rate'));
 $BuildPage .= $smarty->fetch('supplier/new.tpl');

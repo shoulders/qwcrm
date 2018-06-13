@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'system/mpdf.php');
 
 // Generate the barcode (as html)
 $bc_generator = new Picqer\Barcode\BarcodeGeneratorHTML();
-$barcode = $bc_generator->getBarcode(get_giftcert_details($db, $VAR['giftcert_id'], 'giftcert_code'), $bc_generator::TYPE_CODE_128);
+$barcode = $bc_generator->getBarcode(get_giftcert_details($VAR['giftcert_id'], 'giftcert_code'), $bc_generator::TYPE_CODE_128);
 
 // Check if we have an giftcert_id
 if($VAR['giftcert_id'] == '') {
@@ -27,11 +27,11 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Get Gift Certificate details
-$giftcert_details = get_giftcert_details($db, $VAR['giftcert_id']);
-$customer_details = get_customer_details($db, $giftcert_details['customer_id']);
+$giftcert_details = get_giftcert_details($VAR['giftcert_id']);
+$customer_details = get_customer_details($giftcert_details['customer_id']);
 
 // Assign Variables
-$smarty->assign('company_details',  get_company_details($db)    );
+$smarty->assign('company_details',  get_company_details()    );
 $smarty->assign('customer_details', $customer_details           );
 $smarty->assign('giftcert_details', $giftcert_details           );
 $smarty->assign('barcode',          $barcode                    );
@@ -80,7 +80,7 @@ if($VAR['print_content'] == 'gift_certificate') {
         $attachment['filetype'] = 'application/pdf';
         
         // Build the message body        
-        $body = get_email_message_body($db, 'email_msg_giftcert', $customer_details);
+        $body = get_email_message_body('email_msg_giftcert', $customer_details);
         
         // Log activity
         $record = _gettext("Gift Certificate").' '.$VAR['giftcert_id'].' '._gettext("has been emailed as a PDF.");

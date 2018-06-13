@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/invoice.php');
 
 // If the export of the invoice prefill items has been requested
 if($VAR['export_invoice_prefill_items'] == 'export') {
-    export_invoice_prefill_items_csv($db);
+    export_invoice_prefill_items_csv();
     die();
 }
 
@@ -21,26 +21,26 @@ if(isset($VAR['submit'])) {
 
     // New invoice labour rates item
     if($VAR['submit'] == 'new') {
-        insert_invoice_prefill_item($db, $VAR);
+        insert_invoice_prefill_item($VAR);
     }    
     
     // Update invoice labour rates item
     if($VAR['submit'] == 'update') {            
-        update_invoice_prefill_item($db, $VAR);        
+        update_invoice_prefill_item($VAR);        
     }
     
     // Delete invoice labour rates item
     if($VAR['submit'] == 'delete') {        
-        delete_invoice_prefill_item($db, $VAR['invoice_prefill_id']);
+        delete_invoice_prefill_item($VAR['invoice_prefill_id']);
     }
     
     // Upload CSV file of invoice labour rates items
     if($VAR['submit'] == 'csv_upload') {
-        upload_invoice_prefill_items_csv($db, $VAR);
+        upload_invoice_prefill_items_csv($VAR);
     }
     
 }
 
 // Build Page
-$smarty->assign('invoice_prefill_items', get_invoice_prefill_items($db));
+$smarty->assign('invoice_prefill_items', get_invoice_prefill_items());
 $BuildPage .= $smarty->fetch('invoice/prefill_items.tpl');

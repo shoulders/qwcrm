@@ -17,7 +17,7 @@ if($VAR['workorder_id'] == '') {
 }
 
 // Check if we can edit the workorder comment
-if(get_workorder_details($db, $VAR['workorder_id'], 'is_closed')) {
+if(get_workorder_details($VAR['workorder_id'], 'is_closed')) {
     force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'warning_msg='._gettext("Cannot edit the comment of a closed Work Order."));
 }
 
@@ -25,7 +25,7 @@ if(get_workorder_details($db, $VAR['workorder_id'], 'is_closed')) {
 if(isset($VAR['submit'])) {
     
     // update the workorder comment in the database
-    update_workorder_comment($db, $VAR['workorder_id'], $VAR['comment']);
+    update_workorder_comment($VAR['workorder_id'], $VAR['comment']);
     
     // load the workorder details page
     force_page('workorder', 'details', 'workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("comment have been updated."));
@@ -33,5 +33,5 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('comment', get_workorder_details($db, $VAR['workorder_id'], 'comment'));
+$smarty->assign('comment', get_workorder_details($VAR['workorder_id'], 'comment'));
 $BuildPage .= $smarty->fetch('workorder/details_edit_comment.tpl');

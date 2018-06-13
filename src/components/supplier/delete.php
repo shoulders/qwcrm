@@ -21,7 +21,7 @@ if($VAR['supplier_id'] == '') {
 }  
 
 // Delete the supplier function call
-delete_supplier($db, $VAR['supplier_id']);
+delete_supplier($VAR['supplier_id']);
 
 // Load the supplier search page
 force_page('supplier', 'search', 'information_msg='._gettext("Supplier deleted successfully."));

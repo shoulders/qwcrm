@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Invoices                  #
 #########################################
 
-function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_invoices($order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -217,18 +217,18 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
 #     insert invoice                #
 #####################################
 
-function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
+function insert_invoice($customer_id, $workorder_id, $discount_rate) {
     
     $db = QFactory::getDbo();
     
     // Get invoice tax type
-    $tax_type = get_company_details($db, 'tax_type');
+    $tax_type = get_company_details('tax_type');
     
     // Tax Rate based on Tax Type
     if($tax_type == 'none') {
         $tax_rate = '0.00';
     } else {        
-        $tax_rate = get_company_details($db, 'tax_rate');
+        $tax_rate = get_company_details('tax_rate');
     }    
     
     $sql = "INSERT INTO ".PRFX."invoice_records SET     
@@ -252,7 +252,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
         $invoice_id = $db->Insert_ID();
         
         // Create a Workorder History Note  
-        insert_workorder_history_note($db, $workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($workorder_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was created for this Work Order").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
                 
         // Log activity        
         if($workorder_id) {            
@@ -263,8 +263,8 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
         
         // Update last active record    
-        update_customer_last_active($db, $customer_id);
-        update_workorder_last_active($db, $workorder_id);        
+        update_customer_last_active($customer_id);
+        update_workorder_last_active($workorder_id);        
         
         return $invoice_id;
         
@@ -276,7 +276,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
 #     Insert Labour Items           #
 #####################################
 
-function insert_labour_items($db, $invoice_id, $description, $amount, $qty) {
+function insert_labour_items($invoice_id, $description, $amount, $qty) {
     
     $db = QFactory::getDbo();
     
@@ -318,7 +318,7 @@ function insert_labour_items($db, $invoice_id, $description, $amount, $qty) {
 #     Insert Parts Items            #
 #####################################
 
-function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
+function insert_parts_items($invoice_id, $description, $amount, $qty) {
     
     $db = QFactory::getDbo();
     
@@ -360,7 +360,7 @@ function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
 #   insert invoice prefill item     #
 #####################################
 
-function insert_invoice_prefill_item($db, $VAR) {
+function insert_invoice_prefill_item($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -388,7 +388,7 @@ function insert_invoice_prefill_item($db, $VAR) {
 #   Get invoice details             #
 #####################################
 
-function get_invoice_details($db, $invoice_id, $item = null) {
+function get_invoice_details($invoice_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -416,7 +416,7 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 #   Get All invoice labour items        #
 #########################################
 
-function get_invoice_labour_items($db, $invoice_id) {
+function get_invoice_labour_items($invoice_id) {
     
     $db = QFactory::getDbo();
     
@@ -440,7 +440,7 @@ function get_invoice_labour_items($db, $invoice_id) {
 #   Get invoice labour item details   #
 #######################################
 
-function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) {
+function get_invoice_labour_item_details($invoice_labour_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -468,7 +468,7 @@ function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) 
 #   Get All invoice parts items     #
 #####################################
 
-function get_invoice_parts_items($db, $invoice_id) {
+function get_invoice_parts_items($invoice_id) {
     
     $db = QFactory::getDbo();
     
@@ -492,7 +492,7 @@ function get_invoice_parts_items($db, $invoice_id) {
 #   Get invoice parts item details    #
 #######################################
 
-function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
+function get_invoice_parts_item_details($invoice_parts_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -520,7 +520,7 @@ function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
 #   Get invoice prefill items         #
 #######################################
 
-function get_invoice_prefill_items($db, $type = null, $status = null) {
+function get_invoice_prefill_items($type = null, $status = null) {
     
     $db = QFactory::getDbo();
     
@@ -553,7 +553,7 @@ function get_invoice_prefill_items($db, $type = null, $status = null) {
 #    Get Invoice Statuses           #
 #####################################
 
-function get_invoice_statuses($db) {
+function get_invoice_statuses() {
     
     $db = QFactory::getDbo();
     
@@ -573,7 +573,7 @@ function get_invoice_statuses($db) {
 #  Get Invoice status display name   #
 ######################################
 
-function get_invoice_status_display_name($db, $status_key) {
+function get_invoice_status_display_name($status_key) {
     
     $db = QFactory::getDbo();
     
@@ -593,21 +593,21 @@ function get_invoice_status_display_name($db, $status_key) {
 #   Get All invoices stats          #
 #####################################
 
-function get_invoices_stats($db) {
+function get_invoices_stats() {
     
     $db = QFactory::getDbo();
     
     return array(
-        "open_count"            =>  count_invoices($db, 'open'),
-        "pending_count"         =>  count_invoices($db, 'pending'),
-        "unpaid_count"          =>  count_invoices($db, 'unpaid'),
-        "partially_paid_count"  =>  count_invoices($db, 'partially_paid'),
-        "paid_count"            =>  count_invoices($db, 'paid'),
-        "in_dispute_count"      =>  count_invoices($db, 'in_dispute'),
-        "overdue_count"         =>  count_invoices($db, 'overdue'),
-        "cancelled_count"       =>  count_invoices($db, 'cancelled'),
-        "refunded_count"        =>  count_invoices($db, 'refunded'),
-        "collections_count"     =>  count_invoices($db, 'collections')
+        "open_count"            =>  count_invoices('open'),
+        "pending_count"         =>  count_invoices('pending'),
+        "unpaid_count"          =>  count_invoices('unpaid'),
+        "partially_paid_count"  =>  count_invoices('partially_paid'),
+        "paid_count"            =>  count_invoices('paid'),
+        "in_dispute_count"      =>  count_invoices('in_dispute'),
+        "overdue_count"         =>  count_invoices('overdue'),
+        "cancelled_count"       =>  count_invoices('cancelled'),
+        "refunded_count"        =>  count_invoices('refunded'),
+        "collections_count"     =>  count_invoices('collections')
     );
     
 }
@@ -619,7 +619,7 @@ function get_invoices_stats($db) {
 #   update invoice   #  // this is used when a user updates an invoice before any payments
 ######################
 
-function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
+function update_invoice($invoice_id, $date, $due_date, $discount_rate) {
     
     $db = QFactory::getDbo();
     
@@ -634,19 +634,19 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
         
     } else {
         
-        $invoice_details = get_invoice_details($db, $invoice_id);
+        $invoice_details = get_invoice_details($invoice_id);
         
         // Create a Workorder History Note  
-        insert_workorder_history_note($db, $invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record    
-        update_customer_last_active($db, get_invoice_details($db, $invoice_id, 'customer_id'));
-        update_workorder_last_active($db, get_invoice_details($db, $invoice_id, 'workorder_id'));
-        update_invoice_last_active($db, $invoice_id);
+        update_customer_last_active(get_invoice_details($invoice_id, 'customer_id'));
+        update_workorder_last_active(get_invoice_details($invoice_id, 'workorder_id'));
+        update_invoice_last_active($invoice_id);
         
     }
     
@@ -656,7 +656,7 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
 #   update invoice prefill item     #
 #####################################
 
-function update_invoice_prefill_item($db, $VAR) {
+function update_invoice_prefill_item($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -683,12 +683,12 @@ function update_invoice_prefill_item($db, $VAR) {
 # Update Invoice Status    #
 ############################
 
-function update_invoice_status($db, $invoice_id, $new_status) {
+function update_invoice_status($invoice_id, $new_status) {
     
     $db = QFactory::getDbo();
     
     // Get invoice details
-    $invoice_details = get_invoice_details($db, $invoice_id);
+    $invoice_details = get_invoice_details($invoice_id);
     
     // if the new status is the same as the current one, exit
     if($new_status == $invoice_details['status']) {        
@@ -711,28 +711,28 @@ function update_invoice_status($db, $invoice_id, $new_status) {
     
         // Update invoice 'is_closed' boolean
         if($new_status == 'cancelled' || $new_status == 'paid') {
-            update_invoice_closed_status($db, $invoice_id, 'close');
+            update_invoice_closed_status($invoice_id, 'close');
         } else {
-            update_invoice_closed_status($db, $invoice_id, 'open');
+            update_invoice_closed_status($invoice_id, 'open');
         }
         
         // Status updated message
         postEmulationWrite('information_msg', _gettext("Invoice status updated."));  
         
         // For writing message to log file, get work order status display name
-        $inv_status_diplay_name = _gettext(get_invoice_status_display_name($db, $new_status));
+        $inv_status_diplay_name = _gettext(get_invoice_status_display_name($new_status));
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $invoice_id, _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($invoice_id, _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
         
         // Update last active record
-        update_customer_last_active($db, $invoice_details['customer_id']);
-        update_workorder_last_active($db, $invoice_details['workorder_id']);
-        update_invoice_last_active($db, $invoice_id);                
+        update_customer_last_active($invoice_details['customer_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($invoice_id);                
         
         return true;
         
@@ -744,7 +744,7 @@ function update_invoice_status($db, $invoice_id, $new_status) {
 # Update invoice Closed Status    #
 ###################################
 
-function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
+function update_invoice_closed_status($invoice_id, $new_closed_status) {
     
     $db = QFactory::getDbo();
     
@@ -775,7 +775,7 @@ function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
 #    Update Last Active         #
 #################################
 
-function update_invoice_last_active($db, $invoice_id = null) {
+function update_invoice_last_active($invoice_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -800,21 +800,21 @@ function update_invoice_last_active($db, $invoice_id = null) {
 #   Delete Invoice                  #
 #####################################
 
-function delete_invoice($db, $invoice_id) {
+function delete_invoice($invoice_id) {
     
     $db = QFactory::getDbo();
     
     // Get invoice details before deleting
-    $invoice_details = get_invoice_details($db, $invoice_id);
+    $invoice_details = get_invoice_details($invoice_id);
     
     // make sure the invoice can be deleted 
-    if(!check_invoice_can_be_deleted($db, $invoice_id)) {        
+    if(!check_invoice_can_be_deleted($invoice_id)) {        
         return false;
     }
     
     // Delete parts and labour
-    delete_invoice_labour_items($db, $invoice_id);
-    delete_invoice_parts_items($db, $invoice_id);
+    delete_invoice_labour_items($invoice_id);
+    delete_invoice_parts_items($invoice_id);
     
     // delete the invoice primary record
     $sql = "DELETE FROM ".PRFX."invoice_records WHERE invoice_id=".$db->qstr($invoice_id);
@@ -824,21 +824,21 @@ function delete_invoice($db, $invoice_id) {
     } else {
         
         // Update the workorder to remove the invoice_id
-        update_workorder_invoice_id($db, $invoice_details['workorder_id'], '');
+        update_workorder_invoice_id($invoice_details['workorder_id'], '');
         
         // Create a Workorder History Note  
-        insert_workorder_history_note($db, $invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
             
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
         
         // Update workorder status
-        update_workorder_status($db, $invoice_details['workorder_id'], 'closed_without_invoice');        
+        update_workorder_status($invoice_details['workorder_id'], 'closed_without_invoice');        
                 
         // Update last active record
-        update_customer_last_active($db, $invoice_details['customer_id']);
-        update_workorder_last_active($db, $invoice_details['workorder_id']);              
+        update_customer_last_active($invoice_details['customer_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);              
         
         return true;
         
@@ -850,11 +850,11 @@ function delete_invoice($db, $invoice_id) {
 #   Delete Labour Item              #
 #####################################
 
-function delete_invoice_labour_item($db, $invoice_labour_id) {
+function delete_invoice_labour_item($invoice_labour_id) {
     
     $db = QFactory::getDbo();
     
-    $invoice_details = get_invoice_details($db, get_invoice_labour_item_details($db, $invoice_labour_id, 'invoice_id'));    
+    $invoice_details = get_invoice_details(get_invoice_labour_item_details($invoice_labour_id, 'invoice_id'));    
     
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $db->qstr($invoice_labour_id);
 
@@ -863,7 +863,7 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
     } else {
         
         // Recalculate the invoice totals and update them
-        recalculate_invoice($db, $invoice_details['invoice_id']);
+        recalculate_invoice($invoice_details['invoice_id']);
 
         // Create a Workorder History Note 
         // not currently needed
@@ -873,9 +873,9 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Update last active record
-        update_customer_last_active($db, $invoice_details['customer_id']);
-        update_workorder_last_active($db, $invoice_details['workorder_id']);
-        update_invoice_last_active($db, $invoice_details['invoice_id']);  
+        update_customer_last_active($invoice_details['customer_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($invoice_details['invoice_id']);  
         
         return true;
 
@@ -887,7 +887,7 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
 #   Delete an invoice's Labour Items (ALL)  #
 #############################################
 
-function delete_invoice_labour_items($db, $invoice_id) {
+function delete_invoice_labour_items($invoice_id) {
     
     $db = QFactory::getDbo();
     
@@ -907,11 +907,11 @@ function delete_invoice_labour_items($db, $invoice_id) {
 #   Delete Parts Item               #
 #####################################
 
-function delete_invoice_parts_item($db, $invoice_parts_id) {
+function delete_invoice_parts_item($invoice_parts_id) {
     
     $db = QFactory::getDbo();
     
-    $invoice_details = get_invoice_details($db, get_invoice_parts_item_details($db, $invoice_parts_id, 'invoice_id'));  
+    $invoice_details = get_invoice_details(get_invoice_parts_item_details($invoice_parts_id, 'invoice_id'));  
     
     $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_parts_id=" . $db->qstr($invoice_parts_id);
 
@@ -921,7 +921,7 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
     } else {
         
         // Recalculate the invoice totals and update them
-        recalculate_invoice($db, $invoice_details['invoice_id']);
+        recalculate_invoice($invoice_details['invoice_id']);
         
         // Create a Workorder History Note 
         // not currently needed
@@ -931,9 +931,9 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Update last active record
-        update_customer_last_active($db, $invoice_details['customer_id']);
-        update_workorder_last_active($db, $invoice_details['workorder_id']);
-        update_invoice_last_active($db, $invoice_details['invoice_id']);  
+        update_customer_last_active($invoice_details['customer_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($invoice_details['invoice_id']);  
         
         return true;
 
@@ -945,7 +945,7 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
 #   Delete an invoice's Parts Items (ALL)   #
 #############################################
 
-function delete_invoice_parts_items($db, $invoice_id) {
+function delete_invoice_parts_items($invoice_id) {
     
     $db = QFactory::getDbo();
     
@@ -965,7 +965,7 @@ function delete_invoice_parts_items($db, $invoice_id) {
 #     delete labour rate item       #
 #####################################
 
-function delete_invoice_prefill_item($db, $invoice_prefill_id) {
+function delete_invoice_prefill_item($invoice_prefill_id) {
     
     $db = QFactory::getDbo();
     
@@ -991,7 +991,7 @@ function delete_invoice_prefill_item($db, $invoice_prefill_id) {
 #   Sum Labour Sub Totals           #
 #####################################
 
-function labour_sub_total($db, $invoice_id) {
+function labour_sub_total($invoice_id) {
     
     $db = QFactory::getDbo();
     
@@ -1011,7 +1011,7 @@ function labour_sub_total($db, $invoice_id) {
 #   Sum Parts Sub Total             #
 #####################################
 
-function parts_sub_total($db, $invoice_id) {
+function parts_sub_total($invoice_id) {
     
     $db = QFactory::getDbo();
     
@@ -1031,14 +1031,14 @@ function parts_sub_total($db, $invoice_id) {
 #   Recalculate Invoice Totals      #
 #####################################
 
-function recalculate_invoice($db, $invoice_id) {
+function recalculate_invoice($invoice_id) {
     
     $db = QFactory::getDbo();
     
-    $invoice_details        = get_invoice_details($db, $invoice_id);
+    $invoice_details        = get_invoice_details($invoice_id);
     
-    $items_sub_total        = labour_sub_total($db, $invoice_id) + parts_sub_total($db, $invoice_id);
-    $payments_sub_total     = payments_sub_total($db, $invoice_id);
+    $items_sub_total        = labour_sub_total($invoice_id) + parts_sub_total($invoice_id);
+    $payments_sub_total     = payments_sub_total($invoice_id);
     $discount_amount        = $items_sub_total  * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
     $net_amount             = $items_sub_total  - $discount_amount;
     $tax_amount             = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
@@ -1064,27 +1064,27 @@ function recalculate_invoice($db, $invoice_id) {
         
         // if no invoiceable amount, set to pending (if not already)
         if($gross_amount == 0 && $invoice_details['status'] != 'pending') {
-            update_invoice_status($db, $invoice_id, 'pending');
+            update_invoice_status($invoice_id, 'pending');
         }
         
         // if there is an invoiceable amount, and status is pending, set to unpaid
         if($gross_amount > 0 && $invoice_details['status'] == 'pending') {
-            update_invoice_status($db, $invoice_id, 'unpaid');            
+            update_invoice_status($invoice_id, 'unpaid');            
         }               
         
         // If there are no payments, set to unpaid (if not already)
         if($balance == $gross_amount && $invoice_details['status'] != 'unpaid') {
-            update_invoice_status($db, $invoice_id, 'unpaid');
+            update_invoice_status($invoice_id, 'unpaid');
         }
         
         // if there is an outstanding balance and there are some payments, set to partially paid (if not already)
         if($balance != 0 && $payments_sub_total != 0 && $invoice_details['status'] != 'partially_paid') {            
-            update_invoice_status($db, $invoice_id, 'partially_paid');
+            update_invoice_status($invoice_id, 'partially_paid');
         }
         
         // if there is no balance, balance is the sames as payments made, set to paid (if not already)
         if($balance == 0 && $invoice_details['status'] != 'paid') {            
-            update_invoice_status($db, $invoice_id, 'paid');
+            update_invoice_status($invoice_id, 'paid');
         }        
         
         return;        
@@ -1097,7 +1097,7 @@ function recalculate_invoice($db, $invoice_id) {
 #   Upload labour rates CSV file    #
 #####################################
 
-function upload_invoice_prefill_items_csv($db, $VAR) {
+function upload_invoice_prefill_items_csv($VAR) {
     
     $db = QFactory::getDbo();
 
@@ -1189,7 +1189,7 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
 #   Export Invoice Prefill Items as a CSV file   #
 ##################################################
 
-function export_invoice_prefill_items_csv($db) {
+function export_invoice_prefill_items_csv() {
     
     $db = QFactory::getDbo();
     
@@ -1232,12 +1232,12 @@ function export_invoice_prefill_items_csv($db) {
 #  Check if the invoice status is allowed to be changed  #
 ##########################################################
 
- function check_invoice_status_can_be_changed($db, $invoice_id) {
+ function check_invoice_status_can_be_changed($invoice_id) {
      
     $db = QFactory::getDbo();
  
     // Get the invoice details
-    $invoice_details = get_invoice_details($db, $invoice_id);
+    $invoice_details = get_invoice_details($invoice_id);
     
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
@@ -1252,7 +1252,7 @@ function export_invoice_prefill_items_csv($db) {
     }
         
     // Has payments
-    if(!empty(display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has payments."));
         return false;        
     }
@@ -1266,12 +1266,12 @@ function export_invoice_prefill_items_csv($db) {
 #   Check to see if the invoice's can be deleted              #
 ###############################################################
 
-function check_invoice_can_be_deleted($db, $invoice_id) {
+function check_invoice_can_be_deleted($invoice_id) {
     
     $db = QFactory::getDbo();
     
     // Get the invoice details
-    $invoice_details = get_invoice_details($db, $invoice_id);
+    $invoice_details = get_invoice_details($invoice_id);
     
     // Is closed
     if($invoice_details['is_closed'] == true) {
@@ -1292,33 +1292,33 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
     }    
     
     // Has payments
-    if(!empty(display_payments($db, 'payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments."));
         return false;        
     }
 
     /*
     // Has Labour
-    if(!empty(get_invoice_labour_items($db, $invoice_id))) {
+    if(!empty(get_invoice_labour_items($invoice_id))) {
        postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
        return false;          
     }    
     
     // Has Parts
-    if(!empty(get_invoice_parts_items($db, $invoice_id))) {
+    if(!empty(get_invoice_parts_items($invoice_id))) {
        postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
        return false;          
     }
     */
     
     // Has Expenses
-    if(count_expenses($db, $invoice_id) > 0) {
+    if(count_expenses($invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has expenses."));
         return false;
     }
         
     // Has Refunds
-    if(count_refunds($db, $invoice_id) > 0) {
+    if(count_refunds($invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has refunds."));
         return false;
     }
@@ -1332,12 +1332,12 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
 # Assign Workorder to another employee  #
 #########################################
 
-function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
+function assign_invoice_to_employee($invoice_id, $target_employee_id) {
     
     $db = QFactory::getDbo();
     
     // get the invoice details
-    $invoice_details = get_invoice_details($db, $invoice_id);
+    $invoice_details = get_invoice_details($invoice_id);
     
     // if the new employee is the same as the current one, exit
     if($target_employee_id == $invoice_details['employee_id']) {         
@@ -1380,14 +1380,14 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
         if($assigned_employee_id == ''){
             $assigned_employee_display_name = _gettext("Unassigned");            
         } else {            
-            $assigned_employee_display_name = get_user_details($db, $assigned_employee_id, 'display_name');
+            $assigned_employee_display_name = get_user_details($assigned_employee_id, 'display_name');
         }
         
         // Get the Display Name of the Target Employee        
-        $target_employee_display_name = get_user_details($db, $target_employee_id, 'display_name');
+        $target_employee_display_name = get_user_details($target_employee_id, 'display_name');
         
         // Creates a History record
-        insert_workorder_history_note($db, $invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
+        insert_workorder_history_note($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
 
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
@@ -1395,11 +1395,11 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
         
         
         // Update last active record
-        update_user_last_active($db, $invoice_details['employee_id']);
-        update_user_last_active($db, $target_employee_id);
-        update_customer_last_active($db, $invoice_details['customer_id']);
-        update_workorder_last_active($db, $invoice_details['workorder_id']);
-        update_invoice_last_active($db, $invoice_id);
+        update_user_last_active($invoice_details['employee_id']);
+        update_user_last_active($target_employee_id);
+        update_customer_last_active($invoice_details['customer_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($invoice_id);
         
         return true;
         

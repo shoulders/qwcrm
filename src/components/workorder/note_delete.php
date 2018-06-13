@@ -22,10 +22,10 @@ if($VAR['workorder_note_id'] == '') {
 }
 
 // Get the workorder_id before we delete the record
-$VAR['workorder_id'] = get_workorder_note($db, $VAR['workorder_note_id'], 'workorder_id');
+$VAR['workorder_id'] = get_workorder_note($VAR['workorder_note_id'], 'workorder_id');
 
 // Delete the record
-delete_workorder_note($db, $VAR['workorder_note_id']);
+delete_workorder_note($VAR['workorder_note_id']);
 
 // Reload the workorder details page
 force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("The note has been deleted."));

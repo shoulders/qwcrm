@@ -26,14 +26,14 @@ defined('_QWEXEC') or die;
 #   Get MySQL version                          #
 ################################################
 
-function get_mysql_version($db) {
+function get_mysql_version() {
     
     $db = QFactory::getDbo();
     
     // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
     //$db->ServerInfo();
     
-    // Extract and return the MySQL version - print_r($db) this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
+    // Extract and return the MySQL version - print_r() this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
     preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $db->_connectionID->server_info, $matches);
     return $matches[1];    
     
@@ -43,7 +43,7 @@ function get_mysql_version($db) {
 #  Get QWcrm version number from the database  #
 ################################################
 
-function get_qwcrm_database_version_number($db) {
+function get_qwcrm_database_version_number() {
     
     $db = QFactory::getDbo();
     
@@ -86,7 +86,7 @@ function get_qwcrm_database_version_number($db) {
  * supply the required field name or all to return all of them as an array
  */
 
-function get_company_details($db, $item = null) {
+function get_company_details($item = null) {
     
     $db = QFactory::getDbo();
     
@@ -117,7 +117,7 @@ function get_company_details($db, $item = null) {
 #    Update User's Last Active Date   #
 #######################################
 
-function update_user_last_active($db, $user_id = null) {
+function update_user_last_active($user_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -587,7 +587,7 @@ function set_page_header_and_meta_data($component, $page_tpl) {
 #  Verify QWcrm install state and set routing as needed  #
 ##########################################################
 
-function verify_qwcrm_install_state($db) {
+function verify_qwcrm_install_state() {
     
     $db = QFactory::getDbo();
 
@@ -630,14 +630,14 @@ function verify_qwcrm_install_state($db) {
     }
     
     // Check the MySQL version is high enough to run QWcrm
-    if (version_compare(get_mysql_version($db), QWCRM_MINIMUM_MYSQL, '<')) {
-        die('<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version($db).'</div>');
+    if (version_compare(get_mysql_version(), QWCRM_MINIMUM_MYSQL, '<')) {
+        die('<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version().'</div>');
     }
             
     /* Compare the QWcrm file system and database versions - if mismatch load upgrade for further instructions? */
     
     // get the QWcrm database version number
-    $qwcrm_database_version = get_qwcrm_database_version_number($db);
+    $qwcrm_database_version = get_qwcrm_database_version_number();
         
     // If the versions dont match do further checks
     if(version_compare($qwcrm_database_version, QWCRM_VERSION, '!=')) {

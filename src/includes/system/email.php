@@ -164,13 +164,13 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     }
     
     // Subject - prefix with the QWcrm company name to all emails
-    $email->setSubject(get_company_details($db, 'display_name').' - '.$subject);    
+    $email->setSubject(get_company_details('display_name').' - '.$subject);    
     
     /* Build the message body */
     
     // Add the email signature (if not a reset email)
     if(!check_page_accessed_via_qwcrm('user', 'reset') && !check_page_accessed_via_qwcrm('administrator', 'config')) {
-        $body .= get_email_signature($db, $email);
+        $body .= get_email_signature($email);
     }    
     
     // Add Message Body
@@ -226,7 +226,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             // Log activity
             $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
-            if($workorder_id) {insert_workorder_history_note($db, $workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);}
+            if($workorder_id) {insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);}
             write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);            
             
             // Output the system message to the browser
@@ -235,10 +235,10 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             output_notifications_onscreen($system_message, '');
             
             // Update last active record (will not error if no invoice_id sent )
-            update_user_last_active($db, $employee_id);
-            if($customer_id) {update_customer_last_active($db, $customer_id);}  
-            if($workorder_id) {update_workorder_last_active($db, $workorder_id);}
-            if($invoice_id) {update_invoice_last_active($db, $invoice_id);}
+            update_user_last_active($employee_id);
+            if($customer_id) {update_customer_last_active($customer_id);}  
+            if($workorder_id) {update_workorder_last_active($workorder_id);}
+            if($invoice_id) {update_invoice_last_active($invoice_id);}
 
         }
         

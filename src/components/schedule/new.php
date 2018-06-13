@@ -24,13 +24,13 @@ if($VAR['workorder_id'] == '') {
 }
 
 // Get customer_id
-$VAR['customer_id'] =  get_workorder_details($db, $VAR['workorder_id'], 'customer_id');
+$VAR['customer_id'] =  get_workorder_details($VAR['workorder_id'], 'customer_id');
 
 // If new schedule item submitted
 if(isset($VAR['submit'])) {
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!insert_schedule($db, $VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['note'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
+    if (!insert_schedule($VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['note'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
                  
         $smarty->assign('start_date',   $VAR['start_date']                                                  );       
         $smarty->assign('start_time',   $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );              

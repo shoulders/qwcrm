@@ -20,7 +20,7 @@ if($VAR['workorder_id'] == '') {
 if(isset($VAR['submit'])){
     
     // insert the note into the database
-    insert_workorder_note($db, $VAR['workorder_id'], $VAR['workorder_note']);
+    insert_workorder_note($VAR['workorder_id'], $VAR['workorder_note']);
     
     // load the workorder details page    
     force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("The note has been inserted."));

@@ -59,7 +59,7 @@ function get_qwcrm_config() {
 #   Update ACL Permissions      #
 #################################
 
-function update_acl($db, $permissions) {
+function update_acl($permissions) {
     
     $db = QFactory::getDbo();
     
@@ -303,7 +303,7 @@ function check_for_qwcrm_update() {
 #   Load ACL Permissions        #
 #################################
 
-function load_acl($db) {
+function load_acl() {
     
     $db = QFactory::getDbo();
     
@@ -438,11 +438,11 @@ function prepare_config_data($new_config) {
 #      Send Test Mail                      #
 ############################################
 
-function send_test_mail($db) {
+function send_test_mail() {
     
     $db = QFactory::getDbo();
     
-    $user_details = get_user_details($db, QFactory::getUser()->login_user_id);
+    $user_details = get_user_details(QFactory::getUser()->login_user_id);
     
     send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.QFactory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
     
@@ -505,7 +505,7 @@ function clear_smarty_compile() {
 #   Reset ACL Permissions       #
 #################################
 
-function reset_acl_permissions($db) {
+function reset_acl_permissions() {
     
     $db = QFactory::getDbo();
  

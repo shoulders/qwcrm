@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'components/schedule.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Build the page
-$smarty->assign('customer_details', get_customer_details($db, get_schedule_details($db, $VAR['schedule_id'], 'customer_id')));
-$smarty->assign('schedule_details', get_schedule_details($db, $VAR['schedule_id']));
-$smarty->assign('employee_display_name', get_user_details($db, get_schedule_details($db, $VAR['schedule_id'], 'employee_id'), 'display_name')  );
+$smarty->assign('customer_details', get_customer_details(get_schedule_details($VAR['schedule_id'], 'customer_id')));
+$smarty->assign('schedule_details', get_schedule_details($VAR['schedule_id']));
+$smarty->assign('employee_display_name', get_user_details(get_schedule_details($VAR['schedule_id'], 'employee_id'), 'display_name')  );
 $BuildPage .= $smarty->fetch('schedule/details.tpl');

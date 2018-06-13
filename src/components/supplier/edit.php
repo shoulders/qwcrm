@@ -19,7 +19,7 @@ if($VAR['supplier_id'] == '') {
 if(isset($VAR['submit'])) {    
         
     // update the supplier record
-    update_supplier($db, $VAR['supplier_id'], $VAR);
+    update_supplier($VAR['supplier_id'], $VAR);
     
     // load the supplier details apge
     force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier updated successfully."));     
@@ -27,6 +27,6 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('supplier_types', get_supplier_types($db));
-$smarty->assign('supplier_details', get_supplier_details($db, $VAR['supplier_id']));
+$smarty->assign('supplier_types', get_supplier_types());
+$smarty->assign('supplier_details', get_supplier_details($VAR['supplier_id']));
 $BuildPage .= $smarty->fetch('supplier/edit.tpl');

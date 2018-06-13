@@ -26,7 +26,7 @@ if($VAR['invoice_id'] == '') {
 }
 
 // Delete Invoice
-if(!delete_invoice($db, $VAR['invoice_id'])) {    
+if(!delete_invoice($VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
     force_page('invoice', 'details&invoice_id='.$VAR['invoice_id']);

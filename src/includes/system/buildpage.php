@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 #  Build the page content  #    // All variables should be passed by $VAR because it is its own scope
 ############################
 
-function get_page_content($db, $startTime, $page_controller, $VAR, $QConfig = null, $user = null) {
+function get_page_content($startTime, $page_controller, $VAR, $QConfig = null, $user = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();    
@@ -171,7 +171,7 @@ function link_permission($url) {
     $url_routing = get_routing_variables_from_url($url);
     
     // Check to see if user is allowed to use the asset
-    if(check_page_acl($db, $url_routing['component'], $url_routing['page_tpl'])) {
+    if(check_page_acl($url_routing['component'], $url_routing['page_tpl'])) {
         
         return true;
         

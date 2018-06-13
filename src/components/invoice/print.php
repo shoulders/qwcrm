@@ -27,22 +27,22 @@ if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
 }
 
 // Get Record Details
-$invoice_details = get_invoice_details($db, $VAR['invoice_id']);
-$customer_details = get_customer_details($db, $invoice_details['customer_id']);
+$invoice_details = get_invoice_details($VAR['invoice_id']);
+$customer_details = get_customer_details($invoice_details['customer_id']);
 
 /// Assign Variables
-$smarty->assign('company_details',                  get_company_details($db)                                        );
-$smarty->assign('employee_details',                 get_user_details($db, $invoice_details['employee_id'])          );
+$smarty->assign('company_details',                  get_company_details()                                        );
+$smarty->assign('employee_details',                 get_user_details($invoice_details['employee_id'])          );
 $smarty->assign('customer_details',                 $customer_details                                               );
 $smarty->assign('invoice_details',                  $invoice_details                                                );
-$smarty->assign('workorder_details',                get_workorder_details($db, $invoice_details['workorder_id'])    );
-$smarty->assign('payment_details',                  get_payment_details($db)                                        );
-$smarty->assign('active_payment_accepted_methods',    get_payment_active_accepted_methods($db)                          );
-$smarty->assign('invoice_statuses',                 get_invoice_statuses($db)                                       );
-$smarty->assign('labour_items',                     get_invoice_labour_items($db, $VAR['invoice_id'])               );
-$smarty->assign('parts_items',                      get_invoice_parts_items($db, $VAR['invoice_id'])                );
-$smarty->assign('labour_sub_total',                 labour_sub_total($db, $VAR['invoice_id'])                       );
-$smarty->assign('parts_sub_total',                  parts_sub_total($db, $VAR['invoice_id'])                        );
+$smarty->assign('workorder_details',                get_workorder_details($invoice_details['workorder_id'])    );
+$smarty->assign('payment_details',                  get_payment_details()                                        );
+$smarty->assign('active_payment_accepted_methods',    get_payment_active_accepted_methods()                          );
+$smarty->assign('invoice_statuses',                 get_invoice_statuses()                                       );
+$smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
+$smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );
+$smarty->assign('labour_sub_total',                 labour_sub_total($VAR['invoice_id'])                       );
+$smarty->assign('parts_sub_total',                  parts_sub_total($VAR['invoice_id'])                        );
 
 // Invoice Print Routine
 if($VAR['print_content'] == 'invoice') {
@@ -91,7 +91,7 @@ if($VAR['print_content'] == 'invoice') {
         $attachment['filetype'] = 'application/pdf';
         
         // Build the message body        
-        $body = get_email_message_body($db, 'email_msg_invoice', $customer_details);
+        $body = get_email_message_body('email_msg_invoice', $customer_details);
         
         // Log activity
         $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");

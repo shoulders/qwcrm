@@ -15,11 +15,11 @@ require(INCLUDES_DIR.'components/user.php');
 if($VAR['customer_id'] != '') {
     
     // check if there is already a user for the customer (and error if there is)
-    if(!check_customer_already_has_login($db, $VAR['customer_id'])) {
+    if(!check_customer_already_has_login($VAR['customer_id'])) {
         
         $smarty->assign('is_employee', '0');
-        $smarty->assign('customer_display_name', get_customer_details($db, $VAR['customer_id'], 'customer_display_name'));
-        $smarty->assign('usergroups', get_usergroups($db, 'customers'));
+        $smarty->assign('customer_display_name', get_customer_details($VAR['customer_id'], 'customer_display_name'));
+        $smarty->assign('usergroups', get_usergroups('customers'));
         
     } else {
         
@@ -29,15 +29,15 @@ if($VAR['customer_id'] != '') {
     
 } else {
     $smarty->assign('is_employee', '1');    
-    $smarty->assign('usergroups', get_usergroups($db, 'employees'));
+    $smarty->assign('usergroups', get_usergroups('employees'));
 }
 
 // If user data has been submitted
 if(isset($VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if (check_user_username_exists($db, $VAR['username'], get_user_details($db, $VAR['user_id'], 'username')) ||
-        check_user_email_exists($db, $VAR['email'], get_user_details($db, $VAR['user_id'], 'email'))) {     
+    if (check_user_username_exists($VAR['username'], get_user_details($VAR['user_id'], 'username')) ||
+        check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))) {     
         
         // send the posted data back to smarty
         $user_details = $VAR;
@@ -49,7 +49,7 @@ if(isset($VAR['submit'])) {
         } else {    
             
             // Insert user record (and return the new ID)
-            $VAR['user_id'] = insert_user($db, $VAR);
+            $VAR['user_id'] = insert_user($VAR);
             
             // Redirect to the new user's details page
             force_page('user', 'details&user_id='.$VAR['user_id']);

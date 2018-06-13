@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display refunds       #
 #############################
 
-function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
+function display_refunds($order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
     
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -131,7 +131,7 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
 #      Insert Refund                     #
 ##########################################
 
-function insert_refund($db, $VAR) {
+function insert_refund($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -168,7 +168,7 @@ function insert_refund($db, $VAR) {
 #   Get refund details   #
 ##########################
 
-function get_refund_details($db, $refund_id, $item = null) {
+function get_refund_details($refund_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -196,7 +196,7 @@ function get_refund_details($db, $refund_id, $item = null) {
 #    Get Refund Types               #
 #####################################
 
-function get_refund_types($db) {
+function get_refund_types() {
     
     $db = QFactory::getDbo();
     
@@ -218,7 +218,7 @@ function get_refund_types($db) {
 #     Update refund                 #
 #####################################
 
-function update_refund($db, $refund_id, $VAR) {
+function update_refund($refund_id, $VAR) {
     
     $db = QFactory::getDbo();
     
@@ -258,12 +258,12 @@ function update_refund($db, $refund_id, $VAR) {
 #    Delete Record                  #
 #####################################
 
-function delete_refund($db, $refund_id) {
+function delete_refund($refund_id) {
     
     $db = QFactory::getDbo();
     
     // Get invoice_id before deleting the record
-    $invoice_id = get_refund_details($db, $refund_id, 'invoice_id');
+    $invoice_id = get_refund_details($refund_id, 'invoice_id');
     
     $sql = "DELETE FROM ".PRFX."refund_records WHERE refund_id=".$db->qstr($refund_id);
     
@@ -287,7 +287,7 @@ function delete_refund($db, $refund_id) {
 #      Last Record Look Up               #
 ##########################################
 
-function last_refund_id_lookup($db) {
+function last_refund_id_lookup() {
     
     $db = QFactory::getDbo();
     

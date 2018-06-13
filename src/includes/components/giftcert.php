@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
+function display_giftcerts($order_by = 'giftcert_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
@@ -144,7 +144,7 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
 #   insert Gift Certificate     #
 #################################
 
-function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $note) {
+function insert_giftcert($customer_id, $date_expires, $amount, $active, $note) {
     
     $db = QFactory::getDbo();
     
@@ -170,7 +170,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id);
         
         // Update last active record    
-        update_customer_last_active($db, $customer_id);
+        update_customer_last_active($customer_id);
         
         return $giftcert_id ;
         
@@ -184,7 +184,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
 #  Get giftcert details  #
 ##########################
 
-function get_giftcert_details($db, $giftcert_id, $item = null) {
+function get_giftcert_details($giftcert_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -212,7 +212,7 @@ function get_giftcert_details($db, $giftcert_id, $item = null) {
 #   get giftcert_id by giftcert_code    #
 #########################################
 
-function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
+function get_giftcert_id_by_gifcert_code($giftcert_code) {
     
     $db = QFactory::getDbo();
     
@@ -236,7 +236,7 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 #   Update Gift Certificate     #
 #################################
 
-function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $note) {
+function update_giftcert($giftcert_id, $date_expires, $amount, $active, $note) {
     
     $db = QFactory::getDbo();
     
@@ -252,14 +252,14 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
 
     } else {
         
-        $customer_details = get_giftcert_details($db, $giftcert_id);
+        $customer_details = get_giftcert_details($giftcert_id);
         
         // Log activity
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id']);
 
         // Update last active record    
-        update_customer_last_active($db, $customer_details['customer_id']);
+        update_customer_last_active($customer_details['customer_id']);
 
         return;
         
@@ -275,7 +275,7 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
 #  Delete Gift Certificate   #
 ##############################
 
-function delete_giftcert($db, $giftcert_id) {     
+function delete_giftcert($giftcert_id) {     
     
     $db = QFactory::getDbo();
     
@@ -288,14 +288,14 @@ function delete_giftcert($db, $giftcert_id) {
         
     } else {
         
-        $customer_details = get_giftcert_details($db, $giftcert_id);
+        $customer_details = get_giftcert_details($giftcert_id);
         
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id']);
         
         // Update last active record        
-        update_customer_last_active($db, $customer_details['customer_id']);
+        update_customer_last_active($customer_details['customer_id']);
         
         return;
 
@@ -309,19 +309,19 @@ function delete_giftcert($db, $giftcert_id) {
 #  Validate the Gift Certificate can be used for a payemnt   #
 ##############################################################
 
-function validate_giftcert_for_payment($db, $giftcert_id) {
+function validate_giftcert_for_payment($giftcert_id) {
     
     $db = QFactory::getDbo();
 
     // check is active
-    if(get_giftcert_details($db, $giftcert_id, 'active') != 1) {
+    if(get_giftcert_details($giftcert_id, 'active') != 1) {
         //force_page('core','error', 'error_msg='._gettext("This gift certificate is not active"));
 
         return false;
     }
 
     // check if expired
-    if(get_giftcert_details($db, $giftcert_id, 'date_expires') < time()) {
+    if(get_giftcert_details($giftcert_id, 'date_expires') < time()) {
         //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is expired."));
 
         return false;
@@ -335,12 +335,12 @@ function validate_giftcert_for_payment($db, $giftcert_id) {
 #  Check if the giftcert is redeemed       #
 ############################################
 
-function check_giftcert_redeemed($db, $giftcert_id) {
+function check_giftcert_redeemed($giftcert_id) {
     
     $db = QFactory::getDbo();
 
     // check if redeemed
-    if(get_giftcert_details($db, $giftcert_id, 'is_redeemed') == 1) {
+    if(get_giftcert_details($giftcert_id, 'is_redeemed') == 1) {
         //force_page('core','error', 'error_msg=This gift certificate has been redeemed');
 
         return true;
@@ -372,7 +372,7 @@ function generate_giftcert_code() {
 #   redeem the gift certificate against an invoice   #
 ######################################################
 
-function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
+function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
     
     $db = QFactory::getDbo();
     
@@ -387,7 +387,7 @@ function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
     } else {
         
-        $customer_details = get_customer_details($db, get_giftcert_details($db, $giftcert_id, 'customer_id'));
+        $customer_details = get_customer_details(get_giftcert_details($giftcert_id, 'customer_id'));
         
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$customer_details['display_name'].'.';

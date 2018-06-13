@@ -17,7 +17,7 @@ if($VAR['workorder_id'] == '') {
 }
 
 // Check if we can edit the workorder description
-if(get_workorder_details($db, $VAR['workorder_id'], 'is_closed')) {
+if(get_workorder_details($VAR['workorder_id'], 'is_closed')) {
     force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'warning_msg='._gettext("Cannot edit the description of a closed Work Order."));
 }
 
@@ -25,7 +25,7 @@ if(get_workorder_details($db, $VAR['workorder_id'], 'is_closed')) {
 if(isset($VAR['submit'])) {
     
     // update the scope and description in the database
-    update_workorder_scope_and_description($db, $VAR['workorder_id'], $VAR['scope'], $VAR['description']);
+    update_workorder_scope_and_description($VAR['workorder_id'], $VAR['scope'], $VAR['description']);
     
     // load the workorder details page
     force_page('workorder', 'details', 'workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Description has been updated."));
@@ -33,6 +33,6 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page 
-$smarty->assign('scope',          get_workorder_details($db, $VAR['workorder_id'], 'scope')        );
-$smarty->assign('description',    get_workorder_details($db, $VAR['workorder_id'], 'description')  );    
+$smarty->assign('scope',          get_workorder_details($VAR['workorder_id'], 'scope')        );
+$smarty->assign('description',    get_workorder_details($VAR['workorder_id'], 'description')  );    
 $BuildPage .= $smarty->fetch('workorder/details_edit_description.tpl');
