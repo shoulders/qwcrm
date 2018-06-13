@@ -103,8 +103,8 @@
                                                             <td><textarea class="olotd5 mceCheckForContent" name="items" cols="50" rows="15">{$refund_details.items}</textarea></td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Notes{/t}</b></td>
-                                                            <td><textarea class="olotd5" name="notes" cols="50" rows="15">{$refund_details.notes}</textarea></td>
+                                                            <td align="right"><b>{t}Note{/t}</b></td>
+                                                            <td><textarea class="olotd5" name="note" cols="50" rows="15">{$refund_details.note}</textarea></td>
                                                         </tr>                                                        
                                                         <tr>
                                                             <td colspan="2">

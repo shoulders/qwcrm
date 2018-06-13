@@ -180,7 +180,7 @@ function insert_user($db, $VAR){
             home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
             home_country        =". $db->qstr( $VAR['home_country']                         ).", 
             based               =". $db->qstr( $VAR['based']                                ).",  
-            notes               =". $db->qstr( $VAR['notes']                                );                     
+            note               =". $db->qstr( $VAR['note']                                );                     
           
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
@@ -373,7 +373,7 @@ function update_user($db, $user_id, $VAR) {
         home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
         home_country        =". $db->qstr( $VAR['home_country']                         ).",
         based               =". $db->qstr( $VAR['based']                                ).",  
-        notes               =". $db->qstr( $VAR['notes']                                )."
+        note               =". $db->qstr( $VAR['note']                                )."
         WHERE user_id= ".$db->qstr($user_id);
 
     if(!$rs = $db->Execute($sql)) {

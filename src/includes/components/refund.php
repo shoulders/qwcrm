@@ -143,7 +143,7 @@ function insert_refund($db, $VAR) {
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
-            notes            =". $db->qstr( $VAR['notes']                   );
+            note            =". $db->qstr( $VAR['note']                   );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
@@ -224,7 +224,7 @@ function update_refund($db, $refund_id, $VAR) {
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
-            notes            =". $db->qstr( $VAR['notes']                   )."
+            note            =". $db->qstr( $VAR['note']                   )."
             WHERE refund_id  = ". $db->qstr( $refund_id                     );                        
             
     if(!$rs = $db->Execute($sql)) {

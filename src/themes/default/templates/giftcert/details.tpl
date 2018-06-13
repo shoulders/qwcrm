@@ -95,10 +95,10 @@
                         </table>                           
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
-                                <td><b>{t}Notes{/t}:</b></td>
+                                <td><b>{t}Note{/t}:</b></td>
                             </tr>
                             <tr>
-                                <td>{$giftcert_details.notes}</td>
+                                <td>{$giftcert_details.note}</td>
                             </tr>
                         </table>                        
                     </td>

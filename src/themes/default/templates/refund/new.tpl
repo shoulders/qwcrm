@@ -148,8 +148,8 @@
                                                                             <td><textarea name="items" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Notes{/t}</b></td>
-                                                                            <td><textarea name="notes" class="olotd5" cols="50" rows="15"></textarea></td>
+                                                                            <td align="right"><b>{t}Note{/t}</b></td>
+                                                                            <td><textarea name="note" class="olotd5" cols="50" rows="15"></textarea></td>
                                                                         </tr>                                                                        
                                                                     </tbody>
                                                                         <tr>

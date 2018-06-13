@@ -229,17 +229,17 @@
                                                                         </td>
                                                                     </tr>
                                                                     
-                                                                    <!-- Notes -->
+                                                                    <!-- note -->
                                                                     
                                                                     <tr class="row2">
-                                                                        <td class="menuhead" colspan="2">{t}Notes{/t}</td>
+                                                                        <td class="menuhead" colspan="2">{t}Note{/t}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">
                                                                             <table>
                                                                                 <tr>
-                                                                                    <td align="left"><strong>{t}Notes{/t}</strong></td>
-                                                                                    <td><textarea name="notes" class="olotd5" cols="50" rows="2">{$user_details.notes}</textarea></td> 
+                                                                                    <td align="left"><strong>{t}Note{/t}</strong></td>
+                                                                                    <td><textarea name="note" class="olotd5" cols="50" rows="2">{$user_details.note}</textarea></td> 
                                                                                 </tr>                                                                                
                                                                             </table>
                                                                         </td>

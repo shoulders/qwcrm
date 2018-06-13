@@ -117,11 +117,11 @@
                                                             <td><textarea class="olotd5 mceCheckForContent" name="description" cols="50" rows="20">{$supplier_details.description}</textarea></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="menuhead" colspan="2"><b>{t}Notes{/t}</b></td>
+                                                            <td class="menuhead" colspan="2"><b>{t}Note{/t}</b></td>
                                                         </tr> 
                                                         <tr>
                                                             <td align="right"></td>
-                                                            <td><textarea name="notes" class="olotd5" cols="50" rows="20">{$supplier_details.notes}</textarea></td>
+                                                            <td><textarea name="note" class="olotd5" cols="50" rows="20">{$supplier_details.note}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2">

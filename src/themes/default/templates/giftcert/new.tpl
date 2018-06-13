@@ -62,10 +62,10 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><b>{t}Notes{/t}:</b></td>
+                                                <td colspan="2"><b>{t}Note{/t}:</b></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="notes">{$giftcert_details.notes}</textarea></td>
+                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="note">{$giftcert_details.note}</textarea></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">

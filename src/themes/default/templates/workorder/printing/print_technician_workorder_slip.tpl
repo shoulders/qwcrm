@@ -262,8 +262,8 @@
                             {section name=e loop=$workorder_schedules}
                                 <b>{t}Start Time{/t}:</b> {$workorder_schedules[e].start_time|date_format:"$date_format %R"}<br>
                                 <b>{t}End Time{/t}:</b> {$workorder_schedules[e].end_time|date_format:"$date_format %R"}<br>
-                                <b>{t}Notes{/t}:</b><br>
-                                <div>{$workorder_schedules[e].notes}</div>
+                                <b>{t}Note{/t}:</b><br>
+                                <div>{$workorder_schedules[e].note}</div>
                             {sectionelse}
                                 {t}No schedule has been set. Click the day on the calendar you want to set the schedule.{/t}
                             {/section}

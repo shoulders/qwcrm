@@ -15,11 +15,11 @@
         <td class="olohead">{t}Date Redeemed{/t}</td>
         <td class="olohead">{t}Is Active{/t}</td>
         <td class="olohead">{t}Amount{/t}</td>
-        <td class="olohead">{t}Notes{/t}</td> 
+        <td class="olohead">{t}Note{/t}</td> 
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=g loop=$display_giftcerts}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].user_id}';" class="row1">
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}';" class="row1">
             <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_id}</a></td>
             <td class="olotd4">{$display_giftcerts[g].giftcert_code}</td>
             <td class="olotd4"><a href="index.php?component=customer&page_tpl=details&customer_id={$display_giftcerts[g].customer_id}">{$display_giftcerts[g].customer_display_name}</a></td>
@@ -35,8 +35,8 @@
             </td> 
             <td class="olotd4">{$currency_sym} {$display_giftcerts[g].amount}</td>                                                            
             <td class="olotd4" nowrap>
-                {if $display_giftcerts[g].notes != ''}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_giftcerts[g].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {if $display_giftcerts[g].note != ''}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_giftcerts[g].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4">

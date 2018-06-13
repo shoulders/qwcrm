@@ -18,7 +18,7 @@
         <td class="olohead">{t}VAT Rate{/t}</td>
         <td class="olohead">{t}VAT Amount{/t}</td>
         <td class="olohead">{t}Gross Amount{/t}</td>
-        <td class="olohead">{t}Notes{/t}</td>
+        <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Items{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
     </tr>
@@ -43,7 +43,7 @@
             <td class="olotd4" nowrap>{$display_refunds[r].vat_rate} %</td>                                                                
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].vat_amount}</td>                                                            
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].gross_amount}</td>                                                                
-            <td class="olotd4" nowrap>{if $display_refunds[r].notes != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_refunds[r].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
+            <td class="olotd4" nowrap>{if $display_refunds[r].note != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_refunds[r].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}</td>                                                            
             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_refunds[r].items|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();"></td>                                                                
             <td class="olotd4" nowrap>
                 <a href="index.php?component=refund&page_tpl=details&refund_id={$display_refunds[r].refund_id}">

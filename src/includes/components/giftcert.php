@@ -143,7 +143,7 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
 #   insert Gift Certificate     #
 #################################
 
-function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $notes) {
+function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $note) {
     
     $sql = "INSERT INTO ".PRFX."giftcert SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
@@ -153,7 +153,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
             date_expires    =". $db->qstr( $date_expires                        ).",                                     
             amount          =". $db->qstr( $amount                              ).",
             active          =". $db->qstr( $active                              ).",                
-            notes           =". $db->qstr( $notes                               );
+            note           =". $db->qstr( $note                               );
 
     if(!$db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the Gift Certificate into the database."));
@@ -229,13 +229,13 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 #   Update Gift Certificate     #
 #################################
 
-function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $notes) {
+function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $note) {
     
     $sql = "UPDATE ".PRFX."giftcert SET            
             date_expires    =". $db->qstr( $date_expires    ).",
             amount          =". $db->qstr( $amount          ).",
             active          =". $db->qstr( $active          ).",                
-            notes           =". $db->qstr( $notes           )."
+            note           =". $db->qstr( $note           )."
             WHERE giftcert_id =".$giftcert_id;
 
     if(!$db->execute($sql)) {

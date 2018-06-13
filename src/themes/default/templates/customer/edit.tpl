@@ -140,11 +140,11 @@
                                                                         <td><input name="country" class="olotd5" value="{$customer_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"/></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="menuhead"><b>{t}Notes{/t}</b></td>
+                                                                        <td class="menuhead"><b>{t}Note{/t}</b></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td></td>
-                                                                        <td colspan="2"><textarea name="notes" class="olotd5" cols="50" rows="20">{$customer_details.notes}</textarea></td>
+                                                                        <td colspan="2"><textarea name="note" class="olotd5" cols="50" rows="20">{$customer_details.note}</textarea></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>

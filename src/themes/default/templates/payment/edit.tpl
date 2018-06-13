@@ -84,7 +84,7 @@
                                                         <td><input name="amount" class="olotd5" size="10" value="{$payment_details.amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Notes{/t}</b></td>
+                                                        <td align="right"><b>{t}Note{/t}</b></td>
                                                         <td><textarea name="note" class="olotd5" cols="50" rows="15">{$payment_details.note}</textarea></td>
                                                     </tr>                                                    
                                                     <tr>

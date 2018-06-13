@@ -145,7 +145,7 @@ function insert_supplier($db, $VAR) {
             zip            =". $db->qstr( $VAR['zip']           ).",
             country        =". $db->qstr( $VAR['country']       ).",
             description    =". $db->qstr( $VAR['description']   ).", 
-            notes          =". $db->qstr( $VAR['notes']         );            
+            note          =". $db->qstr( $VAR['note']         );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
@@ -230,7 +230,7 @@ function update_supplier($db, $supplier_id, $VAR) {
             zip            =". $db->qstr( $VAR['zip']           ).",
             country        =". $db->qstr( $VAR['country']       ).",
             description    =". $db->qstr( $VAR['description']   ).", 
-            notes          =". $db->qstr( $VAR['notes']         )."
+            note          =". $db->qstr( $VAR['note']         )."
             WHERE supplier_id = ". $db->qstr( $supplier_id );                        
             
     if(!$rs = $db->Execute($sql)) {

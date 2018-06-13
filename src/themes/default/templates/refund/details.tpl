@@ -86,11 +86,11 @@
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                        
                                         <tr>
-                                            <td class="menutd"><b>{t}Notes{/t}</b></td>
+                                            <td class="menutd"><b>{t}Note{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd" colspan="3">{$refund_details.notes}</td>
+                                            <td class="menutd" colspan="3">{$refund_details.note}</td>
                                             <td class="menutd"></td>
                                         </tr>
                                     </table>

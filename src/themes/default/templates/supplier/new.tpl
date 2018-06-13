@@ -120,11 +120,11 @@
                                                                             <td><textarea name="description" class="olotd5 mceCheckForContent" cols="50" rows="20"></textarea></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td class="menuhead" colspan="2"><b>{t}Notes{/t}</b</td>
+                                                                            <td class="menuhead" colspan="2"><b>{t}Note{/t}</b</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"></td>
-                                                                            <td><textarea name="notes" class="olotd5" cols="50" rows="20"></textarea></td>
+                                                                            <td><textarea name="note" class="olotd5" cols="50" rows="20"></textarea></td>
                                                                         </tr>                                                                        
                                                                         <tr>
                                                                             <td></td>

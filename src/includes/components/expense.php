@@ -144,7 +144,7 @@ function insert_expense($db, $VAR) {
             vat_amount      =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount    =". $db->qstr( $VAR['gross_amount']            ).",
             items           =". $db->qstr( $VAR['items']                   ).",
-            notes           =". $db->qstr( $VAR['notes']                   );
+            note           =". $db->qstr( $VAR['note']                   );
                 
             
 
@@ -227,7 +227,7 @@ function update_expense($db, $expense_id, $VAR) {
             vat_amount          =". $db->qstr( $VAR['vat_amount']               ).",
             gross_amount        =". $db->qstr( $VAR['gross_amount']             ).",
             items               =". $db->qstr( $VAR['items']                    ).",
-            notes               =". $db->qstr( $VAR['notes']                    )."
+            note               =". $db->qstr( $VAR['note']                    )."
             WHERE expense_id    =". $db->qstr( $expense_id                      );                        
             
     if(!$rs = $db->Execute($sql)) {

@@ -157,7 +157,7 @@ function insert_customer($db, $VAR) {
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
-            notes           =". $db->qstr( $VAR['notes']            ).",
+            note           =". $db->qstr( $VAR['note']            ).",
             create_date     =". $db->qstr( time()                   );          
                         
     if(!$rs = $db->Execute($sql)) {
@@ -320,7 +320,7 @@ function update_customer($db, $customer_id, $VAR) {
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
-            notes           =". $db->qstr( $VAR['notes']            )."
+            note           =". $db->qstr( $VAR['note']            )."
             WHERE customer_id   =". $db->qstr( $customer_id         );
             
     if(!$rs = $db->Execute($sql)) {

@@ -13,7 +13,7 @@
         <td class="olohead">{t}Type{/t}</td>
         <td class="olohead">{t}Zip{/t}</td>
         <td class="olohead">{t}Country{/t}</td>
-        <td class="olohead">{t}Notes{/t}</td>
+        <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Description{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
     </tr>                                                    
@@ -29,8 +29,8 @@
             </td>
             <td class="olotd4" nowrap>{$display_suppliers[s].zip}</td>
             <td class="olotd4" nowrap>{$display_suppliers[s].country}</td>                                                            
-            <td class="olotd4" nowrap>{if $display_suppliers[s].notes != ''}
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_suppliers[s].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}
+            <td class="olotd4" nowrap>{if $display_suppliers[s].note != ''}
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_suppliers[s].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}
             </td>                                                            
             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Description{/t}</strong></div><hr><div>{$display_suppliers[s].description|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();"></td>                                                            
             <td class="olotd4" nowrap>

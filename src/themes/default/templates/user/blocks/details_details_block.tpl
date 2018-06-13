@@ -145,14 +145,14 @@
         </td>
     </tr>
     
-    <!-- Notes -->
+    <!-- note -->
     
     <tr class="row2">
         <td class="menutd" colspan="4">&nbsp;</td>
     </tr>    
     <tr>
-        <td class="menutd"><b>{t}Notes{/t}:</b></td>
-        <td class="menutd">{$user_details.notes}</td>
+        <td class="menutd"><b>{t}Note{/t}</b></td>
+        <td class="menutd">{$user_details.note}</td>
     </tr>    
     
 </table>

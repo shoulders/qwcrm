@@ -91,8 +91,8 @@
                                             <td class="menutd" colspan="4"></td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Notes{/t}</b></td>
-                                            <td class="menutd" colspan="3">{$customer_details.notes}</td>
+                                            <td class="menutd"><b>{t}Note{/t}</b></td>
+                                            <td class="menutd" colspan="3">{$customer_details.note}</td>
                                         </tr>
                                     </table>
 

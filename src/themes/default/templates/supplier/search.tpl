@@ -38,7 +38,7 @@
                                                                     <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
                                                                     <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>                                                                    
                                                                     <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
-                                                                    <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
+                                                                    <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>
                                                                 </select>
                                                                 <br />
                                                                 <b>{t}for{/t}</b>

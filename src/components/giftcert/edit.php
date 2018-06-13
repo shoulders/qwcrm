@@ -31,7 +31,7 @@ if(check_giftcert_redeemed($db, $VAR['giftcert_id'])) {
 if(isset($VAR['submit'])) {
     
     // Create a new gift certificate
-    update_giftcert($db, $VAR['giftcert_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['status'], $VAR['notes']);
+    update_giftcert($db, $VAR['giftcert_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['status'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id']);    
