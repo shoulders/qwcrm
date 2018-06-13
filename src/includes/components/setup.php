@@ -616,7 +616,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'state'             => 'CUSTOMER_STATE',
         'zip'               => 'CUSTOMER_ZIP',
         'country'           => '',
-        'note'             => 'CUSTOMER_NOTES',
+        'notes'             => 'CUSTOMER_NOTES',
         'create_date'       => 'CREATE_DATE',
         'last_active'       => 'LAST_ACTIVE'
         );
@@ -657,7 +657,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'vat_amount'        => 'EXPENSE_TAX_AMOUNT',
         'gross_amount'      => 'EXPENSE_GROSS_AMOUNT',
         'items'             => 'EXPENSE_ITEMS',
-        'note'             => 'EXPENSE_NOTES'        
+        'notes'             => 'EXPENSE_NOTES'        
         );
     migrate_table($db, $qwcrm_prefix.'expense', $myitcrm_prefix.'TABLE_EXPENSE', $column_mappings);
     
@@ -712,7 +712,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'is_redeemed'       => '',
         'amount'            => 'AMOUNT',
         'active'            => 'ACTIVE',
-        'note'             => 'MEMO'        
+        'notes'             => 'MEMO'        
         );
     migrate_table($db, $qwcrm_prefix.'giftcert', $myitcrm_prefix.'GIFT_CERT', $column_mappings);
     
@@ -781,11 +781,11 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         );
     migrate_table($db, $qwcrm_prefix.'invoice_parts', $myitcrm_prefix.'TABLE_INVOICE_PARTS', $column_mappings);        
     
-    /* Payment */
+    /* Payment / transactions */
     
-    // payment
+    // payment_transactions
     $column_mappings = array(
-        'payment_id'    => 'TRANSACTION_ID',
+        'transaction_id'    => 'TRANSACTION_ID',
         'employee_id'       => '',
         'customer_id'       => 'CUSTOMER_ID',
         'workorder_id'      => 'WORKORDER_ID',
@@ -795,14 +795,14 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'amount'            => 'AMOUNT',
         'note'              => 'MEMO'  
         );
-    migrate_table($db, $qwcrm_prefix.'payment', $myitcrm_prefix.'TABLE_TRANSACTION', $column_mappings);
+    migrate_table($db, $qwcrm_prefix.'payment_transactions', $myitcrm_prefix.'TABLE_TRANSACTION', $column_mappings);
     
     // update payment types
-    update_column_values($db, $qwcrm_prefix.'payment', 'method', '1', 'credit_card');
-    update_column_values($db, $qwcrm_prefix.'payment', 'method', '2', 'cheque');
-    update_column_values($db, $qwcrm_prefix.'payment', 'method', '3', 'cash');
-    update_column_values($db, $qwcrm_prefix.'payment', 'method', '4', 'gift_certificate');
-    update_column_values($db, $qwcrm_prefix.'payment', 'method', '5', 'paypal');    
+    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '1', 'credit_card');
+    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '2', 'cheque');
+    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '3', 'cash');
+    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '4', 'gift_certificate');
+    update_column_values($db, $qwcrm_prefix.'payment_transactions', 'method', '5', 'paypal');    
     
     /* Refund */
     
@@ -818,7 +818,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'vat_amount'        => 'REFUND_TAX_AMOUNT',
         'gross_amount'      => 'REFUND_GROSS_AMOUNT',
         'items'             => 'REFUND_ITEMS',
-        'note'             => 'REFUND_NOTES'        
+        'notes'             => 'REFUND_NOTES'        
         );
     migrate_table($db, $qwcrm_prefix.'refund', $myitcrm_prefix.'TABLE_REFUND', $column_mappings);
     
@@ -852,7 +852,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'workorder_id'      => 'WORK_ORDER_ID',
         'start_time'        => 'SCHEDULE_START',
         'end_time'          => 'SCHEDULE_END',
-        'note'             => 'SCHEDULE_NOTES'    
+        'notes'             => 'SCHEDULE_NOTES'    
         );
     migrate_table($db, $qwcrm_prefix.'schedule', $myitcrm_prefix.'TABLE_SCHEDULE', $column_mappings);
     
@@ -876,7 +876,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'zip'               => 'SUPPLIER_ZIP',
         'country'           => '',
         'description'       => 'SUPPLIER_DESCRIPTION',
-        'note'             => 'SUPPLIER_NOTES'           
+        'notes'             => 'SUPPLIER_NOTES'           
         );
     migrate_table($db, $qwcrm_prefix.'supplier', $myitcrm_prefix.'TABLE_SUPPLIER', $column_mappings);
     
@@ -925,7 +925,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
         'home_zip'          => 'EMPLOYEE_ZIP',
         'home_country'      => '',
         'based'             => 'EMPLOYEE_BASED',
-        'note'             => ''
+        'notes'             => ''
         );
     migrate_table($db, $qwcrm_prefix.'user', $myitcrm_prefix.'TABLE_EMPLOYEE', $column_mappings);
     
