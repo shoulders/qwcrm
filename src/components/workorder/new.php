@@ -21,7 +21,7 @@ if($VAR['customer_id'] == '') {
 if(isset($VAR['submit'])){
     
     // insert the submitted workorder and return it's id
-    $VAR['workorder_id'] = insert_workorder($db, $VAR['customer_id'], $VAR['scope'], $VAR['description'], $VAR['comments']);
+    $VAR['workorder_id'] = insert_workorder($db, $VAR['customer_id'], $VAR['scope'], $VAR['description'], $VAR['comment']);
 
     // If workorder is to be assigned to an employee
     if($VAR['assign_to_employee'] === '1') {       

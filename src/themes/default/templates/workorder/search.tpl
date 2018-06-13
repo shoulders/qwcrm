@@ -41,7 +41,7 @@
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
                                                                         <option value="scope"{if $search_category == 'scope'} selected{/if}>{t}Scope{/t}</option>
                                                                         <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>
-                                                                        <option value="comments"{if $search_category == 'comments'} selected{/if}>{t}Comments{/t}</option> 
+                                                                        <option value="comment"{if $search_category == 'comment'} selected{/if}>{t}comment{/t}</option> 
                                                                         <option value="resolution"{if $search_category == 'resolution'} selected{/if}>{t}Resolution{/t}</option>                                                                       
                                                                     </select>
                                                                    <br />

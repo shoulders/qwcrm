@@ -237,7 +237,7 @@ function display_workorder_history($db, $workorder_id){
 # Insert New Work Order #
 #########################
 
-function insert_workorder($db, $customer_id, $scope, $description, $comments) {
+function insert_workorder($db, $customer_id, $scope, $description, $comment) {
     
     $sql = "INSERT INTO ".PRFX."workorder SET            
             customer_id     =". $db->qstr( $customer_id                         ).",
@@ -247,7 +247,7 @@ function insert_workorder($db, $customer_id, $scope, $description, $comments) {
             created_by      =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             scope           =". $db->qstr( $scope                               ).",
             description     =". $db->qstr( $description                         ).",            
-            comments        =". $db->qstr( $comments                            );
+            comment        =". $db->qstr( $comment                              );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the work order Record into the database."));
@@ -522,27 +522,27 @@ function update_workorder_scope_and_description($db, $workorder_id, $scope, $des
 }
 
 ##################################
-#   Update Workorder Comments    #
+#   Update Workorder Comment     #
 ##################################
 
-function update_workorder_comments($db, $workorder_id, $comments){
+function update_workorder_comment($db, $workorder_id, $comment){
     
     $sql = "UPDATE ".PRFX."workorder SET            
-            comments            =". $db->qstr( $comments        )."
+            comment            =". $db->qstr( $comment        )."
             WHERE workorder_id  =". $db->qstr( $workorder_id    );
 
     if(!$rs = $db->execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comments."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comment."));
     } else {
         
         // Get Work Order Details
         $workorder_details = get_workorder_details($db, $workorder_id);
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($db, $workorder_id, _gettext("Comments updated by").' '.QFactory::getUser()->login_display_name);
+        insert_workorder_history_note($db, $workorder_id, _gettext("Comment updated by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comments updated by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['customer_id'], $workorder_id);
         
         // Update last active record       

@@ -140,14 +140,14 @@
                     </tr>
                 </table>
 
-                <!-- Comments -->
+                <!-- comment -->
                 <hr>
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
-                        <td><b>{t}Comments{/t}:</b></td>
+                        <td><b>{t}comment{/t}:</b></td>
                     </tr>
                     <tr>
-                        <td><div style="min-height: 250px;">{$workorder_details.comments}</div></td>
+                        <td><div style="min-height: 250px;">{$workorder_details.comment}</div></td>
                     </tr>
                 </table>
 

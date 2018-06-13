@@ -91,7 +91,7 @@ CREATE TABLE `#__customer` (
   `state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `notes` text COLLATE utf8_unicode_ci NOT NULL,
+  `note` text COLLATE utf8_unicode_ci NOT NULL,
   `create_date` int(20) NOT NULL,
   `last_active` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -150,7 +150,7 @@ CREATE TABLE `#__expense` (
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `items` text COLLATE utf8_unicode_ci NOT NULL,
-  `notes` text COLLATE utf8_unicode_ci NOT NULL
+  `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -211,7 +211,7 @@ CREATE TABLE `#__giftcert` (
   `is_redeemed` int(1) NOT NULL DEFAULT '0',
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `active` int(1) NOT NULL DEFAULT '0',
-  `notes` text COLLATE utf8_unicode_ci NOT NULL
+  `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -469,7 +469,7 @@ CREATE TABLE `#__refund` (
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `items` text COLLATE utf8_unicode_ci NOT NULL,
-  `notes` text COLLATE utf8_unicode_ci NOT NULL
+  `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -507,7 +507,7 @@ CREATE TABLE `#__schedule` (
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `start_time` int(20) NOT NULL,
   `end_time` int(20) NOT NULL,
-  `notes` text COLLATE utf8_unicode_ci NOT NULL
+  `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -549,7 +549,7 @@ CREATE TABLE `#__supplier` (
   `zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `notes` text COLLATE utf8_unicode_ci NOT NULL
+  `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -615,7 +615,7 @@ CREATE TABLE `#__user` (
   `home_zip` varchar(20) NOT NULL,
   `home_country` varchar(50) NOT NULL,
   `based` int(1) NOT NULL DEFAULT '1',
-  `notes` text NOT NULL
+  `note` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -835,7 +835,7 @@ CREATE TABLE `#__workorder` (
   `is_closed` int(1) NOT NULL,
   `scope` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `comments` text COLLATE utf8_unicode_ci NOT NULL,
+  `comment` text COLLATE utf8_unicode_ci NOT NULL,
   `resolution` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

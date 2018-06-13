@@ -13,7 +13,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>                    
-                    <td class="menuhead2" width="80%">{t}Edit Work Order Comments{/t}</td>
+                    <td class="menuhead2" width="80%">{t}Edit Work Order comment{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_DETAILS_EDIT_COMMENT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_DETAILS_EDIT_COMMENT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -26,8 +26,8 @@
                             <tr>
                                 <td width="100%" valign="top">                                    
                                     <form action="index.php?component=workorder&page_tpl=details_edit_comment" method="post">
-                                        <b>{t}Comments{/t}</b><br>
-                                        <textarea class="olotd4" rows="15" cols="70" name="comments">{$comments}</textarea>
+                                        <b>{t}comment{/t}</b><br>
+                                        <textarea class="olotd4" rows="15" cols="70" name="comment">{$comment}</textarea>
                                         <br>
                                         <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
