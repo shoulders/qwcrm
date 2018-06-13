@@ -1,4 +1,4 @@
-<!-- details_note_block.tpl -->
+<!-- details_notes_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/

@@ -116,7 +116,7 @@
                                                             <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                                 <tr>
                                                                     <td width="100%" valign="top">                                                            
-                                                                        {include file='workorder/blocks/details_note_block.tpl'}
+                                                                        {include file='workorder/blocks/details_notes_block.tpl'}
                                                                         <br>
                                                                     </td>
                                                                 </tr>
