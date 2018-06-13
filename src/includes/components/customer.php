@@ -35,34 +35,34 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
     /* Records Search */
     
     // Default Action    
-    $whereTheseRecords = " WHERE ".PRFX."customer.customer_id\n";    
+    $whereTheseRecords = " WHERE ".PRFX."customer_records.customer_id\n";    
     
     // Search category (contact) and search term
     if($search_category == 'contact') {$havingTheseRecords .= " HAVING contact LIKE '%$search_term%'";}
     
     // Search category with search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer.$search_category LIKE '%$search_term%'";}     
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.$search_category LIKE '%$search_term%'";}     
     
     /* Filter the Records */    
     
     // Restrict by Status
-    if($status) {$whereTheseRecords .= " AND ".PRFX."customer.active=".$db->qstr($status);}
+    if($status) {$whereTheseRecords .= " AND ".PRFX."customer_records.active=".$db->qstr($status);}
     
     // Restrict by Type
-    if($type) {$whereTheseRecords .= " AND ".PRFX."customer.type= ".$db->qstr($type);}    
+    if($type) {$whereTheseRecords .= " AND ".PRFX."customer_records.type= ".$db->qstr($type);}    
 
     /* The SQL code */    
     
     $sql = "SELECT        
-        ".PRFX."customer.*,            
-        CONCAT(".PRFX."customer.first_name, ' ', ".PRFX."customer.last_name) AS contact
+        ".PRFX."customer_records.*,            
+        CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS contact
         
-        FROM ".PRFX."customer            
+        FROM ".PRFX."customer_records            
  
         ".$whereTheseRecords."
-        GROUP BY ".PRFX."customer.".$order_by."
+        GROUP BY ".PRFX."customer_records.".$order_by."
         ".$havingTheseRecords."
-        ORDER BY ".PRFX."customer.".$order_by."
+        ORDER BY ".PRFX."customer_records.".$order_by."
         ".$direction;  
    
     /* Restrict by pages */
@@ -139,7 +139,7 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
 
 function insert_customer($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."customer SET
+    $sql = "INSERT INTO ".PRFX."customer_records SET
             display_name    =". $db->qstr( $VAR['display_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
             last_name       =". $db->qstr( $VAR['last_name']        ).",
@@ -157,7 +157,7 @@ function insert_customer($db, $VAR) {
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
-            note           =". $db->qstr( $VAR['note']            ).",
+            note            =". $db->qstr( $VAR['note']            ).",
             create_date     =". $db->qstr( time()                   );          
                         
     if(!$rs = $db->Execute($sql)) {
@@ -212,7 +212,7 @@ function insert_customer_note($db, $customer_id, $note) {
 
 function get_customer_details($db, $customer_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);
+    $sql = "SELECT * FROM ".PRFX."customer_records WHERE customer_id=".$db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's details."));
@@ -302,7 +302,7 @@ function get_customer_types($db) {
 
 function update_customer($db, $customer_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."customer SET
+    $sql = "UPDATE ".PRFX."customer_records SET
             display_name    =". $db->qstr( $VAR['display_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
             last_name       =". $db->qstr( $VAR['last_name']        ).",
@@ -379,7 +379,7 @@ function update_customer_last_active($db, $customer_id = null) {
     // compensate for some operations not having a customer_id - i.e. sending some emails
     if(!$customer_id) { return; }    
     
-    $sql = "UPDATE ".PRFX."customer SET
+    $sql = "UPDATE ".PRFX."customer_records SET
             last_active=".$db->qstr(time())."
             WHERE customer_id=".$db->qstr($customer_id);
     
@@ -400,7 +400,7 @@ function update_customer_last_active($db, $customer_id = null) {
 function delete_customer($db, $customer_id){
     
     // Check if customer has any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE customer_id=".$db->qstr($customer_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Workorders in the database."));
     }  
@@ -410,7 +410,7 @@ function delete_customer($db, $customer_id){
     }
     
     // Check if customer has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE customer_id=".$db->qstr($customer_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Invoices in the database."));
     }    
@@ -420,7 +420,7 @@ function delete_customer($db, $customer_id){
     }    
     
     // Check if customer has any gift certificates
-    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE customer_id=".$db->qstr($customer_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert_records WHERE customer_id=".$db->qstr($customer_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Gift Certificates in the database."));
     }  
@@ -445,13 +445,13 @@ function delete_customer($db, $customer_id){
     $customer_details = get_customer_details($db, $customer_id);
     
     // Delete any Customer user accounts
-    $sql = "DELETE FROM ".PRFX."user WHERE customer_id=".$db->qstr($customer_id);    
+    $sql = "DELETE FROM ".PRFX."user_records WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer's users from the database."));
     }
     
     // Delete Customer
-    $sql = "DELETE FROM ".PRFX."customer WHERE customer_id=".$db->qstr($customer_id);    
+    $sql = "DELETE FROM ".PRFX."customer_records WHERE customer_id=".$db->qstr($customer_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer from the database."));
     }
@@ -501,7 +501,7 @@ function delete_customer_note($db, $customer_note_id) {
     
 function check_customer_display_name_exists($db, $display_name) {
     
-    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer WHERE display_name=".$db->qstr($display_name);
+    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer_records WHERE display_name=".$db->qstr($display_name);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));

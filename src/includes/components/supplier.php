@@ -35,23 +35,23 @@ function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', 
     /* Records Search */ 
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."supplier.supplier_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."supplier_records.supplier_id\n";
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier.$search_category LIKE '%$search_term%'";}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE '%$search_term%'";}
     
     /* Filter the Records */ 
     
     // Restrict by Type
-    if($type) { $whereTheseRecords .= " AND ".PRFX."supplier.type= ".$db->qstr($type);}
+    if($type) { $whereTheseRecords .= " AND ".PRFX."supplier_records.type= ".$db->qstr($type);}
     
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."supplier                                                   
+            FROM ".PRFX."supplier_records                                                   
             ".$whereTheseRecords."            
-            GROUP BY ".PRFX."supplier.".$order_by."
-            ORDER BY ".PRFX."supplier.".$order_by."
+            GROUP BY ".PRFX."supplier_records.".$order_by."
+            ORDER BY ".PRFX."supplier_records.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
@@ -129,7 +129,7 @@ function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', 
 
 function insert_supplier($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."supplier SET            
+    $sql = "INSERT INTO ".PRFX."supplier_records SET            
             display_name   =". $db->qstr( $VAR['display_name']  ).",
             first_name     =". $db->qstr( $VAR['first_name']    ).",
             last_name      =". $db->qstr( $VAR['last_name']     ).",
@@ -168,7 +168,7 @@ function insert_supplier($db, $VAR) {
 
 function get_supplier_details($db, $supplier_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."supplier WHERE supplier_id=".$db->qstr($supplier_id);
+    $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the supplier details."));
@@ -214,7 +214,7 @@ function get_supplier_types($db) {
 
 function update_supplier($db, $supplier_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."supplier SET
+    $sql = "UPDATE ".PRFX."supplier_records SET
             display_name   =". $db->qstr( $VAR['display_name']  ).",
             first_name     =". $db->qstr( $VAR['first_name']    ).",
             last_name      =". $db->qstr( $VAR['last_name']     ).",
@@ -258,7 +258,7 @@ function delete_supplier($db, $supplier_id) {
     
     $display_name = get_supplier_details($db, $supplier_id, 'display_name');
     
-    $sql = "DELETE FROM ".PRFX."supplier WHERE supplier_id=".$db->qstr($supplier_id);
+    $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
@@ -281,7 +281,7 @@ function delete_supplier($db, $supplier_id) {
 
 function last_supplier_id_lookup($db) {
     
-    $sql = "SELECT * FROM ".PRFX."supplier ORDER BY supplier_id DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."supplier_records ORDER BY supplier_id DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));

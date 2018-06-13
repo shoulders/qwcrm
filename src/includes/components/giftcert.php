@@ -35,40 +35,40 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
     /* Records Search */
         
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."giftcert.giftcert_id\n";    
+    $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert.$search_category LIKE '%$search_term%'";}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.$search_category LIKE '%$search_term%'";}
     
     /* Filter the Records */
     
     // Restrict by Status
-    if($status) {$whereTheseRecords .= " AND ".PRFX."giftcert.active=".$db->qstr($status);} 
+    if($status) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.active=".$db->qstr($status);} 
     
     // Restrict by redmption Status
-    if($is_redeemed) {$whereTheseRecords .= " AND ".PRFX."giftcert.is_redeemed=".$db->qstr($is_redeemed);}
+    if($is_redeemed) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.is_redeemed=".$db->qstr($is_redeemed);}
     
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."giftcert.employee_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.employee_id=".$db->qstr($employee_id);}
     
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."giftcert.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.customer_id=".$db->qstr($customer_id);}
     
     // Restrict by Invoice
-    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."giftcert.invoice_id=".$db->qstr($invoice_id);}
+    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.invoice_id=".$db->qstr($invoice_id);}
     
     /* The SQL code */
     
     $sql = "SELECT
-            ".PRFX."giftcert.*,
-            ".PRFX."user.display_name as employee_display_name,
-            ".PRFX."customer.display_name as customer_display_name         
-            FROM ".PRFX."giftcert
-            LEFT JOIN ".PRFX."user ON ".PRFX."giftcert.employee_id = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."giftcert.customer_id = ".PRFX."customer.customer_id            
+            ".PRFX."giftcert_records.*,
+            ".PRFX."user_records.display_name as employee_display_name,
+            ".PRFX."customer_records.display_name as customer_display_name         
+            FROM ".PRFX."giftcert_records
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."giftcert_records.employee_id = ".PRFX."user_records.user_id
+            LEFT JOIN ".PRFX."customer_records ON ".PRFX."giftcert_records.customer_id = ".PRFX."customer_records.customer_id            
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."giftcert.".$order_by."        
-            ORDER BY ".PRFX."giftcert.".$order_by."
+            GROUP BY ".PRFX."giftcert_records.".$order_by."        
+            ORDER BY ".PRFX."giftcert_records.".$order_by."
             ".$direction;           
 
     /* Restrict by pages */
@@ -145,7 +145,7 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
 
 function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $note) {
     
-    $sql = "INSERT INTO ".PRFX."giftcert SET 
+    $sql = "INSERT INTO ".PRFX."giftcert_records SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             customer_id     =". $db->qstr( $customer_id                         ).",                        
@@ -183,7 +183,7 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
 
 function get_giftcert_details($db, $giftcert_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."giftcert WHERE giftcert_id=".$db->qstr($giftcert_id);
+    $sql = "SELECT * FROM ".PRFX."giftcert_records WHERE giftcert_id=".$db->qstr($giftcert_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate details."));
@@ -209,7 +209,7 @@ function get_giftcert_details($db, $giftcert_id, $item = null){
 
 function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
     
-    $sql = "SELECT * FROM ".PRFX."giftcert WHERE giftcert_code=".$db->qstr( $giftcert_code );
+    $sql = "SELECT * FROM ".PRFX."giftcert_records WHERE giftcert_code=".$db->qstr( $giftcert_code );
 
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate ID by the Gift Certificate code."));
@@ -231,7 +231,7 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 
 function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $note) {
     
-    $sql = "UPDATE ".PRFX."giftcert SET            
+    $sql = "UPDATE ".PRFX."giftcert_records SET            
             date_expires    =". $db->qstr( $date_expires    ).",
             amount          =". $db->qstr( $amount          ).",
             active          =". $db->qstr( $active          ).",                
@@ -270,7 +270,7 @@ function delete_giftcert($db, $giftcert_id) {
     
     // update and set non-active as you cannot really delete an issues gift certificate
     
-    $sql = "UPDATE ".PRFX."giftcert SET active='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
+    $sql = "UPDATE ".PRFX."giftcert_records SET active='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Gift Certificate."));
@@ -361,7 +361,7 @@ function generate_giftcert_code() {
 
 function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
     
-    $sql = "UPDATE ".PRFX."giftcert SET
+    $sql = "UPDATE ".PRFX."giftcert_records SET
             invoice_id          =". $db->qstr( $invoice_id  ).",
             date_redeemed       =". $db->qstr( time()       ).",
             is_redeemed         =". $db->qstr( 1            ).",            

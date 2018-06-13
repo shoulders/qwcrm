@@ -85,12 +85,12 @@ $page_no        =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';
 $skip_logging   =   isset($skip_logging)        ? $skip_logging         : null;
 
 ##########################################
-#   Set Global PHP Values from QWcrm     #
+#   Set Global PHP Values from QWcrm     #  // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
 ##########################################
 
 // Set Date Format
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    define('DATE_FORMAT', get_company_details($db, 'date_format'));             // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
+    define('DATE_FORMAT', get_company_details($db, 'date_format'));
 }
 
 ##########################################################################

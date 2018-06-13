@@ -35,26 +35,26 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
     /* Records Search */    
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."refund.refund_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."refund.$search_category LIKE '%$search_term%'";} 
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE '%$search_term%'";} 
     
     /* Filter the Records */  
     
     // Restrict by Type
-    if($type) { $whereTheseRecords .= " AND ".PRFX."refund.type= ".$db->qstr($type);}
+    if($type) { $whereTheseRecords .= " AND ".PRFX."refund_records.type= ".$db->qstr($type);}
         
     // Restrict by Method
-    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."refund.payment_method= ".$db->qstr($payment_method);} 
+    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."refund_records.payment_method= ".$db->qstr($payment_method);} 
     
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."refund                                                   
+            FROM ".PRFX."refund_records                                                   
             ".$whereTheseRecords."            
-            GROUP BY ".PRFX."refund.".$order_by."
-            ORDER BY ".PRFX."refund.".$order_by."
+            GROUP BY ".PRFX."refund_records.".$order_by."
+            ORDER BY ".PRFX."refund_records.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
@@ -132,7 +132,7 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
 
 function insert_refund($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."refund SET
+    $sql = "INSERT INTO ".PRFX."refund_records SET
             invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
@@ -167,7 +167,7 @@ function insert_refund($db, $VAR) {
 
 function get_refund_details($db, $refund_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."refund WHERE refund_id=".$db->qstr($refund_id);
+    $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$db->qstr($refund_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
@@ -213,7 +213,7 @@ function get_refund_types($db) {
 
 function update_refund($db, $refund_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."refund SET
+    $sql = "UPDATE ".PRFX."refund_records SET
             invoice_id          =". $db->qstr( $VAR['invoice_id']           ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
@@ -254,7 +254,7 @@ function delete_refund($db, $refund_id) {
     // Get invoice_id before deleting the record
     $invoice_id = get_refund_details($db, $refund_id, 'invoice_id');
     
-    $sql = "DELETE FROM ".PRFX."refund WHERE refund_id=".$db->qstr($refund_id);
+    $sql = "DELETE FROM ".PRFX."refund_records WHERE refund_id=".$db->qstr($refund_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
@@ -278,7 +278,7 @@ function delete_refund($db, $refund_id) {
 
 function last_refund_id_lookup($db) {
     
-    $sql = "SELECT * FROM ".PRFX."refund ORDER BY refund_id DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."refund_records ORDER BY refund_id DESC LIMIT 1";
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));

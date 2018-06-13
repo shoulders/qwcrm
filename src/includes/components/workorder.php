@@ -35,16 +35,16 @@ function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC'
     /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."workorder.workorder_id\n";    
+    $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";    
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder.$search_category LIKE '%$search_term%'";}  
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE '%$search_term%'";}  
     
     /* Filter the Records */
     
@@ -54,62 +54,62 @@ function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC'
         // All Open workorders
         if($status == 'open') {
             
-            $whereTheseRecords .= " AND ".PRFX."workorder.is_closed != '1'";
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.is_closed != '1'";
         
         // All Closed workorders
         } elseif($status == 'closed') {
             
-            $whereTheseRecords .= " AND ".PRFX."workorder.is_closed = '1'";
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.is_closed = '1'";
         
         // Return Workorders for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."workorder.status= ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$db->qstr($status);
             
         }
         
     }        
 
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user.user_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user_records.user_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."customer.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."customer_records.customer_id=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
     $sql =  "SELECT            
-            ".PRFX."user.email AS employee_email,
-            ".PRFX."user.display_name AS employee_display_name,
-            ".PRFX."user.work_primary_phone AS employee_work_primary_phone,
-            ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
-            ".PRFX."user.home_primary_phone AS employee_home_primary_phone,
+            ".PRFX."user_records.email AS employee_email,
+            ".PRFX."user_records.display_name AS employee_display_name,
+            ".PRFX."user_records.work_primary_phone AS employee_work_primary_phone,
+            ".PRFX."user_records.work_mobile_phone AS employee_work_mobile_phone,
+            ".PRFX."user_records.home_primary_phone AS employee_home_primary_phone,
                 
-            ".PRFX."customer.customer_id,
-            ".PRFX."customer.display_name AS customer_display_name,
-            ".PRFX."customer.first_name AS customer_first_name,
-            ".PRFX."customer.last_name AS customer_last_name,            
-            ".PRFX."customer.address AS customer_address,
-            ".PRFX."customer.city AS customer_city,
-            ".PRFX."customer.state AS customer_state,
-            ".PRFX."customer.zip AS customer_zip,
-            ".PRFX."customer.country AS customer_country,
-            ".PRFX."customer.primary_phone AS customer_phone,
-            ".PRFX."customer.mobile_phone AS customer_mobile_phone,
-            ".PRFX."customer.fax AS customer_fax,
+            ".PRFX."customer_records.customer_id,
+            ".PRFX."customer_records.display_name AS customer_display_name,
+            ".PRFX."customer_records.first_name AS customer_first_name,
+            ".PRFX."customer_records.last_name AS customer_last_name,            
+            ".PRFX."customer_records.address AS customer_address,
+            ".PRFX."customer_records.city AS customer_city,
+            ".PRFX."customer_records.state AS customer_state,
+            ".PRFX."customer_records.zip AS customer_zip,
+            ".PRFX."customer_records.country AS customer_country,
+            ".PRFX."customer_records.primary_phone AS customer_phone,
+            ".PRFX."customer_records.mobile_phone AS customer_mobile_phone,
+            ".PRFX."customer_records.fax AS customer_fax,
                 
-            ".PRFX."workorder.workorder_id, employee_id, invoice_id,
-            ".PRFX."workorder.open_date AS workorder_open_date,
-            ".PRFX."workorder.close_date AS workorder_close_date,
-            ".PRFX."workorder.scope AS workorder_scope,
-            ".PRFX."workorder.status AS workorder_status
+            ".PRFX."workorder_records.workorder_id, employee_id, invoice_id,
+            ".PRFX."workorder_records.open_date AS workorder_open_date,
+            ".PRFX."workorder_records.close_date AS workorder_close_date,
+            ".PRFX."workorder_records.scope AS workorder_scope,
+            ".PRFX."workorder_records.status AS workorder_status
                
-            FROM ".PRFX."workorder
-            LEFT JOIN ".PRFX."user ON ".PRFX."workorder.employee_id   = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."workorder.customer_id = ".PRFX."customer.customer_id                 
+            FROM ".PRFX."workorder_records
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_records.employee_id   = ".PRFX."user_records.user_id
+            LEFT JOIN ".PRFX."customer_records ON ".PRFX."workorder_records.customer_id = ".PRFX."customer_records.customer_id                 
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."workorder.".$order_by."
-            ORDER BY ".PRFX."workorder.".$order_by."
+            GROUP BY ".PRFX."workorder_records.".$order_by."
+            ORDER BY ".PRFX."workorder_records.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
@@ -187,12 +187,12 @@ function display_workorder_notes($db, $workorder_id){
     
     $sql = "SELECT
             ".PRFX."workorder_notes.*,
-            ".PRFX."user.display_name
+            ".PRFX."user_records.display_name
             FROM
             ".PRFX."workorder_notes,
-            ".PRFX."user
+            ".PRFX."user_records
             WHERE workorder_id=".$db->qstr($workorder_id)."
-            AND ".PRFX."user.user_id = ".PRFX."workorder_notes.employee_id";
+            AND ".PRFX."user_records.user_id = ".PRFX."workorder_notes.employee_id";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return notes for the work order."));
@@ -212,13 +212,13 @@ function display_workorder_history($db, $workorder_id){
     
     $sql = "SELECT 
             ".PRFX."workorder_history.*,
-            ".PRFX."user.display_name AS employee_display_name
+            ".PRFX."user_records.display_name AS employee_display_name
                 
             FROM 
             ".PRFX."workorder_history
-            LEFT JOIN ".PRFX."user ON ".PRFX."workorder_history.employee_id = ".PRFX."user.user_id
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_history.employee_id = ".PRFX."user_records.user_id
             WHERE ".PRFX."workorder_history.workorder_id=".$db->qstr($workorder_id)." 
-            AND ".PRFX."user.user_id = ".PRFX."workorder_history.employee_id
+            AND ".PRFX."user_records.user_id = ".PRFX."workorder_history.employee_id
             ORDER BY ".PRFX."workorder_history.history_id";
     
     if(!$rs = $db->Execute($sql)) {
@@ -239,7 +239,7 @@ function display_workorder_history($db, $workorder_id){
 
 function insert_workorder($db, $customer_id, $scope, $description, $comment) {
     
-    $sql = "INSERT INTO ".PRFX."workorder SET            
+    $sql = "INSERT INTO ".PRFX."workorder_records SET            
             customer_id     =". $db->qstr( $customer_id                         ).",
             open_date       =". $db->qstr( time()                               ).",
             status          =". $db->qstr( 'unassigned'                         ).",
@@ -356,7 +356,7 @@ function get_workorder_details($db, $workorder_id = null, $item = null) {
         return;        
     }
 
-    $sql = "SELECT * FROM ".PRFX."workorder WHERE workorder_id=".$db->qstr($workorder_id);
+    $sql = "SELECT * FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get work order details."));
@@ -492,7 +492,7 @@ function get_workorder_stats($db) {
 
 function update_workorder_scope_and_description($db, $workorder_id, $scope, $description){
     
-    $sql = "UPDATE ".PRFX."workorder SET           
+    $sql = "UPDATE ".PRFX."workorder_records SET           
             scope               =".$db->qstr( $scope        ).",
             description         =".$db->qstr( $description  )."            
             WHERE workorder_id  =".$db->qstr( $workorder_id );
@@ -527,7 +527,7 @@ function update_workorder_scope_and_description($db, $workorder_id, $scope, $des
 
 function update_workorder_comment($db, $workorder_id, $comment){
     
-    $sql = "UPDATE ".PRFX."workorder SET            
+    $sql = "UPDATE ".PRFX."workorder_records SET            
             comment            =". $db->qstr( $comment        )."
             WHERE workorder_id  =". $db->qstr( $workorder_id    );
 
@@ -561,7 +561,7 @@ function update_workorder_comment($db, $workorder_id, $comment){
 
 function update_workorder_resolution($db, $workorder_id, $resolution) {
     
-    $sql = "UPDATE ".PRFX."workorder SET                        
+    $sql = "UPDATE ".PRFX."workorder_records SET                        
             resolution          =". $db->qstr( $resolution      )."            
             WHERE workorder_id  =". $db->qstr( $workorder_id    );
 
@@ -604,7 +604,7 @@ function update_workorder_status($db, $workorder_id, $new_status) {
         return false;
     }
     
-    $sql = "UPDATE ".PRFX."workorder SET \n";
+    $sql = "UPDATE ".PRFX."workorder_records SET \n";
     
     // when unassigned there should be no employee the '\n' makes sql look neater
     if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }
@@ -660,7 +660,7 @@ function update_workorder_closed_status($db, $workorder_id, $new_closed_status) 
     
     if($new_closed_status == 'open') {
         
-        $sql = "UPDATE ".PRFX."workorder SET
+        $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           ='',
                 close_date          ='',
                 is_closed           =". $db->qstr( 0                                    )."
@@ -669,7 +669,7 @@ function update_workorder_closed_status($db, $workorder_id, $new_closed_status) 
     }
     
     if($new_closed_status == 'close') {        
-        $sql = "UPDATE ".PRFX."workorder SET
+        $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
                 close_date          =". $db->qstr( time()                               ).",
                 is_closed           =". $db->qstr( 1                                    )."
@@ -692,7 +692,7 @@ function update_workorder_last_active($db, $workorder_id = null) {
     // compensate for some invoices not having workorders
     if(!$workorder_id) { return; }
     
-    $sql = "UPDATE ".PRFX."workorder SET
+    $sql = "UPDATE ".PRFX."workorder_records SET
             last_active=".$db->qstr(time())."
             WHERE workorder_id=".$db->qstr($workorder_id);
     
@@ -711,7 +711,7 @@ function update_workorder_invoice_id($db, $workorder_id, $invoice_id) {
     // This prevents invoices with no workorders causing issues
     if($workorder_id == null) { return; }
     
-    $sql = "UPDATE ".PRFX."workorder SET
+    $sql = "UPDATE ".PRFX."workorder_records SET
             invoice_id          =". $db->qstr( $invoice_id      )."
             WHERE workorder_id  =". $db->qstr( $workorder_id    );
 
@@ -763,7 +763,7 @@ function update_workorder_note($db, $workorder_note_id, $note) {
 function close_workorder_without_invoice($db, $workorder_id, $resolution){
     
     // Insert resolution and close information
-    $sql = "UPDATE ".PRFX."workorder SET
+    $sql = "UPDATE ".PRFX."workorder_records SET
             closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             close_date          =". $db->qstr( time()                               ).",            
             status              =". $db->qstr( 'closed_without_invoice'             ).",
@@ -805,7 +805,7 @@ function close_workorder_without_invoice($db, $workorder_id, $resolution){
 function close_workorder_with_invoice($db, $workorder_id, $resolution){
     
     // Insert resolution and close information
-    $sql = "UPDATE ".PRFX."workorder SET
+    $sql = "UPDATE ".PRFX."workorder_records SET
             closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             close_date          =". $db->qstr( time()                               ).",            
             status              =". $db->qstr( 'closed_with_invoice'                ).",
@@ -864,7 +864,7 @@ function delete_workorder($db, $workorder_id) {
     $customer_id = get_workorder_details($db, $workorder_id, 'customer_id');
     
     // Delete the workorder primary record
-    $sql = "DELETE FROM ".PRFX."workorder WHERE workorder_id=".$db->qstr($workorder_id);
+    $sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Work Order").' '.$workorder_id.'.');
@@ -889,7 +889,7 @@ function delete_workorder($db, $workorder_id) {
             // Delete the workorder schedule events     
             } else {
 
-                $sql = "DELETE FROM ".PRFX."schedule WHERE workorder_id=".$db->qstr($workorder_id);
+                $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$db->qstr($workorder_id);
 
                 if(!$rs = $db->Execute($sql)) {
                     force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the schedules for Work Order").' '.$workorder_id.'.');
@@ -922,7 +922,7 @@ function delete_workorder($db, $workorder_id) {
 
 function check_workorder_status_allows_for_deletion($db, $workorder_id) {
     
-    $sql = "SELECT status FROM ".PRFX."workorder WHERE workorder_id=".$workorder_id;
+    $sql = "SELECT status FROM ".PRFX."workorder_records WHERE workorder_id=".$workorder_id;
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if a work order is allowed to be deleted."));
@@ -1022,7 +1022,7 @@ function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
     // Only change workorder status if unassigned
     if($workorder_details['status'] == 'unassigned') {
         
-        $sql = "UPDATE ".PRFX."workorder SET
+        $sql = "UPDATE ".PRFX."workorder_records SET
                 employee_id         =". $db->qstr( $target_employee_id  ).",
                 status              =". $db->qstr( 'assigned'           )."
                 WHERE workorder_id  =". $db->qstr( $workorder_id        );
@@ -1030,7 +1030,7 @@ function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
     // Keep the same workorder status    
     } else {    
         
-        $sql = "UPDATE ".PRFX."workorder SET
+        $sql = "UPDATE ".PRFX."workorder_records SET
                 employee_id         =". $db->qstr( $target_employee_id  )."            
                 WHERE workorder_id  =". $db->qstr( $workorder_id        );
 

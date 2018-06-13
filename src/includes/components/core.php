@@ -24,7 +24,7 @@ defined('_QWEXEC') or die;
 
 function display_welcome_msg($db){
     
-    $sql = "SELECT welcome_msg FROM ".PRFX."company";
+    $sql = "SELECT welcome_msg FROM ".PRFX."company_options";
        
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));

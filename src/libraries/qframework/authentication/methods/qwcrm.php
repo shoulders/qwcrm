@@ -49,7 +49,7 @@ class PlgAuthenticationQwcrm
         }
 
         // Load the relevant user record form the database
-        $sql = "SELECT user_id, password FROM ".PRFX."user WHERE username = ".$this->db->qstr($credentials['username']);        
+        $sql = "SELECT user_id, password FROM ".PRFX."user_records WHERE username = ".$this->db->qstr($credentials['username']);        
         $rs = $this->db->Execute($sql);
         //$result = $rs->GetRowAssoc();
         

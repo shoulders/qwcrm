@@ -45,16 +45,16 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
     /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."schedule.schedule_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."schedule_records.schedule_id\n";
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}     
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE '%$search_term%'";} 
     
     /* Filter the Records */
     
@@ -64,46 +64,46 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
         // All Open schedules
         if($status == 'open') {
             
-            $whereTheseRecords .= " AND ".PRFX."schedule.is_closed != '1'";
+            $whereTheseRecords .= " AND ".PRFX."schedule_records.is_closed != '1'";
         
         // All Closed schedules
         } elseif($status == 'closed') {
             
-            $whereTheseRecords .= " AND ".PRFX."schedule.is_closed = '1'";
+            $whereTheseRecords .= " AND ".PRFX."schedule_records.is_closed = '1'";
         
         // Return schedules for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."schedule.status= ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."schedule_records.status= ".$db->qstr($status);
             
         }
         
     }        
 
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule.user_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."schedule.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.customer_id=".$db->qstr($customer_id);}
     
     // Restrict by Work Order
-    if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule.workorder_id=".$db->qstr($workorder_id);}    
+    if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$db->qstr($workorder_id);}    
     
     /* The SQL code */
     
     $sql =  "SELECT
-            ".PRFX."schedule.*,
+            ".PRFX."schedule_records.*,
                 
-            ".PRFX."customer.display_name AS customer_display_name,       
+            ".PRFX."customer_records.display_name AS customer_display_name,       
             
-            ".PRFX."user.display_name AS employee_display_name           
+            ".PRFX."user_records.display_name AS employee_display_name           
                
-            FROM ".PRFX."schedule
-            LEFT JOIN ".PRFX."user ON ".PRFX."schedule.employee_id   = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."schedule.customer_id = ".PRFX."customer.customer_id                 
+            FROM ".PRFX."schedule_records
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."schedule_records.employee_id   = ".PRFX."user_records.user_id
+            LEFT JOIN ".PRFX."customer_records ON ".PRFX."schedule_records.customer_id = ".PRFX."customer_records.customer_id                 
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."schedule.".$order_by."
-            ORDER BY ".PRFX."schedule.".$order_by."
+            GROUP BY ".PRFX."schedule_records.".$order_by."
+            ORDER BY ".PRFX."schedule_records.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
@@ -196,7 +196,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
     if(!validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id)) {return false;}        
 
     // Insert schedule item into the database
-    $sql = "INSERT INTO ".PRFX."schedule SET
+    $sql = "INSERT INTO ".PRFX."schedule_records SET
             employee_id     =". $db->qstr( $employee_id     ).",
             customer_id     =". $db->qstr( $customer_id     ).",   
             workorder_id    =". $db->qstr( $workorder_id    ).",
@@ -249,7 +249,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
 
 function get_schedule_details($db, $schedule_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."schedule WHERE schedule_id=".$db->qstr($schedule_id);
+    $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$db->qstr($schedule_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
@@ -281,7 +281,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT schedule_id
-            FROM ".PRFX."schedule       
+            FROM ".PRFX."schedule_records       
             WHERE start_time >= ".$company_day_start." AND start_time <= ".$company_day_end."
             AND employee_id =".$db->qstr($employee_id)."
             ORDER BY start_time
@@ -319,7 +319,7 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
     // Validate the submitted dates
     if(!validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id)) { return false; }        
     
-    $sql = "UPDATE ".PRFX."schedule SET
+    $sql = "UPDATE ".PRFX."schedule_records SET
         schedule_id         =". $db->qstr( $schedule_id         ).",
         employee_id         =". $db->qstr( $employee_id         ).",
         customer_id         =". $db->qstr( $customer_id         ).",
@@ -363,7 +363,7 @@ function delete_schedule($db, $schedule_id) {
     // Get schedule details before deleting
     $schedule_details = get_schedule_details($db, $schedule_id);
     
-    $sql = "DELETE FROM ".PRFX."schedule WHERE schedule_id =".$db->qstr($schedule_id);
+    $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$db->qstr($schedule_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
@@ -715,17 +715,17 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql ="SELECT 
-        ".PRFX."schedule.*,
-        ".PRFX."customer.display_name AS customer_display_name
-        FROM ".PRFX."schedule
-        INNER JOIN ".PRFX."workorder
-        ON ".PRFX."schedule.workorder_id = ".PRFX."workorder.workorder_id
-        INNER JOIN ".PRFX."customer
-        ON ".PRFX."workorder.customer_id = ".PRFX."customer.customer_id
-        WHERE ".PRFX."schedule.start_time >= ".$company_day_start."
-        AND ".PRFX."schedule.start_time <= ".$company_day_end."
-        AND ".PRFX."schedule.employee_id =".$db->qstr($employee_id)."
-        ORDER BY ".PRFX."schedule.start_time
+        ".PRFX."schedule_records.*,
+        ".PRFX."customer_records.display_name AS customer_display_name
+        FROM ".PRFX."schedule_records
+        INNER JOIN ".PRFX."workorder_records
+        ON ".PRFX."schedule_records.workorder_id = ".PRFX."workorder_records.workorder_id
+        INNER JOIN ".PRFX."customer_records
+        ON ".PRFX."workorder_records.customer_id = ".PRFX."customer_records.customer_id
+        WHERE ".PRFX."schedule_records.start_time >= ".$company_day_start."
+        AND ".PRFX."schedule_records.start_time <= ".$company_day_end."
+        AND ".PRFX."schedule_records.employee_id =".$db->qstr($employee_id)."
+        ORDER BY ".PRFX."schedule_records.start_time
         ASC";
     
     if(!$rs = $db->Execute($sql)) {
@@ -902,7 +902,7 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
     // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
     $sql = "SELECT
              schedule_id, start_time, end_time
-            FROM ".PRFX."schedule
+            FROM ".PRFX."schedule_records
             WHERE start_time >= ".$company_day_start."
             AND end_time <=".$company_day_end."
             AND employee_id ='".$employee_id."'
@@ -948,7 +948,7 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
 function count_workorder_schedule_items($db, $workorder_id) {
     
     $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."schedule
+            FROM ".PRFX."schedule_records
             WHERE workorder_id=".$db->qstr($workorder_id);         
             
     if(!$rs = $db->Execute($sql)) {

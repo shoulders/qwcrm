@@ -40,7 +40,7 @@ defined('_QWEXEC') or die;
 
 function get_company_start_end_times($db, $time_event) {
     
-    $sql = "SELECT opening_hour, opening_minute, closing_hour, closing_minute FROM ".PRFX."company";
+    $sql = "SELECT opening_hour, opening_minute, closing_hour, closing_minute FROM ".PRFX."company_options";
 
    if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
@@ -143,7 +143,7 @@ function update_company_details($db, $VAR) {
         $new_logo_filepath = upload_logo($db);
     }
     
-    $sql .= "UPDATE ".PRFX."company SET
+    $sql .= "UPDATE ".PRFX."company_options SET
             display_name            = ". $db->qstr( $VAR['display_name']                   ).",";
     
     if($VAR['delete_logo']) {
@@ -208,7 +208,7 @@ function update_company_hours($db, $openingTime, $closingTime) {
     
     $smarty = QSmarty::getInstance();
     
-    $sql = "UPDATE ".PRFX."company SET
+    $sql = "UPDATE ".PRFX."company_options SET
             opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
             opening_minute  =". $db->qstr( $openingTime['Time_Minute']   ).",
             closing_hour    =". $db->qstr( $closingTime['Time_Hour']     ).",

@@ -36,26 +36,26 @@ function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $u
     /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."expense.expense_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense.$search_category LIKE '%$search_term%'";}     
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE '%$search_term%'";}     
     
     /* Filter the Records */  
     
     // Restrict by Type
-    if($type) { $whereTheseRecords .= " AND ".PRFX."expense.type= ".$db->qstr($type);}
+    if($type) { $whereTheseRecords .= " AND ".PRFX."expense_records.type= ".$db->qstr($type);}
         
     // Restrict by Method
-    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."expense.payment_method= ".$db->qstr($payment_method);} 
+    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."expense_records.payment_method= ".$db->qstr($payment_method);} 
         
     /* The SQL code */
     
     $sql =  "SELECT * 
-            FROM ".PRFX."expense                                                   
+            FROM ".PRFX."expense_records                                                   
             ".$whereTheseRecords."            
-            GROUP BY ".PRFX."expense.".$order_by."
-            ORDER BY ".PRFX."expense.".$order_by."
+            GROUP BY ".PRFX."expense_records.".$order_by."
+            ORDER BY ".PRFX."expense_records.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
@@ -133,7 +133,7 @@ function display_expenses($db, $order_by = 'expense_id', $direction = 'DESC', $u
 
 function insert_expense($db, $VAR) {
     
-    $sql = "INSERT INTO ".PRFX."expense SET
+    $sql = "INSERT INTO ".PRFX."expense_records SET
             invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
             payee           =". $db->qstr( $VAR['payee']                   ).",
             date            =". $db->qstr( date_to_timestamp($VAR['date']) ).",
@@ -170,7 +170,7 @@ function insert_expense($db, $VAR) {
 
 function get_expense_details($db, $expense_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
+    $sql = "SELECT * FROM ".PRFX."expense_records WHERE expense_id=".$db->qstr($expense_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the expense details."));
@@ -216,7 +216,7 @@ function get_expense_types($db) {
 
 function update_expense($db, $expense_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."expense SET
+    $sql = "UPDATE ".PRFX."expense_records SET
             invoice_id          =". $db->qstr( $VAR['invoice_id']               ).",
             payee               =". $db->qstr( $VAR['payee']                    ).",
             date                =". $db->qstr( date_to_timestamp($VAR['date'])  ).",
@@ -257,7 +257,7 @@ function delete_expense($db, $expense_id) {
     // Get invoice_id before deleting the record
     $invoice_id = get_expense_details($db, $expense_id, 'invoice_id');
     
-    $sql = "DELETE FROM ".PRFX."expense WHERE expense_id=".$db->qstr($expense_id);
+    $sql = "DELETE FROM ".PRFX."expense_records WHERE expense_id=".$db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
@@ -281,7 +281,7 @@ function delete_expense($db, $expense_id) {
 
 function last_expense_id_lookup($db){
     
-    $sql = "SELECT * FROM ".PRFX."expense ORDER BY expense_id DESC LIMIT 1";
+    $sql = "SELECT * FROM ".PRFX."expense_records ORDER BY expense_id DESC LIMIT 1";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last expense record ID."));

@@ -295,7 +295,7 @@ class JUserHelper
             ->where($db->quoteName('username') . ' = ' . $db->quote($username));
         $db->setQuery($query, 0, 1);*/
         
-        $sql = "SELECT user_id FROM ".PRFX."user WHERE username = ".$db->qstr($username);
+        $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username = ".$db->qstr($username);
         $rs = $db->Execute($sql);        
 
         //return $db->loadResult();

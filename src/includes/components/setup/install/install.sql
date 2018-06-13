@@ -647,7 +647,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('administrator:update', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-('company:settings', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('company:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:dashboard', 1, 1, 1, 1, 1, 1, 0, 0, 0),

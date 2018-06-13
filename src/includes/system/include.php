@@ -86,7 +86,7 @@ function get_qwcrm_database_version_number($db) {
 
 function get_company_details($db, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."company";
+    $sql = "SELECT * FROM ".PRFX."company_options";
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
@@ -118,7 +118,7 @@ function update_user_last_active($db, $user_id = null) {
     // compensate for some operations not having a user_id
     if(!$user_id) { return; }        
     
-    $sql = "UPDATE ".PRFX."user SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
+    $sql = "UPDATE ".PRFX."user_records SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));

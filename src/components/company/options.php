@@ -20,4 +20,4 @@ if(isset($VAR['submit'])) {
 
 // Build the page
 $smarty->assign('company_details', get_company_details($db) );
-$BuildPage .= $smarty->fetch('company/settings.tpl');
+$BuildPage .= $smarty->fetch('company/options.tpl');

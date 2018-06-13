@@ -497,7 +497,7 @@ function generate_database_prefix($not_this_prefix = null) {
 
 function set_workorder_start_number($db, $start_number) {
     
-    $sql = "ALTER TABLE ".PRFX."workorder auto_increment =".$start_number ;
+    $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$start_number ;
 
     $db->execute($sql);    
     
@@ -511,7 +511,7 @@ function set_workorder_start_number($db, $start_number) {
 
 function set_invoice_start_number($db, $start_number) {
     
-    $sql = "ALTER TABLE ".PRFX."invoice auto_increment =".$start_number ;
+    $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$start_number ;
 
     $db->execute($sql);   
     

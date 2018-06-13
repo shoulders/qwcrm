@@ -1,4 +1,4 @@
-<!-- edit.tpl -->
+<!-- options.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -18,14 +18,14 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Edit The Company Information{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Company Options{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}COMPANY_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}COMPANY_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}COMPANY_OPTIONS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}COMPANY_OPTIONS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
-                        <form method="post" action="index.php?component=company&page_tpl=settings" enctype="multipart/form-data">
+                        <form method="post" action="index.php?component=company&page_tpl=options" enctype="multipart/form-data">
                             <table width="100%" border="0" cellpadding="20" cellspacing="0">
                                 <tr>
                                     <td>
@@ -46,7 +46,7 @@
                                                 <div id="tab_1_contents" class="tab_contents tab_contents_active">                    
                                                     <table width="100%" cellpadding="5" cellspacing="0" border="0">
                                                         <tr>
-                                                            <td class="menuhead2" width="80%">&nbsp;{t}Edit The Company Information{/t}</td>
+                                                            <td class="menuhead2" width="80%">&nbsp;{t}Company Options{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="menutd2">

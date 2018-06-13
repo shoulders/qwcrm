@@ -37,48 +37,48 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
     /* Records Search */
         
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."user.user_id\n";    
+    $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user.$search_category LIKE '%$search_term%'";}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE '%$search_term%'";}
     
     /* Filter the Records */
         
     // Restrict by Status
-    if($status) {$whereTheseRecords .= " AND ".PRFX."user.active=".$db->qstr($status);}  
+    if($status) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$db->qstr($status);}  
     
     // Restrict results by user type
     if($usertype) {
         
         if($usertype == 'customer') { 
-            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('7');}            
+            $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr('7');}            
         
         if($usertype == 'employee') {
             
-            $whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr('1');
-            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('2');
-            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('3');
-            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('4');
-            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('5');
-            $whereTheseRecords .= " OR ".PRFX."user.usergroup =".$db->qstr('6');
+            $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr('1');
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('2');
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('3');
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('4');
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('5');
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('6');
             
         }
         
     }
          
     // Restrict results by usergroup
-    if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user.usergroup =".$db->qstr($usergroup);}
+    if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr($usergroup);}
     
     /* The SQL code */    
     
     $sql = "SELECT
-            ".PRFX."user.*,
+            ".PRFX."user_records.*,
             ".PRFX."user_usergroups.usergroup_display_name   
-            FROM ".PRFX."user
-            LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user.usergroup = ".PRFX."user_usergroups.usergroup_id)
+            FROM ".PRFX."user_records
+            LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user_records.usergroup = ".PRFX."user_usergroups.usergroup_id)
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."user.".$order_by."
-            ORDER BY ".PRFX."user.".$order_by."
+            GROUP BY ".PRFX."user_records.".$order_by."
+            ORDER BY ".PRFX."user_records.".$order_by."
             ".$direction;  
    
     /* Restrict by pages */
@@ -155,7 +155,7 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
 
 function insert_user($db, $VAR){
     
-    $sql = "INSERT INTO ".PRFX."user SET
+    $sql = "INSERT INTO ".PRFX."user_records SET
             customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
             username            =". $db->qstr( $VAR['username']                             ).",
             password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
@@ -223,7 +223,7 @@ function get_user_details($db, $user_id = null, $item = null) {
         return;        
     }
     
-    $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$user_id;
+    $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id =".$user_id;
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
@@ -258,7 +258,7 @@ function get_user_details($db, $user_id = null, $item = null) {
 
 function get_user_id_by_username($db, $username){
     
-    $sql = "SELECT user_id FROM ".PRFX."user WHERE username =".$db->qstr($username);    
+    $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$db->qstr($username);    
     if(!$rs = $db->execute($sql)){
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
     } else {
@@ -275,7 +275,7 @@ function get_user_id_by_username($db, $username){
 
 function get_user_id_by_email($db, $email) {
     
-    $sql = "SELECT user_id FROM ".PRFX."user WHERE email =".$db->qstr($email);
+    $sql = "SELECT user_id FROM ".PRFX."user_records WHERE email =".$db->qstr($email);
     
     if(!$rs = $db->execute($sql)){
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their email."));
@@ -326,7 +326,7 @@ function get_usergroups($db, $user_type = null) {
     
 function get_active_users($db, $user_type = null) {    
     
-    $sql = "SELECT user_id, display_name FROM ".PRFX."user WHERE active='1'";
+    $sql = "SELECT user_id, display_name FROM ".PRFX."user_records WHERE active='1'";
     
     // Filter the results by user type customer/employee
     if($user_type === 'customers') {$sql .= " AND is_employee='0'";}
@@ -350,7 +350,7 @@ function get_active_users($db, $user_type = null) {
 
 function update_user($db, $user_id, $VAR) {
     
-    $sql = "UPDATE ".PRFX."user SET
+    $sql = "UPDATE ".PRFX."user_records SET
         customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
         username            =". $db->qstr( $VAR['username']                             ).",
         email               =". $db->qstr( $VAR['email']                                ).",
@@ -410,7 +410,7 @@ function update_user($db, $user_id, $VAR) {
     // compensate for some operations not having a user_id
     if(!$user_id) { return; }
     
-    $sql = "UPDATE ".PRFX."user SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
+    $sql = "UPDATE ".PRFX."user_records SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
@@ -440,7 +440,7 @@ function delete_user($db, $user_id) {
     // Cannot delete this account if it is the last administrator account
     if($user_details['usergroup'] == '7') {
         
-        $sql = "SELECT count(*) as count FROM ".PRFX."user WHERE usergroup = '7'";    
+        $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '7'";    
         if(!$rs = $db->Execute($sql)) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
         }  
@@ -451,7 +451,7 @@ function delete_user($db, $user_id) {
     }
 
     // Check if user has created any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE created_by=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
@@ -461,7 +461,7 @@ function delete_user($db, $user_id) {
     }
     
     // Check if user has any assigned workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder WHERE employee_id=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
@@ -471,7 +471,7 @@ function delete_user($db, $user_id) {
     }
     
     // Check if user has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."invoice WHERE employee_id=".$db->qstr($user_id);    
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
     }    
@@ -481,7 +481,7 @@ function delete_user($db, $user_id) {
     }    
     
     // Check if user is assigned to any gift certificates
-    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert WHERE employee_id=".$db->qstr($user_id);
+    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert_records WHERE employee_id=".$db->qstr($user_id);
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Gift Certificates in the database."));
     }  
@@ -493,7 +493,7 @@ function delete_user($db, $user_id) {
     /* we can now delete the user */
     
     // Delete User account
-    $sql = "DELETE FROM ".PRFX."user WHERE user_id=".$db->qstr($user_id);    
+    $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$db->qstr($user_id);    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
     }
@@ -531,7 +531,7 @@ function delete_user($db, $user_id) {
 function build_active_employee_form_option_list($db, $assigned_user_id){
     
     // select all employees and return their display name and ID as an array
-    $sql = "SELECT display_name, user_id FROM ".PRFX."user WHERE active=1 AND is_employee=1";
+    $sql = "SELECT display_name, user_id FROM ".PRFX."user_records WHERE active=1 AND is_employee=1";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
@@ -555,7 +555,7 @@ function check_user_username_exists($db, $username, $current_username = null){
     // This prevents self-checking of the current username of the record being edited
     if ($current_username != null && $username === $current_username) {return false;}
     
-    $sql = "SELECT username FROM ".PRFX."user WHERE username =". $db->qstr($username);
+    $sql = "SELECT username FROM ".PRFX."user_records WHERE username =". $db->qstr($username);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
@@ -590,7 +590,7 @@ function check_user_email_exists($db, $email, $current_email = null){
     // This prevents self-checking of the current username of the record being edited
     if ($current_email != null && $email === $current_email) {return false;}
     
-    $sql = "SELECT email FROM ".PRFX."user WHERE email =". $db->qstr($email);
+    $sql = "SELECT email FROM ".PRFX."user_records WHERE email =". $db->qstr($email);
     
     if(!$rs = $db->Execute($sql)) {
         
@@ -638,7 +638,7 @@ function check_customer_already_has_login($db, $customer_id) {
     
     $smarty = QSmarty::getInstance();
     
-    $sql = "SELECT user_id FROM ".PRFX."user WHERE customer_id =". $db->qstr($customer_id);
+    $sql = "SELECT user_id FROM ".PRFX."user_records WHERE customer_id =". $db->qstr($customer_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the customer already has a login."));
@@ -686,7 +686,7 @@ function reset_user_password($db, $user_id, $password = null) {
     // if no password supplied generate a random one
     if($password == null) { $password = JUserHelper::genRandomPassword(16); }
     
-    $sql = "UPDATE ".PRFX."user SET
+    $sql = "UPDATE ".PRFX."user_records SET
             password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
             require_reset   =". $db->qstr( 0                                    ).",   
             last_reset_time =". $db->qstr( time()                               ).",
@@ -720,7 +720,7 @@ function reset_user_password($db, $user_id, $password = null) {
 
 function reset_all_user_passwords($db) { 
     
-    $sql = "SELECT user_id FROM ".PRFX."user";
+    $sql = "SELECT user_id FROM ".PRFX."user_records";
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
@@ -1189,7 +1189,7 @@ function delete_expired_reset_codes($db) {
 
  function update_user_reset_count($db, $user_id) {
      
-    $sql = "UPDATE ".PRFX."user SET       
+    $sql = "UPDATE ".PRFX."user_records SET       
             reset_count     = reset_count + 1
             WHERE user_id   =". $db->qstr( $user_id  );
     

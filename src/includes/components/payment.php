@@ -35,54 +35,54 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
     /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."payment.payment_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}     
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}     
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE '%$search_term%'";} 
     
     /* Filter the Records */
     
     // Restrict by Status
-    if($method) {$whereTheseRecords .= " AND ".PRFX."payment.method= ".$db->qstr($method);}        
+    if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$db->qstr($method);}        
 
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment.employee_id=".$db->qstr($employee_id);}
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$db->qstr($employee_id);}
 
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."payment.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.customer_id=".$db->qstr($customer_id);}
     
     // Restrict by Invoice
-    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment.invoice_id=".$db->qstr($invoice_id);}    
+    if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);}    
     
     /* The SQL code */
     
     $sql =  "SELECT                
-            ".PRFX."customer.display_name AS customer_display_name,
+            ".PRFX."customer_records.display_name AS customer_display_name,
                 
-            ".PRFX."payment.payment_id,
-            ".PRFX."payment.employee_id,
-            ".PRFX."payment.customer_id,
-            ".PRFX."payment.workorder_id,
-            ".PRFX."payment.invoice_id,
-            ".PRFX."payment.date,
-            ".PRFX."payment.method,
-            ".PRFX."payment.amount,
-            ".PRFX."payment.note,
+            ".PRFX."payment_records.payment_id,
+            ".PRFX."payment_records.employee_id,
+            ".PRFX."payment_records.customer_id,
+            ".PRFX."payment_records.workorder_id,
+            ".PRFX."payment_records.invoice_id,
+            ".PRFX."payment_records.date,
+            ".PRFX."payment_records.method,
+            ".PRFX."payment_records.amount,
+            ".PRFX."payment_records.note,
                 
-            ".PRFX."user.display_name AS employee_display_name
+            ".PRFX."user_records.display_name AS employee_display_name
                
-            FROM ".PRFX."payment
-            LEFT JOIN ".PRFX."user ON ".PRFX."payment.employee_id   = ".PRFX."user.user_id
-            LEFT JOIN ".PRFX."customer ON ".PRFX."payment.customer_id = ".PRFX."customer.customer_id                 
+            FROM ".PRFX."payment_records
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."payment_records.employee_id   = ".PRFX."user_records.user_id
+            LEFT JOIN ".PRFX."customer_records ON ".PRFX."payment_records.customer_id = ".PRFX."customer_records.customer_id                 
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."payment.".$order_by."
-            ORDER BY ".PRFX."payment.".$order_by."
+            GROUP BY ".PRFX."payment_records.".$order_by."
+            ORDER BY ".PRFX."payment_records.".$order_by."
             ".$direction;            
     
     /* Restrict by pages */
@@ -162,7 +162,7 @@ function insert_payment($db, $VAR) {
 
     $invoice_details = get_invoice_details($db, $VAR['invoice_id']);
     
-    $sql = "INSERT INTO ".PRFX."payment SET            
+    $sql = "INSERT INTO ".PRFX."payment_records SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
             customer_id     = ".$db->qstr( $invoice_details['customer_id']             ).",
             workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
@@ -207,7 +207,7 @@ function insert_payment($db, $VAR) {
 
 function get_payment_details($db, $payment_id, $item = null){
     
-    $sql = "SELECT * FROM ".PRFX."payment  WHERE payment_id=".$db->qstr($payment_id);
+    $sql = "SELECT * FROM ".PRFX."payment_records  WHERE payment_id=".$db->qstr($payment_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
@@ -365,7 +365,7 @@ function get_credit_card_display_name_from_key($db, $card_key) {
 
 function update_payment($db, $VAR) {    
     
-    $sql = "UPDATE ".PRFX."payment SET        
+    $sql = "UPDATE ".PRFX."payment_records SET        
             employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
             customer_id     = ".$db->qstr( $VAR['customer_id']              ).",
             workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
@@ -483,7 +483,7 @@ function delete_payment($db, $payment_id) {
     // Get payment details before deleting the record
     $payment_details = get_payment_details($db, $payment_id);
     
-    $sql = "DELETE FROM ".PRFX."payment WHERE payment_id=".$db->qstr($payment_id);
+    $sql = "DELETE FROM ".PRFX."payment_records WHERE payment_id=".$db->qstr($payment_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
@@ -572,7 +572,7 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
 
 function payments_sub_total($db, $invoice_id) {
     
-    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."payment WHERE invoice_id=". $db->qstr($invoice_id);
+    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."payment_records WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the payments sub total."));

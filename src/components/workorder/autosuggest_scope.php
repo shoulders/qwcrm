@@ -18,7 +18,7 @@ if(!check_page_accessed_via_qwcrm('workorder', 'new') && !check_page_accessed_vi
 if(isset($VAR['posted_scope_string']) && strlen($VAR['posted_scope_string']) > 0) {
 
     $posted_scope_string    = $VAR['posted_scope_string'];
-    $sql                    = "SELECT scope FROM ".PRFX."workorder WHERE scope LIKE '$posted_scope_string%' LIMIT 10";
+    $sql                    = "SELECT scope FROM ".PRFX."workorder_records WHERE scope LIKE '$posted_scope_string%' LIMIT 10";
     $rs                     = $db->Execute($sql);
     $record_count           = $rs->RecordCount();        
 

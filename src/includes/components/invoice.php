@@ -35,13 +35,13 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     /* Records Search */
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."invoice.invoice_id\n";
+    $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer.display_name LIKE '%$search_term%'";}
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
     
     // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user.display_name LIKE '%$search_term%'";}
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}
     
     // Restrict results by search category (labour items / labour descriptions) and search term
     elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE '%$search_term%'";} 
@@ -50,7 +50,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
     elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE '%$search_term%'";}    
     
     // Restrict results by search category and search term
-    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice.$search_category LIKE '%$search_term%'";}
+    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.$search_category LIKE '%$search_term%'";}
     
     /* Filter the Records */
     
@@ -60,49 +60,49 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
         // All Open Invoices
         if($status == 'open') {
             
-            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed != '1'";
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.is_closed != '1'";
         
         // All Closed Invoices
         } elseif($status == 'closed') {
             
-            $whereTheseRecords .= " AND ".PRFX."invoice.is_closed = '1'";
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.is_closed = '1'";
         
         // Return Workorders for the given status
         } else {
             
-            $whereTheseRecords .= " AND ".PRFX."invoice.status= ".$db->qstr($status);
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$db->qstr($status);
             
         }
         
     }
 
     // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."invoice.employee_id=".$db->qstr($employee_id);}        
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$db->qstr($employee_id);}        
 
     // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."invoice.customer_id=".$db->qstr($customer_id);}
+    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.customer_id=".$db->qstr($customer_id);}
     
     /* The SQL code */
     
     $sql = "SELECT        
-        ".PRFX."invoice.*,
+        ".PRFX."invoice_records.*,
             
-        ".PRFX."customer.display_name AS customer_display_name,
-        ".PRFX."customer.first_name AS customer_first_name,
-        ".PRFX."customer.last_name AS customer_last_name,
-        ".PRFX."customer.primary_phone AS customer_phone,
-        ".PRFX."customer.mobile_phone AS customer_mobile_phone,
-        ".PRFX."customer.fax AS customer_fax,
+        ".PRFX."customer_records.display_name AS customer_display_name,
+        ".PRFX."customer_records.first_name AS customer_first_name,
+        ".PRFX."customer_records.last_name AS customer_last_name,
+        ".PRFX."customer_records.primary_phone AS customer_phone,
+        ".PRFX."customer_records.mobile_phone AS customer_mobile_phone,
+        ".PRFX."customer_records.fax AS customer_fax,
             
-        ".PRFX."user.display_name AS employee_display_name,
-        ".PRFX."user.work_primary_phone AS employee_work_primary_phone,
-        ".PRFX."user.work_mobile_phone AS employee_work_mobile_phone,
-        ".PRFX."user.home_mobile_phone AS employee_home_mobile_phone,
+        ".PRFX."user_records.display_name AS employee_display_name,
+        ".PRFX."user_records.work_primary_phone AS employee_work_primary_phone,
+        ".PRFX."user_records.work_mobile_phone AS employee_work_mobile_phone,
+        ".PRFX."user_records.home_mobile_phone AS employee_home_mobile_phone,
         
         labour.labour_items,
         parts.parts_items
 
-        FROM ".PRFX."invoice
+        FROM ".PRFX."invoice_records
             
         LEFT JOIN (
             SELECT ".PRFX."invoice_labour.invoice_id,            
@@ -117,7 +117,7 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
             ORDER BY ".PRFX."invoice_labour.invoice_id
             ASC            
         ) AS labour
-        ON ".PRFX."invoice.invoice_id = labour.invoice_id 
+        ON ".PRFX."invoice_records.invoice_id = labour.invoice_id 
         
         LEFT JOIN (
             SELECT 
@@ -133,14 +133,14 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
             ORDER BY ".PRFX."invoice_parts.invoice_id
             ASC            
         ) AS parts
-        ON ".PRFX."invoice.invoice_id = parts.invoice_id 
+        ON ".PRFX."invoice_records.invoice_id = parts.invoice_id 
 
-        LEFT JOIN ".PRFX."customer ON ".PRFX."invoice.customer_id = ".PRFX."customer.customer_id         
-        LEFT JOIN ".PRFX."user ON ".PRFX."invoice.employee_id = ".PRFX."user.user_id
+        LEFT JOIN ".PRFX."customer_records ON ".PRFX."invoice_records.customer_id = ".PRFX."customer_records.customer_id         
+        LEFT JOIN ".PRFX."user_records ON ".PRFX."invoice_records.employee_id = ".PRFX."user_records.user_id
         
         ".$whereTheseRecords."
-        GROUP BY ".PRFX."invoice.".$order_by."         
-        ORDER BY ".PRFX."invoice.".$order_by."
+        GROUP BY ".PRFX."invoice_records.".$order_by."         
+        ORDER BY ".PRFX."invoice_records.".$order_by."
         ".$direction;
 
     /* Restrict by pages */
@@ -228,7 +228,7 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
         $tax_rate = get_company_details($db, 'tax_rate');
     }    
     
-    $sql = "INSERT INTO ".PRFX."invoice SET     
+    $sql = "INSERT INTO ".PRFX."invoice_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             customer_id     =". $db->qstr( $customer_id                         ).",
             workorder_id    =". $db->qstr( $workorder_id                        ).",
@@ -381,7 +381,7 @@ function insert_invoice_prefill_item($db, $VAR){
 
 function get_invoice_details($db, $invoice_id, $item = null) {
     
-    $sql = "SELECT * FROM ".PRFX."invoice WHERE invoice_id =".$db->qstr($invoice_id);
+    $sql = "SELECT * FROM ".PRFX."invoice_records WHERE invoice_id =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice details."));
@@ -594,7 +594,7 @@ function get_invoices_stats($db) {
 
 function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
     
-    $sql = "UPDATE ".PRFX."invoice SET
+    $sql = "UPDATE ".PRFX."invoice_records SET
             date                =". $db->qstr( date_to_timestamp($date)     ).",
             due_date            =". $db->qstr( date_to_timestamp($due_date) ).",
             discount_rate       =". $db->qstr( $discount_rate               )."               
@@ -663,7 +663,7 @@ function update_invoice_status($db, $invoice_id, $new_status) {
         return false;
     }    
     
-    $sql = "UPDATE ".PRFX."invoice SET \n";
+    $sql = "UPDATE ".PRFX."invoice_records SET \n";
     
     if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unassigned there should be no employee the '\n' makes sql look neater
     
@@ -715,7 +715,7 @@ function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
     
     if($new_closed_status == 'open') {
         
-        $sql = "UPDATE ".PRFX."invoice SET
+        $sql = "UPDATE ".PRFX."invoice_records SET
                 close_date          ='',
                 is_closed           =". $db->qstr( 0                )."
                 WHERE invoice_id    =". $db->qstr( $invoice_id      );
@@ -724,7 +724,7 @@ function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
     
     if($new_closed_status == 'close') {
         
-        $sql = "UPDATE ".PRFX."invoice SET
+        $sql = "UPDATE ".PRFX."invoice_records SET
                 close_date          =". $db->qstr( time()           ).",
                 is_closed           =". $db->qstr( 1                )."
                 WHERE invoice_id    =". $db->qstr( $invoice_id      );
@@ -745,7 +745,7 @@ function update_invoice_last_active($db, $invoice_id = null) {
     // compensate for some workorders not having invoices
     if(!$invoice_id) { return; }
     
-    $sql = "UPDATE ".PRFX."invoice SET
+    $sql = "UPDATE ".PRFX."invoice_records SET
             last_active=".$db->qstr(time())."
             WHERE invoice_id=".$db->qstr($invoice_id);
     
@@ -778,7 +778,7 @@ function delete_invoice($db, $invoice_id) {
     delete_invoice_parts_items($db, $invoice_id);
     
     // delete the invoice primary record
-    $sql = "DELETE FROM ".PRFX."invoice WHERE invoice_id=".$db->qstr($invoice_id);
+    $sql = "DELETE FROM ".PRFX."invoice_records WHERE invoice_id=".$db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice."));
@@ -991,7 +991,7 @@ function recalculate_invoice($db, $invoice_id) {
     
     $balance = $gross_amount - $payments_sub_total;
 
-    $sql = "UPDATE ".PRFX."invoice SET
+    $sql = "UPDATE ".PRFX."invoice_records SET
             sub_total           =". $db->qstr( $items_sub_total         ).",
             discount_amount     =". $db->qstr( $discount_amount         ).",
             net_amount          =". $db->qstr( $net_amount              ).",
@@ -1283,7 +1283,7 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
     // only change invoice status if unassigned
     if($invoice_details['status'] == 'unassigned') {
         
-        $sql = "UPDATE ".PRFX."invoice SET
+        $sql = "UPDATE ".PRFX."invoice_records SET
                 employee_id         =". $db->qstr( $target_employee_id  ).",
                 status              =". $db->qstr( 'assigned'           )."
                 WHERE invoice_id    =". $db->qstr( $invoice_id          );
@@ -1291,7 +1291,7 @@ function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
     // Keep the same invoice status    
     } else {    
         
-        $sql = "UPDATE ".PRFX."invoice SET
+        $sql = "UPDATE ".PRFX."invoice_records SET
                 employee_id         =". $db->qstr( $target_employee_id  )."            
                 WHERE invoice_id    =". $db->qstr( $invoice_id          );
 

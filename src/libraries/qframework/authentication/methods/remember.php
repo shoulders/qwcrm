@@ -191,7 +191,7 @@ class PlgAuthenticationCookie //extends QFramework //class PlgSystemRemember //e
         }
 
         // Make sure there really is a user with this name and get the data for the session.
-        $sql = "SELECT user_id, username, password FROM ".PRFX."user WHERE username = ".$this->db->qstr($results[0]['user_id'])." AND require_reset = 0";
+        $sql = "SELECT user_id, username, password FROM ".PRFX."user_records WHERE username = ".$this->db->qstr($results[0]['user_id'])." AND require_reset = 0";
 
         try
         {            
