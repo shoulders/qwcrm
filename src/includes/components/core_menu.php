@@ -20,25 +20,3 @@
  */
 
 defined('_QWEXEC') or die;
-
-/** Mandatory Code **/
-
-/** Workorders **/ 
-
-##########################################
-# Get single Work Order status           # // not currently used
-##########################################
-/*
-function menu_get_single_workorder_is_closed($db, $workorder_id){
-    
-    $sql = "SELECT is_closed FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to a get a single workorder status."));
-    } else {
-        
-        return $rs->fields['is_closed'];
-        
-    }
-    
-}*/

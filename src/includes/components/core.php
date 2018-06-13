@@ -22,7 +22,9 @@ defined('_QWEXEC') or die;
 # Display Welcome Note                  #
 #########################################
 
-function display_welcome_msg($db){
+function display_welcome_msg($db) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT welcome_msg FROM ".PRFX."company_options";
        

@@ -30,6 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
 
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     /* Records Search */
@@ -218,6 +219,8 @@ function display_invoices($db, $order_by = 'invoice_id', $direction = 'DESC', $u
 
 function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
     
+    $db = QFactory::getDbo();
+    
     // Get invoice tax type
     $tax_type = get_company_details($db, 'tax_type');
     
@@ -275,6 +278,8 @@ function insert_invoice($db, $customer_id, $workorder_id, $discount_rate) {
 
 function insert_labour_items($db, $invoice_id, $description, $amount, $qty) {
     
+    $db = QFactory::getDbo();
+    
     // Insert Labour Items into database (if any)
     if($qty > 0 ) {
         
@@ -315,6 +320,8 @@ function insert_labour_items($db, $invoice_id, $description, $amount, $qty) {
 
 function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
     
+    $db = QFactory::getDbo();
+    
     // Insert Parts Items into database (if any)
     if($qty > 0 ) {
         
@@ -353,7 +360,9 @@ function insert_parts_items($db, $invoice_id, $description, $amount, $qty) {
 #   insert invoice prefill item     #
 #####################################
 
-function insert_invoice_prefill_item($db, $VAR){
+function insert_invoice_prefill_item($db, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
             description =". $db->qstr( $VAR['description']  ).",
@@ -381,6 +390,8 @@ function insert_invoice_prefill_item($db, $VAR){
 
 function get_invoice_details($db, $invoice_id, $item = null) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."invoice_records WHERE invoice_id =".$db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
@@ -407,6 +418,8 @@ function get_invoice_details($db, $invoice_id, $item = null) {
 
 function get_invoice_labour_items($db, $invoice_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
@@ -428,6 +441,8 @@ function get_invoice_labour_items($db, $invoice_id) {
 #######################################
 
 function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_labour_id =".$db->qstr($invoice_labour_id);
     
@@ -455,6 +470,8 @@ function get_invoice_labour_item_details($db, $invoice_labour_id, $item = null) 
 
 function get_invoice_parts_items($db, $invoice_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_id=".$db->qstr( $invoice_id );
     
     if(!$rs = $db->Execute($sql)) {
@@ -476,6 +493,8 @@ function get_invoice_parts_items($db, $invoice_id) {
 #######################################
 
 function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."invoice_parts WHERE invoice_parts_id =".$db->qstr($invoice_parts_id);
     
@@ -502,6 +521,8 @@ function get_invoice_parts_item_details($db, $invoice_parts_id, $item = null) {
 #######################################
 
 function get_invoice_prefill_items($db, $type = null, $status = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."invoice_prefill_items";
     
@@ -534,6 +555,8 @@ function get_invoice_prefill_items($db, $type = null, $status = null) {
 
 function get_invoice_statuses($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."invoice_statuses";
 
     if(!$rs = $db->execute($sql)){        
@@ -552,6 +575,8 @@ function get_invoice_statuses($db) {
 
 function get_invoice_status_display_name($db, $status_key) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT display_name FROM ".PRFX."invoice_statuses WHERE status_key=".$db->qstr($status_key);
 
     if(!$rs = $db->execute($sql)){        
@@ -569,6 +594,8 @@ function get_invoice_status_display_name($db, $status_key) {
 #####################################
 
 function get_invoices_stats($db) {
+    
+    $db = QFactory::getDbo();
     
     return array(
         "open_count"            =>  count_invoices($db, 'open'),
@@ -593,6 +620,8 @@ function get_invoices_stats($db) {
 ######################
 
 function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."invoice_records SET
             date                =". $db->qstr( date_to_timestamp($date)     ).",
@@ -627,7 +656,9 @@ function update_invoice($db, $invoice_id, $date, $due_date, $discount_rate) {
 #   update invoice prefill item     #
 #####################################
 
-function update_invoice_prefill_item($db, $VAR){
+function update_invoice_prefill_item($db, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."invoice_prefill_items SET
             description                 =". $db->qstr( $VAR['description']          ).",
@@ -653,6 +684,8 @@ function update_invoice_prefill_item($db, $VAR){
 ############################
 
 function update_invoice_status($db, $invoice_id, $new_status) {
+    
+    $db = QFactory::getDbo();
     
     // Get invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
@@ -713,6 +746,8 @@ function update_invoice_status($db, $invoice_id, $new_status) {
 
 function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
     
+    $db = QFactory::getDbo();
+    
     if($new_closed_status == 'open') {
         
         $sql = "UPDATE ".PRFX."invoice_records SET
@@ -742,6 +777,8 @@ function update_invoice_closed_status($db, $invoice_id, $new_closed_status) {
 
 function update_invoice_last_active($db, $invoice_id = null) {
     
+    $db = QFactory::getDbo();
+    
     // compensate for some workorders not having invoices
     if(!$invoice_id) { return; }
     
@@ -764,6 +801,8 @@ function update_invoice_last_active($db, $invoice_id = null) {
 #####################################
 
 function delete_invoice($db, $invoice_id) {
+    
+    $db = QFactory::getDbo();
     
     // Get invoice details before deleting
     $invoice_details = get_invoice_details($db, $invoice_id);
@@ -813,6 +852,8 @@ function delete_invoice($db, $invoice_id) {
 
 function delete_invoice_labour_item($db, $invoice_labour_id) {
     
+    $db = QFactory::getDbo();
+    
     $invoice_details = get_invoice_details($db, get_invoice_labour_item_details($db, $invoice_labour_id, 'invoice_id'));    
     
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_labour_id=" . $db->qstr($invoice_labour_id);
@@ -848,6 +889,8 @@ function delete_invoice_labour_item($db, $invoice_labour_id) {
 
 function delete_invoice_labour_items($db, $invoice_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "DELETE FROM ".PRFX."invoice_labour WHERE invoice_id=" . $db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
@@ -865,6 +908,8 @@ function delete_invoice_labour_items($db, $invoice_id) {
 #####################################
 
 function delete_invoice_parts_item($db, $invoice_parts_id) {
+    
+    $db = QFactory::getDbo();
     
     $invoice_details = get_invoice_details($db, get_invoice_parts_item_details($db, $invoice_parts_id, 'invoice_id'));  
     
@@ -902,6 +947,8 @@ function delete_invoice_parts_item($db, $invoice_parts_id) {
 
 function delete_invoice_parts_items($db, $invoice_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "DELETE FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
 
     if(!$rs = $db->execute($sql)){        
@@ -918,7 +965,9 @@ function delete_invoice_parts_items($db, $invoice_id) {
 #     delete labour rate item       #
 #####################################
 
-function delete_invoice_prefill_item($db, $invoice_prefill_id){
+function delete_invoice_prefill_item($db, $invoice_prefill_id) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$invoice_prefill_id;
 
@@ -944,6 +993,8 @@ function delete_invoice_prefill_item($db, $invoice_prefill_id){
 
 function labour_sub_total($db, $invoice_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_labour WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
@@ -962,6 +1013,8 @@ function labour_sub_total($db, $invoice_id) {
 
 function parts_sub_total($db, $invoice_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
@@ -979,6 +1032,8 @@ function parts_sub_total($db, $invoice_id) {
 #####################################
 
 function recalculate_invoice($db, $invoice_id) {
+    
+    $db = QFactory::getDbo();
     
     $invoice_details        = get_invoice_details($db, $invoice_id);
     
@@ -1043,6 +1098,8 @@ function recalculate_invoice($db, $invoice_id) {
 #####################################
 
 function upload_invoice_prefill_items_csv($db, $VAR) {
+    
+    $db = QFactory::getDbo();
 
     // Allowed extensions
     $allowedExts = array('csv');
@@ -1134,6 +1191,8 @@ function upload_invoice_prefill_items_csv($db, $VAR) {
 
 function export_invoice_prefill_items_csv($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT description, type, amount, active FROM ".PRFX."invoice_prefill_items";
     
     if(!$rs = $db->Execute($sql)) {        
@@ -1174,6 +1233,8 @@ function export_invoice_prefill_items_csv($db) {
 ##########################################################
 
  function check_invoice_status_can_be_changed($db, $invoice_id) {
+     
+    $db = QFactory::getDbo();
  
     // Get the invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
@@ -1206,6 +1267,8 @@ function export_invoice_prefill_items_csv($db) {
 ###############################################################
 
 function check_invoice_can_be_deleted($db, $invoice_id) {
+    
+    $db = QFactory::getDbo();
     
     // Get the invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);
@@ -1270,6 +1333,8 @@ function check_invoice_can_be_deleted($db, $invoice_id) {
 #########################################
 
 function assign_invoice_to_employee($db, $invoice_id, $target_employee_id) {
+    
+    $db = QFactory::getDbo();
     
     // get the invoice details
     $invoice_details = get_invoice_details($db, $invoice_id);

@@ -30,6 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $type = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
 
     /* Records Search */
@@ -139,6 +140,8 @@ function display_customers($db, $order_by = 'customer_id', $direction = 'DESC', 
 
 function insert_customer($db, $VAR) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "INSERT INTO ".PRFX."customer_records SET
             display_name    =". $db->qstr( $VAR['display_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
@@ -180,6 +183,8 @@ function insert_customer($db, $VAR) {
 
 function insert_customer_note($db, $customer_id, $note) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "INSERT INTO ".PRFX."customer_notes SET            
             employee_id =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             customer_id =". $db->qstr( $customer_id                         ).",
@@ -210,7 +215,9 @@ function insert_customer_note($db, $customer_id, $note) {
 #  Get Customer Details        #
 ################################
 
-function get_customer_details($db, $customer_id, $item = null){
+function get_customer_details($db, $customer_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."customer_records WHERE customer_id=".$db->qstr($customer_id);
     
@@ -236,7 +243,9 @@ function get_customer_details($db, $customer_id, $item = null){
 #  Get a single customer note       #
 #####################################
 
-function get_customer_note($db, $customer_note_id, $item = null){
+function get_customer_note($db, $customer_note_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );    
     
@@ -264,6 +273,8 @@ function get_customer_note($db, $customer_note_id, $item = null){
 
 function get_customer_notes($db, $customer_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr( $customer_id );
     
     if(!$rs = $db->Execute($sql)) {
@@ -281,6 +292,8 @@ function get_customer_notes($db, $customer_id) {
 #####################################
 
 function get_customer_types($db) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."customer_types";
 
@@ -301,6 +314,8 @@ function get_customer_types($db) {
 #####################################
 
 function update_customer($db, $customer_id, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."customer_records SET
             display_name    =". $db->qstr( $VAR['display_name']     ).",
@@ -346,6 +361,8 @@ function update_customer($db, $customer_id, $VAR) {
 
 function update_customer_note($db, $customer_note_id, $note) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "UPDATE ".PRFX."customer_notes SET
             employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
             note                    =". $db->qstr( $note                                )."
@@ -376,6 +393,8 @@ function update_customer_note($db, $customer_note_id, $note) {
 
 function update_customer_last_active($db, $customer_id = null) {
     
+    $db = QFactory::getDbo();
+    
     // compensate for some operations not having a customer_id - i.e. sending some emails
     if(!$customer_id) { return; }    
     
@@ -397,7 +416,9 @@ function update_customer_last_active($db, $customer_id = null) {
 #    Delete Customer                #
 #####################################
 
-function delete_customer($db, $customer_id){
+function delete_customer($db, $customer_id) {
+    
+    $db = QFactory::getDbo();
     
     // Check if customer has any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE customer_id=".$db->qstr($customer_id);    
@@ -470,6 +491,8 @@ function delete_customer($db, $customer_id){
 
 function delete_customer_note($db, $customer_note_id) {
     
+    $db = QFactory::getDbo();
+    
     // get customer_id before deleting the record
     $customer_id = get_customer_note($db, $customer_note_id, 'customer_id');
     
@@ -501,6 +524,8 @@ function delete_customer_note($db, $customer_note_id) {
     
 function check_customer_display_name_exists($db, $display_name) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer_records WHERE display_name=".$db->qstr($display_name);
     
     if(!$rs = $db->Execute($sql)) {
@@ -525,7 +550,9 @@ function check_customer_display_name_exists($db, $display_name) {
 #    Build a Google map string      #
 #####################################
 
-function build_googlemap_directions_string($db, $customer_id, $employee_id)  {
+function build_googlemap_directions_string($db, $customer_id, $employee_id) {
+    
+    $db = QFactory::getDbo();
     
     $company_details    = get_company_details($db);
     $customer_details   = get_customer_details($db, $customer_id);

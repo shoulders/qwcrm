@@ -32,6 +32,7 @@ defined('_QWEXEC') or die;
 
 function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $usertype = null, $usergroup = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
 
     /* Records Search */
@@ -153,7 +154,9 @@ function display_users($db, $order_by = 'user_id', $direction = 'DESC', $use_pag
 #    insert new user                #
 #####################################
 
-function insert_user($db, $VAR){
+function insert_user($db, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."user_records SET
             customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
@@ -218,6 +221,8 @@ function insert_user($db, $VAR){
 
 function get_user_details($db, $user_id = null, $item = null) {
     
+    $db = QFactory::getDbo();
+    
     // This allows for workorder:status to work
     if(!$user_id){
         return;        
@@ -256,7 +261,9 @@ function get_user_details($db, $user_id = null, $item = null) {
  * 
  */
 
-function get_user_id_by_username($db, $username){
+function get_user_id_by_username($db, $username) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$db->qstr($username);    
     if(!$rs = $db->execute($sql)){
@@ -274,6 +281,8 @@ function get_user_id_by_username($db, $username){
 #########################################
 
 function get_user_id_by_email($db, $email) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT user_id FROM ".PRFX."user_records WHERE email =".$db->qstr($email);
     
@@ -303,6 +312,8 @@ function get_user_id_by_email($db, $email) {
 
 function get_usergroups($db, $user_type = null) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."user_usergroups";
     
     // Filter the results by user type customer/employee
@@ -324,7 +335,9 @@ function get_usergroups($db, $user_type = null) {
 # Get all active users display name and ID       #
 ##################################################
     
-function get_active_users($db, $user_type = null) {    
+function get_active_users($db, $user_type = null) {  
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT user_id, display_name FROM ".PRFX."user_records WHERE active='1'";
     
@@ -349,6 +362,8 @@ function get_active_users($db, $user_type = null) {
 #########################
 
 function update_user($db, $user_id, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."user_records SET
         customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
@@ -406,6 +421,9 @@ function update_user($db, $user_id, $VAR) {
 #######################################
 
 /*function update_user_last_active($db, $user_id = null) {
+ * 
+
+    $db = QFactory::getDbo(); 
 
     // compensate for some operations not having a user_id
     if(!$user_id) { return; }
@@ -427,6 +445,8 @@ function update_user($db, $user_id, $VAR) {
 #####################################
 
 function delete_user($db, $user_id) {
+    
+    $db = QFactory::getDbo();
     
     // get user details before deleting
     $user_details = get_user_details($db, $user_id);
@@ -528,7 +548,9 @@ function delete_user($db, $user_id) {
  * 
  */
 
-function build_active_employee_form_option_list($db, $assigned_user_id){
+function build_active_employee_form_option_list($db, $assigned_user_id) {
+    
+    $db = QFactory::getDbo();
     
     // select all employees and return their display name and ID as an array
     $sql = "SELECT display_name, user_id FROM ".PRFX."user_records WHERE active=1 AND is_employee=1";
@@ -548,8 +570,9 @@ function build_active_employee_form_option_list($db, $assigned_user_id){
 #    Check if username already exists           #
 #################################################
 
-function check_user_username_exists($db, $username, $current_username = null){
+function check_user_username_exists($db, $username, $current_username = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     // This prevents self-checking of the current username of the record being edited
@@ -583,8 +606,9 @@ function check_user_username_exists($db, $username, $current_username = null){
 #  Check if an email address has already been used   #
 ######################################################
 
-function check_user_email_exists($db, $email, $current_email = null){
+function check_user_email_exists($db, $email, $current_email = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     // This prevents self-checking of the current username of the record being edited
@@ -622,6 +646,8 @@ function check_user_email_exists($db, $email, $current_email = null){
 
 function check_user_is_employee($db, $user_id) {
     
+    $db = QFactory::getDbo();
+    
     if(get_user_details($db, $user_id, 'is_employee')) {
         return true;
     } else {
@@ -636,6 +662,7 @@ function check_user_is_employee($db, $user_id) {
 
 function check_customer_already_has_login($db, $customer_id) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     $sql = "SELECT user_id FROM ".PRFX."user_records WHERE customer_id =". $db->qstr($customer_id);
@@ -668,6 +695,8 @@ function check_customer_already_has_login($db, $customer_id) {
 #################################################
 
 function is_user_active($db, $user_id) {   
+    
+    $db = QFactory::getDbo();
         
     if(get_user_details($db, $user_id, 'active')) {        
         return true;
@@ -682,6 +711,8 @@ function is_user_active($db, $user_id) {
 #####################################
 
 function reset_user_password($db, $user_id, $password = null) { 
+    
+    $db = QFactory::getDbo();
     
     // if no password supplied generate a random one
     if($password == null) { $password = JUserHelper::genRandomPassword(16); }
@@ -720,6 +751,8 @@ function reset_user_password($db, $user_id, $password = null) {
 
 function reset_all_user_passwords($db) { 
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT user_id FROM ".PRFX."user_records";
     
     if(!$rs = $db->Execute($sql)) {
@@ -754,10 +787,9 @@ function reset_all_user_passwords($db) {
 ####################################
 
 function login($VAR, $credentials, $options = array())
-{       
-    $smarty = QSmarty::getInstance();
-    
+{   
     $db = QFactory::getDbo();
+    $smarty = QSmarty::getInstance();   
     
     // If username or password is missing
     if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
@@ -836,8 +868,8 @@ function login($VAR, $credentials, $options = array())
 
 function logout($silent = null)        
 {   
-    $user = QFactory::getUser();
     $db = QFactory::getDbo();
+    $user = QFactory::getUser();
     
     // Build logout message (while user details exist)
     $record = _gettext("Logout successful for").' '.$user->login_username.'.';
@@ -923,6 +955,8 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
 
 function validate_reset_email($db, $email) {
     
+    $db = QFactory::getDbo();
+    
     // get the user_id if the user exists
     if(!$user_id = get_user_id_by_email($db, $email)) {
         return false;        
@@ -942,6 +976,8 @@ function validate_reset_email($db, $email) {
 #####################################
 
 function send_reset_email($db, $user_id) {
+    
+    $db = QFactory::getDbo();
     
     // Get recipient email
     $recipient_email = get_user_details($db, $user_id, 'email');
@@ -997,6 +1033,8 @@ function send_reset_email($db, $user_id) {
 ###################################################################################
 
 function authorise_password_reset($db, $token) {
+    
+    $db = QFactory::getDbo();
           
     $reset_code = JUserHelper::genRandomPassword(64);     // 64 character token
     $reset_code_expiry_time = time() + (60 * 5);          // sets a 5 minute expiry time
@@ -1023,6 +1061,8 @@ function authorise_password_reset($db, $token) {
 #####################################
 
 function create_reset_token($db, $user_id) {
+    
+    $db = QFactory::getDbo();
     
     // check for previous tokens for this user and delete them
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$db->qstr($user_id);
@@ -1064,6 +1104,8 @@ function create_reset_token($db, $user_id) {
 
 function get_user_id_by_reset_code($db, $reset_code) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
     
     if(!$rs = $db->execute($sql)){
@@ -1082,6 +1124,7 @@ function get_user_id_by_reset_code($db, $reset_code) {
 
 function validate_reset_token($db, $token) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     // check for previous tokens for this user and delete them
@@ -1124,6 +1167,7 @@ function validate_reset_token($db, $token) {
 
 function validate_reset_code($db, $reset_code) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     // Check for previous tokens for this user and delete them
@@ -1158,7 +1202,9 @@ function validate_reset_code($db, $reset_code) {
 #    Delete user reset codes             #
 ##########################################
 
-function delete_user_reset_code($db, $user_id) {    
+function delete_user_reset_code($db, $user_id) {  
+    
+    $db = QFactory::getDbo();
 
     $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$db->qstr($user_id);
     
@@ -1172,7 +1218,9 @@ function delete_user_reset_code($db, $user_id) {
 #    Delete all expired reset codes      #
 ##########################################
 
-function delete_expired_reset_codes($db) {    
+function delete_expired_reset_codes($db) {   
+    
+    $db = QFactory::getDbo();
 
     $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$db->qstr(time());
     
@@ -1188,6 +1236,8 @@ function delete_expired_reset_codes($db) {
 #####################################
 
  function update_user_reset_count($db, $user_id) {
+     
+    $db = QFactory::getDbo();
      
     $sql = "UPDATE ".PRFX."user_records SET       
             reset_count     = reset_count + 1

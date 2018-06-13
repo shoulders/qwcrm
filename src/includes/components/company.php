@@ -40,12 +40,14 @@ defined('_QWEXEC') or die;
 
 function get_company_start_end_times($db, $time_event) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT opening_hour, opening_minute, closing_hour, closing_minute FROM ".PRFX."company_options";
 
-   if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
+    if(!$rs = $db->Execute($sql)) {
+         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
     } else {        
-    
+
         $companyTime = $rs->GetRowAssoc();
 
         // return opening time in correct format for smarty time builder
@@ -57,7 +59,7 @@ function get_company_start_end_times($db, $time_event) {
         if($time_event == 'closing_time') {
             return $companyTime['closing_hour'].':'.$companyTime['closing_minute'].':00';
         }
-        
+
     }
     
 }
@@ -67,6 +69,8 @@ function get_company_start_end_times($db, $time_event) {
 ##########################################
 
 function get_email_signature($db, $swift_emailer = null) {
+    
+    $db = QFactory::getDbo();
     
     // only add email signature if enabled
     if(!get_company_details($db, 'email_signature_active')) { return; }
@@ -98,6 +102,8 @@ function get_email_signature($db, $swift_emailer = null) {
 
 function get_email_message_body($db, $message_name, $customer_details = null) {
     
+    $db = QFactory::getDbo();
+    
     // get the message from the database
     $content = get_company_details($db, $message_name);
     
@@ -125,6 +131,7 @@ function get_email_message_body($db, $message_name, $customer_details = null) {
 
 function update_company_details($db, $VAR) {
 
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     // compensate for installation and migration
@@ -206,6 +213,7 @@ function update_company_details($db, $VAR) {
 
 function update_company_hours($db, $openingTime, $closingTime) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     $sql = "UPDATE ".PRFX."company_options SET
@@ -266,6 +274,8 @@ function check_start_end_times($start_time, $end_time) {
 
 function delete_logo($db) {
     
+    $db = QFactory::getDbo();
+    
     // Only delete a logo if there is one set
     if(get_company_details($db, 'logo')) {
         
@@ -283,6 +293,8 @@ function delete_logo($db) {
 ##########################
 
 function upload_logo($db) {
+    
+    $db = QFactory::getDbo();
     
     // Logo - Only process if there is an image uploaded
     if($_FILES['logo']['size'] > 0) {

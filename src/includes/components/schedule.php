@@ -40,6 +40,7 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 
 function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
    
     /* Records Search */
@@ -179,7 +180,9 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
 #  Insert schedule                   #
 ######################################
 
-function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $note, $employee_id, $customer_id, $workorder_id){
+function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $note, $employee_id, $customer_id, $workorder_id) {
+    
+    $db = QFactory::getDbo();
 
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
     //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
@@ -247,7 +250,9 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
 #  Get Schedule Details        #
 ################################
 
-function get_schedule_details($db, $schedule_id, $item = null){
+function get_schedule_details($db, $schedule_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$db->qstr($schedule_id);
     
@@ -274,6 +279,8 @@ function get_schedule_details($db, $schedule_id, $item = null){
 ##########################################################
 
 function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $start_month, $start_day) {
+    
+    $db = QFactory::getDbo();
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $start_month, $start_day, $start_year);
@@ -304,6 +311,8 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $
 ######################################
 
 function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $note, $schedule_id, $employee_id, $customer_id, $workorder_id) {
+    
+    $db = QFactory::getDbo();
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
     //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
@@ -359,6 +368,8 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
 ##################################
 
 function delete_schedule($db, $schedule_id) {
+    
+    $db = QFactory::getDbo();
     
     // Get schedule details before deleting
     $schedule_details = get_schedule_details($db, $schedule_id);
@@ -422,8 +433,10 @@ function ics_header_settings() {
 
 function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
     
+    $db = QFactory::getDbo();
+    
     // Get the schedule information
-    $schedule_details    = get_schedule_details($db, $schedule_id);
+    $schedule_details   = get_schedule_details($db, $schedule_id);
     $workorder          = get_workorder_details($db, $schedule_details['workorder_id']);
     $customer           = get_customer_details($db, $workorder['customer_id']);
     
@@ -468,6 +481,8 @@ function build_single_schedule_ics($db, $schedule_id, $ics_type = 'single') {
 #########################################################################
 
 function build_ics_schedule_day($db, $employee_id, $start_year, $start_month, $start_day) {
+    
+    $db = QFactory::getDbo();
     
     // fetch all schdule items for this setup
     $schedule_multi_ics = ics_header_settings();
@@ -706,6 +721,8 @@ function ics_string_octet_split($ics_keyname, $ics_string) {
 
 function build_calendar_matrix($db, $start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
     
+    $db = QFactory::getDbo();
+    
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = mktime(get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), 0, $start_month, $start_day, $start_year);
     $company_day_end   = mktime(get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), 59, $start_month, $start_day, $start_year);    
@@ -871,9 +888,10 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
 #   validate schedule start and end time   #
 ############################################
 
-function validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id = null) {
+function validate_schedule_times($db, $start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id = null) {    
     
-    $smarty = QSmarty::getInstance();
+    $db = QFactory::getDbo();
+    $smarty = QSmarty::getInstance();    
     
     $company_day_start = datetime_to_timestamp($start_date, get_company_details($db, 'opening_hour'), get_company_details($db, 'opening_minute'), '0', '24');
     $company_day_end   = datetime_to_timestamp($start_date, get_company_details($db, 'closing_hour'), get_company_details($db, 'closing_minute'), '0', '24');
@@ -946,6 +964,8 @@ function validate_schedule_times($db, $start_date, $start_timestamp, $end_timest
 ############################################
 
 function count_workorder_schedule_items($db, $workorder_id) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."schedule_records

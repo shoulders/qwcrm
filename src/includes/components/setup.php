@@ -44,6 +44,7 @@ defined('_QWEXEC') or die;
 
 function update_record_value($db, $select_table, $select_column, $record_identifier, $record_column, $record_new_value) {
     
+    $db = QFactory::getDbo();    
     global $executed_sql_results;
     global $setup_error_flag;
     
@@ -93,6 +94,7 @@ function update_record_value($db, $select_table, $select_column, $record_identif
 
 function update_column_values($db, $table, $column, $current_value, $new_value) {
     
+    $db = QFactory::getDbo();    
     global $executed_sql_results;
     global $setup_error_flag;
     
@@ -156,6 +158,7 @@ function update_column_values($db, $table, $column, $current_value, $new_value) 
 
 function execute_sql_file($db, $sql_file) {
     
+    $db = QFactory::getDbo();    
     global $executed_sql_results;
     global $setup_error_flag;    
     
@@ -253,6 +256,7 @@ function execute_sql_file($db, $sql_file) {
 
 function execute_sql_file_lines($db, $sql_file) {
     
+    $db = QFactory::getDbo();
     global $executed_sql_results;
     global $setup_error_flag;    
     
@@ -398,6 +402,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 
 function check_database_connection($db, $db_host, $db_user, $db_pass, $db_name) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     // Get current PHP error reporting level
@@ -466,8 +471,6 @@ function submit_qwcrm_config_settings($VAR) {
 
 function generate_database_prefix($not_this_prefix = null) {
     
-    // generate a random string for the gift certificate
-    
     $acceptedChars = 'abcdefghijklmnopqrstuvwxyz';
     $max_offset = strlen($acceptedChars)-1;
     $prefix = '';
@@ -497,6 +500,8 @@ function generate_database_prefix($not_this_prefix = null) {
 
 function set_workorder_start_number($db, $start_number) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$start_number ;
 
     $db->execute($sql);    
@@ -510,6 +515,8 @@ function set_workorder_start_number($db, $start_number) {
 ############################################
 
 function set_invoice_start_number($db, $start_number) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$start_number ;
 
@@ -525,9 +532,10 @@ function set_invoice_start_number($db, $start_number) {
 
 function install_database($db) {
     
-    global $executed_sql_results;
-    global $setup_error_flag;
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
+    global $executed_sql_results;
+    global $setup_error_flag;    
     
     // Run the install.sql
     execute_sql_file($db, SETUP_DIR.'install/install.sql');
@@ -590,9 +598,10 @@ function install_database($db) {
 
 function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
     
-    global $executed_sql_results;
-    global $setup_error_flag;
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
+    global $executed_sql_results;
+    global $setup_error_flag;    
     
     /* Customer */
     
@@ -1063,6 +1072,7 @@ function migrate_database($db, $qwcrm_prefix, $myitcrm_prefix) {
 
 function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefix) {
     
+    $db = QFactory::getDbo();
     global $executed_sql_results;
     
     // Add division to seperate table migration function results
@@ -1188,6 +1198,7 @@ function migate_database_correction_workorder($db, $qwcrm_prefix, $myitcrm_prefi
 
 function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix) {
     
+    $db = QFactory::getDbo();
     global $executed_sql_results;
     
     // Add division to seperate table migration function results
@@ -1282,6 +1293,7 @@ function migate_database_correction_invoice($db, $qwcrm_prefix, $myitcrm_prefix)
 
 function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix) {
     
+    $db = QFactory::getDbo();
     global $executed_sql_results;
     
     // Add division to seperate table migration function results
@@ -1349,6 +1361,7 @@ function migate_database_correction_giftcert($db, $qwcrm_prefix, $myitcrm_prefix
 
 function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix) {
     
+    $db = QFactory::getDbo();
     global $executed_sql_results;
     
     // Add division to seperate table migration function results
@@ -1420,6 +1433,7 @@ function migate_database_correction_schedule($db, $qwcrm_prefix, $myitcrm_prefix
 
 function migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix) {
     
+    $db = QFactory::getDbo();
     global $executed_sql_results;
     
     // Add division to seperate table migration function results
@@ -1488,6 +1502,7 @@ function migate_database_correction_user($db, $qwcrm_prefix, $myitcrm_prefix) {
 function get_myitcrm_company_details($db, $item = null) {
     
     $config = new QConfig;
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".$config->myitcrm_prefix."TABLE_COMPANY";
     
@@ -1515,6 +1530,7 @@ function get_myitcrm_company_details($db, $item = null) {
 
 function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
     
+    $db = QFactory::getDbo();
     global $executed_sql_results;
     global $setup_error_flag;
     
@@ -1719,6 +1735,8 @@ function migrate_table($db, $qwcrm_table, $myitcrm_table, $column_mappings) {
 // 
 function check_myitcrm_database_connection($db, $myitcrm_prefix) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT VERSION_ID FROM ".$myitcrm_prefix."VERSION WHERE VERSION_ID = '293'";
     
     if(!$rs = $db->execute($sql)) {        
@@ -1750,6 +1768,8 @@ function check_myitcrm_database_connection($db, $myitcrm_prefix) {
 ##############################################
 
 function get_merged_company_details($db) {
+    
+    $db = QFactory::getDbo();
     
     $qwcrm_company_details              = get_company_details($db);
     $myitcrm_company_details            = get_myitcrm_company_details($db);
@@ -1791,8 +1811,10 @@ function get_merged_company_details($db) {
 #   Upgrade database                       #
 ############################################
 
-function upgrade_database($db) {
+function upgrade_database() {
+
+    $db = QFactory::getDbo();
     
-    // to follow
+    // not done yet
        
 }

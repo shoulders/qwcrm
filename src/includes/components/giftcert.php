@@ -30,6 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
 
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     /* Records Search */
@@ -145,6 +146,8 @@ function display_giftcerts($db, $order_by = 'giftcert_id', $direction = 'DESC', 
 
 function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $note) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "INSERT INTO ".PRFX."giftcert_records SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -181,7 +184,9 @@ function insert_giftcert($db, $customer_id, $date_expires, $amount, $active, $no
 #  Get giftcert details  #
 ##########################
 
-function get_giftcert_details($db, $giftcert_id, $item = null){
+function get_giftcert_details($db, $giftcert_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."giftcert_records WHERE giftcert_id=".$db->qstr($giftcert_id);
     
@@ -209,6 +214,8 @@ function get_giftcert_details($db, $giftcert_id, $item = null){
 
 function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."giftcert_records WHERE giftcert_code=".$db->qstr( $giftcert_code );
 
     if(!$rs = $db->execute($sql)) {
@@ -230,6 +237,8 @@ function get_giftcert_id_by_gifcert_code($db, $giftcert_code) {
 #################################
 
 function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $note) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."giftcert_records SET            
             date_expires    =". $db->qstr( $date_expires    ).",
@@ -268,6 +277,8 @@ function update_giftcert($db, $giftcert_id, $date_expires, $amount, $active, $no
 
 function delete_giftcert($db, $giftcert_id) {     
     
+    $db = QFactory::getDbo();
+    
     // update and set non-active as you cannot really delete an issues gift certificate
     
     $sql = "UPDATE ".PRFX."giftcert_records SET active='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
@@ -299,6 +310,8 @@ function delete_giftcert($db, $giftcert_id) {
 ##############################################################
 
 function validate_giftcert_for_payment($db, $giftcert_id) {
+    
+    $db = QFactory::getDbo();
 
     // check is active
     if(get_giftcert_details($db, $giftcert_id, 'active') != 1) {
@@ -323,6 +336,8 @@ function validate_giftcert_for_payment($db, $giftcert_id) {
 ############################################
 
 function check_giftcert_redeemed($db, $giftcert_id) {
+    
+    $db = QFactory::getDbo();
 
     // check if redeemed
     if(get_giftcert_details($db, $giftcert_id, 'is_redeemed') == 1) {
@@ -341,8 +356,6 @@ function check_giftcert_redeemed($db, $giftcert_id) {
 
 function generate_giftcert_code() {
     
-    // generate a random string for the gift certificate
-    
     $acceptedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $max_offset = strlen($acceptedChars)-1;
     $giftcert_code = '';
@@ -360,6 +373,8 @@ function generate_giftcert_code() {
 ######################################################
 
 function update_giftcert_as_redeemed($db, $giftcert_id, $invoice_id) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."giftcert_records SET
             invoice_id          =". $db->qstr( $invoice_id  ).",

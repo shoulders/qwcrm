@@ -45,7 +45,9 @@ defined('_QWEXEC') or die;
 #    Count Customers                        #
 #############################################
 
-function count_customers($db, $status, $start_date = null, $end_date = null) {    
+function count_customers($db, $status, $start_date = null, $end_date = null) { 
+    
+    $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = " WHERE customer_id >= '0'";
@@ -81,6 +83,8 @@ function count_customers($db, $status, $start_date = null, $end_date = null) {
 #########################################
 
 function count_workorders($db, $status, $user_id = null, $start_date = null, $end_date = null) {
+    
+    $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = " WHERE workorder_id >= '1'";
@@ -160,7 +164,9 @@ function count_workorders($db, $status, $user_id = null, $start_date = null, $en
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($db, $status = null, $user_id = null, $start_date = null, $end_date = null, $tax_type = null) {    
+function count_invoices($db, $status = null, $user_id = null, $start_date = null, $end_date = null, $tax_type = null) {   
+    
+    $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
@@ -244,6 +250,8 @@ function count_invoices($db, $status = null, $user_id = null, $start_date = null
 #########################################
 
 function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_date = null, $tax_type = null) {
+    
+    $db = QFactory::getDbo();
         
     // Default Action
     $whereTheseRecords = " WHERE invoice_id >= '0'";
@@ -302,6 +310,8 @@ function sum_invoices_value($db, $status, $value_name, $start_date = null, $end_
 
 function count_labour_items($db, $start_date, $end_date) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT SUM(qty) AS count
             FROM ".PRFX."invoice_labour
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_labour.invoice_id
@@ -323,6 +333,8 @@ function count_labour_items($db, $start_date, $end_date) {
 
 function count_labour_different_items($db, $start_date, $end_date) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice_labour
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_labour.invoice_id
@@ -343,6 +355,8 @@ function count_labour_different_items($db, $start_date, $end_date) {
 #########################################
 
 function sum_labour_items($db, $value_name, $start_date, $end_date) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT SUM(".PRFX."invoice_labour.$value_name) AS sum
             FROM ".PRFX."invoice_labour
@@ -367,6 +381,8 @@ function sum_labour_items($db, $value_name, $start_date, $end_date) {
 
 function count_parts_items($db, $start_date, $end_date) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT SUM(qty) AS count
             FROM ".PRFX."invoice_parts
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_parts.invoice_id
@@ -388,6 +404,8 @@ function count_parts_items($db, $start_date, $end_date) {
 
 function count_parts_different_items($db, $start_date, $end_date) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice_parts
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_parts.invoice_id
@@ -408,6 +426,8 @@ function count_parts_different_items($db, $start_date, $end_date) {
 ###################################
 
 function sum_parts_value($db, $value_name, $start_date, $end_date) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT SUM(".PRFX."invoice_parts.$value_name) AS sum
             FROM ".PRFX."invoice_parts
@@ -433,6 +453,8 @@ function sum_parts_value($db, $value_name, $start_date, $end_date) {
 //function count_expenses($db, $status, $user_id = null, $start_date = null, $end_date = null) {
 
 function count_expenses($db, $invoice_id = null, $start_date = null, $end_date = null) {
+    
+    $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = " WHERE expense_id";
@@ -469,6 +491,8 @@ function count_expenses($db, $invoice_id = null, $start_date = null, $end_date =
 
 function sum_expenses_value($db, $value_name, $start_date, $end_date) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT SUM(".PRFX."expense_records.$value_name) AS sum
             FROM ".PRFX."expense_records
             WHERE date  >= ".$db->qstr($start_date)." AND date  <= ".$db->qstr($end_date);
@@ -490,6 +514,8 @@ function sum_expenses_value($db, $value_name, $start_date, $end_date) {
 #########################################
 
 function count_refunds($db, $invoice_id = null, $start_date = null, $end_date = null) {
+    
+    $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = " WHERE refund_id";
@@ -525,6 +551,8 @@ function count_refunds($db, $invoice_id = null, $start_date = null, $end_date = 
 ###################################
 
 function sum_refunds_value($db, $value_name, $start_date, $end_date) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT SUM(".PRFX."refund_records.$value_name) AS sum
             FROM ".PRFX."refund_records

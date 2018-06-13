@@ -30,6 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     /* Records Search */    
@@ -132,6 +133,8 @@ function display_refunds($db, $order_by = 'refund_id', $direction = 'DESC', $use
 
 function insert_refund($db, $VAR) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "INSERT INTO ".PRFX."refund_records SET
             invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
@@ -165,7 +168,9 @@ function insert_refund($db, $VAR) {
 #   Get refund details   #
 ##########################
 
-function get_refund_details($db, $refund_id, $item = null){
+function get_refund_details($db, $refund_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$db->qstr($refund_id);
     
@@ -193,6 +198,8 @@ function get_refund_details($db, $refund_id, $item = null){
 
 function get_refund_types($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."refund_types";
 
     if(!$rs = $db->execute($sql)){        
@@ -212,6 +219,8 @@ function get_refund_types($db) {
 #####################################
 
 function update_refund($db, $refund_id, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."refund_records SET
             invoice_id          =". $db->qstr( $VAR['invoice_id']           ).",
@@ -251,6 +260,8 @@ function update_refund($db, $refund_id, $VAR) {
 
 function delete_refund($db, $refund_id) {
     
+    $db = QFactory::getDbo();
+    
     // Get invoice_id before deleting the record
     $invoice_id = get_refund_details($db, $refund_id, 'invoice_id');
     
@@ -277,6 +288,8 @@ function delete_refund($db, $refund_id) {
 ##########################################
 
 function last_refund_id_lookup($db) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."refund_records ORDER BY refund_id DESC LIMIT 1";
 

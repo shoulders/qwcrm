@@ -15,9 +15,9 @@ defined('_QWEXEC') or die;
 ############################################
 
 function get_page_controller($db, &$VAR = null, $QConfig = null, $user = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
-    
-    // This is required for the required files/templates
-    $smarty = QSmarty::getInstance();
+        
+    $db = QFactory::getDbo();
+    $smarty = QSmarty::getInstance();  // This is required for the required files/templates grabbed here
     
     // Maintenance Mode
     if($QConfig->maintenance) {
@@ -233,6 +233,8 @@ function parseSEF($sef_url, $mode = null, &$VAR = null) {
 #######################
 
 function check_page_exists($db, $component = null, $page_tpl = null) {
+    
+    $db = QFactory::getDbo();
 
     // If a valid page has not been submitted
     if($component == null || $page_tpl == null) { return false; }
@@ -412,6 +414,8 @@ function get_routing_variables_from_url($url) {
 #################################################################
 
 function check_page_acl($db, $component, $page_tpl, $user = null) {
+    
+    $db = QFactory::getDbo();
     
     // Get the current user unless a user (object) has been passed
     if($user == null) { $user = QFactory::getUser(); }

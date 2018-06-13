@@ -30,6 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $method = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
    
     /* Records Search */
@@ -159,6 +160,8 @@ function display_payments($db, $order_by = 'payment_id', $direction = 'DESC', $u
 ############################
 
 function insert_payment($db, $VAR) {
+    
+    $db = QFactory::getDbo();
 
     $invoice_details = get_invoice_details($db, $VAR['invoice_id']);
     
@@ -205,7 +208,9 @@ function insert_payment($db, $VAR) {
 #  Get payment details      #
 #############################
 
-function get_payment_details($db, $payment_id, $item = null){
+function get_payment_details($db, $payment_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."payment_records  WHERE payment_id=".$db->qstr($payment_id);
     
@@ -231,7 +236,9 @@ function get_payment_details($db, $payment_id, $item = null){
 #  Get payment options   #
 ##########################
 
-function get_payment_options($db, $item = null){
+function get_payment_options($db, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."payment_options";
     
@@ -259,6 +266,8 @@ function get_payment_options($db, $item = null){
 
 function get_payment_active_accepted_methods($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT
             accepted_method_id, active
             FROM ".PRFX."payment_accepted_methods
@@ -280,6 +289,8 @@ function get_payment_active_accepted_methods($db) {
 
 function get_payment_accepted_methods($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."payment_accepted_methods";
 
     if(!$rs = $db->execute($sql)){        
@@ -297,6 +308,8 @@ function get_payment_accepted_methods($db) {
 #####################################
 
 function get_payment_purchase_methods($db) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."payment_purchase_methods";
 
@@ -316,6 +329,8 @@ function get_payment_purchase_methods($db) {
 #########################################
 
 function get_active_credit_cards($db) {
+    
+    $db = QFactory::getDbo();
 
     $sql = "SELECT card_key, display_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
     
@@ -345,6 +360,8 @@ function get_active_credit_cards($db) {
 
 function get_credit_card_display_name_from_key($db, $card_key) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT display_name FROM ".PRFX."payment_credit_cards WHERE card_key=".$db->qstr($card_key);
 
     if(!$rs = $db->execute($sql)){        
@@ -364,6 +381,8 @@ function get_credit_card_display_name_from_key($db, $card_key) {
 #####################
 
 function update_payment($db, $VAR) {    
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."payment_records SET        
             employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
@@ -408,6 +427,8 @@ function update_payment($db, $VAR) {
 
 function update_payment_options($db, $VAR) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "UPDATE ".PRFX."payment_options SET            
             bank_account_name       =". $db->qstr( $VAR['bank_account_name']        ).",
             bank_name               =". $db->qstr( $VAR['bank_name']                ).",
@@ -437,6 +458,8 @@ function update_payment_options($db, $VAR) {
 #####################################
 
 function update_active_payment_accepted_methods($db, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     // Array of all valid payment methods (name / active state)
     $payment_accepted_methods =
@@ -480,6 +503,8 @@ function update_active_payment_accepted_methods($db, $VAR) {
 
 function delete_payment($db, $payment_id) {
     
+    $db = QFactory::getDbo();
+    
     // Get payment details before deleting the record
     $payment_details = get_payment_details($db, $payment_id);
     
@@ -518,6 +543,8 @@ function delete_payment($db, $payment_id) {
 
 function check_payment_method_is_active($db, $method) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT active FROM ".PRFX."payment_accepted_methods WHERE accepted_method_id=".$db->qstr($method);   
     
     if(!$rs = $db->execute($sql)) {
@@ -542,6 +569,7 @@ function check_payment_method_is_active($db, $method) {
 
 function validate_payment_method_totals($db, $invoice_id, $amount) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
 
     // Has a zero amount been submitted, this is not allowed
@@ -571,6 +599,8 @@ function validate_payment_method_totals($db, $invoice_id, $amount) {
 #########################################
 
 function payments_sub_total($db, $invoice_id) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."payment_records WHERE invoice_id=". $db->qstr($invoice_id);
     

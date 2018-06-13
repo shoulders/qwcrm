@@ -30,6 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
    
     /* Records Search */
@@ -183,7 +184,9 @@ function display_workorders($db, $order_by = 'workorder_id', $direction = 'DESC'
 # Display Work Order Notes  #
 #############################
 
-function display_workorder_notes($db, $workorder_id){
+function display_workorder_notes($db, $workorder_id) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT
             ".PRFX."workorder_notes.*,
@@ -208,7 +211,9 @@ function display_workorder_notes($db, $workorder_id){
 # Display Work Order History #
 ##############################
 
-function display_workorder_history($db, $workorder_id){
+function display_workorder_history($db, $workorder_id) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT 
             ".PRFX."workorder_history.*,
@@ -238,6 +243,8 @@ function display_workorder_history($db, $workorder_id){
 #########################
 
 function insert_workorder($db, $customer_id, $scope, $description, $comment) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."workorder_records SET            
             customer_id     =". $db->qstr( $customer_id                         ).",
@@ -281,6 +288,8 @@ function insert_workorder($db, $customer_id, $scope, $description, $comment) {
 
 function insert_workorder_history_note($db, $workorder_id = null, $note = '') {
     
+    $db = QFactory::getDbo();
+    
     // If Work Order History Notes are not enabled, exit
     if(QFactory::getConfig()->get('workorder_history_notes') != true) { return; }    
     
@@ -308,6 +317,8 @@ function insert_workorder_history_note($db, $workorder_id = null, $note = '') {
 ##############################
 
 function insert_workorder_note($db, $workorder_id, $note){
+    
+    $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."workorder_notes SET                        
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -351,6 +362,8 @@ function insert_workorder_note($db, $workorder_id, $note){
 
 function get_workorder_details($db, $workorder_id = null, $item = null) {  
     
+    $db = QFactory::getDbo();
+    
     // This covers invoice only
     if(!$workorder_id){
         return;        
@@ -380,7 +393,9 @@ function get_workorder_details($db, $workorder_id = null, $item = null) {
 #  Get a single workorder note      #
 #####################################
 
-function get_workorder_note($db, $workorder_note_id, $item = null){
+function get_workorder_note($db, $workorder_note_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$db->qstr( $workorder_note_id );    
     
@@ -407,6 +422,8 @@ function get_workorder_note($db, $workorder_note_id, $item = null){
 #####################################
 
 function get_workorder_notes($db, $workorder_id) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_id=".$db->qstr( $workorder_id );
     
@@ -436,6 +453,8 @@ function get_workorder_notes($db, $workorder_id) {
 
 function get_workorder_statuses($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."workorder_statuses";
 
     if(!$rs = $db->execute($sql)){        
@@ -453,6 +472,8 @@ function get_workorder_statuses($db) {
 ######################################
 
 function get_workorder_status_display_name($db, $status_key) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$db->qstr($status_key);
 
@@ -472,6 +493,8 @@ function get_workorder_status_display_name($db, $status_key) {
 
 function get_workorder_stats($db) {
     
+    $db = QFactory::getDbo();
+    
     return array(
         "open_count"                =>  count_workorders($db, 'open'),
         "assigned_count"            =>  count_workorders($db, 'assigned'),
@@ -490,7 +513,9 @@ function get_workorder_stats($db) {
 # Update Work Order Scope and Description #
 ###########################################
 
-function update_workorder_scope_and_description($db, $workorder_id, $scope, $description){
+function update_workorder_scope_and_description($db, $workorder_id, $scope, $description) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."workorder_records SET           
             scope               =".$db->qstr( $scope        ).",
@@ -525,7 +550,9 @@ function update_workorder_scope_and_description($db, $workorder_id, $scope, $des
 #   Update Workorder Comment     #
 ##################################
 
-function update_workorder_comment($db, $workorder_id, $comment){
+function update_workorder_comment($db, $workorder_id, $comment) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."workorder_records SET            
             comment            =". $db->qstr( $comment        )."
@@ -561,6 +588,8 @@ function update_workorder_comment($db, $workorder_id, $comment){
 
 function update_workorder_resolution($db, $workorder_id, $resolution) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "UPDATE ".PRFX."workorder_records SET                        
             resolution          =". $db->qstr( $resolution      )."            
             WHERE workorder_id  =". $db->qstr( $workorder_id    );
@@ -594,6 +623,8 @@ function update_workorder_resolution($db, $workorder_id, $resolution) {
 ############################
 
 function update_workorder_status($db, $workorder_id, $new_status) {
+    
+    $db = QFactory::getDbo();
     
     // Get current workorder details
     $workorder_details = get_workorder_details($db, $workorder_id);
@@ -658,6 +689,8 @@ function update_workorder_status($db, $workorder_id, $new_status) {
 
 function update_workorder_closed_status($db, $workorder_id, $new_closed_status) {
     
+    $db = QFactory::getDbo();
+    
     if($new_closed_status == 'open') {
         
         $sql = "UPDATE ".PRFX."workorder_records SET
@@ -689,6 +722,8 @@ function update_workorder_closed_status($db, $workorder_id, $new_closed_status) 
 
 function update_workorder_last_active($db, $workorder_id = null) {
     
+    $db = QFactory::getDbo();
+    
     // compensate for some invoices not having workorders
     if(!$workorder_id) { return; }
     
@@ -708,6 +743,8 @@ function update_workorder_last_active($db, $workorder_id = null) {
 
 function update_workorder_invoice_id($db, $workorder_id, $invoice_id) {
     
+    $db = QFactory::getDbo();
+    
     // This prevents invoices with no workorders causing issues
     if($workorder_id == null) { return; }
     
@@ -726,6 +763,8 @@ function update_workorder_invoice_id($db, $workorder_id, $invoice_id) {
 ##############################
 
 function update_workorder_note($db, $workorder_note_id, $note) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."workorder_notes SET
             employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
@@ -760,7 +799,9 @@ function update_workorder_note($db, $workorder_note_id, $note) {
 # Close Workorder without invoice      #
 ########################################
 
-function close_workorder_without_invoice($db, $workorder_id, $resolution){
+function close_workorder_without_invoice($db, $workorder_id, $resolution) {
+    
+    $db = QFactory::getDbo();
     
     // Insert resolution and close information
     $sql = "UPDATE ".PRFX."workorder_records SET
@@ -802,7 +843,9 @@ function close_workorder_without_invoice($db, $workorder_id, $resolution){
 # Close Workorder with Invoice  #
 #################################
 
-function close_workorder_with_invoice($db, $workorder_id, $resolution){
+function close_workorder_with_invoice($db, $workorder_id, $resolution) {
+    
+    $db = QFactory::getDbo();
     
     // Insert resolution and close information
     $sql = "UPDATE ".PRFX."workorder_records SET
@@ -847,6 +890,8 @@ function close_workorder_with_invoice($db, $workorder_id, $resolution){
 #####################
 
 function delete_workorder($db, $workorder_id) {
+    
+    $db = QFactory::getDbo();
     
     // Does the workorder have an invoice
     if(get_workorder_details($db, $workorder_id, 'invoice_id')) {        
@@ -922,6 +967,8 @@ function delete_workorder($db, $workorder_id) {
 
 function check_workorder_status_allows_for_deletion($db, $workorder_id) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT status FROM ".PRFX."workorder_records WHERE workorder_id=".$workorder_id;
     
     if(!$rs = $db->Execute($sql)) {        
@@ -948,6 +995,8 @@ function check_workorder_status_allows_for_deletion($db, $workorder_id) {
 ####################################
 
 function delete_workorder_note($db, $workorder_note_id) {
+    
+    $db = QFactory::getDbo();
     
     // Get workorder details before any deleting
     $workorder_details = get_workorder_details($db, get_workorder_note($db, $workorder_note_id, 'workorder_id'));
@@ -982,6 +1031,8 @@ function delete_workorder_note($db, $workorder_note_id) {
 
 function resolution_edit_status_check($db, $workorder_id) {    
     
+    $db = QFactory::getDbo();
+    
     $wo_is_closed   = get_workorder_details($db, $workorder_id, 'is_closed');
     $wo_status      = get_workorder_details($db, $workorder_id, 'status');
 
@@ -1009,6 +1060,8 @@ function resolution_edit_status_check($db, $workorder_id) {
 #########################################
 
 function assign_workorder_to_employee($db, $workorder_id, $target_employee_id) {
+    
+    $db = QFactory::getDbo();
     
     // Get the workorder details
     $workorder_details = get_workorder_details($db, $workorder_id);

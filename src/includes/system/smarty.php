@@ -34,7 +34,7 @@ class QSmarty extends Smarty {
     public function __construct()
     { 
 
-    $QConfig = new QConfig;
+        $QConfig = new QConfig;
 
         // initialize Smarty 
         parent::__construct();    

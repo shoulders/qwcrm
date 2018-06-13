@@ -28,6 +28,8 @@ defined('_QWEXEC') or die;
 
 function get_mysql_version($db) {
     
+    $db = QFactory::getDbo();
+    
     // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
     //$db->ServerInfo();
     
@@ -43,7 +45,7 @@ function get_mysql_version($db) {
 
 function get_qwcrm_database_version_number($db) {
     
-    //$smarty = QSmarty::getInstance();
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
     
@@ -86,6 +88,8 @@ function get_qwcrm_database_version_number($db) {
 
 function get_company_details($db, $item = null) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."company_options";
     
     if(!$rs = $db->execute($sql)) {        
@@ -114,6 +118,8 @@ function get_company_details($db, $item = null) {
 #######################################
 
 function update_user_last_active($db, $user_id = null) {
+    
+    $db = QFactory::getDbo();
     
     // compensate for some operations not having a user_id
     if(!$user_id) { return; }        
@@ -582,6 +588,8 @@ function set_page_header_and_meta_data($component, $page_tpl) {
 ##########################################################
 
 function verify_qwcrm_install_state($db) {
+    
+    $db = QFactory::getDbo();
 
     /* General Checks */    
     

@@ -61,6 +61,8 @@ function get_qwcrm_config() {
 
 function update_acl($db, $permissions) {
     
+    $db = QFactory::getDbo();
+    
     /* Process Submitted Permissions */
     
     // Cycle through the submitted permissions and update the database
@@ -303,6 +305,8 @@ function check_for_qwcrm_update() {
 
 function load_acl($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
     
     if(!$rs = $db->execute($sql)) {
@@ -436,6 +440,8 @@ function prepare_config_data($new_config) {
 
 function send_test_mail($db) {
     
+    $db = QFactory::getDbo();
+    
     $user_details = get_user_details($db, QFactory::getUser()->login_user_id);
     
     send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.QFactory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
@@ -500,6 +506,8 @@ function clear_smarty_compile() {
 #################################
 
 function reset_acl_permissions($db) {
+    
+    $db = QFactory::getDbo();
  
     // Remove current permissions
     $sql = "TRUNCATE ".PRFX."user_acl_page";

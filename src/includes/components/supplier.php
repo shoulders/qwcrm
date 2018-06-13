@@ -30,6 +30,7 @@ defined('_QWEXEC') or die;
 
 function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null) {
     
+    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();
     
     /* Records Search */ 
@@ -129,6 +130,8 @@ function display_suppliers($db, $order_by = 'supplier_id', $direction = 'DESC', 
 
 function insert_supplier($db, $VAR) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "INSERT INTO ".PRFX."supplier_records SET            
             display_name   =". $db->qstr( $VAR['display_name']  ).",
             first_name     =". $db->qstr( $VAR['first_name']    ).",
@@ -166,7 +169,9 @@ function insert_supplier($db, $VAR) {
 #   Get supplier details   #
 ############################
 
-function get_supplier_details($db, $supplier_id, $item = null){
+function get_supplier_details($db, $supplier_id, $item = null) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
     
@@ -194,6 +199,8 @@ function get_supplier_details($db, $supplier_id, $item = null){
 
 function get_supplier_types($db) {
     
+    $db = QFactory::getDbo();
+    
     $sql = "SELECT * FROM ".PRFX."supplier_types";
 
     if(!$rs = $db->execute($sql)){        
@@ -213,6 +220,8 @@ function get_supplier_types($db) {
 #####################################
 
 function update_supplier($db, $supplier_id, $VAR) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."supplier_records SET
             display_name   =". $db->qstr( $VAR['display_name']  ).",
@@ -256,6 +265,8 @@ function update_supplier($db, $supplier_id, $VAR) {
 
 function delete_supplier($db, $supplier_id) {
     
+    $db = QFactory::getDbo();
+    
     $display_name = get_supplier_details($db, $supplier_id, 'display_name');
     
     $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
@@ -280,6 +291,8 @@ function delete_supplier($db, $supplier_id) {
 ############################################
 
 function last_supplier_id_lookup($db) {
+    
+    $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."supplier_records ORDER BY supplier_id DESC LIMIT 1";
 
