@@ -84,9 +84,9 @@
                                                                     
                                                                     <tr>
                                                                         <td colspan="2">
-                                                                            <b>{t}Notes{/t}</b>
+                                                                            <b>{t}Note{/t}</b>
                                                                             <br>
-                                                                            <textarea name="notes" class="olotd5 mceCheckForContent" rows="15" cols="70">{$notes}</textarea>
+                                                                            <textarea name="note" class="olotd5 mceCheckForContent" rows="15" cols="70">{$note}</textarea>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>

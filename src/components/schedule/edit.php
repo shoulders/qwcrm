@@ -28,7 +28,7 @@ if(isset($VAR['submit'])) {
         $smarty->assign('start_time',       $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );                
         $smarty->assign('end_date',         $VAR['end_date']                                                    );        
         $smarty->assign('end_time',         $VAR['EndTime']['Time_Hour'].":".$VAR['EndTime']['Time_Minute']     );
-        $smarty->assign('notes',            $VAR['notes']                                                       );        
+        $smarty->assign('note',             $VAR['note']                                                       );        
         $smarty->assign('active_employees', get_active_users($db, 'employees')                                  );                      
             
     } else {       
@@ -63,7 +63,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('start_time',       date('H:i', $schedule_item['start_time'])               );         
     $smarty->assign('end_date',         timestamp_to_date($schedule_item['end_time'])           );         
     $smarty->assign('end_time',         date('H:i', $end_time)                                  );   
-    $smarty->assign('notes',            $schedule_item['notes']                                 );
+    $smarty->assign('note',             $schedule_item['note']                                 );
     $smarty->assign('active_employees', get_active_users($db, 'employees')                      );
     
 }

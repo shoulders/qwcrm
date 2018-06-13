@@ -40,7 +40,7 @@
                                                                         <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>                                                                        
                                                                         <option value="start_time"{if $search_category == 'start_time'} selected{/if}>{t}Start Time{/t}</option>
                                                                         <option value="end_time"{if $search_category == 'end_time'} selected{/if}>{t}End Time{/t}</option>
-                                                                        <option value="notes"{if $search_category == 'notes'} selected{/if}>{t}Notes{/t}</option>
+                                                                        <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>
                                                                     </select>
                                                                    <br />
                                                                    <b>{t}for{/t}</b>

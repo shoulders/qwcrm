@@ -14,7 +14,7 @@
         <td class="olohead"><b>{t}Customer{/t}</b></td>        
         <td class="olohead"><b>{t}Start Time{/t}</b></td>
         <td class="olohead"><b>{t}End Time{/t}</b></td>
-        <td class="olohead"><b>{t}Notes{/t}</b></td>
+        <td class="olohead"><b>{t}Note{/t}</b></td>
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=s loop=$display_schedules}
@@ -42,10 +42,10 @@
             <!-- End time -->
             <td class="olotd4">{$display_schedules[s].end_time|date_format:$date_format}</td>
             
-            <!-- Notes -->            
+            <!-- Note -->            
             <td class="olotd4" nowrap>
-                {if $display_schedules[s].notes}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Notes{/t}</strong></div><hr><div>{$display_schedules[s].notes|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                {if $display_schedules[s].note}
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_schedules[s].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
              </td>
 

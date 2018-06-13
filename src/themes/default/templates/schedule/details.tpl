@@ -30,8 +30,8 @@
                                                     <b>{t}End Time{/t}: </b>{$schedule_details.end_time|date_format:"%H:%M"}
                                                 </p>
                                                 <p><b>{t}Employee{/t}: </b><a href="index.php?component=user&page_tpl=details&user_id={$schedule_details.employee_id}">{$employee_display_name}</a></p>
-                                                <b>{t}Notes{/t}:</b><br />
-                                                <div>{$schedule_details.notes}</div><br>
+                                                <b>{t}Note{/t}:</b><br />
+                                                <div>{$schedule_details.note}</div><br>
                                                 <button type="button" onclick="window.location='index.php?component=schedule&page_tpl=edit&schedule_id={$schedule_details.schedule_id}';">{t}Edit{/t}</button>
                                                 <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$workorder_schedule[a].schedule_id}" onclick="return confirmChoice('Are you sure you want to delete the schedule item?');"><button type="button">{t}Delete{/t}</button></a>                                                    
                                                 <button type="button" onclick="window.location='index.php?component=schedule&page_tpl=icalendar&schedule_id={$schedule_details.schedule_id}&theme=print';">{t}Export{/t}</button>                                         

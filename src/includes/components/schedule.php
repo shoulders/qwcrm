@@ -179,7 +179,7 @@ function display_schedules($db, $order_by = 'schedule_id', $direction = 'DESC', 
 #  Insert schedule                   #
 ######################################
 
-function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $notes, $employee_id, $customer_id, $workorder_id){
+function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $note, $employee_id, $customer_id, $workorder_id){
 
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
     //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
@@ -202,7 +202,7 @@ function insert_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
             workorder_id    =". $db->qstr( $workorder_id    ).",
             start_time      =". $db->qstr( $start_timestamp ).",
             end_time        =". $db->qstr( $end_timestamp   ).",            
-            notes           =". $db->qstr( $notes           );            
+            note            =". $db->qstr( $note            );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
@@ -303,7 +303,7 @@ function get_schedule_ids_for_employee_on_date($db, $employee_id, $start_year, $
 #      Update Schedule               #
 ######################################
 
-function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $notes, $schedule_id, $employee_id, $customer_id, $workorder_id) {
+function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $note, $schedule_id, $employee_id, $customer_id, $workorder_id) {
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
     //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
@@ -326,7 +326,7 @@ function update_schedule($db, $start_date, $StartTime, $end_date, $EndTime, $not
         workorder_id        =". $db->qstr( $workorder_id        ).",   
         start_time          =". $db->qstr( $start_timestamp     ).",
         end_time            =". $db->qstr( $end_timestamp       ).",                
-        notes               =". $db->qstr( $notes               )."
+        note                =". $db->qstr( $note                )."
         WHERE schedule_id   =". $db->qstr( $schedule_id         );
    
     if(!$rs = $db->Execute($sql)) {
@@ -529,8 +529,8 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
                         $workorder['scope'].'\n\n'.
                         _gettext("Description").': \n\n'.
                         html_to_textarea($workorder['description']).'\n\n'.
-                        _gettext("Schedule Notes").': \n\n'.
-                        html_to_textarea($single_schedule['notes']);
+                        _gettext("Schedule Note").': \n\n'.
+                        html_to_textarea($single_schedule['note']);
 
         // Contact Information
         $description .= _gettext("Contact Information")  .''.'\n\n'.
@@ -560,8 +560,8 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
                         '<p>'.$workorder['scope'].'</p>'.
                         '<p><strong>'._gettext("Description").': </strong></p>'.
                         '<div>'.$workorder['description'].'</div>'.
-                        '<p><strong>'._gettext("Schedule Notes").': </strong></p>'.
-                        '<div>'.$single_schedule['notes'].'</div>';        
+                        '<p><strong>'._gettext("Schedule Note").': </strong></p>'.
+                        '<div>'.$single_schedule['note'].'</div>';        
 
         // Contact Information
         $description .= '<p><strong>'._gettext("Contact Information").'</strong></p>'.
@@ -741,7 +741,7 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
             'workorder_id'          => $rs->fields['workorder_id'],
             'start_time'            => $rs->fields['start_time'],
             'end_time'              => $rs->fields['end_time'],
-            'notes'                 => $rs->fields['notes']            
+            'note'                  => $rs->fields['note']            
             ));
         $rs->MoveNext();
     }
@@ -802,8 +802,8 @@ function build_calendar_matrix($db, $start_year, $start_month, $start_day, $empl
                 // Time period of schedule
                 $calendar .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['start_time'])." - ".date("H:i",$scheduleObject[$i]['end_time'])."</font></b><br>\n";
 
-                // Schedule Notes
-                $calendar .= "<div style=\"color: blue; font-weight: bold;\">"._gettext("Notes").":  ".$scheduleObject[$i]['notes']."</div><br>\n";
+                // Schedule Note
+                $calendar .= "<div style=\"color: blue; font-weight: bold;\">"._gettext("Note").":  ".$scheduleObject[$i]['note']."</div><br>\n";
 
                 // Links for schedule
                 $calendar .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
