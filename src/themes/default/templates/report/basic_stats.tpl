@@ -24,162 +24,59 @@
                             <!-- Global - Current Work Order Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Global{/t} - {t}Current Work Order Stats{/t}</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Open{/t}</b></td>
-                                            <td class="row2"><b>{t}Assigned{/t}</b></td>
-                                            <td class="row2"><b>{t}Waiting for Parts{/t}</b></td>
-                                            <td class="row2"><b>{t}Scheduled{/t}</b></td>
-                                            <td class="row2"><b>{t}With Client{/t}</b></td>
-                                            <td class="row2"><b>{t}On Hold{/t}</b></td>
-                                            <td class="row2"><b>{t}Management{/t}</b></td>                                            
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td>{$global_workorders_open_count}</td>
-                                            <td>{$global_workorders_assigned_count}</td>
-                                            <td>{$global_workorders_waiting_for_parts_count}</td>
-                                            <td>{$global_workorders_scheduled_count}</td>
-                                            <td>{$global_workorders_with_client_count}</td>
-                                            <td>{$global_workorders_on_hold_count}</td>
-                                            <td>{$global_workorders_management_count}</td>                                                                                     
-                                        </tr>
-                                    </table>                                 
+                                    <a name="global_workorder_stats"></a>                                                
+                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$global_workorder_stats block_title=_gettext("Current Global Work Order Stats")}                                               
                                 </td>
                             </tr>
+                            
                             
                             <!-- Global - Overall Work Order Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Global{/t} - {t}Overall Work Order Stats{/t}</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Opened{/t}</b></td>                                            
-                                            <td class="row2"><b>{t}Closed{/t}</b></td>
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td>{$global_workorders_opened_count}</td>                                             
-                                            <td>{$global_workorders_closed_count}</td>                                            
-                                        </tr>
-                                    </table>                                 
+                                    <a name="global_workorder_stats"></a>                                                
+                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$global_workorder_overall_stats block_title=_gettext("Global Overall Work Order Stats")}                                             
                                 </td>
-                            </tr>
+                            </tr>  
                                                         
                             <!-- Logged In Employee - Current Work Order Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Employee{/t} ({$login_display_name}) - {t}Current Work Order Stats{/t}</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Open{/t}</b></td>
-                                            <td class="row2"><b>{t}Assigned{/t}</b></td>
-                                            <td class="row2"><b>{t}Waiting for Parts{/t}</b></td>
-                                            <td class="row2"><b>{t}Scheduled{/t}</b></td>
-                                            <td class="row2"><b>{t}With Client{/t}</b></td>
-                                            <td class="row2"><b>{t}On Hold{/t}</b></td>
-                                            <td class="row2"><b>{t}Management{/t}</b></td>  
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td>{$employee_workorders_open_count}</td>
-                                            <td>{$employee_workorders_assigned_count}</td>
-                                            <td>{$employee_workorders_waiting_for_parts_count}</td>
-                                            <td>{$employee_workorders_scheduled_count}</td>
-                                            <td>{$employee_workorders_with_client_count}</td> 
-                                            <td>{$employee_workorders_on_hold_count}</td>
-                                            <td>{$employee_workorders_management_count}</td>                                            
-                                        </tr>
-                                    </table>                                     
+                                    <a name="employee_workorder_stats"></a>                                                
+                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$employee_workorder_stats block_title=_gettext("Employee Current Work Order Stats")}                                             
                                 </td>
-                            </tr>
+                            </tr>                            
                             
                             <!-- Logged In Employee - Overall Work Order Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Employee{/t} ({$login_display_name}) - {t}Overall Work Order Stats{/t}</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Opened{/t}</b></td>                                            
-                                            <td class="row2"><b>{t}Closed{/t}</b></td>
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td>{$employee_workorders_opened_count}</td>                                             
-                                            <td>{$employee_workorders_closed_count}</td>                                            
-                                        </tr>
-                                    </table>                                 
+                                    <a name="employee_workorder_overall_stats"></a>                                                
+                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$employee_workorder_overall_stats block_title=_gettext("Employee Overall Work Order Stats")}                                             
                                 </td>
-                            </tr>                            
+                            </tr> 
                             
                             <!-- Global - Current Invoice Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Global{/t} - {t}Current Invoice Stats{/t}</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Open{/t}</b></td>
-                                            <td class="row2"><b>{t}Pending{/t}</b></td>
-                                            <td class="row2"><b>{t}Unpaid{/t}</b></td>
-                                            <td class="row2"><b>{t}Partially Paid{/t}</b></td>
-                                            <td class="row2"><b>{t}Paid{/t}</b></td>                                                                                        
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td>{$global_invoices_open_count}</td>
-                                            <td>{$global_invoices_pending_count}</td>
-                                            <td>{$global_invoices_unpaid_count}</td>
-                                            <td>{$global_invoices_partially_paid_count}</td>
-                                            <td>{$global_invoices_paid_count}</td>                                            
-                                        </tr>
-                                    </table>
+                                    <a name="global_invoice_stats"></a>                                                
+                                    {include file='invoice/blocks/display_invoice_stats_block.tpl' invoice_stats=$global_invoice_stats block_title=_gettext("Global - Current Invoice Stats")}                                             
                                 </td>
                             </tr>
                             
                             <!-- Global - Overall Invoice Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Global{/t} - {t}Overall Invoice Stats{/t}</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}Opened{/t}</b></td>
-                                            <td class="row2"><b>{t}Closed{/t}</b></td>
-                                            <td class="row2"><b>{t}Invoiced Total{/t}</b></td>                                                                                      
-                                            <td class="row2"><b>{t}Received Monies{/t}</b></td>
-                                            <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td>{$global_invoices_opened_count}</td>
-                                            <td>{$global_invoices_closed_count}</td>
-                                            <td><font color="green">{$currency_sym}{$global_invoiced_total|string_format:"%.2f"}</font></td>
-                                            <td><font color="green">{$currency_sym}{$global_received_monies|string_format:"%.2f"}</font></td>
-                                            <td><font color="cc0000">{$currency_sym}{$global_outstanding_balance|string_format:"%.2f"}</font></td>
-                                        </tr>
-                                    </table>
+                                    <a name="global_invoice_overall_stats"></a>                                                
+                                    {include file='invoice/blocks/display_invoice_overall_stats_block.tpl' invoice_overall_stats=$global_invoice_overall_stats block_title=_gettext("Global - Overall Invoice Stats")}                                             
                                 </td>
-                            </tr>                            
+                            </tr>                                                        
                             
                             <!-- Global - Customer Stats -->
                             <tr>
                                 <td>
-                                    <b>{t}Global - Customer Stats{/t}</b>
-                                    <br>
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                        <tr class="olotd4">
-                                            <td class="row2"><b>{t}New This Month{/t}</b></td>
-                                            <td class="row2"><b>{t}New This Year{/t}</b></td>
-                                            <td class="row2"><b>{t}Total{/t}</b></td>
-                                        </tr>
-                                        <tr class="olotd4">
-                                            <td>{$customer_month_count}</td>
-                                            <td>{$customer_year_count}</td>
-                                            <td>{$customer_total_count}</td>
-                                        </tr>
-                                    </table>
+                                    <a name="global_customer_overall_stats"></a>                                                
+                                    {include file='customer/blocks/display_customer_overall_stats_block.tpl' customer_overall_stats=$global_customer_overall_stats block_title=_gettext("Global - Customer Stats")}                                             
                                 </td>
-                            </tr>
+                            </tr>                            
                             
                         </table>
                     </td>

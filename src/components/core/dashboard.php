@@ -12,29 +12,18 @@ require(INCLUDES_DIR.'components/core.php');
 require(INCLUDES_DIR.'components/report.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
-// Display Welcome Message
-$smarty->assign('welcome_msg', display_welcome_msg());
-
-// Employee Workorder Stats
-$employee_workorder_stats = array(
-    "open_count"                =>  count_workorders('open', $user->login_user_id),
-    "assigned_count"            =>  count_workorders('assigned', $user->login_user_id),
-    "waiting_for_parts_count"   =>  count_workorders('waiting_for_parts', $user->login_user_id),
-    "scheduled_count"           =>  count_workorders('scheduled', $user->login_user_id),
-    "with_client_count"         =>  count_workorders('with_client', $user->login_user_id),
-    "on_hold_count"             =>  count_workorders('on_hold', $user->login_user_id),
-    "management_count"          =>  count_workorders('management', $user->login_user_id)
-);
-$smarty->assign('employee_workorder_stats', $employee_workorder_stats);
-
 // Employee Workorders
-$smarty->assign('employee_workorders_assigned',          display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'assigned', $user->login_user_id)          );
-$smarty->assign('employee_workorders_waiting_for_parts', display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'waiting_for_parts', $user->login_user_id) );
-$smarty->assign('employee_workorders_scheduled',         display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'scheduled', $user->login_user_id)         );
-$smarty->assign('employee_workorders_with_client',       display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'with_client', $user->login_user_id)       );
-$smarty->assign('employee_workorders_on_hold',           display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'on_hold', $user->login_user_id)           );
-$smarty->assign('employee_workorders_management',        display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'management', $user->login_user_id)        );
+$smarty->assign('employee_workorders_assigned',          display_workorders('workorder_id', 'DESC', false, null, null, null, null, 'assigned', $user->login_user_id)          );
+$smarty->assign('employee_workorders_waiting_for_parts', display_workorders('workorder_id', 'DESC', false, null, null, null, null, 'waiting_for_parts', $user->login_user_id) );
+$smarty->assign('employee_workorders_scheduled',         display_workorders('workorder_id', 'DESC', false, null, null, null, null, 'scheduled', $user->login_user_id)         );
+$smarty->assign('employee_workorders_with_client',       display_workorders('workorder_id', 'DESC', false, null, null, null, null, 'with_client', $user->login_user_id)       );
+$smarty->assign('employee_workorders_on_hold',           display_workorders('workorder_id', 'DESC', false, null, null, null, null, 'on_hold', $user->login_user_id)           );
+$smarty->assign('employee_workorders_management',        display_workorders('workorder_id', 'DESC', false, null, null, null, null, 'management', $user->login_user_id)        );
+
+// Misc
+$smarty->assign('welcome_msg', display_welcome_msg());
+$smarty->assign('employee_workorder_stats', get_workorder_stats($user->login_user_id));
+$smarty->assign('workorder_statuses', get_workorder_statuses());
 
 // Build the page
-$smarty->assign('workorder_statuses', get_workorder_statuses());
 $BuildPage .= $smarty->fetch('core/dashboard.tpl');

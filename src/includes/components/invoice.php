@@ -593,21 +593,31 @@ function get_invoice_status_display_name($status_key) {
 #   Get All invoices stats          #
 #####################################
 
-function get_invoices_stats() {
-    
-    $db = QFactory::getDbo();
+function get_invoices_stats($employee_id = null) {
     
     return array(
-        "open_count"            =>  count_invoices('open'),
-        "pending_count"         =>  count_invoices('pending'),
-        "unpaid_count"          =>  count_invoices('unpaid'),
-        "partially_paid_count"  =>  count_invoices('partially_paid'),
-        "paid_count"            =>  count_invoices('paid'),
-        "in_dispute_count"      =>  count_invoices('in_dispute'),
-        "overdue_count"         =>  count_invoices('overdue'),
-        "cancelled_count"       =>  count_invoices('cancelled'),
-        "refunded_count"        =>  count_invoices('refunded'),
-        "collections_count"     =>  count_invoices('collections')
+        "open_count"            =>  count_invoices('open', $employee_id),
+        "pending_count"         =>  count_invoices('pending', $employee_id),
+        "unpaid_count"          =>  count_invoices('unpaid', $employee_id),
+        "partially_paid_count"  =>  count_invoices('partially_paid', $employee_id),
+        "paid_count"            =>  count_invoices('paid', $employee_id),
+        "in_dispute_count"      =>  count_invoices('in_dispute', $employee_id),
+        "overdue_count"         =>  count_invoices('overdue', $employee_id),
+        "cancelled_count"       =>  count_invoices('cancelled', $employee_id),
+        "refunded_count"        =>  count_invoices('refunded', $employee_id),
+        "collections_count"     =>  count_invoices('collections', $employee_id)
+    );
+    
+}
+
+function get_invoices_overall_stats($employee_id = null) {
+    
+    return array(
+        "opened_count"          =>  count_invoices('opened', $employee_id),
+        "closed_count"          =>  count_invoices('closed', $employee_id),
+        "invoiced_total"        =>  sum_invoices_value('all', 'gross_amount'),
+        "received_monies"       =>  sum_invoices_value('all', 'paid_amount'),
+        "outstanding_balance"   =>  sum_invoices_value('all', 'balance')
     );
     
 }
