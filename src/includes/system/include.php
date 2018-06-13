@@ -1278,7 +1278,7 @@ function timestamp_to_calendar_format($timestamp) {
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-function compress_page_output($BuildPage)
+function compress_page_output(&$BuildPage)
 {
     // Supported compression encodings.
     $supported = array(
@@ -1293,13 +1293,13 @@ function compress_page_output($BuildPage)
     // If no supported encoding is detected do nothing and return.
     if (empty($encodings))
     {
-        return $BuildPage;
+        return;
     }
 
     // Verify that headers have not yet been sent, and that our connection is still alive.
     if (headers_sent() || (connection_status() !== CONNECTION_NORMAL))
     {
-        return $BuildPage;
+        return;
     }
 
     // Iterate through the encodings and attempt to compress the data using any found supported encodings.
@@ -1326,7 +1326,8 @@ function compress_page_output($BuildPage)
             header("Content-Encoding: $encoding");
 
             // Replace the output with the encoded data.            
-            return $gzBuildPage;
+            $BuildPage = $gzBuildPage;
+            return;
             
         }
     }

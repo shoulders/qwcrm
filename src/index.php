@@ -161,7 +161,7 @@ if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') {
 
     // Compress page payload and send compression headers
     if ($QConfig->gzip) {
-        $BuildPage = compress_page_output($BuildPage);    
+        compress_page_output($BuildPage);    
     }
         
 }
