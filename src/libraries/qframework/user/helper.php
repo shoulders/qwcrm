@@ -650,6 +650,8 @@ class JUserHelper
     }
 
     /**
+     * Modfied to work on PHP 5.6+ - see original for PHP 7 version
+     * 
      * Generate a random password
      *
      * @param   integer  $length  Length of the password to generate
@@ -661,7 +663,7 @@ class JUserHelper
     public static function genRandomPassword($length = 8)
     {
         $salt = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        $base = strlen($salt);
+        //$base = strlen($salt);
         $makepass = '';
 
         /*
@@ -672,7 +674,7 @@ class JUserHelper
          * predictable.
          *
         
-        // This is php 7 only. the JCrpyt function returns after failing
+        // This is PHP 7 only. the JCrpyt function returns after failing
         $random = JCrypt::genRandomBytes($length + 1);  // or direct - $random = random_bytes($length + 1);  
         $shift = ord($random[0]);
 
