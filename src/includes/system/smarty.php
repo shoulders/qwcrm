@@ -18,61 +18,61 @@ require_once('Smarty.class.php');
 
 class QSmarty extends Smarty {
     
-  static $instance = null;
+    static $instance = null;
 
-  public static function getInstance($newInstance = null)
-  {
-    if(!is_null($newInstance)) {
-        self::$instance = $newInstance;    
+    public static function getInstance($newInstance = null)
+    {
+        if(!is_null($newInstance)) {
+            self::$instance = $newInstance;    
+        }
+        if(is_null(self::$instance)) {
+            self::$instance = new QSmarty();        
+        }
+        return self::$instance;
     }
-    if(is_null(self::$instance)) {
-        self::$instance = new QSmarty();        
+
+    public function __construct()
+    { 
+
+    $QConfig = new QConfig;
+
+        // initialize Smarty 
+        parent::__construct();    
+
+        /* Configure Smarty */
+
+        // Smarty Class Variables - https://www.smarty.net/docs/en/api.variables.tpl
+
+        $this->template_dir           = THEME_TEMPLATE_DIR;
+        $this->cache_dir              = SMARTY_CACHE_DIR;
+        $this->compile_dir            = SMARTY_COMPILE_DIR;
+        $this->force_compile          = $QConfig->smarty_force_compile;
+
+        // Enable caching
+        if($QConfig->smarty_caching == '1') { $this->caching = Smarty::CACHING_LIFETIME_CURRENT;}
+        if($QConfig->smarty_caching == '2') { $this->caching = Smarty::CACHING_LIFETIME_SAVED;}
+
+        // Other Caching settings
+        $this->force_cache            = $QConfig->smarty_force_cache;
+        $this->cache_lifetime         = $QConfig->smarty_cache_lifetime;
+        $this->cache_modified_check   = $QConfig->smarty_cache_modified_check;
+        $this->cache_locking          = $QConfig->smarty_cache_locking;
+
+        // Debugging    
+        $this->debugging_ctrl         = $QConfig->smarty_debugging_ctrl;
+        //$this->debugging            = $QConfig->smarty_debugging;                                     // Does not work with fetch()
+        //$this->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
+        //$this->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
+
+        // Other Settings
+        //$this->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads
+        //$this->error_unassigned = true;                 // to enable notices.
+        //$this->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
+        //$this->compileAllTemplates();                   // this is a really cool feature and useful for translations
+        //$this->clearAllCache();                         // clears all of the cache
+        //$this->clear_cache()();                         // clear individual cache files (or groups)
+        //$this->clearCompiledTemplate();                 // Clears the compile dirctory
     }
-    return self::$instance;
-  }
-
-  public function __construct()
-  { 
-      
-   $QConfig = new QConfig;
-    
-    // initialize Smarty 
-    parent::__construct();    
-    
-    /* Configure Smarty */
-
-    // Smarty Class Variables - https://www.smarty.net/docs/en/api.variables.tpl
-
-    $this->template_dir           = THEME_TEMPLATE_DIR;
-    $this->cache_dir              = SMARTY_CACHE_DIR;
-    $this->compile_dir            = SMARTY_COMPILE_DIR;
-    $this->force_compile          = $QConfig->smarty_force_compile;
-
-    // Enable caching
-    if($QConfig->smarty_caching == '1') { $this->caching = Smarty::CACHING_LIFETIME_CURRENT;}
-    if($QConfig->smarty_caching == '2') { $this->caching = Smarty::CACHING_LIFETIME_SAVED;}
-
-    // Other Caching settings
-    $this->force_cache            = $QConfig->smarty_force_cache;
-    $this->cache_lifetime         = $QConfig->smarty_cache_lifetime;
-    $this->cache_modified_check   = $QConfig->smarty_cache_modified_check;
-    $this->cache_locking          = $QConfig->smarty_cache_locking;
-
-    // Debugging    
-    $this->debugging_ctrl         = $QConfig->smarty_debugging_ctrl;
-    //$this->debugging            = $QConfig->smarty_debugging;                                     // Does not work with fetch()
-    //$this->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
-    //$this->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
-
-    // Other Settings
-    //$this->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads
-    //$this->error_unassigned = true;                 // to enable notices.
-    //$this->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
-    //$this->compileAllTemplates();                   // this is a really cool feature and useful for translations
-    //$this->clearAllCache();                         // clears all of the cache
-    //$this->clear_cache()();                         // clear individual cache files (or groups)
-    //$this->clearCompiledTemplate();                 // Clears the compile dirctory
-  }
   
 } 
 

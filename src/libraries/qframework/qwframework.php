@@ -20,7 +20,7 @@ require QFRAMEWORK_DIR . 'input/StringHelper.php';                  // Filtering
 require QFRAMEWORK_DIR . 'input/JFilterInput.php';                  // Filtering of strings - a class for filtering input from any data source - used for QCookie and authenticatin
 require QFRAMEWORK_DIR . 'input/core.php';                          // Used just for function utf8_strpos() from JFilterInput
 require QFRAMEWORK_DIR . 'input/input.php';                         // This is an abstracted input class used to manage retrieving data from the application environment. (i.e. cookie.php)
-require QFRAMEWORK_DIR . 'input/cookie.php';                        // Extends input.php with cooke get and set functions to allow manipulation of cookie data via input.php class
+require QFRAMEWORK_DIR . 'input/cookie.php';                        // Extends input.php with cookie get and set functions to allow manipulation of cookie data via input.php class
 
 // Session
 require QFRAMEWORK_DIR . 'session/session.php';                     // Primary Class for managing HTTP sessions
