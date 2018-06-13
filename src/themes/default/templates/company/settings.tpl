@@ -167,7 +167,7 @@
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td><b>{t}Welcome Message{/t}:</b><br>{t}(Dashboard){/t}</td>
+                                                                                    <td><b>{t}Welcome Message{/t}:</b> {t}(Dashboard){/t}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea></td>

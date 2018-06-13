@@ -12,8 +12,8 @@ require(INCLUDES_DIR.'components/core.php');
 require(INCLUDES_DIR.'components/report.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
-// Display Welcome Note
-$smarty->assign('welcome_note', display_welcome_msg($db));
+// Display Welcome Message
+$smarty->assign('welcome_msg', display_welcome_msg($db));
 
 // Employee Workorder Stats
 $employee_workorder_stats = array(

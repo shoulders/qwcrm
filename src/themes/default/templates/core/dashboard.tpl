@@ -30,15 +30,15 @@
                                 <td>                                    
                                     <table>
                                         
-                                        <!-- Company Notes - Welcome Message -->
+                                        <!-- Welcome Message -->
                                         <tr>
                                             <td>
                                                 <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                     <tr class="olotd4">
-                                                        <td class="row2"><b>{t}Company Welcome Message{/t}</b></td>
+                                                        <td class="row2"><b>{t}Welcome Message{/t}</b></td>
                                                     </tr>
                                                     <tr class="olotd4">
-                                                        <td>{$welcome_note}</td>
+                                                        <td>{$welcome_msg}</td>
                                                     </tr>
                                                 </table>
                                                 <br> 
