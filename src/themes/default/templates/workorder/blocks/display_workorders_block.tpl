@@ -40,7 +40,11 @@
             </td>
 
             <!-- Scope -->
-            <td class="olotd4" nowrap>{$display_workorders[w].workorder_scope}</td>
+            <td class="olotd4" nowrap>
+                {if $display_workorders[w].workorder_scope != ''}
+                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Scope{/t}</strong></div><hr><div>{$display_workorders[w].workorder_scope|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                 {/if}
+            </td>
 
             <!-- Status -->
             <td class="olotd4" align="center">
