@@ -381,7 +381,7 @@ INSERT INTO `#__payment_credit_cards` (`id`, `card_key`, `display_name`, `active
 --
 
 CREATE TABLE `#__payment_purchase_methods` (
-  `manual_method_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `purchase_method_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -389,7 +389,7 @@ CREATE TABLE `#__payment_purchase_methods` (
 -- Dumping data for table `#__payment_purchase_methods`
 --
 
-INSERT INTO `#__payment_purchase_methods` (`manual_method_id`, `display_name`) VALUES
+INSERT INTO `#__payment_purchase_methods` (`purchase_method_id`, `display_name`) VALUES
 ('bank_transfer', 'Bank Transfer'),
 ('card', 'Card'),
 ('cash', 'Cash'),
@@ -986,7 +986,7 @@ ALTER TABLE `#__payment_credit_cards`
 -- Indexes for table `#__payment_purchase_methods`
 --
 ALTER TABLE `#__payment_purchase_methods`
-  ADD PRIMARY KEY (`manual_method_id`);
+  ADD PRIMARY KEY (`purchase_method_id`);
 
 --
 -- Indexes for table `#__payment_options`
