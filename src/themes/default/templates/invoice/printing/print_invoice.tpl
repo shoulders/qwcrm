@@ -109,8 +109,8 @@
     {if $workorder_details.scope != ''}    
         <table width="750" border="0" cellpadding="3" cellspacing="0">
             <tr>
-                <td><b>{t}Work Order Description{/t}</b></td>
-                <td><b>{t}Work Order Resolution{/t}</b></td>
+                <td><b>{t}Work Order{/t} {t}Description{/t}</b></td>
+                <td><b>{t}Work Order{/t} {t}Resolution{/t}</b></td>
             </tr>
             <tr>
                 <td width="50%" valign="top"><div style="min-height: 100px;">{$workorder_details.description}</div></td>
@@ -190,19 +190,19 @@
                     </tr>
 
                     <!-- Cheque -->                        
-                    {if $active_payment_accepted_methods.cheque}
+                    {if $payment_active_accepted_methods.cheque}
                         <tr>
                             <td>                                    
                                 <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
                             </td>                                
                         </tr>
                         <tr>
-                            <td>{$payment_details.cheque_payable_to_msg}</td>
+                            <td>{$payment_options.invoice_cheque_msg}</td>
                         </tr>
                     {/if}
 
                     <!-- Direct Deposit -->
-                    {if $active_payment_accepted_methods.direct_deposit}
+                    {if $payment_active_accepted_methods.direct_deposit}
                         <tr>
                             <td>
                                 <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Direct Deposit{/t}</b><br>
@@ -210,22 +210,22 @@
                         </tr>
                         <tr>
                             <td>                                
-                                {t}Bank Account Name{/t}: {$payment_details.bank_account_name}<br>
-                                {t}Bank Name{/t}: {$payment_details.bank_name}<br>
-                                {t}Account Number{/t}: {$payment_details.bank_account_number}<br>
-                                {t}Sort Code{/t}: {$payment_details.bank_sort_code}<br>
-                                {t}IBAN{/t}: {$payment_details.bank_iban}                                
+                                {t}Bank Account Name{/t}: {$payment_options.bank_account_name}<br>
+                                {t}Bank Name{/t}: {$payment_options.bank_name}<br>
+                                {t}Account Number{/t}: {$payment_options.bank_account_number}<br>
+                                {t}Sort Code{/t}: {$payment_options.bank_sort_code}<br>
+                                {t}IBAN{/t}: {$payment_options.bank_iban}                                
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                {$payment_details.bank_transaction_msg}
+                                {$payment_options.invoice_direct_deposit_message}
                             </td>
                         </tr>
                     {/if}
 
                     <!-- PayPal -->
-                    {if $active_payment_accepted_methods.paypal}
+                    {if $payment_active_accepted_methods.paypal}
                     <tr>
                         <td>
                             <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
@@ -234,7 +234,7 @@
                     {/if}
 
                     <!-- If none of the above are enabled then display this message -->                        
-                    {if !$active_payment_accepted_methods.cheque && !$active_payment_accepted_methods.direct_deposit_active && !$active_payment_accepted_methods}
+                    {if !$payment_active_accepted_methods.cheque && !$payment_active_accepted_methods.direct_deposit_active && !$payment_active_accepted_methods}
                         <tr>
                             <td>{t}Please call us to discuss payment options.{/t}</td>
                         </tr>
@@ -295,7 +295,7 @@
             </tr>
         {/if}
         <tr>
-            <td align="center">{$payment_details.invoice_footer_msg}</td>
+            <td align="center">{$payment_options.invoice_footer_msg}</td>
         </tr>
     </table>    
     

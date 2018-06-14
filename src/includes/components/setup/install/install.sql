@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `#__company`
 --
 
-CREATE TABLE `#__company` (
+CREATE TABLE `#__company_options` (
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `logo` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `address` text COLLATE utf8_unicode_ci NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE `#__company` (
 -- Dumping data for table `#__company`
 --
 
-INSERT INTO `#__company` (`display_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
+INSERT INTO `#__options` (`display_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
 ('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
 
 -- --------------------------------------------------------
@@ -72,7 +72,7 @@ INSERT INTO `#__company` (`display_name`, `logo`, `address`, `city`, `state`, `z
 -- Table structure for table `#__customer`
 --
 
-CREATE TABLE `#__customer` (
+CREATE TABLE `#__customer_records` (
   `customer_id` int(10) NOT NULL,
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -138,7 +138,7 @@ INSERT INTO `#__customer_types` (`customer_type_id`, `display_name`) VALUES
 -- Table structure for table `#__expense`
 --
 
-CREATE TABLE `#__expense` (
+CREATE TABLE `#__expense_records` (
   `expense_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -199,7 +199,7 @@ INSERT INTO `#__expense_types` (`expense_type_id`, `display_name`) VALUES
 -- Table structure for table `#__giftcert`
 --
 
-CREATE TABLE `#__giftcert` (
+CREATE TABLE `#__giftcert_records` (
   `giftcert_id` int(10) NOT NULL,
   `giftcert_code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -220,7 +220,7 @@ CREATE TABLE `#__giftcert` (
 -- Table structure for table `#__invoice`
 --
 
-CREATE TABLE `#__invoice` (
+CREATE TABLE `#__invoice_records` (
   `invoice_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -338,7 +338,7 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 -- Table structure for table `#__payment`
 --
 
-CREATE TABLE `#__payment` (
+CREATE TABLE `#__payment_records` (
   `payment_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -415,8 +415,8 @@ CREATE TABLE `#__payment_options` (
   `bank_sort_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `bank_iban` varchar(34) COLLATE utf8_unicode_ci NOT NULL,
   `paypal_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `bank_transaction_msg` text COLLATE utf8_unicode_ci NOT NULL,
-  `cheque_payable_to_msg` text COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_direct_deposit_msg` text COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_cheque_msg` text COLLATE utf8_unicode_ci NOT NULL,
   `invoice_footer_msg` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -424,8 +424,8 @@ CREATE TABLE `#__payment_options` (
 -- Dumping data for table `#__payment_options`
 --
 
-INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `bank_transaction_msg`, `cheque_payable_to_msg`, `invoice_footer_msg`) VALUES
-('', '', '', '', '', '', '<p>This is a bank transaction message and can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message and can be edited in payment options.</p>');
+INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `invoice_direct_deposit_msg`, `invoice_cheque_msg`, `invoice_footer_msg`) VALUES
+('', '', '', '', '', '', '<p>Use your invoice number as the reference ...</p>\r\n<p>This message can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>');
 
 -- --------------------------------------------------------
 
@@ -457,7 +457,7 @@ INSERT INTO `#__payment_accepted_methods` (`accepted_method_id`, `display_name`,
 -- Table structure for table `#__refund`
 --
 
-CREATE TABLE `#__refund` (
+CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -500,7 +500,7 @@ INSERT INTO `#__refund_types` (`refund_type_id`, `display_name`) VALUES
 -- Table structure for table `#__schedule`
 --
 
-CREATE TABLE `#__schedule` (
+CREATE TABLE `#__schedule_records` (
   `schedule_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -532,7 +532,7 @@ CREATE TABLE `#__session` (
 -- Table structure for table `#__supplier`
 --
 
-CREATE TABLE `#__supplier` (
+CREATE TABLE `#__supplier_records` (
   `supplier_id` int(10) NOT NULL,
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -586,7 +586,7 @@ INSERT INTO `#__supplier_types` (`supplier_type_id`, `display_name`) VALUES
 -- Table structure for table `#__user`
 --
 
-CREATE TABLE `#__user` (
+CREATE TABLE `#__user_records` (
   `user_id` int(10) NOT NULL,
   `customer_id` varchar(10) NOT NULL,
   `username` varchar(20) NOT NULL,
@@ -821,7 +821,7 @@ INSERT INTO `#__version` (`database_version`) VALUES
 -- Table structure for table `#__workorder`
 --
 
-CREATE TABLE `#__workorder` (
+CREATE TABLE `#__workorder_records` (
   `workorder_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -901,13 +901,13 @@ INSERT INTO `#__workorder_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 -- Indexes for table `#__company`
 --
-ALTER TABLE `#__company`
+ALTER TABLE `#__company_options`
   ADD PRIMARY KEY (`display_name`);
 
 --
 -- Indexes for table `#__customer`
 --
-ALTER TABLE `#__customer`
+ALTER TABLE `#__customer_records`
   ADD PRIMARY KEY (`customer_id`);
 
 --
@@ -925,7 +925,7 @@ ALTER TABLE `#__customer_types`
 --
 -- Indexes for table `#__expense`
 --
-ALTER TABLE `#__expense`
+ALTER TABLE `#__expense_records`
   ADD PRIMARY KEY (`expense_id`);
 
 --
@@ -937,13 +937,13 @@ ALTER TABLE `#__expense_types`
 --
 -- Indexes for table `#__giftcert`
 --
-ALTER TABLE `#__giftcert`
+ALTER TABLE `#__giftcert_records`
   ADD PRIMARY KEY (`giftcert_id`);
 
 --
 -- Indexes for table `#__invoice`
 --
-ALTER TABLE `#__invoice`
+ALTER TABLE `#__invoice_records`
   ADD PRIMARY KEY (`invoice_id`);
 
 --
@@ -973,7 +973,7 @@ ALTER TABLE `#__invoice_statuses`
 --
 -- Indexes for table `#__payment`
 --
-ALTER TABLE `#__payment`
+ALTER TABLE `#__payment_records`
   ADD PRIMARY KEY (`payment_id`);
 
 --
@@ -1003,7 +1003,7 @@ ALTER TABLE `#__payment_accepted_methods`
 --
 -- Indexes for table `#__refund`
 --
-ALTER TABLE `#__refund`
+ALTER TABLE `#__refund_records`
   ADD PRIMARY KEY (`refund_id`);
 
 --
@@ -1015,7 +1015,7 @@ ALTER TABLE `#__refund_types`
 --
 -- Indexes for table `#__schedule`
 --
-ALTER TABLE `#__schedule`
+ALTER TABLE `#__schedule_records`
   ADD PRIMARY KEY (`schedule_id`);
 
 --
@@ -1029,7 +1029,7 @@ ALTER TABLE `#__session`
 --
 -- Indexes for table `#__supplier`
 --
-ALTER TABLE `#__supplier`
+ALTER TABLE `#__supplier_records`
   ADD PRIMARY KEY (`supplier_id`);
 
 --
@@ -1041,7 +1041,7 @@ ALTER TABLE `#__supplier_types`
 --
 -- Indexes for table `#__user`
 --
-ALTER TABLE `#__user`
+ALTER TABLE `#__user_records`
   ADD PRIMARY KEY (`user_id`);
 
 --
@@ -1081,7 +1081,7 @@ ALTER TABLE `#__version`
 --
 -- Indexes for table `#__workorder`
 --
-ALTER TABLE `#__workorder`
+ALTER TABLE `#__workorder_records`
   ADD PRIMARY KEY (`workorder_id`);
 
 --
@@ -1109,7 +1109,7 @@ ALTER TABLE `#__workorder_statuses`
 --
 -- AUTO_INCREMENT for table `#__customer`
 --
-ALTER TABLE `#__customer`
+ALTER TABLE `#__customer_records`
   MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__customer_notes`
@@ -1119,17 +1119,17 @@ ALTER TABLE `#__customer_notes`
 --
 -- AUTO_INCREMENT for table `#__expense`
 --
-ALTER TABLE `#__expense`
+ALTER TABLE `#__expense_records`
   MODIFY `expense_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__giftcert`
 --
-ALTER TABLE `#__giftcert`
+ALTER TABLE `#__giftcert_records`
   MODIFY `giftcert_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__invoice`
 --
-ALTER TABLE `#__invoice`
+ALTER TABLE `#__invoice_records`
   MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__invoice_labour`
@@ -1149,27 +1149,27 @@ ALTER TABLE `#__invoice_prefill_items`
 --
 -- AUTO_INCREMENT for table `#__payment`
 --
-ALTER TABLE `#__payment`
+ALTER TABLE `#__payment_records`
   MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__refund`
 --
-ALTER TABLE `#__refund`
+ALTER TABLE `#__refund_records`
   MODIFY `refund_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__schedule`
 --
-ALTER TABLE `#__schedule`
+ALTER TABLE `#__schedule_records`
   MODIFY `schedule_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__supplier`
 --
-ALTER TABLE `#__supplier`
+ALTER TABLE `#__supplier_records`
   MODIFY `supplier_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__user`
 --
-ALTER TABLE `#__user`
+ALTER TABLE `#__user_records`
   MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__user_keys`
@@ -1184,7 +1184,7 @@ ALTER TABLE `#__user_usergroups`
 --
 -- AUTO_INCREMENT for table `#__workorder`
 --
-ALTER TABLE `#__workorder`
+ALTER TABLE `#__workorder_records`
   MODIFY `workorder_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__workorder_history`

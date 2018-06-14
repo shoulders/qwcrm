@@ -82,15 +82,15 @@
                                                 <td colspan="2"><font color="red"><b>{t}Invoice Messages{/t}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Bank Transaction Message{/t}</b></td>
-                                                <td><textarea class="olotd5" name="bank_transaction_message" cols="50" rows="2" >{$payment_options.bank_transaction_msg}</textarea><br></td>
+                                                <td><b>{t}Direct Deposit{/t}</b></td>
+                                                <td><textarea class="olotd5" name="invoice_direct_deposit_message" cols="50" rows="2" >{$payment_options.invoice_direct_deposit_message}</textarea><br></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Cheques payable to{/t}:</b></td>
-                                                <td><textarea class="olotd5" name="cheque_payable_to_msg" cols="50" rows="2" >{$payment_options.cheque_payable_to_msg}</textarea><br></td>
+                                                <td><b>{t}Cheque{/t}</b></td>
+                                                <td><textarea class="olotd5" name="invoice_cheque_msg" cols="50" rows="2" >{$payment_options.invoice_cheque_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Invoice Footer Message{/t}:</b></td>
+                                                <td><b>{t}Footer{/t}</b></td>
                                                 <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_options.invoice_footer_msg}</textarea><br></td>
                                             </tr>
 

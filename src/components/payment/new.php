@@ -63,7 +63,7 @@ $smarty->assign('invoice_details',                  get_invoice_details($VAR['in
 $smarty->assign('invoice_statuses',                 get_invoice_statuses()                                                                   );
 $smarty->assign('display_payments',                 display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );
 $smarty->assign('payment_methods',                  get_payment_accepted_methods()                                                             );
-$smarty->assign('active_payment_accepted_methods',  get_payment_active_accepted_methods()                                                      );
+$smarty->assign('payment_active_accepted_methods',  get_payment_active_accepted_methods()                                                      );
 $smarty->assign('active_credit_cards',              get_active_credit_cards()                                                                );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');
