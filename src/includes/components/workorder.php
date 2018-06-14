@@ -487,37 +487,6 @@ function get_workorder_status_display_name($status_key) {
     
 }
 
-#####################################
-#    Get Workorders Stats           #
-#####################################
-
-function get_workorder_stats($employee_id = null) {
-    
-    return array(
-        "open_count"                =>  count_workorders('open', $employee_id),
-        "assigned_count"            =>  count_workorders('assigned', $employee_id),
-        "waiting_for_parts_count"   =>  count_workorders('waiting_for_parts', $employee_id),
-        "scheduled_count"           =>  count_workorders('scheduled', $employee_id),
-        "with_client_count"         =>  count_workorders('with_client', $employee_id),
-        "on_hold_count"             =>  count_workorders('on_hold', $employee_id),
-        "management_count"          =>  count_workorders('management', $employee_id)
-    );
-    
-}
-
-#####################################
-#    Get Workorders Overall Stats   #
-#####################################
-
-function get_workorder_overall_stats($employee_id = null) {
-    
-    return array(
-        "opened_count"             =>  count_workorders('opened', $employee_id),
-        "closed_count"              =>  count_workorders('closed', $employee_id)
-    );
-    
-}
-
 /** Update Functions **/
 
 ###########################################

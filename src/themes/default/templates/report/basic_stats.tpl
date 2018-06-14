@@ -21,60 +21,57 @@
                     <td class="menutd2" colspan="2">
                         <table class="olotable" width="700" border="0" cellpadding="5" cellspacing="0">                            
                             
-                            <!-- Global - Current Work Order Stats -->
+                            <!-- Current Work Order Stats (Global) -->
                             <tr>
                                 <td>
-                                    <a name="global_workorder_stats"></a>                                                
-                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$global_workorder_stats block_title=_gettext("Current Global Work Order Stats")}                                               
-                                </td>
-                            </tr>
-                            
-                            
-                            <!-- Global - Overall Work Order Stats -->
-                            <tr>
-                                <td>
-                                    <a name="global_workorder_stats"></a>                                                
-                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$global_workorder_overall_stats block_title=_gettext("Global Overall Work Order Stats")}                                             
-                                </td>
-                            </tr>  
-                                                        
-                            <!-- Logged In Employee - Current Work Order Stats -->
-                            <tr>
-                                <td>
-                                    <a name="employee_workorder_stats"></a>                                                
-                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$employee_workorder_stats block_title=_gettext("Employee Current Work Order Stats")}                                             
+                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$global_workorder_stats block_title=_gettext("Current Work Order Stats")|cat:" ("|cat:gettext("Global")|cat:")"} 
                                 </td>
                             </tr>                            
                             
-                            <!-- Logged In Employee - Overall Work Order Stats -->
+                            <!-- Overall Work Order Stats (Global) -->
                             <tr>
                                 <td>
-                                    <a name="employee_workorder_overall_stats"></a>                                                
-                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$employee_workorder_overall_stats block_title=_gettext("Employee Overall Work Order Stats")}                                             
+                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$global_workorder_overall_stats block_title=_gettext("Overall Work Order Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                             
                                 </td>
-                            </tr> 
+                            </tr>                      
                             
-                            <!-- Global - Current Invoice Stats -->
+                            <!-- Current Invoice Stats (Global) -->
                             <tr>
                                 <td>
-                                    <a name="global_invoice_stats"></a>                                                
-                                    {include file='invoice/blocks/display_invoice_stats_block.tpl' invoice_stats=$global_invoice_stats block_title=_gettext("Global - Current Invoice Stats")}                                             
+                                    {include file='invoice/blocks/display_invoice_stats_block.tpl' invoice_stats=$global_invoice_stats block_title=_gettext("Current Invoice Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                            
                                 </td>
                             </tr>
                             
-                            <!-- Global - Overall Invoice Stats -->
+                            <!-- Overall Invoice Stats (Global) -->
                             <tr>
                                 <td>
-                                    <a name="global_invoice_overall_stats"></a>                                                
-                                    {include file='invoice/blocks/display_invoice_overall_stats_block.tpl' invoice_overall_stats=$global_invoice_overall_stats block_title=_gettext("Global - Overall Invoice Stats")}                                             
+                                    {include file='invoice/blocks/display_invoice_overall_stats_block.tpl' invoice_overall_stats=$global_invoice_overall_stats block_title=_gettext("Overall Invoice Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                              
                                 </td>
                             </tr>                                                        
                             
-                            <!-- Global - Customer Stats -->
+                            <!-- Customer Stats (Global) -->
                             <tr>
                                 <td>
-                                    <a name="global_customer_overall_stats"></a>                                                
-                                    {include file='customer/blocks/display_customer_overall_stats_block.tpl' customer_overall_stats=$global_customer_overall_stats block_title=_gettext("Global - Customer Stats")}                                             
+                                    {include file='customer/blocks/display_customer_overall_stats_block.tpl' customer_overall_stats=$global_customer_overall_stats block_title=_gettext("Overall Customer Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                             
+                                </td>
+                            </tr>
+                            
+                            <!-- Separator -->
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            
+                            <!-- Current Work Order Stats (Logged in Employee) -->
+                            <tr>
+                                <td>
+                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$employee_workorder_stats block_title=_gettext("Current Work Order Stats")|cat:" ($login_display_name)"}                                          
+                                </td>
+                            </tr>                            
+                            
+                            <!-- Overall Work Order Stats (Logged in Employee) -->
+                            <tr>
+                                <td>
+                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$employee_workorder_overall_stats block_title=_gettext("Overall Work Order Stats")|cat:" ($login_display_name)"}                                            
                                 </td>
                             </tr>                            
                             

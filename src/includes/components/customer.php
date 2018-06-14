@@ -307,45 +307,6 @@ function get_customer_types() {
     
 }
 
-#####################################
-#    Get Customer Overall Stats     #
-#####################################
-
-function get_customer_overall_stats() {
-    
-    /** Dates **/
-
-    $dateObject = new DateTime();
-    //$date_today = $dateObject->getTimestamp();
-
-    $dateObject->modify('first day of this month');
-    $date_month_start = $dateObject->getTimestamp();
-
-    $dateObject->modify('last day of this month');
-    $date_month_end = $dateObject->getTimestamp();
-
-    //$dateObject->modify('first day of this year');
-    //$date_year_start = $dateObject->getTimestamp();
-
-    //$dateObject->modify('last day of this year');
-    //$date_year_end = $dateObject->getTimestamp();
-
-    //if($requested_period === 'month')   {$period = mktime(0,0,0,date('m'),0,date('Y'));} - not used for reference only
-    //if($requested_period === 'year')    {$period = mktime(0,0,0,0,0,date('Y'));} - not used for reference only
-
-    $date_year_start    = get_company_details('year_start');
-    $date_year_end      = get_company_details('year_end');
-    
-    /* Build and return array */
-    
-    return array(
-        "month_count"   =>  count_customers('all', $date_month_start, $date_month_end),
-        "year_count"    =>  count_customers('all', $date_year_start, $date_year_end),
-        "total_count"   =>  count_customers('all')
-    );
-    
-}
-
 /** Update Functions **/
 
 #####################################

@@ -8,36 +8,22 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/invoice.php');
 require(INCLUDES_DIR.'components/report.php');
-require(INCLUDES_DIR.'components/workorder.php');
-
-/** Work Orders **/
 
 // Global Workorder Stats
-$smarty->assign('global_workorder_stats', get_workorder_stats());
-$smarty->assign('global_workorder_overall_stats', get_workorder_overall_stats());
+$smarty->assign('global_workorder_stats', get_workorder_stats('current'));
+$smarty->assign('global_workorder_overall_stats', get_workorder_stats('overall'));
 
 // Employee Workorder Stats
-$smarty->assign('employee_workorder_stats', get_workorder_stats($user->login_user_id));
-$smarty->assign('employee_workorder_overall_stats', get_workorder_overall_stats($user->login_user_id));
-
-
-/** Invoices **/
+$smarty->assign('employee_workorder_stats', get_workorder_stats('current', $user->login_user_id));
+$smarty->assign('employee_workorder_overall_stats', get_workorder_stats('overall', $user->login_user_id));
 
 // Global Invoice Stats
-$smarty->assign('global_invoice_stats', get_invoices_stats());
-$smarty->assign('global_invoice_overall_stats', get_invoices_overall_stats());
-
-/** Customers **/
+$smarty->assign('global_invoice_stats', get_invoices_stats('current'));
+$smarty->assign('global_invoice_overall_stats', get_invoices_stats('overall'));
 
 // Global Customer Stats
 $smarty->assign('global_customer_overall_stats', get_customer_overall_stats($date_year_start, $date_year_end, $date_month_start, $date_month_end));
-
-
-
-/** Build the Page **/
 
 // Build the page
 $BuildPage .= $smarty->fetch('report/basic_stats.tpl');

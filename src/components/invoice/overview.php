@@ -22,7 +22,7 @@ $smarty->assign('overview_invoices_cancelled',          display_invoices('invoic
 $smarty->assign('overview_invoices_refunded',           display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'refunded')          );
 $smarty->assign('overview_invoices_collections',        display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'collections')       );
 
-$smarty->assign('overview_invoice_stats', get_invoices_stats());
+$smarty->assign('overview_invoice_stats', get_invoices_stats('current'));
 $smarty->assign('invoice_statuses', get_invoice_statuses());
 
 $BuildPage .= $smarty->fetch('invoice/overview.tpl');

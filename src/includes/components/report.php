@@ -41,6 +41,45 @@ defined('_QWEXEC') or die;
 
 /** Customers **/
 
+#####################################
+#    Get Customer Overall Stats     #
+#####################################
+
+function get_customer_overall_stats() {
+    
+    /** Dates **/
+
+    $dateObject = new DateTime();
+    //$date_today = $dateObject->getTimestamp();
+
+    $dateObject->modify('first day of this month');
+    $date_month_start = $dateObject->getTimestamp();
+
+    $dateObject->modify('last day of this month');
+    $date_month_end = $dateObject->getTimestamp();
+
+    //$dateObject->modify('first day of this year');
+    //$date_year_start = $dateObject->getTimestamp();
+
+    //$dateObject->modify('last day of this year');
+    //$date_year_end = $dateObject->getTimestamp();
+
+    //if($requested_period === 'month')   {$period = mktime(0,0,0,date('m'),0,date('Y'));} - not used for reference only
+    //if($requested_period === 'year')    {$period = mktime(0,0,0,0,0,date('Y'));} - not used for reference only
+
+    $date_year_start    = get_company_details('year_start');
+    $date_year_end      = get_company_details('year_end');
+    
+    /* Build and return array */
+    
+    return array(
+        "month_count"   =>  count_customers('all', $date_month_start, $date_month_end),
+        "year_count"    =>  count_customers('all', $date_year_start, $date_year_end),
+        "total_count"   =>  count_customers('all')
+    );
+    
+}
+
 #############################################
 #    Count Customers                        #
 #############################################
@@ -77,6 +116,45 @@ function count_customers($status, $start_date = null, $end_date = null) {
 }
 
 /** Workorders **/
+
+#####################################
+#    Get Workorders Stats           #
+#####################################
+
+function get_workorder_stats($record_set, $employee_id = null) {
+    
+    $stats = array();
+            
+    if($record_set == 'current' || $record_set == 'all') {        
+        
+        $current_stats = array(
+            "open_count"                =>  count_workorders('open', $employee_id),
+            "assigned_count"            =>  count_workorders('assigned', $employee_id),
+            "waiting_for_parts_count"   =>  count_workorders('waiting_for_parts', $employee_id),
+            "scheduled_count"           =>  count_workorders('scheduled', $employee_id),
+            "with_client_count"         =>  count_workorders('with_client', $employee_id),
+            "on_hold_count"             =>  count_workorders('on_hold', $employee_id),
+            "management_count"          =>  count_workorders('management', $employee_id)
+        );
+        
+        $stats = array_merge($stats, $current_stats);
+    
+    }
+    
+    if($record_set == 'overall' || $record_set == 'all') {       
+        
+        $overall_stats = array(
+            "opened_count"  =>  count_workorders('opened', $employee_id),
+            "closed_count"  =>  count_workorders('closed', $employee_id)
+        );
+        
+        $stats = array_merge($stats, $overall_stats);
+    
+    }    
+    
+    return $stats;
+    
+}
 
 #########################################
 #     Count Work Orders                 #
@@ -159,6 +237,51 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
 }
 
 /** Invoices **/
+
+#####################################
+#   Get All invoices stats          #
+#####################################
+
+function get_invoices_stats($record_set, $employee_id = null) {
+    
+    $stats = array();
+    
+    if($record_set == 'current' || $record_set == 'all') {
+    
+        $current_stats = array(
+            "open_count"            =>  count_invoices('open', $employee_id),
+            "pending_count"         =>  count_invoices('pending', $employee_id),
+            "unpaid_count"          =>  count_invoices('unpaid', $employee_id),
+            "partially_paid_count"  =>  count_invoices('partially_paid', $employee_id),
+            "paid_count"            =>  count_invoices('paid', $employee_id),
+            "in_dispute_count"      =>  count_invoices('in_dispute', $employee_id),
+            "overdue_count"         =>  count_invoices('overdue', $employee_id),
+            "cancelled_count"       =>  count_invoices('cancelled', $employee_id),
+            "refunded_count"        =>  count_invoices('refunded', $employee_id),
+            "collections_count"     =>  count_invoices('collections', $employee_id)
+        );
+
+        $stats = array_merge($stats, $current_stats);
+    
+    }
+    
+    if($record_set == 'overall' || $record_set == 'all') {       
+        
+        $overall_stats = array(
+            "opened_count"          =>  count_invoices('opened', $employee_id),
+            "closed_count"          =>  count_invoices('closed', $employee_id),
+            "invoiced_total"        =>  sum_invoices_value('all', 'gross_amount'),
+            "received_monies"       =>  sum_invoices_value('all', 'paid_amount'),
+            "outstanding_balance"   =>  sum_invoices_value('all', 'balance')
+        );
+        
+        $stats = array_merge($stats, $overall_stats);
+    
+    }    
+    
+    return $stats;
+    
+}
 
 ####################################################
 #     Count Invoices                               #
