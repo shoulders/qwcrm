@@ -205,6 +205,7 @@ class QFactory {
         
         switch (QFactory::getClientId())
         {
+            // site
             case 0:
                 if ($this->conf->get('force_ssl') == 2)
                 {
@@ -213,6 +214,7 @@ class QFactory {
 
                 break;
 
+            // administrator
             case 1:
                 if ($this->conf->get('force_ssl') >= 1)
                 {
