@@ -381,8 +381,7 @@ function write_config_file($content)
 #   Process config data before saving      #  // joomla\administrator\components\com_config\model\application.php  -  public function save($data)
 ############################################
 
-function prepare_config_data($new_config) {
-    
+function prepare_config_data($new_config) {    
     
     // remove unwanted varibles from the new_config
     unset($new_config['page']);

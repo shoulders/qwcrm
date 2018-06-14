@@ -143,20 +143,26 @@ function update_user_last_active($user_id = null) {
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($component, $page_tpl = null, $variables = null, $method = 'post', $url_type = 'auto') {
+function force_page($component, $page_tpl = null, $variables = null, $url_sef = 'auto', $url_protocol = 'auto', $method = 'post') {
     
-    // Set URL type to be used
-    if ($url_type == 'sef') { $makeSEF = true; }
-    elseif ($url_type == 'nonsef') { $makeSEF = false; }
+    // Set URL SEF type to be used
+    if ($url_sef == 'sef') { $makeSEF = true; }
+    elseif ($url_sef == 'nonsef') { $makeSEF = false; }
     elseif(class_exists(QFactory)) { $makeSEF = QFactory::getConfig()->get('sef'); }
     else { $makeSEF = false; }
+    
+    // Configure and set URL protocol and domain segment (allows for https to http, http to https using QWcrm style force_page() links)
+    if ($url_protocol == 'https') { $protocol_domain_segment = 'https://'.QWCRM_DOMAIN; }
+    elseif ($url_protocol == 'http') { $protocol_domain_segment = 'http://'.QWCRM_DOMAIN; }
+    //else { $protocol_domain_segment = null; }                         // This makes relative links
+    else { $protocol_domain_segment = QWCRM_PROTOCOL.QWCRM_DOMAIN; }    // This makes absolute links using config settings
     
     /* Standard URL Redirect */
     
     if($component != 'index.php' && $page_tpl == null) {       
 
         // Build the URL and perform the redirect
-        perform_redirect($component);        
+        perform_redirect($protocol_domain_segment.$component);        
 
     }
     
@@ -181,7 +187,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             
             // Perform redirect
             if($method == 'get') {
-                perform_redirect($url);
+                perform_redirect($protocol_domain_segment.$url);
             } else {
                 return $url;
             }
@@ -200,7 +206,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             
             // Perform redirect
             if($method == 'get') {
-                perform_redirect($url);            
+                perform_redirect($protocol_domain_segment.$url);            
             } else {
                 return $url;
             }
@@ -239,7 +245,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             if ($makeSEF) { $url = buildSEF($url); }
             
             // Perform redirect
-            perform_redirect($url);
+            perform_redirect($protocol_domain_segment.$url);
        
         // Page Name and Variables (QWcrm Style Redirect)     
         } else {
@@ -251,7 +257,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             if ($makeSEF) { $url = buildSEF($url);}
             
             // Perform redirect
-            perform_redirect($url);
+            perform_redirect($protocol_domain_segment.$url);
                 
         }
         
@@ -326,7 +332,7 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
     } else {  
 
         // Load Error Page
-        force_page('core', 'error', $variables, 'post', 'auto');
+        force_page('core', 'error', $variables, 'auto', 'auto');
         
     }
     

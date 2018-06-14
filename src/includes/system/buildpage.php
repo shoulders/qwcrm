@@ -14,7 +14,6 @@ defined('_QWEXEC') or die;
 
 function get_page_content($startTime, $page_controller, $VAR, $QConfig = null, $user = null) {
     
-    $db = QFactory::getDbo();
     $smarty = QSmarty::getInstance();    
     
     // This varible holds the page as it is built

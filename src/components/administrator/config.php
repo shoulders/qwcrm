@@ -40,28 +40,36 @@ if($VAR['submit'] == 'update') {
     
     if(update_qwcrm_config($VAR['qwconfig'])) {
         
-        // Reload Page to get the new settings - Ccompensate for SEF change               
-        if ($VAR['qwconfig']['sef']) {
-            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), 'post', 'sef'); 
+        // Compensate for SEF change  
+        $url_sef = $VAR['qwconfig']['sef'] ? 'sef' : 'nonsef';
+        
+        /// Reload Page (nonSSL to SSL)
+        if (!QFactory::getConfig()->get('force_ssl') && $VAR['qwconfig']['force_ssl']) {
+            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), $url_sef, 'https');
+            
+        // Reload page with forced logout (SSL to nonSSL)
+        } elseif(QFactory::getConfig()->get('force_ssl') && !$VAR['qwconfig']['force_ssl']) {
+            logout(true);
+            force_page('user', 'login', null, $url_sef, 'http', 'get');
+        
+        // Reload Page (No change in SSL state)
         } else {
-            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), 'post', 'nonsef'); 
+            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), $url_sef, 'auto');             
         }
         
     } else {
         
         // Load the submitted values
         $smarty->assign('warning_msg', _gettext("Some information was invalid, please check for errors and try again."));
-        $smarty->assign('qwcrm_config', $VAR['qwconfig']);        
-        
+        $smarty->assign('qwcrm_config', $VAR['qwconfig']); 
     }
     
 } else {
-    
+
     // No data submitted so just load the current config settings
     $smarty->assign('qwcrm_config', get_qwcrm_config() );
-    
+
 }
 
 // Build the page
 $BuildPage .= $smarty->fetch('administrator/config.tpl');
-

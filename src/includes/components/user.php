@@ -868,7 +868,6 @@ function login($VAR, $credentials, $options = array())
 
 function logout($silent = null)        
 {   
-    $db = QFactory::getDbo();
     $user = QFactory::getUser();
     
     // Build logout message (while user details exist)
@@ -900,8 +899,7 @@ function logout($silent = null)
         // Reload Homepage with message (default)
         
         // only $_GET will work because the session store is destroyed (this is good behaviour)
-        force_page('index.php', null, 'information_msg='._gettext("Logout successful."), 'get');
-        //force_page('index.php?information_msg='._gettext("Logout successful."));
+        force_page('index.php', null, 'information_msg='._gettext("Logout successful."), 'auto', 'auto', 'get');
         
     }
 
