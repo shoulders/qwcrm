@@ -93,7 +93,21 @@
                     {if $giftcert_id > 0}
                         <a href="index.php?component=giftcert&page_tpl=edit&giftcert_id={$giftcert_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                     {/if}
-                </div>
+                </div>                   
+                
+                <!-- Finance -->
+                <div class="menugroup">
+                    <span>{t}Finance{/t}</span>
+                    
+                    <!-- Stats -->                        
+                    <a href="index.php?component=report&page_tpl=basic_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Basic Stats{/t}</a>
+                    <a href="index.php?component=report&page_tpl=financial"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Financial Report{/t}</a>
+            
+                    <!-- Payments -->
+                    <a href="index.php?component=payment&page_tpl=options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Payment Options{/t}</a>
+                    <a href="index.php?component=payment&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Payment Search{/t}</a>
+                
+                </div>                    
 
                 <!-- Expenses -->
                 <div class="menugroup">
@@ -108,7 +122,6 @@
                         <a href="index.php?component=expense&page_tpl=delete&expense_id={$expense_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                     {/if}                        
                 </div>
-
                 
                 <!-- Refunds -->
                 <div class="menugroup">
@@ -120,8 +133,16 @@
                         <a href="index.php?component=refund&page_tpl=edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                         <a href="index.php?component=refund&page_tpl=delete&refund_id={$refund_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Refund Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                     {/if}                        
-                </div>
+                </div>    
 
+                <!-- Company -->
+                    <div class="menugroup">
+                        <span>{t}Company{/t}</span>                        
+                        <a href="index.php?component=company&page_tpl=options"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Options{/t}</a>                        
+                        <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
+                        <a href="index.php?component=invoice&page_tpl=prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>                                
+                    </div>
+                    
                 <!-- Suppliers -->
                 <div class="menugroup">
                     <span>{t}Suppliers{/t}</span> 
@@ -132,30 +153,7 @@
                         <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                         <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
                     {/if}
-                </div>
-
-
-                <!-- Company -->
-                    <div class="menugroup">
-                        <span>{t}Company{/t}</span>                        
-                        <a href="index.php?component=company&page_tpl=options"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Options{/t}</a>                        
-                        <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
-                        <a href="index.php?component=invoice&page_tpl=prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>                                
-                    </div>
-                
-                <!-- Finance -->
-                <div class="menugroup">
-                    <span>{t}Finance{/t}</span>
-                    
-                    <!-- Stats -->                        
-                    <a href="index.php?component=report&page_tpl=basic_stats"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Basic Stats{/t}</a>
-                    <a href="index.php?component=report&page_tpl=financial"><img src="{$theme_images_dir}icons/reports.png" alt="" border="0" height="14" width="14" /> {t}Financial Report{/t}</a>
-            
-                    <!-- Payments -->
-                    <a href="index.php?component=payment&page_tpl=options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Payment Options{/t}</a>
-                    <a href="index.php?component=payment&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Payment Search{/t}</a>
-                
-                </div>
+                </div>                 
 
                 <!-- Administration -->
                     <div class="menugroup">
