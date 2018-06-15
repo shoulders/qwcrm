@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm(null, null, $raw_output)) {
+if(!check_page_accessed_via_qwcrm(null, null, $VAR['error_enable_override'])) {
     die(_gettext("No Direct Access Allowed."));
 }
 

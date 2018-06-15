@@ -311,6 +311,8 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
     $VAR['error_database']      = $error_database ;
     $VAR['error_sql_query']     = prepare_error_data('error_sql_query', $error_sql_query);
     $VAR['error_msg']           = $error_msg;
+    
+    $VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
         
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
     if(QFactory::getConfig()->get('error_page_raw_output')) {
@@ -319,7 +321,7 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
         $BuildPage = '';
         
         // Allow error page to display RAW Output
-        $raw_output = 'override';
+        $raw_output = true;
         
         // Error page main content and processing logic
         require(COMPONENTS_DIR.'core/error.php');

@@ -26,7 +26,7 @@ function display_welcome_msg() {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT welco me_msg FROM ".PRFX."company_options";
+    $sql = "SELECT welcome_msg FROM ".PRFX."company_options";
        
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
