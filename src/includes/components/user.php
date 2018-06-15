@@ -905,6 +905,37 @@ function logout($silent = null)
 
 } 
 
+####################################
+#  Logout all online users         #  // This terminates sessions fo those currently connected (Logged in and Guests). This does not handle users with 'remember me' enabled. 
+####################################
+
+function logout_all_users($except_me = false) {
+    
+    // Get the database object
+    $db = QFactory::getDbo();
+
+    // Logout all users
+    if(!$except_me) {
+
+        $sql = "TRUNCATE ".PRFX."session";
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+        }
+
+    // Delete all sessions except the currently logged in user 
+    } else {
+        
+        $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$db->qstr(QFactory::getUser()->login_user_id);
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+        }
+
+    }
+    
+    return;
+        
+}
+
 /* Reset Password */
 
 #####################################

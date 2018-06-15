@@ -23,5 +23,5 @@ if($VAR['submit'] == 'update') {
 }
     
 // Build the page with the permissions from the database 
-$smarty->assign('acl', load_acl());
+$smarty->assign('acl', get_acl_permissions());
 $BuildPage .= $smarty->fetch('administrator/acl.tpl');

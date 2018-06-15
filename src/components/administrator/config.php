@@ -43,19 +43,30 @@ if($VAR['submit'] == 'update') {
         // Compensate for SEF change  
         $url_sef = $VAR['qwconfig']['sef'] ? 'sef' : 'nonsef';
         
+        // Load maintenance page if maintenance mode has been enabled
+        if(!QFactory::getConfig()->get('maintenance') && $VAR['qwconfig']['maintenance']) {
+            logout_all_users();
+            force_page('index.php', null, null, $url_sef, 'auto', 'get');
+        }        
+        
         /// Reload Page (nonSSL to SSL)
-        if (!QFactory::getConfig()->get('force_ssl') && $VAR['qwconfig']['force_ssl']) {
+        elseif (!QFactory::getConfig()->get('force_ssl') && $VAR['qwconfig']['force_ssl']) {
             force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), $url_sef, 'https');
             
         // Reload page with forced logout (SSL to nonSSL)
         } elseif(QFactory::getConfig()->get('force_ssl') && !$VAR['qwconfig']['force_ssl']) {
-            logout(true);
+            logout_all_users();
             force_page('user', 'login', null, $url_sef, 'http', 'get');
         
-        // Reload Page (No change in SSL state)
+        // Reload Page (No change in SSL state or maintenance mode)
         } else {
             force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), $url_sef, 'auto');             
         }
+     
+        
+            
+
+        
         
     } else {
         

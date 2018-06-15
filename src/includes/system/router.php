@@ -18,6 +18,8 @@ function get_page_controller(&$VAR = null, $QConfig = null, $user = null, $emplo
         
     $smarty = QSmarty::getInstance();  // This is required for the required files/templates grabbed here
     
+    // If maintenance mode is already set
+    
     // Maintenance Mode
     if($QConfig->maintenance) {
 
@@ -26,10 +28,12 @@ function get_page_controller(&$VAR = null, $QConfig = null, $user = null, $emplo
         $VAR['page_tpl']    = 'maintenance';        
         $VAR['theme']       = 'off';   
 
-        // If user logged in, then log user off (Hard logout, no logging)
+        // If user logged in, then log user off (Hard logout, no logging) - This is needed for 'remember me', purge as they come in.
         if(isset($user->login_token)) {    
             QFactory::getAuth()->logout(); 
         }
+        
+        // If not root or maintence page redirect to maintenance page
         
         goto page_controller_check;
         

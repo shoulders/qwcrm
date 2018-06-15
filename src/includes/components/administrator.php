@@ -52,8 +52,25 @@ function get_qwcrm_config() {
     
 }
 
-/* Update Functions */
+#################################
+#   Get ACL Permissions         #
+#################################
 
+function get_acl_permissions() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
+    
+    if(!$rs = $db->execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
+    }
+    
+    return $rs->GetArray(); 
+
+}
+
+/* Update Functions */
 
 #################################
 #   Update ACL Permissions      #
@@ -154,7 +171,7 @@ function update_qwcrm_config($new_config) {
     $current_config = get_qwcrm_config();
     
     // Perform miscellaneous options based on configuration settings/changes.
-    $new_config = prepare_config_data($new_config);
+    $new_config = process_config_data($new_config);
     
     // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
     $merged_config = array_merge($current_config, $new_config);
@@ -299,24 +316,6 @@ function check_for_qwcrm_update() {
 
 }
 
-#################################
-#   Load ACL Permissions        #
-#################################
-
-function load_acl() {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
-    
-    if(!$rs = $db->execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
-    }
-    
-    return $rs->GetArray(); 
-
-}
-
 ############################################
 #   Prepare the Config file data layout    #
 ############################################
@@ -381,7 +380,7 @@ function write_config_file($content)
 #   Process config data before saving      #  // joomla\administrator\components\com_config\model\application.php  -  public function save($data)
 ############################################
 
-function prepare_config_data($new_config) {    
+function process_config_data($new_config) {    
     
     // remove unwanted varibles from the new_config
     unset($new_config['page']);
@@ -396,6 +395,7 @@ function prepare_config_data($new_config) {
         // Get the database object
         $db = QFactory::getDbo();
         
+        // Empty the session table if changing to database session handling from non-database session handling
         if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
         {
             $sql = "TRUNCATE ".PRFX."session";                    
