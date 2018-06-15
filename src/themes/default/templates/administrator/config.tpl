@@ -88,7 +88,7 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Gzip Page Compression{/t}</strong></div><hr><div>{t escape=tooltip}Compress buffered output if supported.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>                        
                     </tr>                    
-                    <tr>
+                    {*<tr>
                         <td align="right"><b>{t}Site Maintenance{/t}</b></td>
                         <td>
                             <select class="olotd5" id="maintenance" name="qwconfig[maintenance]">                                                       
@@ -97,7 +97,7 @@
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Site Maintenance{/t}</strong></div><hr><div>{t escape=tooltip}Select if access to the Site Frontend is available. If Yes, the Frontend will display a message via the maintenance page.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>
+                    </tr>*}
                     <tr>
                         <td align="right"><b>{t}Theme Name{/t}</b></td>
                         <td>

@@ -477,6 +477,9 @@ function check_page_acl($component, $page_tpl, $user = null) {
 
 function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null) {
     
+    // If override is set, return true
+    if($access_rule == 'override') {return true;}
+    
     // If no referer, page was not access via QWcrm and a setup procedure is not occuring
     if(!getenv('HTTP_REFERER') && $access_rule != 'setup') {return false;}
     

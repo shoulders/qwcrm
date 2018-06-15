@@ -61,12 +61,7 @@ if($VAR['submit'] == 'update') {
         // Reload Page (No change in SSL state or maintenance mode)
         } else {
             force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), $url_sef, 'auto');             
-        }
-     
-        
-            
-
-        
+        }        
         
     } else {
         

@@ -53,10 +53,7 @@ function get_qwcrm_database_version_number() {
     {        
         if($rs = $db->execute($sql)) {
             
-            //force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
-
-            
-            return $rs->fields['database_version'];
+           return $rs->fields['database_version'];
             
         }
         
@@ -64,6 +61,8 @@ function get_qwcrm_database_version_number() {
     
     catch (Exception $e)
     {
+        
+        //force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
         
         //echo $e->msg;
         //var_dump($e);
@@ -304,35 +303,35 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
     $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
     
     // Prepare Variables
-    $variables['error_component']     = prepare_error_data('error_component', $routing_variables['component']);
-    $variables['error_page_tpl']      = prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
-    $variables['error_type']          = $error_type;
-    $variables['error_location']      = prepare_error_data('error_location', $error_location);
-    $variables['error_php_function']  = prepare_error_data('error_php_function', $error_php_function);
-    $variables['error_database']      = $error_database ;
-    $variables['error_sql_query']     = prepare_error_data('error_sql_query', $error_sql_query);
-    $variables['error_msg']           = $error_msg;
-    
+    $VAR['error_component']     = prepare_error_data('error_component', $routing_variables['component']);
+    $VAR['error_page_tpl']      = prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
+    $VAR['error_type']          = $error_type;
+    $VAR['error_location']      = prepare_error_data('error_location', $error_location);
+    $VAR['error_php_function']  = prepare_error_data('error_php_function', $error_php_function);
+    $VAR['error_database']      = $error_database ;
+    $VAR['error_sql_query']     = prepare_error_data('error_sql_query', $error_sql_query);
+    $VAR['error_msg']           = $error_msg;
+        
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
     if(QFactory::getConfig()->get('error_page_raw_output')) {
         
         // Create and empty page object
         $BuildPage = '';
         
-        // Load error variables for BuildPage
-        $VAR = $variables;
+        // Allow error page to display RAW Output
+        $raw_output = 'override';
         
         // Error page main content and processing logic
         require(COMPONENTS_DIR.'core/error.php');
 
-        // output the error page
-        echo $BuildPage;
+        // Output the error page and finish
+        die($BuildPage);
     
     // This will show errors within the template as normal - but occassionaly can cause boot loops during development
     } else {  
 
         // Load Error Page
-        force_page('core', 'error', $variables, 'auto', 'auto');
+        force_page('core', 'error', $VAR, 'auto', 'auto');   // no referer unless loaded from link - could use host to check
         
     }
     

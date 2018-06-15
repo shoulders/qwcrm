@@ -73,6 +73,11 @@ require(INCLUDES_DIR.'system/error.php');
 // Load dependencies via composer
 require(VENDOR_DIR.'autoload.php');
 
+/*
+$whoops = new \Whoops\Run;
+$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+$whoops->register();*/
+
 // Load System Include
 require(INCLUDES_DIR.'system/include.php');
 
@@ -169,5 +174,5 @@ if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') {
 ################################################
 #         Display the Built Page               #
 ################################################
-
+trigger_error("Number cannot be larger than 10");
 echo $BuildPage;
