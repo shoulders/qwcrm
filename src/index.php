@@ -49,20 +49,16 @@ define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);
 // QWcrm Path - /develop/qwcrm/
 define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 
+
+
 ################################################
 #         Load QWCRM                           #
 ################################################
 
-// Load the config if it exists
-if(is_file('configuration.php')) {
-    
-    // Load the config file
-    require('configuration.php');
-    
-    // Create config object for global scope
-    $QConfig = new QConfig;
-    
-}
+// Load the session and user framework
+define('QFRAMEWORK_DIR', 'libraries/qframework/');
+require(QFRAMEWORK_DIR.'qwframework.php');
+//require('libraries/qframework/qwframework.php');
 
 // Load System Constants
 require('includes/system/defines.php');
@@ -77,6 +73,7 @@ require(VENDOR_DIR.'autoload.php');
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
+//trigger_error("Number cannot be larger than 10"); // This can be used to simulate an error
 
 // Load System Include
 require(INCLUDES_DIR.'system/include.php');
@@ -84,8 +81,8 @@ require(INCLUDES_DIR.'system/include.php');
 // Load Language
 require(INCLUDES_DIR.'system/language.php');
 
-// Load Database Abstraction Layer
-require(INCLUDES_DIR.'system/adodb.php');
+// Load Database Abstraction Layer  -  Not currently needed here because it is in the framework, but might be needed for install/migrate/upgrade
+//require(INCLUDES_DIR.'system/adodb.php');
 
 // Load QWcrm Security including mandatory security code
 require(INCLUDES_DIR.'system/security.php');
@@ -99,21 +96,21 @@ require(INCLUDES_DIR.'system/email.php');
 // Load Template Engine
 require(INCLUDES_DIR.'system/smarty.php');
 
+// Configure variables to be used by QWcrm
+require(INCLUDES_DIR.'system/variables.php');
+
 // Route the page request
 require(INCLUDES_DIR.'system/router.php');
 
 // Build the page content payload
 require(INCLUDES_DIR.'system/buildpage.php');
 
-// Load the session and user framework
-require(QFRAMEWORK_DIR.'qwframework.php');
-
 ################################################
 #         Test QWCRM Enviroment                #
 ################################################
 
 // Verify QWcrm is installed correctly
-verify_qwcrm_install_state();
+//verify_qwcrm_install_state();
 
 ################################################
 #         Initialise QWCRM                     #
@@ -124,18 +121,15 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $app = new QFactory;
 }
 
-// Configure variables to be used by QWcrm
-require(INCLUDES_DIR.'system/variables.php');
-
 ################################################
 #         Build Page and Content               #
 ################################################
 
 // Get the page controller - no user has been set to calculate what page to load
-$page_controller = get_page_controller($VAR, $QConfig, $user, $employee_id, $customer_id, $workorder_id, $invoice_id);
+$page_controller = get_page_controller($VAR, $employee_id, $customer_id, $workorder_id, $invoice_id);
 
 // Build the page
-$BuildPage = get_page_content($startTime, $page_controller, $VAR, $QConfig, $user);
+$BuildPage = get_page_content($page_controller, $startTime, $VAR);
 
 ################################################
 #         Content Plugins                      #
@@ -147,11 +141,14 @@ $BuildPage = get_page_content($startTime, $page_controller, $VAR, $QConfig, $use
 #         Logging                              #
 ################################################
 
+// Update the Logged in User's Last Active Times 
+update_user_last_active(QFactory::getUser()->get('login_user_id'));
+
 // Access Logging
 if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
     
     // This logs QWcrm page load details to the access log
-    if($QConfig->qwcrm_access_log){
+    if(QFactory::getConfig()->get('qwcrm_access_log')){
         write_record_to_access_log();
     }
     
@@ -165,7 +162,7 @@ if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
 if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
 
     // Compress page payload and send compression headers
-    if ($QConfig->gzip) {
+    if (QFactory::getConfig()->get('gzip')) {
         compress_page_output($BuildPage);    
     }
         
@@ -174,5 +171,5 @@ if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') {
 ################################################
 #         Display the Built Page               #
 ################################################
-trigger_error("Number cannot be larger than 10");
+
 echo $BuildPage;

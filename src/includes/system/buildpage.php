@@ -12,9 +12,11 @@ defined('_QWEXEC') or die;
 #  Build the page content  #    // All variables should be passed by $VAR because it is its own scope
 ############################
 
-function get_page_content($startTime, $page_controller, $VAR, $QConfig = null, $user = null) {
+function get_page_content($page_controller, $startTime, $VAR = null) {    
     
-    $smarty = QSmarty::getInstance();    
+    $config = QFactory::getConfig();
+    $smarty = QSmarty::getInstance();  // This is required for the required files/templates grabbed here
+    $user = QFactory::getUser();
     
     // This varible holds the page as it is built
     $BuildPage = '';
@@ -61,7 +63,7 @@ function get_page_content($startTime, $page_controller, $VAR, $QConfig = null, $
     }    
 
     // Fetch the Debug Block
-    if($QConfig->qwcrm_debug == true){
+    if($config->get('qwcrm_debug')){
         require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');        
         $BuildPage .= "\r\n</body>\r\n</html>";
     } else {
@@ -81,7 +83,7 @@ function get_page_content($startTime, $page_controller, $VAR, $QConfig = null, $
     }
 
     // Convert to SEF
-    if ($QConfig->sef) { page_links_to_sef($BuildPage); }    
+    if ($config->get('sef')) { page_links_to_sef($BuildPage); }    
         
     return $BuildPage;
     
@@ -163,8 +165,6 @@ function page_links_sdmenu_cleanup(&$BuildPage) {
 ############################################################
 
 function link_permission($url) {
-    
-    $db = QFactory::getDbo();
     
     // Get routing variables from URL
     $url_routing = get_routing_variables_from_url($url);

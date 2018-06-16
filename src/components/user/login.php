@@ -18,13 +18,13 @@ require(INCLUDES_DIR.'components/user.php');
 // Get variables in correct format for login()
 $credentials['username'] = $VAR['login_username'];
 $credentials['password'] = $VAR['login_pwd'];
-if($QConfig->remember_me && isset($VAR['remember'])) { $options['remember'] = $VAR['remember']; }
+if($config->get('remember_me') && isset($VAR['remember'])) { $options['remember'] = $VAR['remember']; }
 
 // If login submitted 
 if($VAR['action'] === 'login') {
     
     // recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$QConfig->recaptcha || ($QConfig->recaptcha && authenticate_recaptcha($QConfig->recaptcha_secret_key, $VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('>recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */        
 
@@ -58,8 +58,8 @@ if ($VAR['action'] == 'logout') {
 }
 
 // Build the page
-$smarty->assign('remember_me', $QConfig->remember_me);
-$smarty->assign('recaptcha', $QConfig->recaptcha);
-$smarty->assign('recaptcha_site_key', $QConfig->recaptcha_site_key);
+$smarty->assign('remember_me', $config->get('remember_me'));
+$smarty->assign('recaptcha', $config->get('recaptcha'));
+$smarty->assign('recaptcha_site_key', $config->get('recaptcha_site_key'));
 
 $BuildPage .= $smarty->fetch('user/login.tpl');

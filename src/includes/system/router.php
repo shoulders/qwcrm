@@ -14,14 +14,13 @@ defined('_QWEXEC') or die;
 #  Build path to relevant Page Controller  #
 ############################################
 
-function get_page_controller(&$VAR = null, $QConfig = null, $user = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
-        
-    $smarty = QSmarty::getInstance();  // This is required for the required files/templates grabbed here
+function get_page_controller(&$VAR = null) {        
     
-    // If maintenance mode is already set
+    $config = QFactory::getConfig();    
+    $user = QFactory::getUser();
     
     // Maintenance Mode
-    if($QConfig->maintenance) {
+    if($config->get('maintenance')) {
 
         // Set to the maintenance page    
         $VAR['component']   = 'core';
@@ -32,8 +31,6 @@ function get_page_controller(&$VAR = null, $QConfig = null, $user = null, $emplo
         if(isset($user->login_token)) {    
             QFactory::getAuth()->logout(); 
         }
-        
-        // If not root or maintence page redirect to maintenance page
         
         goto page_controller_check;
         
@@ -48,13 +45,11 @@ function get_page_controller(&$VAR = null, $QConfig = null, $user = null, $emplo
         $VAR['theme']       = 'off'; 
 
         goto page_controller_check;
-        
-        //force_error_page('url', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Malformed URL."));
 
     }
 
     // If SEF routing is enabled parse the link - This allows the use of Non-SEF URLS in the SEF enviroment
-    if ($QConfig->sef && check_link_is_sef($_SERVER['REQUEST_URI'])) {
+    if ($config->get('sef') && check_link_is_sef($_SERVER['REQUEST_URI'])) {
 
         // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
         parseSEF($_SERVER['REQUEST_URI'], 'set_var', $VAR);
@@ -102,7 +97,7 @@ function get_page_controller(&$VAR = null, $QConfig = null, $user = null, $emplo
 
         // Log activity
         $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$VAR['component'].':'.$VAR['page_tpl'].')';
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id); 
+        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']); 
 
         // Set to the 403 error page 
         $VAR['component']   = 'core';

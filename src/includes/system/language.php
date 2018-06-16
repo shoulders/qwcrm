@@ -19,13 +19,13 @@ defined('_QWEXEC') or die;
 PhpMyAdmin\MoTranslator\Loader::loadFunctions();
 
 // Autodetect Language - I18N support information here
-if(function_exists('locale_accept_from_http') && ($QConfig->autodetect_language == '1' || $QConfig->autodetect_language == null)) {
+if(function_exists('locale_accept_from_http') && (QFactory::getConfig()->get('autodetect_language') == '1' || QFactory::getConfig()->get('autodetect_language') == null)) {
     
     // Use the locale language if detected or default language or british english
     if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         
         // Set default language as the chosen language or fallback to british english
-        if(!$language = $QConfig->default_language) {
+        if(!$language = QFactory::getConfig()->get('default_language')) {
             $language = 'en_GB';
         }
         
@@ -39,7 +39,7 @@ if(function_exists('locale_accept_from_http') && ($QConfig->autodetect_language 
 } else {
 
     // Set default language or fallback to british english
-    if(!$language = $QConfig->default_language) {
+    if(!$language = QFactory::getConfig()->get('default_language')) {
         $language = 'en_GB';
     }
         

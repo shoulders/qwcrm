@@ -37,18 +37,22 @@ defined('_QWEXEC') or die;
 ############################################
 
 function get_qwcrm_config() {
+
+    // Load the config if it exists
+    if(is_file('configuration.php')) {
+
+        // Load the configuration settings
+        require_once('configuration.php');     
     
-    if(class_exists(QConfig)) {
-        
         // Return the config values if defined
-        return get_object_vars(new QConfig);
-        
-    } else {
-        
-        // if not config does not exist yet (i.e. install)
-        return array();
+        if(class_exists(QConfig)) {            
+            return get_object_vars(new QConfig);
+        } 
         
     }
+        
+    // if config does not exist (i.e. install)
+    return array();
     
 }
 

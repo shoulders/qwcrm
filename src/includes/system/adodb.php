@@ -6,6 +6,8 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
+// This might not be needed anymore. Keep for exceptions code
+
 defined('_QWEXEC') or die;
 
 /* ADODB Options */
@@ -35,7 +37,7 @@ require(VENDOR_DIR.'adodb/adodb-php/adodb-exceptions.inc.php');
 $db = ADONewConnection('mysqli');
 
 // This is needed to allow install/migration/upgrade
-if($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != '') {
+if(QFactory::getConfig()->get('db_host') != '' && QFactory::getConfig()->get('db_user') != '' || QFactory::getConfig()->get('db_name') != '') {
     
     // Get current PHP error reporting level
     $reporting_level = error_reporting();
@@ -46,7 +48,7 @@ if($QConfig->db_host != '' && $QConfig->db_user != '' || $QConfig->db_name != ''
     // Create ADOdb database connection - and collection exceptions
     try
     {        
-        $db->Connect($QConfig->db_host, $QConfig->db_user, $QConfig->db_pass, $QConfig->db_name);
+        $db->Connect(QFactory::getConfig()->get('db_host'), QFactory::getConfig()->get('db_user'), QFactory::getConfig()->get('db_pass'), QFactory::getConfig()->get('db_name'));
     }
     
     // Error handling is tested/displayed/handled in verify_qwcrm_is_installed_correctly() this allows a graceful fail

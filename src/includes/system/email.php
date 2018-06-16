@@ -32,7 +32,7 @@ defined('_QWEXEC') or die;
 
 function php_mail_fallback($to, $subject, $body, $attachment = null) {
     
-    // this wrapper can be used as an intermedery so i can choose what email platform to use and also logging in the future
+    // this wrapper can be used as an intermediary so i can choose what email platform to use and also logging in the future
     
     //  PHP mail()
     $headers = 'From: no-reply@example.com' . "\r\n" .
@@ -49,11 +49,9 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 #######################################
 
 function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
-    
-    $smarty = QSmarty::getInstance();
-    
-    $config = new QConfig;
-    $db = QFactory::getDbo();
+        
+    $config = QFactory::getConfig();
+    //$smarty = QSmarty::getInstance();
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
     clear_onscreen_notifications();

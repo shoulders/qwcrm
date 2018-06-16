@@ -34,7 +34,7 @@ class QSmarty extends Smarty {
     public function __construct()
     { 
 
-        $QConfig = new QConfig;
+        $config = QFactory::getConfig();
 
         // initialize Smarty 
         parent::__construct();    
@@ -46,21 +46,21 @@ class QSmarty extends Smarty {
         $this->template_dir           = THEME_TEMPLATE_DIR;
         $this->cache_dir              = SMARTY_CACHE_DIR;
         $this->compile_dir            = SMARTY_COMPILE_DIR;
-        $this->force_compile          = $QConfig->smarty_force_compile;
+        $this->force_compile          = $config->get('smarty_force_compile');
 
         // Enable caching
-        if($QConfig->smarty_caching == '1') { $this->caching = Smarty::CACHING_LIFETIME_CURRENT;}
-        if($QConfig->smarty_caching == '2') { $this->caching = Smarty::CACHING_LIFETIME_SAVED;}
+        if($config->get('smarty_caching') == '1') { $this->caching = Smarty::CACHING_LIFETIME_CURRENT;}
+        if($config->get('smarty_caching') == '2') { $this->caching = Smarty::CACHING_LIFETIME_SAVED;}
 
         // Other Caching settings
-        $this->force_cache            = $QConfig->smarty_force_cache;
-        $this->cache_lifetime         = $QConfig->smarty_cache_lifetime;
-        $this->cache_modified_check   = $QConfig->smarty_cache_modified_check;
-        $this->cache_locking          = $QConfig->smarty_cache_locking;
+        $this->force_cache            = $config->get('smarty_force_cache');
+        $this->cache_lifetime         = $config->get('smarty_cache_lifetime');
+        $this->cache_modified_check   = $config->get('smarty_cache_modified_check');
+        $this->cache_locking          = $config->get('smarty_cache_locking');
 
         // Debugging    
-        $this->debugging_ctrl         = $QConfig->smarty_debugging_ctrl;
-        //$this->debugging            = $QConfig->smarty_debugging;                                     // Does not work with fetch()
+        $this->debugging_ctrl         = $config->get('smarty_debugging_ctrl');
+        //$this->debugging            = $config->get('smarty_debugging');                                     // Does not work with fetch()
         //$this->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
         //$this->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
 

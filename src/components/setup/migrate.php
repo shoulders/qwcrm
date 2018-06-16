@@ -203,7 +203,7 @@ if($VAR['stage'] == '6') {
         
         write_record_to_setup_log('migrate', _gettext("Starting MyITCRM Database Migration."));
         
-        $config = new QConfig;
+        $config = QFactory::getConfig();
         
         // install the database file and load the next page
         if(migrate_database($config->db_prefix, $config->myitcrm_prefix)) {

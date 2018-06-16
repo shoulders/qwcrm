@@ -16,7 +16,7 @@ defined('_QWEXEC') or die;
 ################################################
 
 // Set the error_reporting
-switch ($QConfig->error_reporting)
+switch (QFactory::getConfig()->get('error_reporting'))
 {
     case 'default':
     case '-1':

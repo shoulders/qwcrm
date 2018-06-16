@@ -19,7 +19,7 @@ if(isset($VAR['submit'])) {
     
 }
 
-
+// Build the page
 $smarty->assign('search_category',      $VAR['search_category']                                                                                             );
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                 );
 $smarty->assign('filter_type',          $VAR['filter_type']                                                                                                 );

@@ -416,26 +416,6 @@ function update_user($user_id, $VAR) {
     
 }
 
-#######################################
-#    Update User's Last Active Date   #  // This is in include.php
-#######################################
-
-/*function update_user_last_active($user_id = null) {
- * 
-
-    $db = QFactory::getDbo(); 
-
-    // compensate for some operations not having a user_id
-    if(!$user_id) { return; }
-    
-    $sql = "UPDATE ".PRFX."user_records SET LAST_ACTIVE=".$db->qstr(time())." WHERE USER_ID=".$db->qstr($user_id);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
-    }
-    
-}*/
-
 /** Close Functions **/
 
 /** Delete Functions **/

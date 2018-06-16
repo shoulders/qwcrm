@@ -692,7 +692,7 @@ class JUser
             $this->username                 = $record['username'];
             $this->id                       = $record['user_id'];
             
-            // Added for QWcrm
+            // Extra Variables (Added for QWcrm)
             $this->login_user_id            = $record['user_id'];
             $this->login_username           = $record['username'];            
             $this->login_usergroup_id       = $record['usergroup'];
@@ -700,8 +700,8 @@ class JUser
             $this->login_token              = 'login_verified';
             $this->login_is_employee        = $record['is_employee'];
             $this->login_customer_id        = $record['customer_id'];
-            
-            // if not active block the account
+
+            // If not active block the account
             if($record['active'] != '1') { $this->block = 1; }
 
         }

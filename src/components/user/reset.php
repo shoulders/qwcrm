@@ -35,7 +35,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     }   
 
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
-    if( !$QConfig->recaptcha || ($QConfig->recaptcha && authenticate_recaptcha($QConfig->recaptcha_secret_key, $VAR['g-recaptcha-response']))) {
+    if( !$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
         
             /* Allowed to submit */
             
@@ -91,7 +91,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     }
     
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
-    if( !$QConfig->recaptcha || ($QConfig->recaptcha && authenticate_recaptcha($QConfig->recaptcha_secret_key, $VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
         
         /* Allowed to submit */
         
@@ -175,8 +175,8 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 
 
 // set recaptcha values if enabled
-$smarty->assign('recaptcha', $QConfig->recaptcha);
-$smarty->assign('recaptcha_site_key', $QConfig->recaptcha_site_key);
+$smarty->assign('recaptcha', $config->get('recaptcha'));
+$smarty->assign('recaptcha_site_key', $config->get('recaptcha_site_key'));
 
 // Select the correct stage of reset to load
 $smarty->assign('stage', $stage);       

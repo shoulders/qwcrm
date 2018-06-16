@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 /** Mandatory Code **/
 
 // Force SSL/HTTPS if enabled - add base path stuff here
-if($QConfig->force_ssl >= 1 && !isset($_SERVER['HTTPS'])) {   
+if(QFactory::getConfig()->get('force_ssl') >= 1 && !isset($_SERVER['HTTPS'])) {   
     force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'https' );
 }
 

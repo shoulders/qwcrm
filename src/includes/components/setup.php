@@ -1501,7 +1501,7 @@ function migate_database_correction_user($qwcrm_prefix, $myitcrm_prefix) {
 
 function get_myitcrm_company_details($item = null) {
     
-    $config = new QConfig;
+    $config = QFactory::getConfig();
     $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".$config->myitcrm_prefix."TABLE_COMPANY";
