@@ -57,8 +57,7 @@ define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 
 // Load the session and user framework
 define('QFRAMEWORK_DIR', 'libraries/qframework/');
-require(QFRAMEWORK_DIR.'qwframework.php');
-//require('libraries/qframework/qwframework.php');
+require(QFRAMEWORK_DIR.'qframework.php');
 
 // Load System Constants
 require('includes/system/defines.php');
