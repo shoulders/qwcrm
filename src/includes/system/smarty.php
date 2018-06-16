@@ -36,7 +36,7 @@ class QSmarty extends Smarty {
 
         $config = QFactory::getConfig();
 
-        // initialize Smarty 
+        // Initialize Smarty 
         parent::__construct();    
 
         /* Configure Smarty */

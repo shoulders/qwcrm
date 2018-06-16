@@ -33,7 +33,7 @@ defined('_QWEXEC') or die;
 function display_users($order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $usertype = null, $usergroup = null) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
 
     /* Records Search */
         
@@ -553,7 +553,7 @@ function build_active_employee_form_option_list($assigned_user_id) {
 function check_user_username_exists($username, $current_username = null) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     // This prevents self-checking of the current username of the record being edited
     if ($current_username != null && $username === $current_username) {return false;}
@@ -589,7 +589,7 @@ function check_user_username_exists($username, $current_username = null) {
 function check_user_email_exists($email, $current_email = null) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     // This prevents self-checking of the current username of the record being edited
     if ($current_email != null && $email === $current_email) {return false;}
@@ -643,7 +643,7 @@ function check_user_is_employee($user_id) {
 function check_customer_already_has_login($customer_id) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     $sql = "SELECT user_id FROM ".PRFX."user_records WHERE customer_id =". $db->qstr($customer_id);
     
@@ -769,7 +769,7 @@ function reset_all_user_passwords() {
 function login($VAR, $credentials, $options = array())
 {   
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();   
+    $smarty = QFactory::getSmarty();   
     
     // If username or password is missing
     if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
@@ -938,7 +938,7 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
         
     } else {
         
-        $smarty = QSmarty::getInstance();        
+        $smarty = QFactory::getSmarty();        
         
         /* If it's not successful, then one or more error codes will be returned.      
         $error_msg .= '<h2>Something went wrong</h2>';
@@ -1134,7 +1134,7 @@ function get_user_id_by_reset_code($reset_code) {
 function validate_reset_token($token) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     // check for previous tokens for this user and delete them
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE token=".$db->qstr($token);
@@ -1177,7 +1177,7 @@ function validate_reset_token($token) {
 function validate_reset_code($reset_code) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     // Check for previous tokens for this user and delete them
     $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code=".$db->qstr($reset_code);

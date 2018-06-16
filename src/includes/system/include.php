@@ -577,7 +577,7 @@ function prepare_error_data($type, $data = null) {
 
 function set_page_header_and_meta_data($component, $page_tpl) {
     
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     // Page Title
     $smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    

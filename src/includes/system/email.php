@@ -51,7 +51,7 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
         
     $config = QFactory::getConfig();
-    //$smarty = QSmarty::getInstance();
+    //$smarty = QFactory::getSmarty();
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
     clear_onscreen_notifications();

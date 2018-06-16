@@ -31,7 +31,7 @@ defined('_QWEXEC') or die;
 function display_giftcerts($order_by = 'giftcert_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
 
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     /* Records Search */
         

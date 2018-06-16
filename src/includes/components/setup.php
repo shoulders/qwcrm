@@ -403,7 +403,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 function check_database_connection($db_host, $db_user, $db_pass, $db_name) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     // Get current PHP error reporting level
     $reporting_level = error_reporting();
@@ -533,7 +533,7 @@ function set_invoice_start_number($start_number) {
 function install_database() {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     global $executed_sql_results;
     global $setup_error_flag;    
     
@@ -599,7 +599,7 @@ function install_database() {
 function migrate_database($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     global $executed_sql_results;
     global $setup_error_flag;    
     

@@ -31,7 +31,7 @@ defined('_QWEXEC') or die;
 function display_payments($order_by = 'payment_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $method = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
    
     /* Records Search */
     
@@ -570,7 +570,7 @@ function check_payment_method_is_active($method) {
 function validate_payment_method_totals($invoice_id, $amount) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
 
     // Has a zero amount been submitted, this is not allowed
     if($amount == 0){

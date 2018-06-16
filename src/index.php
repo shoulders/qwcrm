@@ -49,8 +49,6 @@ define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);
 // QWcrm Path - /develop/qwcrm/
 define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
 
-
-
 ################################################
 #         Load QWCRM                           #
 ################################################
@@ -92,8 +90,8 @@ require(INCLUDES_DIR.'system/security.php');
 // Load email transport
 require(INCLUDES_DIR.'system/email.php');
 
-// Load Template Engine
-require(INCLUDES_DIR.'system/smarty.php');
+// Load Smarty Template Engine
+//require(INCLUDES_DIR.'system/smarty.php');
 
 // Configure variables to be used by QWcrm
 require(INCLUDES_DIR.'system/variables.php');
@@ -114,6 +112,9 @@ require(INCLUDES_DIR.'system/buildpage.php');
 ################################################
 #         Initialise QWCRM                     #
 ################################################
+
+// Load the variables
+load_variables($VAR);
 
 // Start the QFramework 
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {

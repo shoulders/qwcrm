@@ -52,15 +52,15 @@ class QFactory {
     public static $database     = null;     // Global Database object
     public static $clientId     = 0;        // The Client identifier. (0 = site, 1 = administrator)
     public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )
-    
-    // Context Variables
-    public $smarty              = null;     // Global Smarty object
+    public static $smarty       = null;     // Global Smarty object
+
+    // Context Variables    
     public $conf                = null;
 
     public function __construct()
     {
         $this->conf     = self::getConfig();
-        $this->smarty   = QSmarty::getInstance();
+        $this->smarty   = self::getSmarty();
         
         // Enable sessions by default.
         if (is_null($this->conf->get('session')))
@@ -562,6 +562,78 @@ class QFactory {
         } 
         
         return $db;
+    
+    }
+    
+/****************** Smarty Object ******************/
+    
+    /**
+     * Get a Smarty Object
+     *
+     * @return  smary Object
+     *
+     * @see     JDatabaseDriver
+     * @since   11.1
+     */
+    public static function getSmarty($newInstance = null)
+    {
+        if(!is_null($newInstance)) {
+            self::$smarty = $newInstance;    
+        }
+        if(is_null(self::$smarty)) {
+            self::$smarty = self::createSmarty();      
+        }
+        return self::$smarty;
+    }         
+    
+    /**
+     * Create a smarty object
+     *
+     * @return  Smarty Object
+     *
+     * @see     JDatabaseDriver
+     * @since   11.1
+     */
+    protected static function createSmarty()
+    {        
+        $conf = self::getConfig();
+        $smarty = new Smarty;
+        
+        /* Configure Smarty */
+
+        // Smarty Class Variables - https://www.smarty.net/docs/en/api.variables.tpl
+
+        $smarty->template_dir           = THEME_TEMPLATE_DIR;
+        $smarty->cache_dir              = SMARTY_CACHE_DIR;
+        $smarty->compile_dir            = SMARTY_COMPILE_DIR;
+        $smarty->force_compile          = $conf->get('smarty_force_compile');
+
+        // Enable caching
+        if($conf->get('smarty_caching') == '1') { $smarty->caching = Smarty::CACHING_LIFETIME_CURRENT;}
+        if($conf->get('smarty_caching') == '2') { $smarty->caching = Smarty::CACHING_LIFETIME_SAVED;}
+
+        // Other Caching settings
+        $smarty->force_cache            = $conf->get('smarty_force_cache');
+        $smarty->cache_lifetime         = $conf->get('smarty_cache_lifetime');
+        $smarty->cache_modified_check   = $conf->get('smarty_cache_modified_check');
+        $smarty->cache_locking          = $conf->get('smarty_cache_locking');
+
+        // Debugging    
+        $smarty->debugging_ctrl         = $conf->get('smarty_debugging_ctrl');
+        //$smarty->debugging            = $conf->get('smarty_debugging');                                     // Does not work with fetch()
+        //$smarty->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
+        //$smarty->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
+
+        // Other Settings
+        //$smarty->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads
+        //$smarty->error_unassigned = true;                 // to enable notices.
+        //$smarty->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
+        //$smarty->compileAllTemplates();                   // this is a really cool feature and useful for translations
+        //$smarty->clearAllCache();                         // clears all of the cache
+        //$smarty->clear_cache()();                         // clear individual cache files (or groups)
+        //$smarty->clearCompiledTemplate();                 // Clears the compile dirctory
+        
+        return $smarty;
     
     }
 

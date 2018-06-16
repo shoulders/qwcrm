@@ -15,7 +15,7 @@ defined('_QWEXEC') or die;
 function get_page_content($page_controller, $startTime, $VAR = null) {    
     
     $config = QFactory::getConfig();
-    $smarty = QSmarty::getInstance();  // This is required for the required files/templates grabbed here
+    $smarty = QFactory::getSmarty();  // This is required for the required files/templates grabbed here
     $user = QFactory::getUser();
     
     // This varible holds the page as it is built

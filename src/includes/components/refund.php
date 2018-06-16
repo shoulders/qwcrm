@@ -31,7 +31,7 @@ defined('_QWEXEC') or die;
 function display_refunds($order_by = 'refund_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $type = null, $payment_method = null) {
     
     $db = QFactory::getDbo();
-    $smarty = QSmarty::getInstance();
+    $smarty = QFactory::getSmarty();
     
     /* Records Search */    
     
