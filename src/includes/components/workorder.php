@@ -487,6 +487,51 @@ function get_workorder_status_display_name($status_key) {
     
 }
 
+#########################################
+#  Get Workorder Scope Suggestions      #
+#########################################
+ 
+function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
+    
+    $db = QFactory::getDbo();
+    
+    // if the string is not long enough so dont bother with a DB lookup
+    if(strlen($scope_string) < $return_count) { return; }
+          
+    $sql = "SELECT scope FROM ".PRFX."workorder_records WHERE scope LIKE '$scope_string%' LIMIT 10";
+    
+    // Get Workorder Scope Suggestions from the database      
+    if(!$rs = $db->Execute($sql)) {
+        
+        //force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get a work order scopes list from the database."));
+        echo $db->ErrorMsg();
+        
+    } else {
+        
+        $record_count = $rs->RecordCount();           
+        
+        if($record_count) {
+
+            $autosuggest_items = $rs->GetArray(); 
+
+            // loop over the rows, outputting them to the page object in the required format
+            foreach($autosuggest_items as $key => $value) {
+                $BuildPage .= '<li onclick="fill(\''.$value['scope'].'\');">'.$value['scope'].'</li>';
+            } 
+            
+            return $BuildPage;
+
+        } else {
+
+            // No records found - do nothing 
+            return;
+
+        }
+    
+    }
+
+}
+
 /** Update Functions **/
 
 ###########################################

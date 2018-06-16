@@ -47,8 +47,6 @@ $VAR['supplier_id']     =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   
 $VAR['schedule_id']     =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;
 $VAR['page_no']         =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';  // This one is definitely needed
 
-$skip_logging           =   isset($skip_logging)        ? $skip_logging         : null;
-
 ##########################################
 #   Set Global PHP Values from QWcrm     #  // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
 ##########################################

@@ -145,7 +145,7 @@ $BuildPage = get_page_content($page_controller, $startTime, $VAR);
 update_user_last_active(QFactory::getUser()->get('login_user_id'));
 
 // Access Logging
-if(!$skip_logging && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
+if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
     
     // This logs QWcrm page load details to the access log
     if(QFactory::getConfig()->get('qwcrm_access_log')){

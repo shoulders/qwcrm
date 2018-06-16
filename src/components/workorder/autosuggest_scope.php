@@ -9,39 +9,17 @@
 // Prevent direct Access
 defined('_QWEXEC') or die;
 
-// Prevent direct access to this page - Pexcept from workorder:new or workorder:details_edit_description
-if(!check_page_accessed_via_qwcrm('workorder', 'new') && !check_page_accessed_via_qwcrm('workorder', 'details_edit_description')) {
-    die(_gettext("No Direct Access Allowed."));    
-}
-    
-// Is there a posted query string and is the string length greater than 0?
+require(INCLUDES_DIR.'components/workorder.php');
+  
+// Is there a posted query string and is the string length greater than 0
 if(isset($VAR['posted_scope_string']) && strlen($VAR['posted_scope_string']) > 0) {
 
-    $posted_scope_string    = $VAR['posted_scope_string'];
-    $sql                    = "SELECT scope FROM ".PRFX."workorder_records WHERE scope LIKE '$posted_scope_string%' LIMIT 10";
-    $rs                     = $db->Execute($sql);
-    $record_count           = $rs->RecordCount();        
-
-    if($record_count) {
-
-        $autosuggest_items = $rs->GetArray(); 
-
-        // loop over the rows, outputting them to the page object in the required format
-        foreach($autosuggest_items as $key => $value) {
-            $BuildPage .= '<li onclick="fill(\''.$value['scope'].'\');">'.$value['scope'].'</li>';
-        } 
-
-    } else {
-
-        // No records found - do nothing            
-
-    }
-
-} else {
-
-    // the string length was zero or not submitted - do nothing
+    // BuildPage will only hold the html for this scope table
+    $BuildPage = get_workorder_scope_suggestions($VAR['posted_scope_string']);
 
 }
 
 // Skip page logging
-$skip_logging = true;
+if(!defined('SKIP_LOGGING')) {
+    define('SKIP_LOGGING', true);
+}
