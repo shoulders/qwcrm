@@ -98,7 +98,7 @@ if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
 ##########################################################################
 
 // QWcrm System Folders
-$smarty->assign('media_dir',                QW_MEDIA_DIR                   );      // set media directory
+$smarty->assign('media_dir',                QW_MEDIA_DIR                );      // set media directory
 
 // QWcrm Theme Directory Template Variables
 $smarty->assign('theme_dir',                THEME_DIR                   );      // set theme directory

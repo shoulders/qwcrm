@@ -73,10 +73,10 @@ require(INCLUDES_DIR.'system/error.php');
 // Load dependencies via composer
 require(VENDOR_DIR.'autoload.php');
 
-/*
+// Whoops Error Handler - Here so it can load ASAP
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();*/
+$whoops->register();
 
 // Load System Include
 require(INCLUDES_DIR.'system/include.php');
