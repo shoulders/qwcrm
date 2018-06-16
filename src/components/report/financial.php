@@ -62,6 +62,9 @@ if(isset($VAR['submit'])) {
     
     /* Revenue Calculations */
     
+    // Tax Type
+    $smarty->assign('tax_type', get_company_details('tax_type')                                        );
+    
     // Invoiced
     $invoice_sub_total          = sum_invoices_value('all', 'sub_total', $start_date, $end_date        );
     $invoice_discount_amount    = sum_invoices_value('all', 'discount_amount', $start_date, $end_date  );

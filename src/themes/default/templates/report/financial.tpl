@@ -297,7 +297,7 @@
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><b>{t}Tax{/t}:</b></td>
+                                                                    <td><b>{if $tax_type == 'vat'}{t}VAT{/t}{elseif $tax_type == 'sales'}{t}Sales Tax{/t}{else}{t}Sales Tax{/t} / {t}VAT{/t}{/if}:</b></td>                                                                    
                                                                     <td><font color="red"<b>{$currency_sym}{$invoice_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                 </tr>
                                                                 <tr>
