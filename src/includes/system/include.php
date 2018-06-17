@@ -142,8 +142,13 @@ function update_user_last_active($user_id = null) {
  * will force a URL redirect exactly how it was supplied 
  */
 
-function force_page($component, $page_tpl = null, $variables = null, $url_sef = 'auto', $url_protocol = 'auto', $method = 'post') {
+function force_page($component, $page_tpl = null, $variables = null, $method = 'auto', $url_sef = 'auto', $url_protocol = 'auto') {
     
+    /* Process Options */
+
+    // Set method to be used
+    if($method == null || $method == 'auto') { $method = 'post'; }    
+
     // Set URL SEF type to be used
     if ($url_sef == 'sef') { $makeSEF = true; }
     elseif ($url_sef == 'nonsef') { $makeSEF = false; }
@@ -154,7 +159,7 @@ function force_page($component, $page_tpl = null, $variables = null, $url_sef = 
     if ($url_protocol == 'https') { $protocol_domain_segment = 'https://'.QWCRM_DOMAIN; }
     elseif ($url_protocol == 'http') { $protocol_domain_segment = 'http://'.QWCRM_DOMAIN; }
     //else { $protocol_domain_segment = null; }                         // This makes relative links
-    else { $protocol_domain_segment = QWCRM_PROTOCOL.QWCRM_DOMAIN; }    // This makes absolute links using config settings
+    else { $protocol_domain_segment = QWCRM_PROTOCOL.QWCRM_DOMAIN; }    // This makes absolute links using define settings
     
     /* Standard URL Redirect */
     
@@ -333,7 +338,7 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
     } else {  
 
         // Load Error Page
-        force_page('core', 'error', $VAR, 'auto', 'auto');   // no referer unless loaded from link - could use host to check
+        force_page('core', 'error', $VAR);   // No referer unless loaded from clicked link
         
     }
     
@@ -745,7 +750,6 @@ function check_template_is_compatible() {
     
 }
 
-
 ############################################
 #   Parse XML file into an array           #
 ############################################
@@ -848,9 +852,9 @@ function decrypt($strString, $secret_key) {
     
 }
 
-###################################################################################
-#  Alternate encrytption routines - Not Used - might be for something (Untested)  #
-###################################################################################
+########################################################################
+#  Alternate encrytption routines - Not Used - might be for something  #  // Untested
+########################################################################
 
 /*
 function encrypt($strString, $secret_key) {
@@ -868,9 +872,9 @@ function encrypt($strString, $secret_key) {
 }
 */
 
-###################################################################################
-#  Alternate Decrytption routines - Not Used - might be for something (Untested)  #
-###################################################################################
+########################################################################
+#  Alternate Decrytption routines - Not Used - might be for something  #  // Untested
+########################################################################
 
 /*
 function decrypt($strString, $secret_key) {

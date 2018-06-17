@@ -879,7 +879,7 @@ function logout($silent = null)
         // Reload Homepage with message (default)
         
         // only $_GET will work because the session store is destroyed (this is good behaviour)
-        force_page('index.php', null, 'information_msg='._gettext("Logout successful."), 'auto', 'auto', 'get');
+        force_page('index.php', null, 'information_msg='._gettext("Logout successful."), 'get');
         
     }
 

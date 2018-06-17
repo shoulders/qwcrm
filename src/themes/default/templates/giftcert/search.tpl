@@ -73,9 +73,9 @@
                                                     <table>
                                                         <tr>
                                                             
-                                                            <!-- Left Buttons -->
+                                                            <!-- Left Side Buttons -->
                                                             <td>
-                                                                {if $previous_page_no}
+                                                                {if $previous_page_no && $display_giftcerts}
                                                                     <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
                                                                     <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
@@ -97,7 +97,7 @@
                                                             
                                                             <!-- Right Side Buttons --> 
                                                             <td>
-                                                                {if $next_page_no}
+                                                                {if $next_page_no && $display_giftcerts}
                                                                     <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
                                                                     <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}

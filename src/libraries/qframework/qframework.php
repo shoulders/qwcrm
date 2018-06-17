@@ -570,10 +570,10 @@ class QFactory {
     /**
      * Get a Smarty Object
      *
-     * @return  smary Object
+     * @return  smatry Object
      *
-     * @see     JDatabaseDriver
-     * @since   11.1
+     * @see     
+     * @since   
      */
     public static function getSmarty($newInstance = null)
     {
@@ -591,8 +591,8 @@ class QFactory {
      *
      * @return  Smarty Object
      *
-     * @see     JDatabaseDriver
-     * @since   11.1
+     * @see     
+     * @since   
      */
     protected static function createSmarty()
     {        

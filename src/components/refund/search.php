@@ -18,6 +18,10 @@ if(isset($VAR['submit'])) {
     $record = _gettext("A search of refunds has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
     write_record_to_activity_log($record);
     
+    // Redirect search so the variables are in the URL
+    unset($VAR['submit']);
+    force_page('refund', 'search', $VAR, 'get');
+    
 }
 
 // Build the page

@@ -195,7 +195,7 @@ if($VAR['stage'] == '7') {
         write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
         //$VAR['stage'] = '8';
         
-        force_page('user', 'login', 'setup=finished&information_msg='._gettext("The QWcrm installation process has completed successfully.").' '._gettext("Please login with the administrator account you have just created."), 'nonsef', 'auto', 'get');
+        force_page('user', 'login', 'setup=finished&information_msg='._gettext("The QWcrm installation process has completed successfully.").' '._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
     
     // load the page
     } else {
