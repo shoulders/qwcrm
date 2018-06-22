@@ -136,7 +136,7 @@ function insert_refund($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."refund_records SET
-            invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
+            invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
             type             =". $db->qstr( $VAR['type']                    ).",
@@ -146,7 +146,7 @@ function insert_refund($VAR) {
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
-            note            =". $db->qstr( $VAR['note']                   );
+            note             =". $db->qstr( $VAR['note']                    );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
@@ -218,12 +218,12 @@ function get_refund_types() {
 #     Update refund                 #
 #####################################
 
-function update_refund($refund_id, $VAR) {
+function update_refund($VAR) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."refund_records SET
-            invoice_id          =". $db->qstr( $VAR['invoice_id']           ).",
+            invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
             type             =". $db->qstr( $VAR['type']                    ).",
@@ -233,8 +233,8 @@ function update_refund($refund_id, $VAR) {
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
-            note            =". $db->qstr( $VAR['note']                   )."
-            WHERE refund_id  = ". $db->qstr( $refund_id                     );                        
+            note             =". $db->qstr( $VAR['note']                    )."
+            WHERE refund_id  =". $db->qstr( $VAR['refund_id']               );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));

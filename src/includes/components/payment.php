@@ -569,7 +569,6 @@ function check_payment_method_is_active($method) {
 
 function validate_payment_method_totals($invoice_id, $amount) {
     
-    $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
 
     // Has a zero amount been submitted, this is not allowed
@@ -595,7 +594,7 @@ function validate_payment_method_totals($invoice_id, $amount) {
 }
 
 #########################################
-#  Sum Payments Sub Total (ny inovice)  #
+#  Sum Invoice Payments Sub Total       #
 #########################################
 
 function payments_sub_total($invoice_id) {

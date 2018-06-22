@@ -254,7 +254,7 @@ function insert_workorder($customer_id, $scope, $description, $comment) {
             created_by      =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             scope           =". $db->qstr( $scope                               ).",
             description     =". $db->qstr( $description                         ).",            
-            comment        =". $db->qstr( $comment                              );
+            comment         =". $db->qstr( $comment                             );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the work order Record into the database."));
@@ -316,7 +316,7 @@ function insert_workorder_history_note($workorder_id = null, $note = '') {
 #    insert workorder note   #
 ##############################
 
-function insert_workorder_note($workorder_id, $note){
+function insert_workorder_note($workorder_id, $note) {
     
     $db = QFactory::getDbo();
     
@@ -365,7 +365,7 @@ function get_workorder_details($workorder_id = null, $item = null) {
     $db = QFactory::getDbo();
     
     // This covers invoice only
-    if(!$workorder_id){
+    if(!$workorder_id) {
         return;        
     }
 
@@ -1055,8 +1055,6 @@ function delete_workorder_note($workorder_note_id) {
 ################################
 
 function resolution_edit_status_check($workorder_id) {    
-    
-    $db = QFactory::getDbo();
     
     $wo_is_closed   = get_workorder_details($workorder_id, 'is_closed');
     $wo_status      = get_workorder_details($workorder_id, 'status');

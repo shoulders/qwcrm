@@ -28,8 +28,8 @@ if(isset($VAR['submit'])) {
         $smarty->assign('start_time',       $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );                
         $smarty->assign('end_date',         $VAR['end_date']                                                    );        
         $smarty->assign('end_time',         $VAR['EndTime']['Time_Hour'].":".$VAR['EndTime']['Time_Minute']     );
-        $smarty->assign('note',             $VAR['note']                                                       );        
-        $smarty->assign('active_employees', get_active_users('employees')                                  );                      
+        $smarty->assign('note',             $VAR['note']                                                        );        
+        $smarty->assign('active_employees', get_active_users('employees')                                       );                      
             
     } else {       
         

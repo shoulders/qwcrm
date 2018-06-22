@@ -361,7 +361,7 @@ function execute_sql_file_lines($sql_file) {
 }
 
 ############################################
-#  Write a record to the Setup Log         #    // cannot be turned off - install/migrate/upgrade
+#  Write a record to the Setup Log         #    // Cannot be turned off - install/migrate/upgrade
 ############################################
 
 function write_record_to_setup_log($setup_type, $record, $database_error = null, $sql_query = null) {
@@ -400,7 +400,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 #  Check the database connection works     #
 ############################################
 
-function check_database_connection($db_host, $db_user, $db_pass, $db_name) {
+function check_database_connection_details($db_host, $db_user, $db_pass, $db_name) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -532,10 +532,9 @@ function set_invoice_start_number($start_number) {
 
 function install_database() {
     
-    $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
     global $executed_sql_results;
-    global $setup_error_flag;    
+    global $setup_error_flag;  
     
     // Run the install.sql
     execute_sql_file(SETUP_DIR.'install/install.sql');
@@ -598,7 +597,6 @@ function install_database() {
 
 function migrate_database($qwcrm_prefix, $myitcrm_prefix) {
     
-    $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
     global $executed_sql_results;
     global $setup_error_flag;    
@@ -998,19 +996,19 @@ function migrate_database($qwcrm_prefix, $myitcrm_prefix) {
     /* Corrections */
     
     // Workorder
-    migate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix);
+    migrate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix);
     
     // Invoice
-    migate_database_correction_invoice($qwcrm_prefix, $myitcrm_prefix);
+    migrate_database_correction_invoice($qwcrm_prefix);
     
     // Giftcert
-    migate_database_correction_giftcert($qwcrm_prefix, $myitcrm_prefix);
+    migrate_database_correction_giftcert($qwcrm_prefix);
     
     // Schedule
-    migate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix);
+    migrate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix);
     
     // User
-    migate_database_correction_user($qwcrm_prefix, $myitcrm_prefix);
+    migrate_database_correction_user($qwcrm_prefix);
     
     /* Final stuff */
 
@@ -1064,13 +1062,13 @@ function migrate_database($qwcrm_prefix, $myitcrm_prefix) {
     
 }
 
-/* corrections */
+/* Corrections */
 
 ############################################
 #   Correct migrated workorder data        #
 ############################################
 
-function migate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
+function migrate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1196,7 +1194,7 @@ function migate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
 #   Correct migrated invoice data          #
 ############################################
 
-function migate_database_correction_invoice($qwcrm_prefix, $myitcrm_prefix) {
+function migrate_database_correction_invoice($qwcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1291,7 +1289,7 @@ function migate_database_correction_invoice($qwcrm_prefix, $myitcrm_prefix) {
 #   Correct migrated giftcert data         #
 ############################################
 
-function migate_database_correction_giftcert($qwcrm_prefix, $myitcrm_prefix) {
+function migrate_database_correction_giftcert($qwcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1359,7 +1357,7 @@ function migate_database_correction_giftcert($qwcrm_prefix, $myitcrm_prefix) {
 #   Correct migrated schedule data         #
 ############################################
 
-function migate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
+function migrate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1431,7 +1429,7 @@ function migate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
 #   Correct migrated user data             #
 ############################################
 
-function migate_database_correction_user($qwcrm_prefix, $myitcrm_prefix) {
+function migrate_database_correction_user($qwcrm_prefix, $myitcrm_prefix) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
@@ -1492,12 +1490,6 @@ function migate_database_correction_user($qwcrm_prefix, $myitcrm_prefix) {
 ##################################
 #  Get MyITCRM company details   #
 ##################################
-
-/*
- * This combined function allows you to pull any of the company information individually
- * or return them all as an array
- * supply the required field name or all to return all of them as an array
- */
 
 function get_myitcrm_company_details($item = null) {
     
@@ -1768,8 +1760,6 @@ function check_myitcrm_database_connection($myitcrm_prefix) {
 ##############################################
 
 function get_merged_company_details() {
-    
-    $db = QFactory::getDbo();
     
     $qwcrm_company_details              = get_company_details();
     $myitcrm_company_details            = get_myitcrm_company_details();

@@ -113,20 +113,23 @@ require(INCLUDES_DIR.'system/buildpage.php');
 #         Initialise QWCRM                     #
 ################################################
 
-// Load the variables
-load_variables($VAR);
+// Load the system variables
+load_system_variables($VAR);
 
 // Start the QFramework 
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
     $app = new QFactory;
 }
 
+// Set the User's smarty variables
+set_user_smarty_variables();
+
 ################################################
 #         Build Page and Content               #
 ################################################
 
 // Get the page controller - no user has been set to calculate what page to load
-$page_controller = get_page_controller($VAR, $employee_id, $customer_id, $workorder_id, $invoice_id);
+$page_controller = get_page_controller($VAR);
 
 // Build the page
 $BuildPage = get_page_content($page_controller, $startTime, $VAR);

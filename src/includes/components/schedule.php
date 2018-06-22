@@ -180,7 +180,7 @@ function display_schedules($order_by = 'schedule_id', $direction = 'DESC', $use_
 #  Insert schedule                   #
 ######################################
 
-function insert_schedule($start_date, $StartTime, $end_date, $EndTime, $note, $employee_id, $customer_id, $workorder_id) {
+function insert_schedule($VAR) {
     
     $db = QFactory::getDbo();
 
@@ -189,54 +189,54 @@ function insert_schedule($start_date, $StartTime, $end_date, $EndTime, $note, $e
     //$end_timestamp   = datetime_to_timestamp($end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
-    $start_timestamp = datetime_to_timestamp($start_date, $StartTime['Time_Hour'], $StartTime['Time_Minute'], '0', '24');
-    $end_timestamp   = datetime_to_timestamp($end_date, $EndTime['Time_Hour'], $EndTime['Time_Minute'], '0', '24');
+    $start_timestamp = datetime_to_timestamp($VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
+    $end_timestamp   = datetime_to_timestamp($VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
     
     // Corrects the extra time segment issue
     $end_timestamp -= 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($start_date, $start_timestamp, $end_timestamp, $employee_id)) {return false;}        
+    if(!validate_schedule_times($VAR['start_date'], $start_timestamp, $end_timestamp, $VAR['employee_id'])) {return false;}        
 
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."schedule_records SET
-            employee_id     =". $db->qstr( $employee_id     ).",
-            customer_id     =". $db->qstr( $customer_id     ).",   
-            workorder_id    =". $db->qstr( $workorder_id    ).",
-            start_time      =". $db->qstr( $start_timestamp ).",
-            end_time        =". $db->qstr( $end_timestamp   ).",            
-            note            =". $db->qstr( $note            );            
+            employee_id     =". $db->qstr( $VAR['employee_id']      ).",
+            customer_id     =". $db->qstr( $VAR['customer_id']      ).",   
+            workorder_id    =". $db->qstr( $VAR['workorder_id']     ).",
+            start_time      =". $db->qstr( $start_timestamp         ).",
+            end_time        =". $db->qstr( $end_timestamp           ).",            
+            note            =". $db->qstr( $VAR['note']             );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
     } else {
         
         // Get work order details
-        $workorder_details = get_workorder_details($workorder_id);
+        $workorder_details = get_workorder_details($VAR['workorder_id']);
         
         // Get the new Schedule ID
         $schedule_id = $db->Insert_ID();
         
         // Assign the work order to the scheduled employee (if not already)
-        if($employee_id != $workorder_details['employee_id']) {
-            assign_workorder_to_employee($workorder_id, $employee_id);
+        if($VAR['employee_id'] != $workorder_details['employee_id']) {
+            assign_workorder_to_employee($VAR['workorder_id'], $VAR['employee_id']);
         }
     
         // Change the Workorders Status to scheduled (if not already)
         if($workorder_details['status'] != 'scheduled') {
-            update_workorder_status($workorder_id, 'scheduled');
+            update_workorder_status($VAR['workorder_id'], 'scheduled');
         }
         
         // Insert Work Order History Note
-        insert_workorder_history_note($workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($VAR['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$workorder_id.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id);
+        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$VAR['workorder_id'].' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id']);
         
         // Update last active record
-        update_workorder_last_active($workorder_id);
-        update_customer_last_active($customer_id);
+        update_workorder_last_active($VAR['workorder_id']);
+        update_customer_last_active($VAR['customer_id']);
     
         return true;
         
@@ -310,7 +310,7 @@ function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start
 #      Update Schedule               #
 ######################################
 
-function update_schedule($start_date, $StartTime, $end_date, $EndTime, $note, $schedule_id, $employee_id, $customer_id, $workorder_id) {
+function update_schedule($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -319,39 +319,39 @@ function update_schedule($start_date, $StartTime, $end_date, $EndTime, $note, $s
     //$end_timestamp   = datetime_to_timestamp($end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
     // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
-    $start_timestamp = datetime_to_timestamp($start_date, $StartTime['Time_Hour'], $StartTime['Time_Minute'], '0', '24');
-    $end_timestamp   = datetime_to_timestamp($end_date, $EndTime['Time_Hour'], $EndTime['Time_Minute'], '0', '24');
+    $start_timestamp = datetime_to_timestamp($VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
+    $end_timestamp   = datetime_to_timestamp($VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
     
     // Corrects the extra time segment issue
     $end_timestamp -= 1;
     
     // Validate the submitted dates
-    if(!validate_schedule_times($start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id)) { return false; }        
+    if(!validate_schedule_times($VAR['start_date'], $start_timestamp, $end_timestamp, $VAR['employee_id'], $VAR['schedule_id'])) { return false; }        
     
     $sql = "UPDATE ".PRFX."schedule_records SET
-        schedule_id         =". $db->qstr( $schedule_id         ).",
-        employee_id         =". $db->qstr( $employee_id         ).",
-        customer_id         =". $db->qstr( $customer_id         ).",
-        workorder_id        =". $db->qstr( $workorder_id        ).",   
-        start_time          =". $db->qstr( $start_timestamp     ).",
-        end_time            =". $db->qstr( $end_timestamp       ).",                
-        note                =". $db->qstr( $note                )."
-        WHERE schedule_id   =". $db->qstr( $schedule_id         );
+        schedule_id         =". $db->qstr( $VAR['schedule_id']      ).",
+        employee_id         =". $db->qstr( $VAR['employee_id']      ).",
+        customer_id         =". $db->qstr( $VAR['customer_id']      ).",
+        workorder_id        =". $db->qstr( $VAR['workorder_id']     ).",   
+        start_time          =". $db->qstr( $start_timestamp         ).",
+        end_time            =". $db->qstr( $end_timestamp           ).",                
+        note                =". $db->qstr( $VAR['note']             )."
+        WHERE schedule_id   =". $db->qstr( $VAR['schedule_id']      );
    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
     } else {       
          
         // Insert Work Order History Note
-        insert_workorder_history_note($workorder_id, _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($VAR['workorder_id'], _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id);
+        $record = _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id']);
         
         // Update last active record
-        update_workorder_last_active($workorder_id);
-        update_customer_last_active($customer_id);        
+        update_workorder_last_active($VAR['workorder_id']);
+        update_customer_last_active($VAR['customer_id']);        
         
         return true;
         
@@ -382,7 +382,7 @@ function delete_schedule($schedule_id) {
     } else {
         
         // If there are no schedules left for this workorder
-        if(count_workorder_schedule_items($schedule_details['workorder_id']) == 0) {
+        if(count_schedules($schedule_details['workorder_id']) == 0) {
             
             // if the workorder status is 'scheduled', change the status to 'assigned'
             if(get_workorder_details($schedule_details['workorder_id'], 'status') == 'scheduled') {
@@ -433,22 +433,19 @@ function ics_header_settings() {
 
 function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
     
-    $db = QFactory::getDbo();
-    
     // Get the schedule information
     $schedule_details   = get_schedule_details($schedule_id);
-    $workorder          = get_workorder_details($schedule_details['workorder_id']);
-    $customer           = get_customer_details($workorder['customer_id']);
+    $customer_details   = get_customer_details($schedule_details['customer_id']);
     
     $start_datetime     = timestamp_to_ics_datetime($schedule_details['start_time']);
     $end_datetime       = timestamp_to_ics_datetime($schedule_details['end_time']);
     $current_datetime   = timestamp_to_ics_datetime(time());
 
-    $summary            = prepare_ics_strings('SUMMARY', $customer['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
-    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $schedule_details, $customer, $workorder));
-    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $schedule_details, $customer, $workorder));
+    $summary            = prepare_ics_strings('SUMMARY', $customer_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
+    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $schedule_details, $schedule_details['customer_id'], $schedule_details['workorder_id']));
+    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $schedule_details, $schedule_details['customer_id'], $schedule_details['workorder_id']));
     
-    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']));
+    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer_details['address'], $customer_details['city'], $customer_details['state'], $customer_details['zip']));
     $uniqid             = 'QWcrm-'.$schedule_details['schedule_id'].'-'.$schedule_details['start_time'];    
   
     // Build the Schedule .ics content
@@ -481,8 +478,6 @@ function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
 #########################################################################
 
 function build_ics_schedule_day($employee_id, $start_year, $start_month, $start_day) {
-    
-    $db = QFactory::getDbo();
     
     // fetch all schdule items for this setup
     $schedule_multi_ics = ics_header_settings();
@@ -535,27 +530,30 @@ function build_html_adddress($address, $city, $state, $postcode){
 #    Build description for ics                   #
 ##################################################
 
-function build_ics_description($type, $single_schedule, $customer, $workorder) {     
+function build_ics_description($type, $single_schedule, $customer_id, $workorder_id) {
+    
+    $workorder_details  = get_workorder_details($workorder_id);
+    $customer_details   = get_customer_details($customer_id);
     
     if($type == 'textarea') {      
 
         // Workorder and Schedule Information
         $description =  _gettext("Scope").': \n\n'.
-                        $workorder['scope'].'\n\n'.
+                        $workorder_details['scope'].'\n\n'.
                         _gettext("Description").': \n\n'.
-                        html_to_textarea($workorder['description']).'\n\n'.
+                        html_to_textarea($workorder_details['description']).'\n\n'.
                         _gettext("Schedule Note").': \n\n'.
                         html_to_textarea($single_schedule['note']);
 
         // Contact Information
         $description .= _gettext("Contact Information")  .''.'\n\n'.
-                        _gettext("Company")              .': '   .$customer['display_name'].'\n\n'.
-                        _gettext("Contact")              .': '   .$customer['first_name'].' '.$customer['last_name'].'\n\n'.
-                        _gettext("Phone")                .': '   .$customer['primary_phone'].'\n\n'.
-                        _gettext("Mobile")               .': '   .$customer['mobile_phone'].'\n\n'.
-                        _gettext("Website")              .': '   .$customer['website'].'\n\n'.
-                        _gettext("Email")                .': '   .$customer['email'].'\n\n'.
-                        _gettext("Address")              .': '   .build_single_line_address($customer['address'], $customer['city'], $customer['state'], $customer['zip']).'\n\n';                        
+                        _gettext("Company")              .': '   .$customer_details['display_name'].'\n\n'.
+                        _gettext("Contact")              .': '   .$customer_details['first_name'].' '.$customer_details['last_name'].'\n\n'.
+                        _gettext("Phone")                .': '   .$customer_details['primary_phone'].'\n\n'.
+                        _gettext("Mobile")               .': '   .$customer_details['mobile_phone'].'\n\n'.
+                        _gettext("Website")              .': '   .$customer_details['website'].'\n\n'.
+                        _gettext("Email")                .': '   .$customer_details['email'].'\n\n'.
+                        _gettext("Address")              .': '   .build_single_line_address($customer_details['address'], $customer_details['city'], $customer_details['state'], $customer_details['zip']).'\n\n';                        
     
     }
     
@@ -572,24 +570,24 @@ function build_ics_description($type, $single_schedule, $customer, $workorder) {
     
         // Workorder and Schedule Information
         $description .= '<p><strong>'._gettext("Scope").': </strong></p>'.
-                        '<p>'.$workorder['scope'].'</p>'.
+                        '<p>'.$workorder_details['scope'].'</p>'.
                         '<p><strong>'._gettext("Description").': </strong></p>'.
-                        '<div>'.$workorder['description'].'</div>'.
+                        '<div>'.$workorder_details['description'].'</div>'.
                         '<p><strong>'._gettext("Schedule Note").': </strong></p>'.
                         '<div>'.$single_schedule['note'].'</div>';        
 
         // Contact Information
         $description .= '<p><strong>'._gettext("Contact Information").'</strong></p>'.
                         '<p>'.
-                        '<strong>'._gettext("Company")   .':</strong> '  .$customer['display_name'].'<br>'.
-                        '<strong>'._gettext("Contact")   .':</strong> '  .$customer['first_name'].' '.$customer['last_name'].'<br>'.              
-                        '<strong>'._gettext("Phone")     .':</strong> '  .$customer['primary_phone'].'<br>'.
-                        '<strong>'._gettext("Mobile")    .':</strong> '  .$customer['mobile_phone'].'<br>'.
-                        '<strong>'._gettext("Website")   .':</strong> '  .$customer['website'].
-                        '<strong>'._gettext("Email")     .':</strong> '  .$customer['email'].'<br>'.                        
+                        '<strong>'._gettext("Company")   .':</strong> '  .$customer_details['display_name'].'<br>'.
+                        '<strong>'._gettext("Contact")   .':</strong> '  .$customer_details['first_name'].' '.$customer_details['last_name'].'<br>'.              
+                        '<strong>'._gettext("Phone")     .':</strong> '  .$customer_details['primary_phone'].'<br>'.
+                        '<strong>'._gettext("Mobile")    .':</strong> '  .$customer_details['mobile_phone'].'<br>'.
+                        '<strong>'._gettext("Website")   .':</strong> '  .$customer_details['website'].
+                        '<strong>'._gettext("Email")     .':</strong> '  .$customer_details['email'].'<br>'.                        
                         '</p>'.                
                         '<p><strong>'._gettext("Contact Information").'Address: </strong></p>'.
-                        build_html_adddress($customer['address'], $customer['city'], $customer['state'], $customer['zip']);
+                        build_html_adddress($customer_details['address'], $customer_details['city'], $customer_details['state'], $customer_details['zip']);
         
         // Close HTML Wrapper
         $description .= '</BODY>\n'.
@@ -956,28 +954,5 @@ function validate_schedule_times($start_date, $start_timestamp, $end_timestamp, 
     }
     
     return true;
-    
-}
-
-############################################
-#   count schedule items for a workorder   #
-############################################
-
-function count_workorder_schedule_items($workorder_id) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."schedule_records
-            WHERE workorder_id=".$db->qstr($workorder_id);         
-            
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
-        
-    } else {      
-        
-        return  $rs->fields['count'];
-        
-    }
     
 }

@@ -18,7 +18,7 @@ if($VAR['customer_id'] == '') {
 if(isset($VAR['submit'])) {    
         
     // Update the Customer's Details
-    update_customer($VAR['customer_id'], $VAR);
+    update_customer($VAR);
     
     // Load the customer's details page
     force_page('customer', 'details&customer_id='.$VAR['customer_id'], 'information_msg='._gettext("The Customer's information was updated."));

@@ -276,26 +276,26 @@ function insert_invoice($customer_id, $workorder_id, $discount_rate) {
 #     Insert Labour Items           #
 #####################################
 
-function insert_labour_items($invoice_id, $description, $amount, $qty) {
+function insert_labour_items($invoice_id, $descriptions, $amounts, $qtys) {
     
     $db = QFactory::getDbo();
     
     // Insert Labour Items into database (if any)
-    if($qty > 0 ) {
+    if($qtys > 0 ) {
         
         $i = 1;
         
         $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, description, amount, qty, sub_total) VALUES ";
         
-        foreach($qty as $key) {
+        foreach($qtys as $key) {
             
             $sql .="(".
                     
-                    $db->qstr( $invoice_id              ).",".                    
-                    $db->qstr( $description[$i]         ).",".
-                    $db->qstr( $amount[$i]              ).",".
-                    $db->qstr( $qty[$i]                 ).",".
-                    $db->qstr( $qty[$i] * $amount[$i]   ).
+                    $db->qstr( $invoice_id               ).",".                    
+                    $db->qstr( $descriptions[$i]         ).",".
+                    $db->qstr( $amounts[$i]              ).",".
+                    $db->qstr( $qtys[$i]                 ).",".
+                    $db->qstr( $qtys[$i] * $amounts[$i]  ).
                     
                     "),";
             
@@ -318,26 +318,26 @@ function insert_labour_items($invoice_id, $description, $amount, $qty) {
 #     Insert Parts Items            #
 #####################################
 
-function insert_parts_items($invoice_id, $description, $amount, $qty) {
+function insert_parts_items($invoice_id, $descriptions, $amounts, $qtys) {
     
     $db = QFactory::getDbo();
     
     // Insert Parts Items into database (if any)
-    if($qty > 0 ) {
+    if($qtys > 0 ) {
         
         $i = 1;
         
         $sql = "INSERT INTO ".PRFX."invoice_parts (invoice_id, description, amount, qty, sub_total) VALUES ";
         
-        foreach($qty as $key) {
+        foreach($qtys as $key) {
             
             $sql .="(".
                     
-                    $db->qstr( $invoice_id              ).",".                    
-                    $db->qstr( $description[$i]         ).",".                  
-                    $db->qstr( $amount[$i]              ).",".
-                    $db->qstr( $qty[$i]                 ).",".
-                    $db->qstr( $qty[$i] * $amount[$i]   ).
+                    $db->qstr( $invoice_id               ).",".                    
+                    $db->qstr( $descriptions[$i]         ).",".                  
+                    $db->qstr( $amounts[$i]              ).",".
+                    $db->qstr( $qtys[$i]                 ).",".
+                    $db->qstr( $qtys[$i] * $amounts[$i]  ).
                     
                     "),";
             
@@ -1028,7 +1028,7 @@ function recalculate_invoice($invoice_id) {
             net_amount          =". $db->qstr( $net_amount              ).",
             tax_amount          =". $db->qstr( $tax_amount              ).",
             gross_amount        =". $db->qstr( $gross_amount            ).",
-            paid_amount         =". $db->qstr( $payments_sub_total  ).",
+            paid_amount         =". $db->qstr( $payments_sub_total      ).",
             balance             =". $db->qstr( $balance                 )."
             WHERE invoice_id    =". $db->qstr( $invoice_id              );
 
@@ -1210,8 +1210,6 @@ function export_invoice_prefill_items_csv() {
 
  function check_invoice_status_can_be_changed($invoice_id) {
      
-    $db = QFactory::getDbo();
- 
     // Get the invoice details
     $invoice_details = get_invoice_details($invoice_id);
     
@@ -1243,8 +1241,6 @@ function export_invoice_prefill_items_csv() {
 ###############################################################
 
 function check_invoice_can_be_deleted($invoice_id) {
-    
-    $db = QFactory::getDbo();
     
     // Get the invoice details
     $invoice_details = get_invoice_details($invoice_id);

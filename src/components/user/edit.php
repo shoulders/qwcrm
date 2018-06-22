@@ -43,7 +43,7 @@ if(isset($VAR['submit'])) {
     } else {    
             
         // Insert user record
-        update_user($VAR['user_id'], $VAR);
+        update_user($VAR);
 
         // Redirect to the new users's details page
         force_page('user', 'details&user_id='.$VAR['user_id']);

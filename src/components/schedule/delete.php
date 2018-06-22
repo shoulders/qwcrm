@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/customer.php');
+require(INCLUDES_DIR.'components/report.php');
 require(INCLUDES_DIR.'components/schedule.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
@@ -22,7 +23,7 @@ if($VAR['schedule_id'] == '') {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
 }
 
-// get workorder_id
+// Get workorder_id before deleting the record
 $VAR['workorder_id'] = get_schedule_details($VAR['schedule_id'], 'workorder_id');
 
 // Delete the schedule

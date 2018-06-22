@@ -236,6 +236,39 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
     
 }
 
+/** Schedules **/
+
+############################################
+#    Count schedule items                  #  // Currently only used in schedule delete check
+############################################
+
+function count_schedules($workorder_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."schedule_records\n";  
+
+    // Filter by workorder_id
+    if($workorder_id) {
+        $whereTheseRecords .= " AND workorder_id=".$db->qstr($workorder_id);
+    }    
+    
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."schedule_records
+            ".$whereTheseRecords;   
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count schedule items for the specified Work Order."));
+        
+    } else {      
+        
+        return  $rs->fields['count'];
+        
+    }
+    
+}
+
 /** Invoices **/
 
 #####################################
@@ -573,8 +606,6 @@ function sum_parts_value($value_name, $start_date, $end_date) {
 #     Count Expenses                    #  // Currently only used in invoice delete check
 #########################################
 
-//function count_expenses($status, $user_id = null, $start_date = null, $end_date = null) {
-
 function count_expenses($invoice_id = null, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
@@ -633,7 +664,7 @@ function sum_expenses_value($value_name, $start_date, $end_date) {
 /** Refunds **/
 
 #########################################
-#     Count Refunds                   #  // Currently only used in invoice delete check
+#     Count Refunds                     #  // Currently only used in invoice delete check
 #########################################
 
 function count_refunds($invoice_id = null, $start_date = null, $end_date = null) {

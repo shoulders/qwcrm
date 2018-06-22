@@ -156,7 +156,7 @@ function insert_giftcert($customer_id, $date_expires, $amount, $active, $note) {
             date_expires    =". $db->qstr( $date_expires                        ).",                                     
             amount          =". $db->qstr( $amount                              ).",
             active          =". $db->qstr( $active                              ).",                
-            note           =". $db->qstr( $note                               );
+            note            =". $db->qstr( $note                                );
 
     if(!$db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the Gift Certificate into the database."));
@@ -244,7 +244,7 @@ function update_giftcert($giftcert_id, $date_expires, $amount, $active, $note) {
             date_expires    =". $db->qstr( $date_expires    ).",
             amount          =". $db->qstr( $amount          ).",
             active          =". $db->qstr( $active          ).",                
-            note           =". $db->qstr( $note           )."
+            note            =". $db->qstr( $note            )."
             WHERE giftcert_id =".$giftcert_id;
 
     if(!$db->execute($sql)) {
@@ -279,7 +279,7 @@ function delete_giftcert($giftcert_id) {
     
     $db = QFactory::getDbo();
     
-    // update and set non-active as you cannot really delete an issues gift certificate
+    // update and set non-active as you cannot really delete an issued Gift Certificate
     
     $sql = "UPDATE ".PRFX."giftcert_records SET active='0' WHERE giftcert_id=".$db->qstr($giftcert_id);
 
@@ -311,8 +311,6 @@ function delete_giftcert($giftcert_id) {
 
 function validate_giftcert_for_payment($giftcert_id) {
     
-    $db = QFactory::getDbo();
-
     // check is active
     if(get_giftcert_details($giftcert_id, 'active') != 1) {
         //force_page('core','error', 'error_msg='._gettext("This gift certificate is not active"));
@@ -337,8 +335,6 @@ function validate_giftcert_for_payment($giftcert_id) {
 
 function check_giftcert_redeemed($giftcert_id) {
     
-    $db = QFactory::getDbo();
-
     // check if redeemed
     if(get_giftcert_details($giftcert_id, 'is_redeemed') == 1) {
         //force_page('core','error', 'error_msg=This gift certificate has been redeemed');

@@ -89,18 +89,17 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
     
 }
 
-###################################################################
-#  Check all page links for permission for the user to view them  #
-###################################################################
+#######################################################
+#  Replace all unauthorised page links with href="#"  #
+#######################################################
 
-// Swap out the link in href="" for a hash
 function page_links_acl_modify(&$BuildPage) {
     
     $BuildPage = preg_replace_callback('/(["\'])(index\.php.*)(["\'])/U',
         function($matches) {
         
             // Check to see if user is allowed to use the link
-            if(link_permission($matches[2])) { 
+            if(check_link_permission($matches[2])) { 
                 
                 // Return un-modified link
                 return $matches[0];
@@ -115,7 +114,10 @@ function page_links_acl_modify(&$BuildPage) {
 
 }
 
-// Remove links altogether
+#######################################
+#  Remove all unauthorised page links #
+#######################################
+
 function page_links_acl_removal(&$BuildPage) {
     
     // This allows for <a>...</a> being split over several lines. The opening <a .....> must be on one line - This is also optimized with atomic groups
@@ -123,7 +125,7 @@ function page_links_acl_removal(&$BuildPage) {
         function($matches) {
             
             // Check to see if user is allowed to use the link
-            if(link_permission($matches[1])) { 
+            if(check_link_permission($matches[1])) { 
                 
                 // Return un-modified link
                 return $matches[0];
@@ -138,7 +140,30 @@ function page_links_acl_removal(&$BuildPage) {
        
 }
 
-// Remove unpopulated main menu groups
+############################################################
+#  Does the current user have permission to see this link  #
+############################################################
+
+function check_link_permission($url) {
+    
+    // Get routing variables from URL
+    $url_routing = get_routing_variables_from_url($url);
+    
+    // Check to see if user is allowed to use the asset
+    if(check_page_acl($url_routing['component'], $url_routing['page_tpl'])) {
+        
+        return true;
+        
+    } else {
+    
+        return false;
+    }
+}
+
+#########################################
+#  Remove unpopulated SD Menu groups    #
+#########################################
+
 function page_links_sdmenu_cleanup(&$BuildPage) {
     
     $BuildPage = preg_replace_callback('/<div class="menugroup">.*<\/div>/Us',
@@ -160,26 +185,6 @@ function page_links_sdmenu_cleanup(&$BuildPage) {
     
 }
 
-############################################################
-#  Does the current user have permission to see this link  #
-############################################################
-
-function link_permission($url) {
-    
-    // Get routing variables from URL
-    $url_routing = get_routing_variables_from_url($url);
-    
-    // Check to see if user is allowed to use the asset
-    if(check_page_acl($url_routing['component'], $url_routing['page_tpl'])) {
-        
-        return true;
-        
-    } else {
-    
-        return false;
-    }
-}
-
 ###########################################
 #  Change all internal page links to SEF  #
 ###########################################
@@ -194,4 +199,171 @@ function page_links_to_sef(&$BuildPage) {
 
         }, $BuildPage);
     
+}
+
+#################################################################
+#  Verify User's authorisation for a specific page / operation  #
+#################################################################
+
+function check_page_acl($component, $page_tpl, $user = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get the current user unless a user (object) has been passed
+    if($user == null) { $user = QFactory::getUser(); }
+    
+    // If installing
+    if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
+    
+    // Usergroup Error catching - you cannot use normal error logging as it will cause a loop (should not be needed now)
+    if($user->login_usergroup_id == '') {
+        die(_gettext("The ACL has been supplied with no usergroup. QWcrm will now die."));                
+    }
+
+    // Get user's Group Name by login_usergroup_id
+    $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
+            FROM ".PRFX."user_usergroups
+            WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
+    
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
+    } else {
+        $usergroup_display_name = $rs->fields['usergroup_display_name'];
+    } 
+    
+    // Build the page name for the ACL lookup
+    $page_name = $component.':'.$page_tpl;
+    
+    /* Check Page to see if we have access */
+    
+    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
+
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
+    } else {
+        
+        $acl = $rs->fields['acl'];
+        
+        // Add if guest (8) rules here if there are errors
+        
+        if($acl != 1) {
+            
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+        
+    }
+    
+}
+
+############################################
+#      Set Page Header and Meta Data       #
+############################################
+
+function set_page_header_and_meta_data($component, $page_tpl) {
+    
+    $smarty = QFactory::getSmarty();
+    
+    // Page Title
+    $smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
+    
+    // Meta Tags
+    $smarty->assign('meta_description', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
+    $smarty->assign('meta_keywords',    _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
+    
+    return;
+    
+}
+
+###########################################
+#  Compress page output and send headers  #
+###########################################
+
+/**
+ * Checks the accept encoding of the browser and compresses the data before
+ * sending it to the client if possible.
+ *
+ * @return  void
+ *
+ * @since   11.3
+ *
+ * From {Joomla}libraries/joomla/application/web.php
+ */
+
+/**
+ * @package     Joomla.Platform
+ * @subpackage  Application
+ *
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2017 - Jon Brown / Quantumwarp.com
+ * @license     GNU General Public License version 2 or later; see LICENSE
+ */
+
+function compress_page_output(&$BuildPage)
+{
+    // Supported compression encodings.
+    $supported = array(
+        'x-gzip'    => 'gz',
+        'gzip'      => 'gz',
+        'deflate'   => 'deflate'
+    );
+
+    // Get the supported encoding.
+    $encodings = array_intersect(browserSupportedCompressionEncodings(), array_keys($supported));
+
+    // If no supported encoding is detected do nothing and return.
+    if (empty($encodings))
+    {
+        return;
+    }
+
+    // Verify that headers have not yet been sent, and that our connection is still alive.
+    if (headers_sent() || (connection_status() !== CONNECTION_NORMAL))
+    {
+        return;
+    }
+
+    // Iterate through the encodings and attempt to compress the data using any found supported encodings.
+    foreach ($encodings as $encoding)
+    {
+        if (($supported[$encoding] == 'gz') || ($supported[$encoding] == 'deflate'))
+        {
+            // Verify that the server supports gzip compression before we attempt to gzip encode the data.            
+            if (!extension_loaded('zlib') || ini_get('zlib.output_compression'))
+            {
+                continue;
+            }           
+
+            // Attempt to gzip encode the page with an optimal level 4.            
+            $gzBuildPage = gzencode($BuildPage, 4, ($supported[$encoding] == 'gz') ? FORCE_GZIP : FORCE_DEFLATE);
+
+            // If there was a problem encoding the data just try the next encoding scheme.            
+            if ($gzBuildPage === false)
+            {
+                continue;
+            }            
+
+            // Set the encoding headers.
+            header("Content-Encoding: $encoding");
+
+            // Replace the output with the encoded data.            
+            $BuildPage = $gzBuildPage;
+            return;
+            
+        }
+    }
+}
+
+####################################################################
+#  Get the supported compression algorithms in the client browser  #
+####################################################################
+
+function browserSupportedCompressionEncodings() {
+        
+    return array_map('trim', (array) explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']));
+
 }

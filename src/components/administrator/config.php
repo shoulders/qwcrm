@@ -73,7 +73,7 @@ if($VAR['submit'] == 'update') {
 } else {
 
     // No data submitted so just load the current config settings
-    $smarty->assign('qwcrm_config', get_qwcrm_config() );
+    $smarty->assign('qwcrm_config', get_qwcrm_config_from_file() );
 
 }
 

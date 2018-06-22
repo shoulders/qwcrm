@@ -20,7 +20,7 @@ if($VAR['refund_id'] == '') {
 if(isset($VAR['submit'])) {    
         
     // Update the refund in the database
-    update_refund($VAR['refund_id'], $VAR);
+    update_refund($VAR);
     
     // load details page
     force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'information_msg='._gettext("Refund updated successfully.")); 

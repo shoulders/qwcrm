@@ -313,7 +313,7 @@ function get_customer_types() {
 #    Update Customer                #
 #####################################
 
-function update_customer($customer_id, $VAR) {
+function update_customer($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -335,8 +335,8 @@ function update_customer($customer_id, $VAR) {
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
-            note           =". $db->qstr( $VAR['note']            )."
-            WHERE customer_id   =". $db->qstr( $customer_id         );
+            note            =". $db->qstr( $VAR['note']             )."
+            WHERE customer_id  =". $db->qstr( $VAR['customer_id']   );
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Customer's details."));
@@ -551,8 +551,6 @@ function check_customer_display_name_exists($display_name) {
 #####################################
 
 function build_googlemap_directions_string($customer_id, $employee_id) {
-    
-    $db = QFactory::getDbo();
     
     $company_details    = get_company_details();
     $customer_details   = get_customer_details($customer_id);

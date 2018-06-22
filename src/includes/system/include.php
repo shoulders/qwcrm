@@ -76,13 +76,13 @@ function get_qwcrm_database_version_number() {
 }
 
 ##########################
-#  Get company details   #
+#  Get Company details   #
 ##########################
 
 /*
  * This combined function allows you to pull any of the company information individually
  * or return them all as an array
- * supply the required field name or all to return all of them as an array
+ * supply the required field name for a single item or all for all items as an array.
  */
 
 function get_company_details($item = null) {
@@ -111,7 +111,6 @@ function get_company_details($item = null) {
 
 /* Update Functions */
 
-
 #######################################
 #    Update User's Last Active Date   #
 #######################################
@@ -134,7 +133,7 @@ function update_user_last_active($user_id = null) {
 /* Other Functions */
 
 #####################################
-#   force_page - Page Redirector    #  // can send variables as a get string or variable
+#   force_page - Page Redirector    #  // Can send variables as a GET string or POST variables
 #####################################
 
 /*
@@ -572,29 +571,6 @@ function prepare_error_data($type, $data = null) {
     
 }
 
-############################################
-#      Set Page Header and Meta Data       #
-############################################
-
-/*
- * This does cause these translations to be loaded/assigned twice but allows me to use 1 file language instead of 2
- */
-
-function set_page_header_and_meta_data($component, $page_tpl) {
-    
-    $smarty = QFactory::getSmarty();
-    
-    // Page Title
-    $smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
-    
-    // Meta Tags
-    $smarty->assign('meta_description', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
-    $smarty->assign('meta_keywords',    _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
-    
-    return;
-    
-}
-
 ##########################################################
 #  Verify QWcrm install state and set routing as needed  #
 ##########################################################
@@ -811,133 +787,7 @@ function parse_xml_file_into_array($file) {
     
 }
 
-/* Encryption */
-
-####################################################################
-#  Encryption Routine using the secret key from configuration.php  #  // not sure this is used anywhere
-####################################################################
-
-function encrypt($strString, $secret_key) {
-    
-    $deresult = '';
-    
-    for($i=0; $i<strlen($strString); $i++) {
-        $char       =   substr($strString, $i, 1);
-        $keychar    =   substr($secret_key, ($i % strlen($secret_key))-1, 1);
-        $char       =   chr(ord($char)+ord($keychar));
-        $deresult  .=   $char;
-    }    
-    
-    return base64_encode($deresult);
-    
-}
-
-####################################################################
-#  Deryption Routine using the secret key from configuration.php   # // not sure this is used anywhere
-####################################################################
-
-function decrypt($strString, $secret_key) {
-     
-    $deresult = '';
-    base64_decode($strString);
-    
-    for($i=0; $i<strlen($strString); $i++) {
-        $char       =   substr($strString, $i, 1);
-        $keychar    =   substr($secret_key, ($i % strlen($secret_key))-1, 1);
-        $char       =   chr(ord($char)-ord($keychar));
-        $deresult  .=   $char;
-    }
-    
-    return $deresult;
-    
-}
-
-########################################################################
-#  Alternate encrytption routines - Not Used - might be for something  #  // Untested
-########################################################################
-
-/*
-function encrypt($strString, $secret_key) {
-
-	if ($strString == '') {
-            return $strString;
-	}
-        
-	$iv         = mcrypt_create_iv (mcrypt_get_iv_size (MCRYPT_BLOWFISH, MCRYPT_MODE_ECB), MCRYPT_RAND);
-	$enString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secret_key, $strString, MCRYPT_ENCRYPT, $iv);
-	$enString   = bin2hex($enString);
-
-	return ($enString);
-	
-}
-*/
-
-########################################################################
-#  Alternate Decrytption routines - Not Used - might be for something  #  // Untested
-########################################################################
-
-/*
-function decrypt($strString, $secret_key) {
-	
-	if ($strString == '') {
-            return $strString;
-	}
-        
-	$iv         = mcrypt_create_iv (mcrypt_get_iv_size (MCRYPT_BLOWFISH, MCRYPT_MODE_ECB), MCRYPT_RAND);
-	$strString  = hex2bin($strString);
-	$deString   = mcrypt_ecb(MCRYPT_BLOWFISH, $secret_key, $strString, MCRYPT_DECRYPT, $iv);
-
-	return ($deString);
-
-}
-*/
-
 /* Logging */
-
-################################################
-#  Get Real IP address                         #
-################################################
-
-/*
- * This attempts to get the real IP address of the user 
- */
-
-function get_ip_address() {
-    
-    if(getenv('HTTP_CLIENT_IP')) {
-        $ip_address = getenv('HTTP_CLIENT_IP');        
-    }
-    elseif(getenv('HTTP_X_FORWARDED_FOR')) {
-        $ip_address = getenv('HTTP_X_FORWARDED_FOR');        
-    }
-    elseif(getenv('REMOTE_ADDR')) {
-        $ip_address = getenv('REMOTE_ADDR');        
-    }
-    else {$ip_address = 'UNKNOWN';}
-    
-    return $ip_address;
-    
-}
-
-/*
- * The following code delivers ::1 instead of 127.0.0.1
- */
-
-/*
-// Check ip from share internet
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-    $ip=$_SERVER['HTTP_CLIENT_IP'];
-}
-
-// To check ip is pass from proxy
-elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-    $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-    $ip=$_SERVER['REMOTE_ADDR'];
-}
-
-echo ('My real IP is:'.$ip);
-*/
 
 ############################################
 #  Write a record to the Access Log        #
@@ -1228,10 +1078,8 @@ function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian
 }
 
 ##########################################
-#     Timestamp to dates                 #
+#     Timestamp to dates                 #  // not used anywhere at the minute
 ##########################################
-
-// not used anywhere at the minute
 
 function timestamp_to_date($timestamp) {    
 
@@ -1265,96 +1113,6 @@ function timestamp_to_calendar_format($timestamp) {
 
 /* Other */
 
-###########################################
-#  Compress page output and send headers  #
-###########################################
-
-/**
- * Checks the accept encoding of the browser and compresses the data before
- * sending it to the client if possible.
- *
- * @return  void
- *
- * @since   11.3
- *
- * From {Joomla}libraries/joomla/application/web.php
- */
-
-/**
- * @package     Joomla.Platform
- * @subpackage  Application
- *
- * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
- * @copyright   Copyright (C) 2017 - Jon Brown / Quantumwarp.com
- * @license     GNU General Public License version 2 or later; see LICENSE
- */
-
-function compress_page_output(&$BuildPage)
-{
-    // Supported compression encodings.
-    $supported = array(
-        'x-gzip'    => 'gz',
-        'gzip'      => 'gz',
-        'deflate'   => 'deflate'
-    );
-
-    // Get the supported encoding.
-    $encodings = array_intersect(browserSupportedCompressionEncodings(), array_keys($supported));
-
-    // If no supported encoding is detected do nothing and return.
-    if (empty($encodings))
-    {
-        return;
-    }
-
-    // Verify that headers have not yet been sent, and that our connection is still alive.
-    if (headers_sent() || (connection_status() !== CONNECTION_NORMAL))
-    {
-        return;
-    }
-
-    // Iterate through the encodings and attempt to compress the data using any found supported encodings.
-    foreach ($encodings as $encoding)
-    {
-        if (($supported[$encoding] == 'gz') || ($supported[$encoding] == 'deflate'))
-        {
-            // Verify that the server supports gzip compression before we attempt to gzip encode the data.            
-            if (!extension_loaded('zlib') || ini_get('zlib.output_compression'))
-            {
-                continue;
-            }           
-
-            // Attempt to gzip encode the page with an optimal level 4.            
-            $gzBuildPage = gzencode($BuildPage, 4, ($supported[$encoding] == 'gz') ? FORCE_GZIP : FORCE_DEFLATE);
-
-            // If there was a problem encoding the data just try the next encoding scheme.            
-            if ($gzBuildPage === false)
-            {
-                continue;
-            }            
-
-            // Set the encoding headers.
-            header("Content-Encoding: $encoding");
-
-            // Replace the output with the encoded data.            
-            $BuildPage = $gzBuildPage;
-            return;
-            
-        }
-    }
-}
-
-####################################################################
-#  Get the supported compression algorithms in the client browser  #
-####################################################################
-
-function browserSupportedCompressionEncodings() {
-        
-    return array_map('trim', (array) explode(',', $_SERVER['HTTP_ACCEPT_ENCODING']));
-
-}
-
-
 ##############################################
 #  Clear any onscreen notifications          #   // this is needed for messages when pages are requested via ajax (emails/config)
 ##############################################
@@ -1387,5 +1145,57 @@ function escape_for_javascript($text){
     $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
     
     return $text;
+    
+}
+
+/* Smarty Section */
+
+############################################
+#      Clear Smarty Cache                  #
+############################################
+
+function clear_smarty_cache() {
+    
+    $smarty = QFactory::getSmarty();
+    
+    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
+    clear_onscreen_notifications();
+    
+    // clear the entire cache
+    $smarty->clearAllCache();
+
+    // clears all files over one hour old
+    //$smarty->clearAllCache(3600);
+    
+    // Output the system message to the browser   
+    output_notifications_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
+    
+    // Log activity        
+    write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
+    
+}
+
+############################################
+#      Clear Smarty Compile                #
+############################################
+
+function clear_smarty_compile() {
+    
+    $smarty = QFactory::getSmarty();
+    
+    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
+    clear_onscreen_notifications();
+    
+    // clear a specific template resource
+    //$smarty->clearCompiledTemplate('index.tpl');
+
+    // clear entire compile directory
+    $smarty->clearCompiledTemplate();
+    
+    // Output the system message to the browser   
+    output_notifications_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
+    
+    // Log activity        
+    write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
     
 }

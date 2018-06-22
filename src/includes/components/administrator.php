@@ -33,10 +33,10 @@ defined('_QWEXEC') or die;
 /* Get Functions */
 
 ############################################
-#   get current config details             #
+#   get current config details from file   #
 ############################################
 
-function get_qwcrm_config() {
+function get_qwcrm_config_from_file() {
 
     // Load the config if it exists
     if(is_file('configuration.php')) {
@@ -172,7 +172,7 @@ function update_acl($permissions) {
 function update_qwcrm_config($new_config) {
     
     // Get a fresh copy of the current settings as an array        
-    $current_config = get_qwcrm_config();
+    $current_config = get_qwcrm_config_from_file();
     
     // Perform miscellaneous options based on configuration settings/changes.
     $new_config = process_config_data($new_config);
@@ -207,7 +207,7 @@ function update_qwcrm_config($new_config) {
 function delete_qwcrm_config_setting($key) {
     
     // Get a fresh copy of the current settings as an array        
-    $qwcrm_config = get_qwcrm_config();
+    $qwcrm_config = get_qwcrm_config_from_file();
     
     // Remove the key from the object
     unset($qwcrm_config[$key]);
@@ -386,12 +386,8 @@ function write_config_file($content)
 
 function process_config_data($new_config) {    
     
-    // remove unwanted varibles from the new_config
-    unset($new_config['page']);
-    unset($new_config['submit']);
-    
     // Get a fresh copy of the current settings as an array        
-    $current_config = get_qwcrm_config();
+    $current_config = get_qwcrm_config_from_file();
     
     // Purge the database session table if we are changing to the database handler.
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
@@ -443,64 +439,12 @@ function process_config_data($new_config) {
 
 function send_test_mail() {
     
-    $db = QFactory::getDbo();
-    
     $user_details = get_user_details(QFactory::getUser()->login_user_id);
     
     send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.QFactory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
     
     // Log activity        
     write_record_to_activity_log(_gettext("Test email initiated."));
-    
-}
-
-############################################
-#      Clear Smarty Cache                  #
-############################################
-
-function clear_smarty_cache() {
-    
-    $smarty = QFactory::getSmarty();
-    
-    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-    clear_onscreen_notifications();
-    
-    // clear the entire cache
-    $smarty->clearAllCache();
-
-    // clears all files over one hour old
-    //$smarty->clearAllCache(3600);
-    
-    // Output the system message to the browser   
-    output_notifications_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
-    
-    // Log activity        
-    write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
-    
-}
-
-############################################
-#      Clear Smarty Compile                #
-############################################
-
-function clear_smarty_compile() {
-    
-    $smarty = QFactory::getSmarty();
-    
-    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-    clear_onscreen_notifications();
-    
-    // clear a specific template resource
-    //$smarty->clearCompiledTemplate('index.tpl');
-
-    // clear entire compile directory
-    $smarty->clearCompiledTemplate();
-    
-    // Output the system message to the browser   
-    output_notifications_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
-    
-    // Log activity        
-    write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
     
 }
 

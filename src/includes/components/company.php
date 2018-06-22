@@ -64,65 +64,6 @@ function get_company_start_end_times($time_event) {
     
 }
 
-##########################################
-#  Get email signature                   #
-##########################################
-
-function get_email_signature($swift_emailer = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // only add email signature if enabled
-    if(!get_company_details('email_signature_active')) { return; }
-    
-    // Load the signature from the database
-    $email_signature = get_company_details('email_signature');
-    
-    // If swiftmailer is going to be used to add image via CID
-    if($swift_emailer != null) {         
-        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath(get_company_details('logo'))).'" alt="'.get_company_details('display_name').'" width="150">'; 
-        
-        
-    // Load the logo as a standard base64 string image
-    } else {        
-        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents(get_company_details('logo'))).'" alt="'.get_company_details('display_name').'" width="150">'; 
-    }    
-        
-    // Swap the logo placeholders with the new logo string
-    $email_signature  = replace_placeholder($email_signature, '{logo}', $logo_string);
-        
-    // Return the processed signature
-    return $email_signature ;
-    
-}
-
-##########################################
-#  Get email message body                #
-##########################################
-
-function get_email_message_body($message_name, $customer_details = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // get the message from the database
-    $content = get_company_details($message_name);
-    
-    // Process placeholders
-    if($message_name == 'email_msg_invoice') {        
-        $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
-        $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
-        $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
-        $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
-    }
-    if($message_name == 'email_msg_workorder') {
-        // not currently used
-    }
-    
-    // return the process email
-    return $content;
-    
-}
-
 /** Update Functions **/
 
 #############################
@@ -274,8 +215,6 @@ function check_start_end_times($start_time, $end_time) {
 
 function delete_logo() {
     
-    $db = QFactory::getDbo();
-    
     // Only delete a logo if there is one set
     if(get_company_details('logo')) {
         
@@ -347,15 +286,5 @@ function upload_logo() {
         }
         
     }
-    
-}
-
-###########################################
-#  Replace placeholders with new content  #
-###########################################
-
-function replace_placeholder($content, $placeholder, $replacement) {
-    
-    return preg_replace('/'.$placeholder.'/', $replacement, $content);
     
 }

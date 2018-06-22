@@ -30,7 +30,7 @@ $VAR['customer_id'] =  get_workorder_details($VAR['workorder_id'], 'customer_id'
 if(isset($VAR['submit'])) {
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!insert_schedule($VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['note'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
+    if (!insert_schedule($VAR)) {        
                  
         $smarty->assign('start_date',   $VAR['start_date']                                                  );       
         $smarty->assign('start_time',   $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );              
@@ -53,9 +53,10 @@ if(isset($VAR['submit'])) {
 } else {
     
     $smarty->assign('start_date',          convert_year_month_day_to_date($VAR['start_year'], $VAR['start_month'], $VAR['start_day'])    );
-    $smarty->assign('start_time',          $VAR['start_time']                                                       );    
-    $smarty->assign('end_date',            convert_year_month_day_to_date($VAR['start_year'], $VAR['start_month'], $VAR['start_day'])    );
-    $smarty->assign('end_time',            $VAR['start_time']                                                       ); 
+    $smarty->assign('start_time',          $VAR['start_time']   );  
+    
+    $smarty->assign('end_date',            convert_year_month_day_to_date($VAR['start_year'], $VAR['start_month'], $VAR['start_day'])    );      
+    $smarty->assign('end_time',            $VAR['start_time']   ); 
     
 }
 

@@ -183,7 +183,7 @@ function insert_user($VAR) {
             home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
             home_country        =". $db->qstr( $VAR['home_country']                         ).", 
             based               =". $db->qstr( $VAR['based']                                ).",  
-            note               =". $db->qstr( $VAR['note']                                );                     
+            note                =". $db->qstr( $VAR['note']                                 );                     
           
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
@@ -361,7 +361,7 @@ function get_active_users($user_type = null) {
 #   Update Employee     #
 #########################
 
-function update_user($user_id, $VAR) {
+function update_user($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -388,8 +388,8 @@ function update_user($user_id, $VAR) {
         home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
         home_country        =". $db->qstr( $VAR['home_country']                         ).",
         based               =". $db->qstr( $VAR['based']                                ).",  
-        note               =". $db->qstr( $VAR['note']                                )."
-        WHERE user_id= ".$db->qstr($user_id);
+        note                =". $db->qstr( $VAR['note']                                 )."
+        WHERE user_id= ".$db->qstr($VAR['user_id']);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
@@ -397,7 +397,7 @@ function update_user($user_id, $VAR) {
         
         // Reset user password if required
         if($VAR['password'] != '') {
-            reset_user_password($user_id, $VAR['password']);
+            reset_user_password($VAR['user_id'], $VAR['password']);
         }
         
         // Update last active record
@@ -407,8 +407,8 @@ function update_user($user_id, $VAR) {
         }
         
         // Log activity        
-        $record = _gettext("User Account").' '.$user_id.' ('.$VAR['display_name'].') '._gettext("updated.");
-        write_record_to_activity_log($record, $user_id);
+        $record = _gettext("User Account").' '.$VAR['user_id'].' ('.$VAR['display_name'].') '._gettext("updated.");
+        write_record_to_activity_log($record, $VAR['user_id']);
         
         return true;
         
@@ -621,22 +621,6 @@ function check_user_email_exists($email, $current_email = null) {
 }
 
 #################################################
-#    Check if user is an employee or customer   #  // is this needed as it is just a boolean
-#################################################
-
-function check_user_is_employee($user_id) {
-    
-    $db = QFactory::getDbo();
-    
-    if(get_user_details($user_id, 'is_employee')) {
-        return true;
-    } else {
-        return false;
-    }    
-    
-}
-
-#################################################
 #    Check if user already has login            #
 #################################################
 
@@ -666,23 +650,6 @@ function check_customer_already_has_login($customer_id) {
         }        
         
     }     
-    
-}
-
-
-#################################################
-#    Check if user is active/enabled            #  // If user does nto exist it will return false
-#################################################
-
-function is_user_active($user_id) {   
-    
-    $db = QFactory::getDbo();
-        
-    if(get_user_details($user_id, 'active')) {        
-        return true;
-    } else {        
-        return false;
-    }    
     
 }
 
@@ -768,7 +735,6 @@ function reset_all_user_passwords() {
 
 function login($VAR, $credentials, $options = array())
 {   
-    $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();   
     
     // If username or password is missing
@@ -891,7 +857,6 @@ function logout($silent = null)
 
 function logout_all_users($except_me = false) {
     
-    // Get the database object
     $db = QFactory::getDbo();
 
     // Logout all users
@@ -964,15 +929,13 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
 
 function validate_reset_email($email) {
     
-    $db = QFactory::getDbo();
-    
     // get the user_id if the user exists
     if(!$user_id = get_user_id_by_email($email)) {
         return false;        
     }
     
     // is the user active
-    if(!is_user_active($user_id)) {
+    if(!get_user_details($user_id, 'active')) {
         return false;
     }
     
@@ -985,8 +948,6 @@ function validate_reset_email($email) {
 #####################################
 
 function send_reset_email($user_id) {
-    
-    $db = QFactory::getDbo();
     
     // Get recipient email
     $recipient_email = get_user_details($user_id, 'email');
@@ -1149,8 +1110,8 @@ function validate_reset_token($token) {
             return false;
         }
         
-        // check if user is block
-        if(!is_user_active($rs->fields['user_id'])){
+        // check if user is blocked        
+        if(!get_user_details($rs->fields['user_id'], 'active')){
             $smarty->assign('warning_msg', _gettext("The user is blocked."));
             return false;
         }
@@ -1262,4 +1223,3 @@ function delete_expired_reset_codes() {
     }
      
  }
-

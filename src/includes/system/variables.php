@@ -8,10 +8,13 @@
 
 defined('_QWEXEC') or die;
 
-function load_variables(&$VAR = null) {
+################################################
+#  Load and set the System's global variables  #
+################################################
+
+function load_system_variables(&$VAR = null) {
     
     $smarty = QFactory::getSmarty();
-    $user = QFactory::getUser();
 
     // Acquire variables from classes examples
     // $user->login_user_id;                                    // This is a public variable defined in the class
@@ -97,18 +100,6 @@ function load_variables(&$VAR = null) {
         $smarty->assign('date_format',  DATE_FORMAT                                     );
     }
 
-    ################################
-    #  Set User Smarty Variables   #  // Empty if not logged in or installing
-    ################################
-    
-    $smarty->assign('login_user_id',            $user->login_user_id          );
-    $smarty->assign('login_username',           $user->login_username         );
-    $smarty->assign('login_usergroup_id',       $user->login_usergroup_id     );
-    $smarty->assign('login_display_name',       $user->login_display_name     );
-    $smarty->assign('login_token',              $user->login_token            );
-    $smarty->assign('login_is_employee',        $user->login_is_employee      );
-    $smarty->assign('login_customer_id',        $user->login_customer_id      );
-
     #############################
     #        Messages           #
     #############################
@@ -123,6 +114,27 @@ function load_variables(&$VAR = null) {
         $smarty->assign('warning_msg', $VAR['warning_msg']);
     }
 
+    return;
+    
+}
+
+#####################################
+#  Set the User's Smarty Variables  #  // Empty if not logged in or installing (except for usergroup)
+#####################################
+
+function set_user_smarty_variables() {
+    
+    $smarty = QFactory::getSmarty();
+    $user = QFactory::getUser();    
+    
+    $smarty->assign('login_user_id',            $user->login_user_id          );
+    $smarty->assign('login_username',           $user->login_username         );
+    $smarty->assign('login_usergroup_id',       $user->login_usergroup_id     );
+    $smarty->assign('login_display_name',       $user->login_display_name     );
+    $smarty->assign('login_token',              $user->login_token            );
+    $smarty->assign('login_is_employee',        $user->login_is_employee      );
+    $smarty->assign('login_customer_id',        $user->login_customer_id      );
+    
     return;
     
 }
