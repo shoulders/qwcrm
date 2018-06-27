@@ -340,6 +340,7 @@ class JUserHelper
             // JCrypt::hasStrongPasswordSupport() includes a fallback for us in the worst case
             //JCrypt::hasStrongPasswordSupport();
             $match = password_verify($password, $hash);
+            $rehash = true;
 
             // Uncomment this line if we actually move to bcrypt. - this gets the password and rehashes it to this algorithym
             // $rehash = true;
@@ -362,7 +363,7 @@ class JUserHelper
         elseif ($hash[0] == '$')
         {
             // JCrypt::hasStrongPasswordSupport() includes a fallback for us in the worst case
-            //JCrypt::hasStrongPasswordSupport();
+            JCrypt::hasStrongPasswordSupport();
             $match = password_verify($password, $hash);
 
             // Uncomment this line if we actually move to bcrypt.

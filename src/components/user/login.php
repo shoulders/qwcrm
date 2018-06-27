@@ -11,14 +11,19 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/user.php');
 
-################################################
-#           Authentication                     #
-################################################
+// Prevent undefined variable errors
+$VAR['login_username'] = isset($VAR['login_username']) ? $VAR['login_username'] : null;
+$VAR['login_pwd'] = isset($VAR['login_pwd']) ? $VAR['login_pwd'] : null;
+$VAR['action'] = isset($VAR['action']) ? $VAR['action'] : null;
 
 // Get variables in correct format for login()
 $credentials['username'] = $VAR['login_username'];
 $credentials['password'] = $VAR['login_pwd'];
-if($config->get('remember_me') && isset($VAR['remember'])) { $options['remember'] = $VAR['remember']; }
+if (QFactory::getConfig()->get('remember_me') && isset($VAR['remember'])) {
+    $options['remember'] = $VAR['remember'];
+} else {
+    $options = array();
+}
 
 // If login submitted 
 if($VAR['action'] === 'login') {
@@ -49,8 +54,9 @@ if($VAR['action'] === 'login') {
     
 }
 
-// Remove credentials as no longer needed
+// Remove credentials and options as no longer needed
 unset($credentials);
+unset($options);
 
 // If logout is set, then log the user off
 if ($VAR['action'] == 'logout') {    

@@ -28,10 +28,15 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($order_by = 'giftcert_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
+function display_giftcerts($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
+    
+    // Process certain variables - This prevents undefined variable errors
+    $records_per_page = $records_per_page ?: '25';
+    $page_no = $page_no ?: '1';
+    $search_category = $search_category ?: 'giftcert_id';    
     
     /* Records Search */
         
@@ -90,6 +95,9 @@ function display_giftcerts($order_by = 'giftcert_id', $direction = 'DESC', $use_
         // Figure out the total number of pages. Always round up using ceil()
         $total_pages = ceil($total_results / $records_per_page);
         $smarty->assign('total_pages', $total_pages);
+        
+        // Set the page number
+        $smarty->assign('page_no', $page_no);
 
         // Assign the Previous page        
         $previous_page_no = ($page_no - 1);        

@@ -30,10 +30,15 @@ defined('_QWEXEC') or die;
 #    Display Users                  #
 #####################################
 
-function display_users($order_by = 'user_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $usertype = null, $usergroup = null) {
+function display_users($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $usertype = null, $usergroup = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
+    
+    // Process certain variables - This prevents undefined variable errors
+    $records_per_page = $records_per_page ?: '25';
+    $page_no = $page_no ?: '1';
+    $search_category = $search_category ?: 'user_id';    
 
     /* Records Search */
         
@@ -100,6 +105,9 @@ function display_users($order_by = 'user_id', $direction = 'DESC', $use_pages = 
         // Figure out the total number of pages. Always round up using ceil()
         $total_pages = ceil($total_results / $records_per_page);
         $smarty->assign('total_pages', $total_pages);
+        
+        // Set the page number
+        $smarty->assign('page_no', $page_no);        
 
         // Assign the Previous page        
         $previous_page_no = ($page_no - 1);        

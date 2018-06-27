@@ -537,6 +537,9 @@ class JUser
      */
     public function save($updateOnly = false)
     {
+        // This function sis not needed but is called by the shutdown code.
+        return;
+        
         // Create the user table object
         $table = $this->getTable();
         $this->params = (string) $this->_params;

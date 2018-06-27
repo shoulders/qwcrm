@@ -455,11 +455,11 @@ class JAuthentication
 
             ////// OK, the credentials are authenticated and user is authorised.  Let's fire the onLogin event. (stored qwcrm.php and remember.php methods)
             //$results = $this->triggerEvent('onUserLogin', array((array) $response, $options));                     
-            $user['username'] = $response->username;
-            $user['fullname'] = $response->fullname;
-            $user['password_clear'] = $response->password_clear;            
-            $user['email'] = $response->email;            
-            $results = array($this->qwcrmAuthPlg->onUserLogin($user, $options));            
+            //$user['username'] = $response->username;
+            //$user['fullname'] = $response->fullname;
+            //$user['password_clear'] = $response->password_clear; // Causes undefined variable error     
+            //$user['email'] = $response->email;            
+            $results = array($this->qwcrmAuthPlg->onUserLogin(get_object_vars($response), $options));            
             
             /*
              * If any of the user plugins did not successfully complete the login routine

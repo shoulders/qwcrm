@@ -113,43 +113,49 @@ function get_page_controller(&$VAR = null) {
 
 
 #####################################
-#  Build SEF URL from Non-SEF URL   #
+#  Build SEF URL from Non-SEF URL   #  // supply only in the format - index.php?compnent=workorder&page_tpl=search 
 #####################################
 
 function buildSEF($non_sef_url) {
     
-    // Move URL into an array 
-    $parsed_url = parse_url($non_sef_url);
-
-    // Get URL Query Variables
-    parse_str($parsed_url['query'], $parsed_url_query);
+    $sef_url_path = '';
+    $sef_url_query = '';
+    $sef_url_fragement = '';
     
-    // Build URL 'Path' from query variables and then remove them as they are no longer needed
-    if($parsed_url_query['component'] && $parsed_url_query['page_tpl']) { 
-        $sef_url_path = $parsed_url_query['component'].'/'.$parsed_url_query['page_tpl'];
-        unset($parsed_url_query['component']);
-        unset($parsed_url_query['page_tpl']);    
-    } else {
-        // Compensate for home/dashboard special case
-        $sef_url_path = '';
-    }
-       
-    // Build URL 'Query' if variables present
-    if ($parsed_url_query) {
+    // Convert URL into an array 
+    $parsed_url = parse_url($non_sef_url);    
+    
+    // Get URL Query Variables (if present    
+    if(isset($parsed_url['query'])) {
         
-        foreach($parsed_url_query as $key => $value) {
+        // Convert Query variables into an array
+        parse_str($parsed_url['query'], $parsed_url_query);
 
-            $sef_url_query .= '&'.$key.'='.$value;
-
+        // Build URL 'Path' from query variables and then remove them as they are no longer needed
+        if(isset($parsed_url_query['component'], $parsed_url_query['page_tpl']) && $parsed_url_query['component'] && $parsed_url_query['page_tpl']) { 
+            $sef_url_path = $parsed_url_query['component'].'/'.$parsed_url_query['page_tpl'];
+            unset($parsed_url_query['component']);
+            unset($parsed_url_query['page_tpl']);    
         }
-        
-        // Remove the first & and prepend a ?
-        $sef_url_query = '?'.ltrim($sef_url_query, '&');        
+
+        // Build URL 'Query' (if variables present)
+        if(!empty($parsed_url_query)) {
             
+            foreach($parsed_url_query as $key => $value) {
+                $sef_url_query .= '&'.$key.'='.$value;
+            }
+
+            // Remove the first & and prepend a ?
+            $sef_url_query = '?'.ltrim($sef_url_query, '&');
+        
+        }
+    
     }
     
     // Build URL 'Fragement'
-    if($parsed_url['fragment']) { $sef_url_fragement = '#'.$parsed_url['fragment']; }
+    if(isset($parsed_url['fragment'])) {
+        $sef_url_fragement = '#'.$parsed_url['fragment'];        
+    }
        
     // Build and return full SEF URL
     return QWCRM_BASE_PATH. $sef_url_path . $sef_url_query . $sef_url_fragement;
@@ -157,18 +163,22 @@ function buildSEF($non_sef_url) {
 }
 
 #########################################################################################################################
-#  Convert a SEF url into a standard url and (optionally) inject routing varibles into $VAR or return routing variables #
+#  Convert a SEF url into a standard URL and (optionally) inject routing varibles into $VAR or return routing variables #
 #########################################################################################################################
 
 function parseSEF($sef_url, $mode = null, &$VAR = null) {    
     
+    $nonsef_url_path_variables  = '';
+    $nonsef_url_query = '';
+    $nonsef_url_fragment = '';
+    
     // Remove base path from URI
-    $sef_url = str_replace(QWCRM_BASE_PATH, '', $sef_url);
+    $relative_sef_url = str_replace(QWCRM_BASE_PATH, '', $sef_url);
     
     // Move URL into an array
-    $parsed_url = parse_url($sef_url);
+    $parsed_url = parse_url($relative_sef_url);
 
-    // Get Variables from path
+    // Get URL segments from path
     $url_segments = array_filter(explode('/', $parsed_url['path']));
     
     // Create a holding variable because page is index.php
@@ -177,7 +187,7 @@ function parseSEF($sef_url, $mode = null, &$VAR = null) {
     // If there are routing variables
     if ($url_segments) {
         
-        // Set $_GET routing variables
+        // Set $_GET routing variables        
         $nonsef_url_path_variables .= '?';
         $nonsef_url_path_variables .= 'component='.$url_segments['0'];
         $nonsef_url_path_variables .= '&page_tpl='.$url_segments['1'];       
@@ -200,28 +210,33 @@ function parseSEF($sef_url, $mode = null, &$VAR = null) {
     if ($mode == 'get_var') { return $onlyVar; }
     
     // No further processing needed with 'only_set_var'
-    if ($mode == 'set_var') { return; }
+    if ($mode == 'set_var') { return; }    
     
-    // Get URL Query Variables (if present)
-    if(parse_str($parsed_url['query'], $parsed_url_query_variables)) {
-       
+    // Build URL 'Query' (if variables present)
+    if(isset($parsed_url['query'])) {
+    
+        // Load Query variables into an array
+        parse_str($parsed_url['query'], $parsed_url_query_variables);
+
         // Build URL 'Query' if variables present
-        if ($parsed_url_query_variables) {
+        if (!empty($parsed_url_query_variables)) {
             foreach($parsed_url_query_varibles as $key => $value) {
                 $nonsef_url_query .= '&'.$key.'='.$value;
             }
-            
+
             // Remove the first & and prepend a ?
             $nonsef_url_query = '?'.ltrim($nonsef_url_query, '&');            
-            
+
         }
-        
-    }    
+
+    }        
     
     // Build URL 'Fragement'
-    if($parsed_url['fragment']) { $nonsef_url_fragment = '#'.$parsed_url['fragment']; }
+    if(isset($parsed_url['fragment'])) {
+        $nonsef_url_fragment = '#'.$parsed_url['fragment'];        
+    }    
     
-    // Build and return full SEF URL
+    // Build and return full nonSEF URL
     return 'index.php' . $nonsef_url_path_variables . $nonsef_url_query . $nonsef_url_fragment;
     
 }
@@ -381,7 +396,7 @@ function get_routing_variables_from_url($url) {
         }
         
         // If $VAR is empty it is because page is index.php, set required
-        if($VAR['component'] == '' && $VAR['page_tpl'] == '') {
+        if(!isset($VAR['component']) && !isset($VAR['page_tpl'])) {
             
             if(isset($user->login_token)) {
 

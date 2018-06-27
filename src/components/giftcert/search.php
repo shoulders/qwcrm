@@ -10,7 +10,14 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/giftcert.php');
 
-// a workaround until i add a full type search, this keeps the logic intact
+// Prevent undefined variable errors
+$VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
+$VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
+$VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
+$VAR['filter_status'] = isset($VAR['filter_status']) ? $VAR['filter_status'] : null;
+$VAR['filter_is_redeemed'] = isset($VAR['filter_is_redeemed']) ? $VAR['filter_is_redeemed'] : null;
+
+// A workaround until i add a full type search, this keeps the logic intact
 $VAR['search_category'] = 'giftcert_code';
 
 // If a search is submitted
@@ -31,5 +38,5 @@ $smarty->assign('search_category',      $VAR['search_category']                 
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                                     );
 $smarty->assign('filter_status',        $VAR['filter_status']                                                                                                                                          );
 $smarty->assign('filter_is_redeemed',   $VAR['filter_is_redeemed']                                                                                                                                     );
-$smarty->assign('display_giftcerts',    display_giftcerts('giftcert_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'], $VAR['filter_is_redeemed'])  );
+$smarty->assign('display_giftcerts',    display_giftcerts('giftcert_id', 'DESC', true, '1', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_is_redeemed'])  );
 $BuildPage .= $smarty->fetch('giftcert/search.tpl');

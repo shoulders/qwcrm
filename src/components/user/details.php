@@ -12,14 +12,18 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
+// Prevent undefined variable errors
+$VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
+
 // Check if we have an user_id
 if($VAR['user_id'] == '') {
     force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
 }
 
 // Build the page
-$smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, $VAR['page_no'], '25', null, null, 'open', $VAR['user_id'])    );
+
 $smarty->assign('user_details',             get_user_details($VAR['user_id'])                                                                         );
 $smarty->assign('customer_display_name',    get_customer_details(get_user_details($VAR['user_id'], 'customer_id'), 'customer_display_name')      );
 $smarty->assign('usergroups',               get_usergroups()                                                                                     );
+$smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', $VAR['user_id']));
 $BuildPage .= $smarty->fetch('user/details.tpl');

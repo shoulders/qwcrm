@@ -10,6 +10,13 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/customer.php');
 
+// Prevent undefined variable errors
+$VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
+$VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
+$VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
+$VAR['filter_status'] = isset($VAR['filter_status']) ? $VAR['filter_status'] : null;
+$VAR['filter_type'] = isset($VAR['filter_type']) ? $VAR['filter_type'] : null;
+
 // If a search is submitted
 if(isset($VAR['submit'])) {
     
@@ -28,6 +35,6 @@ $smarty->assign('search_category',      $VAR['search_category']                 
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                 );
 $smarty->assign('filter_status',        $VAR['filter_status']                                                                                                               );
 $smarty->assign('filter_type',          $VAR['filter_type']                                                                                                                 );
-$smarty->assign('customer_types',       get_customer_types()                                                                                                             );
-$smarty->assign('display_customers',    display_customers('customer_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_status'], $VAR['filter_type'])   );
+$smarty->assign('customer_types',       get_customer_types()                                                                                                                );
+$smarty->assign('display_customers',    display_customers('customer_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_type'])   );
 $BuildPage .= $smarty->fetch('customer/search.tpl');

@@ -151,7 +151,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
     // Set URL SEF type to be used
     if ($url_sef == 'sef') { $makeSEF = true; }
     elseif ($url_sef == 'nonsef') { $makeSEF = false; }
-    elseif(class_exists(QFactory)) { $makeSEF = QFactory::getConfig()->get('sef'); }
+    elseif(class_exists('QFactory')) { $makeSEF = QFactory::getConfig()->get('sef'); }
     else { $makeSEF = false; }
     
     // Configure and set URL protocol and domain segment (allows for https to http, http to https using QWcrm style force_page() links)

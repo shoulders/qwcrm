@@ -10,6 +10,12 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/supplier.php');
 
+// Prevent undefined variable errors
+$VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
+$VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
+$VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
+$VAR['filter_type'] = isset($VAR['filter_type']) ? $VAR['filter_type'] : null;
+
 // If a search is submitted
 if(isset($VAR['submit'])) {
     
@@ -28,5 +34,5 @@ $smarty->assign('search_category',      $VAR['search_category']                 
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                 );
 $smarty->assign('filter_type',          $VAR['filter_type']                                                                                                 );
 $smarty->assign('supplier_types',       get_supplier_types()                                                                                             );
-$smarty->assign('display_suppliers',    display_suppliers('supplier_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_type'])   );
+$smarty->assign('display_suppliers',    display_suppliers('supplier_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'])   );
 $BuildPage .= $smarty->fetch('supplier/search.tpl');

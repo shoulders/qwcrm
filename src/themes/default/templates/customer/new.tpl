@@ -76,7 +76,7 @@
                                                                             <td>
                                                                                 <select id="type" name="type" class="olotd5"> 
                                                                                     {section name=s loop=$customer_types}    
-                                                                                        <option value="{$customer_types[s].customer_type_id}"{if $customer_details.type == $customer_types[s].customer_type_id} selected{/if}>{t}{$customer_types[s].display_name}{/t}</option>
+                                                                                        <option value="{$customer_types[s].customer_type_id}">{t}{$customer_types[s].display_name}{/t}</option>
                                                                                     {/section}    
                                                                                 </select>                                                                                   
                                                                             </td>

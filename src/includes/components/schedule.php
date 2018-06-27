@@ -38,10 +38,15 @@ if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
 # Display all Work orders for the given status      # // Status is not currently used but it will be
 #####################################################
 
-function display_schedules($order_by = 'schedule_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null) {
+function display_schedules($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
+    
+    // Process certain variables - This prevents undefined variable errors
+    $records_per_page = $records_per_page ?: '25';
+    $page_no = $page_no ?: '1';
+    $search_category = $search_category ?: 'schedule_id';    
    
     /* Records Search */
     

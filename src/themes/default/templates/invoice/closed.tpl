@@ -72,7 +72,7 @@
                                         </tr>
                                         <tr>
                                             <td valign="top" colspan="2">
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_workorders=$invoices block_title=''}
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_workorders=$display_invoices block_title=''}
                                             </td>
                                         </tr>
                                     </table>

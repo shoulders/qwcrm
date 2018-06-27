@@ -10,6 +10,12 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/payment.php');
 
+// Prevent undefined variable errors
+$VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
+$VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
+$VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
+$VAR['filter_method'] = isset($VAR['filter_method']) ? $VAR['filter_method'] : null;
+
 // If a search is submitted
 if(isset($VAR['submit'])) {
     
@@ -28,6 +34,6 @@ $smarty->assign('search_category',  $VAR['search_category']                     
 $smarty->assign('search_term',      $VAR['search_term']                                                                                 );
 $smarty->assign('filter_method',    $VAR['filter_method']                                                                               );
 $smarty->assign('payment_methods',  get_payment_accepted_methods()                                                                     );
-$smarty->assign('display_payments', display_payments('payment_id', 'DESC', true, $VAR['page_no'], '25', $VAR['search_term'], $VAR['search_category'], $VAR['filter_method'])   );
+$smarty->assign('display_payments', display_payments('payment_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_method'])   );
 
 $BuildPage .= $smarty->fetch('payment/search.tpl');

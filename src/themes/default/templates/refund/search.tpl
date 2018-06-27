@@ -77,7 +77,7 @@
                                                                         <option value=""{if $filter_payment_method == ''} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
                                                                         {section name=t loop=$payment_methods}    
-                                                                            <option value="{$payment_methods[t].purchase_method_id}"{if $filter_method == $payment_methods[t].purchase_method_id} selected{/if}>{t}{$payment_methods[t].display_name}{/t}</option>        
+                                                                            <option value="{$payment_methods[t].purchase_method_id}"{if $filter_payment_method == $payment_methods[t].purchase_method_id} selected{/if}>{t}{$payment_methods[t].display_name}{/t}</option>        
                                                                         {/section}
                                                                     </select>
                                                                 </td>

@@ -28,10 +28,15 @@ defined('_QWEXEC') or die;
 #     Display Invoices                  #
 #########################################
 
-function display_invoices($order_by = 'invoice_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_invoices($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $customer_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
+    
+    // Process certain variables - This prevents undefined variable errors
+    $records_per_page = $records_per_page ?: '25';
+    $page_no = $page_no ?: '1';
+    $search_category = $search_category ?: 'invoice_id';    
     
     /* Records Search */
     

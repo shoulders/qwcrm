@@ -10,7 +10,13 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/invoice.php');
 
+// Prevent undefined variable errors
+$VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
+
 // Build the page
-$smarty->assign('invoices', display_invoices('invoice_id', 'DESC', true, $VAR['page_no'], '25', null, null, 'open'));
+$smarty->assign('search_category',    null );
+$smarty->assign('search_term',        null );
+$smarty->assign('filter_status',      null );
+$smarty->assign('invoices', display_invoices('invoice_id', 'DESC', true, '25', $VAR['page_no'], null, null, 'open'));
 $smarty->assign('invoice_statuses', get_invoice_statuses());
 $BuildPage .= $smarty->fetch('invoice/open.tpl');

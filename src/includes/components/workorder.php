@@ -25,27 +25,32 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 #####################################################
-# Display all Work orders for the given status      #
+#  Display all Work orders for the given status     #
 #####################################################
 
-function display_workorders($order_by = 'workorder_id', $direction = 'DESC', $use_pages = false, $page_no = '1', $records_per_page = '25', $search_term = null, $search_category = null, $status = null, $employee_id = null, $customer_id = null) {
-    
+function display_workorders($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $customer_id = null) {
+       
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
-   
+    
+    // Process certain variables - This prevents undefined variable errors
+    $records_per_page = $records_per_page ?: '25';
+    $page_no = $page_no ?: '1';
+    $search_category = $search_category ?: 'workorder_id';
+    
     /* Records Search */
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";    
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
+    if($search_term && $search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}
+    elseif($search_term && $search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE '%$search_term%'";}  
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE '%$search_term%'";}
     
     /* Filter the Records */
     
@@ -165,9 +170,10 @@ function display_workorders($order_by = 'workorder_id', $direction = 'DESC', $us
     } else {
         
         $records = $rs->GetArray();   // do i need to add the check empty
-
+        
         if(empty($records)){
             
+            // This prevents undefined variable error when there are no search results
             return false;
             
         } else {

@@ -84,13 +84,13 @@
                                                     <tr>
                                                         <td>
                                                             <a name="on_hold"></a>
-                                                            {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$display_workorders block_title=_gettext("On Hold")|cat:" ($login_display_name)"}
+                                                            {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$employee_workorders_on_hold block_title=_gettext("On Hold")|cat:" ($login_display_name)"}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>
                                                             <a name="management"></a>
-                                                            {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$display_workorders block_title=_gettext("Management")|cat:" ($login_display_name)"}
+                                                            {include file='workorder/blocks/display_workorders_block.tpl' display_workorders=$employee_workorders_management block_title=_gettext("Management")|cat:" ($login_display_name)"}
                                                         </td>
                                                     </tr>
                                                 </table>

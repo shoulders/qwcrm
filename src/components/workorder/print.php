@@ -36,7 +36,7 @@ $smarty->assign('workorder_details',    $workorder_details                      
 $smarty->assign('customer_types',       get_customer_types()                                         );
 $smarty->assign('workorder_statuses',   get_workorder_statuses()                                     );
 $smarty->assign('workorder_notes',      display_workorder_notes($VAR['workorder_id'])                     );
-$smarty->assign('workorder_schedules',  display_schedules($order_by = 'schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
+$smarty->assign('workorder_schedules',  display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
 
 // Technician Workorder Slip Print Routine
 if($VAR['print_content'] == 'technician_workorder_slip') {    
