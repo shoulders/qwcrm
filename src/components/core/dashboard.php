@@ -12,6 +12,9 @@ require(INCLUDES_DIR.'components/core.php');
 require(INCLUDES_DIR.'components/report.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
+// Prevent undefined variable errors
+$VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
+
 // Employee Workorders
 $smarty->assign('employee_workorders_assigned',          display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'assigned', $user->login_user_id)          );
 $smarty->assign('employee_workorders_waiting_for_parts', display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'waiting_for_parts', $user->login_user_id) );
