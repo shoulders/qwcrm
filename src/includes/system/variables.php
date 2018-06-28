@@ -41,20 +41,6 @@ function load_system_variables(&$VAR = null) {
         $VAR = array_merge($_POST, $_GET, $VAR);
     }
 
-    // These are used globally and also a workaround for undefined indexes. They also prevent page load failures.
-    /*$VAR['user_id']         =   isset($VAR['user_id'])      ? $VAR['user_id']       : null;
-    $VAR['employee_id']     =   isset($VAR['employee_id'])  ? $VAR['employee_id']   : null;
-    $VAR['customer_id']     =   isset($VAR['customer_id'])  ? $VAR['customer_id']   : null;
-    $VAR['workorder_id']    =   isset($VAR['workorder_id']) ? $VAR['workorder_id']  : null;
-    $VAR['invoice_id']      =   isset($VAR['invoice_id'])   ? $VAR['invoice_id']    : null;
-    $VAR['payment']         =   isset($VAR['payment_id'])   ? $VAR['payment_id']    : null;
-    $VAR['giftcert_id']     =   isset($VAR['giftcert_id'])  ? $VAR['giftcert_id']   : null;
-    $VAR['expense_id']      =   isset($VAR['expense_id'])   ? $VAR['expense_id']    : null;
-    $VAR['refund_id']       =   isset($VAR['refund_id'])    ? $VAR['refund_id']     : null;
-    $VAR['supplier_id']     =   isset($VAR['supplier_id'])  ? $VAR['supplier_id']   : null;
-    $VAR['schedule_id']     =   isset($VAR['schedule_id'])  ? $VAR['schedule_id']   : null;*/
-    //$VAR['page_no']         =   isset($VAR['page_no'])      ? $VAR['page_no']       : '1';  // This one is definitely needed, factor this out by adding into the individual display_xxx() functions
-
     ##########################################
     #   Set Global PHP Values from QWcrm     #  // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
     ##########################################
@@ -93,32 +79,6 @@ function load_system_variables(&$VAR = null) {
     isset($VAR['supplier_id'])  ? $smarty->assign('supplier_id', $VAR['supplier_id'])   : $smarty->assign('supplier_id', null);
     isset($VAR['schedule_id'])  ? $smarty->assign('schedule_id', $VAR['schedule_id'])   : $smarty->assign('schedule_id', null);
    
-    /* These are used globally but are mainly for the menu !! - Set if present - causes errors with unknown variables in smarty
-    if(isset($VAR['user_id']))      { $smarty->assign('user_id',        $VAR['user_id']);       }
-    if(isset($VAR['employee_id']))  { $smarty->assign('employee_id',    $VAR['employee_id']);   }
-    if(isset($VAR['customer_id']))  { $smarty->assign('customer_id',    $VAR['customer_id']);   }
-    if(isset($VAR['workorder_id'])) { $smarty->assign('workorder_id',   $VAR['workorder_id']);  }
-    if(isset($VAR['invoice_id']))   { $smarty->assign('invoice_id',     $VAR['invoice_id']);    }
-    if(isset($VAR['payment_id']))   { $smarty->assign('payment_id',     $VAR['payment_id']);    }
-    if(isset($VAR['giftcert_id']))  { $smarty->assign('giftcert_id',    $VAR['giftcert_id']);   }
-    if(isset($VAR['expense_id']))   { $smarty->assign('expense_id',     $VAR['expense_id']);    }
-    if(isset($VAR['refund_id']))    { $smarty->assign('refund_id',      $VAR['refund_id']);     }
-    if(isset($VAR['supplier_id']))  { $smarty->assign('supplier_id',    $VAR['supplier_id']);   }
-    if(isset($VAR['schedule_id']))  { $smarty->assign('schedule_id',    $VAR['schedule_id']);   }  */
-                
-    /* These are used globally but are mainly for the menu !!
-    $smarty->assign('user_id',                  $VAR['user_id']             );
-    $smarty->assign('employee_id',              $VAR['employee_id']         );
-    $smarty->assign('customer_id',              $VAR['customer_id']         );
-    $smarty->assign('workorder_id',             $VAR['workorder_id']        );
-    $smarty->assign('invoice_id',               $VAR['invoice_id']          );
-    $smarty->assign('payment_id',               $VAR['payment_id']          );
-    $smarty->assign('giftcert_id',              $VAR['giftcert_id']         );
-    $smarty->assign('expense_id',               $VAR['expense_id']          );
-    $smarty->assign('refund_id',                $VAR['refund_id']           );
-    $smarty->assign('supplier_id',              $VAR['supplier_id']         );
-    $smarty->assign('schedule_id',              $VAR['schedule_id']         );*/
-
     // Used throughout the site
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
         $smarty->assign('currency_sym', get_company_details('currency_symbol')     );
