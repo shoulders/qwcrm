@@ -36,15 +36,13 @@
                             <table width="100%" cellpadding="4" cellspacing="0" style="border-collapse: collapse;">                
                                 <tr style="border: 1px black solid; background-color: #ededed;">
                                     <td><b>{t}Customer Note ID{/t}: {$customer_notes[n].customer_note_id}</b></td>
-                                    <td width="33%" align="right">
-                                        {if $login_usergroup_id == 1}
-                                            <a href="index.php?component=customer&page_tpl=note_edit&customer_note_id={$customer_notes[n].customer_note_id}">
-                                                <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
-                                            </a>
-                                            <a href="index.php?component=customer&page_tpl=note_delete&customer_note_id={$customer_notes[n].customer_note_id}" oNclick="return confirmChoice('{t}Are you sure you want to delete this customer note?{/t}');">
-                                                <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
-                                            </a>
-                                        {/if}
+                                    <td width="33%" align="right">                                        
+                                        <a href="index.php?component=customer&page_tpl=note_edit&customer_note_id={$customer_notes[n].customer_note_id}">
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Edit the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
+                                        </a>
+                                        <a href="index.php?component=customer&page_tpl=note_delete&customer_note_id={$customer_notes[n].customer_note_id}" oNclick="return confirmChoice('{t}Are you sure you want to delete this customer note?{/t}');">
+                                            <img src="{$theme_images_dir}icons/16x16/small_edit.gif" onMouseOver="ddrivetip('{t}Delete the Note{/t}');" onMouseOut="hideddrivetip();">                                                 
+                                        </a>                                        
                                     </td>
                                 </tr>                                
                             </table>    

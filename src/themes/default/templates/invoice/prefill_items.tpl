@@ -93,8 +93,7 @@
                                                 </form>
                                                 <div>
                                                     <form method="post" action="index.php?component=invoice&page_tpl=prefill_items">
-                                                        <strong><span style="color: green;">{t}Export Prefill Items as a CSV file{/t}</span></strong>
-                                                        <input type="hidden" name="invoice_prefill_id" value="{$invoice_prefill_items[q].invoice_prefill_id}">
+                                                        <strong><span style="color: green;">{t}Export Prefill Items as a CSV file{/t}</span></strong>                                                        
                                                         <button type="submit" name="export_invoice_prefill_items" value="export">{t}Export{/t}</button>
                                                     </form>
                                                 </div>
@@ -128,7 +127,7 @@
                                                                                 <td width="246">                                                                                    
                                                                                     <input name="invoice_prefill_csv" type="file" accept=".csv">
                                                                                 </td>
-                                                                                <td width="80"><button id="csv_upload" name="submit" type="submit" class="box" value="csv_upload" onclick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}CSV Upload{/t}</button></td>
+                                                                                <td width="80"><button id="csv_upload" name="submit" type="submit" class="box" value="csv_upload" onclick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}Upload{/t}</button></td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td width="246"><input id="empty_prefill_items_table" name="empty_prefill_items_table" type="checkbox" value="1">{t}Empty Prefill Table{/t}</td>                                                                                

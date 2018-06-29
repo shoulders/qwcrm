@@ -21,8 +21,6 @@
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
                                 <td><h2>{t}Gift Certificate{/t}</h2></td>
-                                <td>{$company_name}</td>
-                                <td>{$company_phone}</td>
                             </tr>
                         </table>
                         <hr>

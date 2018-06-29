@@ -10,6 +10,9 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/company.php');
 
+// Prevent undefined variable errors
+$VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;
+
 // Update Company details
 if(isset($VAR['submit'])) {
 

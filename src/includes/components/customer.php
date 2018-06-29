@@ -284,7 +284,13 @@ function get_customer_notes($customer_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr( $customer_id );
+    $sql = "SELECT *,
+        
+            ".PRFX."user_records.display_name AS employee_display_name
+            
+            FROM ".PRFX."customer_notes
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."customer_notes.employee_id = ".PRFX."user_records.user_id
+            WHERE ".PRFX."customer_notes.customer_id=".$db->qstr( $customer_id );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's notes."));
@@ -353,10 +359,10 @@ function update_customer($VAR) {
         
         // Log activity        
         $record = _gettext("The customer").' '.$VAR['display_name'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, null, $customer_id);
+        write_record_to_activity_log($record, null, $VAR['customer_id']);
         
         // Update last active record      
-        update_customer_last_active($customer_id);
+        update_customer_last_active($VAR['customer_id']);
         
       return true;
       
@@ -502,8 +508,9 @@ function delete_customer_note($customer_note_id) {
     
     $db = QFactory::getDbo();
     
-    // get customer_id before deleting the record
+    // Get information before deleting the record
     $customer_id = get_customer_note($customer_note_id, 'customer_id');
+    $employee_id = get_customer_note($customer_note_id, 'employee_id');
     
     $sql = "DELETE FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );
 
@@ -516,7 +523,7 @@ function delete_customer_note($customer_note_id) {
         
         // Log activity        
         $record = _gettext("Customer Note").' '.$customer_note_id.' '._gettext("for Customer").' '.$customer_details['display_name'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $customer_details['employee_id'], $customer_id);
+        write_record_to_activity_log($record, $employee_id, $customer_id);
         
         // Update last active record        
         update_customer_last_active($customer_id);

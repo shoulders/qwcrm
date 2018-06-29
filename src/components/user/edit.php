@@ -31,7 +31,7 @@ if(isset($VAR['submit'])) {
 
     // Update the record - if the username or email have not been used
     if (check_user_username_exists($VAR['username'], get_user_details($VAR['user_id'], 'username')) ||
-        check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))) {        
+        check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))) {
 
         // Send the posted data back to smarty
         $user_details = $VAR;

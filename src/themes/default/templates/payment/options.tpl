@@ -83,7 +83,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Direct Deposit{/t}</b></td>
-                                                <td><textarea class="olotd5" name="invoice_direct_deposit_message" cols="50" rows="2" >{$payment_options.invoice_direct_deposit_message}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="invoice_direct_deposit_msg" cols="50" rows="2" >{$payment_options.invoice_direct_deposit_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Cheque{/t}</b></td>

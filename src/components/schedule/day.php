@@ -12,6 +12,16 @@ require(INCLUDES_DIR.'components/schedule.php');
 require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
+// Prevent undefined variable errors
+$VAR['workorder_id'] = isset($VAR['workorder_id']) ? $VAR['workorder_id'] : null;
+$VAR['employee_id'] = isset($VAR['employee_id']) ? $VAR['employee_id'] : QFactory::getUser()->login_user_id;
+
+/* handled in schedule.php for now
+$VAR['start_year'] = isset($VAR['start_year']) ? $VAR['start_year'] : date('Y');
+$VAR['start_month'] = isset($VAR['start_month']) ? $VAR['start_month'] : date('m');
+$VAR['start_day'] = isset($VAR['start_day']) ? $VAR['start_day'] : date('d');
+*/
+
 // Check the workorder status - We don't want to schedule/reschedule a workorder if it's closed
 if(isset($VAR['workorder_id'])) { 
     
@@ -22,9 +32,6 @@ if(isset($VAR['workorder_id'])) {
     }
     
 }
-
-// if no selected_employee, use the logged in user
-if(!$VAR['employee_id']) {$VAR['employee_id'] = $user->login_user_id;}
 
 // Assign the variables
 $smarty->assign('start_year',               $VAR['start_year']                                                                                                 );

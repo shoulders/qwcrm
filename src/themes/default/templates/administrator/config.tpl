@@ -22,50 +22,49 @@
                     <!-- Database --> 
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Database{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Database{/t}</td>
                     </tr>
                     
                     <tr>
-                        <td align="right"><b>{t}Host{/t}</b> <span style="color: #ff0000">*</span></td>
+                        <td align="right"><b>{t}Host{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <input name="qwconfig[db_host]" class="olotd5" size="25" value="{$qwcrm_config.db_host}" type="text" maxlength="20" placeholder="localhost" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[db_host]" class="olotd5" size="25" value="{$qwcrm_config.db_host}" type="text" maxlength="20" placeholder="localhost" required onkeydown="return onlyAlphaNumeric(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Host{/t}</strong></div><hr><div>{t escape=tooltip}The hostname for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}Database Name{/t}</b> <span style="color: #ff0000">*</span></td>
+                        <td align="right"><b>{t}Database Name{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <input name="qwconfig[db_name]" class="olotd5" size="25" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
+                            <input name="qwconfig[db_name]" class="olotd5" size="25" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Name{/t}</strong></div><hr><div>{t escape=tooltip}The name for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>
-                        <td align="right"><b>{t}Database Username{/t}</b> <span style="color: #ff0000">*</span></td>
+                        <td align="right"><b>{t}Database Username{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <input name="qwconfig[db_user]" class="olotd5" size="25" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[db_user]" class="olotd5" size="25" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Username{/t}</strong></div><hr><div>{t escape=tooltip}The username for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     {*<tr>
-                        <td align="right"><b>{t}Database Password{/t}</b></td>
+                        <td align="right"><b>{t}Database Password{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <input name="qwconfig[db_pass]" class="olotd5" size="25" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[db_pass]" class="olotd5" size="25" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Password{/t}</strong></div><hr><div>{t escape=tooltip}The password for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>*}                
                     <tr>
-                        <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
+                        <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <input name="qwconfig[db_prefix]" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);"/>
+                            <input name="qwconfig[db_prefix]" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>
-                    
+                    </tr>                    
                     
                     <!-- Other -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Other{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Other{/t}</td>
                     </tr>
                     
                     <tr>
@@ -87,8 +86,8 @@
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Gzip Page Compression{/t}</strong></div><hr><div>{t escape=tooltip}Compress buffered output if supported.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>                        
-                    </tr>                    
-                    {*<tr>
+                    </tr>                      
+                    <tr>
                         <td align="right"><b>{t}Site Maintenance{/t}</b></td>
                         <td>
                             <select class="olotd5" id="maintenance" name="qwconfig[maintenance]">                                                       
@@ -97,12 +96,12 @@
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Site Maintenance{/t}</strong></div><hr><div>{t escape=tooltip}Select if access to the Site Frontend is available. If Yes, the Frontend will display a message via the maintenance page.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>*}
+                    </tr>
                     <tr>
-                        <td align="right"><b>{t}Theme Name{/t}</b></td>
+                        <td align="right"><b>{t}Theme Name{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             {$qwcrm_config.theme_name}
-                            <input name="qwconfig[theme_name]" class="olotd5" value="{$qwcrm_config.theme_name}" type="hidden" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwconfig[theme_name]" class="olotd5" value="{$qwcrm_config.theme_name}" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" hidden/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Theme Name{/t}</strong></div><hr><div>{t escape=tooltip}This is the theme QWcrm is using. The ability to change the theme is not currently available, although the templating code is all present.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -270,7 +269,7 @@
                     <tr>
                         <td align="right">&nbsp;</td>
                         <td>                                                                                                                   
-                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator:config&send_test_mail=true&theme=print', success&page_tpl= function(data) { $('body').append(data); } } );">{t}Send Test Mail{/t}</button>
+                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&send_test_mail=true&theme=print', success: function(data) { $('body').append(data); } } );">{t}Send Test Mail{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Send Test Mail{/t}</strong></div><hr><div>{t escape=tooltip}You must save your changes before using this as the test uses the saved settings not those on the page.<br><br>The email will be sent to the logged in user\'s email address{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
@@ -278,7 +277,7 @@
                     <!-- Security -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Security{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Security{/t}</td>
                     </tr>
                     
                     <tr>
@@ -321,7 +320,7 @@
                     <!-- Session -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Session{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Session{/t}</td>
                     </tr>
                     
                     <tr>
@@ -341,21 +340,21 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Session Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}Auto log out a User after they have been inactive for the entered number of minutes. Do not set too high.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
-                    {*<tr>
-                        <td align="right"><b>{t}Shared Session{/t}</b></td>
+                    <tr>
+                        <td align="right"><b>{t}Shared Session{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="shared_session" name="qwconfig[shared_session]">                                                       
-                                <option value="0"{if $qwcrm_config.shared_session == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.shared_session == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.shared_session == '0'} selected{/if} hidden>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.shared_session == '1'} selected{/if} hidden>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Shared Session{/t}</strong></div><hr><div>{t escape=tooltip}When enabled, a user\'s session is shared between the frontend and administrator sections of the site. Note that changing this value will invalidate all existing sessions on the site. This is not available when the \'Force HTTPS\' option is set to \'Administrator Only\'.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>*}
+                    </tr>
                     
                     <!-- Remember Me -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Remember Me{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Remember Me{/t}</td>
                     </tr>
                                         
                     <tr>
@@ -386,7 +385,7 @@
                     <!-- Cookies -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Cookies{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Cookies{/t}</td>
                     </tr>
                     
                     <tr>
@@ -407,7 +406,7 @@
                     <!-- Logging -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Logging{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Logging{/t}</td>
                     </tr>
                     
                     <tr>
@@ -484,7 +483,7 @@
                     <!-- Error Reporting -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Error Reporting{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Error Reporting{/t}</td>
                     </tr>
                                         
                     <tr>
@@ -515,7 +514,7 @@
                     <!-- Debugging -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Debugging{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Debugging{/t}</td>
                     </tr>
                                         
                     <tr>
@@ -548,32 +547,32 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Smarty Debugging (QWcrm){/t}</strong></div><hr><div>{t escape=tooltip}Because of the way QWcrm is structured I needed to implement a custom method to call the Smarty Debugging template.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
-                    {*<tr>
-                        <td align="right"><b>{t}Smarty Debugging{/t}</b></td>
+                    <tr>
+                        <td align="right"><b>{t}Smarty Debugging{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_debugging" name="qwconfig[smarty_debugging]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_debugging == '0'} selected{/if} hidden>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if} hidden>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Smarty Debugging{/t}</strong></div><hr><div>{t escape=tooltip}This enables the debugging console. The console is a javascript popup window that informs you of the included templates, variables assigned from php and config file variables for the current script. It does not show variables assigned within a template with the { assign } function. This is the standard way to enable Smarty Debugging. This currently does not work.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}Smarty Debugging Control{/t}</b></td>
+                        <td align="right"><b>{t}Smarty Debugging Control{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_debugging_ctrl" name="qwconfig[smarty_debugging_ctrl]">
-                                <option value=""{if $qwcrm_config.smarty_debugging_ctrl == ''} selected{/if}>{t}No Control{/t}</option>
-                                <option value="NONE"{if $qwcrm_config.smarty_debugging_ctrl == 'NONE'} selected{/if}>{t}None{/t}</option>
-                                <option value="URL"{if $qwcrm_config.smarty_debugging_ctrl == 'URL'} selected{/if}>{t}URL{/t}</option>
+                                <option value=""{if $qwcrm_config.smarty_debugging_ctrl == ''} selected{/if} hidden>{t}No Control{/t}</option>
+                                <option value="NONE"{if $qwcrm_config.smarty_debugging_ctrl == 'NONE'} selected{/if} hidden>{t}None{/t}</option>
+                                <option value="URL"{if $qwcrm_config.smarty_debugging_ctrl == 'URL'} selected{/if} hidden>{t}URL{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Smarty Debugging Control{/t}</strong></div><hr><div>{t escape=tooltip}This allows alternate ways to enable debugging. NONE means no alternate methods are allowed. URL means when the keyword SMARTY_DEBUG is found in the QUERY_STRING, debugging is enabled for that invocation of the script. If $debugging is TRUE, this value is ignored.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>*}
+                    </tr>
                     
                     <!-- Smarty -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Smarty{/t}</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Smarty{/t}</td>
                     </tr>                                        
                     
                     
@@ -590,54 +589,57 @@
                     <tr>
                         <td align="right">&nbsp;</td>
                         <td>                                                                                                                   
-                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator:config&clear_smarty_compile=true&theme=print', success&page_tpl= function(data) { $('body').append(data); } } );">{t}Clear Smarty Compile{/t}</button>
+                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&clear_smarty_compile=true&theme=print', success: function(data) { $('body').append(data); } } );">{t}Clear Smarty Compile{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Clear Smarty Compile{/t}</strong></div><hr><div>{t escape=tooltip}This clears all of the Smarty compiled template files.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>                    
-                    {*<tr>
-                        <td align="right"><b>{t}Force Cache{/t}</b></td>
+                    </tr>
+                    
+                    
+                    
+                    <tr>
+                        <td align="right"><b>{t}Force Cache{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <select class="olotd5" id="smarty_force_cache" name="qwconfig[smarty_force_cache]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_force_cache == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_force_cache== '1'} selected{/if}>{t}Yes{/t}</option>
+                            <select class="olotd5" id="smarty_force_cache" name="qwconfig[smarty_force_cache]" readonly>                                                       
+                                <option value="0"{if $qwcrm_config.smarty_force_cache == '0'} selected{/if} hidden>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_force_cache== '1'} selected{/if} hidden>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Force Cache{/t}</strong></div><hr><div>{t escape=tooltip}This forces Smarty to (re)cache templates on every invocation. It does not override the $caching level, but merely pretends the template has never been cached before. {/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}Caching{/t}</b></td>
+                        <td align="right"><b>{t}Caching{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_caching" name="qwconfig[smarty_caching]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_caching == '0'} selected{/if}>{t}None{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_caching == '1'} selected{/if}>{t}Current{/t}</option>
-                                <option value="2"{if $qwcrm_config.smarty_caching == '2'} selected{/if}>{t}Saved{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_caching == '0'} selected{/if} hidden>{t}None{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_caching == '1'} selected{/if} hidden>{t}Current{/t}</option>
+                                <option value="2"{if $qwcrm_config.smarty_caching == '2'} selected{/if} hidden>{t}Saved{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Caching{/t}</strong></div><hr><div>{t escape=tooltip}This tells Smarty whether or not to cache the output of the templates to the Cache Directory. This is untested with QWcrm.<hr>A value of Smarty::CACHING_LIFETIME_CURRENT tells Smarty to use the current $cache_lifetime variable to determine if the cache has expired.<br><br>A value of Smarty::CACHING_LIFETIME_SAVED tells Smarty to use the $cache_lifetime value at the time the cache was generated. This way you can set the $cache_lifetime just before fetching the template to have granular control over when that particular cache expires.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>
-                        <td align="right"><b>{t}Cache Lifetime{/t}</b> <span style="color: #ff0000">*</span></td>
+                        <td align="right"><b>{t}Cache Lifetime{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <input name="qwconfig[smarty_cache_lifetime]" class="olotd5" value="{$qwcrm_config.smarty_cache_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumber(event);"/>
+                            <input name="qwconfig[smarty_cache_lifetime]" class="olotd5" value="{$qwcrm_config.smarty_cache_lifetime}" type="text" maxlength="20" required onkeydown="return onlyNumber(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Lifetime{/t}</strong></div><hr><div>{t escape=tooltip}This is the length of time in seconds that a template cache is valid. Once this time has expired, the cache will be regenerated.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}Cache Modified Check{/t}</b></td>
+                        <td align="right"><b>{t}Cache Modified Check{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_cache_modified_check" name="qwconfig[smarty_cache_modified_check]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_cache_modified_check == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_cache_modified_check == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_cache_modified_check == '0'} selected{/if} hidden>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_cache_modified_check == '1'} selected{/if} hidden>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Modified Check{/t}</strong></div><hr><div>{t escape=tooltip}If set to TRUE, Smarty will respect the \'If-Modified-Since\' header sent from the client. If the cached file timestamp has not changed since the last visit, then a \'304: Not Modified\' header will be sent instead of the content. This works only on cached content without { insert } tags.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
-                        <td align="right"><b>{t}Cache Locking{/t}</b></td>
+                        <td align="right"><b>{t}Cache Locking{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_cache_locking" name="qwconfig[smarty_cache_locking]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_cache_locking == '0'} selected{/if}>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_cache_locking == '1'} selected{/if}>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_cache_locking == '0'} selected{/if} hidden>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_cache_locking == '1'} selected{/if} hidden>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Locking{/t}</strong></div><hr><div>{t escape=tooltip}Cache locking avoids concurrent cache generation. This means resource intensive pages can be generated only once, even if they\'ve been requested multiple times in the same moment.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -645,17 +647,24 @@
                     <tr>
                         <td align="right">&nbsp;</td>
                         <td>                                                                                                                   
-                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator:config&clear_smarty_cache=true&theme=print', success&page_tpl= function(data) { $('body').append(data); } } );">{t}Clear Smarty Cache{/t}</button>
+                            <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&clear_smarty_cache=true&theme=print', success: function(data) { $('body').append(data); } } );" disabled>{t}Clear Smarty Cache{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Clear Smarty Cache{/t}</strong></div><hr><div>{t escape=tooltip}This clears the Smarty cache.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>*}
+                    </tr>
                     
                     <!-- Update -->
                     
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;</td>
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;</td>
                     </tr> 
                     
+                    <tr>
+                        <td colspan="2">
+                            <p><span style="color: #ff0000">*</span> {t}Mandatory{/t}</p>
+                            <p><span style="color: blue">*</span> {t}Cannot Change{/t}</p>
+                        </td>
+                    </tr>
+                    </tr>
                     <tr>
                         <td colspan="2" style="text-align: center;">
                             <button class="olotd5" type="submit" name="submit" value="update">{t}Update{/t}</button>&nbsp;                            

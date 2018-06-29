@@ -69,7 +69,7 @@
                                                                             <td>
                                                                                 <select id="type" name="type" class="olotd5">               
                                                                                     {section name=s loop=$supplier_types}
-                                                                                        <option value="{$supplier_types[s].supplier_type_id}"{if $supplier_details.type == $supplier_types[s].supplier_type_id} selected{/if}>{t}{$supplier_types[s].display_name}{/t}</option>
+                                                                                        <option value="{$supplier_types[s].supplier_type_id}">{t}{$supplier_types[s].display_name}{/t}</option>
                                                                                     {/section}
                                                                                 </select>
                                                                             </td>
@@ -94,7 +94,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Address{/t}</strong></td>
-                                                                            <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);">{$employee_details[a].EMPLOYEE_ADDRESS}</textarea></td>
+                                                                            <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);"></textarea></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}City{/t}</strong></td>

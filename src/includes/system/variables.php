@@ -32,7 +32,7 @@ function load_system_variables(&$VAR = null) {
     ################################ 
 
     // Make sure $VAR exist as an array, $VAR is not always created upstream.
-    if(!isset($VAR)) { $VAR = array(); }
+    $VAR = isset($VAR) ? $VAR : array();
 
     // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
@@ -91,15 +91,17 @@ function load_system_variables(&$VAR = null) {
     #############################
 
     // Information Message (Green)
-    if(isset($VAR['information_msg'])){
-        $smarty->assign('information_msg', $VAR['information_msg']);
-    }
-
+    $VAR['information_msg'] = isset($VAR['information_msg']) ? $VAR['information_msg'] : null;
+    $smarty->assign('information_msg', $VAR['information_msg']);
+            
     // Warning Message (Red)
-    if(isset($VAR['warning_msg'])){
-        $smarty->assign('warning_msg', $VAR['warning_msg']);
-    }
-
+    $VAR['warning_msg'] = isset($VAR['warning_msg']) ? $VAR['warning_msg'] : null;
+    $smarty->assign('warning_msg', $VAR['warning_msg']);
+    
+    #############################
+    #        Exit Function      #
+    #############################
+    
     return;
     
 }

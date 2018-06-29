@@ -73,10 +73,11 @@ function get_company_start_end_times($time_event) {
 function update_company_details($VAR) {
 
     $db = QFactory::getDbo();
-    $smarty = QFactory::getSmarty();
+    $smarty = QFactory::getSmarty();    
+    $sql = '';
     
     // compensate for installation and migration
-    if(!defined(DATE_FORMAT)) {
+    if(!defined('DATE_FORMAT')) {
         define('DATE_FORMAT', get_company_details('date_format'));
     } 
            
@@ -92,10 +93,10 @@ function update_company_details($VAR) {
     }
     
     $sql .= "UPDATE ".PRFX."company_options SET
-            display_name            = ". $db->qstr( $VAR['display_name']                   ).",";
+            display_name            =". $db->qstr( $VAR['display_name']                   ).",";
     
     if($VAR['delete_logo']) {
-        $sql .="logo                = ''                                                   ,";
+        $sql .="logo                =''                                                   ,";
     }
                 
     if(!empty($_FILES['logo']['name'])) {
@@ -218,7 +219,7 @@ function delete_logo() {
     // Only delete a logo if there is one set
     if(get_company_details('logo')) {
         
-        // Prepare the correct file name from the entry in the database
+        // Build the full logo file path
         $logo_file = parse_url(MEDIA_DIR . get_company_details('logo'), PHP_URL_PATH);
         
         // Perform the deletion

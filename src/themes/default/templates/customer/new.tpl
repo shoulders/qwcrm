@@ -85,8 +85,8 @@
                                                                             <td align="right"><b>{t}Active{/t}</b></td>
                                                                             <td>
                                                                                 <select class="olotd5" id="active" name="active">                                                                                    
-                                                                                    <option value="1"{if $customer_details.active == '1'} selected{/if}>{t}Yes{/t}</option>
-                                                                                    <option value="0"{if $customer_details.active == '0'} selected{/if}>{t}No{/t}</option>
+                                                                                    <option value="1">{t}Yes{/t}</option>
+                                                                                    <option value="0">{t}No{/t}</option>
                                                                                 </select>                                                                                
                                                                             </td>                        
                                                                         </tr>                                                                                                                                     

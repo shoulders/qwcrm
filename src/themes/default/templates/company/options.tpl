@@ -97,12 +97,12 @@
                                                                                     <td><input name="country" class="olotd5" value="{$company_details.country}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td align="right"><b>{t}Primary{/t}:</b></td>
+                                                                                    <td align="right"><b>{t}Primary Phone{/t}:</b></td>
                                                                                     <td><input name="primary_phone" class="olotd5" value="{$company_details.primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td align="right"><b>{t}Mobile{/t}:</b></td>
-                                                                                    <td><input name="mobile" class="olotd5" value="{$company_details.mobile}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                    <td align="right"><b>{t}Mobile Phone{/t}:</b></td>
+                                                                                    <td><input name="mobile_phone" class="olotd5" value="{$company_details.mobile_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Fax{/t}:</b></td>
@@ -337,6 +337,12 @@
                                 </tr>        
 
                                 <!-- Update Button -->
+                                
+                                <tr>
+                                    <td colspan="2">
+                                        <span style="color: #ff0000">*</span> {t}Mandatory{/t}
+                                    </td>
+                                </tr>
 
                                 <tr>
                                     <td>

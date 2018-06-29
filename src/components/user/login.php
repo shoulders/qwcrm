@@ -19,7 +19,7 @@ $VAR['action'] = isset($VAR['action']) ? $VAR['action'] : null;
 // Get variables in correct format for login()
 $credentials['username'] = $VAR['login_username'];
 $credentials['password'] = $VAR['login_pwd'];
-if (QFactory::getConfig()->get('remember_me') && isset($VAR['remember'])) {
+if ($config->get('remember_me') && isset($VAR['remember'])) {
     $options['remember'] = $VAR['remember'];
 } else {
     $options = array();
@@ -29,7 +29,7 @@ if (QFactory::getConfig()->get('remember_me') && isset($VAR['remember'])) {
 if($VAR['action'] === 'login') {
     
     // recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('>recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */        
 

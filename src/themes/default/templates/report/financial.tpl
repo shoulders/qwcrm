@@ -79,304 +79,314 @@
                             <br />
                             
                         </form>                
-                                
-                        <!-- Basic Statistics -->
-                        <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
-                            <tr>
-                                <td class="olotd">
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                        <tr>
-                                            <td class="menuhead2" width="100%">&nbsp;{t}Basic Statisitics{/t}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="olotd5" colspan="2">
-                                                <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
-                                                    
-                                                    <tr>
-                                                        <td class="olohead">{t}Customers{/t}</td>
-                                                        <td class="olohead">{t}Work Orders{/t}</td>
-                                                        <td class="olohead">{t}Invoices{/t}</td>
-                                                    </tr>                                                    
-                                                    
-                                                    <tr>
-                                                        
-                                                        <!-- Customers -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>
-                                                                <tr>
-                                                                    <td><b>{t}New{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$new_customers}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        
-                                                        <!-- Workorders -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table >
-                                                                <tr>
-                                                                    <td><b>{t}Opened{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$wo_opened}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Closed{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$wo_closed}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        
-                                                        <!-- Invoices -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>
-                                                                <tr>
-                                                                    <td><b>{t}Opened{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$opened_invoices}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Pending{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$pending_invoices}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Unpaid{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$unpaid_invoices}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Partially Paid{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$partially_paid_invoices}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Paid{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$paid_invoices}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>                         
-
-                        <!-- Advanced Statistics -->
-                        <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
-                            <tr>
-                                <td class="olotd">
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                        <tr>
-                                            <td class="menuhead2" width="100%">&nbsp;{t}Advanced Statistics{/t}</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="olotd5" colspan="2">
-                                                <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
-                                                    <tr>
-                                                        <td class="olohead">{t}Labour{/t}</td>
-                                                        <td class="olohead">{t}Parts{/t}</td>                                                        
-                                                        <td class="olohead">{t}Expenses{/t}</td>
-                                                        <td class="olohead">{t}Refunds{/t}</td>                                                        
-                                                    </tr>
-                                                    <tr>
-                                                        
-                                                        <!-- Labour -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>
-                                                                <tr>
-                                                                    <td><b>{t}Items{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$labour_different_items_count}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Qty{/t}:</b></td>
-                                                                    <td><font color="red"<b>{if $labour_items_count == ''}0{else}{$labour_items_count}{/if}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Sub{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        
-                                                        <!-- Parts -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>
-                                                                <tr>
-                                                                    <td><b>{t}Items{/t}:</b></td>
-                                                                    <td><font color="red"<b> {$parts_different_items_count}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Qty{/t}:</b></td>
-                                                                    <td><font color="red"<b>{if $parts_items_count == ''}0{else}{$parts_items_count}{/if}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Sub{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>                                                        
-                                                        
-                                                        <!-- Expenses -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>
-                                                                <tr>
-                                                                    <td><b>{t}Net{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$expense_net_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}VAT{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$expense_vat_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Gross{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$expense_gross_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>
-                                                        
-                                                        <!-- Refunds -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>
-                                                                <tr>
-                                                                    <td><b>{t}Net{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$refund_net_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}VAT{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$refund_vat_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Gross{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$refund_gross_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td>                                                        
-                                                        
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                        <br>
                         
-                        <!-- Revenue -->
-                        <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
-                            <tr>
-                                <td class="olotd">
-                                    <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                        <tr>
-                                            <td class="menuhead2" width="100%">&nbsp;{t}Revenue Calculations{/t}</td>
-                                        </tr>                                        
-                                        <tr>
-                                            <td class="olotd5" colspan="2">
-                                                <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
-                                                    
-                                                    <tr>                                                        
-                                                        <td class="olohead">{t}Invoiced{/t}</td>
-                                                        <td class="olohead">{t}VAT{/t}</td>
-                                                        <td class="olohead">{t}Profit{/t}</td>                                                        
-                                                    </tr>                                                    
-                                                    
-                                                    <tr>
-                                                        
-                                                        <!-- Revenue -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>
-                                                                <tr>
-                                                                    <td><b>{t}Sub Total{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$invoice_sub_total|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Discount{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$invoice_discount_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Net{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{if $tax_type == 'vat'}{t}VAT{/t}{elseif $tax_type == 'sales'}{t}Sales Tax{/t}{else}{t}Sales Tax{/t} / {t}VAT{/t}{/if}:</b></td>                                                                    
-                                                                    <td><font color="red"<b>{$currency_sym}{$invoice_tax_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Gross{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$invoice_gross_amount|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><hr></td>
-                                                                </tr>
-                                                                 
-                                                                <tr>
-                                                                    <td><b>{t}Received Monies{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$received_monies|string_format:"%.2f"}</b></font></td>
-                                                                </tr> 
-                                                                <tr>
-                                                                    <td><b>{t}Outstanding Balance{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$outstanding_balance|string_format:"%.2f"}</b></font></td>
-                                                                </tr> 
-                                                            </table>
-                                                        </td>
-                                                        
-                                                        <!-- VAT -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table>                                                                
-                                                                <tr>
-                                                                    <td><b>{t}Outlay{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$vat_outlay|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td><b>{t}Invoiced{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$vat_invoiced|string_format:"%.2f"}</b></font></td>
-                                                                </tr> 
-                                                                <tr>
-                                                                    <td><b>{t}Balance{/t}:</b></td>
-                                                                    <td><font color="red"<b>{$currency_sym}{$vat_balance|string_format:"%.2f"}</b></font></td>
-                                                                </tr>
-                                                            </table>
-                                                        </td> 
-                                                        
-                                                        <!-- Calculations -->
-                                                        <td class="olotd4" valign="top">
-                                                            <table cellpadding="5">
-                                                                <tr>
-                                                                    <td style="text-align: center;">                                                                        
-                                                                        <p>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}</p>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: center;">
-                                                                        <p><strong>{t}No Tax{/t}</strong></p>
-                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[G]{/t} - ( {t}Expenses{/t}{t}[G]{/t} - {t}Refunds{/t}{t}[G]{/t} )</p>                                                                       
-                                                                        <p>{$currency_sym}{$no_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>                                                                        
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td style="text-align: center;">                                                                        
-                                                                        <p><strong>{t}Sales Tax{/t}</strong></p>
-                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[N]{/t} - ( {t}Expenses{/t}{t}[G]{/t} - {t}Refunds{/t}{t}[G]{/t} )</p> 
-                                                                        <p>{$currency_sym}{$sales_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>
-                                                                    </td>
-                                                                </tr> 
-                                                                <tr>
-                                                                    <td style="text-align: center;">                                                                        
-                                                                        <p><strong>{t}VAT{/t}</strong></p>
-                                                                        <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[N]{/t} - ( {t}Expenses{/t}{t}[N]{/t} - {t}Refunds{/t}{t}[N]{/t} )</p> 
-                                                                        <p>{$currency_sym}{$vat_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})</p>
-                                                                    </td>
-                                                                </tr>                                                                                                                               
-                                                            </table>
-                                                        </td>                                                                                                              
-                                                        
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>                                                                      
+                        <!-- The Report Section -->                        
+                        
+                        {if $enable_report_section}
+                            <!-- Basic Statistics -->
+                            <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
+                                <tr>
+                                    <td class="olotd">
+                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                            <tr>
+                                                <td class="menuhead2" width="100%">&nbsp;{t}Basic Statisitics{/t}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="olotd5" colspan="2">
+                                                    <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
+
+                                                        <tr>
+                                                            <td class="olohead">{t}Customers{/t}</td>
+                                                            <td class="olohead">{t}Work Orders{/t}</td>
+                                                            <td class="olohead">{t}Invoices{/t}</td>
+                                                        </tr>                                                    
+
+                                                        <tr>
+
+                                                            <!-- Customers -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}New{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$new_customers}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+
+                                                            <!-- Workorders -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table >
+                                                                    <tr>
+                                                                        <td><b>{t}Opened{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$wo_opened}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Closed{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$wo_closed}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+
+                                                            <!-- Invoices -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}Opened{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$opened_invoices}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Pending{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$pending_invoices}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Unpaid{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$unpaid_invoices}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Partially Paid{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$partially_paid_invoices}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Paid{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$paid_invoices}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>                         
+
+                            <!-- Advanced Statistics -->
+                            <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
+                                <tr>
+                                    <td class="olotd">
+                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                            <tr>
+                                                <td class="menuhead2" width="100%">&nbsp;{t}Advanced Statistics{/t}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="olotd5" colspan="2">
+                                                    <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
+                                                        <tr>
+                                                            <td class="olohead">{t}Labour{/t}</td>
+                                                            <td class="olohead">{t}Parts{/t}</td>                                                        
+                                                            <td class="olohead">{t}Expenses{/t}</td>
+                                                            <td class="olohead">{t}Refunds{/t}</td>                                                        
+                                                        </tr>
+                                                        <tr>
+
+                                                            <!-- Labour -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}Items{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$labour_different_items_count}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Qty{/t}:</b></td>
+                                                                        <td><font color="red"<b>{if $labour_items_count == ''}0{else}{$labour_items_count}{/if}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Sub{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+
+                                                            <!-- Parts -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}Items{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$parts_different_items_count}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Qty{/t}:</b></td>
+                                                                        <td><font color="red"<b>{if $parts_items_count == ''}0{else}{$parts_items_count}{/if}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Sub{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>                                                        
+
+                                                            <!-- Expenses -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}Net{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$expense_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}VAT{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$expense_vat_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Gross{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$expense_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+
+                                                            <!-- Refunds -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}Net{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$refund_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}VAT{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$refund_vat_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Gross{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$refund_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>                                                        
+
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>
+
+                            <!-- Revenue -->
+                            <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
+                                <tr>
+                                    <td class="olotd">
+                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                            <tr>
+                                                <td class="menuhead2" width="100%">&nbsp;{t}Revenue Calculations{/t}</td>
+                                            </tr>                                        
+                                            <tr>
+                                                <td class="olotd5" colspan="2">
+                                                    <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
+
+                                                        <tr>                                                        
+                                                            <td class="olohead">{t}Invoiced{/t}</td>
+                                                            <td class="olohead">{t}VAT{/t}</td>
+                                                            <td class="olohead">{t}Profit{/t}</td>                                                        
+                                                        </tr>                                                    
+
+                                                        <tr>
+
+                                                            <!-- Revenue -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}Sub Total{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Discount{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_discount_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Net{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{if $tax_type == 'vat'}{t}VAT{/t}{elseif $tax_type == 'sales'}{t}Sales Tax{/t}{else}{t}Sales Tax{/t} / {t}VAT{/t}{/if}:</b></td>                                                                    
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_tax_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Gross{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><hr></td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td><b>{t}Received Monies{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$received_monies|string_format:"%.2f"}</b></font></td>
+                                                                    </tr> 
+                                                                    <tr>
+                                                                        <td><b>{t}Outstanding Balance{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$outstanding_balance|string_format:"%.2f"}</b></font></td>
+                                                                    </tr> 
+                                                                </table>
+                                                            </td>
+
+                                                            <!-- VAT -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>                                                                
+                                                                    <tr>
+                                                                        <td><b>{t}Outlay{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_outlay|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Invoiced{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_invoiced|string_format:"%.2f"}</b></font></td>
+                                                                    </tr> 
+                                                                    <tr>
+                                                                        <td><b>{t}Balance{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_balance|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td> 
+
+                                                            <!-- Calculations -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table cellpadding="5">
+                                                                    <tr>
+                                                                        <td style="text-align: center;">                                                                        
+                                                                            <p>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="text-align: center;">
+                                                                            <p><strong>{t}No Tax{/t}</strong></p>
+                                                                            <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[G]{/t} - ( {t}Expenses{/t}{t}[G]{/t} - {t}Refunds{/t}{t}[G]{/t} )</p>                                                                       
+                                                                            <p>{$currency_sym}{$no_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>                                                                        
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td style="text-align: center;">                                                                        
+                                                                            <p><strong>{t}Sales Tax{/t}</strong></p>
+                                                                            <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[N]{/t} - ( {t}Expenses{/t}{t}[G]{/t} - {t}Refunds{/t}{t}[G]{/t} )</p> 
+                                                                            <p>{$currency_sym}{$sales_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} - {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>
+                                                                        </td>
+                                                                    </tr> 
+                                                                    <tr>
+                                                                        <td style="text-align: center;">                                                                        
+                                                                            <p><strong>{t}VAT{/t}</strong></p>
+                                                                            <p>{t}Profit{/t} = {t}Invoiced{/t}{t}[N]{/t} - ( {t}Expenses{/t}{t}[N]{/t} - {t}Refunds{/t}{t}[N]{/t} )</p> 
+                                                                            <p>{$currency_sym}{$vat_tax_profit|string_format:"%.2f"} = {$currency_sym}{$invoice_net_amount|string_format:"%.2f"} - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} - {$currency_sym}{$refund_net_amount|string_format:"%.2f"})</p>
+                                                                        </td>
+                                                                    </tr>                                                                                                                               
+                                                                </table>
+                                                            </td>                                                                                                              
+
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        {else}
+                            <table width="650px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
+                                <tr>
+                                    <td class="olotd"><strong>{t}To generate a report, submit a date range above.{/t}</strong</td>
+                                </tr>
+                            </table>
+                        {/if}
                                                                     
                     </td>
                 </tr>

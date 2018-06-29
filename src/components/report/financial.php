@@ -92,7 +92,10 @@ if(isset($VAR['submit'])) {
     // Profit  || Profit = Invoiced - (Expenses - Refunds) 
     $smarty->assign('no_tax_profit',    $invoice_gross_amount - ($expense_gross_amount - $refund_gross_amount)  );
     $smarty->assign('sales_tax_profit', $invoice_net_amount - ($expense_gross_amount - $refund_gross_amount)    );
-    $smarty->assign('vat_tax_profit',   $invoice_net_amount - ($expense_net_amount - $refund_net_amount)        );    
+    $smarty->assign('vat_tax_profit',   $invoice_net_amount - ($expense_net_amount - $refund_net_amount)        );
+    
+    // Enable Report Section
+    $smarty->assign('enable_report_section', true);
     
     /* Logging */
     
@@ -100,6 +103,9 @@ if(isset($VAR['submit'])) {
     write_record_to_activity_log(_gettext("Financial report run for the date range").': '.$VAR['start_date'].' - '.$VAR['end_date']);
     
 } else {
+    
+    // Prevent undefined variable errors
+    $smarty->assign('enable_report_section', false);
     
     // Load company finacial year dates
     $start_date = get_company_details('year_start'); 

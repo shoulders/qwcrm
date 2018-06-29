@@ -10,11 +10,19 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/payment.php');
 
+// Prevent undefined variable errors
+$VAR['credit_card'] = isset($VAR['credit_card']) ? $VAR['credit_card'] : null;
+$VAR['cheque'] = isset($VAR['cheque']) ? $VAR['cheque'] : null;
+$VAR['cash'] = isset($VAR['cash']) ? $VAR['cash'] : null;
+$VAR['gift_certificate'] = isset($VAR['gift_certificate']) ? $VAR['gift_certificate'] : null;
+$VAR['paypal'] = isset($VAR['paypal']) ? $VAR['paypal'] : null;
+$VAR['direct_deposit'] = isset($VAR['direct_deposit']) ? $VAR['direct_deposit'] : null;
+
 // If changes submited
 if(isset($VAR['submit'])) {
     
     // Update enabled payment methods (checkboxes)
-    update_active_payment_accepted_methods($VAR);
+    update_payment_accepted_methods_statuses($VAR);
     
     // Update Payment details
     update_payment_options($VAR);

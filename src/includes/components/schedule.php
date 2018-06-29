@@ -564,6 +564,8 @@ function build_ics_description($type, $single_schedule, $customer_id, $workorder
     
     if($type == 'html') {
         
+        $description = '';
+        
         // Open HTML Wrapper
         $description .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">\n'.
                         '<HTML>\n'.
@@ -725,6 +727,7 @@ function ics_string_octet_split($ics_keyname, $ics_string) {
 function build_calendar_matrix($start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
     
     $db = QFactory::getDbo();
+    $calendar_matrix = '';
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
     $company_day_start = mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, $start_month, $start_day, $start_year);
@@ -754,7 +757,7 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
 
     // Add any scheduled events found into the $scheduleObject for any employee
     $scheduleObject = array();
-    while (!$rs->EOF ){        
+    while (!$rs->EOF){        
         array_push($scheduleObject, array(
             'schedule_id'           => $rs->fields['schedule_id'],
             'customer_display_name' => $rs->fields['customer_display_name'],
@@ -769,7 +772,7 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
     /* Build the Calendar Matrix Table Content */   
 
     // Open the Calendar Matrix Table - Blue Header Bar
-    $calendar .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"olotable\">\n
+    $calendar_matrix .= "<table cellpadding=\"0\" cellspacing=\"0\" class=\"olotable\">\n
         <tr>\n
             <td class=\"olohead\" width=\"75\">&nbsp;</td>\n
             <td class=\"olohead\" width=\"600\">&nbsp;</td>\n
@@ -784,7 +787,7 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
     // Needed for the loop advancement
     $matrixStartTime    = $company_day_start;
     
-    // Cycle through the Business day in 15 minute segments (set at the bottom) - you take of the $time_slot_length to prevent an additional slot at the end
+    // Cycle through the Business day in 15 minute segments (set at the bottom) - you take off the $time_slot_length to prevent an additional slot at the end
     while($matrixStartTime <= $company_day_end - $time_slot_length) {        
 
         /*
@@ -796,17 +799,17 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
          */
         
         /* Start ROW */
-        $calendar .= "<tr>\n";        
+        $calendar_matrix .= "<tr>\n";        
 
         /* Schedule Block ROW */
         
-        // If the ROW is within the time range of the schedule item            
-        if($matrixStartTime >= $scheduleObject[$i]['start_time'] && $matrixStartTime <= $scheduleObject[$i]['end_time']) {
+        // If the ROW is within the time range of the schedule item (assuming a schedule object has been created)          
+        if(!empty($scheduleObject[$i]) && $matrixStartTime >= $scheduleObject[$i]['start_time'] && $matrixStartTime <= $scheduleObject[$i]['end_time']) {
             
             /* LEFT CELL*/           
             
             // Make the left column blank when there is a schedule item
-            $calendar .= "<td></td>\n";           
+            $calendar_matrix .= "<td></td>\n";           
 
             /* RIGHT CELL */
             
@@ -814,28 +817,28 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
             if($matrixStartTime == $scheduleObject[$i]['start_time']){
 
                 // Open CELL and add clickable link (to workorder) for CELL
-                $calendar .= "<td class=\"menutd2\" align=\"center\" >\n";
+                $calendar_matrix .= "<td class=\"menutd2\" align=\"center\" >\n";
 
                 // Schedule Item Title
-                $calendar .= "<b><font color=\"red\">"._gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." "._gettext("for")." ". $scheduleObject[$i]['customer_display_name']."</font></b><br>\n";
+                $calendar_matrix .= "<b><font color=\"red\">"._gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." "._gettext("for")." ". $scheduleObject[$i]['customer_display_name']."</font></b><br>\n";
 
                 // Time period of schedule
-                $calendar .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['start_time'])." - ".date("H:i",$scheduleObject[$i]['end_time'])."</font></b><br>\n";
+                $calendar_matrix .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['start_time'])." - ".date("H:i",$scheduleObject[$i]['end_time'])."</font></b><br>\n";
 
                 // Schedule Note
-                $calendar .= "<div style=\"color: blue; font-weight: bold;\">"._gettext("Note").":  ".$scheduleObject[$i]['note']."</div><br>\n";
+                $calendar_matrix .= "<div style=\"color: blue; font-weight: bold;\">"._gettext("Note").":  ".$scheduleObject[$i]['note']."</div><br>\n";
 
                 // Links for schedule
-                $calendar .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
-                $calendar .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
+                $calendar_matrix .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
+                $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
                 if(!get_workorder_details($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
-                    $calendar .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ".
+                    $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ".
                                     "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("Export")."</a></b> - ".
                                     "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
                 }
 
                 // Close CELL
-                $calendar .= "</td>\n";                
+                $calendar_matrix .= "</td>\n";                
                 
             }           
             
@@ -846,33 +849,33 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
             // If just viewing/no workorder_id -  no clickable links to create schedule items
             if(!$workorder_id) {
                 if(date('i',$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
-                    $calendar .= "<td class=\"olotd\"></td>\n";
+                    $calendar_matrix .= "<td class=\"olotd\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
+                    $calendar_matrix .= "<td class=\"olotd\"></td>\n";
                 } else {
-                    $calendar .= "<td class=\"olotd4\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
-                    $calendar .= "<td class=\"olotd4\"></td>\n";
+                    $calendar_matrix .= "<td class=\"olotd4\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
+                    $calendar_matrix .= "<td class=\"olotd4\"></td>\n";
                 }
             
             // If workorder_id is present enable clickable links
             } else {            
                 if(date('i',$matrixStartTime) == 0) {
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
-                    $calendar .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar_matrix .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
+                    $calendar_matrix .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 } else {
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
-                    $calendar .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
+                    $calendar_matrix .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
+                    $calendar_matrix .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
                 }                
             }          
             
         }
 
         /* Close ROW */
-        $calendar .= "</tr>\n";             
+        $calendar_matrix .= "</tr>\n";             
         
         /* Loop Advancement */        
         
-        // Advance the schedule counter to the next item
-        if($matrixStartTime >= $scheduleObject[$i]['end_time']) {$i++;}
+        // Advance the schedule counter to the next schedule item if the schedule end time has been reached
+        if(!empty($scheduleObject[$i]) && $matrixStartTime >= $scheduleObject[$i]['end_time']) { $i++; }
 
         // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements        
         $matrixStartTime += $time_slot_length;      
@@ -880,10 +883,10 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
     }
 
     // Close the Calendar Matrix Table
-    $calendar .= "</table>\n";    
+    $calendar_matrix .= "</table>\n";    
     
     // Return Calender HTML Matrix
-    return $calendar;
+    return $calendar_matrix;
     
 }
 

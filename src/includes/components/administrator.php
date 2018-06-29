@@ -45,7 +45,7 @@ function get_qwcrm_config_from_file() {
         require_once('configuration.php');     
     
         // Return the config values if defined
-        if(class_exists(QConfig)) {            
+        if(class_exists('QConfig')) {            
             return get_object_vars(new QConfig);
         } 
         

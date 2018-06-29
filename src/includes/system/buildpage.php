@@ -149,6 +149,9 @@ function check_link_permission($url) {
     // Get routing variables from URL
     $url_routing = get_routing_variables_from_url($url);
     
+    // temp
+    if(isset($url_routing['component']) && !isset($url_routing['page_tpl'])) {echo 'coccccck  '.$url.'<br >';}
+    
     // Check to see if user is allowed to use the asset
     if(check_page_acl($url_routing['component'], $url_routing['page_tpl'])) {
         

@@ -13,6 +13,9 @@ require(INCLUDES_DIR.'components/invoice.php'); // require to stop email sub-sys
 require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
+// Prevent undefined variable errors
+//$VAR['token'] = isset($VAR['token']) ? $VAR['token'] : null;
+
 // Delete any expired resets (CRON is better)
 delete_expired_reset_codes();
 
@@ -27,7 +30,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 
 
 // STAGE 2 - Email submitted for account reset
-} elseif(isset($VAR['submit']) && isset($VAR['email']) && $VAR['email'] != '') {
+} elseif(isset($VAR['submit']) && isset($VAR['email']) && $VAR['email']) {
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user', 'reset')) {
@@ -57,7 +60,8 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
                 // build the email and send it
                 send_reset_email($VAR['user_id']);
                     
-                // Load the enter_token page            
+                // Load the enter_token page
+                $smarty->assign('token', null);
                 $stage = 'enter_token';                
                 
             }
@@ -74,7 +78,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
 
         
 // STAGE 3 - Enter Token
-} elseif(!isset($VAR['submit']) && isset($VAR['token']) && $VAR['token'] != '') {    
+} elseif(!isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {    
     
     // Load the enter_token page
     $smarty->assign('token', $VAR['token']);
@@ -83,7 +87,7 @@ if(!isset($VAR['submit']) && !isset($VAR['email']) && !isset($VAR['token']) && !
     
     
 // STAGE 4 - Token has been submitted
-} elseif(isset($VAR['submit']) && isset($VAR['token']) && $VAR['token'] != '') {
+} elseif(isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user', 'reset')) {
@@ -183,8 +187,3 @@ $smarty->assign('stage', $stage);
 
 // Build the page
 $BuildPage .= $smarty->fetch('user/reset.tpl');
-
-
-   
-
-

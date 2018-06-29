@@ -41,7 +41,7 @@
         
         <!-- Assigned To -->
         <td class="olotd4" align="center">
-            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$employee_details.work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$employee_details.mobile_phone}<br><b>{t}Home{/t}: </b>{$employee_details.home_primary_phone}');" onMouseOut="hideddrivetip();">                
+            <img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Fax{/t}: </b>{$employee_details.work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$employee_details.work_mobile_phone}<br><b>{t}Home{/t}: </b>{$employee_details.home_primary_phone}');" onMouseOut="hideddrivetip();">                
            <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$workorder_details.employee_id}">{$employee_details.display_name}</a>
         </td>
         

@@ -11,8 +11,8 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/administrator.php');
 require(INCLUDES_DIR.'components/user.php');
 
-// Clear Smarty Cache
-if($VAR['clear_smarty_cache'] == 'true') {
+// Clear Smarty Cache button
+if(isset($VAR['submit'], $VAR['clear_smarty_cache'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         clear_smarty_cache();
     }
@@ -20,7 +20,7 @@ if($VAR['clear_smarty_cache'] == 'true') {
 }
 
 // Clear Smarty Compile
-if($VAR['clear_smarty_compile'] == 'true') {    
+if(isset($VAR['submit'], $VAR['clear_smarty_compile'])) {    
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         clear_smarty_compile();        
     }    
@@ -28,7 +28,7 @@ if($VAR['clear_smarty_compile'] == 'true') {
 }
 
 // Send a Test Mail
-if($VAR['send_test_mail'] == 'true') {
+if(isset($VAR['submit'], $VAR['send_test_mail'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         send_test_mail();
     }
@@ -36,7 +36,7 @@ if($VAR['send_test_mail'] == 'true') {
 }
 
 // Update Config details
-if($VAR['submit'] == 'update') {   
+if(isset($VAR['submit']) && $VAR['submit'] == 'update') {   
     
     if(update_qwcrm_config($VAR['qwconfig'])) {
         

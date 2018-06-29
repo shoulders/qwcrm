@@ -11,13 +11,13 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}Invoice{/t} {$invoice_details.invoice_id}</title>   
+    <title>{t}INVOICE_PRINT_INVOICE_PAGE_TITLE{/t}</title>   
         
     <!-- PDF Subject -->
-    <meta name="description" content="{$meta_description}">
+    <meta name="description" content="{t}INVOICE_PRINT_INVOICE_META_DESCRIPTION{/t}">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="keywords" content="{t}INVOICE_PRINT_INVOICE_META_KEYWORDS{/t}">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       
@@ -87,8 +87,7 @@
                                         <b>{t}Status{/t} - </b>
                                         {section name=s loop=$invoice_statuses}    
                                             {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
-                                        {/section} 
-                                        {$workorder_details.active}<br>
+                                        {/section}<br>
                                         <b>{t}Date{/t} - </b>{$invoice_details.date|date_format:$date_format}<br>
                                         <b>{t}Due Date{/t} - </b>{$invoice_details.due_date|date_format:$date_format}<br>
                                         <b>{t}Work Order{/t} - </b>{if !$workorder_details}{t}n/a{/t}{else}{$invoice_details.workorder_id}{/if}<br>
@@ -106,7 +105,7 @@
     <br>
     
     <!-- Workorder Row -->
-    {if $workorder_details.scope != ''}    
+    {if $workorder_details.scope}    
         <table width="750" border="0" cellpadding="3" cellspacing="0">
             <tr>
                 <td><b>{t}Work Order{/t} {t}Description{/t}</b></td>
@@ -185,56 +184,59 @@
             
             <td colspan="1" valign="top">
                 <table width="530" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-                    <tr>
-                        <td align="left" ><font size="-1"><b>{t}Payment Instructions{/t}</b></font></td>
-                    </tr>
-
-                    <!-- Cheque -->                        
-                    {if $payment_active_accepted_methods.cheque}
+                    
+                    <!-- Only show payments section if there are valid ones enabled -->
+                    {if $payment_accepted_methods_statuses.cheque || $payment_accepted_methods_statuses.direct_deposit || $payment_accepted_methods_statuses.paypal}
                         <tr>
-                            <td>                                    
-                                <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
-                            </td>                                
+                            <td align="left" ><font size="-1"><b>{t}Payment Instructions{/t}</b></font></td>
                         </tr>
-                        <tr>
-                            <td>{$payment_options.invoice_cheque_msg}</td>
-                        </tr>
-                    {/if}
 
-                    <!-- Direct Deposit -->
-                    {if $payment_active_accepted_methods.direct_deposit}
+                        <!-- Cheque -->                        
+                        {if $payment_accepted_methods_statuses.cheque}
+                            <tr>
+                                <td>                                    
+                                    <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
+                                </td>                                
+                            </tr>
+                            <tr>
+                                <td>{$payment_options.invoice_cheque_msg}</td>
+                            </tr>
+                        {/if}
+
+                        <!-- Direct Deposit -->
+                        {if $payment_accepted_methods_statuses.direct_deposit}
+                            <tr>
+                                <td>
+                                    <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Direct Deposit{/t}</b><br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>                                
+                                    {t}Bank Account Name{/t}: {$payment_options.bank_account_name}<br>
+                                    {t}Bank Name{/t}: {$payment_options.bank_name}<br>
+                                    {t}Account Number{/t}: {$payment_options.bank_account_number}<br>
+                                    {t}Sort Code{/t}: {$payment_options.bank_sort_code}<br>
+                                    {t}IBAN{/t}: {$payment_options.bank_iban}                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {$payment_options.invoice_direct_deposit_msg}
+                                </td>
+                            </tr>
+                        {/if}
+
+                        <!-- PayPal -->
+                        {if $payment_accepted_methods_statuses.paypal}
                         <tr>
                             <td>
-                                <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Direct Deposit{/t}</b><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>                                
-                                {t}Bank Account Name{/t}: {$payment_options.bank_account_name}<br>
-                                {t}Bank Name{/t}: {$payment_options.bank_name}<br>
-                                {t}Account Number{/t}: {$payment_options.bank_account_number}<br>
-                                {t}Sort Code{/t}: {$payment_options.bank_sort_code}<br>
-                                {t}IBAN{/t}: {$payment_options.bank_iban}                                
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                {$payment_options.invoice_direct_deposit_message}
+                                <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
                             </td>
                         </tr>
                     {/if}
 
-                    <!-- PayPal -->
-                    {if $payment_active_accepted_methods.paypal}
-                    <tr>
-                        <td>
-                            <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
-                        </td>
-                    </tr>
-                    {/if}
-
-                    <!-- If none of the above are enabled then display this message -->                        
-                    {if !$payment_active_accepted_methods.cheque && !$payment_active_accepted_methods.direct_deposit_active && !$payment_active_accepted_methods}
+                    <!-- If none of the above payment methods are enabled then display this message -->                        
+                    {else}
                         <tr>
                             <td>{t}Please call us to discuss payment options.{/t}</td>
                         </tr>
@@ -289,7 +291,7 @@
                 </td>
             </tr>
         {/if}
-        {if $invoice_details.tax_type == 'vat'}}
+        {if $invoice_details.tax_type == 'vat'}
             <tr>
                 <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
             </tr>

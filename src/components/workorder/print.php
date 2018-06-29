@@ -15,12 +15,12 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'system/mpdf.php');
 
 // Check if we have a workorder_id
-if($VAR['workorder_id'] == '') {
+if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
 }
 
 // Check there is a print content and print type set
-if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
+if(!isset($VAR['print_content'], $VAR['print_type']) || !$VAR['print_content'] || !$VAR['print_type']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
 }
 

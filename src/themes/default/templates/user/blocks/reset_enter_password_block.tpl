@@ -9,11 +9,7 @@
 {if $recaptcha}<script src="https://www.google.com/recaptcha/api.js" async defer></script>{/if}
 
 <table width="900" border="0" cellspacing="0" cellpadding="2">
-    <tr>
-        <td align="center"><img src="{$company_logo}" alt="" height="114"></td>
-    </tr>
-    <tr>
-        <td></td>
+    <tr>        
         <td>       
             <table class="olotable" border="0" align="center" style="margin: 20px;">
                 <tr>

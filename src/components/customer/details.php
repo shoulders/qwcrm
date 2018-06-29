@@ -26,6 +26,7 @@ if($VAR['customer_id'] == '') {
 // Build the page
 $smarty->assign('customer_types',           get_customer_types()                                                                                                 );
 $smarty->assign('customer_details',         get_customer_details($VAR['customer_id'])                                                                                 );
+$smarty->assign('customer_notes',           get_customer_notes($VAR['customer_id'])                                                                                   );
 
 $smarty->assign('workorder_statuses',       get_workorder_statuses()                                                                                             );
 $smarty->assign('workorders_open',          display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', null, $VAR['customer_id'])          );
@@ -43,6 +44,6 @@ $smarty->assign('giftcerts_active',         display_giftcerts('giftcert_id', 'DE
 $smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, '1', null, $VAR['customer_id'])         );
 
 $smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['customer_id'], $user->login_user_id)                                                    );
-$smarty->assign('customer_notes',           get_customer_notes($VAR['customer_id'])                                                                                   );
+
 
 $BuildPage .= $smarty->fetch('customer/details.tpl');

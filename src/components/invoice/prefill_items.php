@@ -10,8 +10,11 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'components/invoice.php');
 
+// Prevent undefined variable errors
+$VAR['empty_prefill_items_table'] = isset($VAR['empty_prefill_items_table']) ? $VAR['empty_prefill_items_table'] : null;
+
 // If the export of the invoice prefill items has been requested
-if($VAR['export_invoice_prefill_items'] == 'export') {
+if(isset($VAR['export_invoice_prefill_items'])) {
     export_invoice_prefill_items_csv();
     die();
 }

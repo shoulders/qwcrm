@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Set the template for the correct user type (customer/employee)
-if($VAR['customer_id'] != '') {
+if(isset($VAR['customer_id']) && $VAR['customer_id']) {
     
     // check if there is already a user for the customer (and error if there is)
     if(!check_customer_already_has_login($VAR['customer_id'])) {
@@ -36,8 +36,7 @@ if($VAR['customer_id'] != '') {
 if(isset($VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if (check_user_username_exists($VAR['username'], get_user_details($VAR['user_id'], 'username')) ||
-        check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))) {     
+    if (check_user_username_exists($VAR['username']) || check_user_email_exists($VAR['email'])) {     
         
         // send the posted data back to smarty
         $user_details = $VAR;
@@ -58,7 +57,10 @@ if(isset($VAR['submit'])) {
 
 } else {
     
-    // Build the page from the database       
+    // Prevent undefined variable errors
+    $smarty->assign('user_details', null);
+    
+    // Build the page from the database         
     $BuildPage .= $smarty->fetch('user/new.tpl');
     
 }

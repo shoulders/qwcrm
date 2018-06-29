@@ -21,7 +21,7 @@
     {section name=g loop=$display_giftcerts}
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}';" class="row1">
             <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_id}</a></td>
-            <td class="olotd4">{$display_giftcerts[g].giftcert_code}</td>
+            <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_code}</a></td>
             <td class="olotd4"><a href="index.php?component=customer&page_tpl=details&customer_id={$display_giftcerts[g].customer_id}">{$display_giftcerts[g].customer_display_name}</a></td>
             <td class="olotd4">{$display_giftcerts[g].date_expires|date_format:$date_format}</td>
             <td class="olotd4">

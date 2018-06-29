@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'components/invoice.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Create an invoice for the supplied workorder
-if($VAR['workorder_id'] && !get_workorder_details($VAR['workorder_id'], 'invoice_id')) {
+if(isset($VAR['workorder_id']) && $VAR['workorder_id'] && !get_workorder_details($VAR['workorder_id'], 'invoice_id')) {
 
     // Get Customer_id from the workorder    
     $VAR['customer_id'] = get_workorder_details($VAR['workorder_id'], 'customer_id');

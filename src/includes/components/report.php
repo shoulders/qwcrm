@@ -247,7 +247,7 @@ function count_schedules($workorder_id = null) {
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."schedule_records\n";  
+    $whereTheseRecords = " WHERE schedule_id";
 
     // Filter by workorder_id
     if($workorder_id) {

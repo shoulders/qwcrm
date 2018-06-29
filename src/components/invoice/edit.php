@@ -14,8 +14,16 @@ require(INCLUDES_DIR.'components/payment.php');
 require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
+// Prevent undefined variable errors
+$VAR['labour_description'] = isset($VAR['labour_description']) ? $VAR['labour_description'] : null;
+$VAR['labour_amount'] = isset($VAR['labour_amount']) ? $VAR['labour_amount'] : null;
+$VAR['labour_qty'] = isset($VAR['labour_qty']) ? $VAR['labour_qty'] : null;
+$VAR['parts_description'] = isset($VAR['parts_description']) ? $VAR['parts_description'] : null;
+$VAR['parts_amount'] = isset($VAR['parts_amount']) ? $VAR['parts_amount'] : null;
+$VAR['parts_qty'] = isset($VAR['parts_qty']) ? $VAR['parts_qty'] : null;
+
 // Check if we have an invoice_id
-if($VAR['invoice_id'] == '') {
+if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 

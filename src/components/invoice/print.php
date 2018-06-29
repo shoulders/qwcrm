@@ -37,7 +37,7 @@ $smarty->assign('customer_details',                 $customer_details           
 $smarty->assign('invoice_details',                  $invoice_details                                                );
 $smarty->assign('workorder_details',                get_workorder_details($invoice_details['workorder_id'])    );
 $smarty->assign('payment_options',                  get_payment_options()                                        );
-$smarty->assign('payment_active_accepted_methods',  get_payment_active_accepted_methods()                          );
+$smarty->assign('payment_accepted_methods_statuses',  get_payment_accepted_methods_statuses()                          );
 $smarty->assign('invoice_statuses',                 get_invoice_statuses()                                       );
 $smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );
@@ -58,7 +58,7 @@ if($VAR['print_content'] == 'invoice') {
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Build the page
-        $BuildPage .= $smarty->fetch('invoice/printing/print_invoice.tpl'); 
+        $BuildPage = $smarty->fetch('invoice/printing/print_invoice.tpl'); 
     }
     
     // Print PDF Invoice
@@ -118,7 +118,7 @@ if($VAR['print_content'] == 'customer_envelope') {
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Build the page
-        $BuildPage .= $smarty->fetch('invoice/printing/print_customer_envelope.tpl');
+        $BuildPage = $smarty->fetch('invoice/printing/print_customer_envelope.tpl');
         
     }
     

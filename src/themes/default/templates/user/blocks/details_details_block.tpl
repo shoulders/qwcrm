@@ -20,6 +20,7 @@
     <tr>                        
         <td class="menutd"><b>{t}Display Name{/t}</b></td>
         <td class="menutd">{$user_details.display_name}</td>
+        <td colspan="2">&nbsp;</td>
     </tr>
     <tr>
         <td class="menutd"><b>{t}First Name{/t}</b></td>
@@ -116,6 +117,7 @@
     <tr>                                
         <td class="menutd"><b>{t}Work Fax{/t}</b></td>
         <td class="menutd">{$user_details.work_fax}</td>
+        <td colspan="2">&nbsp;</td>
     </tr>
     
     <!-- Home -->
@@ -133,6 +135,7 @@
     <tr>
         <td class="menutd"><b>{t}Home Email{/t}</b></td>
         <td class="menutd">{$user_details.home_email}</td>
+        <td colspan="2">&nbsp;</td>
     </tr>    
     <tr>
         <td class="menutd"><b>{t}Address{/t}</b></td>
@@ -143,6 +146,7 @@
             {$user_details.home_zip}<br>
             {$user_details.home_country}
         </td>
+        <td colspan="2">&nbsp;</td>
     </tr>
     
     <!-- note -->
@@ -153,6 +157,7 @@
     <tr>
         <td class="menutd"><b>{t}Note{/t}</b></td>
         <td class="menutd">{$user_details.note}</td>
+        <td colspan="2">&nbsp;</td>
     </tr>    
     
 </table>

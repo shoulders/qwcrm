@@ -23,7 +23,7 @@ $smarty->assign('global_invoice_stats', get_invoices_stats('current'));
 $smarty->assign('global_invoice_overall_stats', get_invoices_stats('overall'));
 
 // Global Customer Stats
-$smarty->assign('global_customer_overall_stats', get_customer_overall_stats($date_year_start, $date_year_end, $date_month_start, $date_month_end));
+$smarty->assign('global_customer_overall_stats', get_customer_overall_stats());
 
 // Build the page
 $BuildPage .= $smarty->fetch('report/basic_stats.tpl');

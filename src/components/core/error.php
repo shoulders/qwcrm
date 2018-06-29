@@ -29,7 +29,7 @@ if(QFactory::getConfig()->get('qwcrm_error_log')) {
 }
     
 // View RAW error output if allowed and set
-if($user->login_usergroup_id <= 6 && $raw_output) {
+if($user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
 
     $BuildPage = '
         <div>    

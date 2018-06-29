@@ -14,24 +14,24 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have a employee_id and output is set to day
-if($VAR['ics_type'] == 'day' && $VAR['employee_id'] == '') {    
+if(isset($VAR['ics_type']) && $VAR['ics_type'] == 'day' && !$VAR['employee_id']) {    
     force_page('schedule', 'search', 'warning_msg='._gettext("Employee ID missing."));
 }
 
 // Check if we have a schedule_id if output is not set to day
-if($VAR['ics_type'] != 'day' && $VAR['schedule_id'] == '') {    
+if(isset($VAR['ics_type']) && $VAR['ics_type'] != 'day' && !$VAR['schedule_id']) {    
     force_page('schedule', 'search', 'warning_msg='._gettext("Schedule ID is missing."));
 }
 
 // Check if we have all of the date information required
-if($VAR['start_year'] == '' || $VAR['start_month'] == '' || $VAR['start_day'] == '') {
-    force_page('user', 'search', 'warning_msg='._gettext("Some date information is missing."));
+if(!isset($VAR['start_year'], $VAR['start_month'], $VAR['start_day']) || !$VAR['start_year'] || !$VAR['start_month'] || !$VAR['start_day']) {
+    force_page('schedule', 'search', 'warning_msg='._gettext("Some date information is missing."));
 }
 
 // Add routines here to decide what is returned ie multi schedule, single schedule or a live calendar
 
 // ICS Schedule
-if($VAR['ics_type'] == 'day') {
+if(isset($VAR['ics_type']) && $VAR['ics_type'] == 'day') {
     
     // Get Employee Display Name
     $user_display_name = get_user_details($VAR['employee_id'], 'display_name');

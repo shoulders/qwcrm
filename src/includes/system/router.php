@@ -53,14 +53,11 @@ function get_page_controller(&$VAR = null) {
 
         // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
         parseSEF($_SERVER['REQUEST_URI'], 'set_var', $VAR);
-
-        goto page_controller_check;
-
     
     }
     
     // Check to see if the page exists otherwise send to the 404 page
-    if (isset($VAR['component']) && !isset($VAR['page_tpl']) && !check_page_exists($VAR['component'], $VAR['page_tpl'])) {
+    if (isset($VAR['component'], $VAR['page_tpl']) && !check_page_exists($VAR['component'], $VAR['page_tpl'])) {
 
         // Set to the 404 error page       
         $VAR['component']   = 'core';
@@ -71,7 +68,7 @@ function get_page_controller(&$VAR = null) {
 
     }  
 
-    // If no page specified set page based on login status
+    // If no page specified, set page based on login status
     if(!isset($VAR['component']) && !isset($VAR['page_tpl']) ) {    
 
         if(isset($user->login_token)) {
@@ -97,7 +94,7 @@ function get_page_controller(&$VAR = null) {
 
         // Log activity
         $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$VAR['component'].':'.$VAR['page_tpl'].')';
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']); 
+        write_record_to_activity_log($record, $VAR['employee_id'] = null, $VAR['customer_id'] = null, $VAR['workorder_id'] = null, $VAR['invoice_id'] = null); 
 
         // Set to the 403 error page 
         $VAR['component']   = 'core';

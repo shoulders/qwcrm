@@ -38,5 +38,5 @@ $smarty->assign('search_category',      $VAR['search_category']                 
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                                     );
 $smarty->assign('filter_status',        $VAR['filter_status']                                                                                                                                          );
 $smarty->assign('filter_is_redeemed',   $VAR['filter_is_redeemed']                                                                                                                                     );
-$smarty->assign('display_giftcerts',    display_giftcerts('giftcert_id', 'DESC', true, '1', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_is_redeemed'])  );
+$smarty->assign('display_giftcerts',    display_giftcerts('giftcert_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_is_redeemed'])  );
 $BuildPage .= $smarty->fetch('giftcert/search.tpl');

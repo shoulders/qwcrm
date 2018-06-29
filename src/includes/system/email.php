@@ -57,7 +57,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     clear_onscreen_notifications();
     
     // If email is not enabled, do not send emails
-    if($config->email_online != true) {
+    if(!$config->get('email_online')) {
         
         // Log activity 
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
@@ -75,27 +75,27 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     /* Create the Transport */
     
     // Use SMTP
-    if($config->email_mailer == 'smtp') {        
+    if($config->get('email_mailer') == 'smtp') {        
                  
         // Create SMTP Object 
-        $transport = new Swift_SmtpTransport($config->email_smtp_host, $config->email_smtp_port);        
+        $transport = new Swift_SmtpTransport($config->get('email_smtp_host'), $config->get('email_smtp_port'));        
 
         // Enable encryption SSL/TLS if set
-        if($config->email_smtp_security != '') {
-            $transport->setEncryption($config->email_smtp_security);
+        if($config->get('email_smtp_security')) {
+            $transport->setEncryption($config->get('email_smtp_security'));
         }
 
         // SMTP Authentication if set
-        if($config->email_smtp_auth) {
-            $transport->setUsername($config->email_smtp_username);
-            $transport->setPassword($config->email_smtp_password); 
+        if($config->get('email_smtp_auth')) {
+            $transport->setUsername($config->get('email_smtp_username'));
+            $transport->setPassword($config->get('email_smtp_password')); 
         }                               
     
     // Use Sendmail / Locally installed MTA - only works on Linux/Unix
-    } elseif($config->email_mailer == 'sendmail') {
+    } elseif($config->get('email_mailer') == 'sendmail') {
         
         // Standard sendmail
-        $transport = new Swift_SendmailTransport($config->email_sendmail_path.' -bs');
+        $transport = new Swift_SendmailTransport($config->get('email_sendmail_path').' -bs');
         
         // Exim - The Swift_SendmailTransport also supports the use of Exim (same ninary wrapper as sendmail)
         //$transport = new Swift_SendmailTransport('/usr/sbin/exim -bs');
@@ -133,11 +133,11 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     // Verify the supplied emails, then add them to the object
     try {
         $email->setTo([$recipient_email => $recipient_name]);
-        $email->setFrom([$config->email_mailfrom => $config->email_fromname]);   
+        $email->setFrom([$config->get('email_mailfrom') => $config->get('email_fromname')]);   
         
         // Only add 'Reply To' if the reply email address is present. This prevents errors.
-        if($config->email_replyto != '') {
-            $email->setReplyTo([$config->email_replyto => $config->email_replytoname]);  
+        if($config->get('email_replyto')) {
+            $email->setReplyTo([$config->get('email_replyto') => $config->get('email_replytoname')]);  
         }
         
     }
@@ -169,7 +169,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     // Add the email signature (if not a reset email)
     if(!check_page_accessed_via_qwcrm('user', 'reset') && !check_page_accessed_via_qwcrm('administrator', 'config')) {
         $body .= add_email_signature($email);
-    }    
+    } 
     
     // Add Message Body
     $email->setBody($body, 'text/html');
@@ -178,7 +178,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     //$email->addPart('My amazing body in plain text', 'text/plain');    
     
     // Add Optional attachment
-    if($attachment != null) {
+    if($attachment) {
         
         // Create the attachment with your data
         $attachment = new Swift_Attachment($attachment['data'], $attachment['filename'], $attachment['filetype']);
@@ -281,14 +281,17 @@ function add_email_signature($swift_emailer = null) {
     // Load the signature from the database
     $email_signature = get_company_details('email_signature');
     
+    // Build the full logo file path
+    $logo_file = parse_url(MEDIA_DIR . get_company_details('logo'), PHP_URL_PATH);    
+    
     // If swiftmailer is going to be used to add image via CID
-    if($swift_emailer != null) {         
-        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath(get_company_details('logo'))).'" alt="'.get_company_details('display_name').'" width="150">'; 
+    if($swift_emailer) {         
+        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath($logo_file)).'" alt="'.get_company_details('display_name').'" width="150">'; 
         
         
     // Load the logo as a standard base64 string image
     } else {        
-        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents(get_company_details('logo'))).'" alt="'.get_company_details('display_name').'" width="150">'; 
+        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents($logo_file)).'" alt="'.get_company_details('display_name').'" width="150">'; 
     }    
         
     // Swap the logo placeholders with the new logo string

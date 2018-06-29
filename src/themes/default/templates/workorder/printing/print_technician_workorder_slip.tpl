@@ -96,7 +96,7 @@
                             </p>
                             <p>
                                 <b>{t}Phone{/t}: </b>{$employee_details.work_primary_phone}<br>                        
-                                <b>{t}Mobile{/t}: </b>{$company_details.mobile}<br>
+                                <b>{t}Mobile{/t}: </b>{$company_details.mobile_phone}<br>
                                 <b>{t}Fax{/t}: </b>{$company_details.fax}<br>
                                 <b>{t}Website{/t}: </b>{$company_details.website}<br>   
                                 <b>{t}Email{/t}: </b>{$company_details.email}

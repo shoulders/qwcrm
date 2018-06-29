@@ -12,8 +12,11 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'components/user.php');
 
+// Prevent undefined variable errors
+$VAR['assign_to_employee'] = isset($VAR['assign_to_employee']) ? $VAR['assign_to_employee'] : null;
+
 // Check if we have a customer_id
-if($VAR['customer_id'] == '') {
+if(!isset($VAR['customer_id']) || !$VAR['customer_id']) {
     force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
 }
 
@@ -34,5 +37,4 @@ if(isset($VAR['submit'])){
 }
 
 // Build the page
-$smarty->assign('customer_details', get_customer_details($VAR['customer_id']));
 $BuildPage .= $smarty->fetch('workorder/new.tpl');

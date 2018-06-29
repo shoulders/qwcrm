@@ -266,17 +266,16 @@ function get_payment_options($item = null) {
 }
 
 ################################################
-#   Get get active accepted payment methods    # // If i dont have 'accepted_method_id' and 'active' in the select, the array is not built correctly
+#   Get get accepted payment methods statuses  #
 ################################################
 
-function get_payment_active_accepted_methods() {
+function get_payment_accepted_methods_statuses() {
     
     $db = QFactory::getDbo();
     
     $sql = "SELECT
             accepted_method_id, active
-            FROM ".PRFX."payment_accepted_methods
-            WHERE active='1'";
+            FROM ".PRFX."payment_accepted_methods";
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get active payment methods."));
@@ -435,15 +434,15 @@ function update_payment_options($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."payment_options SET            
-            bank_account_name       =". $db->qstr( $VAR['bank_account_name']        ).",
-            bank_name               =". $db->qstr( $VAR['bank_name']                ).",
-            bank_account_number     =". $db->qstr( $VAR['bank_account_number']      ).",
-            bank_sort_code          =". $db->qstr( $VAR['bank_sort_code']           ).",
-            bank_iban               =". $db->qstr( $VAR['bank_iban']                ).",
-            paypal_email            =". $db->qstr( $VAR['paypal_email']             ).",        
-            bank_transaction_msg    =". $db->qstr( $VAR['bank_transaction_message'] ).",
-            cheque_payable_to_msg   =". $db->qstr( $VAR['cheque_payable_to_msg']    ).",
-            invoice_footer_msg      =". $db->qstr( $VAR['invoice_footer_msg']       );            
+            bank_account_name           =". $db->qstr( $VAR['bank_account_name']            ).",
+            bank_name                   =". $db->qstr( $VAR['bank_name']                    ).",
+            bank_account_number         =". $db->qstr( $VAR['bank_account_number']          ).",
+            bank_sort_code              =". $db->qstr( $VAR['bank_sort_code']               ).",
+            bank_iban                   =". $db->qstr( $VAR['bank_iban']                    ).",
+            paypal_email                =". $db->qstr( $VAR['paypal_email']                 ).",        
+            invoice_direct_deposit_msg  =". $db->qstr( $VAR['invoice_direct_deposit_msg']   ).",
+            invoice_cheque_msg          =". $db->qstr( $VAR['invoice_cheque_msg']           ).",
+            invoice_footer_msg          =". $db->qstr( $VAR['invoice_footer_msg']           );            
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
@@ -462,7 +461,7 @@ function update_payment_options($VAR) {
 #   Update Payment Methods status   #
 #####################################
 
-function update_active_payment_accepted_methods($VAR) {
+function update_payment_accepted_methods_statuses($VAR) {
     
     $db = QFactory::getDbo();
     

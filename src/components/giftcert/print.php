@@ -45,6 +45,8 @@ if($VAR['print_content'] == 'gift_certificate') {
     // Print HTML
     if ($VAR['print_type'] == 'print_html') {
         
+        $giftcert_details['workorder_id'] = null;  // This is a temporary fix until workorder_id is added properly
+        
         // Log activity
         $record = _gettext("Gift Certificate").' '.$VAR['giftcert_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['customer_id'], $giftcert_details['workorder_id'], $giftcert_details['invoice_id']);

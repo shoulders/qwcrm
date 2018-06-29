@@ -196,7 +196,7 @@ function display_workorder_notes($workorder_id) {
     
     $sql = "SELECT
             ".PRFX."workorder_notes.*,
-            ".PRFX."user_records.display_name
+            ".PRFX."user_records.display_name AS employee_display_name
             FROM
             ".PRFX."workorder_notes,
             ".PRFX."user_records
@@ -500,6 +500,7 @@ function get_workorder_status_display_name($status_key) {
 function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
     
     $db = QFactory::getDbo();
+    $BuildPage = '';
     
     // if the string is not long enough so dont bother with a DB lookup
     if(strlen($scope_string) < $return_count) { return; }

@@ -325,7 +325,7 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
         $BuildPage = '';
         
         // Allow error page to display RAW Output
-        $raw_output = true;
+        $output_raw_error_page = true;
         
         // Error page main content and processing logic
         require(COMPONENTS_DIR.'core/error.php');

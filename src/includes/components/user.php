@@ -967,6 +967,8 @@ function send_reset_email($user_id) {
     $token = create_reset_token($user_id);
     
     /* Build Email body
+    $body = '';
+    
     $body .= _gettext("Hello").','."\r\n\r\n";
 
     $body .= _gettext("A request has been made to reset your QWcrm account password.").' ';
@@ -982,6 +984,8 @@ function send_reset_email($user_id) {
     
     
     // Build Email body
+    $body = '';
+    
     $body .= '<p>'._gettext("Hello").','.'</p>';
     
     $body .= '<p>'._gettext("A request has been made to reset your QWcrm account password.").' ';

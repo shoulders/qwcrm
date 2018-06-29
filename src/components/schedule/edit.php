@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have a schedule_id
-if($VAR['schedule_id'] == '') {
+if(!isset($VAR['schedule_id'])) {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
 }
 
@@ -22,7 +22,7 @@ if($VAR['schedule_id'] == '') {
 if(isset($VAR['submit'])) {    
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!update_schedule($VAR['start_date'], $VAR['StartTime'], $VAR['end_date'], $VAR['EndTime'], $VAR['notes'], $VAR['schedule_id'], $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'])) {        
+    if (!update_schedule($VAR)) {        
         
         $smarty->assign('start_date',       $VAR['start_date']                                                  );       
         $smarty->assign('start_time',       $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );                
@@ -43,7 +43,7 @@ if(isset($VAR['submit'])) {
         */
         
         // Load the workorder page
-        force_page('workorder', 'details&workorder_id='.$VAR['workorder_id']);
+        force_page('schedule', 'details&schedule_id='.$VAR['schedule_id']);
         
     }
 
