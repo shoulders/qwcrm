@@ -344,8 +344,8 @@
                         <td align="right"><b>{t}Shared Session{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="shared_session" name="qwconfig[shared_session]">                                                       
-                                <option value="0"{if $qwcrm_config.shared_session == '0'} selected{/if} hidden>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.shared_session == '1'} selected{/if} hidden>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.shared_session == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.shared_session == '1'} selected{/if} disabled>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Shared Session{/t}</strong></div><hr><div>{t escape=tooltip}When enabled, a user\'s session is shared between the frontend and administrator sections of the site. Note that changing this value will invalidate all existing sessions on the site. This is not available when the \'Force HTTPS\' option is set to \'Administrator Only\'.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -551,8 +551,8 @@
                         <td align="right"><b>{t}Smarty Debugging{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_debugging" name="qwconfig[smarty_debugging]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_debugging == '0'} selected{/if} hidden>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if} hidden>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_debugging == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_debugging == '1'} selected{/if} disabled>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Smarty Debugging{/t}</strong></div><hr><div>{t escape=tooltip}This enables the debugging console. The console is a javascript popup window that informs you of the included templates, variables assigned from php and config file variables for the current script. It does not show variables assigned within a template with the { assign } function. This is the standard way to enable Smarty Debugging. This currently does not work.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -560,10 +560,9 @@
                     <tr>
                         <td align="right"><b>{t}Smarty Debugging Control{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <select class="olotd5" id="smarty_debugging_ctrl" name="qwconfig[smarty_debugging_ctrl]">
-                                <option value=""{if $qwcrm_config.smarty_debugging_ctrl == ''} selected{/if} hidden>{t}No Control{/t}</option>
-                                <option value="NONE"{if $qwcrm_config.smarty_debugging_ctrl == 'NONE'} selected{/if} hidden>{t}None{/t}</option>
-                                <option value="URL"{if $qwcrm_config.smarty_debugging_ctrl == 'URL'} selected{/if} hidden>{t}URL{/t}</option>
+                            <select class="olotd5" id="smarty_debugging_ctrl" name="qwconfig[smarty_debugging_ctrl]">                                
+                                <option value="NONE"{if $qwcrm_config.smarty_debugging_ctrl == 'NONE'} selected{/if}>{t}None{/t}</option>
+                                <option value="URL"{if $qwcrm_config.smarty_debugging_ctrl == 'URL'} selected{/if} disabled>{t}URL{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Smarty Debugging Control{/t}</strong></div><hr><div>{t escape=tooltip}This allows alternate ways to enable debugging. NONE means no alternate methods are allowed. URL means when the keyword SMARTY_DEBUG is found in the QUERY_STRING, debugging is enabled for that invocation of the script. If $debugging is TRUE, this value is ignored.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -599,9 +598,9 @@
                     <tr>
                         <td align="right"><b>{t}Force Cache{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <select class="olotd5" id="smarty_force_cache" name="qwconfig[smarty_force_cache]" readonly>                                                       
-                                <option value="0"{if $qwcrm_config.smarty_force_cache == '0'} selected{/if} hidden>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_force_cache== '1'} selected{/if} hidden>{t}Yes{/t}</option>
+                            <select class="olotd5" id="smarty_force_cache" name="qwconfig[smarty_force_cache]">                                                       
+                                <option value="0"{if $qwcrm_config.smarty_force_cache == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_force_cache== '1'} selected{/if} disabled>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Force Cache{/t}</strong></div><hr><div>{t escape=tooltip}This forces Smarty to (re)cache templates on every invocation. It does not override the $caching level, but merely pretends the template has never been cached before. {/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -610,9 +609,9 @@
                         <td align="right"><b>{t}Caching{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_caching" name="qwconfig[smarty_caching]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_caching == '0'} selected{/if} hidden>{t}None{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_caching == '1'} selected{/if} hidden>{t}Current{/t}</option>
-                                <option value="2"{if $qwcrm_config.smarty_caching == '2'} selected{/if} hidden>{t}Saved{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_caching == '0'} selected{/if}>{t}None{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_caching == '1'} selected{/if} disabled>{t}Current{/t}</option>
+                                <option value="2"{if $qwcrm_config.smarty_caching == '2'} selected{/if} disabled>{t}Saved{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Caching{/t}</strong></div><hr><div>{t escape=tooltip}This tells Smarty whether or not to cache the output of the templates to the Cache Directory. This is untested with QWcrm.<hr>A value of Smarty::CACHING_LIFETIME_CURRENT tells Smarty to use the current $cache_lifetime variable to determine if the cache has expired.<br><br>A value of Smarty::CACHING_LIFETIME_SAVED tells Smarty to use the $cache_lifetime value at the time the cache was generated. This way you can set the $cache_lifetime just before fetching the template to have granular control over when that particular cache expires.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -628,8 +627,8 @@
                         <td align="right"><b>{t}Cache Modified Check{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_cache_modified_check" name="qwconfig[smarty_cache_modified_check]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_cache_modified_check == '0'} selected{/if} hidden>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_cache_modified_check == '1'} selected{/if} hidden>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_cache_modified_check == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_cache_modified_check == '1'} selected{/if} disabled>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Modified Check{/t}</strong></div><hr><div>{t escape=tooltip}If set to TRUE, Smarty will respect the \'If-Modified-Since\' header sent from the client. If the cached file timestamp has not changed since the last visit, then a \'304: Not Modified\' header will be sent instead of the content. This works only on cached content without { insert } tags.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
@@ -638,8 +637,8 @@
                         <td align="right"><b>{t}Cache Locking{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <select class="olotd5" id="smarty_cache_locking" name="qwconfig[smarty_cache_locking]">                                                       
-                                <option value="0"{if $qwcrm_config.smarty_cache_locking == '0'} selected{/if} hidden>{t}No{/t}</option>
-                                <option value="1"{if $qwcrm_config.smarty_cache_locking == '1'} selected{/if} hidden>{t}Yes{/t}</option>
+                                <option value="0"{if $qwcrm_config.smarty_cache_locking == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.smarty_cache_locking == '1'} selected{/if} disabled>{t}Yes{/t}</option>
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Cache Locking{/t}</strong></div><hr><div>{t escape=tooltip}Cache locking avoids concurrent cache generation. This means resource intensive pages can be generated only once, even if they\'ve been requested multiple times in the same moment.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>

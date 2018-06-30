@@ -11,28 +11,28 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'components/administrator.php');
 require(INCLUDES_DIR.'components/user.php');
 
-// Clear Smarty Cache button
-if(isset($VAR['submit'], $VAR['clear_smarty_cache'])) {
+// Send a Test Mail
+if(isset($VAR['send_test_mail'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
-        clear_smarty_cache();
+        send_test_mail();
     }
-    die();
+    die();    
 }
 
 // Clear Smarty Compile
-if(isset($VAR['submit'], $VAR['clear_smarty_compile'])) {    
+if(isset($VAR['clear_smarty_compile'])) {    
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         clear_smarty_compile();        
     }    
     die();
 }
 
-// Send a Test Mail
-if(isset($VAR['submit'], $VAR['send_test_mail'])) {
+// Clear Smarty Cache button
+if(isset($VAR['clear_smarty_cache'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
-        send_test_mail();
+        clear_smarty_cache();
     }
-    die();    
+    die();
 }
 
 // Update Config details
