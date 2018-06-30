@@ -1,4 +1,4 @@
-<!-- home.tpl -->
+<!-- dashboard_employee.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
