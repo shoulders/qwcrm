@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/refund.php');
 require(INCLUDES_DIR.'components/payment.php');
 
 // Check if we have a refund_id
-if($VAR['refund_id'] == '') {
+if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
     force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
 } 
 

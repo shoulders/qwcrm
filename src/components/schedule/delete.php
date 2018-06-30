@@ -19,7 +19,7 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a schedule_id
-if($VAR['schedule_id'] == '') {
+if(!isset($VAR['schedule_id']) || !$VAR['schedule_id']) {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
 }
 

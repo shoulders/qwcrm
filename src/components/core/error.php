@@ -14,7 +14,7 @@ if(!check_page_accessed_via_qwcrm(null, null, $VAR['error_enable_override'])) {
 }
 
 // Process SQL Query for log if SQL loggin is enabled
-if(QFactory::getConfig()->get('qwcrm_sql_logging')) {
+if($config->get('qwcrm_sql_logging')) {
     
     // Prepare the SQL statement for the error log (already been prepared for output to screen)
     $sql_query_for_log = str_replace('<br>', '\r\n', $VAR['error_sql_query']);
@@ -24,7 +24,7 @@ if(QFactory::getConfig()->get('qwcrm_sql_logging')) {
 }
 
 // Log errors to log if enabled
-if(QFactory::getConfig()->get('qwcrm_error_log')) {    
+if($config->get('qwcrm_error_log')) {    
     write_record_to_error_log($VAR['error_component'].':'.$VAR['error_page_tpl'], $VAR['error_type'], $VAR['error_location'], $VAR['error_php_function'], $VAR['error_database'], $VAR['error_msg'], $sql_query_for_log);    
 }
     

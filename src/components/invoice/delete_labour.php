@@ -19,7 +19,7 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have an invoice labour_id
-if($VAR['labour_id'] == '') {
+if(!isset($VAR['labour_id']) || !$VAR['labour_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice Labour ID supplied."));
 }
 

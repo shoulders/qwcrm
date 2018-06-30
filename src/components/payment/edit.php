@@ -15,7 +15,7 @@ require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'components/payment.php');
 
 // Check if we have a payment_id
-if($VAR['payment_id'] == '') {
+if(!isset($VAR['payment']) || !$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }
 

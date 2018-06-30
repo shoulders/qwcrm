@@ -17,12 +17,12 @@ $bc_generator = new Picqer\Barcode\BarcodeGeneratorHTML();
 $barcode = $bc_generator->getBarcode(get_giftcert_details($VAR['giftcert_id'], 'giftcert_code'), $bc_generator::TYPE_CODE_128);
 
 // Check if we have an giftcert_id
-if($VAR['giftcert_id'] == '') {
+if(!isset($VAR['giftcert_id']) || !$VAR['giftcert_id']) {
     force_page('giftcert', 'search', 'warning_msg='._gettext("No Gift Certificate ID supplied."));
 }
 
 // Check there is a print content and print type set
-if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
+if(isset($VAR['print_content'], $VAR['print_type']) || !$VAR['print_content'] || !$VAR['print_type']) {
     force_page('giftcert', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
 }
 

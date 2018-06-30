@@ -17,7 +17,7 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have an giftcert_id
-if($VAR['giftcert_id'] == '') {
+if(!isset($VAR['giftcert_id']) || !$VAR['giftcert_id']) {
     force_page('giftcert', 'search', 'warning_msg='._gettext("No Gift Certificate ID supplied."));
 }
 

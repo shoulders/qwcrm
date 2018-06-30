@@ -16,7 +16,7 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a customer_id
-if($VAR['customer_id'] == '') {
+if(!isset($VAR['customer_id']) || !$VAR['customer_id']) {
     force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
 }
 

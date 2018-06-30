@@ -24,7 +24,7 @@ if(!check_page_accessed_via_qwcrm('setup', 'migrate') ) {
 }
 
 // Stage 1 - Database Connection -->
-if($VAR['stage'] == '1') {
+if(isset($VAR['stage']) && $VAR['stage'] == '1') {
     
     if($VAR['submit'] == 'stage1') {
         
@@ -58,7 +58,7 @@ if($VAR['stage'] == '1') {
 }
 
 // Stage 1a - Database Connection (MyITCRM) -->
-if($VAR['stage'] == '1a') {
+if(isset($VAR['stage']) && $VAR['stage'] == '1a') {
     
     if($VAR['submit'] == 'stage1a') {
         
@@ -90,7 +90,7 @@ if($VAR['stage'] == '1a') {
 }
 
 // Stage 2 - Config Settings
-if($VAR['stage'] == '2') {    
+if(isset($VAR['stage']) && $VAR['stage'] == '2') {    
     
     // submit the config settings and load the next page
     if($VAR['submit'] == 'stage2') {
@@ -124,7 +124,7 @@ if($VAR['stage'] == '2') {
 }
 
 // Stage 3 - Install the database
-if($VAR['stage'] == '3') {    
+if(isset($VAR['stage']) && $VAR['stage'] == '3') {    
     
     if($VAR['submit'] == 'stage3') {
         
@@ -157,7 +157,7 @@ if($VAR['stage'] == '3') {
 }
 
 // Stage 4 - Database Installation Results
-if($VAR['stage'] == '4') {    
+if(isset($VAR['stage']) && $VAR['stage'] == '4') {    
 
     // load the next page
     if($VAR['submit'] == 'stage4') {
@@ -175,7 +175,7 @@ if($VAR['stage'] == '4') {
 }
 
 // Stage 5 - Company Details
-if($VAR['stage'] == '5') {   
+if(isset($VAR['stage']) && $VAR['stage'] == '5') {   
         
     // submit the company details and load the next page
     if($VAR['submit'] == 'stage5') {
@@ -197,7 +197,7 @@ if($VAR['stage'] == '5') {
 }
 
 // Stage 6 - Migrate the database (MyITCRM)
-if($VAR['stage'] == '6') {    
+if(isset($VAR['stage']) && $VAR['stage'] == '6') {    
     
     if($VAR['submit'] == 'stage6') {
         
@@ -234,7 +234,7 @@ if($VAR['stage'] == '6') {
 }
 
 // Stage 7 - Database Migration Results (MyITCRM)
-if($VAR['stage'] == '7') {    
+if(isset($VAR['stage']) && $VAR['stage'] == '7') {    
 
     // load the next page
     if($VAR['submit'] == 'stage7') {
@@ -253,7 +253,7 @@ if($VAR['stage'] == '7') {
 }
 
 // Stage 8 - Create an Administrator
-if($VAR['stage'] == '8') {
+if(isset($VAR['stage']) && $VAR['stage'] == '8') {
     
     // create the administrator and load the next page
     if($VAR['submit'] == 'stage8') {

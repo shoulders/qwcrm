@@ -30,7 +30,7 @@ if(isset($VAR['workorder_id']) && $VAR['workorder_id'] && !get_workorder_details
 } 
 
 // Invoice only
-if(($VAR['customer_id'] != '' && $VAR['invoice_type'] == 'invoice-only')) {
+if((isset($VAR['customer_id'], $VAR['invoice_type']) && $VAR['customer_id'] && $VAR['invoice_type'] == 'invoice-only')) {
     
     // Create the invoice and return the new invoice_id
     $VAR['invoice_id'] = insert_invoice($VAR['customer_id'], '', get_customer_details($VAR['customer_id'], 'discount_rate'));

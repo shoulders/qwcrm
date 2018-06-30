@@ -22,7 +22,7 @@ $VAR['start_month'] = isset($VAR['start_month']) ? $VAR['start_month'] : date('m
 $VAR['start_day'] = isset($VAR['start_day']) ? $VAR['start_day'] : date('d');
 
 // Check the workorder status - We don't want to schedule/reschedule a workorder if it's closed
-if(isset($VAR['workorder_id'])) { 
+if($VAR['workorder_id']) { 
     
     // If the workorder is closed, remove the workorder_id preventing further schedule creation for this workorder_id
     if(get_workorder_details($VAR['workorder_id'], 'is_closed')) {        

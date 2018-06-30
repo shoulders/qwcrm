@@ -17,12 +17,12 @@ require(INCLUDES_DIR.'components/workorder.php');
 require(INCLUDES_DIR.'system/mpdf.php');
 
 // Check if we have an invoice_id
-if($VAR['invoice_id'] == '') {
+if(!isset($VAR['invoice']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
 // Check there is a print content and print type set
-if($VAR['print_content'] == '' || $VAR['print_type'] == '') {
+if(isset($VAR['print_content'], $VAR['print_type']) || !$VAR['print_content'] || !$VAR['print_type']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
 }
 

@@ -23,7 +23,7 @@ $VAR['parts_amount'] = isset($VAR['parts_amount']) ? $VAR['parts_amount'] : null
 $VAR['parts_qty'] = isset($VAR['parts_qty']) ? $VAR['parts_qty'] : null;
 
 // Check if we have an invoice_id
-if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
+if(!isset($VAR['invoice']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 

@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have a workorder_id
-if($VAR['workorder_id'] == '') {
+if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
 }
 

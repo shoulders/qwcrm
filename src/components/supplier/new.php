@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'components/supplier.php');
 $new_record_id = last_supplier_id_lookup() +1;
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
-if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
+if(isset($VAR['submit']) || isset($VAR['submitandnew'])) {
         
     // insert the supplier record and get the supplier_id
     $VAR['supplier_id'] = insert_supplier($VAR);

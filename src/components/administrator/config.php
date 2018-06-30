@@ -36,7 +36,7 @@ if(isset($VAR['clear_smarty_cache'])) {
 }
 
 // Update Config details
-if(isset($VAR['submit']) && $VAR['submit'] == 'update') {   
+if(isset($VAR['submit'])) {   
     
     if(update_qwcrm_config($VAR['qwconfig'])) {
         

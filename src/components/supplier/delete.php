@@ -16,7 +16,7 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a supplier_id
-if($VAR['supplier_id'] == '') {
+if(!isset($VAR['supplier_id']) || !$VAR['supplier_id']) {
     force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
 }  
 

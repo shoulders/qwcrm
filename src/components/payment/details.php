@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'components/payment.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Check if we have an expense_id
-if($VAR['payment_id'] == '') {
+if(!isset($VAR['payment']) || !$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }
 

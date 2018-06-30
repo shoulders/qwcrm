@@ -16,7 +16,7 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a refund_id
-if($VAR['refund_id'] == '') {
+if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
     force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
 } 
 

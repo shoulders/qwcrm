@@ -14,12 +14,12 @@ require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have an employee_id
-if($VAR['employee_id'] == '') {
+if(!isset($VAR['employee_id']) || !$VAR['employee_id']) {
     force_page('user', 'search', 'warning_msg='._gettext("No Employee ID supplied."));
 }
 
 // Check if we have a workorder_id
-if($VAR['workorder_id'] == '') {
+if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
 }
 

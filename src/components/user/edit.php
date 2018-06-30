@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'components/customer.php');
 require(INCLUDES_DIR.'components/user.php');
 
 // Check if we have an user_id
-if($VAR['user_id'] == '') {
+if(!isset($VAR['user_id']) || !$VAR['user_id']) {
     force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
 }
 
