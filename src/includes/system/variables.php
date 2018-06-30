@@ -55,6 +55,7 @@ function load_system_variables(&$VAR = null) {
     ##########################################################################
 
     // QWcrm System Folders
+    $smarty->assign('base_path',                QWCRM_BASE_PATH             );      // set base path, useful for javascript links i.e. 404.tpl
     $smarty->assign('media_dir',                QW_MEDIA_DIR                );      // set media directory
 
     // QWcrm Theme Directory Template Variables

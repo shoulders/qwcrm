@@ -41,7 +41,7 @@ function get_page_controller(&$VAR = null) {
 
         // Set the error page    
         $VAR['component']   = 'core';
-        $VAR['page_tpl']    = 'error';        
+        $VAR['page_tpl']    = '404';        
         $VAR['theme']       = 'off'; 
 
         goto page_controller_check;
@@ -235,6 +235,66 @@ function parseSEF($sef_url, $mode = null, &$VAR = null) {
     
     // Build and return full nonSEF URL
     return 'index.php' . $nonsef_url_path_variables . $nonsef_url_query . $nonsef_url_fragment;
+    
+}
+
+
+#################################################################
+#  Verify User's authorisation for a specific page / operation  #
+#################################################################
+
+function check_page_acl($component, $page_tpl, $user = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get the current user unless a user (object) has been passed
+    if($user == null) { $user = QFactory::getUser(); }
+    
+    // If installing
+    if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
+    
+    // Usergroup Error catching - you cannot use normal error logging as it will cause a loop (should not be needed now)
+    if($user->login_usergroup_id == '') {
+        die(_gettext("The ACL has been supplied with no usergroup. QWcrm will now die."));                
+    }
+
+    // Get user's Group Name by login_usergroup_id
+    $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
+            FROM ".PRFX."user_usergroups
+            WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
+    
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
+    } else {
+        $usergroup_display_name = $rs->fields['usergroup_display_name'];
+    } 
+    
+    // Build the page name for the ACL lookup
+    $page_name = $component.':'.$page_tpl;
+    
+    /* Check Page to see if we have access */
+    
+    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
+
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
+    } else {
+        
+        $acl = $rs->fields['acl'];
+        
+        // Add if guest (8) rules here if there are errors
+        
+        if($acl != 1) {
+            
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+        
+    }
     
 }
 

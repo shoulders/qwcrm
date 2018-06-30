@@ -8,6 +8,17 @@
 
 defined('_QWEXEC') or die;
 
+// Prevent undefined variable errors
+$VAR['error_component'] = isset($VAR['error_component']) ? $VAR['error_component'] : null;
+$VAR['error_page_tpl'] = isset($VAR['error_page_tpl']) ? $VAR['error_page_tpl'] : null;
+$VAR['error_type'] = isset($VAR['error_type']) ? $VAR['error_type'] : null;
+$VAR['error_location'] = isset($VAR['error_location']) ? $VAR['error_location'] : null;
+$VAR['error_php_function'] = isset($VAR['error_php_function']) ? $VAR['error_php_function'] : null;
+$VAR['error_database'] = isset($VAR['error_database']) ? $VAR['error_database'] : null;
+$VAR['error_sql_query'] = isset($VAR['error_sql_query']) ? $VAR['error_sql_query'] : null;
+$VAR['error_msg'] = isset($VAR['error_msg']) ? $VAR['error_msg'] : null;
+$VAR['error_enable_override'] = isset($VAR['error_enable_override']) ? $VAR['error_enable_override'] : null;
+
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm(null, null, $VAR['error_enable_override'])) {
     die(_gettext("No Direct Access Allowed."));

@@ -73,7 +73,7 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
     page_build_end:
     
     // Process Page links
-    //page_links_acl_modify($BuildPage);
+    //page_links_acl_replace($BuildPage);
     page_links_acl_removal($BuildPage);
     page_links_sdmenu_cleanup($BuildPage);        
         
@@ -89,17 +89,40 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
     
 }
 
+############################################################
+#  This checks the links in templates for permissions      #
+############################################################
+
+function check_page_link_permission($url) {
+    
+    // index.php is a special case
+    if($url === 'index.php') { return true; }
+    
+    // Get routing variables from URL
+    $url_routing = get_routing_variables_from_url($url);
+    
+    // Check to see if user is allowed to use the asset
+    if(isset($url_routing['component'], $url_routing['page_tpl']) && check_page_acl($url_routing['component'], $url_routing['page_tpl'])) {
+        
+        return true;
+        
+    } else {
+    
+        return false;
+    }
+}
+
 #######################################################
 #  Replace all unauthorised page links with href="#"  #
 #######################################################
 
-function page_links_acl_modify(&$BuildPage) {
+function page_links_acl_replace(&$BuildPage) {
     
     $BuildPage = preg_replace_callback('/(["\'])(index\.php.*)(["\'])/U',
         function($matches) {
         
-            // Check to see if user is allowed to use the link
-            if(check_link_permission($matches[2])) { 
+             // Check to see if user is allowed to use the link
+            if(check_page_link_permission($matches[2])) { 
                 
                 // Return un-modified link
                 return $matches[0];
@@ -125,7 +148,7 @@ function page_links_acl_removal(&$BuildPage) {
         function($matches) {
             
             // Check to see if user is allowed to use the link
-            if(check_link_permission($matches[1])) { 
+            if(check_page_link_permission($matches[1])) { 
                 
                 // Return un-modified link
                 return $matches[0];
@@ -138,29 +161,6 @@ function page_links_acl_removal(&$BuildPage) {
 
         }, $BuildPage);
        
-}
-
-############################################################
-#  Does the current user have permission to see this link  #
-############################################################
-
-function check_link_permission($url) {
-    
-    // Get routing variables from URL
-    $url_routing = get_routing_variables_from_url($url);
-    
-    // temp
-    if(isset($url_routing['component']) && !isset($url_routing['page_tpl'])) {echo 'coccccck  '.$url.'<br >';}
-    
-    // Check to see if user is allowed to use the asset
-    if(check_page_acl($url_routing['component'], $url_routing['page_tpl'])) {
-        
-        return true;
-        
-    } else {
-    
-        return false;
-    }
 }
 
 #########################################
@@ -201,65 +201,6 @@ function page_links_to_sef(&$BuildPage) {
             return $matches[1].buildSEF($matches[2]).$matches[3];
 
         }, $BuildPage);
-    
-}
-
-#################################################################
-#  Verify User's authorisation for a specific page / operation  #
-#################################################################
-
-function check_page_acl($component, $page_tpl, $user = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // Get the current user unless a user (object) has been passed
-    if($user == null) { $user = QFactory::getUser(); }
-    
-    // If installing
-    if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
-    
-    // Usergroup Error catching - you cannot use normal error logging as it will cause a loop (should not be needed now)
-    if($user->login_usergroup_id == '') {
-        die(_gettext("The ACL has been supplied with no usergroup. QWcrm will now die."));                
-    }
-
-    // Get user's Group Name by login_usergroup_id
-    $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
-            FROM ".PRFX."user_usergroups
-            WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
-    
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
-    } else {
-        $usergroup_display_name = $rs->fields['usergroup_display_name'];
-    } 
-    
-    // Build the page name for the ACL lookup
-    $page_name = $component.':'.$page_tpl;
-    
-    /* Check Page to see if we have access */
-    
-    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
-
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
-    } else {
-        
-        $acl = $rs->fields['acl'];
-        
-        // Add if guest (8) rules here if there are errors
-        
-        if($acl != 1) {
-            
-            return false;
-            
-        } else {
-            
-            return true;
-            
-        }
-        
-    }
     
 }
 
