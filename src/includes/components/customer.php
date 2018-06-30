@@ -575,8 +575,8 @@ function build_googlemap_directions_string($customer_id, $employee_id) {
     // Get google server or use default value, then removes a trailing slash if present
     $google_server = rtrim(QFactory::getConfig()->get('google_server', 'https://www.google.com/'), '/');
     
-    // Determine the employee's start location (1 = Office, 2 = Home, Onsite = 3)
-    if ($employee_details['based'] == 1 || $employee_details['based'] == 3){
+    // Determine the employee's start location
+    if ($employee_details['based'] == 'office' || $employee_details['based'] == 'onsite') {
         
         // Works from the office
         $employee_address  = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $company_details['address']);
