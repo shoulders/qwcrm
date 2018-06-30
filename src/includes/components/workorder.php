@@ -504,8 +504,33 @@ function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
     
     // if the string is not long enough so dont bother with a DB lookup
     if(strlen($scope_string) < $return_count) { return; }
-          
-    $sql = "SELECT scope FROM ".PRFX."workorder_records WHERE scope LIKE '$scope_string%' LIMIT 10";
+    
+    // These SQL statements werre derived from https://stackoverflow.com/questions/19462919/mysql-select-distinct-should-be-case-sensitive
+    
+    /* This search removes case insensitive duplicates from the results i.e. 'chicken', 'CHICKEN' would return only 'chicken'
+    $sql = "SELECT
+            DISTINCT scope AS autoscope
+            FROM ".PRFX."workorder_records
+            WHERE scope
+            LIKE '$scope_string%'
+            LIMIT 10";*/
+
+    /* This search removes case sensitive duplicates from the results i.e. 'chicken', 'CHICKEN' would return both 'chicken' and 'CHICKEN'
+    $sql = "SELECT
+            DISTINCT BINARY scope AS autoscope
+            FROM ".PRFX."workorder_records
+            WHERE scope
+            LIKE '$scope_string%'
+            LIMIT 10";*/
+    
+    // This search removes case sensitive duplicates from the results i.e. 'chicken', 'CHICKEN' would return both 'chicken' and 'CHICKEN'
+    $sql = "SELECT
+            DISTINCT (CAST(scope AS CHAR CHARACTER SET utf8) COLLATE utf8_bin) AS autoscope
+            FROM ".PRFX."workorder_records
+            WHERE scope
+            LIKE '$scope_string%'
+            LIMIT 10";    
+
     
     // Get Workorder Scope Suggestions from the database      
     if(!$rs = $db->Execute($sql)) {
@@ -523,7 +548,7 @@ function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
 
             // loop over the rows, outputting them to the page object in the required format
             foreach($autosuggest_items as $key => $value) {
-                $BuildPage .= '<li onclick="fill(\''.$value['scope'].'\');">'.$value['scope'].'</li>';
+                $BuildPage .= '<li onclick="fill(\''.$value['autoscope'].'\');">'.$value['autoscope'].'</li>';
             } 
             
             return $BuildPage;

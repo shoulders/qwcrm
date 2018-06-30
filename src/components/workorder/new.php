@@ -37,4 +37,5 @@ if(isset($VAR['submit'])){
 }
 
 // Build the page
+$smarty->assign('customer_display_name', get_customer_details($VAR['customer_id'], 'display_name'));
 $BuildPage .= $smarty->fetch('workorder/new.tpl');
