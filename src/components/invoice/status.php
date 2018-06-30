@@ -16,7 +16,7 @@ require(INCLUDES_DIR.'components/report.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
 // Check if we have a invoice_id
-if(!isset($VAR['invoice']) || !$VAR['invoice_id']) {
+if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
