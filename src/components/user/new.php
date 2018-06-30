@@ -43,7 +43,6 @@ if(isset($VAR['submit'])) {
         
         // Reload the page with the POST'ed data
         $smarty->assign('user_details', $user_details);        
-        $BuildPage .= $smarty->fetch('user/new.tpl');
             
         } else {    
             
@@ -60,7 +59,8 @@ if(isset($VAR['submit'])) {
     // Prevent undefined variable errors
     $smarty->assign('user_details', null);
     
-    // Build the page from the database         
-    $BuildPage .= $smarty->fetch('user/new.tpl');
-    
 }
+
+// Build the page
+$smarty->assign('user_locations', get_user_locations());
+$BuildPage .= $smarty->fetch('user/new.tpl');

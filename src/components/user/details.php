@@ -26,4 +26,5 @@ $smarty->assign('user_details',             get_user_details($VAR['user_id'])   
 $smarty->assign('customer_display_name',    get_customer_details(get_user_details($VAR['user_id'], 'customer_id'), 'customer_display_name')      );
 $smarty->assign('usergroups',               get_usergroups()                                                                                     );
 $smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', $VAR['user_id']));
+$smarty->assign('user_locations',           get_user_locations());
 $BuildPage .= $smarty->fetch('user/details.tpl');

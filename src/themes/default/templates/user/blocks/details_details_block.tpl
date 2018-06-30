@@ -45,11 +45,11 @@
         <td class="menutd"><b>{t}User ID{/t}</b></td>
         <td class="menutd">{$user_details.user_id}</td>
         <td class="menutd"><b>{t}Based{/t}</b></td>
-        <td class="menutd">
-            {if $user_details.based == '1'}{t}Office{/t}{/if}
-            {if $user_details.based == '2'}{t}Home{/t}{/if}
-            {if $user_details.based == '3'}{t}OnSite{/t}{/if}
-        </td>     
+        <td class="menutd">            
+            {section name=l loop=$user_locations}    
+                {if $user_details.based == $user_locations[l].user_location_id}{t}{$user_locations[l].display_name}{/t}{/if}
+            {/section}
+        </td>    
     </tr>
     <tr>
         <td class="menutd"><b>{t}Is Employee{/t}</b></td>

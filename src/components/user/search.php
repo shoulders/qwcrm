@@ -40,7 +40,8 @@ $smarty->assign('search_term',       $VAR['search_term']                        
 $smarty->assign('filter_status',     $VAR['filter_status']                                                                                                                                               );
 $smarty->assign('filter_usertype',   $VAR['filter_usertype']                                                                                                                                             );
 $smarty->assign('filter_usergroup',  $VAR['filter_usergroup']                                                                                                                                             );
-$smarty->assign('usergroups',       get_usergroups()                                                                                                                                                 );
-$smarty->assign('display_users',    display_users('user_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_usertype'], $VAR['filter_usergroup'])    );
+$smarty->assign('usergroups',        get_usergroups()                                                                                                                                                 );
+$smarty->assign('user_locations',    get_user_locations());
+$smarty->assign('display_users',     display_users('user_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_usertype'], $VAR['filter_usergroup'])    );
 
 $BuildPage .= $smarty->fetch('user/search.tpl');

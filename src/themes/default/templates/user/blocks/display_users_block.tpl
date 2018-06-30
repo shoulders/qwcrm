@@ -14,6 +14,7 @@
         <td class="olohead">{t}Type{/t}</td>
         <td class="olohead">{t}Usergroup{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
+        <td class="olohead">{t}Based{/t}</td>
         <td class="olohead">{t}Email{/t}</td>
         <td class="olohead">{t}Notes{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
@@ -36,6 +37,11 @@
                 {if $display_users[u].active == '0'}{t}Blocked{/t}{/if}
                 {if $display_users[u].active == '1'}{t}Active{/t}{/if}                                                            
             </td>
+            <td class="olotd4">           
+                {section name=l loop=$user_locations}    
+                    {if $display_users[u].based == $user_locations[l].user_location_id}{t}{$user_locations[l].display_name}{/t}{/if}
+                {/section}
+            </td> 
             <td class="olotd4"><a href="mailto: {$display_users[u].email}"><font class="blueLink">{$display_users[u].email}</font></a></td>
             <td class="olotd4" nowrap>
                 {if $display_users[u].note != ''}

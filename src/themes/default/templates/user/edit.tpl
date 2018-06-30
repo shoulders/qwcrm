@@ -80,10 +80,10 @@
                                                                                     <tr{if !$is_employee} style="display: none;"{/if}>
                                                                                         <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            <select name="based" class="olotd5">                                                                                                    
-                                                                                                <option value="1" {if $user_details.based == 1 } selected{/if}>{t}Office{/t}</option>
-                                                                                                <option value="2" {if $user_details.based == 2 } selected{/if}>{t}Home{/t}</option>
-                                                                                                <option value="3" {if $user_details.based == 3 } selected{/if}>{t}OnSite{/t}</option>
+                                                                                            <select name="based" class="olotd5">
+                                                                                                {section name=l loop=$user_locations}    
+                                                                                                    <option value="{$user_locations[l].user_location_id}"{if $user_details.based == $user_locations[l].user_location_id} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
+                                                                                                {/section} 
                                                                                             </select>
                                                                                         </td>
                                                                                     </tr>

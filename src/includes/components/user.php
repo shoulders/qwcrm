@@ -159,7 +159,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
 /** Insert Functions **/
 
 #####################################
-#    insert new user                #
+#    Insert new user                #
 #####################################
 
 function insert_user($VAR) {
@@ -355,6 +355,26 @@ function get_active_users($user_type = null) {
        
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active users."));
+    } else {    
+        
+        return $rs->GetArray();    
+        
+    }
+    
+}
+
+##################################################
+# Get all active users display name and ID       #
+##################################################
+    
+function get_user_locations() {  
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."user_locations";
+       
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user locations."));
     } else {    
         
         return $rs->GetArray();    
