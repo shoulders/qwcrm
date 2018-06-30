@@ -13,6 +13,11 @@ require(INCLUDES_DIR.'components/schedule.php');
 require(INCLUDES_DIR.'components/user.php');
 require(INCLUDES_DIR.'components/workorder.php');
 
+// If no schedule year/month/day set, use today's date
+$VAR['start_year'] = isset($VAR['start_year']) ? $VAR['start_year'] : date('Y');
+$VAR['start_month'] = isset($VAR['start_month']) ? $VAR['start_month'] : date('m');
+$VAR['start_day'] = isset($VAR['start_day']) ? $VAR['start_day'] : date('d');
+
 // Check if we have a employee_id and output is set to day
 if(isset($VAR['ics_type']) && $VAR['ics_type'] == 'day' && !$VAR['employee_id']) {    
     force_page('schedule', 'search', 'warning_msg='._gettext("Employee ID missing."));

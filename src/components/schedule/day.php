@@ -16,11 +16,10 @@ require(INCLUDES_DIR.'components/workorder.php');
 $VAR['workorder_id'] = isset($VAR['workorder_id']) ? $VAR['workorder_id'] : null;
 $VAR['employee_id'] = isset($VAR['employee_id']) ? $VAR['employee_id'] : QFactory::getUser()->login_user_id;
 
-/* handled in schedule.php for now
+// If no schedule year/month/day set, use today's date
 $VAR['start_year'] = isset($VAR['start_year']) ? $VAR['start_year'] : date('Y');
 $VAR['start_month'] = isset($VAR['start_month']) ? $VAR['start_month'] : date('m');
 $VAR['start_day'] = isset($VAR['start_day']) ? $VAR['start_day'] : date('d');
-*/
 
 // Check the workorder status - We don't want to schedule/reschedule a workorder if it's closed
 if(isset($VAR['workorder_id'])) { 

@@ -23,15 +23,6 @@ defined('_QWEXEC') or die;
 
 /** Mandatory Code **/
 
-// If no schedule year set, use today's year
-if(!isset($VAR['start_year'])) { $VAR['start_year'] = date('Y'); }
-
-// If no schedule month set, use today's month
-if(!isset($VAR['start_month'])) { $VAR['start_month'] = date('m'); }
-
-// If no schedule day set, use today's day
-if(!isset($VAR['start_day'])) { $VAR['start_day'] = date('d'); }
-
 /** Display Functions **/
 
 #####################################################
