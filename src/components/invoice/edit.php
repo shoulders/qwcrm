@@ -43,7 +43,7 @@ if(isset($VAR['submit'])) {
     insert_parts_items($VAR['invoice_id'], $VAR['parts_description'], $VAR['parts_amount'], $VAR['parts_qty']);
     
     // update and recalculate the invoice
-    update_invoice($VAR['invoice_id'], $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
+    update_invoice_static_values($VAR['invoice_id'], $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
     recalculate_invoice($VAR['invoice_id']);
     
 }

@@ -596,11 +596,11 @@ function get_invoice_status_display_name($status_key) {
 
 /** Update Functions **/
 
-######################
-#   update invoice   #  // this is used when a user updates an invoice before any payments
-######################
+####################################
+#   update invoice static values   #  // This is used when a user updates an invoice before any payments
+####################################
 
-function update_invoice($invoice_id, $date, $due_date, $discount_rate) {
+function update_invoice_static_values($invoice_id, $date, $due_date, $discount_rate) {
     
     $db = QFactory::getDbo();
     
