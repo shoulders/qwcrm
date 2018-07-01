@@ -448,9 +448,6 @@ function update_payment_options($VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
     } else {
         
-        // Log activity        
-        //write_record_to_activity_log(_gettext("Payment settings updated."));
-
         return;
         
     }
@@ -492,8 +489,7 @@ function update_payment_accepted_methods_statuses($VAR) {
         
     }
     
-    // Log activity        
-    //write_record_to_activity_log(_gettext("Available payment methods updated."));
+    return;
     
 }
 
