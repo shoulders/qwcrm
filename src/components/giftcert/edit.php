@@ -23,7 +23,7 @@ if(!check_payment_method_is_active('gift_certificate')) {
 }
 
 // Check if giftcert redeemed - if so, it cannot be updated
-if(check_giftcert_redeemed($VAR['giftcert_id'])) {
+if(get_giftcert_details($VAR['giftcert_id'], 'is_redeemed')) {
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'warning_msg='._gettext("You cannot edit this Gift Certificate because it has been redeemed."));
 }
 

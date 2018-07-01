@@ -338,23 +338,6 @@ function validate_giftcert_for_payment($giftcert_id) {
 }
 
 ############################################
-#  Check if the giftcert is redeemed       #
-############################################
-
-function check_giftcert_redeemed($giftcert_id) {
-    
-    // check if redeemed
-    if(get_giftcert_details($giftcert_id, 'is_redeemed') == 1) {
-        //force_page('core','error', 'error_msg=This gift certificate has been redeemed');
-
-        return true;
-    }
-    
-    return false;
-    
-}
-
-############################################
 #  Generate Random Gift Certificate code   #
 ############################################
 
