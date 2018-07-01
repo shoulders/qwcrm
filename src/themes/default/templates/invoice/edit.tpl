@@ -347,16 +347,14 @@
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                             
                                             <tr class="olotd4">
-                                                    <td class="row2"><b>{t}Invoice ID{/t}</b></td>
-                                                    <td class="row2"><b>{t}Work Order{/t}</b></td>
-                                                    <td class="row2"><b>{t}Employee{/t}</b></td> 
-                                                    <td class="row2"><b>{t}Date{/t}</b></td>
-                                                    <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
-                                                    <td class="row2"><b>{t}Status{/t}</b></td>
-                                                    <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                    <td class="row2"><b>{t}Balance{/t}</b></td>
-                                                    {*<td class="row2"><b>{t}Date Paid{/t}</b></td>*}
-                                                    
+                                                <td class="row2"><b>{t}Invoice ID{/t}</b></td>
+                                                <td class="row2"><b>{t}Work Order{/t}</b></td>
+                                                <td class="row2"><b>{t}Employee{/t}</b></td> 
+                                                <td class="row2"><b>{t}Date{/t}</b></td>
+                                                <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
+                                                <td class="row2"><b>{t}Status{/t}</b></td>
+                                                <td class="row2"><b>{t}Gross{/t}</b></td>
+                                                <td class="row2"><b>{t}Balance{/t}</b></td>                                                    
                                             </tr>
                                             <tr class="olotd4">
 
@@ -406,7 +404,7 @@
                                                 </td>
                                                 <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
                                                 <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
-                                                {*<td>{$invoice_details.paid_date|date_format:$date_format}</td>*}
+                                                
 
                                             </tr>                                        
                                             <tr class="olotd4">

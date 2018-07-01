@@ -681,8 +681,7 @@ function update_invoice_status($invoice_id, $new_status) {
     
     if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unassigned there should be no employee the '\n' makes sql look neater
     
-    $sql .="last_active         =". $db->qstr( time()       ).",
-            status              =". $db->qstr( $new_status  )."            
+    $sql .="status              =". $db->qstr( $new_status  )."            
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->Execute($sql)) {
@@ -692,7 +691,7 @@ function update_invoice_status($invoice_id, $new_status) {
     
         // Update invoice 'is_closed' boolean
         if($new_status == 'cancelled' || $new_status == 'paid') {
-            update_invoice_closed_status($invoice_id, 'close');
+            update_invoice_closed_status($invoice_id, 'closed');
         } else {
             update_invoice_closed_status($invoice_id, 'open');
         }
@@ -738,7 +737,7 @@ function update_invoice_closed_status($invoice_id, $new_closed_status) {
                 
     }
     
-    if($new_closed_status == 'close') {
+    if($new_closed_status == 'closed') {
         
         $sql = "UPDATE ".PRFX."invoice_records SET
                 close_date          =". $db->qstr( time()           ).",
@@ -1020,8 +1019,8 @@ function recalculate_invoice($invoice_id) {
     
     $items_sub_total        = labour_sub_total($invoice_id) + parts_sub_total($invoice_id);
     $payments_sub_total     = payments_sub_total($invoice_id);
-    $discount_amount        = $items_sub_total  * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
-    $net_amount             = $items_sub_total  - $discount_amount;
+    $discount_amount        = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
+    $net_amount             = $items_sub_total - $discount_amount;
     $tax_amount             = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
     $gross_amount           = $net_amount + $tax_amount;
     
@@ -1043,28 +1042,23 @@ function recalculate_invoice($invoice_id) {
      
         /* update invoice status - only change if there is a change in status */
         
-        // if no invoiceable amount, set to pending (if not already)
+        // No invoiceable amount, set to pending (if not already)
         if($gross_amount == 0 && $invoice_details['status'] != 'pending') {
             update_invoice_status($invoice_id, 'pending');
         }
         
-        // if there is an invoiceable amount, and status is pending, set to unpaid
-        if($gross_amount > 0 && $invoice_details['status'] == 'pending') {
-            update_invoice_status($invoice_id, 'unpaid');            
-        }               
-        
-        // If there are no payments, set to unpaid (if not already)
-        if($balance == $gross_amount && $invoice_details['status'] != 'unpaid') {
+        // Has invoiceable amount with no payments, set to unpaid (if not already)
+        elseif($gross_amount > 0 && $gross_amount == $balance && $invoice_details['status'] != 'unpaid') {
             update_invoice_status($invoice_id, 'unpaid');
         }
         
-        // if there is an outstanding balance and there are some payments, set to partially paid (if not already)
-        if($balance != 0 && $payments_sub_total != 0 && $invoice_details['status'] != 'partially_paid') {            
+        // Has invoiceable amount with some payment(s), set to partially paid (if not already)
+        elseif($gross_amount > 0 && $gross_amount > $payments_sub_total && $invoice_details['status'] != 'partially_paid') {            
             update_invoice_status($invoice_id, 'partially_paid');
         }
         
-        // if there is no balance, balance is the sames as payments made, set to paid (if not already)
-        if($balance == 0 && $invoice_details['status'] != 'paid') {            
+        // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
+        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total  && $invoice_details['status'] != 'paid') {            
             update_invoice_status($invoice_id, 'paid');
         }        
         

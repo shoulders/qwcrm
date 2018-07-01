@@ -241,8 +241,7 @@ CREATE TABLE `#__invoice_records` (
   `close_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `last_active` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `is_closed` int(1) NOT NULL DEFAULT '0',
-  `paid_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+  `is_closed` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
