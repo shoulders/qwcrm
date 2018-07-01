@@ -46,7 +46,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE '%$search_term%'";}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
         
@@ -85,7 +85,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
             ".$whereTheseRecords."
             GROUP BY ".PRFX."user_records.".$order_by."
             ORDER BY ".PRFX."user_records.".$order_by."
-            ".$direction;  
+            ".$direction; 
    
     /* Restrict by pages */
         
@@ -236,7 +236,7 @@ function get_user_details($user_id = null, $item = null) {
         return;        
     }
     
-    $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id =".$user_id;
+    $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id =".$db->qstr($user_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
@@ -285,7 +285,7 @@ function get_user_id_by_username($username) {
 }
 
 #########################################
-# Get User ID by username               # // moved from core
+# Get User ID by username               #
 #########################################
 
 function get_user_id_by_email($email) {
@@ -466,9 +466,9 @@ function delete_user($user_id) {
     }
     
     // Cannot delete this account if it is the last administrator account
-    if($user_details['usergroup'] == '7') {
+    if($user_details['usergroup'] == '1') {
         
-        $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '7'";    
+        $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";    
         if(!$rs = $db->Execute($sql)) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
         }  
@@ -1243,7 +1243,7 @@ function delete_expired_reset_codes() {
      
     $sql = "UPDATE ".PRFX."user_records SET       
             reset_count     = reset_count + 1
-            WHERE user_id   =". $db->qstr( $user_id  );
+            WHERE user_id   =". $db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));

@@ -89,7 +89,7 @@ function update_record_value($select_table, $select_column, $record_identifier, 
 }
 
 #########################################################
-#   update all matching values in a colum to new value  #
+#   update all matching values in a column to new value #
 #########################################################
 
 function update_column_values($table, $column, $current_value, $new_value) {
@@ -502,7 +502,7 @@ function set_workorder_start_number($start_number) {
     
     $db = QFactory::getDbo();
     
-    $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$start_number ;
+    $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$db->qstr($start_number);
 
     $db->execute($sql);    
     
@@ -518,7 +518,7 @@ function set_invoice_start_number($start_number) {
     
     $db = QFactory::getDbo();
     
-    $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$start_number ;
+    $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$db->qstr($start_number);
 
     $db->execute($sql);   
     

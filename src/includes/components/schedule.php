@@ -45,13 +45,13 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
     $whereTheseRecords = "WHERE ".PRFX."schedule_records.schedule_id\n";
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}     
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');} 
     
     /* Filter the Records */
     
@@ -101,7 +101,7 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
             ".$whereTheseRecords."
             GROUP BY ".PRFX."schedule_records.".$order_by."
             ORDER BY ".PRFX."schedule_records.".$order_by."
-            ".$direction;            
+            ".$direction;           
     
     /* Restrict by pages */
     
@@ -916,11 +916,11 @@ function validate_schedule_times($start_date, $start_timestamp, $end_timestamp, 
 
     // Load all schedule items from the database for the supplied employee for the specified day (this currently ignores company hours)
     $sql = "SELECT
-             schedule_id, start_time, end_time
+            schedule_id, start_time, end_time
             FROM ".PRFX."schedule_records
             WHERE start_time >= ".$company_day_start."
             AND end_time <=".$company_day_end."
-            AND employee_id ='".$employee_id."'
+            AND employee_id =".$db->qstr($employee_id)."
             ORDER BY start_time
             ASC";
     

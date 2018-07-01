@@ -44,7 +44,7 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.$search_category LIKE '%$search_term%'";}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
     
@@ -75,7 +75,7 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
             ".$whereTheseRecords."
             GROUP BY ".PRFX."giftcert_records.".$order_by."        
             ORDER BY ".PRFX."giftcert_records.".$order_by."
-            ".$direction;           
+            ".$direction;          
 
     /* Restrict by pages */
         
@@ -224,7 +224,7 @@ function get_giftcert_id_by_gifcert_code($giftcert_code) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."giftcert_records WHERE giftcert_code=".$db->qstr( $giftcert_code );
+    $sql = "SELECT * FROM ".PRFX."giftcert_records WHERE giftcert_code=".$db->qstr($giftcert_code);
 
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the Gift Certificate ID by the Gift Certificate code."));
@@ -253,7 +253,7 @@ function update_giftcert($giftcert_id, $date_expires, $amount, $active, $note) {
             amount          =". $db->qstr( $amount          ).",
             active          =". $db->qstr( $active          ).",                
             note            =". $db->qstr( $note            )."
-            WHERE giftcert_id =".$giftcert_id;
+            WHERE giftcert_id =". $db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate record in the database."));

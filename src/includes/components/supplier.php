@@ -44,7 +44,7 @@ function display_suppliers($order_by, $direction, $use_pages = false, $records_p
     $whereTheseRecords = "WHERE ".PRFX."supplier_records.supplier_id\n";
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE '%$search_term%'";}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */ 
     
@@ -58,7 +58,7 @@ function display_suppliers($order_by, $direction, $use_pages = false, $records_p
             ".$whereTheseRecords."            
             GROUP BY ".PRFX."supplier_records.".$order_by."
             ORDER BY ".PRFX."supplier_records.".$order_by."
-            ".$direction;            
+            ".$direction;           
     
     /* Restrict by pages */
     

@@ -93,16 +93,16 @@ function update_acl($permissions) {
         $page_permission['Administrator'] = '1';
 
         $sql = "UPDATE `".PRFX."user_acl_page` SET
-                `Administrator` ='". $page_permission['Administrator']  ."',
-                `Manager`       ='". $page_permission['Manager']        ."',
-                `Supervisor`    ='". $page_permission['Supervisor']     ."',
-                `Technician`    ='". $page_permission['Technician']     ."',
-                `Clerical`      ='". $page_permission['Clerical']       ."',
-                `Counter`       ='". $page_permission['Counter']        ."',
-                `Customer`      ='". $page_permission['Customer']       ."',
-                `Guest`         ='". $page_permission['Guest']          ."',
-                `Public`        ='". $page_permission['Public']         ."'
-                WHERE `page`    ='". $page_name."';";
+                `Administrator` =". $db->qstr( $page_permission['Administrator']    ).",
+                `Manager`       =". $db->qstr( $page_permission['Manager']          ).",
+                `Supervisor`    =". $db->qstr( $page_permission['Supervisor']       ).",
+                `Technician`    =". $db->qstr( $page_permission['Technician']       ).",
+                `Clerical`      =". $db->qstr( $page_permission['Clerical']         ).",
+                `Counter`       =". $db->qstr( $page_permission['Counter']          ).",
+                `Customer`      =". $db->qstr( $page_permission['Customer']         ).",
+                `Guest`         =". $db->qstr( $page_permission['Guest']            ).",
+                `Public`        =". $db->qstr( $page_permission['Public']           )."
+                WHERE `page`    =". $db->qstr( $page_name                           ).";";
           
         if(!$rs = $db->execute($sql)) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
@@ -143,16 +143,16 @@ function update_acl($permissions) {
     foreach($mandatory_permissions as $page_name => $page_permission) {
                  
         $sql = "UPDATE `".PRFX."user_acl_page` SET
-                `Administrator` ='". $page_permission['Administrator']  ."',
-                `Manager`       ='". $page_permission['Manager']        ."',
-                `Supervisor`    ='". $page_permission['Supervisor']     ."',
-                `Technician`    ='". $page_permission['Technician']     ."',
-                `Clerical`      ='". $page_permission['Clerical']       ."',
-                `Counter`       ='". $page_permission['Counter']        ."',
-                `Customer`      ='". $page_permission['Customer']       ."',
-                `Guest`         ='". $page_permission['Guest']          ."',
-                `Public`        ='". $page_permission['Public']         ."'
-                WHERE `page`    ='". $page_name."';";
+                `Administrator` =". $db->qstr( $page_permission['Administrator']  ).",
+                `Manager`       =". $db->qstr( $page_permission['Manager']        ).",
+                `Supervisor`    =". $db->qstr( $page_permission['Supervisor']     ).",
+                `Technician`    =". $db->qstr( $page_permission['Technician']     ).",
+                `Clerical`      =". $db->qstr( $page_permission['Clerical']       ).",
+                `Counter`       =". $db->qstr( $page_permission['Counter']        ).",
+                `Customer`      =". $db->qstr( $page_permission['Customer']       ).",
+                `Guest`         =". $db->qstr( $page_permission['Guest']          ).",
+                `Public`        =". $db->qstr( $page_permission['Public']         )."
+                WHERE `page`    =". $db->qstr( $page_name                         ).";";
 
          if(!$rs = $db->execute($sql)) {
              force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
@@ -280,7 +280,7 @@ function check_for_qwcrm_update() {
     }
     
     // If no response return with error message
-    if($curl_response == '' || $curl_error) {         
+    if(!$curl_response || $curl_error) {         
         $smarty->assign('warning_msg', _gettext("No response from the QWcrm update server."));
         $smarty->assign('update_response', 'no_response');
         return;        

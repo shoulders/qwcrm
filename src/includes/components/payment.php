@@ -44,13 +44,13 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}     
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE '%$search_term%'";} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');} 
     
     /* Filter the Records */
     
@@ -89,7 +89,7 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
             ".$whereTheseRecords."
             GROUP BY ".PRFX."payment_records.".$order_by."
             ORDER BY ".PRFX."payment_records.".$order_by."
-            ".$direction;            
+            ".$direction;           
     
     /* Restrict by pages */
     
@@ -483,8 +483,8 @@ function update_payment_accepted_methods_statuses($VAR) {
         if($payment_method['active'] == ''){$payment_method['active'] = '0';}
         
         $sql = "UPDATE ".PRFX."payment_accepted_methods
-                SET active=". $db->qstr( $payment_method['active'] )."
-                WHERE accepted_method_id=". $db->qstr( $payment_method['accepted_method_id'] ); 
+                SET active=". $db->qstr($payment_method['active'])."
+                WHERE accepted_method_id=". $db->qstr($payment_method['accepted_method_id']); 
         
         if(!$rs = $db->execute($sql)) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method active state."));

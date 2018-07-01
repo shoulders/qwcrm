@@ -45,7 +45,7 @@ function display_expenses($order_by, $direction, $use_pages = false, $records_pe
     $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE '%$search_term%'";}     
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     /* Filter the Records */  
     
@@ -62,7 +62,7 @@ function display_expenses($order_by, $direction, $use_pages = false, $records_pe
             ".$whereTheseRecords."            
             GROUP BY ".PRFX."expense_records.".$order_by."
             ORDER BY ".PRFX."expense_records.".$order_by."
-            ".$direction;            
+            ".$direction;           
     
     /* Restrict by pages */
     

@@ -124,7 +124,7 @@ class PlgAuthenticationQwcrm
             return false;
         }
 
-        $sql = "DELETE FROM ".PRFX."session WHERE userid = ". (int) $user['id'];
+        $sql = "DELETE FROM ".PRFX."session WHERE userid = ". $this->db->qstr((int) $user['id']);
 
         try
         {            

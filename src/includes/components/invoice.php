@@ -44,19 +44,19 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
+    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}
+    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (labour items / labour descriptions) and search term
-    elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE '%$search_term%'";} 
+    elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE ".$db->qstr('%'.$search_term.'%');} 
 
     // Restrict results by search category (parts items / parts descriptions) and search term
-    elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE '%$search_term%'";}    
+    elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE ".$db->qstr('%'.$search_term.'%');}    
     
     // Restrict results by search category and search term
-    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.$search_category LIKE '%$search_term%'";}
+    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
     
@@ -147,7 +147,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
         ".$whereTheseRecords."
         GROUP BY ".PRFX."invoice_records.".$order_by."         
         ORDER BY ".PRFX."invoice_records.".$order_by."
-        ".$direction;
+        ".$db->qstr($direction);
 
     /* Restrict by pages */
     
@@ -425,7 +425,7 @@ function get_invoice_labour_items($invoice_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$db->qstr( $invoice_id );
+    $sql = "SELECT * FROM ".PRFX."invoice_labour WHERE invoice_id=".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice labour items."));
@@ -949,7 +949,7 @@ function delete_invoice_prefill_item($invoice_prefill_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$invoice_prefill_id;
+    $sql = "DELETE FROM ".PRFX."invoice_prefill_items WHERE invoice_prefill_id =".$db->qstr($invoice_prefill_id);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete an invoice prefill item."));

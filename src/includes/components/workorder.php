@@ -44,13 +44,13 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
     $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";    
     
     // Restrict results by search category (customer) and search term
-    if($search_term && $search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE '%$search_term%'";}
+    if($search_term && $search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_term && $search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE '%$search_term%'";}
+    elseif($search_term && $search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE '%$search_term%'";}
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
     
@@ -116,7 +116,7 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
             ".$whereTheseRecords."
             GROUP BY ".PRFX."workorder_records.".$order_by."
             ORDER BY ".PRFX."workorder_records.".$order_by."
-            ".$direction;            
+            ".$direction;           
     
     /* Restrict by pages */
     
@@ -403,7 +403,7 @@ function get_workorder_note($workorder_note_id, $item = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$db->qstr( $workorder_note_id );    
+    $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$db->qstr($workorder_note_id);    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get a work order Note."));
@@ -431,7 +431,7 @@ function get_workorder_notes($workorder_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_id=".$db->qstr( $workorder_id );
+    $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get all notes for a work order."));
@@ -528,7 +528,7 @@ function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
             DISTINCT (CAST(scope AS CHAR CHARACTER SET utf8) COLLATE utf8_bin) AS autoscope
             FROM ".PRFX."workorder_records
             WHERE scope
-            LIKE '$scope_string%'
+            LIKE ".$db->qstr($scope_string.'%')."
             LIMIT 10";    
 
     
@@ -575,9 +575,9 @@ function update_workorder_scope_and_description($workorder_id, $scope, $descript
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."workorder_records SET           
-            scope               =".$db->qstr( $scope        ).",
-            description         =".$db->qstr( $description  )."            
-            WHERE workorder_id  =".$db->qstr( $workorder_id );
+            scope               =".$db->qstr($scope).",
+            description         =".$db->qstr($description)."            
+            WHERE workorder_id  =".$db->qstr($workorder_id);
 
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order scope and description."));
@@ -612,8 +612,8 @@ function update_workorder_comment($workorder_id, $comment) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."workorder_records SET            
-            comment            =". $db->qstr( $comment        )."
-            WHERE workorder_id  =". $db->qstr( $workorder_id    );
+            comment             =". $db->qstr($comment)."
+            WHERE workorder_id  =". $db->qstr($workorder_id);
 
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comment."));
@@ -798,12 +798,12 @@ function update_workorder_last_active($workorder_id = null) {
 # Update a Workorder's Invoice ID  #
 ####################################
 
-function update_workorder_invoice_id($workorder_id, $invoice_id) {
+function update_workorder_invoice_id($workorder_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     
     // This prevents invoices with no workorders causing issues
-    if($workorder_id == null) { return; }
+    if(!$workorder_id || !$invoice_id) { return; }
     
     $sql = "UPDATE ".PRFX."workorder_records SET
             invoice_id          =". $db->qstr( $invoice_id      )."
@@ -1026,7 +1026,7 @@ function check_workorder_status_allows_for_deletion($workorder_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT status FROM ".PRFX."workorder_records WHERE workorder_id=".$workorder_id;
+    $sql = "SELECT status FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if a work order is allowed to be deleted."));

@@ -44,7 +44,7 @@ function display_refunds($order_by, $direction, $use_pages = false, $records_per
     $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE '%$search_term%'";} 
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');} 
     
     /* Filter the Records */  
     
@@ -61,7 +61,7 @@ function display_refunds($order_by, $direction, $use_pages = false, $records_per
             ".$whereTheseRecords."            
             GROUP BY ".PRFX."refund_records.".$order_by."
             ORDER BY ".PRFX."refund_records.".$order_by."
-            ".$direction;            
+            ".$direction;           
     
     /* Restrict by pages */
     
