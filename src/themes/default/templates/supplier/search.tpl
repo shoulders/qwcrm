@@ -33,7 +33,8 @@
                                                                 <br />
                                                                 <select class="olotd5" id="search_category" name="search_category">
                                                                     <option value="supplier_id"{if $search_category == 'supplier_id'} selected{/if}>{t}Supplier ID{/t}</option>
-                                                                    <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Display Name{/t}</option>                                                                    
+                                                                    <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Name{/t}</option>  
+                                                                    <option value="contact_name"{if $search_category == 'contact_name'} selected{/if}>{t}Contact{/t}</option>
                                                                     <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                     <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
                                                                     <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>                                                                    

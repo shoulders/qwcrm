@@ -41,7 +41,7 @@
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Contact{/t}</b></td>
-                                            <td class="menutd" >{$supplier_details.first_name} {$supplier_details.last_name}</td>                                            
+                                            <td class="menutd" >{$supplier_details.contact_name}</td>                                            
                                             <td class="menutd"><b>{t}Mobile{/t}</b></td>
                                             <td class="menutd">{$supplier_details.mobile_phone}</td>
                                         </tr>                                      

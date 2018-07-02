@@ -63,7 +63,7 @@
                                 {$customer_details.country}
                             </p>
                             <p>
-                                <b>{t}Contact{/t}: </b>{$customer_details.first_name} {$customer_details.last_name}<br />
+                                <b>{t}Contact{/t}: </b>{$customer_details.contact_name}<br />
                                 <b>{t}Phone{/t}: </b>{$customer_details.primary_phone}<br>
                                 <b>{t}Mobile{/t}: </b>{$customer_details.mobile_phone}<br>
                                 <b>{t}Fax{/t}: </b>{$customer_details.primary_phone}<br>                                

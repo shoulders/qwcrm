@@ -46,12 +46,8 @@
                                                                                         <td><input name="display_name" class="olotd5" value="{$user_details.display_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td align="right"><strong>{t}First Name{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                                        <td><input name="first_name" class="olotd5" value="{$user_details.first_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td align="right"><strong>{t}Last Name{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                                        <td><input name="last_name" class="olotd5" value="{$user_details.last_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
+                                                                                        <td align="right"><strong>{t}Contact Name{/t}</strong><span style="color: #ff0000">*</span></td>
+                                                                                        <td><input name="contact_name" class="olotd5" value="{$user_details.contact_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        

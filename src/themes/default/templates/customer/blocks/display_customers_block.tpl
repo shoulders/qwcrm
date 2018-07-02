@@ -10,8 +10,7 @@
     <tr>
         <td class="olohead">ID</td>
         <td class="olohead">{t}Display Name{/t}</td>
-        <td class="olohead">{t}First Name{/t}</td>
-        <td class="olohead">{t}Last Name{/t}</td>
+        <td class="olohead">{t}Contact{/t}</td>        
         <td class="olohead">{t}Phone{/t}</td>
         <td class="olohead">{t}Type{/t}</td>
         <td class="olohead">{t}Email{/t}</td>
@@ -23,8 +22,7 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}';" class="row1">
             <td class="olotd4" nowrap><a href="index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}">{$display_customers[c].customer_id}</a></td>
             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('{$display_customers[c].address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>{$display_customers[c].city}<br>{$display_customers[c].state}<br>{$display_customers[c].zip}<br>{$display_customers[c].country}');" onMouseOut="hideddrivetip();">&nbsp;<a href="index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}">{$display_customers[c].display_name}</a></td>
-            <td class="olotd4" nowrap>{$display_customers[c].first_name}</td>
-            <td class="olotd4" nowrap>{$display_customers[c].last_name}</td>
+            <td class="olotd4" nowrap>{$display_customers[c].contact_name}</td>
             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Mobile{/t}: </b>{$display_customers[c].mobile_phone}<br><b>{t}Fax{/t}:</b>{$display_customers[c].fax}');" onMouseOut="hideddrivetip();">{$display_customers[c].primary_phone}</td>                                                            
             <td class="olotd4" nowrap>
                 {section name=s loop=$customer_types}    

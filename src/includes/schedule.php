@@ -51,7 +51,7 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
     elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
     
     /* Filter the Records */
     
@@ -544,7 +544,7 @@ function build_ics_description($type, $single_schedule, $customer_id, $workorder
         // Contact Information
         $description .= _gettext("Contact Information")  .''.'\n\n'.
                         _gettext("Company")              .': '   .$customer_details['display_name'].'\n\n'.
-                        _gettext("Contact")              .': '   .$customer_details['first_name'].' '.$customer_details['last_name'].'\n\n'.
+                        _gettext("Contact")              .': '   .$customer_details['contact_name'].'\n\n'.
                         _gettext("Phone")                .': '   .$customer_details['primary_phone'].'\n\n'.
                         _gettext("Mobile")               .': '   .$customer_details['mobile_phone'].'\n\n'.
                         _gettext("Website")              .': '   .$customer_details['website'].'\n\n'.
@@ -578,7 +578,7 @@ function build_ics_description($type, $single_schedule, $customer_id, $workorder
         $description .= '<p><strong>'._gettext("Contact Information").'</strong></p>'.
                         '<p>'.
                         '<strong>'._gettext("Company")   .':</strong> '  .$customer_details['display_name'].'<br>'.
-                        '<strong>'._gettext("Contact")   .':</strong> '  .$customer_details['first_name'].' '.$customer_details['last_name'].'<br>'.              
+                        '<strong>'._gettext("Contact")   .':</strong> '  .$customer_details['contact_name'].'<br>'.              
                         '<strong>'._gettext("Phone")     .':</strong> '  .$customer_details['primary_phone'].'<br>'.
                         '<strong>'._gettext("Mobile")    .':</strong> '  .$customer_details['mobile_phone'].'<br>'.
                         '<strong>'._gettext("Website")   .':</strong> '  .$customer_details['website'].

@@ -44,7 +44,7 @@ function display_suppliers($order_by, $direction, $use_pages = false, $records_p
     $whereTheseRecords = "WHERE ".PRFX."supplier_records.supplier_id\n";
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */ 
     
@@ -139,8 +139,7 @@ function insert_supplier($VAR) {
     
     $sql = "INSERT INTO ".PRFX."supplier_records SET            
             display_name   =". $db->qstr( $VAR['display_name']  ).",
-            first_name     =". $db->qstr( $VAR['first_name']    ).",
-            last_name      =". $db->qstr( $VAR['last_name']     ).",
+            contact_name   =". $db->qstr( $VAR['contact_name']  ).",
             website        =". $db->qstr( $VAR['website']       ).",
             email          =". $db->qstr( $VAR['email']         ).",
             type           =". $db->qstr( $VAR['type']          ).",
@@ -230,8 +229,7 @@ function update_supplier($supplier_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."supplier_records SET
             display_name   =". $db->qstr( $VAR['display_name']  ).",
-            first_name     =". $db->qstr( $VAR['first_name']    ).",
-            last_name      =". $db->qstr( $VAR['last_name']     ).",
+            contact_name   =". $db->qstr( $VAR['contact_name']  ).",
             website        =". $db->qstr( $VAR['website']       ).",
             email          =". $db->qstr( $VAR['email']         ).",
             type           =". $db->qstr( $VAR['type']          ).",

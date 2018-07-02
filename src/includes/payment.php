@@ -50,7 +50,7 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');} 
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
     
     /* Filter the Records */
     

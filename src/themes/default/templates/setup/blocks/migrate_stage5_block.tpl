@@ -236,9 +236,8 @@
                                                                     <tr>
                                                                         <td>                                                                
                                                                             <strong>Placeholders</strong><br>
-                                                                            {literal}{customer_display_name}{/literal} = {t}Customer's name{/t}<br>
-                                                                            {literal}{customer_first_name}{/literal} = {t}Customer's contact first name{/t}<br> 
-                                                                            {literal}{customer_last_name}{/literal} = {t}Customer's contact last name{/t}<br> 
+                                                                            {literal}{customer_display_name}{/literal} = {t}Customer's name{/t}<br>                                                                            
+                                                                            {literal}{customer_contact_name}{/literal} = {t}Customer's contact name{/t}<br> 
                                                                             {literal}{customer_credit_terms}{/literal} = {t}Customer's credit terms{/t} 
                                                                         </td>
                                                                     </tr>
@@ -268,9 +267,8 @@
                                                                     <tr>
                                                                         <td>                                                                
                                                                             <strong>Placeholders</strong><br>
-                                                                            {literal}{customer_display_name}{/literal} = {t}Customer's name{/t}<br>
-                                                                            {literal}{customer_first_name}{/literal} = {t}Customer's contact first name{/t}<br> 
-                                                                            {literal}{customer_last_name}{/literal} = {t}Customer's contact last name{/t}<br> 
+                                                                            {literal}{customer_display_name}{/literal} = {t}Customer's name{/t}<br>                                                                             
+                                                                            {literal}{customer_contact_name}{/literal} = {t}Customer's contact name{/t}<br> 
                                                                             {literal}{customer_credit_terms}{/literal} = {t}Customer's credit terms{/t} 
                                                                         </td>
                                                                     </tr>
