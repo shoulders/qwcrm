@@ -21,13 +21,7 @@
         <td class="menutd"><b>{t}Display Name{/t}</b></td>
         <td class="menutd">{$user_details.display_name}</td>
         <td colspan="2">&nbsp;</td>
-    </tr>
-    <tr>
-        <td class="menutd"><b>{t}First Name{/t}</b></td>
-        <td class="menutd">{$user_details.first_name}</td>
-        <td class="menutd"><b>{t}Last Name{/t}</b>
-        <td class="menutd">{$user_details.last_name}</td>
-    </tr>
+    </tr>    
     
     <!-- Account -->
     
