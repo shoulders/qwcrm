@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/supplier.php');
+require(INCLUDES_DIR.'supplier.php');
 
 // Check if we have a supplier_id
 if(!isset($VAR['supplier_id']) || !$VAR['supplier_id']) {

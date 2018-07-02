@@ -8,10 +8,10 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/report.php');
-require(INCLUDES_DIR.'components/schedule.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'report.php');
+require(INCLUDES_DIR.'schedule.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {

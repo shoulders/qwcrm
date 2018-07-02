@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/administrator.php');
-require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'administrator.php');
+require(INCLUDES_DIR.'user.php');
 
 // Send a Test Mail
 if(isset($VAR['send_test_mail'])) {

@@ -8,11 +8,11 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/giftcert.php');
-require(INCLUDES_DIR.'components/invoice.php');
-require(INCLUDES_DIR.'components/payment.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'giftcert.php');
+require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an invoice_id
 if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {

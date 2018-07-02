@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/schedule.php');
-require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'schedule.php');
+require(INCLUDES_DIR.'user.php');
 
 // Build the page
 $smarty->assign('customer_details', get_customer_details(get_schedule_details($VAR['schedule_id'], 'customer_id')));

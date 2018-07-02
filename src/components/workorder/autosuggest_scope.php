@@ -9,7 +9,7 @@
 // Prevent direct Access
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'workorder.php');
   
 // Is there a posted query string and is the string length greater than 0
 if(isset($VAR['posted_scope_string']) && strlen($VAR['posted_scope_string']) > 0) {

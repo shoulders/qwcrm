@@ -357,7 +357,7 @@ class JUser
         return $table->setLastVisit($timestamp);*/
         
         $db = QFactory::getDbo();        
-        $sql = "UPDATE ".PRFX."user_records SET last_active = ".time()." WHERE user_id = " . $this->db->qstr($this->id);
+        $sql = "UPDATE ".PRFX."user_records SET last_active = ".time()." WHERE user_id = " . $db->qstr($this->id);
         $db->Execute($sql);
         
         return;

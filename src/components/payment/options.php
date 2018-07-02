@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'payment.php');
 
 // Prevent undefined variable errors
 $VAR['credit_card'] = isset($VAR['credit_card']) ? $VAR['credit_card'] : null;

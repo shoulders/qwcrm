@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'user.php');
 
 // Prevent undefined variable errors
 $VAR['login_username'] = isset($VAR['login_username']) ? $VAR['login_username'] : null;

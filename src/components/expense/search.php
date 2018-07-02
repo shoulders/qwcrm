@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/expense.php');
-require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'expense.php');
+require(INCLUDES_DIR.'payment.php');
 
 // Prevent undefined variable errors
 $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;

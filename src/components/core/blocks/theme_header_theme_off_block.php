@@ -8,6 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require_once(INCLUDES_DIR.'components/core_theme.php');
+require_once(INCLUDES_DIR.'core_theme.php');
 
 $BuildPage .= $smarty->fetch('core/blocks/theme_header_theme_off_block.tpl');

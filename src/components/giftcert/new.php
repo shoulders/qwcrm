@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/giftcert.php');
-require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'giftcert.php');
+require(INCLUDES_DIR.'payment.php');
 
 // Check if we have a customer_id
 if(!isset($VAR['customer_id']) || !$VAR['customer_id']) {

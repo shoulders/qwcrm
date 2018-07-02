@@ -10,6 +10,16 @@
 
 defined('_QWEXEC') or die;
 
+// System
+require QFRAMEWORK_DIR . 'system/defines.php';                      // Load System Constants
+require QFRAMEWORK_DIR . 'system/error.php';                        // Configure PHP error reporting
+require QFRAMEWORK_DIR . 'system/include.php';                      // Load System Include
+require QFRAMEWORK_DIR . 'system/security.php';                     // Load QWcrm Security including mandatory security code
+require QFRAMEWORK_DIR . 'system/email.php';                        // Load email transport
+require QFRAMEWORK_DIR . 'system/variables.php';                    // Configure variables to be used by QWcrm
+require QFRAMEWORK_DIR . 'system/router.php';                       // Route the page request
+require QFRAMEWORK_DIR . 'system/buildpage.php';                    // Build the page content payload
+
 // General Helpers
 require QFRAMEWORK_DIR . 'general/Registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
 require QFRAMEWORK_DIR . 'general/WebClient.php';                   // Gets the browser details from the session (used in cookie creation)
@@ -87,7 +97,25 @@ class QFactory {
     
     }
 
+/****************** Load QWcrm ******************/
+    
+    /**
+     * Load all of the includes, settings and variables for QWcrm
+     *
+     */    
+    public static function loadQwcrm(&$VAR)
+    {        
+        load_defines();                                     // Load System Constants
+        force_ssl(QFactory::getConfig()->get('force_ssl')); // Redirect ot SSL (if enabled)
+        configure_php_error_reporting();                    // Configure PHP error reporting
+        require(VENDOR_DIR.'autoload.php');                 // Load dependencies via composer
+        load_whoops();                                      // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)
+        load_language();                                    // Load Language  (now in include)        
+        load_system_variables($VAR);                        // Load the system variables
 
+        return;
+    }
+    
 /****************** Configuration Object ******************/
     
     
@@ -484,17 +512,6 @@ class QFactory {
      */
     protected static function createDbo()
     {        
-        /* Old version but works well
-        $conf = self::getConfig();       
-        
-        // create adodb database connection
-        $db = ADONewConnection('mysqli');
-        $db->Connect($conf->get('db_host'), $conf->get('db_user'), $conf->get('db_pass'), $conf->get('db_name'));
-                
-        return $db;*/
-        
-        /* New Version */
-
         $conf = self::getConfig();
         
         /* ADODB Options */

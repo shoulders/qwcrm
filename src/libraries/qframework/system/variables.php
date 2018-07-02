@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 #  Load and set the System's global variables  #
 ################################################
 
-function load_system_variables(&$VAR = null) {
+function load_system_variables(&$VAR) {
     
     $smarty = QFactory::getSmarty();
 
@@ -31,8 +31,8 @@ function load_system_variables(&$VAR = null) {
     #   Set Global PHP Values      #
     ################################ 
 
-    // Make sure $VAR exist as an array, $VAR is not always created upstream.
-    $VAR = isset($VAR) ? $VAR : array();
+    // Make sure $VAR exist as an array, $VAR is not always created upstream. - delete when ready
+    //$VAR = isset($VAR) ? $VAR : array();
 
     // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
@@ -67,7 +67,7 @@ function load_system_variables(&$VAR = null) {
     // QWcrm Theme Directory Template Smarty File Include Path Variables
     $smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
     
-    // This assigns framework globals to smarty and also prevents undefined variable errors - bypassing the use of the $VAR[''] to pass these
+    // This assigns framework globals to smarty and also prevents undefined variable errors (mainly for the menu)
     isset($VAR['user_id'])      ? $smarty->assign('user_id', $VAR['user_id'])           : $smarty->assign('user_id', null);
     isset($VAR['employee_id'])  ? $smarty->assign('employee_id', $VAR['employee_id'])   : $smarty->assign('employee_id', null);
     isset($VAR['customer_id'])  ? $smarty->assign('customer_id', $VAR['customer_id'])   : $smarty->assign('customer_id', null);

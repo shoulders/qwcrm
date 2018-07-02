@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require_once(INCLUDES_DIR.'components/core_menu.php');
+require_once(INCLUDES_DIR.'core_menu.php');
  
 /* Get Workorder Status if we have a workorder_id - not currently used
 if($VAR['workorder_id'] != '') {

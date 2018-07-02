@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/administrator.php');
+require(INCLUDES_DIR.'administrator.php');
 
 // Build the page with the phpinfo
 $smarty->assign('phpinfo', getPHPInfo());

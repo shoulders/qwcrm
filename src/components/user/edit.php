@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'user.php');
 
 // Check if we have an user_id
 if(!isset($VAR['user_id']) || !$VAR['user_id']) {

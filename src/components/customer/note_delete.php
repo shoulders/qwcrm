@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
+require(INCLUDES_DIR.'customer.php');
 
 // check if we have a customer_note_id
 if(!isset($VAR['customer_note_id']) || !$VAR['customer_note_id']) {

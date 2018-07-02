@@ -11,9 +11,13 @@ defined('_QWEXEC') or die;
 
 /** Mandatory Code **/
 
-// Force SSL/HTTPS if enabled - add base path stuff here
-if(QFactory::getConfig()->get('force_ssl') >= 1 && !isset($_SERVER['HTTPS'])) {   
-    force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
+function force_ssl($force_ssl_config) {
+    
+    // Force SSL/HTTPS if enabled - add base path stuff here
+    if($force_ssl_config >= 1 && !isset($_SERVER['HTTPS'])) {   
+        force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
+    }
+
 }
 
 // add security routines here
@@ -32,21 +36,24 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     // If override is set, return true
     if($access_rule == 'override') {return true;}
     
+    // Get Referer
+    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null; 
+    
     // If no referer, page was not access via QWcrm and a setup procedure is not occuring
-    if(!getenv('HTTP_REFERER') && $access_rule != 'setup') {return false;}
+    if($referer && $access_rule != 'setup') {return false;}
     
     // Check if a 'SPECIFIC' QWcrm page is the referer
     if($component != null && $page_tpl != null) {       
         
         // If supplied page matches the 'Referring Page'
-        if(preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'full', 'auto'), '/').'/U', getenv('HTTP_REFERER'))) {
+        if(preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'full', 'auto'), '/').'/U', $referer)) {
             
             return true;
             
         }
         
         // Setup Access Rule - allow direct access (useful for setup routines and some system pages)
-        if(!getenv('HTTP_REFERER') && $access_rule == 'setup') {          
+        if($referer && $access_rule == 'setup') {          
             
             return true;
 
@@ -59,7 +66,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
     } else {
         
-        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', getenv('HTTP_REFERER'));       
+        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);       
         
     }
     
@@ -73,16 +80,20 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
  * This attempts to get the real IP address of the user 
  */
 
-function get_visitor_ip_address() {
+function get_visitor_ip_address() {    
     
-    if(getenv('HTTP_CLIENT_IP')) {
-        $ip_address = getenv('HTTP_CLIENT_IP');        
+    $http_client_ip = isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : null;
+    $http_x_forwarded_for = isset($_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : null;
+    $remote_addr = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : null;    
+    
+    if($http_client_ip) {
+        $ip_address = $http_client_ip;        
     }
-    elseif(getenv('HTTP_X_FORWARDED_FOR')) {
-        $ip_address = getenv('HTTP_X_FORWARDED_FOR');        
+    elseif($http_x_forwarded_for) {
+        $ip_address = $http_x_forwarded_for;        
     }
-    elseif(getenv('REMOTE_ADDR')) {
-        $ip_address = getenv('REMOTE_ADDR');        
+    elseif($remote_addr) {
+        $ip_address = $remote_addr;        
     }
     else {$ip_address = 'UNKNOWN';}
     

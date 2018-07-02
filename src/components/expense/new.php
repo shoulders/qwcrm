@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/expense.php');
-require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'expense.php');
+require(INCLUDES_DIR.'payment.php');
 
 // Predict the next expense_id
 $new_record_id = last_expense_id_lookup() +1;

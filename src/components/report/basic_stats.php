@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/report.php');
+require(INCLUDES_DIR.'report.php');
 
 // Global Workorder Stats
 $smarty->assign('global_workorder_stats', get_workorder_stats('current'));

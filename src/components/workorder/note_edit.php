@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_note_id
 if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {

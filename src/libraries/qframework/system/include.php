@@ -435,11 +435,12 @@ function prepare_error_data($type, $data = null) {
     }
 
     /* Error Page (by referring page) - only needed when using referrer - not currently used 
-    if($type === 'error_page') {
+    if($type === 'error_page' && isset()) {
      */
         
-        // extract the qwcrm page reference from the url      
-        // preg_match('/^.*\?page=(.*)&.*/U', getenv('HTTP_REFERER'), $page_string);
+        // extract the qwcrm page reference from the url (if present)
+        //$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;   
+        // preg_match('/^.*\?page=(.*)&.*/U', $referer, $page_string);
                 
       /*  // compensate for home and login pages
         if($page_string[1] == '') {     
@@ -1197,5 +1198,75 @@ function clear_smarty_compile() {
     
     // Log activity        
     write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
+    
+}
+
+################################################
+#         Load Language                        #
+################################################
+
+function load_language() {
+    
+    // Load compatibility layer (motranslator)
+    PhpMyAdmin\MoTranslator\Loader::loadFunctions();
+
+    // Autodetect Language - I18N support information here
+    if(function_exists('locale_accept_from_http') && (QFactory::getConfig()->get('autodetect_language') == '1' || QFactory::getConfig()->get('autodetect_language') == null)) {
+
+        // Use the locale language if detected or default language or british english
+        if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+
+            // Set default language as the chosen language or fallback to british english
+            if(!$language = QFactory::getConfig()->get('default_language')) {
+                $language = 'en_GB';
+            }
+
+        }
+
+        // If there is no language file for the locale, set language to british english - This allows me to use CONSTANTS in translations but bypasses normal fallback mechanism for _gettext()
+        if(!is_file(LANGUAGE_DIR.$language.'/LC_MESSAGES/site.po')) {
+            $language = 'en_GB';    
+        }
+
+    } else {
+
+        // Set default language or fallback to british english
+        if(!$language = QFactory::getConfig()->get('default_language')) {
+            $language = 'en_GB';
+        }
+
+    }
+
+    // Here we define the global system locale given the found language
+    putenv("LANG=$language");
+
+    // This might be useful for date functions (LC_TIME) or money formatting (LC_MONETARY), for instance
+    _setlocale(LC_ALL, $language);
+
+    // Set the text domain
+    $textdomain = 'site';
+
+    // This will make _gettext look for ../language/<lang>/LC_MESSAGES/site.mo
+    _bindtextdomain($textdomain, LANGUAGE_DIR);
+
+    // Indicates in what encoding the file should be read
+    _bind_textdomain_codeset($textdomain, 'UTF-8');
+
+    // Here we indicate the default domain the _gettext() calls will respond to
+    _textdomain($textdomain);
+
+}
+
+
+################################################
+#         Load Whoops Error Handler            #  // This replaces the PHP default error handler
+################################################
+
+function load_whoops() {
+    
+    $whoops = new \Whoops\Run;
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+    $whoops->register();
+    //trigger_error("Number cannot be larger than 10"); // This can be used to simulate an error*/
     
 }

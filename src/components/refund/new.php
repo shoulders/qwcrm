@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/refund.php');
-require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'refund.php');
+require(INCLUDES_DIR.'payment.php');
 
 // Predict the next refund_id
 $new_record_id = last_refund_id_lookup() +1;

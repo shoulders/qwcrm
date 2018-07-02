@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {

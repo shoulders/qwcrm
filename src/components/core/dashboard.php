@@ -11,9 +11,9 @@ defined('_QWEXEC') or die;
 // Decide which dashboard to show (employee or customer)
 if($user->login_is_employee) {
     
-    require(INCLUDES_DIR.'components/core.php');
-    require(INCLUDES_DIR.'components/report.php');
-    require(INCLUDES_DIR.'components/workorder.php');
+    require(INCLUDES_DIR.'core.php');
+    require(INCLUDES_DIR.'report.php');
+    require(INCLUDES_DIR.'workorder.php');
 
     // Prevent undefined variable errors
     $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;

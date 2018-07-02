@@ -8,11 +8,11 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/invoice.php');
-require(INCLUDES_DIR.'components/payment.php');
-require(INCLUDES_DIR.'components/user.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'user.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
 $VAR['labour_description'] = isset($VAR['labour_description']) ? $VAR['labour_description'] : null;

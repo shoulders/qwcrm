@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/giftcert.php');
+require(INCLUDES_DIR.'giftcert.php');
 
 // Prevent undefined variable errors
 $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;

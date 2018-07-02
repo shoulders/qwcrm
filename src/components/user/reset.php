@@ -8,10 +8,10 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/invoice.php'); // require to stop email sub-system error
-require(INCLUDES_DIR.'components/user.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'invoice.php'); // require to stop email sub-system error
+require(INCLUDES_DIR.'user.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
 //$VAR['token'] = isset($VAR['token']) ? $VAR['token'] : null;

@@ -8,10 +8,10 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/schedule.php');
-require(INCLUDES_DIR.'components/user.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'schedule.php');
+require(INCLUDES_DIR.'user.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // If no schedule year/month/day set, use today's date
 $VAR['start_year'] = isset($VAR['start_year']) ? $VAR['start_year'] : date('Y');

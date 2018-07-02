@@ -34,73 +34,16 @@ $startTime = microtime(1);
 $startMem  = memory_get_usage();
 
 ################################################
-#    Get Root Folder and Physical path info    #
-################################################
-
-// QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\
-define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);
-
-// QWcrm Protocol - http:// || https://
-define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');
-
-// QWcrm Domain - quantumwarp.com
-define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);
-
-// QWcrm Path - /develop/qwcrm/
-define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));
-
-################################################
 #         Load QWCRM                           #
 ################################################
 
-// Load the session and user framework
-define('QFRAMEWORK_DIR', 'libraries/qframework/');
+// Intialise QWcrm Global variable $VAR
+$VAR = array();
+
+// Load the framework (session/user/database/template engine/system includes)
+define('QFRAMEWORK_DIR', 'libraries/qframework/'); 
 require(QFRAMEWORK_DIR.'qframework.php');
-
-// Load System Constants
-require('includes/system/defines.php');
-
-// Configure PHP error reporting
-require(INCLUDES_DIR.'system/error.php');
-
-// Load dependencies via composer
-require(VENDOR_DIR.'autoload.php');
-
-// Whoops Error Handler - Here so it can load ASAP
-/*$whoops = new \Whoops\Run;
-$whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-$whoops->register();
-//trigger_error("Number cannot be larger than 10"); // This can be used to simulate an error*/
-
-// Load System Include
-require(INCLUDES_DIR.'system/include.php');
-
-// Load Language
-require(INCLUDES_DIR.'system/language.php');
-
-// Load Database Abstraction Layer  -  Not currently needed here because it is in the framework, but might be needed for install/migrate/upgrade
-//require(INCLUDES_DIR.'system/adodb.php');
-
-// Load QWcrm Security including mandatory security code
-require(INCLUDES_DIR.'system/security.php');
-
-// Load PDF creation library
-//require(INCLUDES_DIR.'system/mpdf.php');
-
-// Load email transport
-require(INCLUDES_DIR.'system/email.php');
-
-// Load Smarty Template Engine
-//require(INCLUDES_DIR.'system/smarty.php');
-
-// Configure variables to be used by QWcrm
-require(INCLUDES_DIR.'system/variables.php');
-
-// Route the page request
-require(INCLUDES_DIR.'system/router.php');
-
-// Build the page content payload
-require(INCLUDES_DIR.'system/buildpage.php');
+QFramework::loadQwcrm($VAR);
 
 ################################################
 #         Test QWCRM Enviroment                #
@@ -113,15 +56,14 @@ require(INCLUDES_DIR.'system/buildpage.php');
 #         Initialise QWCRM                     #
 ################################################
 
-// Load the system variables
-load_system_variables($VAR);
-
-// Start the QFramework 
 if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    
+    // Start the QFramework 
     $app = new QFactory;
+    
 }
 
-// Set the User's smarty variables
+// Set the Smarty User variables (This seems the best place for this function to run)
 set_user_smarty_variables();
 
 ################################################
@@ -161,7 +103,7 @@ if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'insta
 #         Headers                              #
 ################################################
 
-// Send optional Headers if 'print' mode is not set (print does email, pdf and onscreen)
+// Send optional Headers if 'print' mode is not set (print does: email, pdf and onscreen)
 if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
 
     // Compress page payload and send compression headers

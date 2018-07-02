@@ -147,7 +147,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
         ".$whereTheseRecords."
         GROUP BY ".PRFX."invoice_records.".$order_by."         
         ORDER BY ".PRFX."invoice_records.".$order_by."
-        ".$db->qstr($direction);
+        ".$direction;
 
     /* Restrict by pages */
     

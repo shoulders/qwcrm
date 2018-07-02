@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require_once(INCLUDES_DIR.'components/core_theme.php');
+require_once(INCLUDES_DIR.'core_theme.php');
 
 /* Display Date and Time */
 $smarty->assign('todays_display_date', date('l, j F Y'));

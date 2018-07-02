@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/report.php');
+require(INCLUDES_DIR.'report.php');
 
 if(isset($VAR['submit'])) {
 

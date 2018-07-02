@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/expense.php');
-require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'expense.php');
+require(INCLUDES_DIR.'payment.php');
 
 // Check if we have an expense_id
 if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {

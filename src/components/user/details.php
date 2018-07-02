@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/user.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'user.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
 $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;

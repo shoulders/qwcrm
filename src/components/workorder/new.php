@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/workorder.php');
-require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'workorder.php');
+require(INCLUDES_DIR.'user.php');
 
 // Prevent undefined variable errors
 $VAR['assign_to_employee'] = isset($VAR['assign_to_employee']) ? $VAR['assign_to_employee'] : null;

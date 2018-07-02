@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/invoice.php');
-require(INCLUDES_DIR.'components/workorder.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Create an invoice for the supplied workorder
 if(isset($VAR['workorder_id']) && $VAR['workorder_id'] && !get_workorder_details($VAR['workorder_id'], 'invoice_id')) {

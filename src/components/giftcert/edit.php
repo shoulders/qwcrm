@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/giftcert.php');
-require(INCLUDES_DIR.'components/payment.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'giftcert.php');
+require(INCLUDES_DIR.'payment.php');
 
 // Check if we have an giftcert_id
 if(!isset($VAR['giftcert_id']) || !$VAR['giftcert_id']) {

@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/customer.php');
-require(INCLUDES_DIR.'components/user.php');
+require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'user.php');
 
 // Set the template for the correct user type (customer/employee)
 if(isset($VAR['customer_id']) && $VAR['customer_id']) {

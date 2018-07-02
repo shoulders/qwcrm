@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/invoice.php');
+require(INCLUDES_DIR.'invoice.php');
 
 // Prevent undefined variable errors
 $VAR['empty_prefill_items_table'] = isset($VAR['empty_prefill_items_table']) ? $VAR['empty_prefill_items_table'] : null;

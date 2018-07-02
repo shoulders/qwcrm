@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'components/supplier.php');
+require(INCLUDES_DIR.'supplier.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
