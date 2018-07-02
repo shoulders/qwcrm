@@ -598,6 +598,8 @@ CREATE TABLE `#__user_records` (
   `reset_count` int(10) NOT NULL DEFAULT '0' COMMENT 'Count of password resets since last_reset_time',
   `is_employee` int(1) NOT NULL DEFAULT '0',
   `display_name` varchar(50) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `last_name` varchar(20) NOT NULL,
   `work_primary_phone` varchar(20) NOT NULL,
   `work_mobile_phone` varchar(20) NOT NULL,
   `work_fax` varchar(20) NOT NULL,
