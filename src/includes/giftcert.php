@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
+function display_giftcerts($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $is_redeemed = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -59,6 +59,9 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     
     // Restrict by Customer
     if($customer_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.customer_id=".$db->qstr($customer_id);}
+    
+    // Restrict by Customer
+    if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.workorder_id=".$db->qstr($workorder_id);}
     
     // Restrict by Invoice
     if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.invoice_id=".$db->qstr($invoice_id);}
@@ -159,7 +162,7 @@ function insert_giftcert($customer_id, $date_expires, $amount, $active, $note) {
     $sql = "INSERT INTO ".PRFX."giftcert_records SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            customer_id     =". $db->qstr( $customer_id                         ).",                        
+            customer_id     =". $db->qstr( $customer_id                         ).",
             date_created    =". $db->qstr( time()                               ).",
             date_expires    =". $db->qstr( $date_expires                        ).",                                     
             amount          =". $db->qstr( $amount                              ).",
@@ -363,12 +366,17 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
     
     $db = QFactory::getDbo();
     
+    // Get the associated workorder if there is one
+    $workorder_id = get_invoice_details($invoice_id, 'workorder_id');
+    
     $sql = "UPDATE ".PRFX."giftcert_records SET
-            invoice_id          =". $db->qstr( $invoice_id  ).",
-            date_redeemed       =". $db->qstr( time()       ).",
-            is_redeemed         =". $db->qstr( 1            ).",            
-            active              =". $db->qstr( 0            )."
-            WHERE giftcert_id   =". $db->qstr( $giftcert_id );
+            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id ).",
+            workorder_id        =". $db->qstr( $workorder_id ).",
+            invoice_id          =". $db->qstr( $invoice_id   ).",
+            date_redeemed       =". $db->qstr( time()        ).",
+            is_redeemed         =". $db->qstr( 1             ).",            
+            active              =". $db->qstr( 0             )."
+            WHERE giftcert_id   =". $db->qstr( $giftcert_id  );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
@@ -378,7 +386,7 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
         
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$customer_details['display_name'].'.';
-        write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id'], null, $invoice_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_details['customer_id'], null, $invoice_id);
         
     }
     

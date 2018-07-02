@@ -48,6 +48,14 @@
                                             <td>{$giftcert_details.giftcert_id}</td>
                                         </tr>
                                         <tr>
+                                            <td><b>{t}Workorder ID{/t}</b></td>
+                                            <td><a href="index.php?component=workorder&page_tpl=details&workorder_id={$giftcert_details.workorder_id}">{$giftcert_details.workorder_id}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{t}Invoice ID{/t}</b></td>                                            
+                                            <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$giftcert_details.invoice_id}">{$giftcert_details.invoice_id}</a></td>            
+                                        </tr>
+                                        <tr>
                                             <td><b>{t}Code{/t}</b></td>
                                             <td>{$giftcert_details.giftcert_code}</td>
                                         </tr>
@@ -86,7 +94,7 @@
                                                 {if $giftcert_details.is_redeemed == '0'}Not Redeemed{/if}
                                                 {if $giftcert_details.is_redeemed == '1'}Redeemed{/if}
                                             </td>
-                                        </tr>
+                                        </tr>                                        
                                     </table>                                   
                                 </td>                                
                             </tr>
