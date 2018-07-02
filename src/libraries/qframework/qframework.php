@@ -105,13 +105,13 @@ class QFactory {
      */    
     public static function loadQwcrm(&$VAR)
     {        
-        load_defines();                                     // Load System Constants
-        force_ssl(QFactory::getConfig()->get('force_ssl')); // Redirect ot SSL (if enabled)
-        configure_php_error_reporting();                    // Configure PHP error reporting
-        require(VENDOR_DIR.'autoload.php');                 // Load dependencies via composer
-        load_whoops();                                      // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)
-        load_language();                                    // Load Language  (now in include)        
-        load_system_variables($VAR);                        // Load the system variables
+        load_defines();                                                     // Load System Constants
+        force_ssl(QFactory::getConfig()->get('force_ssl'));                 // Redirect ot SSL (if enabled)
+        configure_php_error_reporting();                                    // Configure PHP error reporting
+        require(VENDOR_DIR.'autoload.php');                                 // Load dependencies via composer
+        load_whoops(QFactory::getConfig()->get('error_handler_whoops'));     // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)
+        load_language();                                                    // Load Language  (now in include)        
+        load_system_variables($VAR);                                        // Load the system variables
 
         return;
     }

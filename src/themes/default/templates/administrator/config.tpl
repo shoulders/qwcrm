@@ -509,7 +509,17 @@
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Error Page Raw Output{/t}</strong></div><hr><div>{t escape=tooltip}Normally when an error occurs the error page is display with the relevant information, however sometimes looping or white screens can occur and this option strips back all uneeded functionality so just the error data is shown to negate these issues. This is only needed for development or unless otherwise instructed. QWcrm Debug does not need to be enabled.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>                    
+                    </tr>
+                    <tr>
+                        <td align="right"><b>{t}Whoops Error Handler{/t}</b></td>
+                        <td>
+                            <select class="olotd5" id="error_handler_whoops" name="qwconfig[error_handler_whoops]">                                                       
+                                <option value="0"{if $qwcrm_config.error_handler_whoops == '0'} selected{/if}>{t}No{/t}</option>
+                                <option value="1"{if $qwcrm_config.error_handler_whoops == '1'} selected{/if}>{t}Yes{/t}</option>
+                            </select>
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Whoops Error Handler{/t}</strong></div><hr><div>{t escape=tooltip}Whoops will replace all of the custom QWcrm and PHP error handling systems. It provides a pretty error interface that helps you debug your web projects, but at heart its a simple yet powerful stacked error handling system.{/t}</div>');" onMouseOut="hideddrivetip();">
+                        </td>
+                    </tr>  
                     
                     <!-- Debugging -->
                     
@@ -644,7 +654,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="right">&nbsp;</td>
+                        <td align="right"><span style="color: blue">*</span></td>
                         <td>                                                                                                                   
                             <button type="button" onclick="$.ajax( { url:'index.php?component=administrator&page_tpl=config&clear_smarty_cache=true&theme=print', success: function(data) { $('body').append(data); } } );" disabled>{t}Clear Smarty Cache{/t}</button>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Clear Smarty Cache{/t}</strong></div><hr><div>{t escape=tooltip}This clears the Smarty cache.{/t}</div>');" onMouseOut="hideddrivetip();">

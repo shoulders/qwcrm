@@ -1262,11 +1262,15 @@ function load_language() {
 #         Load Whoops Error Handler            #  // This replaces the PHP default error handler
 ################################################
 
-function load_whoops() {
+function load_whoops($run_whoops = false) {
     
-    $whoops = new \Whoops\Run;
-    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-    $whoops->register();
-    //trigger_error("Number cannot be larger than 10"); // This can be used to simulate an error*/
+    if($run_whoops) {    
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+        $whoops->register();
+        //trigger_error("Number cannot be larger than 10"); // This can be used to simulate an error*/
+    }
+    
+    return;
     
 }

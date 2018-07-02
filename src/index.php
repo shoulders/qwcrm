@@ -43,7 +43,7 @@ $VAR = array();
 // Load the framework (session/user/database/template engine/system includes)
 define('QFRAMEWORK_DIR', 'libraries/qframework/'); 
 require(QFRAMEWORK_DIR.'qframework.php');
-QFramework::loadQwcrm($VAR);
+QFactory::loadQwcrm($VAR);
 
 ################################################
 #         Test QWCRM Enviroment                #
