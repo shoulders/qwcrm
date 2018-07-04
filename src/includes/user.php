@@ -46,7 +46,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
         

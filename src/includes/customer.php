@@ -48,7 +48,7 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     if($search_category == 'contact') {$havingTheseRecords .= " HAVING contact LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Search category with search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}     
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     /* Filter the Records */    
     
