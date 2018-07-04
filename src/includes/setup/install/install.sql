@@ -64,7 +64,7 @@ CREATE TABLE `#__company_options` (
 --
 
 INSERT INTO `#__options` (`display_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_contact_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
+('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
 
 -- --------------------------------------------------------
 
@@ -75,7 +75,8 @@ INSERT INTO `#__options` (`display_name`, `logo`, `address`, `city`, `state`, `z
 CREATE TABLE `#__customer_records` (
   `customer_id` int(10) NOT NULL,
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `contact_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `credit_terms` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -533,7 +534,8 @@ CREATE TABLE `#__session` (
 CREATE TABLE `#__supplier_records` (
   `supplier_id` int(10) NOT NULL,
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `contact` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -598,6 +600,8 @@ CREATE TABLE `#__user_records` (
   `reset_count` int(10) NOT NULL DEFAULT '0' COMMENT 'Count of password resets since last_reset_time',
   `is_employee` int(1) NOT NULL DEFAULT '0',
   `display_name` varchar(50) NOT NULL,
+  `first_name` varchar(20) NOT NULL,
+  `last_name` varchar(20) NOT NULL,
   `work_primary_phone` varchar(20) NOT NULL,
   `work_mobile_phone` varchar(20) NOT NULL,
   `work_fax` varchar(20) NOT NULL,

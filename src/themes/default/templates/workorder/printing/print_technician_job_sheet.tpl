@@ -78,7 +78,7 @@
                             <b>{t}Contact{/t}:<b>                            
                         </td>
                         <td>
-                            {$customer_details.contact_name}                            
+                            {$customer_details.first_name} {$customer_details.last_name}                            
                         </td>        
                     </tr>
                     <tr>

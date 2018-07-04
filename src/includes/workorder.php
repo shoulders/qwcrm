@@ -50,7 +50,7 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
     elseif($search_term && $search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
     
@@ -93,7 +93,8 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
                 
             ".PRFX."customer_records.customer_id,
             ".PRFX."customer_records.display_name AS customer_display_name,
-            ".PRFX."customer_records.contact_name AS customer_contact_name,                       
+            ".PRFX."customer_records.first_name AS customer_first_name,
+            ".PRFX."customer_records.last_name AS customer_last_name,            
             ".PRFX."customer_records.address AS customer_address,
             ".PRFX."customer_records.city AS customer_city,
             ".PRFX."customer_records.state AS customer_state,

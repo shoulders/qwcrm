@@ -46,7 +46,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
         
@@ -176,7 +176,9 @@ function insert_user($VAR) {
             register_date       =". $db->qstr( time()                                       ).",   
             require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
             is_employee         =". $db->qstr( $VAR['is_employee']                          ).",              
-            display_name        =". $db->qstr( $VAR['display_name']                         ).",            
+            display_name        =". $db->qstr( $VAR['display_name']                         ).",
+            first_name          =". $db->qstr( $VAR['first_name']                           ).",
+            last_name           =". $db->qstr( $VAR['last_name']                            ).",
             work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
             work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
             work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
@@ -400,6 +402,8 @@ function update_user($VAR) {
         require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
         is_employee         =". $db->qstr( $VAR['is_employee']                          ).",                 
         display_name        =". $db->qstr( $VAR['display_name']                         ).",
+        first_name          =". $db->qstr( $VAR['first_name']                           ).",
+        last_name           =". $db->qstr( $VAR['last_name']                            ).",
         work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
         work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
         work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    

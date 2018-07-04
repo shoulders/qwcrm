@@ -30,7 +30,7 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Contact{/t}</b></td>
-                                            <td class="menutd">{$customer_details.contact_name}</td>
+                                            <td class="menutd">{$customer_details.first_name} {$customer_details.last_name}</td>
                                             <td class="menutd"><b>{t}Website{/t}</b></td>
                                             <td class="menutd"><a href="{$customer_details.website}"</a>{$customer_details.website}</td>
                                         </tr>

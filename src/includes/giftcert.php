@@ -44,7 +44,7 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";    
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
     

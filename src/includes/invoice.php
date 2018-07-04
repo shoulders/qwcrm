@@ -56,7 +56,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     elseif($search_category == 'parts_items') {$whereTheseRecords .= " AND parts.parts_items LIKE ".$db->qstr('%'.$search_term.'%');}    
     
     // Restrict results by search category and search term
-    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_term != null) {$whereTheseRecords .= " AND ".PRFX."invoice_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
     
@@ -93,8 +93,9 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     $sql = "SELECT        
         ".PRFX."invoice_records.*,
             
-        ".PRFX."customer_records.display_name AS customer_display_name,        
-        ".PRFX."customer_records.contact_name AS customer_contact_name,
+        ".PRFX."customer_records.display_name AS customer_display_name,
+        ".PRFX."customer_records.first_name AS customer_first_name,
+        ".PRFX."customer_records.last_name AS customer_last_name,
         ".PRFX."customer_records.primary_phone AS customer_phone,
         ".PRFX."customer_records.mobile_phone AS customer_mobile_phone,
         ".PRFX."customer_records.fax AS customer_fax,

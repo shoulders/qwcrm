@@ -36,15 +36,19 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     // Process certain variables - This prevents undefined variable errors
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';   
-    $search_category = $search_category ?: 'customer_id';    
+    $search_category = $search_category ?: 'customer_id';
+    $havingTheseRecords = '';
 
     /* Records Search */
     
     // Default Action    
     $whereTheseRecords = " WHERE ".PRFX."customer_records.customer_id\n";    
     
+    // Search category (contact) and search term
+    if($search_category == 'contact') {$havingTheseRecords .= " HAVING contact LIKE ".$db->qstr('%'.$search_term.'%');}
+    
     // Search category with search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.".$db->qstr($search_category)." LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     /* Filter the Records */    
     
@@ -57,11 +61,14 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     /* The SQL code */    
     
     $sql = "SELECT        
-        ".PRFX."customer_records.*
-            
-        FROM ".PRFX."customer_records 
+        ".PRFX."customer_records.*,            
+        CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS contact
+        
+        FROM ".PRFX."customer_records            
+ 
         ".$whereTheseRecords."
-        GROUP BY ".PRFX."customer_records.".$order_by."        
+        GROUP BY ".PRFX."customer_records.".$order_by."
+        ".$havingTheseRecords."
         ORDER BY ".PRFX."customer_records.".$order_by."
         ".$direction; 
    
@@ -145,8 +152,9 @@ function insert_customer($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."customer_records SET
-            display_name    =". $db->qstr( $VAR['display_name']     ).",            
-            contact_name    =". $db->qstr( $VAR['contact_name']     ).",
+            display_name    =". $db->qstr( $VAR['display_name']     ).",
+            first_name      =". $db->qstr( $VAR['first_name']       ).",
+            last_name       =". $db->qstr( $VAR['last_name']        ).",
             website         =". $db->qstr( $VAR['website']          ).",
             email           =". $db->qstr( $VAR['email']            ).",     
             credit_terms    =". $db->qstr( $VAR['credit_terms']     ).",
@@ -325,8 +333,9 @@ function update_customer($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."customer_records SET
-            display_name    =". $db->qstr( $VAR['display_name']     ).",            
-            contact_name    =". $db->qstr( $VAR['contact_name']     ).",
+            display_name    =". $db->qstr( $VAR['display_name']     ).",
+            first_name      =". $db->qstr( $VAR['first_name']       ).",
+            last_name       =". $db->qstr( $VAR['last_name']        ).",
             website         =". $db->qstr( $VAR['website']          ).",
             email           =". $db->qstr( $VAR['email']            ).",     
             credit_terms    =". $db->qstr( $VAR['credit_terms']     ).",               

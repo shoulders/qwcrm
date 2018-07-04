@@ -313,8 +313,9 @@ function get_email_message_body($message_name, $customer_details) {
     
     // Process placeholders
     if($message_name == 'email_msg_invoice') {        
-        $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);        
-        $content = replace_placeholder($content, '{customer_contact_name}', $customer_details['contact_name']);
+        $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
+        $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
+        $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
         $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
     }
     if($message_name == 'email_msg_workorder') {

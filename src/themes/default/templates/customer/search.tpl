@@ -36,7 +36,7 @@
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="customer_id"{if $search_category == 'customer_id'} selected{/if}>{t}Customer ID{/t}</option>
                                                                         <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Display Name{/t}</option>
-                                                                        <option value="contact_name"{if $search_category == 'contact_name'} selected{/if}>{t}Contact Name{/t}</option>                                                                        
+                                                                        <option value="contact"{if $search_category == 'contact'} selected{/if}>{t}Contact{/t}</option>
                                                                         <option value="email"{if $search_category == 'email'} selected{/if}>{t}Email{/t}</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>                                                                        
                                                                     </select>
