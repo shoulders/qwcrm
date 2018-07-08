@@ -44,8 +44,11 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     // Default Action    
     $whereTheseRecords = " WHERE ".PRFX."customer_records.customer_id\n";    
     
-    // Search category (contact) and search term
-    if($search_category == 'contact') {$havingTheseRecords .= " HAVING contact LIKE ".$db->qstr('%'.$search_term.'%');}
+    // Search category (display_name) and search term
+    if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    
+    // Search category (full_name) and search term
+    elseif($search_category == 'full_name') {$havingTheseRecords .= " HAVING full_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Search category with search term
     elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     
@@ -61,8 +64,9 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     /* The SQL code */    
     
     $sql = "SELECT        
-        ".PRFX."customer_records.*,            
-        CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS contact
+        ".PRFX."customer_records.*,        
+        IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS display_name,
+        CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS full_name
         
         FROM ".PRFX."customer_records            
  
@@ -152,7 +156,7 @@ function insert_customer($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."customer_records SET
-            display_name    =". $db->qstr( $VAR['display_name']     ).",
+            company_name    =". $db->qstr( $VAR['company_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
             last_name       =". $db->qstr( $VAR['last_name']        ).",
             website         =". $db->qstr( $VAR['website']          ).",
@@ -169,18 +173,20 @@ function insert_customer($VAR) {
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
-            note            =". $db->qstr( $VAR['note']            ).",
+            note            =". $db->qstr( $VAR['note']             ).",
             create_date     =". $db->qstr( time()                   );          
                         
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer record into the database."));
     } else {
         
+        $customer_id = $db->Insert_ID();
+        
         // Log activity
-        $record = _gettext("New customer").', '.$VAR['display_name'].', '._gettext("has been created.");
+        $record = _gettext("New customer").', '.get_customer_details($customer_id, 'display_name').', '._gettext("has been created.");
         write_record_to_activity_log($record, null, $db->Insert_ID());  
         
-        return $db->Insert_ID();
+        return $customer_id;
         
     }
     
@@ -234,12 +240,31 @@ function get_customer_details($customer_id, $item = null) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's details."));
     } else { 
         
-        if($item === null){
+        if($item === null) {
             
-            return $rs->GetRowAssoc(); 
+            $results = $rs->GetRowAssoc();
+            
+            // Add these dynamically created fields
+            $results['display_name'] = $results['company_name'] ? $results['company_name'] : $results['first_name'].' '.$results['last_name'];
+            $results['full_name'] = $results['first_name'].' '.$results['last_name'];
+            
+            return $results; 
             
         } else {
             
+            // Return the dynamically created 'display_name'
+            if($item == 'display_name') {
+                $results = $rs->GetRowAssoc();                
+                return $results['company_name'] ? $results['company_name'] : $results['first_name'].' '.$results['last_name'];                               
+            }
+            
+            // Return the dynamically created 'full_name'
+            if($item == 'full_name') {
+                $results = $rs->GetRowAssoc();                
+                return $results['first_name'].' '.$results['last_name'];                               
+            } 
+            
+            // Return static item
             return $rs->fields[$item];   
             
         } 
@@ -286,7 +311,7 @@ function get_customer_notes($customer_id) {
     
     $sql = "SELECT *,
         
-            ".PRFX."user_records.display_name AS employee_display_name
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
             
             FROM ".PRFX."customer_notes
             LEFT JOIN ".PRFX."user_records ON ".PRFX."customer_notes.employee_id = ".PRFX."user_records.user_id
@@ -333,7 +358,7 @@ function update_customer($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."customer_records SET
-            display_name    =". $db->qstr( $VAR['display_name']     ).",
+            company_name    =". $db->qstr( $VAR['company_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
             last_name       =". $db->qstr( $VAR['last_name']        ).",
             website         =". $db->qstr( $VAR['website']          ).",
@@ -358,7 +383,7 @@ function update_customer($VAR) {
     } else {
         
         // Log activity        
-        $record = _gettext("The customer").' '.$VAR['display_name'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("The customer").' '.get_customer_details($VAR['customer_id'], 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, null, $VAR['customer_id']);
         
         // Update last active record      

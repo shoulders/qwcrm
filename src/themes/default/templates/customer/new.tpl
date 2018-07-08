@@ -35,16 +35,16 @@
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Display Name{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td colspan="3"><input name="display_name" class="olotd5" size="60" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
+                                                                            <td align="right"><b>{t}Company Name{/t}</b></td>
+                                                                            <td colspan="3"><input name="company_name" class="olotd5" size="60" type="text" maxlength="50" onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}First Name{/t}</b></td>
-                                                                            <td><input name="first_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyName(event);"></td>
+                                                                            <td align="right"><b>{t}First Name{/t}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td><input name="first_name" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Last Name{/t}</b></td>
-                                                                            <td><input name="last_name" class="olotd5" type="text" maxlength="20" onkeydown="return onlyName(event);"></td>
+                                                                            <td align="right"><b>{t}Last Name{/t}</b><span style="color: #ff0000">*</span></td>
+                                                                            <td><input name="last_name" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Website{/t}</b></td>

@@ -30,7 +30,7 @@
                                                         <table border="0">
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Display Name{/t}</b><br>
+                                                                    <b>{t}Name{/t}</b><br>
                                                                     <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" onkeydown="return onlySearch(event);">                                                            
                                                                     <input name="search_category" value="{$search_category}" type="hidden" />
                                                                     <button type="submit" name="submit" value="search">{t}Search{/t}</button>

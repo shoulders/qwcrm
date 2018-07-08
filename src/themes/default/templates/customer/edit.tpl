@@ -34,15 +34,15 @@
                                                                 <table>
                                                                     <tbody align="left">
                                                                         <tr>
-                                                                            <td align="right"><strong>{t}Display Name{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                            <td colspan="3"><input name="display_name" class="olotd5" size="50" value="{$customer_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"/></td>
+                                                                            <td align="right"><strong>{t}Company Name{/t}</strong></td>
+                                                                            <td colspan="3"><input name="company_name" class="olotd5" size="50" value="{$customer_details.company_name}" type="text" maxlength="50" onkeydown="return onlyName(event);"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><strong>{t}First Name{/t}</strong></td>
-                                                                            <td><input name="first_name" class="olotd5" value="{$customer_details.first_name}" size="20" type="text" maxlength="20" onkeydown="return onlyName(event);"/></td>
+                                                                            <td align="right"><strong>{t}First Name{/t}</strong><span style="color: #ff0000">*</span></td>
+                                                                            <td><input name="first_name" class="olotd5" value="{$customer_details.first_name}" size="20" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
                                                                         <tr>
-                                                                            <td align="right"><strong>{t}Last Name{/t}</strong></td>
-                                                                            <td><input name="last_name" class="olotd5" value="{$customer_details.last_name}" size="20" type="text" maxlength="20" onkeydown="return onlyName(event);"/></td>
+                                                                            <td align="right"><strong>{t}Last Name{/t}</strong><span style="color: #ff0000">*</span></td>
+                                                                            <td><input name="last_name" class="olotd5" value="{$customer_details.last_name}" size="20" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Website{/t}</b></td>

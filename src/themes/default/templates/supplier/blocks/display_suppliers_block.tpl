@@ -11,8 +11,7 @@
         <td class="olohead">{t}ID{/t}</td>
         <td class="olohead">{t}Name{/t}</td>                                                        
         <td class="olohead">{t}Type{/t}</td>
-        <td class="olohead">{t}Zip{/t}</td>
-        <td class="olohead">{t}Country{/t}</td>
+        <td class="olohead">{t}Zip{/t}</td>        
         <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Description{/t}</td>
         <td class="olohead">{t}Action{/t}</td>
@@ -20,15 +19,14 @@
     {section name=s loop=$display_suppliers}
         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}';" class="row1">                                                           
-            <td class="olotd4" nowrap><a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}">{$display_suppliers[s].supplier_id}</a></td>                                                            
-            <td class="olotd4" nowrap>{$display_suppliers[s].display_name}</td>                                                                                                                      
+            <td class="olotd4" nowrap><a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}">{$display_suppliers[s].supplier_id}</a></td>
+            <td class="olotd4" nowrap><a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}">{$display_suppliers[s].display_name}</a></td>
             <td class="olotd4" nowrap>
                 {section name=t loop=$supplier_types}    
                     {if $display_suppliers[s].type == $supplier_types[t].supplier_type_id}{t}{$supplier_types[t].display_name}{/t}{/if}        
                 {/section}    
             </td>
-            <td class="olotd4" nowrap>{$display_suppliers[s].zip}</td>
-            <td class="olotd4" nowrap>{$display_suppliers[s].country}</td>                                                            
+            <td class="olotd4" nowrap>{$display_suppliers[s].zip}</td>                                                                        
             <td class="olotd4" nowrap>{if $display_suppliers[s].note != ''}
                 <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_suppliers[s].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}
             </td>                                                            

@@ -181,12 +181,12 @@ class JUser
     protected static $instances = array();
     
     /**
-     * @var    array QWcrm User variables
+     * @var    string QWcrm User variables
      * 
      */    
     public $login_user_id           = null;    
     public $login_username          = null;
-    public $login_usergroup_id      = 9;    // Default is a public user
+    public $login_usergroup_id      = 9;    // Default to a 'Public' user
     public $login_display_name      = null;
     public $login_token             = null;    
     public $login_is_employee       = null;
@@ -683,7 +683,7 @@ class JUser
             // Reset to guest user
             $this->guest = 1;
             
-            //force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load an Employee."));
+            //force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
             
             return false;
             
@@ -691,6 +691,33 @@ class JUser
             
             // Load the user record into an array
             $record = $rs->GetRowAssoc();            
+            
+            $this->username                 = $record['username'];
+            $this->id                       = $record['user_id'];
+            
+            // Extra Variables (Added for QWcrm)
+            $this->login_user_id            = $record['user_id'];
+            $this->login_username           = $record['username'];            
+            $this->login_usergroup_id       = $record['usergroup'];
+            $this->login_display_name       = $record['first_name'].' '.$record['last_name'];
+            $this->login_token              = 'login_verified';
+            $this->login_is_employee        = $record['is_employee'];
+            $this->login_customer_id        = $record['customer_id'];
+
+            // If not active block the account
+            if($record['active'] != '1') { $this->block = 1; }
+
+        }
+        
+        /* Cannot use this method currently because components/user.php is not included
+        if($record != get_user_details($id)) {
+            
+            // Reset to guest user
+            $this->guest = 1;
+            
+            return false;
+            
+        } else {
             
             $this->username                 = $record['username'];
             $this->id                       = $record['user_id'];
@@ -708,6 +735,7 @@ class JUser
             if($record['active'] != '1') { $this->block = 1; }
 
         }
+         */
 
         /*
          * Set the user parameters using the default XML file.  We might want to

@@ -36,15 +36,22 @@ function display_suppliers($order_by, $direction, $use_pages = false, $records_p
     // Process certain variables - This prevents undefined variable errors
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';
-    $search_category = $search_category ?: 'supplier_id';    
+    $search_category = $search_category ?: 'supplier_id';
+    $havingTheseRecords = '';
     
     /* Records Search */ 
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."supplier_records.supplier_id\n";
     
+    // Search category (display_name) and search term
+    if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    
+    // Search category (full_name) and search term
+    elseif($search_category == 'full_name') {$havingTheseRecords .= " HAVING full_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */ 
     
@@ -53,10 +60,15 @@ function display_suppliers($order_by, $direction, $use_pages = false, $records_p
     
     /* The SQL code */
     
-    $sql =  "SELECT * 
+    $sql =  "SELECT
+            ".PRFX."supplier_records.*,
+            IF(company_name !='', company_name, CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name)) AS display_name,
+            CONCAT(".PRFX."supplier_records.first_name, ' ', ".PRFX."supplier_records.last_name) AS full_name
+
             FROM ".PRFX."supplier_records                                                   
             ".$whereTheseRecords."            
             GROUP BY ".PRFX."supplier_records.".$order_by."
+            ".$havingTheseRecords."
             ORDER BY ".PRFX."supplier_records.".$order_by."
             ".$direction;           
     
@@ -138,7 +150,7 @@ function insert_supplier($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."supplier_records SET            
-            display_name   =". $db->qstr( $VAR['display_name']  ).",
+            company_name   =". $db->qstr( $VAR['company_name']  ).",
             first_name     =". $db->qstr( $VAR['first_name']    ).",
             last_name      =". $db->qstr( $VAR['last_name']     ).",
             website        =". $db->qstr( $VAR['website']       ).",
@@ -160,7 +172,7 @@ function insert_supplier($VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '._gettext("created."));
+        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("created."));
 
         return $db->Insert_ID();
         
@@ -186,9 +198,27 @@ function get_supplier_details($supplier_id, $item = null) {
         
         if($item === null){
             
-            return $rs->GetRowAssoc();            
+            $results = $rs->GetRowAssoc();
+            
+            // Add these dynamically created fields           
+            $results['display_name'] = $results['company_name'] ? $results['company_name'] : $results['first_name'].' '.$results['last_name'];
+            $results['full_name'] = $results['first_name'].' '.$results['last_name'];
+            
+            return $results;          
             
         } else {
+            
+            // Return the dynamically created 'display_name'
+            if($item == 'display_name') {
+                $results = $rs->GetRowAssoc();
+                return $results['company_name'] ? $results['company_name'] : $results['first_name'].' '.$results['last_name'];
+            }
+            
+            // Return the dynamically created 'full_name'
+            if($item == 'display_name') {
+                $results = $rs->GetRowAssoc();
+                return $results['first_name'].' '.$results['last_name']; 
+            }
             
             return $rs->fields[$item];   
             
@@ -229,7 +259,7 @@ function update_supplier($supplier_id, $VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."supplier_records SET
-            display_name   =". $db->qstr( $VAR['display_name']  ).",
+            company_name   =". $db->qstr( $VAR['company_name']  ).",
             first_name     =". $db->qstr( $VAR['first_name']    ).",
             last_name      =". $db->qstr( $VAR['last_name']     ).",
             website        =". $db->qstr( $VAR['website']       ).",
@@ -252,7 +282,7 @@ function update_supplier($supplier_id, $VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['display_name'].') '._gettext("updated."));
+        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("updated."));
 
         return true;
         

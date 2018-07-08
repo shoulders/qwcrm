@@ -86,13 +86,13 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
     
     $sql =  "SELECT            
             ".PRFX."user_records.email AS employee_email,
-            ".PRFX."user_records.display_name AS employee_display_name,
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
             ".PRFX."user_records.work_primary_phone AS employee_work_primary_phone,
             ".PRFX."user_records.work_mobile_phone AS employee_work_mobile_phone,
             ".PRFX."user_records.home_primary_phone AS employee_home_primary_phone,
                 
             ".PRFX."customer_records.customer_id,
-            ".PRFX."customer_records.display_name AS customer_display_name,
+            CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS customer_display_name,
             ".PRFX."customer_records.first_name AS customer_first_name,
             ".PRFX."customer_records.last_name AS customer_last_name,            
             ".PRFX."customer_records.address AS customer_address,
@@ -196,7 +196,8 @@ function display_workorder_notes($workorder_id) {
     
     $sql = "SELECT
             ".PRFX."workorder_notes.*,
-            ".PRFX."user_records.display_name AS employee_display_name
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
+                
             FROM
             ".PRFX."workorder_notes,
             ".PRFX."user_records
@@ -223,7 +224,7 @@ function display_workorder_history($workorder_id) {
     
     $sql = "SELECT 
             ".PRFX."workorder_history.*,
-            ".PRFX."user_records.display_name AS employee_display_name
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
                 
             FROM 
             ".PRFX."workorder_history

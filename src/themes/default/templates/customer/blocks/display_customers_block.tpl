@@ -9,11 +9,9 @@
 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr>
         <td class="olohead">ID</td>
-        <td class="olohead">{t}Display Name{/t}</td>
-        <td class="olohead">{t}First Name{/t}</td>
-        <td class="olohead">{t}Last Name{/t}</td>
-        <td class="olohead">{t}Phone{/t}</td>
+        <td class="olohead">{t}Name{/t}</td>
         <td class="olohead">{t}Type{/t}</td>
+        <td class="olohead">{t}Phone{/t}</td>        
         <td class="olohead">{t}Email{/t}</td>
         <td class="olohead">{t}Active{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
@@ -22,19 +20,17 @@
     {section name=c loop=$display_customers}
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}';" class="row1">
             <td class="olotd4" nowrap><a href="index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}">{$display_customers[c].customer_id}</a></td>
-            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" onMouseOver="ddrivetip('{$display_customers[c].address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>{$display_customers[c].city}<br>{$display_customers[c].state}<br>{$display_customers[c].zip}<br>{$display_customers[c].country}');" onMouseOut="hideddrivetip();">&nbsp;<a href="index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}">{$display_customers[c].display_name}</a></td>
-            <td class="olotd4" nowrap>{$display_customers[c].first_name}</td>
-            <td class="olotd4" nowrap>{$display_customers[c].last_name}</td>
-            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Mobile{/t}: </b>{$display_customers[c].mobile_phone}<br><b>{t}Fax{/t}:</b>{$display_customers[c].fax}');" onMouseOut="hideddrivetip();">{$display_customers[c].primary_phone}</td>                                                            
+            <td class="olotd4" nowrap><a href="index.php?component=customer&page_tpl=details&customer_id={$display_customers[c].customer_id}">{$display_customers[c].display_name}</a></td>
             <td class="olotd4" nowrap>
                 {section name=s loop=$customer_types}    
                     {if $display_customers[c].type == $customer_types[s].customer_type_id}{t}{$customer_types[s].display_name}{/t}{/if}        
                 {/section}
             </td>
+            <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Mobile{/t}: </b>{$display_customers[c].mobile_phone}<br><b>{t}Fax{/t}:</b>{$display_customers[c].fax}');" onMouseOut="hideddrivetip();">{$display_customers[c].primary_phone}</td>            
             <td class="olotd4" nowrap><a href="mailto:{$display_customers[c].email}"><font class="blueLink">{$display_customers[c].email}</font></a></td>
             <td class="olotd4" nowrap>{if $display_customers[c].active == 1}{t}Active{/t}{else}{t}Blocked{/t}{/if}</td>
             <td class="olotd4" nowrap>
-                {if $display_customers[c].note != ''}
+                {if $display_customers[c].note}
                      <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_customers[c].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                  {/if}
             </td>

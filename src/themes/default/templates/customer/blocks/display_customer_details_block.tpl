@@ -29,8 +29,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Contact{/t}</b></td>
-                                            <td class="menutd">{$customer_details.first_name} {$customer_details.last_name}</td>
+                                            <td class="menutd"><b>{t}Name{/t}</b></td>
+                                            <td class="menutd">{$customer_details.display_name}</td>
                                             <td class="menutd"><b>{t}Website{/t}</b></td>
                                             <td class="menutd"><a href="{$customer_details.website}"</a>{$customer_details.website}</td>
                                         </tr>
@@ -51,7 +51,12 @@
                                             <td class="menutd" colspan="4"></td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"> <b>{t}Address{/t}</b> <a style="color:red" href="{$GoogleMapString}" target="_blank" ><img src="{$theme_images_dir}icons/map.png" alt="" border="0" height="14" width="14" />{t}Get Directions{/t}</a></td>
+                                            <td class="menutd"><b>{t}Contact{/t}</b></td>
+                                            <td class="menutd">{$customer_details.full_name}</td>
+                                            <td class="menutd" colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Address{/t}</b> <a style="color:red" href="{$GoogleMapString}" target="_blank" ><img src="{$theme_images_dir}icons/map.png" alt="" border="0" height="14" width="14" />{t}Get Directions{/t}</a></td>
                                             <td class="menutd"></td>
                                             <td class="menutd"><b>{t}Phone{/t}</b></td>
                                             <td class="menutd">{$customer_details.primary_phone}</td>

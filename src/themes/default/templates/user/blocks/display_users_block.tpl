@@ -9,9 +9,9 @@
 <table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
     <tr>
         <td class="olohead">{t}ID{/t}</td>
-        <td class="olohead">{t}Display Name{/t}</td>
-        <td class="olohead">{t}Username{/t}</td>
+        <td class="olohead">{t}Name{/t}</td>
         <td class="olohead">{t}Type{/t}</td>
+        <td class="olohead">{t}Username{/t}</td>        
         <td class="olohead">{t}Usergroup{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Based{/t}</td>
@@ -23,11 +23,11 @@
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}';" class="row1">
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}">{$display_users[u].user_id}</a></td>
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}">{$display_users[u].display_name}</a></td>
-            <td class="olotd4">{$display_users[u].username}</td>
             <td class="olotd4">
                 {if $display_users[u].is_employee == '0'}{t}Customer{/t}{/if}
                 {if $display_users[u].is_employee == '1'}{t}Employee{/t}{/if}                                                            
             </td>
+            <td class="olotd4">{$display_users[u].username}</td>            
             <td class="olotd4">
                 {section name=g loop=$usergroups}
                     {if $display_users[u].usergroup == $usergroups[g].usergroup_id}{$usergroups[g].usergroup_display_name}{/if}

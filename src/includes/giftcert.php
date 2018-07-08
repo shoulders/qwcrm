@@ -70,8 +70,11 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     
     $sql = "SELECT
             ".PRFX."giftcert_records.*,
-            ".PRFX."user_records.display_name as employee_display_name,
-            ".PRFX."customer_records.display_name as customer_display_name         
+                
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
+                
+            CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS customer_display_name
+                
             FROM ".PRFX."giftcert_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."giftcert_records.employee_id = ".PRFX."user_records.user_id
             LEFT JOIN ".PRFX."customer_records ON ".PRFX."giftcert_records.customer_id = ".PRFX."customer_records.customer_id            

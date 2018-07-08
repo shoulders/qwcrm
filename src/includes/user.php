@@ -27,7 +27,7 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 #####################################
-#    Display Users                  #
+#    Display Users                  #  // 'display_name' and 'full_name' are the same. This is usability issues.
 #####################################
 
 function display_users($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $usertype = null, $usergroup = null) {
@@ -38,15 +38,19 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     // Process certain variables - This prevents undefined variable errors
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';
-    $search_category = $search_category ?: 'user_id';    
+    $search_category = $search_category ?: 'user_id';
+    $havingTheseRecords = '';
 
     /* Records Search */
         
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";    
+    $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";
+    
+    // Search category (display) and search term
+    if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
     
     /* Filter the Records */
         
@@ -79,11 +83,15 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     
     $sql = "SELECT
             ".PRFX."user_records.*,
-            ".PRFX."user_usergroups.usergroup_display_name   
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS display_name,
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS full_name,
+            ".PRFX."user_usergroups.usergroup_display_name
+                
             FROM ".PRFX."user_records
             LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user_records.usergroup = ".PRFX."user_usergroups.usergroup_id)
             ".$whereTheseRecords."
             GROUP BY ".PRFX."user_records.".$order_by."
+            ".$havingTheseRecords."
             ORDER BY ".PRFX."user_records.".$order_by."
             ".$direction; 
    
@@ -175,8 +183,7 @@ function insert_user($VAR) {
             active              =". $db->qstr( $VAR['active']                               ).",
             register_date       =". $db->qstr( time()                                       ).",   
             require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-            is_employee         =". $db->qstr( $VAR['is_employee']                          ).",              
-            display_name        =". $db->qstr( $VAR['display_name']                         ).",
+            is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
             first_name          =". $db->qstr( $VAR['first_name']                           ).",
             last_name           =". $db->qstr( $VAR['last_name']                            ).",
             work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
@@ -212,7 +219,7 @@ function insert_user($VAR) {
         } else {
             $user_type = _gettext("Employee");
         }        
-        $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$VAR['display_name'].' '._gettext("created").'.';
+        $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.get_user_details($user_id, 'display_name').' '._gettext("created").'.';
         write_record_to_activity_log($record, $user_id);
                 
         return $user_id;
@@ -224,7 +231,7 @@ function insert_user($VAR) {
 /** Get Functions **/
 
 #####################################
-#     Get User Details              #
+#     Get User Details              #  // 'display_name' and 'full_name' are the same. This is usability issues.
 #####################################
 
 function get_user_details($user_id = null, $item = null) {
@@ -242,11 +249,29 @@ function get_user_details($user_id = null, $item = null) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
     } else {
         
-        if($item === null){
+        if($item === null) {
             
-            return $rs->GetRowAssoc();
+            $results = $rs->GetRowAssoc();
+            
+            // Add these dynamically created fields           
+            $results['display_name'] = $results['first_name'].' '.$results['last_name'];
+            $results['full_name'] = $results['first_name'].' '.$results['last_name'];
+            
+            return $results;
             
         } else {
+            
+            // Return the dynamically created 'display_name'
+            if($item == 'display_name') {
+                $results = $rs->GetRowAssoc();
+                return $results['first_name'].' '.$results['last_name'];
+            }
+            
+            // Return the dynamically created 'full_name'
+            if($item == 'full_name') {
+                $results = $rs->GetRowAssoc();
+                return $results['first_name'].' '.$results['last_name'];
+            }
             
             return $rs->fields[$item];   
             
@@ -347,7 +372,13 @@ function get_active_users($user_type = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT user_id, display_name FROM ".PRFX."user_records WHERE active='1'";
+    $sql = "SELECT
+        
+        user_id,
+        CONCAT(".PRFX."first_name, ' ', ".PRFX."last_name) AS display_name,
+        
+        FROM ".PRFX."user_records
+        WHERE active='1'";
     
     // Filter the results by user type customer/employee
     if($user_type === 'customers') {$sql .= " AND is_employee='0'";}
@@ -400,8 +431,7 @@ function update_user($VAR) {
         usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
         active              =". $db->qstr( $VAR['active']                               ).",                    
         require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-        is_employee         =". $db->qstr( $VAR['is_employee']                          ).",                 
-        display_name        =". $db->qstr( $VAR['display_name']                         ).",
+        is_employee         =". $db->qstr( $VAR['is_employee']                          ).",        
         first_name          =". $db->qstr( $VAR['first_name']                           ).",
         last_name           =". $db->qstr( $VAR['last_name']                            ).",
         work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
@@ -435,7 +465,7 @@ function update_user($VAR) {
         }
         
         // Log activity        
-        $record = _gettext("User Account").' '.$VAR['user_id'].' ('.$VAR['display_name'].') '._gettext("updated.");
+        $record = _gettext("User Account").' '.$VAR['user_id'].' ('.get_user_details($VAR['user_id'], 'display_name').') '._gettext("updated.");
         write_record_to_activity_log($record, $VAR['user_id']);
         
         return true;
@@ -561,7 +591,12 @@ function build_active_employee_form_option_list($assigned_user_id) {
     $db = QFactory::getDbo();
     
     // select all employees and return their display name and ID as an array
-    $sql = "SELECT display_name, user_id FROM ".PRFX."user_records WHERE active=1 AND is_employee=1";
+    $sql = "SELECT
+            CONCAT(".PRFX."first_name, ' ', ".PRFX."last_name) AS display_name,
+            user_id
+        
+            FROM ".PRFX."user_records
+            WHERE active=1 AND is_employee=1";
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));

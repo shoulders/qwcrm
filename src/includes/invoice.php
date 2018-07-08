@@ -36,18 +36,19 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     // Process certain variables - This prevents undefined variable errors
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';
-    $search_category = $search_category ?: 'invoice_id';    
-    
+    $search_category = $search_category ?: 'invoice_id';
+        
     /* Records Search */
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";
+    $havingTheseRecords = '';
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (labour items / labour descriptions) and search term
     elseif($search_category == 'labour_items') {$whereTheseRecords .= " AND labour.labour_items LIKE ".$db->qstr('%'.$search_term.'%');} 
@@ -93,14 +94,14 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     $sql = "SELECT        
         ".PRFX."invoice_records.*,
             
-        ".PRFX."customer_records.display_name AS customer_display_name,
+        CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS customer_display_name,
         ".PRFX."customer_records.first_name AS customer_first_name,
         ".PRFX."customer_records.last_name AS customer_last_name,
         ".PRFX."customer_records.primary_phone AS customer_phone,
         ".PRFX."customer_records.mobile_phone AS customer_mobile_phone,
         ".PRFX."customer_records.fax AS customer_fax,
             
-        ".PRFX."user_records.display_name AS employee_display_name,
+        CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
         ".PRFX."user_records.work_primary_phone AS employee_work_primary_phone,
         ".PRFX."user_records.work_mobile_phone AS employee_work_mobile_phone,
         ".PRFX."user_records.home_mobile_phone AS employee_home_mobile_phone,
@@ -145,7 +146,8 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
         LEFT JOIN ".PRFX."user_records ON ".PRFX."invoice_records.employee_id = ".PRFX."user_records.user_id
         
         ".$whereTheseRecords."
-        GROUP BY ".PRFX."invoice_records.".$order_by."         
+        GROUP BY ".PRFX."invoice_records.".$order_by."
+        ".$havingTheseRecords."
         ORDER BY ".PRFX."invoice_records.".$order_by."
         ".$direction;
 

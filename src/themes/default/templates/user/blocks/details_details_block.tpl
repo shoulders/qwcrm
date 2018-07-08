@@ -18,7 +18,7 @@
     </tr>    
     
     <tr>                        
-        <td class="menutd"><b>{t}Display Name{/t}</b></td>
+        <td class="menutd"><b>{t}Name{/t}</b></td>
         <td class="menutd">{$user_details.display_name}</td>
         <td colspan="2">&nbsp;</td>
     </tr>
