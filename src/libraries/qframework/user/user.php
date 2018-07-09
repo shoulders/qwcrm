@@ -540,6 +540,8 @@ class JUser
         // This function is not needed but is called by the shutdown code.
         return;
         
+        /*
+ 
         // Create the user table object
         $table = $this->getTable();
         $this->params = (string) $this->_params;
@@ -649,6 +651,8 @@ class JUser
         }
 
         return $result;
+         
+        */
     }
 
     /**
