@@ -37,6 +37,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';
     $search_category = $search_category ?: 'invoice_id';
+    $havingTheseRecords = '';
         
     /* Records Search */
     
@@ -94,7 +95,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     $sql = "SELECT        
         ".PRFX."invoice_records.*,
             
-        CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS customer_display_name,
+        IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name,
         ".PRFX."customer_records.first_name AS customer_first_name,
         ".PRFX."customer_records.last_name AS customer_last_name,
         ".PRFX."customer_records.primary_phone AS customer_phone,

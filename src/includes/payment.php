@@ -36,7 +36,8 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     // Process certain variables - This prevents undefined variable errors
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';
-    $search_category = $search_category ?: 'payment_id';    
+    $search_category = $search_category ?: 'payment_id';
+    $havingTheseRecords = '';
    
     /* Records Search */
     
@@ -44,10 +45,10 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
     
     // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
+    elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     // Restrict results by search category and search term
     elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
@@ -69,7 +70,7 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     /* The SQL code */
     
     $sql =  "SELECT                
-            ".PRFX."customer_records.display_name AS customer_display_name,
+            IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name,
                 
             ".PRFX."payment_records.payment_id,
             ".PRFX."payment_records.employee_id,
@@ -81,13 +82,14 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
             ".PRFX."payment_records.amount,
             ".PRFX."payment_records.note,
                 
-            ".PRFX."user_records.display_name AS employee_display_name
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
                
             FROM ".PRFX."payment_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."payment_records.employee_id   = ".PRFX."user_records.user_id
             LEFT JOIN ".PRFX."customer_records ON ".PRFX."payment_records.customer_id = ".PRFX."customer_records.customer_id                 
             ".$whereTheseRecords."
             GROUP BY ".PRFX."payment_records.".$order_by."
+            ".$havingTheseRecords."
             ORDER BY ".PRFX."payment_records.".$order_by."
             ".$direction;           
     

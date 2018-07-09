@@ -71,9 +71,9 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     $sql = "SELECT
             ".PRFX."giftcert_records.*,
                 
-            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
+            IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name,
                 
-            CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS customer_display_name
+            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
                 
             FROM ".PRFX."giftcert_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."giftcert_records.employee_id = ".PRFX."user_records.user_id
@@ -254,11 +254,12 @@ function update_giftcert($giftcert_id, $date_expires, $amount, $active, $note) {
     
     $db = QFactory::getDbo();
     
-    $sql = "UPDATE ".PRFX."giftcert_records SET            
-            date_expires    =". $db->qstr( $date_expires    ).",
-            amount          =". $db->qstr( $amount          ).",
-            active          =". $db->qstr( $active          ).",                
-            note            =". $db->qstr( $note            )."
+    $sql = "UPDATE ".PRFX."giftcert_records SET     
+            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            date_expires    =". $db->qstr( $date_expires                        ).",
+            amount          =". $db->qstr( $amount                              ).",
+            active          =". $db->qstr( $active                              ).",                
+            note            =". $db->qstr( $note                                )."
             WHERE giftcert_id =". $db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {

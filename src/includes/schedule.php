@@ -94,7 +94,7 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
             
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
                 
-            CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS customer_display_name
+            IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name
                
             FROM ".PRFX."schedule_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."schedule_records.employee_id   = ".PRFX."user_records.user_id

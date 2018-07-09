@@ -9,6 +9,7 @@
 <table class="olotable" width="100%" cellpadding="5" celspacing="0" border="0" summary="Work order display">
     <tr>
         <td class="olohead">{t}ID{/t}</td>
+        <td class="olohead">{t}Last Employee{/t}</td>
         <td class="olohead">{t}WO ID{/t}</td>
         <td class="olohead">{t}Inv ID{/t}</td>
         <td class="olohead">{t}Code{/t}</td>
@@ -23,6 +24,7 @@
     {section name=g loop=$display_giftcerts}
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}';" class="row1">
             <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_id}</a></td>
+            <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_giftcerts[g].employee_id}">{$display_giftcerts[g].employee_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_giftcerts[g].workorder_id}">{$display_giftcerts[g].workorder_id}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_giftcerts[g].invoice_id}">{$display_giftcerts[g].invoice_id}</a></td>
             <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_code}</a></td>

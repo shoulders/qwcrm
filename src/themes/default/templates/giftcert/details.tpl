@@ -48,6 +48,12 @@
                                             <td>{$giftcert_details.giftcert_id}</td>
                                         </tr>
                                         <tr>
+                                            <td><b>{t}Last Employee{/t}</b></td>
+                                            <td>
+                                                <a href="index.php?component=user&page_tpl=details&user_id={$giftcert_details.employee_id}">{$employee_display_name}</a>                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td><b>{t}Workorder ID{/t}</b></td>
                                             <td><a href="index.php?component=workorder&page_tpl=details&workorder_id={$giftcert_details.workorder_id}">{$giftcert_details.workorder_id}</a></td>
                                         </tr>
@@ -73,13 +79,7 @@
                                         <tr>
                                             <td><b>{t}Created on{/t}</b></td>
                                             <td>{$giftcert_details.date_created|date_format:$date_format}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><b>{t}Created by{/t}</b></td>
-                                            <td>
-                                                <a href="index.php?component=user&page_tpl=details&user_id={$giftcert_details.employee_id}">{$employee_display_name}</a>                                                
-                                            </td>
-                                        </tr>
+                                        </tr>                                        
                                         <tr>
                                             <td><b>{t}Expires{/t}</b></td>
                                             <td>{$giftcert_details.date_expires|date_format:$date_format}</td>

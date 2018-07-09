@@ -64,7 +64,7 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     /* The SQL code */    
     
     $sql = "SELECT        
-        ".PRFX."customer_records.*,        
+        ".PRFX."customer_records.*,    
         IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS display_name,
         CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS full_name
         

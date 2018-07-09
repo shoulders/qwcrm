@@ -92,7 +92,7 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
             ".PRFX."user_records.home_primary_phone AS employee_home_primary_phone,
                 
             ".PRFX."customer_records.customer_id,
-            CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS customer_display_name,
+            IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name,
             ".PRFX."customer_records.first_name AS customer_first_name,
             ".PRFX."customer_records.last_name AS customer_last_name,            
             ".PRFX."customer_records.address AS customer_address,
