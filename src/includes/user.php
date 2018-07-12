@@ -920,14 +920,23 @@ function logout($silent = null)
 
 function logout_all_users($except_me = false) {
     
+    //truncate something like `#__user_keys` destroys the remember_me link, the session kills the imediate session
+    
     $db = QFactory::getDbo();
 
     // Logout all users
     if(!$except_me) {
 
+        // Sessions
         $sql = "TRUNCATE ".PRFX."session";
         if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
+        }
+        
+        // Remember Me
+        $sql = "TRUNCATE ".PRFX."user_keys";
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
         }
 
     // Delete all sessions except the currently logged in user 
@@ -935,7 +944,12 @@ function logout_all_users($except_me = false) {
         
         $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$db->qstr(QFactory::getUser()->login_user_id);
         if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
+        }
+        
+        $sql = "DELETE FROM ".PRFX."user_keys WHERE userid <> ".$db->qstr(QFactory::getUser()->login_user_id);
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
         }
 
     }
@@ -1054,8 +1068,8 @@ function send_reset_email($user_id) {
     
     $body .= '<p>'._gettext("Thank you.").'</p>';    
     
-    // Send Reset Email    
-    send_email($recipient_email, $subject, $body);
+    // Send Reset Email (no onscreen notifications to prevent headers already sent error)
+    send_email($recipient_email, $subject, $body, null, null, null, null, null, null, true);
     
     // Log activity        
     $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($user_id, 'display_name').') '._gettext("reset email has been sent.");
@@ -1190,7 +1204,7 @@ function validate_reset_token($token) {
         }
         
         // All checked passed
-        $smarty->assign('information_msg', _gettext("Token Accepted."));
+        $smarty->assign('information_msg', _gettext("Token accepted."));
         return true;
         
         
