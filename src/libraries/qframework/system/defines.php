@@ -28,7 +28,7 @@ function load_defines() {
     // System Folders
     define('CACHE_DIR',                 'cache/'                                            );
     define('COMPONENTS_DIR',            'components/'                                       );
-    define('INCLUDES_DIR',              'includes/'                                         );
+    define('INCLUDES_DIR',              COMPONENTS_DIR.'_includes/'                         );
     define('MEDIA_DIR',                 'media/'                                            );
     define('MODULES_DIR',               'modules/'                                          );
     define('LANGUAGE_DIR',              'language/'                                         );
