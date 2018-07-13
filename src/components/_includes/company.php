@@ -93,10 +93,10 @@ function update_company_details($VAR) {
     }
     
     $sql .= "UPDATE ".PRFX."company_options SET
-            display_name            =". $db->qstr( $VAR['display_name']                   ).",";
+            company_name            =". $db->qstr( $VAR['company_name']                     ).",";
     
     if($VAR['delete_logo']) {
-        $sql .="logo                =''                                                   ,";
+        $sql .="logo                =''                                                     ,";
     }
                 
     if(!empty($_FILES['logo']['name'])) {

@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `#__company_options` (
-  `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `company_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `logo` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `address` text COLLATE utf8_unicode_ci NOT NULL,
   `city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE `#__company_options` (
 -- Dumping data for table `#__company`
 --
 
-INSERT INTO `#__options` (`display_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
+INSERT INTO `#__options` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
 ('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_company}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
 
 -- --------------------------------------------------------
