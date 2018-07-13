@@ -27,11 +27,6 @@ function get_page_controller(&$VAR = null) {
         $VAR['page_tpl']    = 'maintenance';        
         $VAR['theme']       = 'off';   
 
-        // If user logged in, then log user off (Hard logout, no logging) - This is needed for 'remember me', purge as they come in.
-        if(isset($user->login_token)) {    
-            QFactory::getAuth()->logout(); 
-        }
-        
         goto page_controller_check;
         
     }    
@@ -110,10 +105,10 @@ function get_page_controller(&$VAR = null) {
 
 
 #####################################
-#  Build SEF URL from Non-SEF URL   #  // supply only in the format - index.php?compnent=workorder&page_tpl=search 
+#  Build SEF URL from Non-SEF URL   #  // supply only in the format - index.php?compnent=workorder&page_tpl=search, outputs /develop/qwcrm/workorder/search
 #####################################
 
-function buildSEF($non_sef_url) {
+function buildSEF($non_sef_url, $include_base_path = true) {
     
     $sef_url_path = '';
     $sef_url_query = '';
@@ -153,9 +148,19 @@ function buildSEF($non_sef_url) {
     if(isset($parsed_url['fragment'])) {
         $sef_url_fragement = '#'.$parsed_url['fragment'];        
     }
-       
-    // Build and return full SEF URL
-    return QWCRM_BASE_PATH. $sef_url_path . $sef_url_query . $sef_url_fragement;
+
+    // Build and return SEF URL
+    if(!$include_base_path) {  
+        
+        // Without Base Path - currently only used for build_url_from_variables()
+        return $sef_url_path . $sef_url_query . $sef_url_fragement;
+        
+    } else {
+        
+        // With Base Path
+        return QWCRM_BASE_PATH . $sef_url_path . $sef_url_query . $sef_url_fragement;
+        
+    }
     
 }
 
@@ -386,7 +391,7 @@ function check_link_is_sef($url) {
 }
 
 ###################################################
-#  Build non sef url from component and page_tpl  #
+#  Build url from component and page_tpl          #
 ###################################################
 
 function build_url_from_variables($component, $page_tpl, $url_length = 'basic', $url_sef = 'auto') {
@@ -397,24 +402,27 @@ function build_url_from_variables($component, $page_tpl, $url_length = 'basic', 
     else { $sef = QFactory::getConfig()->get('sef'); }    
     //else { $sef = $config->sef; } 
     
+    // The basic slug
+    $slug = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
+    
+    // Convert to slug to SEF if set
+    if($sef) {
+        $slug = buildSEF($slug, false);
+    }
+    
     // Full URL (nonsef)
     if($url_length == 'full') {   
-        $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH .'index.php?component='.$component.'&page_tpl='.$page_tpl;    
+        $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;    // this adds the extra shit in because buildsef returns full path
         
     // Relative URL (nonsef)
     } elseif($url_length == 'relative') {
-        $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl;
+        $url = QWCRM_BASE_PATH . $slug;
     
     // Basic URL
     } elseif($url_length == 'basic') {
-        $url = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
+        $url = $slug;
     }
-    
-    // Convert to SEF if set
-    if($sef) {
-        $url = buildSEF($url);
-    }
-    
+        
     return $url;
     
 }
