@@ -169,13 +169,13 @@ CREATE TABLE `#__expense_types` (
 --
 
 INSERT INTO `#__expense_types` (`expense_type_id`, `display_name`) VALUES
-('advertising', 'Advertising'),
 ('bank_charges', 'Bank Charges'),
 ('credit', 'Credit'),
 ('customer_refund', 'Customer Refund'),
 ('equipment', 'Equipment'),
 ('fuel', 'Fuel'),
 ('gift_certificate', 'Gift Certificate'),
+('marketing', 'Marketing'),
 ('office_supplies', 'Office Supplies'),
 ('online', 'Online'),
 ('other', 'Other'),
@@ -564,16 +564,24 @@ CREATE TABLE `#__supplier_types` (
 --
 
 INSERT INTO `#__supplier_types` (`supplier_type_id`, `display_name`) VALUES
-('advertising', 'Advertising'),
-('affiliate_marketing', 'Affiliate Marketing'),
 ('courier', 'Courier'),
 ('drop_shipping', 'Drop Shipping'),
+('equipment', 'Equipment'),
+('financial', 'Financial'),
+('fuel', 'Fuel'),
 ('general', 'General'),
+('human_resources', 'Human Resources'),
+('landlord', 'Landlord'),
+('marketing', 'Marketing'),
+('office_supplies', 'Office Supplies'),
 ('online', 'Online'),
 ('other', 'Other'),
 ('parts', 'Parts'),
 ('services', 'Services'),
 ('software', 'Software'),
+('telco', 'TelCo'),
+('transport', 'Transport'),
+('utilities', 'Utilities'),
 ('wholesale', 'Wholesale');
 
 -- --------------------------------------------------------
