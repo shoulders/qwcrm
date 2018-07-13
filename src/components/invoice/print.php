@@ -14,7 +14,6 @@ require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
-require(INCLUDES_DIR.'system/mpdf.php');
 
 // Check if we have an invoice_id
 if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {

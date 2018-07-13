@@ -45,16 +45,18 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 }
 
 #######################################
-#   Basic email wrapper function      #
+#   Basic email wrapper function      #  // Silent option is need for password reset
 #######################################
 
-function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
+function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
         
     $config = QFactory::getConfig();
     //$smarty = QFactory::getSmarty();
     
-    // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-    clear_onscreen_notifications();
+    // Clear any onscreen notifications - this allows for mutiple errors to be displayed (if allowed)
+    if (!$silent) {
+        ajax_clear_onscreen_notifications();
+    }
     
     // If email is not enabled, do not send emails
     if(!$config->get('email_online')) {
@@ -63,10 +65,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
         
-        // Output the system message to the browser
-        $system_message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
-        //$smarty->assign('warning_msg', $system_message);
-        output_notifications_onscreen('', $system_message);
+        // Output the system message to the browser (if allowed)
+        if (!$silent) {
+            $system_message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
+            //$smarty->assign('warning_msg', $system_message);
+            ajax_output_notifications_onscreen('', $system_message);
+        }
         
         return false;
         
@@ -152,10 +156,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
         write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);        
         
-        // Output the system message to the browser
-        $system_message = $record.'<br>'.$RfcCompliance_exception->getMessage();
-        //$smarty->assign('warning_msg', $system_message);
-        output_notifications_onscreen('', $system_message);
+        // Output the system message to the browser (if allowed)
+        if (!$silent) {
+            $system_message = $record.'<br>'.$RfcCompliance_exception->getMessage();
+            //$smarty->assign('warning_msg', $system_message);
+            ajax_output_notifications_onscreen('', $system_message);
+        }
         
         return false;
         
@@ -170,6 +176,9 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     if(!check_page_accessed_via_qwcrm('user', 'reset') && !check_page_accessed_via_qwcrm('administrator', 'config')) {
         $body .= add_email_signature($email);
     } 
+    
+    // Parse message body and convert links to SEF (if enabled)
+    if ($config->get('sef')) { email_links_to_sef($body); }  
     
     // Add Message Body
     $email->setBody($body, 'text/html');
@@ -213,10 +222,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
             write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
             
-            // Output the system message to the browser
-            $system_message = $record;
-            //$smarty->assign('warning_msg', $system_message);
-            output_notifications_onscreen('', $system_message);
+            // Output the system message to the browser (if allowed)
+            if (!$silent) {
+                $system_message = $record;
+                //$smarty->assign('warning_msg', $system_message);
+                ajax_output_notifications_onscreen('', $system_message);
+            }
 
         } else {
             
@@ -227,10 +238,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             if($workorder_id) {insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);}
             write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);            
             
-            // Output the system message to the browser
-            $system_message = $record;
-            //$smarty->assign('information_msg', $system_message);
-            output_notifications_onscreen($system_message, '');
+            // Output the system message to the browser (if allowed)
+            if (!$silent) {
+                $system_message = $record;
+                //$smarty->assign('information_msg', $system_message);
+                ajax_output_notifications_onscreen($system_message, '');
+            }
             
             // Update last active record (will not error if no invoice_id sent )
             update_user_last_active($employee_id);
@@ -254,11 +267,13 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         write_record_to_email_error_log($Transport_exception->getMessage());
         write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
 
-        // Output the system message to the browser
-        preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
-        $system_message = $record.'<br>'.$matches[0];
-        //$smarty->assign('warning_msg', $system_message);
-        output_notifications_onscreen('', $system_message);
+        // Output the system message to the browser (if allowed)
+        if (!$silent) {
+            preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
+            $system_message = $record.'<br>'.$matches[0];
+            //$smarty->assign('warning_msg', $system_message);
+            ajax_output_notifications_onscreen('', $system_message);
+        }
         
     }
     
@@ -267,6 +282,31 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     
     return;
    
+}
+
+##########################################
+#  Get email message body                #
+##########################################
+
+function get_email_message_body($message_name, $customer_details) {
+    
+    // get the message from the database
+    $content = get_company_details($message_name);
+    
+    // Process placeholders
+    if($message_name == 'email_msg_invoice') {        
+        $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
+        $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
+        $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
+        $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
+    }
+    if($message_name == 'email_msg_workorder') {
+        // not currently used
+    }
+    
+    // return the process email
+    return $content;
+    
 }
 
 ##########################################
@@ -302,31 +342,6 @@ function add_email_signature($swift_emailer = null) {
     
 }
 
-##########################################
-#  Get email message body                #
-##########################################
-
-function get_email_message_body($message_name, $customer_details) {
-    
-    // get the message from the database
-    $content = get_company_details($message_name);
-    
-    // Process placeholders
-    if($message_name == 'email_msg_invoice') {        
-        $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
-        $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
-        $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
-        $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
-    }
-    if($message_name == 'email_msg_workorder') {
-        // not currently used
-    }
-    
-    // return the process email
-    return $content;
-    
-}
-
 ###########################################
 #  Replace placeholders with new content  #
 ###########################################
@@ -334,6 +349,22 @@ function get_email_message_body($message_name, $customer_details) {
 function replace_placeholder($content, $placeholder, $replacement) {
     
     return preg_replace('/'.$placeholder.'/', $replacement, $content);
+    
+}
+
+###########################################
+#  Change all internal page links to SEF  #
+###########################################
+
+function email_links_to_sef(&$body) {
+    
+    // Replace nonsef links within "" and '' and ><
+    $body = preg_replace_callback('|(["\'>])http(.*index\.php.*)+(["\'<])|U',
+        function($matches) {
+            
+            return $matches[1].build_sef_url($matches[2], 'absolute').$matches[3];
+
+        }, $body);
     
 }
 

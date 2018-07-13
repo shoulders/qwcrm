@@ -43,7 +43,7 @@ if(isset($VAR['submit'])) {
         // Compensate for SEF change  
         $url_sef = $VAR['qwconfig']['sef'] ? 'sef' : 'nonsef';
         
-        // Load maintenance page if maintenance mode has been enabled
+        // Load maintenance page if enabled
         if(!QFactory::getConfig()->get('maintenance') && $VAR['qwconfig']['maintenance']) {
             logout_all_users();
             force_page('index.php', null, null, 'get', $url_sef);

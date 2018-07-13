@@ -12,7 +12,6 @@ require(INCLUDES_DIR.'customer.php');
 require(INCLUDES_DIR.'workorder.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
-require(INCLUDES_DIR.'system/mpdf.php');
 
 // Check if we have a workorder_id
 if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {

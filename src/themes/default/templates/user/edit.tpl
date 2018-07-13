@@ -107,12 +107,12 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Password{/t}</strong></td>
-                                                                                        <td><input id="password" name="password" class="olotd5" type="password" minlength="8" maxlength="20" onkeydown="return onlyPassword(event);"></td>
+                                                                                        <td><input id="password" name="password" class="olotd5" type="password" minlength="8" maxlength="20" onkeyup="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="return onlyPassword(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Confirm Password{/t}</strong></td>
                                                                                         <td>
-                                                                                            <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" minlength="8" maxlength="20" onkeyup="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}');" onkeydown="onlyPassword(event);">
+                                                                                            <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" minlength="8" maxlength="20" onkeyup="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="onlyPassword(event);">
                                                                                             <div id="passwordMessage" style="min-height: 5px;"></div>
                                                                                         </td>
                                                                                     </tr>                                                                                    
@@ -239,7 +239,7 @@
                                                                     
                                                                     <tr>
                                                                         <td colspan="2">                                                                            
-                                                                            <input name="submit" class="olotd5" style="margin-left: 40px;" value="{t}Submit{/t}" type="submit">
+                                                                            <button id="submit_button" type="submit" name="submit" style="margin-left: 40px;" value="submit">{t}Submit{/t}</button>
                                                                             <button type="button" class="olotd4" onclick="window.location.href='index.php?component=user&page_tpl=details&user_id={$user_id}';">{t}Cancel{/t}</button>
                                                                         </td>
                                                                     </tr>

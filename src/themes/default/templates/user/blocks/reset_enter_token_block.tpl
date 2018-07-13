@@ -13,7 +13,7 @@
         <td>       
             <table class="olotable" border="0" align="center" style="margin: 20px;">
                 <tr>
-                    <td class="olohead">{t}Enter your Verification code{/t}</td>
+                    <td class="olohead">{t}Enter your Verification Code{/t}</td>
                 </tr>
                 <tr>
                     <td class="olotd">
@@ -30,7 +30,10 @@
                                                 <td><input name="token" class="olotd5" size="72" type="text" value="{$token}" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>                                            
                                             <tr align="center">
-                                                <td colspan="2"><button id="submit_button" type="submit" name="submit" value="submit"><img src="{$theme_images_dir}tick.png" alt=""> {t}Submit{/t}</button></td>
+                                                <td colspan="2">
+                                                    <button id="submit_button" type="submit" name="submit" value="submit"><img src="{$theme_images_dir}tick.png" alt=""> {t}Submit{/t}</button>
+                                                    <button type="submit" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
+                                                </td>
                                             </tr>                            
 
                                         </table>
@@ -40,12 +43,7 @@
                                             <script>
                                                 
                                                 // Disable the submit button
-                                                document.getElementById('submit_button').disabled = true;
-                                                
-                                                // Enable the submit button when ReCaptcha is verified
-                                                function enableSubmitButton() {
-                                                    document.getElementById('submit_button').disabled = false;
-                                                }
+                                                disableSubmitButton();                                               
                                                 
                                             </script>
                                             <div class="g-recaptcha" data-sitekey="{$recaptcha_site_key}" data-callback="enableSubmitButton"></div>

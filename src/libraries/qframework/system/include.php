@@ -186,7 +186,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = QWCRM_BASE_PATH.'index.php'.$variables;
             
             // Convert to SEF if enabled            
-            if ($makeSEF) { $url = buildSEF($url); }
+            if ($makeSEF) { $url = build_sef_url($url); }
             
             // Perform redirect
             if($method == 'get') {
@@ -205,7 +205,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
             
             // Convert to SEF if enabled            
-            if ($makeSEF) { $url = buildSEF($url); }
+            if ($makeSEF) { $url = build_sef_url($url); }
             
             // Perform redirect
             if($method == 'get') {
@@ -245,7 +245,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = QWCRM_BASE_PATH.'index.php';
             
             // Convert to SEF if enabled            
-            if ($makeSEF) { $url = buildSEF($url); }
+            if ($makeSEF) { $url = build_sef_url($url); }
             
             // Perform redirect
             perform_redirect($protocol_domain_segment.$url);
@@ -257,7 +257,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
             $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl;
             
             // Convert to SEF if enabled            
-            if ($makeSEF) { $url = buildSEF($url);}
+            if ($makeSEF) { $url = build_sef_url($url);}
             
             // Perform redirect
             perform_redirect($protocol_domain_segment.$url);
@@ -275,9 +275,21 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
 function perform_redirect($url, $type = 'header') {
    
     // Redirect using Headers (cant always use this method in QWcrm)
-    if($type == 'header') {        
-        header('Location: ' . $url);
-        exit;
+    if($type == 'header') {
+        
+        // From http://php.net/manual/en/function.headers-sent.php
+        // Note that $filename and $linenum are passed in for later use.
+        // Do not assign them values beforehand.
+        if (!headers_sent($filename, $linenum)) {
+            
+            header('Location: ' . $url);
+            exit;
+            
+        // You would most likely trigger an error here.
+        } else {
+            echo "Headers already sent in $filename on line $linenum.";
+        }
+        
     }
     
     // Redirect using Javascript
@@ -1118,26 +1130,24 @@ function timestamp_to_calendar_format($timestamp) {
 #  Clear any onscreen notifications          #   // this is needed for messages when pages are requested via ajax (emails/config)
 ##############################################
 
-function clear_onscreen_notifications() {
-    
+function ajax_clear_onscreen_notifications() {
+
     echo "<script>clearSystemMessages();</script>";
     
 }
 
 ##############################################
-#  output email notifications onscreen       #   // this is needed for messages when pages are requested via ajax (emails/config)
+#  Output email notifications onscreen       #   // this is needed for messages when pages are requested via ajax (emails/config)
 ##############################################
 
-function output_notifications_onscreen($information_msg = '', $warning_msg = '') {
-    
-    // escape here ? like in t block
+function ajax_output_notifications_onscreen($information_msg = '', $warning_msg = '') {
    
     echo "<script>processSystemMessages('".escape_for_javascript($information_msg)."', '".escape_for_javascript($warning_msg)."');</script>";
     
 }
 
 ##############################################
-#  escape string for use in Javascript       #
+#  Escape string for use in Javascript       #
 ##############################################
 
 function escape_for_javascript($text){
@@ -1160,7 +1170,7 @@ function clear_smarty_cache() {
     $smarty = QFactory::getSmarty();
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-    clear_onscreen_notifications();
+    ajax_clear_onscreen_notifications();
     
     // clear the entire cache
     $smarty->clearAllCache();
@@ -1169,7 +1179,7 @@ function clear_smarty_cache() {
     //$smarty->clearAllCache(3600);
     
     // Output the system message to the browser   
-    output_notifications_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
+    ajax_output_notifications_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
     
     // Log activity        
     write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
@@ -1185,7 +1195,7 @@ function clear_smarty_compile() {
     $smarty = QFactory::getSmarty();
     
     // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-    clear_onscreen_notifications();
+    ajax_clear_onscreen_notifications();
     
     // clear a specific template resource
     //$smarty->clearCompiledTemplate('index.tpl');
@@ -1194,7 +1204,7 @@ function clear_smarty_compile() {
     $smarty->clearCompiledTemplate();
     
     // Output the system message to the browser   
-    output_notifications_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
+    ajax_output_notifications_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
     
     // Log activity        
     write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    

@@ -1,4 +1,4 @@
-<!-- reset_send_email_block.tpl -->
+<!-- reset_enter_email_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -27,10 +27,13 @@
                                             </tr>
                                             <tr>
                                                 <td>{t}Email Address{/t} <span style="color: #ff0000">*</span></td>
-                                                <td><input name="email" class="olotd5" size="25" alt="login" type="text" required onkeydown="return onlyEmail(event);"></td>
+                                                <td><input name="email" class="olotd5" size="25" alt="login" type="email" required onkeydown="return onlyEmail(event);"></td>
                                             </tr>                                            
                                             <tr align="center">
-                                                <td colspan="2"><button id="submit_button" type="submit" name="submit" value="submit"><img src="{$theme_images_dir}tick.png" alt=""> {t}Submit{/t}</button></td>
+                                                <td colspan="2">
+                                                    <button id="submit_button" type="submit" name="submit" value="submit"><img src="{$theme_images_dir}tick.png" alt=""> {t}Submit{/t}</button>
+                                                    <button type="submit" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
+                                                </td>
                                             </tr>                            
 
                                         </table>
@@ -40,12 +43,7 @@
                                             <script>
                                                 
                                                 // Disable the submit button
-                                                document.getElementById('submit_button').disabled = true;
-                                                
-                                                // Enable the submit button when ReCaptcha is verified
-                                                function enableSubmitButton() {
-                                                    document.getElementById('submit_button').disabled = false;
-                                                }
+                                                disableSubmitButton();                                               
                                                 
                                             </script>
                                             <div class="g-recaptcha" data-sitekey="{$recaptcha_site_key}" data-callback="enableSubmitButton"></div>

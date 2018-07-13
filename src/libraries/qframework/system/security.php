@@ -39,29 +39,17 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     // Get Referer
     $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null; 
     
-    // If no referer, page was not access via QWcrm and a setup procedure is not occuring
-    if($referer && $access_rule != 'setup') {return false;}
+    // If no referer (the page was not accessed via QWcrm)and if a setup procedure is not occuring
+    if(!$referer && $access_rule != 'setup') { return false; }
     
+    // Setup Access Rule - allow direct access (useful for setup routines and some system pages)
+    if(!$referer && $access_rule == 'setup') { return true; }
+        
     // Check if a 'SPECIFIC' QWcrm page is the referer
-    if($component != null && $page_tpl != null) {       
-        
-        // If supplied page matches the 'Referring Page'
-        if(preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'full', 'auto'), '/').'/U', $referer)) {
-            
-            return true;
-            
-        }
-        
-        // Setup Access Rule - allow direct access (useful for setup routines and some system pages)
-        if($referer && $access_rule == 'setup') {          
-            
-            return true;
+    if($component && $page_tpl) {       
 
-        }
-        
-        // Page was not accessed via QWcrm
-        return false;
-                  
+        // If 'Referring Page' matches the specified page (returns true/false as needed)
+        return preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'absolute', 'auto'), '/').'/U', $referer);
         
     // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
     } else {

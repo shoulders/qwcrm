@@ -411,7 +411,7 @@ function check_database_connection_details($db_host, $db_user, $db_pass, $db_nam
     // Disable PHP error reporting (works globally)
     error_reporting(0);
     
-    // Create ADOdb database connection - and collection exceptions
+    // Create ADOdb database connection - and collect exception if it occurs
     try
     {        
         $db->Connect($db_host, $db_user, $db_pass, $db_name);
@@ -471,7 +471,7 @@ function submit_qwcrm_config_settings($VAR) {
 
 function generate_database_prefix($not_this_prefix = null) {
     
-    $acceptedChars = 'abcdefghijklmnopqrstuvwxyz';
+    $acceptedChars = 'abcdefghijklmnopqrstuvwxyz';  // Lowercase to allow for Windows and Apache setups
     $max_offset = strlen($acceptedChars)-1;
     $prefix = '';
     
@@ -481,7 +481,7 @@ function generate_database_prefix($not_this_prefix = null) {
     
     $prefix .= '_';    
     
-    // this is to prevent using the MyITCRM prefix
+    // This is to prevent using the MyITCRM prefix
     if($not_this_prefix) {
         if($prefix == $not_this_prefix) {
             $prefix = generate_database_prefix($not_this_prefix);

@@ -10,7 +10,6 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'customer.php');
 require(INCLUDES_DIR.'giftcert.php');
-require(INCLUDES_DIR.'system/mpdf.php');
 
 // Generate the barcode (as html)
 $bc_generator = new Picqer\Barcode\BarcodeGeneratorHTML();

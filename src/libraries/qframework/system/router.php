@@ -47,7 +47,7 @@ function get_page_controller(&$VAR = null) {
     if ($config->get('sef') && check_link_is_sef($_SERVER['REQUEST_URI'])) {
 
         // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
-        parseSEF($_SERVER['REQUEST_URI'], 'set_var', $VAR);
+        parse_sef_url($_SERVER['REQUEST_URI'], 'basic', 'set_var', $VAR);
     
     }
     
@@ -103,19 +103,18 @@ function get_page_controller(&$VAR = null) {
     
 }
 
-
 #####################################
-#  Build SEF URL from Non-SEF URL   #  // supply only in the format - index.php?compnent=workorder&page_tpl=search, outputs /develop/qwcrm/workorder/search
+#  Build SEF URL from Non-SEF URL   #  // index.php?compnent=workorder&page_tpl=search, outputs /develop/qwcrm/workorder/search
 #####################################
 
-function buildSEF($non_sef_url, $include_base_path = true) {
+function build_sef_url($non_sef_url, $url_length = 'relative') {
     
     $sef_url_path = '';
     $sef_url_query = '';
-    $sef_url_fragement = '';
+    $sef_url_fragement = '';    
     
     // Convert URL into an array 
-    $parsed_url = parse_url($non_sef_url);    
+    $parsed_url = parse_url($non_sef_url);
     
     // Get URL Query Variables (if present    
     if(isset($parsed_url['query'])) {
@@ -148,37 +147,42 @@ function buildSEF($non_sef_url, $include_base_path = true) {
     if(isset($parsed_url['fragment'])) {
         $sef_url_fragement = '#'.$parsed_url['fragment'];        
     }
-
-    // Build and return SEF URL
-    if(!$include_base_path) {  
+    
+    // The Basic Slug
+    $slug = $sef_url_path . $sef_url_query . $sef_url_fragement;
+    
+    // Full URL (https://quantumwarp.com/develop/qwcrm/user/login)
+    if($url_length == 'absolute') {   
+        $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;
         
-        // Without Base Path - currently only used for build_url_from_variables()
-        return $sef_url_path . $sef_url_query . $sef_url_fragement;
-        
-    } else {
-        
-        // With Base Path
-        return QWCRM_BASE_PATH . $sef_url_path . $sef_url_query . $sef_url_fragement;
-        
+    // Relative URL (/develop/qwcrm/user/login)
+    } elseif($url_length == 'relative') {
+        $url = QWCRM_BASE_PATH . $slug;
+    
+    // Basic URL (user/login)
+    } elseif($url_length == 'basic') {
+        $url = $slug;
     }
+        
+    return $url;
     
 }
 
 #########################################################################################################################
-#  Convert a SEF url into a standard URL and (optionally) inject routing varibles into $VAR or return routing variables #
+#  Convert a SEF url into a standard URL and (optionally) inject routing varibles into $VAR or return routing variables #  makes nonsef from sef
 #########################################################################################################################
 
-function parseSEF($sef_url, $mode = null, &$VAR = null) {    
+function parse_sef_url($sef_url, $url_length = 'basic', $mode = null, &$VAR = null) {    
     
-    $nonsef_url_path_variables  = '';
+    $nonsef_url_path_variables = '';
     $nonsef_url_query = '';
-    $nonsef_url_fragment = '';
-    
-    // Remove base path from URI
-    $relative_sef_url = str_replace(QWCRM_BASE_PATH, '', $sef_url);
+    $nonsef_url_fragment = '';    
     
     // Move URL into an array
-    $parsed_url = parse_url($relative_sef_url);
+    $parsed_url = parse_url($sef_url);
+    
+    // Remove base path from path
+    $parsed_url['path'] = str_replace(QWCRM_BASE_PATH, '', $parsed_url['path']);
 
     // Get URL segments from path
     $url_segments = array_filter(explode('/', $parsed_url['path']));
@@ -196,14 +200,14 @@ function parseSEF($sef_url, $mode = null, &$VAR = null) {
         
         // Sets the following routing values into $VAR for routing
         if ($mode == 'get_var') {
-            if($url_segments['0'] != '') { $onlyVar['component'] = $url_segments['0']; }
-            if($url_segments['1'] != '') { $onlyVar['page_tpl'] = $url_segments['1']; }
+            if($url_segments['0']) { $onlyVar['component'] = $url_segments['0']; }
+            if($url_segments['1']) { $onlyVar['page_tpl'] = $url_segments['1']; }
         }
         
         // Sets the following routing values into $VAR for routing
         if ($mode == 'set_var') {
-            if($url_segments['0'] != '') { $VAR['component'] = $url_segments['0']; }
-            if($url_segments['1'] != '') { $VAR['page_tpl'] = $url_segments['1']; }
+            if($url_segments['0']) { $VAR['component'] = $url_segments['0']; }
+            if($url_segments['1']) { $VAR['page_tpl'] = $url_segments['1']; }
         }
     
     }
@@ -238,11 +242,122 @@ function parseSEF($sef_url, $mode = null, &$VAR = null) {
         $nonsef_url_fragment = '#'.$parsed_url['fragment'];        
     }    
     
-    // Build and return full nonSEF URL
-    return 'index.php' . $nonsef_url_path_variables . $nonsef_url_query . $nonsef_url_fragment;
+    // The Basic Slug
+    $slug = 'index.php' . $nonsef_url_path_variables . $nonsef_url_query . $nonsef_url_fragment;    
+    
+    // Full URL (https://quantumwarp.com/develop/qwcrm/index.php?component=user&page_tpl=login)
+    if($url_length == 'absolute') {   
+        $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;
+
+    // Relative URL (/develop/qwcrm/index.php?component=user&page_tpl=login) (Might not be needed)
+    } elseif($url_length == 'relative') {
+        $url = QWCRM_BASE_PATH . $slug;
+
+    // Basic URL index.php?component=user&page_tpl=login)
+    } elseif($url_length == 'basic') {
+        $url = $slug;
+    }
+
+    return $url;
     
 }
 
+###################################################
+#  Build URL from component and page_tpl          #
+###################################################
+
+function build_url_from_variables($component, $page_tpl, $url_length = 'basic', $url_sef = 'auto') {
+    
+    // Set URL Type to return
+    if($url_sef == 'sef') { $sef = true; }
+    elseif($url_sef == 'nonsef') { $sef = false; }
+    else { $sef = QFactory::getConfig()->get('sef'); }    
+    //else { $sef = $config->sef; } 
+    
+    // The Basic Slug
+    $slug = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
+    
+    // Build either SEF or nonSEF URL
+    if ($sef) {
+        $url = build_sef_url($slug, $url_length);
+    } else {
+                
+        // Full URL (https://quantumwarp.com/develop/qwcrm/index.php?component=user&page_tpl=login)
+        if($url_length == 'absolute') {   
+            $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;
+
+        // Relative URL (/develop/qwcrm/index.php?component=user&page_tpl=login) (Might not be needed)
+        } elseif($url_length == 'relative') {
+            $url = QWCRM_BASE_PATH . $slug;
+
+        // Basic URL index.php?component=user&page_tpl=login)
+        } elseif($url_length == 'basic') {
+            $url = $slug;
+        }
+        
+    }
+        
+    return $url;
+    
+}
+
+#############################################
+#  Validate links and prep SEF environment  #
+#############################################
+
+function get_routing_variables_from_url($url) {
+    
+    $user = QFactory::getUser();
+    
+    // Check if URL is valid
+    if(!check_link_is_valid($_SERVER['REQUEST_URI'])) {
+        
+        return false;
+
+    } else {    
+
+        // Running parse_sef_url only when the link is a SEF allows the use of Non-SEF URLS aswell
+        if (check_link_is_sef($url)) {
+
+            // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF           
+            $VAR = parse_sef_url($url, 'basic', 'get_var');
+
+        // non-sef url
+        } else {
+            
+            // Get URL Query Variables
+            parse_str(parse_url($url, PHP_URL_QUERY), $parsed_url_query);            
+            
+            // Set only routing variables if they exist
+            if(isset($parsed_url_query['component'])) { $VAR['component'] = $parsed_url_query['component']; }
+            if(isset($parsed_url_query['page_tpl'])) { $VAR['page_tpl'] = $parsed_url_query['page_tpl']; }
+            
+        }
+        
+        // If $VAR is empty it is because page is index.php, set required
+        if(!isset($VAR['component']) && !isset($VAR['page_tpl'])) {
+            
+            if(isset($user->login_token)) {
+
+                // If logged in
+                $VAR['component']           = 'core';
+                $VAR['page_tpl']            = 'dashboard';
+
+            } else {
+
+                // If NOT logged in
+                $VAR['component']           = 'core';
+                $VAR['page_tpl']            = 'home';
+
+            }
+            
+        }   
+
+    }
+    
+    return $VAR;
+
+}
 
 #################################################################
 #  Verify User's authorisation for a specific page / operation  #
@@ -388,101 +503,6 @@ function check_link_is_sef($url) {
     // Is SEF
     return true;       
     
-}
-
-###################################################
-#  Build url from component and page_tpl          #
-###################################################
-
-function build_url_from_variables($component, $page_tpl, $url_length = 'basic', $url_sef = 'auto') {
-    
-    // Set URL Type to return
-    if($url_sef == 'sef') { $sef = true; }
-    elseif($url_sef == 'nonsef') { $sef = false; }
-    else { $sef = QFactory::getConfig()->get('sef'); }    
-    //else { $sef = $config->sef; } 
-    
-    // The basic slug
-    $slug = 'index.php?component='.$component.'&page_tpl='.$page_tpl;
-    
-    // Convert to slug to SEF if set
-    if($sef) {
-        $slug = buildSEF($slug, false);
-    }
-    
-    // Full URL (nonsef)
-    if($url_length == 'full') {   
-        $url = QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH . $slug;    // this adds the extra shit in because buildsef returns full path
-        
-    // Relative URL (nonsef)
-    } elseif($url_length == 'relative') {
-        $url = QWCRM_BASE_PATH . $slug;
-    
-    // Basic URL
-    } elseif($url_length == 'basic') {
-        $url = $slug;
-    }
-        
-    return $url;
-    
-}
-
-############################################
-#  Validate links and prep SEF enviroment  #
-############################################
-
-function get_routing_variables_from_url($url) {
-    
-    $user = QFactory::getUser();
-    
-    // Check if URL is valid
-    if(!check_link_is_valid($_SERVER['REQUEST_URI'])) {
-        
-        return false;
-
-    } else {    
-
-        // Running parseSEF only when the link is a SEF allows the use of Non-SEF URLS aswell
-        if (check_link_is_sef($url)) {
-
-            // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF           
-            $VAR = parseSEF($url, 'get_var');
-
-        // non-sef url
-        } else {
-            
-            // Get URL Query Variables
-            parse_str(parse_url($url, PHP_URL_QUERY), $parsed_url_query);            
-            
-            // Set only routing variables if they exist
-            if(isset($parsed_url_query['component'])) { $VAR['component'] = $parsed_url_query['component']; }
-            if(isset($parsed_url_query['page_tpl'])) { $VAR['page_tpl'] = $parsed_url_query['page_tpl']; }
-            
-        }
-        
-        // If $VAR is empty it is because page is index.php, set required
-        if(!isset($VAR['component']) && !isset($VAR['page_tpl'])) {
-            
-            if(isset($user->login_token)) {
-
-                // If logged in
-                $VAR['component']           = 'core';
-                $VAR['page_tpl']            = 'dashboard';
-
-            } else {
-
-                // If NOT logged in
-                $VAR['component']           = 'core';
-                $VAR['page_tpl']            = 'home';
-
-            }
-            
-        }   
-
-    }
-    
-    return $VAR;
-
 }
 
 /** Other Functions **/

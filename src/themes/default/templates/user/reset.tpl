@@ -8,7 +8,7 @@
 
 {if $stage == 'enter_email'}
     
-    {include file="user/blocks/reset_send_email_block.tpl"}
+    {include file="user/blocks/reset_enter_email_block.tpl"}
     
 {elseif $stage == 'enter_token'}
     

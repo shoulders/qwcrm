@@ -198,7 +198,7 @@ function page_links_to_sef(&$BuildPage) {
     $BuildPage = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
         function($matches) {
             
-            return $matches[1].buildSEF($matches[2]).$matches[3];
+            return $matches[1].build_sef_url($matches[2]).$matches[3];
 
         }, $BuildPage);
     

@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 function load_defines() {
     
     // Get Root Folder and Physical path info (moved from index.php)    
-    define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);  // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\    
-    define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');  // QWcrm Protocol - http:// || https://    
-    define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);  // QWcrm Domain - quantumwarp.com    
-    define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));  // QWcrm Path - /develop/qwcrm/
+    define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);                         // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\ || /home/myuser/public_html/develop/qwcrm/
+    define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');   // QWcrm Protocol - http:// || https://    
+    define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);                                      // QWcrm Domain - quantumwarp.com    
+    define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));      // QWcrm Path - /develop/qwcrm/
 
     // Misc
-    //define('SEP',                       DIRECTORY_SEPARATOR             );          // on windows = '\'
+    //define('SEP',                       DIRECTORY_SEPARATOR             );            // on windows = '\'
     //define('SEP',                       '/'                             );
 
     // Information and Configuration

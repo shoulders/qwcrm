@@ -195,7 +195,17 @@ function keyRestriction(e, allowedCharacters, spacesAllowed = false, copyAndPast
    
 }
 
-// Confirm Passwords Match - Form Submmision Control - No Visual message (not used anywhere)
+// Disable the submit button
+function disableSubmitButton() {
+    document.getElementById('submit_button').disabled = true;
+}
+
+// Enable the submit button when ReCaptcha is verified
+function enableSubmitButton() {
+    document.getElementById('submit_button').disabled = false;
+}
+                                                
+// Confirm Passwords Match - Form Submission Control - Verifies the passwords matching state on submission and allows/disallows submission
 function confirmPasswordsMatch() {
     
     // Store the password field objects into variables ...
@@ -203,15 +213,15 @@ function confirmPasswordsMatch() {
     var confirmPassword = document.getElementById('confirmPassword');
     
     // Validate the passwords match
-    if (password.value === confirmPassword.value) {
+    if (password.value === confirmPassword.value) {        
         return true;
-    } else {
-        return false; 
+    } else {        
+        return false;        
     }
 }
 
-// Check Passwords Match - With Visual Message
-function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG) {
+// Check Passwords Match on a keypress and display a Visual Message (Optionally toggle the submit button state)
+function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG, toggleSubmitButton) {
     
     // Store the password field objects into variables ...
     var password        = document.getElementById('password');
@@ -226,19 +236,29 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG) {
     
     // Compare the values in the password field and the confirmation field
     if (password.value === confirmPassword.value) {
+        
+        // Toggle the submit button state to enabled
+        if(toggleSubmitButton === true) { enableSubmitButton(); }
+        
         // The passwords match - Set the color to the good color and inform the user that they have entered the correct password 
         password.style.backgroundColor = goodColor;
         confirmPassword.style.backgroundColor = goodColor;
         message.style.color = goodColor;
         message.innerHTML = passwordsMatchMSG;
         return true;
+        
     } else {
+        
+        // Toggle the submit button state to disabled
+        if(toggleSubmitButton === true) { disableSubmitButton(); }
+        
         // If the passwords do not match - Set the color to the bad color and notify the user.
         password.style.backgroundColor = badColor;
         confirmPassword.style.backgroundColor = badColor;
         message.style.color = badColor;
         message.innerHTML = passwordsDoNotMatchMSG;
         return false;
+        
     }
     
 }
