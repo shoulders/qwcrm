@@ -19,7 +19,7 @@
             <td class="menutd2" colspan="2">
                 <table width="600" class="olotable" cellpadding="5" cellspacing="0" border="0">
                     
-                    <!-- Database --> 
+                    {*<!-- Database --> 
                     
                     <tr class="row2">
                         <td class="menuhead" colspan="2" width="100%">&nbsp;{t}Database{/t}</td>
@@ -46,20 +46,20 @@
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Username{/t}</strong></div><hr><div>{t escape=tooltip}The username for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
-                    {*<tr>
+                    <tr>
                         <td align="right"><b>{t}Database Password{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <input name="qwconfig[db_pass]" class="olotd5" size="25" value="{$qwcrm_config.db_pass}" type="password" maxlength="20" onkeydown="return onlyAlphaNumeric(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Password{/t}</strong></div><hr><div>{t escape=tooltip}The password for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>*}                
+                    </tr>               
                     <tr>
                         <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: blue">*</span></td>
                         <td>
                             <input name="qwconfig[db_prefix]" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);" readonly/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
-                    </tr>                    
+                    </tr>*}                 
                     
                     <!-- Other -->
                     
