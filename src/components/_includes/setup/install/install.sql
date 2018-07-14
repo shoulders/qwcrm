@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__company`
+-- Table structure for table `#__company_options`
 --
 
 CREATE TABLE `#__company_options` (
@@ -60,7 +60,7 @@ CREATE TABLE `#__company_options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `#__company`
+-- Dumping data for table `#__company_options`
 --
 
 INSERT INTO `#__options` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
@@ -69,7 +69,7 @@ INSERT INTO `#__options` (`company_name`, `logo`, `address`, `city`, `state`, `z
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__customer`
+-- Table structure for table `#__customer_records`
 --
 
 CREATE TABLE `#__customer_records` (
@@ -135,7 +135,7 @@ INSERT INTO `#__customer_types` (`customer_type_id`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__expense`
+-- Table structure for table `#__expense_records`
 --
 
 CREATE TABLE `#__expense_records` (
@@ -193,7 +193,7 @@ INSERT INTO `#__expense_types` (`expense_type_id`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__giftcert`
+-- Table structure for table `#__giftcert_records`
 --
 
 CREATE TABLE `#__giftcert_records` (
@@ -214,7 +214,7 @@ CREATE TABLE `#__giftcert_records` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__invoice`
+-- Table structure for table `#__invoice_records`
 --
 
 CREATE TABLE `#__invoice_records` (
@@ -331,7 +331,7 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__payment`
+-- Table structure for table `#__payment_records`
 --
 
 CREATE TABLE `#__payment_records` (
@@ -450,7 +450,7 @@ INSERT INTO `#__payment_accepted_methods` (`accepted_method_id`, `display_name`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__refund`
+-- Table structure for table `#__refund_records`
 --
 
 CREATE TABLE `#__refund_records` (
@@ -493,7 +493,7 @@ INSERT INTO `#__refund_types` (`refund_type_id`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__schedule`
+-- Table structure for table `#__schedule_records`
 --
 
 CREATE TABLE `#__schedule_records` (
@@ -525,7 +525,7 @@ CREATE TABLE `#__session` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__supplier`
+-- Table structure for table `#__supplier_records`
 --
 
 CREATE TABLE `#__supplier_records` (
@@ -587,7 +587,7 @@ INSERT INTO `#__supplier_types` (`supplier_type_id`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__user`
+-- Table structure for table `#__user_records`
 --
 
 CREATE TABLE `#__user_records` (
@@ -817,7 +817,7 @@ INSERT INTO `#__version` (`database_version`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__workorder`
+-- Table structure for table `#__workorder_records`
 --
 
 CREATE TABLE `#__workorder_records` (
@@ -898,13 +898,13 @@ INSERT INTO `#__workorder_statuses` (`id`, `status_key`, `display_name`) VALUES
 --
 
 --
--- Indexes for table `#__company`
+-- Indexes for table `#__company_options`
 --
 ALTER TABLE `#__company_options`
   ADD PRIMARY KEY (`display_name`);
 
 --
--- Indexes for table `#__customer`
+-- Indexes for table `#__customer_records`
 --
 ALTER TABLE `#__customer_records`
   ADD PRIMARY KEY (`customer_id`);
@@ -922,7 +922,7 @@ ALTER TABLE `#__customer_types`
   ADD PRIMARY KEY (`customer_type_id`);
 
 --
--- Indexes for table `#__expense`
+-- Indexes for table `#__expense_records`
 --
 ALTER TABLE `#__expense_records`
   ADD PRIMARY KEY (`expense_id`);
@@ -934,13 +934,13 @@ ALTER TABLE `#__expense_types`
   ADD PRIMARY KEY (`expense_type_id`);
 
 --
--- Indexes for table `#__giftcert`
+-- Indexes for table `#__giftcert_records`
 --
 ALTER TABLE `#__giftcert_records`
   ADD PRIMARY KEY (`giftcert_id`);
 
 --
--- Indexes for table `#__invoice`
+-- Indexes for table `#__invoice_records`
 --
 ALTER TABLE `#__invoice_records`
   ADD PRIMARY KEY (`invoice_id`);
@@ -970,7 +970,7 @@ ALTER TABLE `#__invoice_statuses`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `#__payment`
+-- Indexes for table `#__payment_records`
 --
 ALTER TABLE `#__payment_records`
   ADD PRIMARY KEY (`payment_id`);
@@ -1000,7 +1000,7 @@ ALTER TABLE `#__payment_accepted_methods`
   ADD PRIMARY KEY (`accepted_method_id`);
 
 --
--- Indexes for table `#__refund`
+-- Indexes for table `#__refund_records`
 --
 ALTER TABLE `#__refund_records`
   ADD PRIMARY KEY (`refund_id`);
@@ -1012,7 +1012,7 @@ ALTER TABLE `#__refund_types`
   ADD PRIMARY KEY (`refund_type_id`);
 
 --
--- Indexes for table `#__schedule`
+-- Indexes for table `#__schedule_records`
 --
 ALTER TABLE `#__schedule_records`
   ADD PRIMARY KEY (`schedule_id`);
@@ -1026,7 +1026,7 @@ ALTER TABLE `#__session`
   ADD KEY `time` (`time`);
 
 --
--- Indexes for table `#__supplier`
+-- Indexes for table `#__supplier_records`
 --
 ALTER TABLE `#__supplier_records`
   ADD PRIMARY KEY (`supplier_id`);
@@ -1038,7 +1038,7 @@ ALTER TABLE `#__supplier_types`
   ADD PRIMARY KEY (`supplier_type_id`);
 
 --
--- Indexes for table `#__user`
+-- Indexes for table `#__user_records`
 --
 ALTER TABLE `#__user_records`
   ADD PRIMARY KEY (`user_id`);
@@ -1078,7 +1078,7 @@ ALTER TABLE `#__version`
   ADD PRIMARY KEY (`database_version`);
 
 --
--- Indexes for table `#__workorder`
+-- Indexes for table `#__workorder_records`
 --
 ALTER TABLE `#__workorder_records`
   ADD PRIMARY KEY (`workorder_id`);
@@ -1106,7 +1106,7 @@ ALTER TABLE `#__workorder_statuses`
 --
 
 --
--- AUTO_INCREMENT for table `#__customer`
+-- AUTO_INCREMENT for table `#__customer_records`
 --
 ALTER TABLE `#__customer_records`
   MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT;
@@ -1116,17 +1116,17 @@ ALTER TABLE `#__customer_records`
 ALTER TABLE `#__customer_notes`
   MODIFY `customer_note_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__expense`
+-- AUTO_INCREMENT for table `#__expense_records`
 --
 ALTER TABLE `#__expense_records`
   MODIFY `expense_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__giftcert`
+-- AUTO_INCREMENT for table `#__giftcert_records`
 --
 ALTER TABLE `#__giftcert_records`
   MODIFY `giftcert_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__invoice`
+-- AUTO_INCREMENT for table `#__invoice_records`
 --
 ALTER TABLE `#__invoice_records`
   MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT;
@@ -1146,27 +1146,27 @@ ALTER TABLE `#__invoice_parts`
 ALTER TABLE `#__invoice_prefill_items`
   MODIFY `invoice_prefill_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
--- AUTO_INCREMENT for table `#__payment`
+-- AUTO_INCREMENT for table `#__payment_records`
 --
 ALTER TABLE `#__payment_records`
   MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__refund`
+-- AUTO_INCREMENT for table `#__refund_records`
 --
 ALTER TABLE `#__refund_records`
   MODIFY `refund_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__schedule`
+-- AUTO_INCREMENT for table `#__schedule_records`
 --
 ALTER TABLE `#__schedule_records`
   MODIFY `schedule_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__supplier`
+-- AUTO_INCREMENT for table `#__supplier_records`
 --
 ALTER TABLE `#__supplier_records`
   MODIFY `supplier_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__user`
+-- AUTO_INCREMENT for table `#__user_records`
 --
 ALTER TABLE `#__user_records`
   MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT;
@@ -1181,7 +1181,7 @@ ALTER TABLE `#__user_keys`
 ALTER TABLE `#__user_usergroups`
   MODIFY `usergroup_id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
--- AUTO_INCREMENT for table `#__workorder`
+-- AUTO_INCREMENT for table `#__workorder_records`
 --
 ALTER TABLE `#__workorder_records`
   MODIFY `workorder_id` int(10) NOT NULL AUTO_INCREMENT;

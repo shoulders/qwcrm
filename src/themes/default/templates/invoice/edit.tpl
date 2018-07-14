@@ -441,7 +441,7 @@
                                                     <table cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
                                                             <td valign="top">                                                                    
-                                                                {$company_details.display_name} <br>
+                                                                {$company_details.company_name} <br>
                                                                 {$company_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
                                                                 {$company_details.city}<br>
                                                                 {$company_details.state}<br>

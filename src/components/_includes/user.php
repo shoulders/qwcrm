@@ -375,7 +375,7 @@ function get_active_users($user_type = null) {
     $sql = "SELECT
         
         user_id,
-        CONCAT(".PRFX."first_name, ' ', ".PRFX."last_name) AS display_name,
+        CONCAT(first_name, ' ', last_name) AS display_name
         
         FROM ".PRFX."user_records
         WHERE active='1'";

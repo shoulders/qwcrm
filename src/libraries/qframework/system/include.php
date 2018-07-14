@@ -285,9 +285,23 @@ function perform_redirect($url, $type = 'header') {
             header('Location: ' . $url);
             exit;
             
-        // You would most likely trigger an error here.
+        // If headers already sent, log and output this error
         } else {
-            echo "Headers already sent in $filename on line $linenum.";
+            
+            // Build the error message
+            $error_msg = __gettext("Headers already sent in").' '.$filename.' '.__gettext("on line").' '.$linenum.' .';
+            
+            // Get routing variables
+            $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
+            
+            // Log errors to log if enabled
+            if($config->get('qwcrm_error_log')) {    
+                write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
+            }
+            
+            // Output the message and stop processing
+            die($error_msg);            
+            
         }
         
     }
@@ -309,8 +323,6 @@ function perform_redirect($url, $type = 'header') {
 ############################################
 
 // Example to use
-// If a function needs more than 1 error notification - add after _failed - this keeps it easy to swapp stuff out : i.e _failed --> _failed_notfound ?
-// old - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, $smarty->getTemplateVars('translate_workorder_error_message_function_'.__FUNCTION__.'_failed'));
 // new - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
 
 function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
