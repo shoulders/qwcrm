@@ -12,6 +12,28 @@
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
+<script>
+
+    // If there is a Tax Type selected then verify there is a Tax Rate set (run on form submission)
+    function validateTaxRate(msg) {
+        
+        // Store the tax_type and tax_rate into variables ...
+        var tax_type = document.getElementById('tax_type');
+        var tax_rate = document.getElementById('tax_rate');
+        
+        // If there is a Tax Type set then validate a rate is set
+        if (tax_type.value !== 'none' && tax_rate.value == 0) {             
+            alert(msg);
+            return false;
+            
+        // If no Tax Type set return true
+        } else {
+            return true;
+        }
+        
+    }
+
+</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -25,7 +47,7 @@
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
-                        <form method="post" action="index.php?component=company&page_tpl=options" enctype="multipart/form-data">
+                        <form method="post" action="index.php?component=company&page_tpl=options" enctype="multipart/form-data" onsubmit="return validateTaxRate('{t}You must set a Tax Rate when you have enabled a Tax Type.{/t}');">
                             <table width="100%" border="0" cellpadding="20" cellspacing="0">
                                 <tr>
                                     <td>
@@ -132,7 +154,7 @@
                                                                                 </tr>                                            
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Tax Rate{/t}:</b></td>
-                                                                                    <td><input name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
+                                                                                    <td><input id="tax_rate" name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}VAT Number{/t}:</b></td>

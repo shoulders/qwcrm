@@ -218,6 +218,7 @@ function confirmPasswordsMatch() {
     } else {        
         return false;        
     }
+    
 }
 
 // Check Passwords Match on a keypress and display a Visual Message (Optionally toggle the submit button state)
