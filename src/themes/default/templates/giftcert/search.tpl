@@ -30,9 +30,20 @@
                                                         <table border="0">
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Gift Certificate Code{/t}</b><br>
-                                                                    <input name="search_term" value="{$search_term}" class="olotd4" size="20" type="text" maxlength="20" onkeydown="return onlySearch(event);">                                                            
-                                                                    <input name="search_category" value="{$search_category}" type="hidden" />
+                                                                    <b>{t}Search{/t}</b>
+                                                                    <br />
+                                                                    <select class="olotd5" id="search_category" name="search_category">
+                                                                        <option value="giftcert_id"{if $search_category == 'giftcert_id'} selected{/if}>{t}Gift Certificate ID{/t}</option>
+                                                                        <option value="giftcert_code"{if $search_category == 'giftcert_code'} selected{/if}>{t}Gift Certificate Code{/t}</option>                                                                        
+                                                                        <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
+                                                                        <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>
+                                                                        <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
+                                                                        <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>                                                                      
+                                                                    </select>                                                                    
+                                                                    <br />
+                                                                    <b>{t}for{/t}</b>
+                                                                    <br />
+                                                                    <input name="search_term" class="olotd4" value="{$search_term}" type="text" maxlength="50" onkeydown="return onlySearch(event);">                                                                    
                                                                     <button type="submit" name="submit" value="search">{t}Search{/t}</button>
                                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=giftcert&page_tpl=search';">{t}Reset{/t}</button>
                                                                 </td>

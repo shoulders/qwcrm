@@ -45,10 +45,10 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     $whereTheseRecords = " WHERE ".PRFX."customer_records.customer_id\n";    
     
     // Search category (display_name) and search term
-    if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%'); }
     
     // Search category (full_name) and search term
-    elseif($search_category == 'full_name') {$havingTheseRecords .= " HAVING full_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_category == 'full_name') { $havingTheseRecords .= " HAVING full_name LIKE ".$db->qstr('%'.$search_term.'%'); }
     
     // Search category with search term
     elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     

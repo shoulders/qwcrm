@@ -17,9 +17,6 @@ $VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
 $VAR['filter_status'] = isset($VAR['filter_status']) ? $VAR['filter_status'] : null;
 $VAR['filter_is_redeemed'] = isset($VAR['filter_is_redeemed']) ? $VAR['filter_is_redeemed'] : null;
 
-// A workaround until i add a full type search, this keeps the logic intact
-$VAR['search_category'] = 'giftcert_code';
-
 // If a search is submitted
 if(isset($VAR['submit'])) {
     

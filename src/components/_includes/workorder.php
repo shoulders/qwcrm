@@ -37,6 +37,7 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';
     $search_category = $search_category ?: 'workorder_id';
+    $havingTheseRecords = '';
     
     /* Records Search */
     
@@ -44,10 +45,10 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
     $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";    
     
     // Restrict results by search category (customer) and search term
-    if($search_term && $search_category == 'customer_display_name') {$whereTheseRecords .= " AND ".PRFX."customer_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_namee LIKE ".$db->qstr('%'.$search_term.'%');}
     
    // Restrict results by search category (employee) and search term
-    elseif($search_term && $search_category == 'employee_display_name') {$whereTheseRecords .= " AND ".PRFX."user_records.display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category and search term
     elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
@@ -115,6 +116,7 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
             LEFT JOIN ".PRFX."customer_records ON ".PRFX."workorder_records.customer_id = ".PRFX."customer_records.customer_id                 
             ".$whereTheseRecords."
             GROUP BY ".PRFX."workorder_records.".$order_by."
+            ".$havingTheseRecords."
             ORDER BY ".PRFX."workorder_records.".$order_by."
             ".$direction;           
     

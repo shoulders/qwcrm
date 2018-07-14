@@ -36,15 +36,22 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     // Process certain variables - This prevents undefined variable errors
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';
-    $search_category = $search_category ?: 'giftcert_id';    
+    $search_category = $search_category ?: 'giftcert_id';
+    $havingTheseRecords = '';
     
     /* Records Search */
         
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";    
+    $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";
+    
+    // Restrict results by search category (customer) and search term
+    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    
+   // Restrict results by search category (employee) and search term
+    elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}    
     
     /* Filter the Records */
     
@@ -79,7 +86,8 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
             LEFT JOIN ".PRFX."user_records ON ".PRFX."giftcert_records.employee_id = ".PRFX."user_records.user_id
             LEFT JOIN ".PRFX."customer_records ON ".PRFX."giftcert_records.customer_id = ".PRFX."customer_records.customer_id            
             ".$whereTheseRecords."
-            GROUP BY ".PRFX."giftcert_records.".$order_by."        
+            GROUP BY ".PRFX."giftcert_records.".$order_by."
+            ".$havingTheseRecords."
             ORDER BY ".PRFX."giftcert_records.".$order_by."
             ".$direction;          
 
