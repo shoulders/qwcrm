@@ -38,7 +38,8 @@
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
                                                                         <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
-                                                                        <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>                                                                      
+                                                                        <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
+                                                                        <option value="note"{if $search_category == 'invoice_id'} selected{/if}>{t}Note{/t}</option> 
                                                                     </select>                                                                    
                                                                     <br />
                                                                     <b>{t}for{/t}</b>
@@ -56,23 +57,16 @@
                                                                     <b>{t}Filter By Status{/t}</b><br>
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
                                                                         <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>
-                                                                        <option disabled>----------</option>   
-                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
-                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        <option value="active"{if $filter_status == 'active'} selected{/if}>{t}Active{/t}</option> 
+                                                                        <option value="blocked"{if $filter_status == 'blocked'} selected{/if}>{t}Blocked{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        {section name=s loop=$giftcert_statuses}    
+                                                                            <option value="{$giftcert_statuses[s].status_key}"{if $filter_status == $giftcert_statuses[s].status_key} selected{/if}>{t}{$giftcert_statuses[s].display_name}{/t}</option>        
+                                                                        {/section} 
                                                                     </select>
                                                                 </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <b>{t}Filter By Redemption Status{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_is_redeemed" name="filter_is_redeemed">
-                                                                        <option value=""{if $filter_is_redeemed == ''} selected{/if}>{t}None{/t}</option>
-                                                                        <option disabled>----------</option>   
-                                                                        <option value="1"{if filter_is_redeemed == '1'} selected{/if}>{t}Redeemed{/t}</option>
-                                                                        <option value="0"{if $filter_is_redeemed == '0'} selected{/if}>{t}Not Redeemed{/t}</option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
+                                                            </tr>                                                            
                                                         </table>
                                                     </div>
                                                 </form>
@@ -87,8 +81,8 @@
                                                             <!-- Left Side Buttons -->
                                                             <td>
                                                                 {if $previous_page_no && $display_giftcerts}
-                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>                                                   
                                                     
@@ -109,8 +103,8 @@
                                                             <!-- Right Side Buttons --> 
                                                             <td>
                                                                 {if $next_page_no && $display_giftcerts}
-                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_is_redeemed}&filter_status={$filter_is_redeemed}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=giftcert&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}{if $filter_redeemed}&filter_status={$filter_redeemed}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
                                                     

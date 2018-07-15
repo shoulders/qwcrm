@@ -205,9 +205,10 @@ CREATE TABLE `#__giftcert_records` (
   `date_created` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `date_expires` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `date_redeemed` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `is_redeemed` int(1) NOT NULL DEFAULT '0',
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `redeemed` int(1) NOT NULL DEFAULT '0',
   `active` int(1) NOT NULL DEFAULT '0',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',  
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -676,6 +677,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('giftcert:new', 1, 1, 0, 0, 1, 1, 0, 0, 0),
 ('giftcert:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
 ('giftcert:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('giftcert:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),

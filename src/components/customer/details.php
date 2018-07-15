@@ -40,8 +40,8 @@ $smarty->assign('invoices_partially_paid',  display_invoices('invoice_id', 'DESC
 $smarty->assign('invoices_paid',            display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'paid', null, $VAR['customer_id'])              );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                                               );
 
-$smarty->assign('giftcerts_active',         display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, '0', null, $VAR['customer_id'])         );
-$smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, '1', null, $VAR['customer_id'])         );
+$smarty->assign('giftcerts_unused',         display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'unused', null, $VAR['customer_id'])         );
+$smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, $VAR['customer_id'])         );
 
 $smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['customer_id'], $user->login_user_id)                                                    );
 

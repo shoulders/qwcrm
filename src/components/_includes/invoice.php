@@ -75,7 +75,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
             
             $whereTheseRecords .= " AND ".PRFX."invoice_records.is_closed = '1'";
         
-        // Return Workorders for the given status
+        // Return Invoices for the given status
         } else {
             
             $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$db->qstr($status);
@@ -702,11 +702,11 @@ function update_invoice_status($invoice_id, $new_status) {
         // Status updated message
         postEmulationWrite('information_msg', _gettext("Invoice status updated."));  
         
-        // For writing message to log file, get work order status display name
+        // For writing message to log file, get invoice status display name
         $inv_status_diplay_name = _gettext(get_invoice_status_display_name($new_status));
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($invoice_id, _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
@@ -1239,7 +1239,7 @@ function export_invoice_prefill_items_csv() {
  }
  
 ###############################################################
-#   Check to see if the invoice's can be deleted              #
+#   Check to see if the invoice can be deleted              #
 ###############################################################
 
 function check_invoice_can_be_deleted($invoice_id) {
@@ -1361,7 +1361,7 @@ function assign_invoice_to_employee($invoice_id, $target_employee_id) {
         $target_employee_display_name = get_user_details($target_employee_id, 'display_name');
         
         // Creates a History record
-        insert_workorder_history_note($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
 
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';

@@ -53,15 +53,6 @@
                                                 <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Is Active{/t}</b></td>
-                                                <td>
-                                                    <select name="status">
-                                                        <option value="1">{t}Active{/t}</option>
-                                                        <option value="0">{t}Blocked{/t}</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>
                                             </tr>
                                             <tr>

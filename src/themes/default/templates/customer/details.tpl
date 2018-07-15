@@ -70,7 +70,7 @@
 
                                             <!-- Tab 5 Contents (Gift Certificates) -->
                                             <div id="tab_5_contents" class="tab_contents">
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_active block_title=_gettext("Active Gift Certificates")}
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_unused block_title=_gettext("Unused Gift Certificates")}
                                                 <br>
                                                 {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed Gift Certificates")}
                                             </div>

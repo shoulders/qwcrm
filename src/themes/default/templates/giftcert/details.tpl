@@ -66,10 +66,10 @@
                                             <td>{$giftcert_details.giftcert_code}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Is Active{/t}</b></td>
+                                            <td><b>{t}Blocked{/t}</b></td>
                                             <td>
-                                                {if $giftcert_details.active == '0'}Blocked{/if}
-                                                {if $giftcert_details.active == '1'}Active{/if}
+                                                {if $giftcert_details.blocked == '0'}{t}No{/t}{/if}
+                                                {if $giftcert_details.blocked == '1'}{t}Yes{/t}{/if}
                                             </td>
                                         </tr>                                        
                                         <tr>
@@ -89,10 +89,11 @@
                                             <td>{$giftcert_details.date_redeemed|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Is Redeemed{/t}</b></td>
+                                            <td><b>{t}Status{/t}</b></td>
                                             <td>
-                                                {if $giftcert_details.is_redeemed == '0'}Not Redeemed{/if}
-                                                {if $giftcert_details.is_redeemed == '1'}Redeemed{/if}
+                                                {section name=s loop=$giftcert_statuses}    
+                                                    {if $giftcert_details.status == $giftcert_statuses[s].status_key}{t}{$giftcert_statuses[s].display_name}{/t}{/if}        
+                                                {/section}              
                                             </td>
                                         </tr>                                        
                                     </table>                                   

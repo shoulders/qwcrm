@@ -9,8 +9,10 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an giftcert_id
 if(!isset($VAR['giftcert_id']) || !$VAR['giftcert_id']) {
@@ -22,16 +24,16 @@ if(!check_payment_method_is_active('gift_certificate')) {
     force_page('index.php', null,'warning_msg='._gettext("Gift Certificate payment method is not enabled. Goto Payment Options and enable Gift Certificates there."));
 }
 
-// Check if giftcert redeemed - if so, it cannot be updated
-if(get_giftcert_details($VAR['giftcert_id'], 'is_redeemed')) {
-    force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'warning_msg='._gettext("You cannot edit this Gift Certificate because it has been redeemed."));
+// Check if giftcert can be edited
+if(!check_giftcert_can_be_edited($VAR['giftcert_id'])) {
+    force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'warning_msg='._gettext("You cannot edit this Gift Certificate because its status does not allow it."));
 }
 
 // if information submitted
 if(isset($VAR['submit'])) {
     
     // Create a new gift certificate
-    update_giftcert($VAR['giftcert_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['status'], $VAR['note']);
+    update_giftcert($VAR['giftcert_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id']);    
@@ -39,7 +41,8 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page    
-    $smarty->assign('customer_details', get_customer_details(get_giftcert_details($VAR['giftcert_id'], 'customer_id')));    
+    $smarty->assign('customer_details', get_customer_details(get_giftcert_details($VAR['giftcert_id'], 'customer_id'))); 
+    $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                              );
     $smarty->assign('giftcert_details', get_giftcert_details($VAR['giftcert_id']));
     $BuildPage .= $smarty->fetch('giftcert/edit.tpl');
 }

@@ -43,6 +43,14 @@
                                                 <td><a href="index.php?component=customer&page_tpl=details&customer_id={$giftcert_details.customer_id}">{$customer_details.display_name}</a></td>
                                             </tr>
                                             <tr>
+                                                <td><b>{t}Status{/t}</b></td>
+                                                <td>
+                                                    {section name=s loop=$giftcert_statuses}    
+                                                        {if $giftcert_details.status == $giftcert_statuses[s].status_key}{t}{$giftcert_statuses[s].display_name}{/t}{/if}        
+                                                    {/section}              
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
                                                     <input id="date_expires" name="date_expires" class="olotd4" size="10" value="{$giftcert_details.date_expires|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
@@ -59,15 +67,6 @@
                                             <tr>
                                                 <td><b>{t}Amount{/t}</b></td>
                                                 <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$giftcert_details.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
-                                            </tr>
-                                            <tr>
-                                                <td><b>{t}Is Active{/t}</b></td>
-                                                <td>
-                                                    <select name="status">
-                                                        <option value="1" {if $giftcert_details.active == '1'}selected{/if}>{t}Active{/t}</option>
-                                                        <option value="0" {if $giftcert_details.active == '0'}selected{/if}>{t}Blocked{/t}</option>
-                                                    </select>
-                                                </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>

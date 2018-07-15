@@ -15,7 +15,7 @@ $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
 $VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
 $VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
 $VAR['filter_status'] = isset($VAR['filter_status']) ? $VAR['filter_status'] : null;
-$VAR['filter_is_redeemed'] = isset($VAR['filter_is_redeemed']) ? $VAR['filter_is_redeemed'] : null;
+$VAR['filter_redeemed'] = isset($VAR['filter_redeemed']) ? $VAR['filter_redeemed'] : null;
 
 // If a search is submitted
 if(isset($VAR['submit'])) {
@@ -34,6 +34,7 @@ if(isset($VAR['submit'])) {
 $smarty->assign('search_category',      $VAR['search_category']                                                                                                                                 );
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                                     );
 $smarty->assign('filter_status',        $VAR['filter_status']                                                                                                                                          );
-$smarty->assign('filter_is_redeemed',   $VAR['filter_is_redeemed']                                                                                                                                     );
-$smarty->assign('display_giftcerts',    display_giftcerts('giftcert_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_is_redeemed'])  );
+$smarty->assign('filter_redeemed',      $VAR['filter_redeemed']                                                                                                                                     );
+$smarty->assign('giftcert_statuses',    get_giftcert_statuses()                                                                                                                                  );
+$smarty->assign('display_giftcerts',    display_giftcerts('giftcert_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status']));
 $BuildPage .= $smarty->fetch('giftcert/search.tpl');
