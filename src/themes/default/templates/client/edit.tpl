@@ -26,8 +26,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                         <tr>
                                             <td class="menutd">                                                                                                 
-                                                <form action="index.php?component=client&page_tpl=edit" method="post" name="edit_client" id="edit_client">                                                    
-                                                    <input type="hidden" name="client_id" value="{$client_details.client_id}">
+                                                <form action="index.php?component=client&page_tpl=edit&client_id={$client_details.client_id}" method="post" name="edit_client" id="edit_client">                                                    
                                                     <table width="100%" cellpadding="2" cellspacing="2" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">

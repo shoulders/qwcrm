@@ -23,8 +23,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                                                     
-                                    <form action="index.php?component=workorder&page_tpl=note_new" method="post" name="new_workorder_note" id="new_workorder_note">                                        
-                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
+                                    <form action="index.php?component=workorder&page_tpl=note_new&workorder_id={$workorder_id}" method="post" name="new_workorder_note" id="new_workorder_note">                                        
                                         <table class="olotable" width="100%" border="0" summary="Work order display">
                                             <tr>
                                                 <td class="olotd"><textarea name="workorder_note" class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>

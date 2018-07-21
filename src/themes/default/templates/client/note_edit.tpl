@@ -47,7 +47,6 @@
                                         <p><b>{t}Note{/t}:</b></p>
                                         <textarea class="olotd4" rows="15" cols="70" name="note">{$client_note.note}</textarea>
                                         <br>
-                                        <input type="hidden" name="client_id" value="{$client_note.client_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_note.client_id}';">{t}Cancel{/t}</button>
                                     </form>

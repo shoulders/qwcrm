@@ -690,9 +690,7 @@
                                     <td>
                                         <table width="100%"  cellpadding="3" cellspacing="0" border="0">
                                             <tr>
-                                                <td align="left" valign="top" width="25%">                                                        
-                                                    <input type="hidden" name="invoice_id" value="{$invoice_details.invoice_id}">
-                                                    <input type="hidden" name="sub_total" value="{$invoice_details.sub_total|string_format:"%.2f"}">
+                                                <td align="left" valign="top" width="25%">                                                    
                                                     {if !$display_payments}
                                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=search';">{t}Cancel{/t}</button>

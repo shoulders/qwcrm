@@ -47,7 +47,6 @@
                                         <p><b>{t}Note{/t}:</b></p>
                                         <textarea class="olotd4" rows="15" cols="70" name="note">{$workorder_note_details.description}</textarea>
                                         <br>                                        
-                                        <input type="hidden" name="workorder_id" value="{$workorder_note_details.workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_note_details.workorder_id}';">{t}Cancel{/t}</button>
                                     </form>

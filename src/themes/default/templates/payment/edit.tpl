@@ -33,11 +33,11 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0" >
                                      <tr>
                                          <td>                                                                                           
-                                            <form method="post" action="index.php?component=payment&page_tpl=edit" name="edit_payment" id="edit_payment">                                                
+                                            <form method="post" action="index.php?component=payment&page_tpl=edit&payment_id={$payment_details.payment_id}" name="edit_payment" id="edit_payment">                                                
                                                 <table width="100%" cellpadding="2" cellspacing="2" border="0">                                                    
                                                     <tr>
                                                         <td align="right"><b>{t}Payment ID{/t}</b></td>
-                                                        <td colspan="3"><input name="payment_id" value="{$payment_details.payment_id}" type="hidden">{$payment_details.payment_id}</td>
+                                                        <td colspan="3">{$payment_details.payment_id}</td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Employee{/t}</b></td>

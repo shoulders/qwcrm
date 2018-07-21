@@ -37,7 +37,7 @@
             <td class="olotd4" nowrap>
                 <a href="index.php?component=client&page_tpl=details&client_id={$display_clients[c].client_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" onMouseOver="ddrivetip('{t}View Client Details{/t}');" onMouseOut="hideddrivetip()"></a>&nbsp;
                 <a href="index.php?component=workorder&page_tpl=new&client_id={$display_clients[c].client_id}"><img src="{$theme_images_dir}icons/16x16/small_new_work_order.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Work Order{/t}');" onMouseOut="hideddrivetip();" alt=""></a>&nbsp;
-                <a href="index.php?component=invoice&page_tpl=edit&invoice_type=invoice-only&workorder_id=0&client_id={$display_clients[c].client_id}"><img src="{$theme_images_dir}icons/16x16/small_new_invoice_only.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Invoice Only{/t}');" onMouseOut="hideddrivetip();" alt=""></a>
+                <a href="index.php?component=invoice&page_tpl=new&client_id={$display_clients[c].client_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/16x16/small_new_invoice_only.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Invoice Only{/t}');" onMouseOut="hideddrivetip();" alt=""></a>
                 <a href="index.php?component=user&page_tpl=new&client_id={$display_clients[c].client_id}"><img src="{$theme_images_dir}icons/16x16/small_new_client.gif" alt="" border="0" onMouseOver="ddrivetip('{t}New Client Login{/t}');" onMouseOut="hideddrivetip();" alt=""></a>
             </td>
         </tr>

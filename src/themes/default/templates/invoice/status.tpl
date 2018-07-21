@@ -31,16 +31,15 @@
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>                                    
-                                        <form action="index.php?component=invoice&page_tpl=status" method="post" name="new_invoice_status" id="new_invoice_status">
+                                        <form action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}" method="post" name="new_invoice_status" id="new_invoice_status">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
                                                 {section name=s loop=$invoice_statuses}    
                                                     <option value="{$invoice_statuses[s].status_key}"{if $invoice_status == $invoice_statuses[s].status_key} selected{/if}>{t}{$invoice_statuses[s].display_name}{/t}</option>
                                                 {/section}                                            
-                                            </select>                                        
-                                            <input type="hidden" name="updated_by" value="{$login_user_id}">
-                                            <input type="hidden" name="invoice_id" value="{$invoice_id}">
-                                            <p>&nbsp;</p>                                        
+                                            </select>                                                                                       
+                                            <p>&nbsp;</p>
+                                            <input type="hidden" name="updated_by" value="{$login_user_id}"> 
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />                                                                      
                                         </form>
                                     {else}
@@ -54,14 +53,13 @@
                                         <!-- If the employee is assigned to this invoice and it is not closed, or no one is assigned, or the user is an admin - show a dropdown list and update button, else show the assigned employee details instead -->
                                         {if ($assigned_employee_id == $login_user_id && $invoice_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
                                             <p>&nbsp;</p>  
-                                            <form method="post" action="index.php?component=invoice&page_tpl=status">
+                                            <form method="post" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
                                                 <select class="olotd4" name="target_employee_id">
                                                     {section name=i loop=$active_employees}
                                                         <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
                                                     {/section}
                                                 </select>
                                                 <p>&nbsp;</p>
-                                                <input type="hidden" name="invoice_id" value="{$invoice_id}">
                                                 <input class="olotd4" name="change_employee" value="{t}Update{/t}" type="submit">
                                             </form>                                       
                                         {else}    
@@ -77,9 +75,8 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_delete}
-                                        <form method="post" action="index.php?component=invoice&page_tpl=status">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this invoice?{/t}');">
-                                            <input type="hidden" name="invoice_id" value="{$invoice_id}">
+                                        <form method="post" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this invoice?{/t}');">                                            
                                         </form>                                            
                                     {else}
                                         {t}This invoice cannot be deleted. You can only delete the invoice if it is open and does not have any payments.{/t}

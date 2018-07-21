@@ -25,11 +25,10 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?component=workorder&page_tpl=details_edit_comment" method="post">
+                                    <form action="index.php?component=workorder&page_tpl=details_edit_comment&workorder_id={$workorder_id}" method="post">
                                         <b>{t}comment{/t}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" name="comment">{$comment}</textarea>
                                         <br>
-                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>
                                     </form>

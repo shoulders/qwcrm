@@ -26,7 +26,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                                                      
-                                    <form method="post" action="index.php?component=workorder&page_tpl=details_edit_description">                                    
+                                    <form method="post" action="index.php?component=workorder&page_tpl=details_edit_description&workorder_id={$workorder_id}">                                    
                                         <b>{t}Scope{/t}</b></br>
                                         <input id="scope" name="scope" value="{$scope}"size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                         <div class="suggestionsBoxWrapper">
@@ -41,7 +41,6 @@
                                         <b>{t}Description{/t}</b><br>
                                         <textarea name="description" class="olotd4 mceCheckForContent" rows="15" cols="70">{$description}</textarea>
                                         <br>
-                                        <input type="hidden" name="workorder_id" value="{$workorder_id}">
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=details&workorder_id={$workorder_id}';">{t}Cancel{/t}</button>
                                     </form>
