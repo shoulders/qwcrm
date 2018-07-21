@@ -16,7 +16,7 @@ require(INCLUDES_DIR.'workorder.php');
 require(INCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm()) {
+if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
     die(_gettext("No Direct Access Allowed."));
 }
 

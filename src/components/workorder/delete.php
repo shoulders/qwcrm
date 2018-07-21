@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm()) {
+if(!check_page_accessed_via_qwcrm('workorder', 'status')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
