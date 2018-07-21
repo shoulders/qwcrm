@@ -13,7 +13,7 @@
         <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{t}Add Customer{/t}</td>
+                    <td class="menuhead2" width="80%">{t}Add Client{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}CUSTOMER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}CUSTOMER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -28,7 +28,7 @@
                                     <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
                                         <tr>
                                             <td>                                                
-                                                <form action="index.php?component=customer&page_tpl=new" method="post" name="new_customer" id="new_customer">                                                
+                                                <form action="index.php?component=client&page_tpl=new" method="post" name="new_client" id="new_client">                                                
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -75,8 +75,8 @@
                                                                             <td align="right"><strong>{t}Type{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                             <td>
                                                                                 <select id="type" name="type" class="olotd5"> 
-                                                                                    {section name=s loop=$customer_types}    
-                                                                                        <option value="{$customer_types[s].customer_type_id}">{t}{$customer_types[s].display_name}{/t}</option>
+                                                                                    {section name=s loop=$client_types}    
+                                                                                        <option value="{$client_types[s].client_type_id}">{t}{$client_types[s].display_name}{/t}</option>
                                                                                     {/section}    
                                                                                 </select>                                                                                   
                                                                             </td>
@@ -152,7 +152,7 @@
                                                                         <tr>
                                                                             <td colspan="2">
                                                                                 <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=customer&page_tpl=search';">{t}Cancel{/t}</button>
+                                                                                <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>

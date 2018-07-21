@@ -39,8 +39,8 @@
                                                 <td>{$giftcert_details.giftcert_code}</td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Customer{/t}</b></td>
-                                                <td><a href="index.php?component=customer&page_tpl=details&customer_id={$giftcert_details.customer_id}">{$customer_details.display_name}</a></td>
+                                                <td><b>{t}Client{/t}</b></td>
+                                                <td><a href="index.php?component=client&page_tpl=details&client_id={$giftcert_details.client_id}">{$client_details.display_name}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Status{/t}</b></td>

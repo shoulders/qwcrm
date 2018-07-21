@@ -44,8 +44,8 @@
                                                         <td colspan="3"><input name="employee_id" value="{$payment_details.employee_id}" type="hidden">{$employee_display_name}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right"><b>{t}Customer{/t}</b></td>
-                                                        <td colspan="3"><input name="customer_id" value="{$payment_details.customer_id}" type="hidden">{$customer_display_name}</td>
+                                                        <td align="right"><b>{t}Client{/t}</b></td>
+                                                        <td colspan="3"><input name="client_id" value="{$payment_details.client_id}" type="hidden">{$client_display_name}</td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Workorder ID{/t}</b></td>

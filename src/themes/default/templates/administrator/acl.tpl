@@ -34,7 +34,7 @@
                                                 <td class="olohead">{t}Technician{/t}</td>
                                                 <td class="olohead">{t}Clerical{/t}</td>
                                                 <td class="olohead">{t}Counter{/t}</td>
-                                                <td class="olohead">{t}Customer{/t}</td>
+                                                <td class="olohead">{t}Client{/t}</td>
                                                 <td class="olohead">{t}Guest{/t}</td>
                                                 <td class="olohead">{t}Public{/t}</td>
                                             </tr>
@@ -52,7 +52,7 @@
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Technician]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Clerical]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Counter]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Customer]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Client]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Guest]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Public]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         
@@ -88,9 +88,9 @@
                                                             <input name="qwpermissions[{$acl[i].page}][Counter]" {if $acl[i].Counter == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>                                                
 
-                                                        <!-- Customer -->
+                                                        <!-- Client -->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Customer]" {if $acl[i].Customer == '1'}checked {/if}type="checkbox" value="1">
+                                                            <input name="qwpermissions[{$acl[i].page}][Client]" {if $acl[i].Client == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>
 
                                                         <!-- Guest -->

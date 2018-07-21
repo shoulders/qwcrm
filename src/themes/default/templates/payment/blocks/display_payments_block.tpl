@@ -12,7 +12,7 @@
         <td class="olohead"><b>{t}WO ID{/t}</b></td>
         <td class="olohead"><b>{t}INV ID{/t}</b></td>        
         <td class="olohead"><b>{t}Employee{/t}</b></td>
-        <td class="olohead"><b>{t}Customer{/t}</b></td>
+        <td class="olohead"><b>{t}Client{/t}</b></td>
         <td class="olohead"><b>{t}Date{/t}</b></td>
         <td class="olohead"><b>{t}Method{/t}</b></td>        
         <td class="olohead"><b>{t}Amount{/t}</b></td>
@@ -36,9 +36,9 @@
                 <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_payments[p].employee_id}">{$display_payments[p].employee_display_name}</a>
             </td>
             
-            <!-- Customer -->
+            <!-- Client -->
             <td class="olotd4" nowrap>                
-                <a class="link1" href="index.php?component=customer&page_tpl=details&customer_id={$display_payments[p].customer_id}">{$display_payments[p].customer_display_name}</a>
+                <a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_payments[p].client_id}">{$display_payments[p].client_display_name}</a>
             </td>            
 
             <!-- Date -->

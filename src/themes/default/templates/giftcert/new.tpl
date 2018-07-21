@@ -18,7 +18,7 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}New Gift Certificate for{/t} {t}Customer{/t} {$customer_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}New Gift Certificate for{/t} {t}Client{/t} {$client_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}GIFTCERT_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}GIFTCERT_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
@@ -31,8 +31,8 @@
                                     <form method="post" action="index.php?component=giftcert&page_tpl=new" name="giftcert_new" id="giftcert_new">
                                         <table>
                                             <tr>
-                                                <td><b>{t}Customer{/t}</b></td>
-                                                <td><a href="index.php?component=customer&page_tpl=details&customer_id={$customer_id}">{$customer_details.display_name}</a></td>
+                                                <td><b>{t}Client{/t}</b></td>
+                                                <td><a href="index.php?component=client&page_tpl=details&client_id={$client_id}">{$client_details.display_name}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
@@ -60,9 +60,9 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
-                                                    <input name="customer_id" value="{$customer_id}" type="hidden" />
+                                                    <input name="client_id" value="{$client_id}" type="hidden" />
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_id}';">{t}Cancel{/t}</button>
+                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_id}';">{t}Cancel{/t}</button>
                                                 </td>
                                             </tr>
                                         </table>

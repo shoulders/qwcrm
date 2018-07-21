@@ -13,7 +13,7 @@
         <td class="olohead">{t}WO ID{/t}</td>
         <td class="olohead">{t}Inv ID{/t}</td>
         <td class="olohead">{t}Code{/t}</td>
-        <td class="olohead">{t}Customer{/t}</td>
+        <td class="olohead">{t}Client{/t}</td>
         <td class="olohead">{t}Expires{/t}</td>
         <td class="olohead">{t}Date Redeemed{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
@@ -29,7 +29,7 @@
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_giftcerts[g].workorder_id}">{$display_giftcerts[g].workorder_id}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_giftcerts[g].invoice_id}">{$display_giftcerts[g].invoice_id}</a></td>
             <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_code}</a></td>
-            <td class="olotd4"><a href="index.php?component=customer&page_tpl=details&customer_id={$display_giftcerts[g].customer_id}">{$display_giftcerts[g].customer_display_name}</a></td>
+            <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_giftcerts[g].client_id}">{$display_giftcerts[g].client_display_name}</a></td>
             <td class="olotd4">{$display_giftcerts[g].date_expires|date_format:$date_format}</td>
             <td class="olotd4">
                 {if $display_giftcerts[g].date_redeemed}

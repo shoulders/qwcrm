@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #  Display all payments the given status            #
 #####################################################
 
-function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null,$method = null, $employee_id = null, $customer_id = null, $invoice_id = null) {
+function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null,$method = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -44,8 +44,8 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
     
-    // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    // Restrict results by search category (client) and search term
+    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
    // Restrict results by search category (employee) and search term
     elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
@@ -61,8 +61,8 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     // Restrict by Employee
     if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$db->qstr($employee_id);}
 
-    // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.customer_id=".$db->qstr($customer_id);}
+    // Restrict by Client
+    if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);}
     
     // Restrict by Invoice
     if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);}    
@@ -70,11 +70,11 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     /* The SQL code */
     
     $sql =  "SELECT                
-            IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name,
+            IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
                 
             ".PRFX."payment_records.payment_id,
             ".PRFX."payment_records.employee_id,
-            ".PRFX."payment_records.customer_id,
+            ".PRFX."payment_records.client_id,
             ".PRFX."payment_records.workorder_id,
             ".PRFX."payment_records.invoice_id,
             ".PRFX."payment_records.date,
@@ -86,7 +86,7 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
                
             FROM ".PRFX."payment_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."payment_records.employee_id   = ".PRFX."user_records.user_id
-            LEFT JOIN ".PRFX."customer_records ON ".PRFX."payment_records.customer_id = ".PRFX."customer_records.customer_id                 
+            LEFT JOIN ".PRFX."client_records ON ".PRFX."payment_records.client_id = ".PRFX."client_records.client_id                 
             ".$whereTheseRecords."
             GROUP BY ".PRFX."payment_records.".$order_by."
             ".$havingTheseRecords."
@@ -174,7 +174,7 @@ function insert_payment($VAR) {
     
     $sql = "INSERT INTO ".PRFX."payment_records SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
-            customer_id     = ".$db->qstr( $invoice_details['customer_id']             ).",
+            client_id     = ".$db->qstr( $invoice_details['client_id']             ).",
             workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
             invoice_id      = ".$db->qstr( $VAR['invoice_id']                          ).",
             date            = ".$db->qstr( date_to_timestamp($VAR['date'])             ).",
@@ -198,10 +198,10 @@ function insert_payment($VAR) {
         
         // Log activity        
         $record = _gettext("Payment").' '.$insert_id.' '._gettext("added.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['customer_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
-        update_customer_last_active($invoice_details['customer_id']);
+        update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
         update_invoice_last_active($VAR['invoice_id']);        
                 
@@ -392,7 +392,7 @@ function update_payment($VAR) {
     
     $sql = "UPDATE ".PRFX."payment_records SET        
             employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
-            customer_id     = ".$db->qstr( $VAR['customer_id']              ).",
+            client_id     = ".$db->qstr( $VAR['client_id']              ).",
             workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
             invoice_id      = ".$db->qstr( $VAR['invoice_id']               ).",
             date            = ".$db->qstr( date_to_timestamp($VAR['date'])  ).",
@@ -414,10 +414,10 @@ function update_payment($VAR) {
 
         // Log activity 
         $record = _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated.");
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
-        update_customer_last_active($VAR['customer_id']);
+        update_client_last_active($VAR['client_id']);
         update_workorder_last_active($VAR['workorder_id']);
         update_invoice_last_active($VAR['invoice_id']);
     
@@ -524,10 +524,10 @@ function delete_payment($payment_id) {
         
         // Log activity        
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $payment_details['customer_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
                 
         // Update last active record    
-        update_customer_last_active($payment_details['customer_id']);
+        update_client_last_active($payment_details['client_id']);
         update_workorder_last_active($payment_details['workorder_id']);
         update_invoice_last_active($payment_details['invoice_id']);
         

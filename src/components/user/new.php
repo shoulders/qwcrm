@@ -8,22 +8,22 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'user.php');
 
-// Set the template for the correct user type (customer/employee)
-if(isset($VAR['customer_id']) && $VAR['customer_id']) {
+// Set the template for the correct user type (client/employee)
+if(isset($VAR['client_id']) && $VAR['client_id']) {
     
-    // check if there is already a user for the customer (and error if there is)
-    if(!check_customer_already_has_login($VAR['customer_id'])) {
+    // check if there is already a user for the client (and error if there is)
+    if(!check_client_already_has_login($VAR['client_id'])) {
         
         $smarty->assign('is_employee', '0');
-        $smarty->assign('customer_display_name', get_customer_details($VAR['customer_id'], 'customer_display_name'));
-        $smarty->assign('usergroups', get_usergroups('customers'));
+        $smarty->assign('client_display_name', get_client_details($VAR['client_id'], 'client_display_name'));
+        $smarty->assign('usergroups', get_usergroups('clients'));
         
     } else {
         
-        force_page('customer', 'details', 'customer_id='.$VAR['customer_id'].'&warning_msg='._gettext("The customer already has a login."));
+        force_page('client', 'details', 'client_id='.$VAR['client_id'].'&warning_msg='._gettext("The client already has a login."));
         
     }    
     

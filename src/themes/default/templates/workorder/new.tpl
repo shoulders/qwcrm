@@ -14,7 +14,7 @@
         <td>            
             <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>                                
-                    <td class="menuhead2" width="80%">{t}New Work Order for{/t} {$customer_display_name}</td>
+                    <td class="menuhead2" width="80%">{t}New Work Order for{/t} {$client_display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -35,13 +35,13 @@
                                                     <table class="olotable" width="100%" border="0"  cellpadding="4" cellspacing="0" summary="Work order display">
                                                         <tr>
                                                             <td class="olohead">{t}Opened{/t}</td>
-                                                            <td class="olohead">{t}Customer{/t}</td>
+                                                            <td class="olohead">{t}Client{/t}</td>
                                                             <td class="olohead">{t}Scope{/t}</td>                                                                        
                                                             <td class="olohead">{t}Employee{/t}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4">{$smarty.now|date_format:$date_format}</td>
-                                                            <td class="olotd4">{$customer_display_name}</td>
+                                                            <td class="olotd4">{$client_display_name}</td>
                                                             <td class="olotd4">
                                                                 <input id="scope" name="scope" size="40" type="text" maxlength="80" required onkeydown="return onlyAlphaNumericPunctuation(event);" onkeyup="lookupSuggestions(this.value);" onblur="closeSuggestions();">
                                                                 <div class="suggestionsBoxWrapper">
@@ -89,7 +89,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>
-                                                                <input name="customer_id" value="{$customer_id}" type="hidden">
+                                                                <input name="client_id" value="{$client_id}" type="hidden">
                                                                 <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=workorder&page_tpl=search';">{t}Cancel{/t}</button>
                                                             </td>

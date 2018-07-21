@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
@@ -57,7 +57,7 @@ if(isset($VAR['submit'])) {
     $end_time = $schedule_item['end_time'] + 1;
     
     $smarty->assign('employee_id',      $schedule_item['employee_id']                           );    
-    $smarty->assign('customer_id',      $schedule_item['customer_id']                           );
+    $smarty->assign('client_id',      $schedule_item['client_id']                           );
     $smarty->assign('workorder_id',     $schedule_item['workorder_id']                          );
     $smarty->assign('start_date',       timestamp_to_date($schedule_item['start_time'])         );       
     $smarty->assign('start_time',       date('H:i', $schedule_item['start_time'])               );         

@@ -53,7 +53,7 @@
                                                                                         <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
                                                                                         <td>
                                                                                             {if !$is_employee}
-                                                                                                <span style="color: red; font-weight: 900;">{t}Customer{/t}</span>
+                                                                                                <span style="color: red; font-weight: 900;">{t}Client{/t}</span>
                                                                                                 <input type="hidden" name="is_employee" value="0">
                                                                                             {else}
                                                                                                 <span style="color: red; font-weight: 900;">{t}Employee{/t}</span>
@@ -63,13 +63,13 @@
                                                                                         </td>                                                                                        
                                                                                     </tr>
                                                                                     <tr{if $is_employee} style="display: none;"{/if}>
-                                                                                        <td align="right"><strong>{t}Customer{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
+                                                                                        <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
                                                                                         <td>
                                                                                             {if !$is_employee}
-                                                                                                <a href="index.php?component=customer&page_tpl=details&customer_id={$customer_id}">{$customer_display_name}</a>
-                                                                                                <input type="hidden" name="customer_id" value="{$customer_id}">
+                                                                                                <a href="index.php?component=client&page_tpl=details&client_id={$client_id}">{$client_display_name}</a>
+                                                                                                <input type="hidden" name="client_id" value="{$client_id}">
                                                                                             {else}                                                                                                
-                                                                                                <input type="hidden" name="customer_id" value="">
+                                                                                                <input type="hidden" name="client_id" value="">
                                                                                             {/if}
                                                                                         </td>                                                                                        
                                                                                     </tr>

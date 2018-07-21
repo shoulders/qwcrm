@@ -24,7 +24,7 @@
                                         <tr>
                                             <td>
                                                 <p><b>{t}Date{/t}: </b>{$schedule_details.start_time|date_format:$date_format}</p>
-                                                <p><b>{t}Customer{/t}: </b>{$customer_details.display_name}</p>
+                                                <p><b>{t}Client{/t}: </b>{$client_details.display_name}</p>
                                                 <p>
                                                     <b>{t}Start Time{/t}: </b>{$schedule_details.start_time|date_format:"%H:%M"}<br>
                                                     <b>{t}End Time{/t}: </b>{$schedule_details.end_time|date_format:"%H:%M"}

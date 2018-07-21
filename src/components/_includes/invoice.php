@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Invoices                  #
 #########################################
 
-function display_invoices($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $customer_id = null) {
+function display_invoices($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -45,8 +45,8 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";
     $havingTheseRecords = '';
     
-    // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    // Restrict results by search category (client) and search term
+    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (employee) and search term
     elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
@@ -87,20 +87,20 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
     // Restrict by Employee
     if($employee_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$db->qstr($employee_id);}        
 
-    // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.customer_id=".$db->qstr($customer_id);}
+    // Restrict by Client
+    if($client_id) {$whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$db->qstr($client_id);}
     
     /* The SQL code */
     
     $sql = "SELECT        
         ".PRFX."invoice_records.*,
             
-        IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name,
-        ".PRFX."customer_records.first_name AS customer_first_name,
-        ".PRFX."customer_records.last_name AS customer_last_name,
-        ".PRFX."customer_records.primary_phone AS customer_phone,
-        ".PRFX."customer_records.mobile_phone AS customer_mobile_phone,
-        ".PRFX."customer_records.fax AS customer_fax,
+        IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
+        ".PRFX."client_records.first_name AS client_first_name,
+        ".PRFX."client_records.last_name AS client_last_name,
+        ".PRFX."client_records.primary_phone AS client_phone,
+        ".PRFX."client_records.mobile_phone AS client_mobile_phone,
+        ".PRFX."client_records.fax AS client_fax,
             
         CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
         ".PRFX."user_records.work_primary_phone AS employee_work_primary_phone,
@@ -143,7 +143,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
         ) AS parts
         ON ".PRFX."invoice_records.invoice_id = parts.invoice_id 
 
-        LEFT JOIN ".PRFX."customer_records ON ".PRFX."invoice_records.customer_id = ".PRFX."customer_records.customer_id         
+        LEFT JOIN ".PRFX."client_records ON ".PRFX."invoice_records.client_id = ".PRFX."client_records.client_id         
         LEFT JOIN ".PRFX."user_records ON ".PRFX."invoice_records.employee_id = ".PRFX."user_records.user_id
         
         ".$whereTheseRecords."
@@ -225,7 +225,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
 #     insert invoice                #
 #####################################
 
-function insert_invoice($customer_id, $workorder_id, $discount_rate) {
+function insert_invoice($client_id, $workorder_id, $discount_rate) {
     
     $db = QFactory::getDbo();
     
@@ -241,7 +241,7 @@ function insert_invoice($customer_id, $workorder_id, $discount_rate) {
     
     $sql = "INSERT INTO ".PRFX."invoice_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            customer_id     =". $db->qstr( $customer_id                         ).",
+            client_id     =". $db->qstr( $client_id                         ).",
             workorder_id    =". $db->qstr( $workorder_id                        ).",
             date            =". $db->qstr( time()                               ).",
             due_date        =". $db->qstr( time()                               ).",            
@@ -268,10 +268,10 @@ function insert_invoice($customer_id, $workorder_id, $discount_rate) {
         } else {            
             $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Created with no Work Order").'.';
         }        
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id, $workorder_id, $invoice_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_id, $workorder_id, $invoice_id);
         
         // Update last active record    
-        update_customer_last_active($customer_id);
+        update_client_last_active($client_id);
         update_workorder_last_active($workorder_id);        
         
         return $invoice_id;
@@ -625,10 +625,10 @@ function update_invoice_static_values($invoice_id, $date, $due_date, $discount_r
         
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
         // Update last active record    
-        update_customer_last_active(get_invoice_details($invoice_id, 'customer_id'));
+        update_client_last_active(get_invoice_details($invoice_id, 'client_id'));
         update_workorder_last_active(get_invoice_details($invoice_id, 'workorder_id'));
         update_invoice_last_active($invoice_id);
         
@@ -710,10 +710,10 @@ function update_invoice_status($invoice_id, $new_status) {
         
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("Status updated to").' '.$inv_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
         
         // Update last active record
-        update_customer_last_active($invoice_details['customer_id']);
+        update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
         update_invoice_last_active($invoice_id);                
         
@@ -814,13 +814,13 @@ function delete_invoice($invoice_id) {
             
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
         
         // Update workorder status
         update_workorder_status($invoice_details['workorder_id'], 'closed_without_invoice');        
                 
         // Update last active record
-        update_customer_last_active($invoice_details['customer_id']);
+        update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);              
         
         return true;
@@ -853,10 +853,10 @@ function delete_invoice_labour_item($invoice_labour_id) {
         
         // Log activity        
         $record = _gettext("The Invoice Labour Item").' '.$invoice_labour_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Update last active record
-        update_customer_last_active($invoice_details['customer_id']);
+        update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
         update_invoice_last_active($invoice_details['invoice_id']);  
         
@@ -911,10 +911,10 @@ function delete_invoice_parts_item($invoice_parts_id) {
         
         // Log activity        
         $record = _gettext("The Invoice Parts Item").' '.$invoice_parts_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Update last active record
-        update_customer_last_active($invoice_details['customer_id']);
+        update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
         update_invoice_last_active($invoice_details['invoice_id']);  
         
@@ -1365,13 +1365,13 @@ function assign_invoice_to_employee($invoice_id, $target_employee_id) {
 
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-        write_record_to_activity_log($record, $target_employee_id, $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_id);
+        write_record_to_activity_log($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
         
         
         // Update last active record
         update_user_last_active($invoice_details['employee_id']);
         update_user_last_active($target_employee_id);
-        update_customer_last_active($invoice_details['customer_id']);
+        update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
         update_invoice_last_active($invoice_id);
         

@@ -22,8 +22,8 @@
                         <a href="index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&print_content=technician_job_sheet&print_type=print_html&theme=print" target="_blank">                                                    
                             <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Work Order Job Sheet{/t}');" onMouseOut="hideddrivetip();" />
                         </a>
-                        <a href="index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&print_content=customer_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
-                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Customer Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
+                        <a href="index.php?component=workorder&page_tpl=print&workorder_id={$workorder_id}&print_content=client_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
+                            <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Client Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
                         </a>                        
                         <a href="" target="new">
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}WORKORDER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}WORKORDER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">                                                        
@@ -42,7 +42,7 @@
                                         <!-- The Actual Tabs -->
                                         <ul class="tabs">
                                             <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Work Order{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Customer{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/clients.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Client{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/Calendar.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Schedule{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/note.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Notes{/t}</a></li>                        
                                             <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}History{/t}</a></li>
@@ -72,7 +72,7 @@
                                                 </table>                                               
                                             </div>
 
-                                            <!-- Tab 2 Contents - Customer -->
+                                            <!-- Tab 2 Contents - Client -->
                                             <div id="tab_2_contents" class="tab_contents">
                                                 <table width="700" cellpadding="5" cellspacing="0" border="0">                                                    
                                                     <tr>
@@ -80,7 +80,7 @@
                                                             <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                                                                 <tr>
                                                                     <td width="700" valign="top">                                                                        
-                                                                        {include file='customer/blocks/display_customer_details_block.tpl'}
+                                                                        {include file='client/blocks/display_client_details_block.tpl'}
                                                                         <br>
                                                                     </td>
                                                                 </tr>

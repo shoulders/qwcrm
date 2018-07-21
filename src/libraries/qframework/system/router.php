@@ -89,7 +89,7 @@ function get_page_controller(&$VAR = null) {
 
         // Log activity
         $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$VAR['component'].':'.$VAR['page_tpl'].')';
-        write_record_to_activity_log($record, $VAR['employee_id'] = null, $VAR['customer_id'] = null, $VAR['workorder_id'] = null, $VAR['invoice_id'] = null); 
+        write_record_to_activity_log($record, $VAR['employee_id'] = null, $VAR['client_id'] = null, $VAR['workorder_id'] = null, $VAR['invoice_id'] = null); 
 
         // Set to the 403 error page 
         $VAR['component']   = 'core';

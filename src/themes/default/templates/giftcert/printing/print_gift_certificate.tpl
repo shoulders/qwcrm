@@ -48,7 +48,7 @@
             <td style="text-align:center">
                 {t}Purchased by{/t}<br>
                 <span style="font-size: 20px;">
-                    {$customer_details.display_name}<br>                                     
+                    {$client_details.display_name}<br>                                     
                 </span>                
             </td>
         </tr>

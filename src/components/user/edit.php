@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'user.php');
 
 // Check if we have an user_id
@@ -16,14 +16,14 @@ if(!isset($VAR['user_id']) || !$VAR['user_id']) {
     force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
 }
 
-// Set the template for the correct user type (customer/employee)
+// Set the template for the correct user type (client/employee)
 if(get_user_details($VAR['user_id'], 'is_employee')) {
     $smarty->assign('is_employee', '1');
     $smarty->assign('usergroups', get_usergroups('employees'));
 } else {    
     $smarty->assign('is_employee', '0');
-    $smarty->assign('customer_display_name', get_customer_details(get_user_details($VAR['user_id'], 'customer_id'), 'customer_display_name'));
-    $smarty->assign('usergroups', get_usergroups('customers')); 
+    $smarty->assign('client_display_name', get_client_details(get_user_details($VAR['user_id'], 'client_id'), 'client_display_name'));
+    $smarty->assign('usergroups', get_usergroups('clients')); 
 }
 
 // If user data has been submitted

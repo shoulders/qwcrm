@@ -1,4 +1,4 @@
-<!-- dashboard_customer.tpl -->
+<!-- dashboard_client.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -43,7 +43,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                {t}There is nothing here yet for customers, please logout.{/t}
+                                                {t}There is nothing here yet for clients, please logout.{/t}
                                             </td>
                                         </tr>                                        
                                     </table>                                        

@@ -12,7 +12,7 @@
         <td class="olohead"><b>{t}INV ID{/t}</b></td>
         <td class="olohead"><b>{t}Opened{/t}</b></td>
         <td class="olohead"><b>{t}Closed{/t}</b></td>
-        <td class="olohead"><b>{t}Customer{/t}</b></td>
+        <td class="olohead"><b>{t}Client{/t}</b></td>
         <td class="olohead"><b>{t}Scope{/t}</b></td>
         <td class="olohead"><b>{t}Status{/t}</b></td>
         <td class="olohead"><b>{t}Employee{/t}</b></td>
@@ -33,10 +33,10 @@
             <!-- Closed -->
             <td class="olotd4">{$display_workorders[w].workorder_close_date|date_format:$date_format}</td>
 
-            <!-- Customer -->
+            <!-- Client -->
             <td class="olotd4" nowrap>
-                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Customer Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$display_workorders[w].customer_first_name} {$display_workorders[w].customer_last_name}<br><b>{t}Phone{/t}: </b>{$display_workorders[w].customer_phone}<br><b>{t}Mobile{/t}: </b>{$display_workorders[w].customer_mobile_phone}<br><b>{t}Fax{/t}: </b>{$display_workorders[w].customer_phone}<br><b>{t}Address{/t}: </b><br>{$display_workorders[w].customer_address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>{$display_workorders[w].customer_city}<br>{$display_workorders[w].customer_state}<br>{$display_workorders[w].customer_zip}<br>{$display_workorders[w].customer_country}');" onMouseOut="hideddrivetip();">
-                <a class="link1" href="index.php?component=customer&page_tpl=details&customer_id={$display_workorders[w].customer_id}">{$display_workorders[w].customer_display_name}</a>
+                <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Client Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$display_workorders[w].client_first_name} {$display_workorders[w].client_last_name}<br><b>{t}Phone{/t}: </b>{$display_workorders[w].client_phone}<br><b>{t}Mobile{/t}: </b>{$display_workorders[w].client_mobile_phone}<br><b>{t}Fax{/t}: </b>{$display_workorders[w].client_phone}<br><b>{t}Address{/t}: </b><br>{$display_workorders[w].client_address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>{$display_workorders[w].client_city}<br>{$display_workorders[w].client_state}<br>{$display_workorders[w].client_zip}<br>{$display_workorders[w].client_country}');" onMouseOut="hideddrivetip();">
+                <a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_workorders[w].client_id}">{$display_workorders[w].client_display_name}</a>
             </td>
 
             <!-- Scope -->
@@ -67,10 +67,10 @@
                 <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders[w].workorder_id}&print_content=technician_job_sheet&print_type=print_html&theme=print" target="_blank">                                                    
                     <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Technician Work Order Job Sheet{/t}');" onMouseOut="hideddrivetip();" />
                 </a>
-                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders[w].workorder_id}&print_content=customer_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
-                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Customer Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
+                <a href="index.php?component=workorder&page_tpl=print&workorder_id={$display_workorders[w].workorder_id}&print_content=client_workorder_slip&print_type=print_html&theme=print" target="_blank">                                                    
+                    <img src="{$theme_images_dir}icons/print.gif" alt="Print Works Order" border="0" height="14" width="14" onMouseOver="ddrivetip('{t}Print{/t}<br>{t}Client Work Order Slip{/t}');" onMouseOut="hideddrivetip();" />                                                        
                 </a>
-                <a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_workorders[w].workorder_id}&customer_id={$display_workorders[w].customer_id}">
+                <a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_workorders[w].workorder_id}&client_id={$display_workorders[w].client_id}">
                     <img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}View The Work Order{/t}');" onMouseOut="hideddrivetip();">
                 </a>    
             </td>            

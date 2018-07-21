@@ -8,27 +8,27 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
     die(_gettext("No Direct Access Allowed."));
 }
 
-// Check if we have a customer_id
-if(!isset($VAR['customer_id']) || !$VAR['customer_id']) {
-    force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
+// Check if we have a client_id
+if(!isset($VAR['client_id']) || !$VAR['client_id']) {
+    force_page('client', 'search', 'warning_msg='._gettext("No Client ID supplied."));
 }
 
 // Run the delete function and return the results
-if(!delete_customer($VAR['customer_id'])) {
+if(!delete_client($VAR['client_id'])) {
     
-    // Reload customer details apge with error message
-    force_page('customer', 'details&customer_id='.$VAR['customer_id']);
+    // Reload client details apge with error message
+    force_page('client', 'details&client_id='.$VAR['client_id']);
     
 } else {
     
-    // Load the Customer search page
-    force_page('customer', 'search');
+    // Load the Client search page
+    force_page('client', 'search');
     
 }

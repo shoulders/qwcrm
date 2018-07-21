@@ -38,7 +38,7 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
         require(COMPONENTS_DIR.'core/blocks/theme_header_theme_off_block.php');
     }
 
-    // Fetch Header Legacy Template Code and Menu Block - Customers, Guests and Public users will not see the menu
+    // Fetch Header Legacy Template Code and Menu Block - Clients, Guests and Public users will not see the menu
     if((!isset($VAR['theme']) || $VAR['theme'] != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {       
         $BuildPage .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
 

@@ -29,7 +29,7 @@ defined('_QWEXEC') or die;
 # Display all Work orders for the given status      # // Status is not currently used but it will be
 #####################################################
 
-function display_schedules($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null) {
+function display_schedules($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -45,8 +45,8 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."schedule_records.schedule_id\n";
     
-    // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    // Restrict results by search category (client) and search term
+    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (employee) and search term
     elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
@@ -81,8 +81,8 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
     // Restrict by Employee
     if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$db->qstr($employee_id);}
 
-    // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.customer_id=".$db->qstr($customer_id);}
+    // Restrict by Client
+    if($client_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.client_id=".$db->qstr($client_id);}
     
     // Restrict by Work Order
     if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$db->qstr($workorder_id);}    
@@ -94,11 +94,11 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
             
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,
                 
-            IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name
+            IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name
                
             FROM ".PRFX."schedule_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."schedule_records.employee_id   = ".PRFX."user_records.user_id
-            LEFT JOIN ".PRFX."customer_records ON ".PRFX."schedule_records.customer_id = ".PRFX."customer_records.customer_id                 
+            LEFT JOIN ".PRFX."client_records ON ".PRFX."schedule_records.client_id = ".PRFX."client_records.client_id                 
             ".$whereTheseRecords."
             GROUP BY ".PRFX."schedule_records.".$order_by."
             ".$havingTheseRecords."
@@ -199,7 +199,7 @@ function insert_schedule($VAR) {
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."schedule_records SET
             employee_id     =". $db->qstr( $VAR['employee_id']      ).",
-            customer_id     =". $db->qstr( $VAR['customer_id']      ).",   
+            client_id     =". $db->qstr( $VAR['client_id']      ).",   
             workorder_id    =". $db->qstr( $VAR['workorder_id']     ).",
             start_time      =". $db->qstr( $start_timestamp         ).",
             end_time        =". $db->qstr( $end_timestamp           ).",            
@@ -230,11 +230,11 @@ function insert_schedule($VAR) {
         
         // Log activity 
         $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$VAR['workorder_id'].' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id']);
+        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id']);
         
         // Update last active record
         update_workorder_last_active($VAR['workorder_id']);
-        update_customer_last_active($VAR['customer_id']);
+        update_client_last_active($VAR['client_id']);
     
         return true;
         
@@ -329,7 +329,7 @@ function update_schedule($VAR) {
     $sql = "UPDATE ".PRFX."schedule_records SET
         schedule_id         =". $db->qstr( $VAR['schedule_id']      ).",
         employee_id         =". $db->qstr( $VAR['employee_id']      ).",
-        customer_id         =". $db->qstr( $VAR['customer_id']      ).",
+        client_id         =". $db->qstr( $VAR['client_id']      ).",
         workorder_id        =". $db->qstr( $VAR['workorder_id']     ).",   
         start_time          =". $db->qstr( $start_timestamp         ).",
         end_time            =". $db->qstr( $end_timestamp           ).",                
@@ -345,11 +345,11 @@ function update_schedule($VAR) {
         
         // Log activity 
         $record = _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['customer_id'], $VAR['workorder_id']);
+        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id']);
         
         // Update last active record
         update_workorder_last_active($VAR['workorder_id']);
-        update_customer_last_active($VAR['customer_id']);        
+        update_client_last_active($VAR['client_id']);        
         
         return true;
         
@@ -394,11 +394,11 @@ function delete_schedule($schedule_id) {
         
         // Log activity        
         $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['customer_id'], $schedule_details['workorder_id']);
+        write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
         
         // Update last active record
         update_workorder_last_active($schedule_details['workorder_id']);
-        update_customer_last_active($schedule_details['customer_id']);
+        update_client_last_active($schedule_details['client_id']);
         
         return true;
         
@@ -433,17 +433,17 @@ function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
     
     // Get the schedule information
     $schedule_details   = get_schedule_details($schedule_id);
-    $customer_details   = get_customer_details($schedule_details['customer_id']);
+    $client_details   = get_client_details($schedule_details['client_id']);
     
     $start_datetime     = timestamp_to_ics_datetime($schedule_details['start_time']);
     $end_datetime       = timestamp_to_ics_datetime($schedule_details['end_time']);
     $current_datetime   = timestamp_to_ics_datetime(time());
 
-    $summary            = prepare_ics_strings('SUMMARY', $customer_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
-    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $schedule_details, $schedule_details['customer_id'], $schedule_details['workorder_id']));
-    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $schedule_details, $schedule_details['customer_id'], $schedule_details['workorder_id']));
+    $summary            = prepare_ics_strings('SUMMARY', $client_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
+    $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
+    $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
     
-    $location           = prepare_ics_strings('LOCATION', build_single_line_address($customer_details['address'], $customer_details['city'], $customer_details['state'], $customer_details['zip']));
+    $location           = prepare_ics_strings('LOCATION', build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']));
     $uniqid             = 'QWcrm-'.$schedule_details['schedule_id'].'-'.$schedule_details['start_time'];    
   
     // Build the Schedule .ics content
@@ -528,10 +528,10 @@ function build_html_adddress($address, $city, $state, $postcode){
 #    Build description for ics                   #
 ##################################################
 
-function build_ics_description($type, $single_schedule, $customer_id, $workorder_id) {
+function build_ics_description($type, $single_schedule, $client_id, $workorder_id) {
     
     $workorder_details  = get_workorder_details($workorder_id);
-    $customer_details   = get_customer_details($customer_id);
+    $client_details   = get_client_details($client_id);
     
     if($type == 'textarea') {      
 
@@ -545,13 +545,13 @@ function build_ics_description($type, $single_schedule, $customer_id, $workorder
 
         // Contact Information
         $description .= _gettext("Contact Information")  .''.'\n\n'.
-                        _gettext("Company")              .': '   .$customer_details['display_name'].'\n\n'.
-                        _gettext("Contact")              .': '   .$customer_details['first_name'].' '.$customer_details['last_name'].'\n\n'.
-                        _gettext("Phone")                .': '   .$customer_details['primary_phone'].'\n\n'.
-                        _gettext("Mobile")               .': '   .$customer_details['mobile_phone'].'\n\n'.
-                        _gettext("Website")              .': '   .$customer_details['website'].'\n\n'.
-                        _gettext("Email")                .': '   .$customer_details['email'].'\n\n'.
-                        _gettext("Address")              .': '   .build_single_line_address($customer_details['address'], $customer_details['city'], $customer_details['state'], $customer_details['zip']).'\n\n';                        
+                        _gettext("Company")              .': '   .$client_details['display_name'].'\n\n'.
+                        _gettext("Contact")              .': '   .$client_details['first_name'].' '.$client_details['last_name'].'\n\n'.
+                        _gettext("Phone")                .': '   .$client_details['primary_phone'].'\n\n'.
+                        _gettext("Mobile")               .': '   .$client_details['mobile_phone'].'\n\n'.
+                        _gettext("Website")              .': '   .$client_details['website'].'\n\n'.
+                        _gettext("Email")                .': '   .$client_details['email'].'\n\n'.
+                        _gettext("Address")              .': '   .build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']).'\n\n';                        
     
     }
     
@@ -579,15 +579,15 @@ function build_ics_description($type, $single_schedule, $customer_id, $workorder
         // Contact Information
         $description .= '<p><strong>'._gettext("Contact Information").'</strong></p>'.
                         '<p>'.
-                        '<strong>'._gettext("Company")   .':</strong> '  .$customer_details['display_name'].'<br>'.
-                        '<strong>'._gettext("Contact")   .':</strong> '  .$customer_details['first_name'].' '.$customer_details['last_name'].'<br>'.              
-                        '<strong>'._gettext("Phone")     .':</strong> '  .$customer_details['primary_phone'].'<br>'.
-                        '<strong>'._gettext("Mobile")    .':</strong> '  .$customer_details['mobile_phone'].'<br>'.
-                        '<strong>'._gettext("Website")   .':</strong> '  .$customer_details['website'].
-                        '<strong>'._gettext("Email")     .':</strong> '  .$customer_details['email'].'<br>'.                        
+                        '<strong>'._gettext("Company")   .':</strong> '  .$client_details['display_name'].'<br>'.
+                        '<strong>'._gettext("Contact")   .':</strong> '  .$client_details['first_name'].' '.$client_details['last_name'].'<br>'.              
+                        '<strong>'._gettext("Phone")     .':</strong> '  .$client_details['primary_phone'].'<br>'.
+                        '<strong>'._gettext("Mobile")    .':</strong> '  .$client_details['mobile_phone'].'<br>'.
+                        '<strong>'._gettext("Website")   .':</strong> '  .$client_details['website'].
+                        '<strong>'._gettext("Email")     .':</strong> '  .$client_details['email'].'<br>'.                        
                         '</p>'.                
                         '<p><strong>'._gettext("Contact Information").'Address: </strong></p>'.
-                        build_html_adddress($customer_details['address'], $customer_details['city'], $customer_details['state'], $customer_details['zip']);
+                        build_html_adddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']);
         
         // Close HTML Wrapper
         $description .= '</BODY>\n'.
@@ -732,12 +732,15 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql ="SELECT 
         ".PRFX."schedule_records.*,
-        ".PRFX."customer_records.display_name AS customer_display_name
+        IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS display_name
+            
         FROM ".PRFX."schedule_records
+            
         INNER JOIN ".PRFX."workorder_records
         ON ".PRFX."schedule_records.workorder_id = ".PRFX."workorder_records.workorder_id
-        INNER JOIN ".PRFX."customer_records
-        ON ".PRFX."workorder_records.customer_id = ".PRFX."customer_records.customer_id
+        INNER JOIN ".PRFX."client_records
+        ON ".PRFX."workorder_records.client_id = ".PRFX."client_records.client_id
+            
         WHERE ".PRFX."schedule_records.start_time >= ".$company_day_start."
         AND ".PRFX."schedule_records.start_time <= ".$company_day_end."
         AND ".PRFX."schedule_records.employee_id =".$db->qstr($employee_id)."
@@ -753,7 +756,7 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
     while (!$rs->EOF){        
         array_push($scheduleObject, array(
             'schedule_id'           => $rs->fields['schedule_id'],
-            'customer_display_name' => $rs->fields['customer_display_name'],
+            'client_display_name'   => $rs->fields['client_display_name'],
             'workorder_id'          => $rs->fields['workorder_id'],
             'start_time'            => $rs->fields['start_time'],
             'end_time'              => $rs->fields['end_time'],
@@ -813,7 +816,7 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
                 $calendar_matrix .= "<td class=\"menutd2\" align=\"center\" >\n";
 
                 // Schedule Item Title
-                $calendar_matrix .= "<b><font color=\"red\">"._gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." "._gettext("for")." ". $scheduleObject[$i]['customer_display_name']."</font></b><br>\n";
+                $calendar_matrix .= "<b><font color=\"red\">"._gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." "._gettext("for")." ". $scheduleObject[$i]['client_display_name']."</font></b><br>\n";
 
                 // Time period of schedule
                 $calendar_matrix .= "<b><font color=\"red\">".date("H:i",$scheduleObject[$i]['start_time'])." - ".date("H:i",$scheduleObject[$i]['end_time'])."</font></b><br>\n";

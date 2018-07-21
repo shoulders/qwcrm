@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null) {
+function display_giftcerts($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -44,8 +44,8 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";
     
-    // Restrict results by search category (customer) and search term
-    if($search_category == 'customer_display_name') {$havingTheseRecords .= " HAVING customer_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    // Restrict results by search category (client) and search term
+    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (employee) and search term
     elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
@@ -80,10 +80,10 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     // Restrict by Employee
     if($employee_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.employee_id=".$db->qstr($employee_id);}
     
-    // Restrict by Customer
-    if($customer_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.customer_id=".$db->qstr($customer_id);}
+    // Restrict by Client
+    if($client_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.client_id=".$db->qstr($client_id);}
     
-    // Restrict by Customer
+    // Restrict by Client
     if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.workorder_id=".$db->qstr($workorder_id);}
     
     // Restrict by Invoice
@@ -94,13 +94,13 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     $sql = "SELECT
             ".PRFX."giftcert_records.*,
                 
-            IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS customer_display_name,
+            IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
                 
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
                 
             FROM ".PRFX."giftcert_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."giftcert_records.employee_id = ".PRFX."user_records.user_id
-            LEFT JOIN ".PRFX."customer_records ON ".PRFX."giftcert_records.customer_id = ".PRFX."customer_records.customer_id            
+            LEFT JOIN ".PRFX."client_records ON ".PRFX."giftcert_records.client_id = ".PRFX."client_records.client_id            
             ".$whereTheseRecords."
             GROUP BY ".PRFX."giftcert_records.".$order_by."
             ".$havingTheseRecords."
@@ -182,14 +182,14 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
 #   Insert Gift Certificate     #
 #################################
 
-function insert_giftcert($customer_id, $date_expires, $amount, $note) {
+function insert_giftcert($client_id, $date_expires, $amount, $note) {
     
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."giftcert_records SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            customer_id     =". $db->qstr( $customer_id                         ).",
+            client_id     =". $db->qstr( $client_id                         ).",
             date_created    =". $db->qstr( time()                               ).",
             date_expires    =". $db->qstr( $date_expires                        ).",            
             status          =". $db->qstr( 'unused'                             ).",  
@@ -206,10 +206,10 @@ function insert_giftcert($customer_id, $date_expires, $amount, $note) {
 
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.';      
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_id);
         
         // Update last active record    
-        update_customer_last_active($customer_id);
+        update_client_last_active($client_id);
         
         return $giftcert_id ;
         
@@ -338,10 +338,10 @@ function update_giftcert($giftcert_id, $date_expires, $amount, $note) {
         
         // Log activity
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['customer_id']);
+        write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['client_id']);
 
         // Update last active record    
-        update_customer_last_active($giftcert_details['customer_id']);
+        update_client_last_active($giftcert_details['client_id']);
         
         return;
         
@@ -386,10 +386,10 @@ function update_giftcert_status($giftcert_id, $new_status, $silent = false) {
         
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("Status updated to").' '.$giftcert_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['customer_id'], $giftcert_details['workorder_id'], $giftcert_id);
+        write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['client_id'], $giftcert_details['workorder_id'], $giftcert_id);
         
         // Update last active record
-        update_customer_last_active($giftcert_details['customer_id']);
+        update_client_last_active($giftcert_details['client_id']);
         update_workorder_last_active($giftcert_details['workorder_id']);
         update_invoice_last_active($giftcert_details['invoice_id']);                
         
@@ -421,14 +421,14 @@ function delete_giftcert($giftcert_id) {
         
     } else {
         
-        $customer_details = get_giftcert_details($giftcert_id);
+        $client_details = get_giftcert_details($giftcert_id);
         
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $customer_details['employee_id'], $customer_details['customer_id']);
+        write_record_to_activity_log($record, $client_details['employee_id'], $client_details['client_id']);
         
         // Update last active record        
-        update_customer_last_active($customer_details['customer_id']);
+        update_client_last_active($client_details['client_id']);
         
         return;
 
@@ -511,11 +511,11 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
     } else {
         
-        $customer_details = get_customer_details(get_giftcert_details($giftcert_id, 'customer_id'));
+        $client_details = get_client_details(get_giftcert_details($giftcert_id, 'client_id'));
         
         // Log activity        
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$customer_details['display_name'].'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_details['customer_id'], null, $invoice_id);
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$client_details['display_name'].'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_details['client_id'], null, $invoice_id);
         
     }
     

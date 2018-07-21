@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
@@ -57,11 +57,11 @@ if(isset($VAR['ics_type']) && $VAR['ics_type'] == 'day') {
     // Get Schedule Details
     $schedule_details = get_schedule_details($VAR['schedule_id']);
     
-    // Get Customer Display Name
-    $customer_display_name = get_customer_details($schedule_details['workorder_id'], 'display_name');
+    // Get Client Display Name
+    $client_display_name = get_client_details($schedule_details['workorder_id'], 'display_name');
     
     // Set filename
-    $ics_filename   = _gettext("Schedule").'-'.$VAR['schedule_id'].'_'._gettext("WorkOrder").'-'.$schedule_details['workorder_id'].'_'.str_replace(' ', '-', $customer_display_name).'.ics';
+    $ics_filename   = _gettext("Schedule").'-'.$VAR['schedule_id'].'_'._gettext("WorkOrder").'-'.$schedule_details['workorder_id'].'_'.str_replace(' ', '-', $client_display_name).'.ics';
     //$ics_filename   = 'schedule.ics';
     
     // Build a single schedule item as an .ics
@@ -69,7 +69,7 @@ if(isset($VAR['ics_type']) && $VAR['ics_type'] == 'day') {
     
     // Log activity
     $record = _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("has been exported.");
-    write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['customer_id'], $schedule_details['workorder_id']);
+    write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
     
 }
 

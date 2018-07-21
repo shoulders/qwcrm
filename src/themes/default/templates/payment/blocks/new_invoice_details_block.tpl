@@ -33,23 +33,23 @@
             <table cellpadding="0" cellspacing="0">
                 <tr>
                     <td valign="top">
-                        <a href="index.php?component=customer&page_tpl=details&customer_id={$customer_details.customer_id}">{$customer_details.display_name}</a>
+                        <a href="index.php?component=client&page_tpl=details&client_id={$client_details.client_id}">{$client_details.display_name}</a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                        {$customer_details.city}<br>
-                        {$customer_details.state}<br>
-                        {$customer_details.zip}<br>
-                        {$customer_details.country}
+                        {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                        {$client_details.city}<br>
+                        {$client_details.state}<br>
+                        {$client_details.zip}<br>
+                        {$client_details.country}
                     </td>
                 </tr>
                 <tr>
-                    <td><b>{t}Email{/t}</b> {$customer_details.email}</td>
+                    <td><b>{t}Email{/t}</b> {$client_details.email}</td>
                 </tr>
                 <tr>
-                    <td><b>{t}Phone{/t}</b> {$customer_details.primary_phone}</td>
+                    <td><b>{t}Phone{/t}</b> {$client_details.primary_phone}</td>
             </table>
         </td>
     </tr>

@@ -56,7 +56,7 @@
                                                                     <select class="olotd5" id="filter_usertype" name="filter_usertype">
                                                                         <option value=""{if $filter_usertype == ''} selected{/if}>{t}None{/t}</option>                                                                        
                                                                         <option value="employee"{if $filter_usertype == 'employee'} selected{/if}>{t}Employee{/t}</option>
-                                                                        <option value="customer"{if $filter_usertype == 'customer'} selected{/if}>{t}Customer{/t}</option>
+                                                                        <option value="client"{if $filter_usertype == 'client'} selected{/if}>{t}Client{/t}</option>
                                                                     </select>
                                                                 </td>
                                                             <tr>

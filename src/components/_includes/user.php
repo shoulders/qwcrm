@@ -60,7 +60,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     // Restrict results by user type
     if($usertype) {
         
-        if($usertype == 'customer') { 
+        if($usertype == 'client') { 
             $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr('7');}            
         
         if($usertype == 'employee') {
@@ -175,7 +175,7 @@ function insert_user($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."user_records SET
-            customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
+            client_id         =". $db->qstr( $VAR['client_id']                          ).", 
             username            =". $db->qstr( $VAR['username']                             ).",
             password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
             email               =". $db->qstr( $VAR['email']                                ).",
@@ -209,13 +209,13 @@ function insert_user($VAR) {
         
         // Update last active record
         // - update_user_last_active($user_id);
-        if($VAR['customer_id']) {
-            update_customer_last_active($VAR['customer_id']);
+        if($VAR['client_id']) {
+            update_client_last_active($VAR['client_id']);
         }
         
         // Log activity
-        if($VAR['customer_id']) {
-            $user_type = _gettext("Customer");
+        if($VAR['client_id']) {
+            $user_type = _gettext("Client");
         } else {
             $user_type = _gettext("Employee");
         }        
@@ -349,9 +349,9 @@ function get_usergroups($user_type = null) {
     
     $sql = "SELECT * FROM ".PRFX."user_usergroups";
     
-    // Filter the results by user type customer/employee
+    // Filter the results by user type client/employee
     if($user_type === 'employees') {$sql .= " WHERE user_type='1'";}
-    if($user_type === 'customers') {$sql .= " WHERE user_type='2'";}    
+    if($user_type === 'clients') {$sql .= " WHERE user_type='2'";}    
     if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
     
     if(!$rs = $db->Execute($sql)) {
@@ -380,8 +380,8 @@ function get_active_users($user_type = null) {
         FROM ".PRFX."user_records
         WHERE active='1'";
     
-    // Filter the results by user type customer/employee
-    if($user_type === 'customers') {$sql .= " AND is_employee='0'";}
+    // Filter the results by user type client/employee
+    if($user_type === 'clients') {$sql .= " AND is_employee='0'";}
     if($user_type === 'employees') {$sql .= " AND is_employee='1'";}
        
     if(!$rs = $db->Execute($sql)) {
@@ -425,7 +425,7 @@ function update_user($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."user_records SET
-        customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
+        client_id         =". $db->qstr( $VAR['client_id']                          ).", 
         username            =". $db->qstr( $VAR['username']                             ).",
         email               =". $db->qstr( $VAR['email']                                ).",
         usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
@@ -460,8 +460,8 @@ function update_user($VAR) {
         
         // Update last active record
         // - update_user_last_active($user_id);
-        if($VAR['customer_id']) {
-            update_customer_last_active($VAR['customer_id']);
+        if($VAR['client_id']) {
+            update_client_last_active($VAR['client_id']);
         }
         
         // Log activity        
@@ -561,8 +561,8 @@ function delete_user($user_id) {
     write_record_to_activity_log($record, $user_id);
 
     // Update last active record
-    if($user_details['customer_id']) {
-        update_customer_last_active($user_details['customer_id']);
+    if($user_details['client_id']) {
+        update_client_last_active($user_details['client_id']);
     }
         
     return true;
@@ -687,22 +687,22 @@ function check_user_email_exists($email, $current_email = null) {
 #    Check if user already has login            #
 #################################################
 
-function check_customer_already_has_login($customer_id) {
+function check_client_already_has_login($client_id) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
     
-    $sql = "SELECT user_id FROM ".PRFX."user_records WHERE customer_id =". $db->qstr($customer_id);
+    $sql = "SELECT user_id FROM ".PRFX."user_records WHERE client_id =". $db->qstr($client_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the customer already has a login."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the client already has a login."));
     } else {
         
         $result_count = $rs->RecordCount();
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', _gettext("The customer already has a login."));           
+            $smarty->assign('warning_msg', _gettext("The client already has a login."));           
             
             return true;
             
@@ -745,8 +745,8 @@ function reset_user_password($user_id, $password = null) {
         
         // Update last active record
         // - update_user_last_active($user_id);
-        if(get_user_details($user_id, 'customer_id')) {
-            update_customer_last_active(get_user_details($user_id, 'customer_id'));
+        if(get_user_details($user_id, 'client_id')) {
+            update_client_last_active(get_user_details($user_id, 'client_id'));
         }
         
         return;
@@ -848,8 +848,8 @@ function login($VAR, $credentials, $options = array())
         /*if($user->login_user_id) {            
             update_user_last_active($user->login_user_id);
         }*/   
-        if($user->login_customer_id) {            
-            update_customer_last_active($user->login_customer_id);
+        if($user->login_client_id) {            
+            update_client_last_active($user->login_client_id);
         }
 
         // set success message to survice the login event
@@ -892,8 +892,8 @@ function logout($silent = null)
     /*if($user->login_user_id) {            
         update_user_last_active($user->login_user_id);
     }*/
-    if($user->login_customer_id) {            
-        update_customer_last_active($user->login_customer_id);
+    if($user->login_client_id) {            
+        update_client_last_active($user->login_client_id);
     }
 
     // Action after logout

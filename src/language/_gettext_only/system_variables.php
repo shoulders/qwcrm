@@ -35,7 +35,7 @@ _gettext("Cancelled");
 _gettext("Refunded");
 _gettext("Collections");
 
-/* Customer */
+/* Client */
 
 _gettext("Residential");
 _gettext("Commercial");
@@ -80,7 +80,7 @@ _gettext("Advertising");
 _gettext("Bank Charges");
 _gettext("Broadband");
 _gettext("Credit");
-_gettext("Customer Refund");
+_gettext("Client Refund");
 _gettext("Equipment");
 _gettext("Fuel");
 _gettext("Gift Certificate");

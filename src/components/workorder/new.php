@@ -8,23 +8,23 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'workorder.php');
 require(INCLUDES_DIR.'user.php');
 
 // Prevent undefined variable errors
 $VAR['assign_to_employee'] = isset($VAR['assign_to_employee']) ? $VAR['assign_to_employee'] : null;
 
-// Check if we have a customer_id
-if(!isset($VAR['customer_id']) || !$VAR['customer_id']) {
-    force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
+// Check if we have a client_id
+if(!isset($VAR['client_id']) || !$VAR['client_id']) {
+    force_page('client', 'search', 'warning_msg='._gettext("No Client ID supplied."));
 }
 
 // If a workorder is submitted
 if(isset($VAR['submit'])){
     
     // insert the submitted workorder and return it's id
-    $VAR['workorder_id'] = insert_workorder($VAR['customer_id'], $VAR['scope'], $VAR['description'], $VAR['comment']);
+    $VAR['workorder_id'] = insert_workorder($VAR['client_id'], $VAR['scope'], $VAR['description'], $VAR['comment']);
 
     // If workorder is to be assigned to an employee
     if($VAR['assign_to_employee'] === '1') {       
@@ -37,5 +37,5 @@ if(isset($VAR['submit'])){
 }
 
 // Build the page
-$smarty->assign('customer_display_name', get_customer_details($VAR['customer_id'], 'display_name'));
+$smarty->assign('client_display_name', get_client_details($VAR['client_id'], 'display_name'));
 $BuildPage .= $smarty->fetch('workorder/new.tpl');

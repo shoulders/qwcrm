@@ -8,13 +8,13 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
 
-// Check if we have a customer_id
-if(!isset($VAR['customer_id']) || !$VAR['customer_id']) {
-    force_page('customer', 'search', 'warning_msg='._gettext("No Customer ID supplied."));
+// Check if we have a client_id
+if(!isset($VAR['client_id']) || !$VAR['client_id']) {
+    force_page('client', 'search', 'warning_msg='._gettext("No Client ID supplied."));
 }
 
 // Check if giftcert payment method is enabled
@@ -26,7 +26,7 @@ if(!check_payment_method_is_active('gift_certificate')) {
 if(isset($VAR['submit'])) {   
         
     // Create a new gift certificate
-    $VAR['giftcert_id'] = insert_giftcert($VAR['customer_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['note']);
+    $VAR['giftcert_id'] = insert_giftcert($VAR['client_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id']);
@@ -34,6 +34,6 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page
-    $smarty->assign('customer_details', get_customer_details($VAR['customer_id']));
+    $smarty->assign('client_details', get_client_details($VAR['client_id']));
     $BuildPage .= $smarty->fetch('giftcert/new.tpl');
 }

@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-// Decide which dashboard to show (employee or customer)
+// Decide which dashboard to show (employee or client)
 if($user->login_is_employee) {
     
     require(INCLUDES_DIR.'core.php');
@@ -37,6 +37,6 @@ if($user->login_is_employee) {
 } else {
     
     // Build the page
-    $BuildPage .= $smarty->fetch('core/dashboard_customer.tpl');
+    $BuildPage .= $smarty->fetch('core/dashboard_client.tpl');
     
 }

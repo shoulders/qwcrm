@@ -17,15 +17,15 @@
                     <a href="index.php?component=user&page_tpl=login&action=logout"><img src="{$theme_images_dir}icons/logout.gif" alt="" border="0" height="14" width="14" /> {t}Logout{/t}</a>                
                 </div>
 
-                <!-- Customers -->
+                <!-- Clients -->
                 <div class="menugroup">
-                    <span>{t}Customers{/t}</span>
-                    <a href="index.php?component=customer&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
-                    <a href="index.php?component=customer&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
-                    {if $customer_id}
-                        <a href="index.php?component=customer&page_tpl=edit&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>                        
-                        <a href="index.php?component=customer&page_tpl=delete&customer_id={$customer_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this customer?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                        <a href="index.php?component=user&page_tpl=new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}Create Login{/t}</a>                        
+                    <span>{t}Clients{/t}</span>
+                    <a href="index.php?component=client&page_tpl=new"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
+                    <a href="index.php?component=client&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
+                    {if $client_id}
+                        <a href="index.php?component=client&page_tpl=edit&client_id={$client_id}"><img src="{$theme_images_dir}icons/edit_employee.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>                        
+                        <a href="index.php?component=client&page_tpl=delete&client_id={$client_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this client?{/t}');"><img src="{$theme_images_dir}icons/delete_employees.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
+                        <a href="index.php?component=user&page_tpl=new&client_id={$client_id}"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" /> {t}Create Login{/t}</a>                        
                     {/if}                    
                 </div>
                 
@@ -34,8 +34,8 @@
                     <span>{t}Work Orders{/t}</span>
                     
                     <!-- Single Work Orders -->
-                    {if $customer_id}
-                        <a href="index.php?component=workorder&page_tpl=new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>                        
+                    {if $client_id}
+                        <a href="index.php?component=workorder&page_tpl=new&client_id={$client_id}"><img src="{$theme_images_dir}icons/16x16/view.gif" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>                        
                     {/if}                    
                     {* if $workorder_id}
                         {if $menu_workorder_is_closed === '0'}                            
@@ -68,8 +68,8 @@
                 <div class="menugroup">
                     <span>{t}Invoices{/t}</span>
                     <a href="index.php?component=invoice&page_tpl=overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>
-                    {if $customer_id}                        
-                        <a href="index.php?component=invoice&page_tpl=new&customer_id={$customer_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
+                    {if $client_id}                        
+                        <a href="index.php?component=invoice&page_tpl=new&client_id={$client_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
                     {/if}
                     <a href="index.php?component=invoice&page_tpl=search&filter_status=open"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Open{/t}</a> 
                     <a href="index.php?component=invoice&page_tpl=search&filter_status=closed"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>                                       
@@ -86,8 +86,8 @@
                 <!-- Gift Certificates -->
                 <div class="menugroup">
                     <span>{t}Gift Certificates{/t}</span>
-                    {if $customer_id}
-                        <a href="index.php?component=giftcert&page_tpl=new&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
+                    {if $client_id}
+                        <a href="index.php?component=giftcert&page_tpl=new&client_id={$client_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
                     {/if}
                     <a href="index.php?component=giftcert&page_tpl=search"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
                     {if $giftcert_id}

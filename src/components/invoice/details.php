@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
@@ -21,7 +21,7 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
 
 // Prefill Items
 $smarty->assign('company_details',          get_company_details()                                                                    );
-$smarty->assign('customer_details',         get_customer_details(get_invoice_details($VAR['invoice_id'], 'customer_id'))             );
+$smarty->assign('client_details',         get_client_details(get_invoice_details($VAR['invoice_id'], 'client_id'))             );
 $smarty->assign('workorder_details',        get_workorder_details(get_invoice_details($VAR['invoice_id'], 'workorder_id'))           );
 $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id'])                                                       );
 

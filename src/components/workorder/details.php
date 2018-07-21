@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'workorder.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
@@ -19,16 +19,16 @@ if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
 }
 
 $workorder_details = get_workorder_details($VAR['workorder_id']);
-$customer_details = get_customer_details($workorder_details['customer_id']);
+$client_details = get_client_details($workorder_details['client_id']);
 
 // Build the page with the workorder details from the database
 $smarty->assign('employee_details',     get_user_details($workorder_details['employee_id']));
-$smarty->assign('customer_details',     $customer_details );
+$smarty->assign('client_details',     $client_details );
 $smarty->assign('workorder_statuses',   get_workorder_statuses()                                                         );
 $smarty->assign('workorder_details',    $workorder_details                                           );
 $smarty->assign('workorder_schedules',  display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
 $smarty->assign('workorder_notes',      display_workorder_notes($VAR['workorder_id'])                                         ); 
 $smarty->assign('workorder_history',    display_workorder_history($VAR['workorder_id'])                                       );
 $smarty->assign('selected_date',        timestamp_to_calendar_format(time())                                                );
-$smarty->assign('GoogleMapString',      build_googlemap_directions_string($workorder_details['customer_id'], $user->login_user_id) );
+$smarty->assign('GoogleMapString',      build_googlemap_directions_string($workorder_details['client_id'], $user->login_user_id) );
 $BuildPage .= $smarty->fetch('workorder/details.tpl');

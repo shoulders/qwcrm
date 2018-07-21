@@ -96,19 +96,19 @@
                                                     <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
 
                                                         <tr>
-                                                            <td class="olohead">{t}Customers{/t}</td>
+                                                            <td class="olohead">{t}Clients{/t}</td>
                                                             <td class="olohead">{t}Work Orders{/t}</td>
                                                             <td class="olohead">{t}Invoices{/t}</td>
                                                         </tr>                                                    
 
                                                         <tr>
 
-                                                            <!-- Customers -->
+                                                            <!-- Clients -->
                                                             <td class="olotd4" valign="top">
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}New{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$new_customers}</b></font></td>
+                                                                        <td><font color="red"<b> {$new_clients}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>

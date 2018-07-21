@@ -25,10 +25,10 @@ defined('_QWEXEC') or die;
 /** Display Functions **/
 
 #####################################
-#   Display Customers               #
+#   Display Clients                 #
 #####################################
 
-function display_customers($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null,  $status = null, $type = null) {
+function display_clients($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null,  $status = null, $type = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -36,13 +36,13 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     // Process certain variables - This prevents undefined variable errors
     $records_per_page = $records_per_page ?: '25';
     $page_no = $page_no ?: '1';   
-    $search_category = $search_category ?: 'customer_id';
+    $search_category = $search_category ?: 'client_id';
     $havingTheseRecords = '';
 
     /* Records Search */
     
     // Default Action    
-    $whereTheseRecords = " WHERE ".PRFX."customer_records.customer_id\n";    
+    $whereTheseRecords = " WHERE ".PRFX."client_records.client_id\n";    
     
     // Search category (display_name) and search term
     if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%'); }
@@ -51,29 +51,29 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     elseif($search_category == 'full_name') { $havingTheseRecords .= " HAVING full_name LIKE ".$db->qstr('%'.$search_term.'%'); }
     
     // Search category with search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."customer_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."client_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     /* Filter the Records */    
     
     // Restrict by Status
-    if($status) {$whereTheseRecords .= " AND ".PRFX."customer_records.active=".$db->qstr($status);}
+    if($status) {$whereTheseRecords .= " AND ".PRFX."client_records.active=".$db->qstr($status);}
     
     // Restrict by Type
-    if($type) {$whereTheseRecords .= " AND ".PRFX."customer_records.type= ".$db->qstr($type);}    
+    if($type) {$whereTheseRecords .= " AND ".PRFX."client_records.type= ".$db->qstr($type);}    
 
     /* The SQL code */    
     
     $sql = "SELECT        
-        ".PRFX."customer_records.*,    
-        IF(company_name !='', company_name, CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name)) AS display_name,
-        CONCAT(".PRFX."customer_records.first_name, ' ', ".PRFX."customer_records.last_name) AS full_name
+        ".PRFX."client_records.*,    
+        IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS display_name,
+        CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name) AS full_name
         
-        FROM ".PRFX."customer_records            
+        FROM ".PRFX."client_records            
  
         ".$whereTheseRecords."
-        GROUP BY ".PRFX."customer_records.".$order_by."
+        GROUP BY ".PRFX."client_records.".$order_by."
         ".$havingTheseRecords."
-        ORDER BY ".PRFX."customer_records.".$order_by."
+        ORDER BY ".PRFX."client_records.".$order_by."
         ".$direction; 
    
     /* Restrict by pages */
@@ -85,7 +85,7 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
         
         // Figure out the total number of records in the database for the given search        
         if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching customer records."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching client records."));
         } else {        
             $total_results = $rs->RecordCount();            
             $smarty->assign('total_results', $total_results);
@@ -125,7 +125,7 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching customer records."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching client records."));
         
     } else {        
         
@@ -148,14 +148,14 @@ function display_customers($order_by, $direction, $use_pages = false, $records_p
 /** Insert Functions **/
 
 #####################################
-#    Insert new customer            #
+#    Insert new client              #
 #####################################
 
-function insert_customer($VAR) {
+function insert_client($VAR) {
     
     $db = QFactory::getDbo();
     
-    $sql = "INSERT INTO ".PRFX."customer_records SET
+    $sql = "INSERT INTO ".PRFX."client_records SET
             company_name    =". $db->qstr( $VAR['company_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
             last_name       =". $db->qstr( $VAR['last_name']        ).",
@@ -177,46 +177,46 @@ function insert_customer($VAR) {
             create_date     =". $db->qstr( time()                   );          
                         
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer record into the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
     } else {
         
-        $customer_id = $db->Insert_ID();
+        $client_id = $db->Insert_ID();
         
         // Log activity
-        $record = _gettext("New customer").', '.get_customer_details($customer_id, 'display_name').', '._gettext("has been created.");
+        $record = _gettext("New client").', '.get_client_details($client_id, 'display_name').', '._gettext("has been created.");
         write_record_to_activity_log($record, null, $db->Insert_ID());  
         
-        return $customer_id;
+        return $client_id;
         
     }
     
 } 
 
 #############################
-#    Insert customer note   #
+#    Insert client note     #
 #############################
 
-function insert_customer_note($customer_id, $note) {
+function insert_client_note($client_id, $note) {
     
     $db = QFactory::getDbo();
     
-    $sql = "INSERT INTO ".PRFX."customer_notes SET            
+    $sql = "INSERT INTO ".PRFX."client_notes SET            
             employee_id =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            customer_id =". $db->qstr( $customer_id                         ).",
+            client_id =". $db->qstr( $client_id                         ).",
             date        =". $db->qstr( time()                               ).",
             note        =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the customer note into the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the client note into the database."));
         
     } else {
         
         // Log activity        
-        $record = _gettext("A new customer note was added to the customer").' '.get_customer_details($customer_id, 'display_name').' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id);
+        $record = _gettext("A new client note was added to the client").' '.get_client_details($client_id, 'display_name').' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_id);
         
         // Update last active record      
-        update_customer_last_active($customer_id);
+        update_client_last_active($client_id);
         
         return true;
         
@@ -227,17 +227,17 @@ function insert_customer_note($customer_id, $note) {
 /** Get Functions **/
 
 ################################
-#  Get Customer Details        #
+#  Get Client Details          #
 ################################
 
-function get_customer_details($customer_id, $item = null) {
+function get_client_details($client_id, $item = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."customer_records WHERE customer_id=".$db->qstr($customer_id);
+    $sql = "SELECT * FROM ".PRFX."client_records WHERE client_id=".$db->qstr($client_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's details."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the client's details."));
     } else { 
         
         if($item === null) {
@@ -274,17 +274,17 @@ function get_customer_details($customer_id, $item = null) {
 }
 
 #####################################
-#  Get a single customer note       #
+#  Get a single client note         #
 #####################################
 
-function get_customer_note($customer_note_id, $item = null) {
+function get_client_note($client_note_id, $item = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );    
+    $sql = "SELECT * FROM ".PRFX."client_notes WHERE client_note_id=".$db->qstr( $client_note_id );    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer note."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the client note."));
     } else { 
         
         if($item === null){
@@ -302,10 +302,10 @@ function get_customer_note($customer_note_id, $item = null) {
 }
 
 #####################################
-#  Get ALL of a customer's notes    #
+#  Get ALL of a client's notes      #
 #####################################
 
-function get_customer_notes($customer_id) {
+function get_client_notes($client_id) {
     
     $db = QFactory::getDbo();
     
@@ -313,12 +313,12 @@ function get_customer_notes($customer_id) {
         
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
             
-            FROM ".PRFX."customer_notes
-            LEFT JOIN ".PRFX."user_records ON ".PRFX."customer_notes.employee_id = ".PRFX."user_records.user_id
-            WHERE ".PRFX."customer_notes.customer_id=".$db->qstr( $customer_id );
+            FROM ".PRFX."client_notes
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."client_notes.employee_id = ".PRFX."user_records.user_id
+            WHERE ".PRFX."client_notes.client_id=".$db->qstr( $client_id );
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the customer's notes."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the client's notes."));
     } else {
         
         return $rs->GetArray(); 
@@ -328,17 +328,17 @@ function get_customer_notes($customer_id) {
 }
 
 #####################################
-#    Get Customer Types             #
+#    Get Client Types             #
 #####################################
 
-function get_customer_types() {
+function get_client_types() {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."customer_types";
+    $sql = "SELECT * FROM ".PRFX."client_types";
 
     if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get customer types."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get client types."));
     } else {
         
         return $rs->GetArray();
@@ -350,14 +350,14 @@ function get_customer_types() {
 /** Update Functions **/
 
 #####################################
-#    Update Customer                #
+#    Update Client                  #
 #####################################
 
-function update_customer($VAR) {
+function update_client($VAR) {
     
     $db = QFactory::getDbo();
     
-    $sql = "UPDATE ".PRFX."customer_records SET
+    $sql = "UPDATE ".PRFX."client_records SET
             company_name    =". $db->qstr( $VAR['company_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
             last_name       =". $db->qstr( $VAR['last_name']        ).",
@@ -376,18 +376,18 @@ function update_customer($VAR) {
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
             note            =". $db->qstr( $VAR['note']             )."
-            WHERE customer_id  =". $db->qstr( $VAR['customer_id']   );
+            WHERE client_id  =". $db->qstr( $VAR['client_id']   );
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Customer's details."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Client's details."));
     } else {
         
         // Log activity        
-        $record = _gettext("The customer").' '.get_customer_details($VAR['customer_id'], 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, null, $VAR['customer_id']);
+        $record = _gettext("The client").' '.get_client_details($VAR['client_id'], 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, null, $VAR['client_id']);
         
         // Update last active record      
-        update_customer_last_active($VAR['customer_id']);
+        update_client_last_active($VAR['client_id']);
         
       return true;
       
@@ -396,32 +396,32 @@ function update_customer($VAR) {
 } 
 
 #############################
-#    update customer note   #
+#   update client note      #
 #############################
 
-function update_customer_note($customer_note_id, $note) {
+function update_client_note($client_note_id, $note) {
     
     $db = QFactory::getDbo();
     
-    $sql = "UPDATE ".PRFX."customer_notes SET
+    $sql = "UPDATE ".PRFX."client_notes SET
             employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
             note                    =". $db->qstr( $note                                )."
-            WHERE customer_note_id  =". $db->qstr( $customer_note_id                    );
+            WHERE client_note_id  =". $db->qstr( $client_note_id                    );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the customer note."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the client note."));
         
     } else {
         
-        // get customer_id
-        $customer_id = get_customer_note($customer_note_id, 'customer_id');
+        // get client_id
+        $client_id = get_client_note($client_note_id, 'client_id');
         
         // Log activity        
-        $record = _gettext("Customer Note").' '.$customer_note_id.' '._gettext("for").' '.get_customer_details($customer_id, 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $customer_id);
+        $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for").' '.get_client_details($client_id, 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_id);
         
         // Update last active record        
-        update_customer_last_active($customer_id);
+        update_client_last_active($client_id);
         
     }
     
@@ -431,19 +431,19 @@ function update_customer_note($customer_note_id, $note) {
 #    Update Last Active         #
 #################################
 
-function update_customer_last_active($customer_id = null) {
+function update_client_last_active($client_id = null) {
     
     $db = QFactory::getDbo();
     
-    // compensate for some operations not having a customer_id - i.e. sending some emails
-    if(!$customer_id) { return; }    
+    // compensate for some operations not having a client_id - i.e. sending some emails
+    if(!$client_id) { return; }    
     
-    $sql = "UPDATE ".PRFX."customer_records SET
+    $sql = "UPDATE ".PRFX."client_records SET
             last_active=".$db->qstr(time())."
-            WHERE customer_id=".$db->qstr($customer_id);
+            WHERE client_id=".$db->qstr($client_id);
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Customer's last active time."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Client's last active time."));
     }
     
 }
@@ -453,105 +453,105 @@ function update_customer_last_active($customer_id = null) {
 /** Delete Functions **/
 
 #####################################
-#    Delete Customer                #
+#    Delete Client                  #
 #####################################
 
-function delete_customer($customer_id) {
+function delete_client($client_id) {
     
     $db = QFactory::getDbo();
     
-    // Check if customer has any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE customer_id=".$db->qstr($customer_id);    
+    // Check if client has any workorders
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$db->qstr($client_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Workorders in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a customer who has work orders.');
+        postEmulationWrite('warning_msg', 'You can not delete a client who has work orders.');
         return false;
     }
     
-    // Check if customer has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE customer_id=".$db->qstr($customer_id);    
+    // Check if client has any invoices
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE client_id=".$db->qstr($client_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Invoices in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Invoices in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a customer who has invoices.');
+        postEmulationWrite('warning_msg', 'You can not delete a client who has invoices.');
         return false;
     }    
     
-    // Check if customer has any gift certificates
-    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert_records WHERE customer_id=".$db->qstr($customer_id);
+    // Check if client has any gift certificates
+    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert_records WHERE client_id=".$db->qstr($client_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Gift Certificates in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Gift Certificates in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a customer who has gift certificates.');
+        postEmulationWrite('warning_msg', 'You can not delete a client who has gift certificates.');
         return false;
     }
     
-    // Check if customer has any customer notes
-    $sql = "SELECT count(*) as count FROM ".PRFX."customer_notes WHERE customer_id=".$db->qstr($customer_id);
+    // Check if client has any client notes
+    $sql = "SELECT count(*) as count FROM ".PRFX."client_notes WHERE client_id=".$db->qstr($client_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the customer's Notes in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Notes in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a customer who has customer notes.');
+        postEmulationWrite('warning_msg', 'You can not delete a client who has client notes.');
         return false;
     }
     
-    /* We can now delete the customer */
+    /* We can now delete the client */
     
-    // Get customer details foe loggin before we delete anything
-    $customer_details = get_customer_details($customer_id);
+    // Get client details foe loggin before we delete anything
+    $client_details = get_client_details($client_id);
     
-    // Delete any Customer user accounts
-    $sql = "DELETE FROM ".PRFX."user_records WHERE customer_id=".$db->qstr($customer_id);    
+    // Delete any Client user accounts
+    $sql = "DELETE FROM ".PRFX."user_records WHERE client_id=".$db->qstr($client_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer's users from the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the client's users from the database."));
     }
     
-    // Delete Customer
-    $sql = "DELETE FROM ".PRFX."customer_records WHERE customer_id=".$db->qstr($customer_id);    
+    // Delete Client
+    $sql = "DELETE FROM ".PRFX."client_records WHERE client_id=".$db->qstr($client_id);    
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer from the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the client from the database."));
     }
     
     // Write the record to the activity log                    
-    $record = _gettext("The customer").' '.$customer_details['display_name'].' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name.'.';
-    write_record_to_activity_log($record, null, $customer_id);
+    $record = _gettext("The client").' '.$client_details['display_name'].' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name.'.';
+    write_record_to_activity_log($record, null, $client_id);
     
     return true;
     
 }
 
 ##################################
-#    delete a customer's note    #
+#    Delete a client's note      #
 ##################################
 
-function delete_customer_note($customer_note_id) {
+function delete_client_note($client_note_id) {
     
     $db = QFactory::getDbo();
     
     // Get information before deleting the record
-    $customer_id = get_customer_note($customer_note_id, 'customer_id');
-    $employee_id = get_customer_note($customer_note_id, 'employee_id');
+    $client_id = get_client_note($client_note_id, 'client_id');
+    $employee_id = get_client_note($client_note_id, 'employee_id');
     
-    $sql = "DELETE FROM ".PRFX."customer_notes WHERE customer_note_id=".$db->qstr( $customer_note_id );
+    $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$db->qstr( $client_note_id );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the customer note."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the client note."));
         
     } else {        
         
-        $customer_details = get_customer_details($customer_id);
+        $client_details = get_client_details($client_id);
         
         // Log activity        
-        $record = _gettext("Customer Note").' '.$customer_note_id.' '._gettext("for Customer").' '.$customer_details['display_name'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $employee_id, $customer_id);
+        $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for Client").' '.$client_details['display_name'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $employee_id, $client_id);
         
         // Update last active record        
-        update_customer_last_active($customer_id);
+        update_client_last_active($client_id);
         
     }
     
@@ -563,11 +563,11 @@ function delete_customer_note($customer_note_id) {
 #    check for Duplicate display name   #  // is not currently used
 #########################################
     
-function check_customer_display_name_exists($display_name) {
+function check_client_display_name_exists($display_name) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."customer_records WHERE display_name=".$db->qstr($display_name);
+    $sql = "SELECT COUNT(*) AS count FROM ".PRFX."client_records WHERE display_name=".$db->qstr($display_name);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check the submitted Display Name for duplicates in the database."));
@@ -591,10 +591,10 @@ function check_customer_display_name_exists($display_name) {
 #    Build a Google map string      #
 #####################################
 
-function build_googlemap_directions_string($customer_id, $employee_id) {
+function build_googlemap_directions_string($client_id, $employee_id) {
     
     $company_details    = get_company_details();
-    $customer_details   = get_customer_details($customer_id);
+    $client_details   = get_client_details($client_id);
     $employee_details   = get_user_details($employee_id);
     
     // Get google server or use default value, then removes a trailing slash if present
@@ -617,12 +617,12 @@ function build_googlemap_directions_string($customer_id, $employee_id) {
         
     }
     
-    // Get Customer's Address    
-    $customer_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $customer_details['address']);
-    $customer_city      = $customer_details['city'];
-    $customer_zip       = $customer_details['zip'];
+    // Get Client's Address    
+    $client_address   = preg_replace('/(\r|\n|\r\n){2,}/', ', ', $client_details['address']);
+    $client_city      = $client_details['city'];
+    $client_zip       = $client_details['zip'];
     
     // return the built google map string
-    return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$customer_address,$customer_city,$customer_zip";
+    return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$client_address,$client_city,$client_zip";
    
 }

@@ -64,16 +64,16 @@ CREATE TABLE `#__company_options` (
 --
 
 INSERT INTO `#__options` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {customer_first_name} {customer_last_name}</p>\r\n<p>This is an invoice for the recent work at {customer_company}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
+('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '', '', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Client Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {client_first_name} {client_last_name}</p>\r\n<p>This is an invoice for the recent work at {client_company}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__customer_records`
+-- Table structure for table `#__client_records`
 --
 
-CREATE TABLE `#__customer_records` (
-  `customer_id` int(10) NOT NULL,
+CREATE TABLE `#__client_records` (
+  `client_id` int(10) NOT NULL,
   `company_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -99,13 +99,13 @@ CREATE TABLE `#__customer_records` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__customer_notes`
+-- Table structure for table `#__client_notes`
 --
 
-CREATE TABLE `#__customer_notes` (
-  `customer_note_id` int(10) NOT NULL,
+CREATE TABLE `#__client_notes` (
+  `client_note_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -113,19 +113,19 @@ CREATE TABLE `#__customer_notes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__customer_types`
+-- Table structure for table `#__client_types`
 --
 
-CREATE TABLE `#__customer_types` (
-  `customer_type_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+CREATE TABLE `#__client_types` (
+  `client_type_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `#__customer_types`
+-- Dumping data for table `#__client_types`
 --
 
-INSERT INTO `#__customer_types` (`customer_type_id`, `display_name`) VALUES
+INSERT INTO `#__client_types` (`client_type_id`, `display_name`) VALUES
 ('charity', 'Charity'),
 ('commercial', 'Commercial'),
 ('educational', 'Educational'),
@@ -171,7 +171,7 @@ CREATE TABLE `#__expense_types` (
 INSERT INTO `#__expense_types` (`expense_type_id`, `display_name`) VALUES
 ('bank_charges', 'Bank Charges'),
 ('credit', 'Credit'),
-('customer_refund', 'Customer Refund'),
+('client_refund', 'Client Refund'),
 ('equipment', 'Equipment'),
 ('fuel', 'Fuel'),
 ('gift_certificate', 'Gift Certificate'),
@@ -200,7 +200,7 @@ CREATE TABLE `#__giftcert_records` (
   `giftcert_id` int(10) NOT NULL,
   `giftcert_code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `date_created` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `date_expires` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -221,7 +221,7 @@ CREATE TABLE `#__giftcert_records` (
 CREATE TABLE `#__invoice_records` (
   `invoice_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `due_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -338,7 +338,7 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 CREATE TABLE `#__payment_records` (
   `payment_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -500,7 +500,7 @@ INSERT INTO `#__refund_types` (`refund_type_id`, `display_name`) VALUES
 CREATE TABLE `#__schedule_records` (
   `schedule_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `start_time` int(20) NOT NULL,
   `end_time` int(20) NOT NULL,
@@ -593,7 +593,7 @@ INSERT INTO `#__supplier_types` (`supplier_type_id`, `display_name`) VALUES
 
 CREATE TABLE `#__user_records` (
   `user_id` int(10) NOT NULL,
-  `customer_id` varchar(10) NOT NULL,
+  `client_id` varchar(10) NOT NULL,
   `username` varchar(20) NOT NULL,
   `password` varchar(64) NOT NULL,
   `email` varchar(50) NOT NULL,
@@ -636,7 +636,7 @@ CREATE TABLE `#__user_acl_page` (
   `Technician` int(1) NOT NULL DEFAULT '0',
   `Clerical` int(1) NOT NULL DEFAULT '0',
   `Counter` int(1) NOT NULL DEFAULT '0',
-  `Customer` int(1) NOT NULL DEFAULT '0',
+  `Client` int(1) NOT NULL DEFAULT '0',
   `Guest` int(1) NOT NULL DEFAULT '0',
   `Public` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -645,7 +645,7 @@ CREATE TABLE `#__user_acl_page` (
 -- Dumping data for table `#__user_acl_page`
 --
 
-INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
+INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
 ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -658,14 +658,14 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:home', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:maintenance', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-('customer:delete', 1, 1, 1, 0, 1, 0, 0, 0, 0),
-('customer:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-('customer:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-('customer:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-('customer:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-('customer:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-('customer:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-('customer:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('client:delete', 1, 1, 1, 0, 1, 0, 0, 0, 0),
+('client:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('client:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+('client:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('client:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+('client:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('expense:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -795,7 +795,7 @@ INSERT INTO `#__user_usergroups` (`usergroup_id`, `usergroup_display_name`, `use
 (4, 'Technician', 1),
 (5, 'Clerical', 1),
 (6, 'Counter', 1),
-(7, 'Customer', 2),
+(7, 'Client', 2),
 (8, 'Guest', 3),
 (9, 'Public', 3);
 
@@ -825,7 +825,7 @@ INSERT INTO `#__version` (`database_version`) VALUES
 CREATE TABLE `#__workorder_records` (
   `workorder_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `customer_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `created_by` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `closed_by` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
@@ -906,22 +906,22 @@ ALTER TABLE `#__company_options`
   ADD PRIMARY KEY (`display_name`);
 
 --
--- Indexes for table `#__customer_records`
+-- Indexes for table `#__client_records`
 --
-ALTER TABLE `#__customer_records`
-  ADD PRIMARY KEY (`customer_id`);
+ALTER TABLE `#__client_records`
+  ADD PRIMARY KEY (`client_id`);
 
 --
--- Indexes for table `#__customer_notes`
+-- Indexes for table `#__client_notes`
 --
-ALTER TABLE `#__customer_notes`
-  ADD PRIMARY KEY (`customer_note_id`);
+ALTER TABLE `#__client_notes`
+  ADD PRIMARY KEY (`client_note_id`);
 
 --
--- Indexes for table `#__customer_types`
+-- Indexes for table `#__client_types`
 --
-ALTER TABLE `#__customer_types`
-  ADD PRIMARY KEY (`customer_type_id`);
+ALTER TABLE `#__client_types`
+  ADD PRIMARY KEY (`client_type_id`);
 
 --
 -- Indexes for table `#__expense_records`
@@ -1108,15 +1108,15 @@ ALTER TABLE `#__workorder_statuses`
 --
 
 --
--- AUTO_INCREMENT for table `#__customer_records`
+-- AUTO_INCREMENT for table `#__client_records`
 --
-ALTER TABLE `#__customer_records`
-  MODIFY `customer_id` int(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__client_records`
+  MODIFY `client_id` int(10) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `#__customer_notes`
+-- AUTO_INCREMENT for table `#__client_notes`
 --
-ALTER TABLE `#__customer_notes`
-  MODIFY `customer_note_id` int(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__client_notes`
+  MODIFY `client_note_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__expense_records`
 --

@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
@@ -41,7 +41,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page    
-    $smarty->assign('customer_details', get_customer_details(get_giftcert_details($VAR['giftcert_id'], 'customer_id'))); 
+    $smarty->assign('client_details', get_client_details(get_giftcert_details($VAR['giftcert_id'], 'client_id'))); 
     $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                              );
     $smarty->assign('giftcert_details', get_giftcert_details($VAR['giftcert_id']));
     $BuildPage .= $smarty->fetch('giftcert/edit.tpl');

@@ -37,7 +37,7 @@
                                                                         <option value="schedule_id"{if $search_category == 'schedule_id'} selected{/if}>{t}Schedule ID{/t}</option>
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
-                                                                        <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>                                                                        
+                                                                        <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Client{/t}</option>                                                                        
                                                                         <option value="start_time"{if $search_category == 'start_time'} selected{/if}>{t}Start Time{/t}</option>
                                                                         <option value="end_time"{if $search_category == 'end_time'} selected{/if}>{t}End Time{/t}</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>

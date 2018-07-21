@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
@@ -58,7 +58,7 @@ if(get_invoice_details($VAR['invoice_id'], 'is_closed')) {
 }
 
 // Build the page
-$smarty->assign('customer_details',                  get_customer_details(get_invoice_details($VAR['invoice_id'] , 'customer_id'))     );
+$smarty->assign('client_details',                  get_client_details(get_invoice_details($VAR['invoice_id'] , 'client_id'))     );
 $smarty->assign('invoice_details',                   get_invoice_details($VAR['invoice_id'])                                                );
 $smarty->assign('invoice_statuses',                  get_invoice_statuses()                                                                   );
 $smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );

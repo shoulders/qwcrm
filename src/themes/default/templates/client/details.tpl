@@ -10,10 +10,10 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Customer Details for{/t} {$customer_details.display_name}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Client Details for{/t} {$client_details.display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}CUSTOMER_DETAILS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}CUSTOMER_DETAILS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
-                        <a href="index.php?component=customer&page_tpl=edit&customer_id={$customer_id}"><img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit customer details{/t}');" onMouseOut="hideddrivetip();"></a>
+                        <a href="index.php?component=client&page_tpl=edit&client_id={$client_id}"><img src="{$theme_images_dir}icons/16x16/small_edit.gif" border="0" onMouseOver="ddrivetip('{t}Click to edit client details{/t}');" onMouseOut="hideddrivetip();"></a>
                     </td>
                 </tr>
                 <tr>
@@ -23,7 +23,7 @@
                                 <td>
                                     <div id="tabs_container">
                                         <ul class="tabs">
-                                            <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Customer Details{/t}</a></li>
+                                            <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/clients.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Client Details{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Works Orders{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab">{t}Schedules{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
@@ -37,9 +37,9 @@
                                         <!-- This is a div that hold all the tabbed contents -->
                                         <div class="tab_contents_container">
 
-                                            <!-- Tab 1 Contents (Customer Details) -->
+                                            <!-- Tab 1 Contents (Client Details) -->
                                             <div id="tab_1_contents" class="tab_contents tab_contents_active">
-                                                {include file='customer/blocks/display_customer_details_block.tpl'}
+                                                {include file='client/blocks/display_client_details_block.tpl'}
                                             </div>
 
                                             <!-- Tab 2 Contents (Work Orders) -->
@@ -75,9 +75,9 @@
                                                 {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed Gift Certificates")}
                                             </div>
 
-                                            <!-- Tab 6 Contents (Customer Notes) -->
+                                            <!-- Tab 6 Contents (Client Notes) -->
                                             <div id="tab_6_contents" class="tab_contents">                        
-                                                {include file='customer/blocks/details_notes_block.tpl'}   
+                                                {include file='client/blocks/details_notes_block.tpl'}   
                                             </div>
 
                                         </div>

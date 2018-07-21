@@ -77,20 +77,20 @@
                                         </tr>
                                         <tr>
 
-                                            <!-- Customer Details -->
+                                            <!-- Client Details -->
                                             <td colspan="5" valign="top" align="left">
                                                 <b>{t}Bill{/t}</b>                                                        
                                                 <table cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td valign="top">
-                                                            <a href="index.php?component=customer&page_tpl=details&customer_id={$customer_details.customer_id}">{$customer_details.display_name}</a><br>
-                                                            {$customer_details.address|nl2br}<br>
-                                                            {$customer_details.city}<br>
-                                                            {$customer_details.state}<br>
-                                                            {$customer_details.zip}<br>
-                                                            {$customer_details.country}<br>
-                                                            {$customer_details.primary_phone}<br>
-                                                            {$customer_details.email}                                                                        
+                                                            <a href="index.php?component=client&page_tpl=details&client_id={$client_details.client_id}">{$client_details.display_name}</a><br>
+                                                            {$client_details.address|nl2br}<br>
+                                                            {$client_details.city}<br>
+                                                            {$client_details.state}<br>
+                                                            {$client_details.zip}<br>
+                                                            {$client_details.country}<br>
+                                                            {$client_details.primary_phone}<br>
+                                                            {$client_details.email}                                                                        
                                                         </td>
                                                     </tr>
                                                 </table>                                                        
@@ -118,8 +118,8 @@
                                         <!-- Terms and Discount -->
                                         <tr>
                                             <td colspan="9" valign="top" align="left">                                                        
-                                                <b>{t}TERMS{/t}:</b> {$customer_details.credit_terms}<br>
-                                                <b>{t}Customer Discount Rate{/t}:</b>
+                                                <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
+                                                <b>{t}Client Discount Rate{/t}:</b>
                                                 {$invoice_details.discount_rate|string_format:"%.2f"} %                                                                                                     
                                             </td>
                                         </tr>
@@ -142,8 +142,8 @@
                                                     <!-- Print Buttons -->   
                                                     <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
                                                     <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
-                                                    <button type="button" onclick="confirmChoice('Are you sure you want to email this invoice to the customer?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
-                                                    <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=customer_envelope&theme=print');">{t}Print Customer Envelope{/t}</button>                                              
+                                                    <button type="button" onclick="confirmChoice('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
+                                                    <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=client_envelope&theme=print');">{t}Print Client Envelope{/t}</button>                                              
 
                                                 </td>
                                             </tr>

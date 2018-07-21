@@ -21,7 +21,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-                                    <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Customer Contact">
+                                    <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Client Contact">
                                         <tr>
                                             <td class="olohead" colspan="4">
                                                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -38,8 +38,8 @@
                                             <td class="menutd"><a href="index.php?component=user&page_tpl=details&user_id={$payment_details.employee_id}">{$employee_display_name}</a></td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Customer{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=customer&page_tpl=details&customer_id={$payment_details.customer_id}">{$customer_display_name}</a></td>
+                                            <td class="menutd"><b>{t}Client{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$payment_details.client_id}">{$client_display_name}</a></td>
                                             <td class="menutd" ><b>{t}Work Order ID{/t}</b></td>
                                             <td class="menutd">{if $payment_details.workorder_id}<a href="index.php?component=workorder&page_tpl=details&workorder_id={$payment_details.workorder_id}">{$payment_details.workorder_id}</a>{else}{t}n/a{/t}{/if}</td>
                                         </tr>

@@ -27,16 +27,16 @@
                         <table cellpadding="3" cellspacing="0" border="0" width="100%">
                             <tr>
                                 
-                                <!-- Customer Details -->
+                                <!-- Client Details -->
                                 <td valign="top" width="50%">
-                                    <p><b>{t}Customer{/t} </b><a href="index.php?component=customer&page_tpl=details&customer_id={$customer_details.customer_id}">{$customer_details.display_name}</a></p>
+                                    <p><b>{t}Client{/t} </b><a href="index.php?component=client&page_tpl=details&client_id={$client_details.client_id}">{$client_details.display_name}</a></p>
                                     <p><strong>{t}Address{/t}</strong></p>
                                     <p>
-                                        {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                                        {$customer_details.city}<br>
-                                        {$customer_details.state}<br>
-                                        {$customer_details.zip}<br>
-                                        {$customer_details.country}
+                                        {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                                        {$client_details.city}<br>
+                                        {$client_details.state}<br>
+                                        {$client_details.zip}<br>
+                                        {$client_details.country}
                                     </p>
                                 </td>
                                 

@@ -9,7 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'company.php');
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
@@ -27,12 +27,12 @@ if(!isset($VAR['print_content'], $VAR['print_type']) || !$VAR['print_content'] |
 
 // Get Record Details
 $invoice_details = get_invoice_details($VAR['invoice_id']);
-$customer_details = get_customer_details($invoice_details['customer_id']);
+$client_details = get_client_details($invoice_details['client_id']);
 
 /// Assign Variables
 $smarty->assign('company_details',                  get_company_details()                                        );
 $smarty->assign('employee_details',                 get_user_details($invoice_details['employee_id'])          );
-$smarty->assign('customer_details',                 $customer_details                                               );
+$smarty->assign('client_details',                 $client_details                                               );
 $smarty->assign('invoice_details',                  $invoice_details                                                );
 $smarty->assign('workorder_details',                get_workorder_details($invoice_details['workorder_id'])    );
 $smarty->assign('payment_options',                  get_payment_options()                                        );
@@ -54,7 +54,7 @@ if($VAR['print_content'] == 'invoice') {
         
         // Log activity
         $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("has been printed as html.");
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Build the page
         $BuildPage = $smarty->fetch('invoice/printing/print_invoice.tpl'); 
@@ -68,7 +68,7 @@ if($VAR['print_content'] == 'invoice') {
         
         // Log activity
         $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Output PDF in brower
         mpdf_output_in_browser($pdf_filename, $pdf_template);
@@ -90,14 +90,14 @@ if($VAR['print_content'] == 'invoice') {
         $attachment['filetype'] = 'application/pdf';
         
         // Build the message body        
-        $body = get_email_message_body('email_msg_invoice', $customer_details);
+        $body = get_email_message_body('email_msg_invoice', $client_details);
         
         // Log activity
         $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Email the PDF        
-        send_email($customer_details['email'], _gettext("Invoice").' '.$VAR['invoice_id'], $body, $customer_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
+        send_email($client_details['email'], _gettext("Invoice").' '.$VAR['invoice_id'], $body, $client_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
                 
         // End all other processing
         die();
@@ -106,18 +106,18 @@ if($VAR['print_content'] == 'invoice') {
     
 }
 
-// Customer Envelope Print Routine
-if($VAR['print_content'] == 'customer_envelope') {
+// Client Envelope Print Routine
+if($VAR['print_content'] == 'client_envelope') {
     
-    // Print HTML Customer Envelope
+    // Print HTML Client Envelope
     if ($VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Address Envelope").' '._gettext("for").' '.$customer_details['display_name'].' '._gettext("has been printed as html.");
-        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['customer_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
+        $record = _gettext("Address Envelope").' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
+        write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Build the page
-        $BuildPage = $smarty->fetch('invoice/printing/print_customer_envelope.tpl');
+        $BuildPage = $smarty->fetch('invoice/printing/print_client_envelope.tpl');
         
     }
     

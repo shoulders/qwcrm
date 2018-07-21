@@ -49,7 +49,7 @@
                 <table border="0" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
                         <td style="width: 150px">                        
-                            <b>{t}Customer{/t}: </b><br>
+                            <b>{t}Client{/t}: </b><br>
                             <b>{t}Workorder ID{/t}: </b><br>     
                             <b>{t}Date{/t}: <b><br>
                             <b>{t}Opened{/t}: <b><br>     
@@ -58,13 +58,13 @@
                             <b>{t}Email{/t}: <b><br>                        
                         </td>
                         <td>
-                            {$customer_details.display_name}<br>
+                            {$client_details.display_name}<br>
                             {$workorder_details.workorder_id}<br>
                             {$smarty.now|date_format:$date_format}<br>
                             {$workorder_details.open_date|date_format:$date_format}<br>
-                            {$customer_details.primary_phone}<br>
-                            {$customer_details.mobile_phone}<br>
-                            {$customer_details.email}<br>
+                            {$client_details.primary_phone}<br>
+                            {$client_details.mobile_phone}<br>
+                            {$client_details.email}<br>
                         </td>        
                     </tr>    
                 </table>
@@ -78,7 +78,7 @@
                             <b>{t}Contact{/t}:<b>                            
                         </td>
                         <td>
-                            {$customer_details.first_name} {$customer_details.last_name}                            
+                            {$client_details.first_name} {$client_details.last_name}                            
                         </td>        
                     </tr>
                     <tr>
@@ -86,11 +86,11 @@
                             <b>{t}Address{/t}:<b>
                         </td>
                         <td>
-                            {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                            {$customer_details.city}<br>
-                            {$customer_details.state}<br>
-                            {$customer_details.zip}<br>
-                            {$customer_details.country}
+                            {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                            {$client_details.city}<br>
+                            {$client_details.state}<br>
+                            {$client_details.zip}<br>
+                            {$client_details.country}
                         </td>        
                     </tr>
                 </table>

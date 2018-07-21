@@ -23,7 +23,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">                             
-                                    <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Customer Contact">
+                                    <table class="olotable" border="0" cellpadding="5" cellspacing="5" width="100%" summary="Client Contact">
                                         <tr>
                                             <td class="olohead" colspan="4">
                                                 <table width="100%" cellpadding="0" cellspacing="0" border="0">

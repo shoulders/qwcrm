@@ -48,7 +48,7 @@ function php_mail_fallback($to, $subject, $body, $attachment = null) {
 #   Basic email wrapper function      #  // Silent option is need for password reset
 #######################################
 
-function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $customer_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
+function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
         
     $config = QFactory::getConfig();
     //$smarty = QFactory::getSmarty();
@@ -63,7 +63,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         
         // Log activity 
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
+        write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
         
         // Output the system message to the browser (if allowed)
         if (!$silent) {
@@ -154,7 +154,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         // Log activity 
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
         write_record_to_email_error_log($RfcCompliance_exception->getMessage());
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);        
+        write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);        
         
         // Output the system message to the browser (if allowed)
         if (!$silent) {
@@ -220,7 +220,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             // Log activity             
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
-            write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
+            write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
             
             // Output the system message to the browser (if allowed)
             if (!$silent) {
@@ -236,7 +236,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             // Log activity
             $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
             if($workorder_id) {insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.QFactory::getUser()->login_display_name);}
-            write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);            
+            write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);            
             
             // Output the system message to the browser (if allowed)
             if (!$silent) {
@@ -247,7 +247,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             
             // Update last active record (will not error if no invoice_id sent )
             update_user_last_active($employee_id);
-            if($customer_id) {update_customer_last_active($customer_id);}  
+            if($client_id) {update_client_last_active($client_id);}  
             if($workorder_id) {update_workorder_last_active($workorder_id);}
             if($invoice_id) {update_invoice_last_active($invoice_id);}
 
@@ -265,7 +265,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         // Log activity 
         $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
         write_record_to_email_error_log($Transport_exception->getMessage());
-        write_record_to_activity_log($record, $employee_id, $customer_id, $workorder_id, $invoice_id);
+        write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
         // Output the system message to the browser (if allowed)
         if (!$silent) {
@@ -288,17 +288,17 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
 #  Get email message body                #
 ##########################################
 
-function get_email_message_body($message_name, $customer_details) {
+function get_email_message_body($message_name, $client_details) {
     
     // get the message from the database
     $content = get_company_details($message_name);
     
     // Process placeholders
     if($message_name == 'email_msg_invoice') {        
-        $content = replace_placeholder($content, '{customer_display_name}', $customer_details['display_name']);
-        $content = replace_placeholder($content, '{customer_first_name}', $customer_details['first_name']);
-        $content = replace_placeholder($content, '{customer_last_name}', $customer_details['last_name']);
-        $content = replace_placeholder($content, '{customer_credit_terms}', $customer_details['credit_terms']);
+        $content = replace_placeholder($content, '{client_display_name}', $client_details['display_name']);
+        $content = replace_placeholder($content, '{client_first_name}', $client_details['first_name']);
+        $content = replace_placeholder($content, '{client_last_name}', $client_details['last_name']);
+        $content = replace_placeholder($content, '{client_credit_terms}', $client_details['credit_terms']);
     }
     if($message_name == 'email_msg_workorder') {
         // not currently used

@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'giftcert.php');
 
 // Prevent direct access to this page
@@ -24,6 +24,6 @@ if(!isset($VAR['giftcert_id']) || !$VAR['giftcert_id']) {
 // Delete the Gift Certificate - the giftcert is only deactivated
 delete_giftcert($VAR['giftcert_id']);
     
-// Reload the customers details page
+// Reload the clients details page
 force_page('giftcert', 'search', 'information_msg='._gettext("Gift Certificate deleted(blocked) successfully."));
 exit;

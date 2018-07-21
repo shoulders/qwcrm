@@ -49,10 +49,10 @@
                                 </td>
                             </tr>                                                        
                             
-                            <!-- Customer Stats (Global) -->
+                            <!-- Client Stats (Global) -->
                             <tr>
                                 <td>
-                                    {include file='customer/blocks/display_customer_overall_stats_block.tpl' customer_overall_stats=$global_customer_overall_stats block_title=_gettext("Overall Customer Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                             
+                                    {include file='client/blocks/display_client_overall_stats_block.tpl' client_overall_stats=$global_client_overall_stats block_title=_gettext("Overall Client Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                             
                                 </td>
                             </tr>
                             

@@ -99,7 +99,7 @@ function update_acl($permissions) {
                 `Technician`    =". $db->qstr( $page_permission['Technician']       ).",
                 `Clerical`      =". $db->qstr( $page_permission['Clerical']         ).",
                 `Counter`       =". $db->qstr( $page_permission['Counter']          ).",
-                `Customer`      =". $db->qstr( $page_permission['Customer']         ).",
+                `Client`      =". $db->qstr( $page_permission['Client']         ).",
                 `Guest`         =". $db->qstr( $page_permission['Guest']            ).",
                 `Public`        =". $db->qstr( $page_permission['Public']           )."
                 WHERE `page`    =". $db->qstr( $page_name                           ).";";
@@ -118,24 +118,24 @@ function update_acl($permissions) {
         array(
 
             // Permission always granted for all
-            'core:403'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-            'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-            'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-            'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-            'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
-            'user:login'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:403'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:404'          => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:error'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:home'         => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '1', 'Guest' => '1', 'Public' => '1'),
+            'core:maintenance'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '1', 'Guest' => '1', 'Public' => '1'),
+            'user:login'        => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '1', 'Guest' => '1', 'Public' => '1'),
 
             // Mixed Permissions
-            //'core:dashboard'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+            //'core:dashboard'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
             
             // Administrator Only
-            //'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
+            //'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
 
             // Permissions always removed for all
-            'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:choice'      => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:upgrade'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Customer' => '0', 'Guest' => '0', 'Public' => '0')
+            'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:choice'      => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:upgrade'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0')
 
         ); 
 
@@ -149,7 +149,7 @@ function update_acl($permissions) {
                 `Technician`    =". $db->qstr( $page_permission['Technician']     ).",
                 `Clerical`      =". $db->qstr( $page_permission['Clerical']       ).",
                 `Counter`       =". $db->qstr( $page_permission['Counter']        ).",
-                `Customer`      =". $db->qstr( $page_permission['Customer']       ).",
+                `Client`      =". $db->qstr( $page_permission['Client']       ).",
                 `Guest`         =". $db->qstr( $page_permission['Guest']          ).",
                 `Public`        =". $db->qstr( $page_permission['Public']         )."
                 WHERE `page`    =". $db->qstr( $page_name                         ).";";
@@ -465,7 +465,7 @@ function reset_acl_permissions() {
     } else {
     
         // Insert default permissions 
-        $sql = "INSERT INTO `".PRFX."user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Customer`, `Guest`, `Public`) VALUES
+        $sql = "INSERT INTO `".PRFX."user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES
                 ('administrator:acl', 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('administrator:config', 1, 0, 0, 0, 0, 0, 0, 0, 0),
                 ('administrator:phpinfo', 1, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -478,14 +478,14 @@ function reset_acl_permissions() {
                 ('core:error', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 ('core:home', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 ('core:maintenance', 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                ('customer:delete', 1, 1, 1, 0, 1, 0, 0, 0, 0),
-                ('customer:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                ('customer:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                ('customer:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                ('customer:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                ('customer:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
-                ('customer:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-                ('customer:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('client:delete', 1, 1, 1, 0, 1, 0, 0, 0, 0),
+                ('client:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('client:edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('client:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('client:note_delete', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('client:note_edit', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+                ('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('expense:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('expense:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('expense:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),

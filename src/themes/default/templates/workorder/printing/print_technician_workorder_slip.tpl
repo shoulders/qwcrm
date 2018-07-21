@@ -43,36 +43,36 @@
     <!-- Contact Information -->
     <table width="750" border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse;">
         <tr>
-            <td width="50%" align="center" valign="middle"><b>{t}Customer Details{/t}</b></td>
+            <td width="50%" align="center" valign="middle"><b>{t}Client Details{/t}</b></td>
             <td width="50%" align="center" valign="middle"><b>{t}Company Details{/t}</b></td>        
         </tr>    
         <tr>
 
-            <!-- Customer Details -->
+            <!-- Client Details -->
             <td valign="top">
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td>
-                            <p><b><font size="+1">{$customer_details.display_name}</font></b></p>
+                            <p><b><font size="+1">{$client_details.display_name}</font></b></p>
                             <p>                            
                                 <b>{t}Address{/t}:</b><br>
-                                {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                                {$customer_details.city}<br>
-                                {$customer_details.state}<br>
-                                {$customer_details.zip}<br>
-                                {$customer_details.country}
+                                {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                                {$client_details.city}<br>
+                                {$client_details.state}<br>
+                                {$client_details.zip}<br>
+                                {$client_details.country}
                             </p>
                             <p>
-                                <b>{t}Contact{/t}: </b>{$customer_details.first_name} {$customer_details.last_name}<br />
-                                <b>{t}Phone{/t}: </b>{$customer_details.primary_phone}<br>
-                                <b>{t}Mobile{/t}: </b>{$customer_details.mobile_phone}<br>
-                                <b>{t}Fax{/t}: </b>{$customer_details.primary_phone}<br>                                
-                                <b>{t}Email{/t}: </b>{$customer_details.email}<br>                            
+                                <b>{t}Contact{/t}: </b>{$client_details.first_name} {$client_details.last_name}<br />
+                                <b>{t}Phone{/t}: </b>{$client_details.primary_phone}<br>
+                                <b>{t}Mobile{/t}: </b>{$client_details.mobile_phone}<br>
+                                <b>{t}Fax{/t}: </b>{$client_details.primary_phone}<br>                                
+                                <b>{t}Email{/t}: </b>{$client_details.email}<br>                            
                             </p>
                             <p>
                                 <b>{t}Type{/t}: </b> 
-                                {section name=s loop=$customer_types}    
-                                    {if $customer_details.type == $customer_types[s].customer_type_id}{t}{$customer_types[s].display_name}{/t}{/if}        
+                                {section name=s loop=$client_types}    
+                                    {if $client_details.type == $client_types[s].client_type_id}{t}{$client_types[s].display_name}{/t}{/if}        
                                 {/section}                           
                             </p>
                         </td>

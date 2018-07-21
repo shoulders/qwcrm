@@ -54,15 +54,15 @@
     <tr>
         <td class="menutd"><b>{t}Is Employee{/t}</b></td>
         <td class="menutd">
-            {if $user_details.is_employee == '0'}{t}Customer{/t}{/if}
+            {if $user_details.is_employee == '0'}{t}Client{/t}{/if}
             {if $user_details.is_employee == '1'}{t}Employee{/t}{/if}
         </td>
-        <td class="menutd"><b>{t}Customer{/t}</b></td>
+        <td class="menutd"><b>{t}Client{/t}</b></td>
         <td class="menutd">
-            {if $user_details.customer_id == ''}
+            {if $user_details.client_id == ''}
                 {t}n/a{/t}
             {else}                
-                <a href="index.php?component=customer&page_tpl=details&customer_id={$user_details.customer_id}">{$customer_display_name}</a>
+                <a href="index.php?component=client&page_tpl=details&client_id={$user_details.client_id}">{$client_display_name}</a>
             {/if}
         </td>
     </tr>

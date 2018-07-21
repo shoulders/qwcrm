@@ -122,7 +122,7 @@
     <!-- Invoice To Box -->
     <table width="750" border="0" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
         <tr>
-            <td align="center" class="olotd5" style="font-size: 20px;">{t}Invoice{/t} - {$customer_details.display_name}</td>
+            <td align="center" class="olotd5" style="font-size: 20px;">{t}Invoice{/t} - {$client_details.display_name}</td>
         </tr>
     </table>
     <br>
@@ -288,10 +288,10 @@
     
     <!-- Footer Section -->    
     <table width="750" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-        {if $customer_details.credit_terms != ''}
+        {if $client_details.credit_terms != ''}
             <tr>
                 <td align="center">
-                    <b>{t}Credit Terms{/t}:</b> {$customer_details.credit_terms}
+                    <b>{t}Credit Terms{/t}:</b> {$client_details.credit_terms}
                 </td>
             </tr>
         {/if}

@@ -28,7 +28,7 @@
                                         <!-- The Actual Tabs -->
                                         <ul class="tabs">
                                             <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}User Details{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/customers.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Open Work Orders{/t}</a></li>                                                
+                                            <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/clients.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Open Work Orders{/t}</a></li>                                                
                                         </ul>
 
                                         <!-- This is used so the contents don't appear to the right of the tabs -->

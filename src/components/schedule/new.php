@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
@@ -23,8 +23,8 @@ if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
 }
 
-// Get customer_id
-$VAR['customer_id'] =  get_workorder_details($VAR['workorder_id'], 'customer_id');
+// Get client_id
+$VAR['client_id'] =  get_workorder_details($VAR['workorder_id'], 'client_id');
 
 // If new schedule item submitted
 if(isset($VAR['submit'])) {

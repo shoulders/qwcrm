@@ -39,13 +39,13 @@ defined('_QWEXEC') or die;
 /** General Section */
 
 
-/** Customers **/
+/** Clients **/
 
 #####################################
-#    Get Customer Overall Stats     #
+#    Get Client Overall Stats     #
 #####################################
 
-function get_customer_overall_stats() {
+function get_client_overall_stats() {
     
     /** Dates **/
 
@@ -73,27 +73,27 @@ function get_customer_overall_stats() {
     /* Build and return array */
     
     return array(
-        "month_count"   =>  count_customers('all', $date_month_start, $date_month_end),
-        "year_count"    =>  count_customers('all', $date_year_start, $date_year_end),
-        "total_count"   =>  count_customers('all')
+        "month_count"   =>  count_clients('all', $date_month_start, $date_month_end),
+        "year_count"    =>  count_clients('all', $date_year_start, $date_year_end),
+        "total_count"   =>  count_clients('all')
     );
     
 }
 
 #############################################
-#    Count Customers                        #
+#    Count Clients                        #
 #############################################
 
-function count_customers($status, $start_date = null, $end_date = null) { 
+function count_clients($status, $start_date = null, $end_date = null) { 
     
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = " WHERE customer_id >= '0'";
+    $whereTheseRecords = " WHERE client_id >= '0'";
     
     // Restrict by Status
     if($status != 'all') {        
-        $whereTheseRecords .= " AND ".PRFX."customer_records.active= ".$db->qstr($status);            
+        $whereTheseRecords .= " AND ".PRFX."client_records.active= ".$db->qstr($status);            
     }
         
     // Filter by Create Data
@@ -102,11 +102,11 @@ function count_customers($status, $start_date = null, $end_date = null) {
     }
     
     $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."customer_records
+            FROM ".PRFX."client_records
             ".$whereTheseRecords;                
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of customers."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of clients."));
     } else {
         
        return $rs->fields['count']; 

@@ -18,8 +18,8 @@ if(isset($VAR['submit'])) {
     $start_date = date_to_timestamp($VAR['start_date']);    
     $end_date = date_to_timestamp($VAR['end_date']);    
     
-    // Customers
-    $smarty->assign('new_customers',                count_customers('all', $start_date, $end_date)                         );      
+    // Clients
+    $smarty->assign('new_clients',                count_clients('all', $start_date, $end_date)                         );      
     
     // Workorders   
     $smarty->assign('wo_opened',                    count_workorders('opened', null, $start_date, $end_date)               );   

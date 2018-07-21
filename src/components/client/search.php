@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 
 // Prevent undefined variable errors
 $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
@@ -21,12 +21,12 @@ $VAR['filter_type'] = isset($VAR['filter_type']) ? $VAR['filter_type'] : null;
 if(isset($VAR['submit'])) {
     
     // Log activity
-    $record = _gettext("A search of customers has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    $record = _gettext("A search of clients has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
     write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset($VAR['submit']);
-    force_page('customer', 'search', $VAR, 'get');
+    force_page('client', 'search', $VAR, 'get');
     
 }
 
@@ -35,6 +35,6 @@ $smarty->assign('search_category',      $VAR['search_category']                 
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                 );
 $smarty->assign('filter_status',        $VAR['filter_status']                                                                                                               );
 $smarty->assign('filter_type',          $VAR['filter_type']                                                                                                                 );
-$smarty->assign('customer_types',       get_customer_types()                                                                                                                );
-$smarty->assign('display_customers',    display_customers('customer_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_type'])   );
-$BuildPage .= $smarty->fetch('customer/search.tpl');
+$smarty->assign('client_types',       get_client_types()                                                                                                                );
+$smarty->assign('display_clients',    display_clients('client_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status'], $VAR['filter_type'])   );
+$BuildPage .= $smarty->fetch('client/search.tpl');

@@ -36,7 +36,7 @@
                                                                         <option value="giftcert_id"{if $search_category == 'giftcert_id'} selected{/if}>{t}Gift Certificate ID{/t}</option>
                                                                         <option value="giftcert_code"{if $search_category == 'giftcert_code'} selected{/if}>{t}Gift Certificate Code{/t}</option>                                                                        
                                                                         <option value="employee_display_name"{if $search_category == 'employee_display_name'} selected{/if}>{t}Employee{/t}</option>
-                                                                        <option value="customer_display_name"{if $search_category == 'customer_display_name'} selected{/if}>{t}Customer{/t}</option>
+                                                                        <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Client{/t}</option>
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="note"{if $search_category == 'invoice_id'} selected{/if}>{t}Note{/t}</option> 

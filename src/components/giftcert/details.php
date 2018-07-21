@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'user.php');
 
@@ -18,7 +18,7 @@ if(!isset($VAR['giftcert_id']) || !$VAR['giftcert_id']) {
 }
 
 // Build the page
-$smarty->assign('customer_details',         get_customer_details(get_giftcert_details($VAR['giftcert_id'], 'customer_id'))               );
+$smarty->assign('client_details',         get_client_details(get_giftcert_details($VAR['giftcert_id'], 'client_id'))               );
 $smarty->assign('employee_display_name',    get_user_details(get_giftcert_details($VAR['giftcert_id'], 'employee_id'), 'display_name')   );
 $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                      );
 $smarty->assign('giftcert_details',         get_giftcert_details($VAR['giftcert_id'])                                                    );

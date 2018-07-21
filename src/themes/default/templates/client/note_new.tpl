@@ -23,7 +23,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0" >
                             <tr>
                                 <td width="100%" valign="top" >                                  
-                                    <form method="post" action="index.php?component=customer&page_tpl=note_new&customer_id={$customer_id}">                                        
+                                    <form method="post" action="index.php?component=client&page_tpl=note_new&client_id={$client_id}">                                        
                                         <table class="olotable" width="100%" border="0">
                                             <tr>
                                                 <td class="olohead"></td>
@@ -34,7 +34,7 @@
                                         </table>
                                         <br>
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=customer&page_tpl=details&customer_id={$customer_id}';">{t}Cancel{/t}</button>
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_id}';">{t}Cancel{/t}</button>
                                     </form>
                                     <br>
                                 </td>

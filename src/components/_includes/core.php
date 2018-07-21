@@ -11,7 +11,7 @@
  * Mandatory Code - Code that is run upon the file being loaded
  * Workorders - functions for wokorders
  * Invoices - functions for invoices
- * Customers - functions for customersd
+ * Clients - functions for clientsd
  */
 
 defined('_QWEXEC') or die;

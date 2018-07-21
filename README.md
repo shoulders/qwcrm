@@ -34,7 +34,7 @@ QWcrm has many features, not all can be listed here:
 
 * Employees and roles
 * Configurable permissions
-* Customer Management
+* Client Management
 * Work Order (Jobs/Tasks) Management 
 * Work Order Scheduling
 * Invoicing

@@ -190,7 +190,7 @@ class JUser
     public $login_display_name      = null;
     public $login_token             = null;    
     public $login_is_employee       = null;
-    public $login_customer_id       = null;
+    public $login_client_id       = null;
 
     /**
      * Constructor activating the default information of the language
@@ -706,7 +706,7 @@ class JUser
             $this->login_display_name       = $record['first_name'].' '.$record['last_name'];
             $this->login_token              = 'login_verified';
             $this->login_is_employee        = $record['is_employee'];
-            $this->login_customer_id        = $record['customer_id'];
+            $this->login_client_id          = $record['client_id'];
 
             // If not active block the account
             if($record['active'] != '1') { $this->block = 1; }
@@ -733,7 +733,7 @@ class JUser
             $this->login_display_name       = $record['display_name'];
             $this->login_token              = 'login_verified';
             $this->login_is_employee        = $record['is_employee'];
-            $this->login_customer_id        = $record['customer_id'];
+            $this->login_client_id        = $record['client_id'];
 
             // If not active block the account
             if($record['active'] != '1') { $this->block = 1; }

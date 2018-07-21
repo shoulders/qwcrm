@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php'); // require to stop email sub-system error
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');

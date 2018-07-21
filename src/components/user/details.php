@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'customer.php');
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
 
@@ -23,7 +23,7 @@ if(!isset($VAR['user_id']) || !$VAR['user_id']) {
 // Build the page
 
 $smarty->assign('user_details',             get_user_details($VAR['user_id'])                                                                         );
-$smarty->assign('customer_display_name',    get_customer_details(get_user_details($VAR['user_id'], 'customer_id'), 'customer_display_name')      );
+$smarty->assign('client_display_name',    get_client_details(get_user_details($VAR['user_id'], 'client_id'), 'client_display_name')      );
 $smarty->assign('usergroups',               get_usergroups()                                                                                     );
 $smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', $VAR['user_id']));
 $smarty->assign('user_locations',           get_user_locations());

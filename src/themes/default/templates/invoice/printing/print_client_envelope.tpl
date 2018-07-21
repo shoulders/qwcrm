@@ -1,4 +1,4 @@
-<!-- print_customer_envelope.tpl -->
+<!-- print_client_envelope.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -47,7 +47,7 @@
             <td>&nbsp;</td>
         </tr>
         
-        <!-- Customer Address -->
+        <!-- Client Address -->
         <tr>
             <td>&nbsp;</td>
             <td align="center">
@@ -55,12 +55,12 @@
                     <tr>                        
                         <td>
                             <span style="font-size: 20px;">
-                                {$customer_details.display_name}<br>
-                                {$customer_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
-                                {$customer_details.city}<br>
-                                {$customer_details.state}<br>
-                                {$customer_details.zip}<br>
-                                {$customer_details.country}
+                                {$client_details.display_name}<br>
+                                {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
+                                {$client_details.city}<br>
+                                {$client_details.state}<br>
+                                {$client_details.zip}<br>
+                                {$client_details.country}
                             </span>
                         </td>
                     </tr>

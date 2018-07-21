@@ -11,7 +11,7 @@
         <td class="olohead"><b>{t}Schedule ID{/t}</b></td>
         <td class="olohead"><b>{t}WO ID{/t}</b></td>
         <td class="olohead"><b>{t}Employee{/t}</b></td>
-        <td class="olohead"><b>{t}Customer{/t}</b></td>        
+        <td class="olohead"><b>{t}Client{/t}</b></td>        
         <td class="olohead"><b>{t}Start Time{/t}</b></td>
         <td class="olohead"><b>{t}End Time{/t}</b></td>
         <td class="olohead"><b>{t}Note{/t}</b></td>
@@ -31,9 +31,9 @@
                 <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_schedules[s].employee_id}">{$display_schedules[s].employee_display_name}</a>
             </td> 
             
-            <!-- Customer -->
+            <!-- Client -->
             <td class="olotd4" nowrap>                
-                <a class="link1" href="index.php?component=customer&page_tpl=details&customer_id={$display_schedules[s].customer_id}">{$display_schedules[s].customer_display_name}</a>
+                <a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_schedules[s].client_id}">{$display_schedules[s].client_display_name}</a>
             </td>            
 
             <!-- Start Time -->
@@ -51,7 +51,7 @@
 
             <!-- Action -->
             <td class="olotd4" align="center" nowrap>
-                <a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}&customer_id={$display_schedules[s].customer_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
+                <a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}&client_id={$display_schedules[s].client_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" border="0" onMouseOver="ddrivetip('{t}Details{/t}');" onMouseOut="hideddrivetip();"></a>
                 <a href="index.php?component=schedule&page_tpl=edit&schedule_id={$display_schedules[s].schedule_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
                 <a href="index.php?component=schedule&page_tpl=icalendar&schedule_id={$display_schedules[s].schedule_id}&theme=print" target="_blank"><img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Export{/t}');" onMouseOut="hideddrivetip();"></a>
                 <a href="index.php?component=schedule&page_tpl=delete&schedule_id={$display_schedules[s].schedule_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Schedule?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete{/t}</b>');" onMouseOut="hideddrivetip();"></a>                 

@@ -22,8 +22,8 @@ $smarty->assign('employee_workorder_overall_stats', get_workorder_stats('overall
 $smarty->assign('global_invoice_stats', get_invoices_stats('current'));
 $smarty->assign('global_invoice_overall_stats', get_invoices_stats('overall'));
 
-// Global Customer Stats
-$smarty->assign('global_customer_overall_stats', get_customer_overall_stats());
+// Global Client Stats
+$smarty->assign('global_client_overall_stats', get_client_overall_stats());
 
 // Build the page
 $BuildPage .= $smarty->fetch('report/basic_stats.tpl');
