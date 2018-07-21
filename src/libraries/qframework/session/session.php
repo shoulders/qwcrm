@@ -1046,7 +1046,7 @@ class JSession implements IteratorAggregate
             // if login not shared between site and admin (joomla thing)
             if (!$config->get('shared_session', '0'))
             {
-                $record['client_id'] = (int) QFactory::getClientId();
+                $record['clientid'] = (int) QFactory::getClientId();
             }            
 
             // If the insert failed, exit the application.

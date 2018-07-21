@@ -363,7 +363,7 @@ class PlgAuthenticationQwcrm
 
             if (!$sharedSessions)
             {
-                $sql .= "AND client_id = " . $this->db->qstr((int) $options['clientid']);
+                $sql .= "AND clientid = " . $this->db->qstr((int) $options['clientid']);
             }
 
             try
