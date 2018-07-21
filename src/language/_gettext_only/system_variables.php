@@ -35,8 +35,7 @@ _gettext("Cancelled");
 _gettext("Refunded");
 _gettext("Collections");
 
-/* Client */
-
+/* Client Types */
 _gettext("Residential");
 _gettext("Commercial");
 _gettext("Charity");
