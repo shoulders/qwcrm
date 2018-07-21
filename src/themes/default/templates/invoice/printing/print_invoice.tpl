@@ -130,50 +130,54 @@
     <!-- Items Table Section -->
 
     <!-- Labour Table -->
-    <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-        <tr>
-            <td class="olohead" width="40"><b>{t}Qty{/t}</b></td>
-            <td class="olohead"><b>{t}Labour Items{/t}</b></td>
-            <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
-            <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
-        </tr>
-        {section name=l loop=$labour_items}
-            <tr class="olotd4">
-                <td class="olotd4" width="40">{$labour_items[l].qty}</td>
-                <td class="olotd4">{$labour_items[l].description}</td>
-                <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
+    {if $labour_items}
+        <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td class="olohead" width="40"><b>{t}Qty{/t}</b></td>
+                <td class="olohead"><b>{t}Labour Items{/t}</b></td>
+                <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
+                <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
             </tr>
-        {/section}
-        <tr>
-            <td colspan="3" style="text-align:right;"><b>{t}Labour Total{/t}</b></td>
-            <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
-        </tr>
-    </table>
-    <br>
+            {section name=l loop=$labour_items}
+                <tr class="olotd4">
+                    <td class="olotd4" width="40">{$labour_items[l].qty}</td>
+                    <td class="olotd4">{$labour_items[l].description}</td>
+                    <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
+                    <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
+                </tr>
+            {/section}
+            <tr>
+                <td colspan="3" style="text-align:right;"><b>{t}Labour Total{/t}</b></td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
+            </tr>
+        </table>
+        <br>
+    {/if}
 
     <!-- Parts Table -->
-    <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-        <tr>
-            <td width="40" class="olohead"><b>{t}Qty{/t}</b></td>
-            <td class="olohead"><b>{t}Parts Items{/t}</b></td>
-            <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
-            <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
-        </tr>
-        {section name=p loop=$parts_items}        
-            <tr class="olotd4">
-                <td class="olotd4" width="40">{$parts_items[p].qty}</td>
-                <td class="olotd4">{$parts_items[p].description}</td>
-                <td class="olotd4" width="60" align="right">{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
+    {if $parts_items}
+        <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td width="40" class="olohead"><b>{t}Qty{/t}</b></td>
+                <td class="olohead"><b>{t}Parts Items{/t}</b></td>
+                <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
+                <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
             </tr>
-        {/section}
-        <tr>           
-            <td colspan="3" style="text-align:right;"><b>{t}Parts Total{/t}</b></td>
-            <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
-        </tr>
-    </table>
-    <br>
+            {section name=p loop=$parts_items}        
+                <tr class="olotd4">
+                    <td class="olotd4" width="40">{$parts_items[p].qty}</td>
+                    <td class="olotd4">{$parts_items[p].description}</td>
+                    <td class="olotd4" width="60" align="right">{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
+                    <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
+                </tr>
+            {/section}
+            <tr>           
+                <td colspan="3" style="text-align:right;"><b>{t}Parts Total{/t}</b></td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
+            </tr>
+        </table>
+        <br>
+    {/if}
 
     <!-- Financial Section -->         
     
@@ -216,7 +220,7 @@
                                     {t}Bank Name{/t}: {$payment_options.bank_name}<br>
                                     {t}Account Number{/t}: {$payment_options.bank_account_number}<br>
                                     {t}Sort Code{/t}: {$payment_options.bank_sort_code}<br>
-                                    {t}IBAN{/t}: {$payment_options.bank_iban}                                
+                                    {if $payment_options.bank_iban}{t}IBAN{/t}: {$payment_options.bank_iban}{/if}
                                 </td>
                             </tr>
                             <tr>
