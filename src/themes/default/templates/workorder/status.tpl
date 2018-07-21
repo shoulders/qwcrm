@@ -37,13 +37,13 @@
                                                 {section name=s loop=$workorder_statuses}    
                                                     <option value="{$workorder_statuses[s].status_key}"{if $workorder_status == $workorder_statuses[s].status_key} selected{/if}>{t}{$workorder_statuses[s].display_name}{/t}</option>
                                                 {/section}                                            
-                                            </select>                                        
-                                            <input type="hidden" name="updated_by" value="{$login_user_id}">                                            
-                                            <p>&nbsp;</p>                                        
+                                            </select>                                                                                        
+                                            <p>&nbsp;</p>
+                                            <input type="hidden" name="updated_by" value="{$login_user_id}">
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />                                                                      
                                         </form>
                                     {else}
-                                        {t}This work order cannot have it's status changed because it has an invoice.{/t}
+                                        {t}This work order cannot have it's status changed because it's current state does not allow it.{/t}
                                     {/if}
                                 </td>
 
@@ -67,7 +67,7 @@
                                             <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$assigned_employee_id}">{$assigned_employee_details.employee_display_name}</a>
                                         {/if}
                                     {else}
-                                        {t}This work order cannot have it's assigned employee changed because it is closed.{/t}
+                                        {t}This work order cannot have it's assigned employee changed because it's current state does not allow it.{/t}
                                     {/if}
                                 </td>
 
