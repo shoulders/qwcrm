@@ -17,7 +17,10 @@ $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;
 if(isset($VAR['submit'])) {
 
     // Submit data to the database
-    update_company_details($VAR);    
+    update_company_details($VAR);
+    
+    // Reload Company options and display a success message
+    force_page('company', 'options', 'information_msg='._gettext("Company details updated."));
     
 }
 

@@ -163,7 +163,7 @@
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                     <td>
-                                                                                        <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                        <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                                                         <button type="button" id="year_start_button">+</button>
                                                                                         <script>                                                        
                                                                                             Calendar.setup( {
@@ -177,7 +177,7 @@
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Financial Year End{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                     <td>
-                                                                                        <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                                                        <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                                                         <button type="button" id="year_end_button">+</button>
                                                                                         <script>                                                        
                                                                                             Calendar.setup( {
@@ -231,6 +231,7 @@
                                                                                             <option value="%m/%d/%Y"{if $company_details.date_format == '%m/%d/%Y'} selected{/if}>mm/dd/yyyy</option>
                                                                                             <option value="%d/%m/%y"{if $company_details.date_format == '%d/%m/%y'} selected{/if}>dd/mm/yy</option>
                                                                                             <option value="%m/%d/%y"{if $company_details.date_format == '%m/%d/%y'} selected{/if}>mm/dd/yy</option>
+                                                                                            <option value="%Y-%m-%d"{if $company_details.date_format == '%Y-%m-%d'} selected{/if}>yyyy-mm-dd</option>
                                                                                         </select>
                                                                                     </td>
                                                                                 </tr>                                                        

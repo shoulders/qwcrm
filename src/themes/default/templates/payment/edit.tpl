@@ -58,7 +58,7 @@
                                                     <tr>
                                                         <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>
-                                                            <input id="date" name="date" class="olotd5" size="10" value="{$payment_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,2}(\/|-)[0-9]{1,2}(\/|-)[0-9]{2,2}([0-9]{2,2})?${/literal}" required onkeydown="return onlyDate(event);">
+                                                            <input id="date" name="date" class="olotd5" size="10" value="{$payment_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
                                                             <button type="button" id="date_button">+</button>
                                                             <script>                                                                
                                                                 Calendar.setup( {

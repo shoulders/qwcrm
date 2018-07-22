@@ -289,13 +289,13 @@ function perform_redirect($url, $type = 'header') {
         } else {
             
             // Build the error message
-            $error_msg = __gettext("Headers already sent in").' '.$filename.' '.__gettext("on line").' '.$linenum.' .';
+            $error_msg = _gettext("Headers already sent in").' '.$filename.' '._gettext("on line").' '.$linenum.' .';
             
             // Get routing variables
             $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
             
             // Log errors to log if enabled
-            if($config->get('qwcrm_error_log')) {    
+            if(QFactory::getConfig()->get('qwcrm_error_log')) {    
                 write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
             }
             
@@ -967,13 +967,16 @@ function convert_year_month_day_to_date($year, $month, $day) {
         return $day."/".$month."/".$year;
 
         case '%d/%m/%y':
-        return $day."/".$month."/".substr($year, 2);
+        return $day.'/'.$month.'/'.substr($year, 2);
 
         case '%m/%d/%Y':
-        return $month."/".$day."/".$year;
+        return $month.'/'.$day.'/'.$year;
 
         case '%m/%d/%y':
-        return $month."/".$day."/".substr($year, 2);
+        return $month.'/'.$day.'/'.substr($year, 2);
+            
+        case '%Y-%m-%d':
+        return $year.'-'.$month.'-'.$day;
             
     }
     
@@ -983,17 +986,17 @@ function convert_year_month_day_to_date($year, $month, $day) {
 #    Get Timestamp from year/month/day      #
 #############################################
 
-function convert_year_month_day_to_timestamp($start_year, $start_month, $start_day) {  
+function convert_year_month_day_to_timestamp($year, $month, $day) {  
             
-        return DateTime::createFromFormat('!Y/m/d', $start_year.'/'.$start_month.'/'.$start_day)->getTimestamp();   
+        return DateTime::createFromFormat('!Y/m/d', $year.'/'.$month.'/'.$day)->getTimestamp();   
         
 }
 
 ##########################################
-#   Convert Date into Unix Timestamp     #
+#   Convert Date into Unix Timestamp     #  // $date_format is not currently used
 ##########################################
 
-function date_to_timestamp($date_to_convert) {   
+function date_to_timestamp($date_to_convert, $date_format = null) {   
     
     // this is just returning the current time
     // http://php.net/manual/en/datetime.createfromformat.php
@@ -1002,19 +1005,22 @@ function date_to_timestamp($date_to_convert) {
     // the ! allows the use without supplying the time portion
     // this works for all formats of dates where as mktime() might be a bit dodgy
     
-    switch(DATE_FORMAT) {
+    switch(!is_null($date_format) ? $date_format : DATE_FORMAT) {
         
-        case '%d/%m/%Y':         
+        case '%d/%m/%Y':   
         return DateTime::createFromFormat('!d/m/Y', $date_to_convert)->getTimestamp();
         
-        case '%d/%m/%y':         
+        case '%d/%m/%y':    
         return DateTime::createFromFormat('!d/m/y', $date_to_convert)->getTimestamp();
         
-        case '%m/%d/%Y':         
+        case '%m/%d/%Y':   
         return DateTime::createFromFormat('!m/d/Y', $date_to_convert)->getTimestamp();
 
-        case '%m/%d/%y':         
-        return DateTime::createFromFormat('!m/d/y', $date_to_convert)->getTimestamp(); 
+        case '%m/%d/%y':    
+        return DateTime::createFromFormat('!m/d/y', $date_to_convert)->getTimestamp();
+            
+        case '%Y-%m-%d':         
+        return DateTime::createFromFormat('!Y-m-d', $date_to_convert)->getTimestamp();
         
     }
     
@@ -1121,6 +1127,9 @@ function timestamp_to_date($timestamp) {
 
         case '%m/%d/%y':
         return date('m/d/y', $timestamp);
+            
+        case '%Y-%m-%d':
+        return date('Y-m-d', $timestamp);
             
     }
 

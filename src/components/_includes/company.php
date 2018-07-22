@@ -92,6 +92,10 @@ function update_company_details($VAR) {
         $new_logo_filepath = upload_logo();
     }
     
+    // Convert the dates before submission to prevent errors
+    //$VAR['year_start'] = date_to_timestamp($VAR['year_start']);
+    //$VAR['year_end']   = date_to_timestamp($VAR['year_end']);
+    
     $sql .= "UPDATE ".PRFX."company_options SET
             company_name            =". $db->qstr( $VAR['company_name']                     ).",";
     
@@ -131,14 +135,13 @@ function update_company_details($VAR) {
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
-    } else {
-        
+    } else {       
             
         // Refresh company logo
-        $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
+        //$smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
         
         // Assign success message
-        $smarty->assign('information_msg', _gettext("Company details updated."));
+        //$smarty->assign('information_msg', _gettext("Company details updated."));
         
         // Log activity        
         write_record_to_activity_log(_gettext("Company details updated."));
