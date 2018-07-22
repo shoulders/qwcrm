@@ -25,5 +25,6 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
+$smarty->assign('date_formats', get_date_formats());
 $smarty->assign('company_details', get_company_details() );
 $BuildPage .= $smarty->fetch('company/options.tpl');

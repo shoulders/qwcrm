@@ -328,7 +328,7 @@ function get_client_notes($client_id) {
 }
 
 #####################################
-#    Get Client Types             #
+#    Get Client Types               #
 #####################################
 
 function get_client_types() {

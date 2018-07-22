@@ -947,6 +947,26 @@ function write_record_to_error_log($error_page, $error_type, $error_location, $p
 
 /* Date and Time */
 
+##########################################
+#      Get Date Formats                  #
+##########################################
+
+function get_date_formats() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."date_formats";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
+    } else {
+        
+        return $rs->GetArray();
+        
+    }
+    
+}    
+
 #########################################################
 #   Return Date in correct format from year/month/day   #  // only used in schedule
 #########################################################
