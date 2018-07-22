@@ -948,10 +948,8 @@ function write_record_to_error_log($error_page, $error_type, $error_location, $p
 /* Date and Time */
 
 #########################################################
-#   Return Date in correct format from year/month/day   #
+#   Return Date in correct format from year/month/day   #  // only used in schedule
 #########################################################
-
-// only used in schedule
 
 function convert_year_month_day_to_date($year, $month, $day) {    
 
@@ -990,6 +988,16 @@ function convert_year_month_day_to_timestamp($year, $month, $day) {
             
         return DateTime::createFromFormat('!Y/m/d', $year.'/'.$month.'/'.$day)->getTimestamp();   
         
+}
+
+##########################################
+#   Timestamp to calendar date format    #
+##########################################
+
+function timestamp_to_calendar_format($timestamp) {
+    
+    return date('Ymd', $timestamp);
+    
 }
 
 ##########################################
@@ -1057,6 +1065,33 @@ function date_to_timestamp($date_to_convert, $date_format = null) {
 }
 
 ##########################################
+#     Timestamp to date                  #  // not used anywhere at the minute
+##########################################
+
+function timestamp_to_date($timestamp) {    
+
+    switch(DATE_FORMAT) {
+        
+        case '%d/%m/%Y':
+        return date('d/m/Y', $timestamp);        
+        
+        case '%d/%m/%y':
+        return date('d/m/y', $timestamp);       
+
+        case '%m/%d/%Y':
+        return date('m/d/Y', $timestamp);        
+
+        case '%m/%d/%y':
+        return date('m/d/y', $timestamp);
+            
+        case '%Y-%m-%d':
+        return date('Y-m-d', $timestamp);
+            
+    }
+
+}
+
+##########################################
 #    Date with Time to Unix Timestamp    #
 ##########################################
 
@@ -1105,43 +1140,6 @@ function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian
         return $timestamp;
         
     }
-    
-}
-
-##########################################
-#     Timestamp to dates                 #  // not used anywhere at the minute
-##########################################
-
-function timestamp_to_date($timestamp) {    
-
-    switch(DATE_FORMAT) {
-        
-        case '%d/%m/%Y':
-        return date('d/m/Y', $timestamp);        
-        
-        case '%d/%m/%y':
-        return date('d/m/y', $timestamp);       
-
-        case '%m/%d/%Y':
-        return date('m/d/Y', $timestamp);        
-
-        case '%m/%d/%y':
-        return date('m/d/y', $timestamp);
-            
-        case '%Y-%m-%d':
-        return date('Y-m-d', $timestamp);
-            
-    }
-
-}
-
-##########################################
-#   Timestamp to calendar date format    #
-##########################################
-
-function timestamp_to_calendar_format($timestamp) {
-    
-    return date('Ymd', $timestamp);
     
 }
 
