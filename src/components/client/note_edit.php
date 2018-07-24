@@ -12,14 +12,14 @@ require(INCLUDES_DIR.'client.php');
 
 // check if we have a client_note_id
 if(!isset($VAR['client_note_id']) || !$VAR['client_note_id']) {
-    force_page('client', 'search', 'warning_msg='._gettext("No Client ID supplied."));
+    force_page('client', 'search', 'warning_msg='._gettext("No Client Note ID supplied."));
 }
 
 // If record submitted for updating
 if(isset($VAR['submit'])) {
                
     update_client_note($VAR['client_note_id'], $VAR['note']);
-    force_page('client', 'details&client_id='.$VAR['client_id']);   
+    force_page('client', 'details&client_id='.get_client_note($VAR['client_note_id'], 'client_id'));   
     
 } else {    
     

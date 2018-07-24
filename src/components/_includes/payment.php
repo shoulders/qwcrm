@@ -174,10 +174,10 @@ function insert_payment($VAR) {
     
     $sql = "INSERT INTO ".PRFX."payment_records SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
-            client_id     = ".$db->qstr( $invoice_details['client_id']             ).",
+            client_id       = ".$db->qstr( $invoice_details['client_id']               ).",
             workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
             invoice_id      = ".$db->qstr( $VAR['invoice_id']                          ).",
-            date            = ".$db->qstr( date_to_timestamp($VAR['date'])             ).",
+            date            = ".$db->qstr( date_to_mysql_date($VAR['date'])            ).",
             method          = ".$db->qstr( $VAR['method_type']                         ).",
             amount          = ".$db->qstr( $VAR['amount']                              ).",
             note            = ".$db->qstr( $VAR['note']                                );
@@ -392,10 +392,10 @@ function update_payment($VAR) {
     
     $sql = "UPDATE ".PRFX."payment_records SET        
             employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
-            client_id     = ".$db->qstr( $VAR['client_id']              ).",
+            client_id       = ".$db->qstr( $VAR['client_id']                ).",
             workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
             invoice_id      = ".$db->qstr( $VAR['invoice_id']               ).",
-            date            = ".$db->qstr( date_to_timestamp($VAR['date'])  ).",
+            date            = ".$db->qstr( date_to_mysql_date($VAR['date']) ).",
             method          = ".$db->qstr( $VAR['method']                   ).",
             amount          = ".$db->qstr( $VAR['amount']                   ).",
             note            = ".$db->qstr( $VAR['note']                     )."

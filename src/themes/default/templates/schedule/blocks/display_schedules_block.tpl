@@ -11,7 +11,8 @@
         <td class="olohead"><b>{t}Schedule ID{/t}</b></td>
         <td class="olohead"><b>{t}WO ID{/t}</b></td>
         <td class="olohead"><b>{t}Employee{/t}</b></td>
-        <td class="olohead"><b>{t}Client{/t}</b></td>        
+        <td class="olohead"><b>{t}Client{/t}</b></td>
+        <td class="olohead"><b>{t}Date{/t}</b></td>
         <td class="olohead"><b>{t}Start Time{/t}</b></td>
         <td class="olohead"><b>{t}End Time{/t}</b></td>
         <td class="olohead"><b>{t}Note{/t}</b></td>
@@ -34,13 +35,16 @@
             <!-- Client -->
             <td class="olotd4" nowrap>                
                 <a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_schedules[s].client_id}">{$display_schedules[s].client_display_name}</a>
-            </td>            
-
+            </td> 
+            
             <!-- Start Time -->
             <td class="olotd4"> {$display_schedules[s].start_time|date_format:$date_format}</td>
 
+            <!-- Start Time -->
+            <td class="olotd4"> {$display_schedules[s].start_time|date_format:'H:i'}</td>
+
             <!-- End time -->
-            <td class="olotd4">{$display_schedules[s].end_time|date_format:$date_format}</td>
+            <td class="olotd4">{$display_schedules[s].end_time|date_format:'H:i'}</td>
             
             <!-- Note -->            
             <td class="olotd4" nowrap>

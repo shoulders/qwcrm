@@ -70,7 +70,7 @@ function load_system_variables(&$VAR) {
     // This assigns framework globals to smarty and also prevents undefined variable errors (mainly for the menu)
     isset($VAR['user_id'])      ? $smarty->assign('user_id', $VAR['user_id'])           : $smarty->assign('user_id', null);
     isset($VAR['employee_id'])  ? $smarty->assign('employee_id', $VAR['employee_id'])   : $smarty->assign('employee_id', null);
-    isset($VAR['client_id'])  ? $smarty->assign('client_id', $VAR['client_id'])   : $smarty->assign('client_id', null);
+    isset($VAR['client_id'])    ? $smarty->assign('client_id', $VAR['client_id'])       : $smarty->assign('client_id', null);
     isset($VAR['workorder_id']) ? $smarty->assign('workorder_id', $VAR['workorder_id']) : $smarty->assign('workorder_id', null);
     isset($VAR['invoice_id'])   ? $smarty->assign('invoice_id', $VAR['invoice_id'])     : $smarty->assign('invoice_id', null);
     isset($VAR['payment_id'])   ? $smarty->assign('payment_id', $VAR['payment_id'])     : $smarty->assign('payment_id', null);
@@ -84,7 +84,7 @@ function load_system_variables(&$VAR) {
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
         $smarty->assign('currency_sym', get_company_details('currency_symbol')     );
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
-        $smarty->assign('date_format',  DATE_FORMAT                                     );
+        $smarty->assign('date_format',  DATE_FORMAT                                );
     }
 
     #############################
@@ -122,7 +122,7 @@ function set_user_smarty_variables() {
     $smarty->assign('login_display_name',       $user->login_display_name     );
     $smarty->assign('login_token',              $user->login_token            );
     $smarty->assign('login_is_employee',        $user->login_is_employee      );
-    $smarty->assign('login_client_id',        $user->login_client_id      );
+    $smarty->assign('login_client_id',          $user->login_client_id        );
     
     return;
     

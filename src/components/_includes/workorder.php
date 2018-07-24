@@ -256,8 +256,8 @@ function insert_workorder($client_id, $scope, $description, $comment) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."workorder_records SET            
-            client_id     =". $db->qstr( $client_id                         ).",
-            open_date       =". $db->qstr( time()                               ).",
+            client_id       =". $db->qstr( $client_id                           ).",
+            open_date       =". $db->qstr( mysql_datetime()                     ).",
             status          =". $db->qstr( 'unassigned'                         ).",
             is_closed       =". $db->qstr( 0                                    ).", 
             created_by      =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -308,7 +308,7 @@ function insert_workorder_history_note($workorder_id = null, $note = '') {
     $sql = "INSERT INTO ".PRFX."workorder_history SET            
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             workorder_id    =". $db->qstr( $workorder_id                        ).",
-            date            =". $db->qstr( time()                               ).",
+            date            =". $db->qstr( mysql_datetime()                     ).",
             note            =". $db->qstr( $note                                );
     
     if(!$rs = $db->Execute($sql)) {        
@@ -332,7 +332,7 @@ function insert_workorder_note($workorder_id, $note) {
     $sql = "INSERT INTO ".PRFX."workorder_notes SET                        
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             workorder_id    =". $db->qstr( $workorder_id                        ).", 
-            date            =". $db->qstr( time()                               ).",
+            date            =". $db->qstr( mysql_datetime()                     ).",
             description     =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
@@ -764,7 +764,7 @@ function update_workorder_closed_status($workorder_id, $new_closed_status) {
     if($new_closed_status == 'close') {        
         $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-                close_date          =". $db->qstr( time()                               ).",
+                close_date          =". $db->qstr( mysql_datetime()                     ).",
                 is_closed           =". $db->qstr( 1                                    )."
                 WHERE workorder_id  =". $db->qstr( $workorder_id                        );
         
@@ -788,7 +788,7 @@ function update_workorder_last_active($workorder_id = null) {
     if(!$workorder_id) { return; }
     
     $sql = "UPDATE ".PRFX."workorder_records SET
-            last_active=".$db->qstr(time())."
+            last_active=".$db->qstr( mysql_datetime() )."
             WHERE workorder_id=".$db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -866,7 +866,7 @@ function close_workorder_without_invoice($workorder_id, $resolution) {
     // Insert resolution and close information
     $sql = "UPDATE ".PRFX."workorder_records SET
             closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            close_date          =". $db->qstr( time()                               ).",            
+            close_date          =". $db->qstr( mysql_datetime()                     ).",            
             status              =". $db->qstr( 'closed_without_invoice'             ).",
             is_closed           =". $db->qstr( 1                                    ).",
             resolution          =". $db->qstr( $resolution                          )."
@@ -910,7 +910,7 @@ function close_workorder_with_invoice($workorder_id, $resolution) {
     // Insert resolution and close information
     $sql = "UPDATE ".PRFX."workorder_records SET
             closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            close_date          =". $db->qstr( time()                               ).",            
+            close_date          =". $db->qstr( mysql_datetime()                     ).",            
             status              =". $db->qstr( 'closed_with_invoice'                ).",
             is_closed           =". $db->qstr( 1                                    ).",
             resolution          =". $db->qstr( $resolution                          )."

@@ -17,7 +17,7 @@ if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {
 }
 
 // Build the page
-$smarty->assign('expense_types', get_expense_types());
+$smarty->assign('expense_types',   get_expense_types());
 $smarty->assign('payment_methods', get_payment_purchase_methods());
 $smarty->assign('expense_details', get_expense_details($VAR['expense_id']));
 $BuildPage .= $smarty->fetch('expense/details.tpl');

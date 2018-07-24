@@ -190,7 +190,7 @@ class JUser
     public $login_display_name      = null;
     public $login_token             = null;    
     public $login_is_employee       = null;
-    public $login_client_id       = null;
+    public $login_client_id         = null;
 
     /**
      * Constructor activating the default information of the language
@@ -223,7 +223,7 @@ class JUser
             // Initialise
             $this->id = 0;
             $this->sendEmail = 0;
-            $this->aid = 0;
+            $this->aid = 0;         // not used in QWcrm currently
             $this->guest = 1;
         }
         
@@ -357,7 +357,7 @@ class JUser
         return $table->setLastVisit($timestamp);*/
         
         $db = QFactory::getDbo();        
-        $sql = "UPDATE ".PRFX."user_records SET last_active = ".time()." WHERE user_id = " . $db->qstr($this->id);
+        $sql = "UPDATE ".PRFX."user_records SET last_active = ".mysql_datetime()." WHERE user_id = " . $db->qstr($this->id);
         $db->Execute($sql);
         
         return;
@@ -799,7 +799,7 @@ class JUser
             // Initialise
             $this->id = 0;
             $this->sendEmail = 0;
-            $this->aid = 0;
+            $this->aid = 0;     // not used in QWcrm currently
             $this->guest = 1;
         }
     }    

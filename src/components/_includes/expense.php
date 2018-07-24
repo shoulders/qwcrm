@@ -144,7 +144,7 @@ function insert_expense($VAR) {
     $sql = "INSERT INTO ".PRFX."expense_records SET
             invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
             payee           =". $db->qstr( $VAR['payee']                   ).",
-            date            =". $db->qstr( date_to_timestamp($VAR['date']) ).",
+            date            =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type            =". $db->qstr( $VAR['type']                    ).",
             payment_method  =". $db->qstr( $VAR['payment_method']          ).",
             net_amount      =". $db->qstr( $VAR['net_amount']              ).",
@@ -232,8 +232,8 @@ function update_expense($expense_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."expense_records SET
             invoice_id          =". $db->qstr( $VAR['invoice_id']               ).",
-            payee               =". $db->qstr( $VAR['payee']                    ).",
-            date                =". $db->qstr( date_to_timestamp($VAR['date'])  ).",
+            payee               =". $db->qstr( $VAR['payee']                    ).",            
+            date                =". $db->qstr( date_to_mysql_date($VAR['date']) ).",
             type                =". $db->qstr( $VAR['type']                     ).",
             payment_method      =". $db->qstr( $VAR['payment_method']           ).",
             net_amount          =". $db->qstr( $VAR['net_amount']               ).",

@@ -25,25 +25,25 @@ function greeting_message_based_on_time($employee_name) {
     $friday     = _gettext("Get ready for the weekend!");
     
     // Get the current hour
-    $current_time = date('H');
+    $current_hour = date('H');
     
     // Get the current day
     $current_day = date('l');
     
     // 06:00 - 11:59
-    if ($current_time >= 6 && $current_time <=11) {
+    if ($current_hour >= 6 && $current_hour <=11) {
         $greeting_msg = $morning;
     }
     // 12:00 - 17:59
-    elseif ($current_time >= 12 && $current_time <= 17) {
+    elseif ($current_hour >= 12 && $current_hour <= 17) {
         $greeting_msg =  $afternoon;
     }
     // 18:00. - 23:59 p.m.
-    elseif ($current_time >= 17 && $current_time <= 23) {
+    elseif ($current_hour >= 17 && $current_hour <= 23) {
         $greeting_msg =  $evening;
     }
     // 00:00 - 05:59
-    elseif ($current_time >= 0 && $current_time <= 5) {
+    elseif ($current_hour >= 0 && $current_hour <= 5) {
         $greeting_msg = $night;
     }    
     

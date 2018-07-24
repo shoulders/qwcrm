@@ -189,9 +189,9 @@ function insert_giftcert($client_id, $date_expires, $amount, $note) {
     $sql = "INSERT INTO ".PRFX."giftcert_records SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            client_id     =". $db->qstr( $client_id                         ).",
-            date_created    =". $db->qstr( time()                               ).",
-            date_expires    =". $db->qstr( $date_expires                        ).",            
+            client_id       =". $db->qstr( $client_id                           ).",
+            date_created    =". $db->qstr( mysql_datetime()                     ).",
+            date_expires    =". $db->qstr( date_to_mysql_date($date_expires)    ).",            
             status          =". $db->qstr( 'unused'                             ).",  
             blocked         =". $db->qstr( '0'                                  ).",
             amount          =". $db->qstr( $amount                              ).",
@@ -321,7 +321,7 @@ function update_giftcert($giftcert_id, $date_expires, $amount, $note) {
     
     $sql = "UPDATE ".PRFX."giftcert_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            date_expires    =". $db->qstr( $date_expires                        ).",            
+            date_expires    =". $db->qstr( date_to_mysql_date($date_expires)    ).",            
             amount          =". $db->qstr( $amount                              ).",
             note            =". $db->qstr( $note                                )."
             WHERE giftcert_id =". $db->qstr($giftcert_id);
@@ -368,7 +368,7 @@ function update_giftcert_status($giftcert_id, $new_status, $silent = false) {
     
     $sql = "UPDATE ".PRFX."giftcert_records SET
             status               =". $db->qstr( $new_status  )."            
-            WHERE giftcert_id    =". $db->qstr( $giftcert_id  );
+            WHERE giftcert_id    =". $db->qstr( $giftcert_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a gift Certificate Status."));
@@ -398,7 +398,6 @@ function update_giftcert_status($giftcert_id, $new_status, $silent = false) {
     }
     
 }
-
 
 /** Close Functions **/
 
@@ -500,12 +499,12 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
     
     $sql = "UPDATE ".PRFX."giftcert_records SET
             employee_id         =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            workorder_id        =". $db->qstr( $workorder_id ).",
-            invoice_id          =". $db->qstr( $invoice_id   ).",
-            date_redeemed       =". $db->qstr( time()        ).",
-            redeemed            =". $db->qstr( 1             ).",            
-            blocked             =". $db->qstr( 1             )."
-            WHERE giftcert_id   =". $db->qstr( $giftcert_id  );
+            workorder_id        =". $db->qstr( $workorder_id    ).",
+            invoice_id          =". $db->qstr( $invoice_id      ).",
+            date_redeemed       =". $db->qstr( mysql_datetime() ).",
+            redeemed            =". $db->qstr( 1                ).",            
+            blocked             =". $db->qstr( 1                )."
+            WHERE giftcert_id   =". $db->qstr( $giftcert_id     );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
@@ -522,7 +521,7 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
 }
 
 ##########################################################
-#  Check if the giftcert status is allowed to be changed  #
+#  Check if the giftcert status is allowed to be changed #
 ##########################################################
 
  function check_giftcert_can_be_edited($giftcert_id) {
@@ -690,7 +689,7 @@ function validate_giftcert_is_expired($giftcert_id) {
     $giftcert_details = get_giftcert_details($giftcert_id);
     
     // If the giftcert is expired 
-    if ($giftcert_details['date_expires'] < time() ) {
+    if (strtotime($giftcert_details['date_expires']) < time() ) {
         
         // If the status is not 'expired', update the status silenty (only from unused)
         if ($giftcert_details['status'] == 'unused') {
@@ -702,7 +701,7 @@ function validate_giftcert_is_expired($giftcert_id) {
     }
     
     // If the giftcert is not expired
-    if ($giftcert_details['date_expires'] >= time() ) {
+    if (strtotime($giftcert_details['date_expires']) >= time() ) {
         
         //  If the status has not been updated, update the status silenty (only from expired)
         if ($giftcert_details['status'] == 'expired') {

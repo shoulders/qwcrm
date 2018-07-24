@@ -30,8 +30,8 @@ $giftcert_details = get_giftcert_details($VAR['giftcert_id']);
 $client_details = get_client_details($giftcert_details['client_id']);
 
 // Assign Variables
-$smarty->assign('company_details',  get_company_details()    );
-$smarty->assign('client_details', $client_details           );
+$smarty->assign('company_details',  get_company_details()       );
+$smarty->assign('client_details',   $client_details             );
 $smarty->assign('giftcert_details', $giftcert_details           );
 $smarty->assign('barcode',          $barcode                    );
 

@@ -99,7 +99,7 @@ function update_acl($permissions) {
                 `Technician`    =". $db->qstr( $page_permission['Technician']       ).",
                 `Clerical`      =". $db->qstr( $page_permission['Clerical']         ).",
                 `Counter`       =". $db->qstr( $page_permission['Counter']          ).",
-                `Client`      =". $db->qstr( $page_permission['Client']         ).",
+                `Client`        =". $db->qstr( $page_permission['Client']           ).",
                 `Guest`         =". $db->qstr( $page_permission['Guest']            ).",
                 `Public`        =". $db->qstr( $page_permission['Public']           )."
                 WHERE `page`    =". $db->qstr( $page_name                           ).";";

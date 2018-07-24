@@ -15,11 +15,11 @@ if(isset($VAR['submit'])) {
     /* Basic Statisitics */
 
     // Change dates to proper timestamps
-    $start_date = date_to_timestamp($VAR['start_date']);    
-    $end_date = date_to_timestamp($VAR['end_date']);    
+    $start_date = date_to_mysql_date($VAR['start_date']);    
+    $end_date   = date_to_mysql_date($VAR['end_date']);    
     
     // Clients
-    $smarty->assign('new_clients',                count_clients('all', $start_date, $end_date)                         );      
+    $smarty->assign('new_clients',                  count_clients('all', $start_date, $end_date)                           );      
     
     // Workorders   
     $smarty->assign('wo_opened',                    count_workorders('opened', null, $start_date, $end_date)               );   

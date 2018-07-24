@@ -30,14 +30,14 @@ $invoice_details = get_invoice_details($VAR['invoice_id']);
 $client_details = get_client_details($invoice_details['client_id']);
 
 /// Assign Variables
-$smarty->assign('company_details',                  get_company_details()                                        );
+$smarty->assign('company_details',                  get_company_details()                                      );
 $smarty->assign('employee_details',                 get_user_details($invoice_details['employee_id'])          );
-$smarty->assign('client_details',                 $client_details                                               );
-$smarty->assign('invoice_details',                  $invoice_details                                                );
+$smarty->assign('client_details',                   $client_details                                            );
+$smarty->assign('invoice_details',                  $invoice_details                                           );
 $smarty->assign('workorder_details',                get_workorder_details($invoice_details['workorder_id'])    );
-$smarty->assign('payment_options',                  get_payment_options()                                        );
-$smarty->assign('payment_accepted_methods_statuses',  get_payment_accepted_methods_statuses()                          );
-$smarty->assign('invoice_statuses',                 get_invoice_statuses()                                       );
+$smarty->assign('payment_options',                  get_payment_options()                                      );
+$smarty->assign('payment_accepted_methods_statuses',get_payment_accepted_methods_statuses()                    );
+$smarty->assign('invoice_statuses',                 get_invoice_statuses()                                     );
 $smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );
 $smarty->assign('labour_sub_total',                 labour_sub_total($VAR['invoice_id'])                       );

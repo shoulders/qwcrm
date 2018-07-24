@@ -174,7 +174,7 @@ function insert_client($VAR) {
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
             note            =". $db->qstr( $VAR['note']             ).",
-            create_date     =". $db->qstr( time()                   );          
+            create_date     =". $db->qstr( mysql_datetime()         );          
                         
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
@@ -203,7 +203,7 @@ function insert_client_note($client_id, $note) {
     $sql = "INSERT INTO ".PRFX."client_notes SET            
             employee_id =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             client_id =". $db->qstr( $client_id                         ).",
-            date        =". $db->qstr( time()                               ).",
+            date        =". $db->qstr( mysql_datetime()                    ).",
             note        =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
@@ -406,7 +406,7 @@ function update_client_note($client_note_id, $note) {
     $sql = "UPDATE ".PRFX."client_notes SET
             employee_id             =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
             note                    =". $db->qstr( $note                                )."
-            WHERE client_note_id  =". $db->qstr( $client_note_id                    );
+            WHERE client_note_id    =". $db->qstr( $client_note_id                      );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the client note."));
@@ -439,7 +439,7 @@ function update_client_last_active($client_id = null) {
     if(!$client_id) { return; }    
     
     $sql = "UPDATE ".PRFX."client_records SET
-            last_active=".$db->qstr(time())."
+            last_active=".$db->qstr( mysql_datetime() )."
             WHERE client_id=".$db->qstr($client_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -502,7 +502,7 @@ function delete_client($client_id) {
     
     /* We can now delete the client */
     
-    // Get client details foe loggin before we delete anything
+    // Get client details for logging before we delete anything
     $client_details = get_client_details($client_id);
     
     // Delete any Client user accounts
@@ -594,7 +594,7 @@ function check_client_display_name_exists($display_name) {
 function build_googlemap_directions_string($client_id, $employee_id) {
     
     $company_details    = get_company_details();
-    $client_details   = get_client_details($client_id);
+    $client_details     = get_client_details($client_id);
     $employee_details   = get_user_details($employee_id);
     
     // Get google server or use default value, then removes a trailing slash if present

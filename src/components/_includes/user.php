@@ -175,13 +175,13 @@ function insert_user($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."user_records SET
-            client_id         =". $db->qstr( $VAR['client_id']                          ).", 
+            client_id           =". $db->qstr( $VAR['client_id']                            ).", 
             username            =". $db->qstr( $VAR['username']                             ).",
             password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
             email               =". $db->qstr( $VAR['email']                                ).",
             usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
             active              =". $db->qstr( $VAR['active']                               ).",
-            register_date       =". $db->qstr( time()                                       ).",   
+            register_date       =". $db->qstr( mysql_datetime()                             ).",   
             require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
             is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
             first_name          =". $db->qstr( $VAR['first_name']                           ).",
@@ -425,7 +425,7 @@ function update_user($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."user_records SET
-        client_id         =". $db->qstr( $VAR['client_id']                          ).", 
+        client_id           =". $db->qstr( $VAR['client_id']                            ).", 
         username            =". $db->qstr( $VAR['username']                             ).",
         email               =". $db->qstr( $VAR['email']                                ).",
         usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
@@ -730,7 +730,7 @@ function reset_user_password($user_id, $password = null) {
     $sql = "UPDATE ".PRFX."user_records SET
             password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
             require_reset   =". $db->qstr( 0                                    ).",   
-            last_reset_time =". $db->qstr( time()                               ).",
+            last_reset_time =". $db->qstr( mysql_datetime()                     ).",
             reset_count     =". $db->qstr( 0                                    )."
             WHERE user_id   =". $db->qstr( $user_id                             );
     
@@ -1273,7 +1273,7 @@ function delete_expired_reset_codes() {
     
     $db = QFactory::getDbo();
 
-    $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$db->qstr(time());
+    $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$db->qstr( time() );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));

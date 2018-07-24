@@ -122,7 +122,7 @@ function update_user_last_active($user_id = null) {
     // compensate for some operations not having a user_id
     if(!$user_id) { return; }        
     
-    $sql = "UPDATE ".PRFX."user_records SET last_active=".$db->qstr(time())." WHERE user_id=".$db->qstr($user_id);
+    $sql = "UPDATE ".PRFX."user_records SET last_active=".$db->qstr( mysql_datetime() )." WHERE user_id=".$db->qstr($user_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
@@ -289,7 +289,7 @@ function perform_redirect($url, $type = 'header') {
         } else {
             
             // Build the error message
-            $error_msg = _gettext("Headers already sent in").' '.$filename.' '._gettext("on line").' '.$linenum.' .';
+            $error_msg = '<p>'._gettext("Headers already sent in").' '.$filename.' '._gettext("on line").' '.$linenum.'.</p>';
             
             // Get routing variables
             $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
@@ -889,7 +889,7 @@ function write_record_to_activity_log($record, $employee_id = null, $client_id =
     
     /* Use any supplied IDs instead of $GLOBALS[] counterpart
     if(!$employee_id)   { $employee_id  = $GLOBALS['employee_id'];  }
-    if(!$client_id)   { $client_id  = $GLOBALS['client_id'];  }
+    if(!$client_id)     { $client_id  = $GLOBALS['client_id'];      }
     if(!$workorder_id)  { $workorder_id = $GLOBALS['workorder_id']; }
     if(!$invoice_id)    { $invoice_id   = $GLOBALS['invoice_id'];   }*/   
     
@@ -967,66 +967,12 @@ function get_date_formats() {
     
 }    
 
-#########################################################
-#   Return Date in correct format from year/month/day   #  // only used in schedule
-#########################################################
-
-function convert_year_month_day_to_date($year, $month, $day) {    
-
-    // Ensure months supplied as 2 digits
-    if(strlen($month) == 1) {$month = '0'.$month;}
-    
-    // Ensure days supplied as 2 digits
-    if(strlen($day) == 1) {$day = '0'.$day;}
-    
-    switch(DATE_FORMAT) {
-
-        case '%d/%m/%Y':
-        return $day."/".$month."/".$year;
-
-        case '%d/%m/%y':
-        return $day.'/'.$month.'/'.substr($year, 2);
-
-        case '%m/%d/%Y':
-        return $month.'/'.$day.'/'.$year;
-
-        case '%m/%d/%y':
-        return $month.'/'.$day.'/'.substr($year, 2);
-            
-        case '%Y-%m-%d':
-        return $year.'-'.$month.'-'.$day;
-            
-    }
-    
-}
-
-#############################################
-#    Get Timestamp from year/month/day      #
-#############################################
-
-function convert_year_month_day_to_timestamp($year, $month, $day) {  
-            
-        return DateTime::createFromFormat('!Y/m/d', $year.'/'.$month.'/'.$day)->getTimestamp();   
-        
-}
-
-##########################################
-#   Timestamp to calendar date format    #
-##########################################
-
-function timestamp_to_calendar_format($timestamp) {
-    
-    return date('Ymd', $timestamp);
-    
-}
-
 ##########################################
 #   Convert Date into Unix Timestamp     #  // $date_format is not currently used
 ##########################################
 
 function date_to_timestamp($date_to_convert, $date_format = null) {   
     
-    // this is just returning the current time
     // http://php.net/manual/en/datetime.createfromformat.php
     // Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
     // can also use - instead of /
@@ -1052,36 +998,93 @@ function date_to_timestamp($date_to_convert, $date_format = null) {
         
     }
     
-    /* Alternate method - keep for now
-     * // Invoice Date
-        if(DATE_FORMAT == "%d/%m/%Y") {
-            
-            // Invoice Date
-            $date_part = explode("/",$VAR['date']);
-            $timestamp = mktime(0,0,0,$date_part[1],$date_part[0],$date_part[2]);
-            $datef = $timestamp;
-
-            // Invoice Due Date
-            $date_part2 = explode("/",$VAR['due_date']);
-            $timestamp2 = mktime(0,0,0,$date_part2[1],$date_part2[0],$date_part2[2]);
-            $datef2 = $timestamp2;
-        }
-        if(DATE_FORMAT == "%m/%d/%Y") {
-            
-            // Invoice Date
-            $date_part = explode("/",$VAR['date']);
-            $timestamp = mktime(0,0,0,$date_part[0],$date_part[1],$date_part[2]);
-            $datef = $timestamp;
-
-            // Invoice Due Date
-            $date_part2 = explode("/",$VAR['due_date']);
-            $timestamp2 = mktime(0,0,0,$date_part2[0],$date_part2[1],$date_part2[2]);
-            $datef2 = $timestamp2;
-        }     
-     */
-    
     return;
       
+}
+
+################################################
+#    Smarty Date and Time to Unix Timestamp    #  // only used in schedule at the minute - smartytime_to_otherformat
+################################################
+
+function smartytime_to_otherformat($format, $date, $hour, $minute, $second, $clock, $meridian = null) {
+    
+    // When using a 12 hour clock
+    if($clock == '12') {
+        
+        // Create timestamp from date
+        $timestamp = date_to_timestamp($date);
+
+        // if hour is 12am set hour as 0 - for correct calculation as no zero hour
+        if($hour == '12' && $meridian == 'am') {$hour = '0';}
+
+        // Convert hours into seconds and then add - AM/PM aware
+        if($meridian == 'pm') {$timestamp += ($hour * 60 * 60 + 43200 );} else {$timestamp += ($hour * 60 * 60);}    
+
+        // Convert minutes into seconds and add
+        $timestamp += ($minute * 60);
+        
+        // Add seconds
+        $timestamp += $second;        
+        
+        // Return time in DATETIME format
+        if($format === 'datetime') {
+            return date('Y-m-d H:i:s', $timestamp);
+        }
+        
+        // Return a Timestamp
+        if($format === 'timestamp') {
+            return $timestamp;
+        }
+        
+    }
+    
+    // When using a 24 hour clock
+    if($clock == '24') {
+        
+        // Create timestamp from date
+        $timestamp = date_to_timestamp($date);        
+
+        // Convert hours into seconds and then add
+        $timestamp += ($hour * 60 * 60 );
+
+        // Convert minutes into seconds and add
+        $timestamp += ($minute * 60);
+        
+        // Add seconds
+        $timestamp += $second;        
+        
+        // Return time in DATETIME format
+        if($format === 'datetime') {
+            return date('Y-m-d H:i:s', $timestamp);
+        }
+        
+        // Return a Timestamp
+        if($format === 'timestamp') {
+            return $timestamp;
+        }
+        
+    }
+    
+}
+
+#############################################
+#    Get Timestamp from year/month/day      #
+#############################################
+
+function convert_year_month_day_to_timestamp($year, $month, $day) {  
+            
+        return DateTime::createFromFormat('!Y/m/d', $year.'/'.$month.'/'.$day)->getTimestamp();   
+        
+}
+
+##########################################
+#   Timestamp to calendar date format    #
+##########################################
+
+function timestamp_to_calendar_format($timestamp) {
+    
+    return date('Ymd', $timestamp);
+    
 }
 
 ##########################################
@@ -1111,54 +1114,108 @@ function timestamp_to_date($timestamp) {
 
 }
 
-##########################################
-#    Date with Time to Unix Timestamp    #
-##########################################
+############################################
+#   Convert Date into MySQL DATE Format    #  // $date_format is not currently used
+############################################
 
-// only used in schedule at the minute
-// is this the same as mktime(hour,minute,second,month,day,year,is_dst);
-
-function datetime_to_timestamp($date, $hour, $minute, $second, $clock, $meridian = null) {
+function date_to_mysql_date($date_to_convert, $date_format = null) {   
     
-    // When using a 12 hour clock
-    if($clock == '12') {
+    // http://php.net/manual/en/datetime.createfromformat.php
+    // Be warned that DateTime object created without explicitely providing the time portion will have the current time set instead of 00:00:00.
+    // can also use - instead of /
+    // the ! allows the use without supplying the time portion    
+    
+    switch(!is_null($date_format) ? $date_format : DATE_FORMAT) {
         
-        // Create timestamp from date
-        $timestamp = date_to_timestamp($date);
-
-        // if hour is 12am set hour as 0 - for correct calculation as no zero hour
-        if($hour == '12' && $meridian == 'am') {$hour = '0';}
-
-        // Convert hours into seconds and then add - AM/PM aware
-        if($meridian == 'pm') {$timestamp += ($hour * 60 * 60 + 43200 );} else {$timestamp += ($hour * 60 * 60);}    
-
-        // Convert minutes into seconds and add
-        $timestamp += ($minute * 60);
+        case '%d/%m/%Y':   
+        return DateTime::createFromFormat('!d/m/Y', $date_to_convert)->format('Y-m-d');
         
-        // Add seconds
-        $timestamp += $second;        
+        case '%d/%m/%y':    
+        return DateTime::createFromFormat('!d/m/y', $date_to_convert)->format('Y-m-d');
         
-        return $timestamp;
+        case '%m/%d/%Y':   
+        return DateTime::createFromFormat('!m/d/Y', $date_to_convert)->format('Y-m-d');
+
+        case '%m/%d/%y':    
+        return DateTime::createFromFormat('!m/d/y', $date_to_convert)->format('Y-m-d');
+            
+        case '%Y-%m-%d':   
+        return DateTime::createFromFormat('!Y-m-d', $date_to_convert)->format('Y-m-d');
         
     }
     
-    // When using a 24 hour clock
-    if($clock == '24') {
-        
-        // Create timestamp from date
-        $timestamp = date_to_timestamp($date);        
+    return;
+      
+}
 
-        // Convert hours into seconds and then add
-        $timestamp += ($hour * 60 * 60 );
+##################################################
+#   Get current date in MySQL DATE Format        #  // Is this used
+##################################################
 
-        // Convert minutes into seconds and add
-        $timestamp += ($minute * 60);
-        
-        // Add seconds
-        $timestamp += $second;        
-        
-        return $timestamp;
-        
+function mysql_date() {       
+       
+    // These do the same job and are for reference
+    //(new DateTime('now'))->format('Y-m-d H:i:s');    
+    //date('Y-m-d', time());  // The time() argument is redundant for current time
+    
+    return date('Y-m-d');
+      
+}
+
+##################################################
+#   Get current time in MySQL DATETIME Format    #
+##################################################
+
+function mysql_datetime() {       
+     
+    // These do the same job and are for reference
+    //(new DateTime('now'))->format('Y-m-d H:i:s');    
+    //date('Y-m-d H:i:s', time());  // the time() argument is redundant for current time
+    
+    return date('Y-m-d H:i:s');
+      
+}
+
+##############################################
+#   Build MySQL DATETIME                     # 
+##############################################
+
+function build_mysql_datetime($hour = null, $minute = null, $second = null, $month = null, $day = null, $year = null) {
+ 
+    $timestamp = mktime($hour, $minute, $second, $month, $day, $year);
+    return date('Y-m-d H:i:s', $timestamp);
+    
+}
+
+#########################################################
+#   Return Date in correct format from year/month/day   #  // only used in schedule
+#########################################################
+
+function convert_year_month_day_to_date($year, $month, $day) {    
+
+    // Ensure months supplied as 2 digits
+    if(strlen($month) == 1) {$month = '0'.$month;}
+    
+    // Ensure days supplied as 2 digits
+    if(strlen($day) == 1) {$day = '0'.$day;}
+    
+    switch(DATE_FORMAT) {
+
+        case '%d/%m/%Y':
+        return $day."/".$month."/".$year;
+
+        case '%d/%m/%y':
+        return $day.'/'.$month.'/'.substr($year, 2);
+
+        case '%m/%d/%Y':
+        return $month.'/'.$day.'/'.$year;
+
+        case '%m/%d/%y':
+        return $month.'/'.$day.'/'.substr($year, 2);
+            
+        case '%Y-%m-%d':
+        return $year.'-'.$month.'-'.$day;
+            
     }
     
 }

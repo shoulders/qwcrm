@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'company.php');
 // If new times submitted
 if(isset($VAR['submit'])) {
     
-    // Build the start and end times for comparision
+    // Build the start and end times for comparison
     $opening_time = strtotime($VAR['openingTime']['Time_Hour'].':'.$VAR['openingTime']['Time_Minute'].':'.'00');
     $closing_time = strtotime($VAR['closingTime']['Time_Hour'].':'.$VAR['closingTime']['Time_Minute'].':'.'00');
 
@@ -31,8 +31,8 @@ if(isset($VAR['submit'])) {
 
 // If page is just loaded get the opening and closing times stored in the database
 } else {    
-    $smarty->assign('opening_time', get_company_start_end_times('opening_time'));
-    $smarty->assign('closing_time', get_company_start_end_times('closing_time'));   
+    $smarty->assign('opening_time', get_company_opening_hours('opening_time', 'smartytime'));
+    $smarty->assign('closing_time', get_company_opening_hours('closing_time', 'smartytime'));   
 }
 
 // Fetch the hours page

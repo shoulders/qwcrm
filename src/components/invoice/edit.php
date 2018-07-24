@@ -53,10 +53,10 @@ if(isset($VAR['submit'])) {
 ################################## 
 
 // Invoice Details
-$smarty->assign('company_details',          get_company_details()                                                                    );
-$smarty->assign('client_details',         get_client_details(get_invoice_details($VAR['invoice_id'], 'client_id'))             );
-$smarty->assign('workorder_details',        get_workorder_details(get_invoice_details($VAR['invoice_id'], 'workorder_id'))           ); 
-$smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id'])                                                       );
+$smarty->assign('company_details',          get_company_details()                                                                  );
+$smarty->assign('client_details',           get_client_details(get_invoice_details($VAR['invoice_id'], 'client_id'))               );
+$smarty->assign('workorder_details',        get_workorder_details(get_invoice_details($VAR['invoice_id'], 'workorder_id'))         ); 
+$smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id'])                                                );
 
 // Prefill Items
 $smarty->assign('labour_prefill_items',     get_invoice_prefill_items('Labour', '1')                                               ); 

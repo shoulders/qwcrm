@@ -43,8 +43,8 @@ CREATE TABLE `#__company_options` (
   `tax_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `vat_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `year_start` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `year_end` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `year_start` DATE NOT NULL,
+  `year_end` DATE NOT NULL,
   `welcome_msg` text COLLATE utf8_unicode_ci NOT NULL,
   `currency_symbol` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `currency_code` varchar(3) COLLATE utf8_unicode_ci NOT NULL,
@@ -92,8 +92,8 @@ CREATE TABLE `#__client_records` (
   `zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL,
-  `create_date` int(20) NOT NULL,
-  `last_active` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+  `create_date` DATETIME NOT NULL,
+  `last_active` DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -106,7 +106,7 @@ CREATE TABLE `#__client_notes` (
   `client_note_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date` DATETIME NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -142,7 +142,7 @@ CREATE TABLE `#__expense_records` (
   `expense_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date` DATE NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -202,9 +202,9 @@ CREATE TABLE `#__giftcert_records` (
   `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `date_created` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `date_expires` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `date_redeemed` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date_created` DATETIME NOT NULL,
+  `date_expires` DATE NOT NULL,
+  `date_redeemed` DATETIME NOT NULL,
   `status` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `redeemed` int(1) NOT NULL DEFAULT '0',
   `active` int(1) NOT NULL DEFAULT '0',
@@ -223,8 +223,8 @@ CREATE TABLE `#__invoice_records` (
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `due_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date` DATE NOT NULL,
+  `due_date` DATE NOT NULL,
   `discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `tax_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
@@ -235,9 +235,9 @@ CREATE TABLE `#__invoice_records` (
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `paid_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `open_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `close_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `last_active` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `open_date` DATETIME NOT NULL,
+  `close_date` DATETIME NOT NULL,
+  `last_active` DATETIME NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `is_closed` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -341,7 +341,7 @@ CREATE TABLE `#__payment_records` (
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date` DATE NOT NULL,
   `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL
@@ -458,7 +458,7 @@ CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date` DATE NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -502,8 +502,8 @@ CREATE TABLE `#__schedule_records` (
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `start_time` int(20) NOT NULL,
-  `end_time` int(20) NOT NULL,
+  `start_time` DATETIME NOT NULL,
+  `end_time` DATETIME NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -599,10 +599,10 @@ CREATE TABLE `#__user_records` (
   `email` varchar(50) NOT NULL,
   `usergroup` varchar(2) NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0',
-  `last_active` varchar(20) NOT NULL,
-  `register_date` varchar(20) NOT NULL,
+  `last_active` DATETIME NOT NULL,
+  `register_date` DATETIME NOT NULL,
   `require_reset` int(1) NOT NULL DEFAULT '0' COMMENT 'Require user to reset password on next login',
-  `last_reset_time` varchar(20) NOT NULL COMMENT 'Date of last password reset',
+  `last_reset_time` DATETIME NOT NULL COMMENT 'Date of last password reset',
   `reset_count` int(10) NOT NULL DEFAULT '0' COMMENT 'Count of password resets since last_reset_time',
   `is_employee` int(1) NOT NULL DEFAULT '0',
   `first_name` varchar(20) NOT NULL,
@@ -829,9 +829,9 @@ CREATE TABLE `#__workorder_records` (
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `created_by` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `closed_by` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `open_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `close_date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `last_active` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `open_date` DATETIME NOT NULL,
+  `close_date` DATETIME NOT NULL,
+  `last_active` DATETIME NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `is_closed` int(1) NOT NULL,
   `scope` varchar(80) COLLATE utf8_unicode_ci NOT NULL,
@@ -850,7 +850,7 @@ CREATE TABLE `#__workorder_history` (
   `history_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date` DATETIME NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -864,7 +864,7 @@ CREATE TABLE `#__workorder_notes` (
   `workorder_note_id` int(10) NOT NULL,
   `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `date` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `date` DATETIME NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

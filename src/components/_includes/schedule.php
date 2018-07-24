@@ -182,27 +182,27 @@ function insert_schedule($VAR) {
     
     $db = QFactory::getDbo();
 
-    // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
-    //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
-    //$end_timestamp   = datetime_to_timestamp($end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
+    // Get times in MySQL DATETIME from Smartytime (12 Hour Clock Format) (date/hour/minute/second)
+    //$start_time = smartytime_to_otherformat('datetime', $start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
+    //$end_time   = smartytime_to_otherformat('datetime', $end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
-    // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
-    $start_timestamp = datetime_to_timestamp($VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
-    $end_timestamp   = datetime_to_timestamp($VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
+    // Get times in MySQL DATETIME from Smartytime (24 Hour Clock Format) (date/hour/minute/second)
+    $start_time = smartytime_to_otherformat('datetime', $VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
+    $end_time   = smartytime_to_otherformat('datetime', $VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
     
-    // Corrects the extra time segment issue
-    $end_timestamp -= 1;
+    // Corrects the extra time segment issue by removing a seconf
+    //$end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
     
     // Validate the submitted dates
-    if(!validate_schedule_times($VAR['start_date'], $start_timestamp, $end_timestamp, $VAR['employee_id'])) {return false;}        
+    if(!validate_schedule_times($VAR['start_date'], $start_time, $end_time, $VAR['employee_id'])) { return false; }        
 
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."schedule_records SET
             employee_id     =". $db->qstr( $VAR['employee_id']      ).",
-            client_id     =". $db->qstr( $VAR['client_id']      ).",   
+            client_id       =". $db->qstr( $VAR['client_id']        ).",   
             workorder_id    =". $db->qstr( $VAR['workorder_id']     ).",
-            start_time      =". $db->qstr( $start_timestamp         ).",
-            end_time        =". $db->qstr( $end_timestamp           ).",            
+            start_time      =". $db->qstr( $start_time              ).",
+            end_time        =". $db->qstr( $end_time                ).",            
             note            =". $db->qstr( $VAR['note']             );            
 
     if(!$rs = $db->Execute($sql)) {
@@ -280,14 +280,14 @@ function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start
     
     $db = QFactory::getDbo();
     
-    // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, $start_month, $start_day, $start_year);
-    $company_day_end   = mktime(get_company_details('closing_hour'), get_company_details('closing_minute'), 59, $start_month, $start_day, $start_year);    
+    // Get the start and end time of the calendar schedule to be displayed, Office hours only
+    $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+    $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
       
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql = "SELECT schedule_id
             FROM ".PRFX."schedule_records       
-            WHERE start_time >= ".$company_day_start." AND start_time <= ".$company_day_end."
+            WHERE start_time >= ".$db->qstr($company_day_start)." AND start_time <= ".$db->qstr($company_day_end)."
             AND employee_id =".$db->qstr($employee_id)."
             ORDER BY start_time
             ASC";
@@ -312,27 +312,27 @@ function update_schedule($VAR) {
     
     $db = QFactory::getDbo();
     
-    // Get Full Timestamps for the schedule item (date/hour/minute/second) - 12 Hour
-    //$start_timestamp = datetime_to_timestamp($start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
-    //$end_timestamp   = datetime_to_timestamp($end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
+    // Get Full DATETIME for the schedule item (date/hour/minute/second) - 12 Hour
+    //$start_time = smartytime_to_otherformat('datetime', $start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
+    //$end_time   = smartytime_to_otherformat('datetime', $end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
-    // Get Full Timestamps for the schedule item (date/hour/minute/second) - 24 Hour
-    $start_timestamp = datetime_to_timestamp($VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
-    $end_timestamp   = datetime_to_timestamp($VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
+    // Get Full DATETIME for the schedule item (date/hour/minute/second) - 24 Hour
+    $start_time = smartytime_to_otherformat('datetime', $VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
+    $end_time   = smartytime_to_otherformat('datetime', $VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
     
     // Corrects the extra time segment issue
-    $end_timestamp -= 1;
+    //$end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
     
     // Validate the submitted dates
-    if(!validate_schedule_times($VAR['start_date'], $start_timestamp, $end_timestamp, $VAR['employee_id'], $VAR['schedule_id'])) { return false; }        
+    if(!validate_schedule_times($VAR['start_date'], $start_time, $end_time, $VAR['employee_id'], $VAR['schedule_id'])) { return false; }        
     
     $sql = "UPDATE ".PRFX."schedule_records SET
         schedule_id         =". $db->qstr( $VAR['schedule_id']      ).",
         employee_id         =". $db->qstr( $VAR['employee_id']      ).",
-        client_id         =". $db->qstr( $VAR['client_id']      ).",
+        client_id           =". $db->qstr( $VAR['client_id']        ).",
         workorder_id        =". $db->qstr( $VAR['workorder_id']     ).",   
-        start_time          =". $db->qstr( $start_timestamp         ).",
-        end_time            =". $db->qstr( $end_timestamp           ).",                
+        start_time          =". $db->qstr( $start_time              ).",
+        end_time            =". $db->qstr( $end_time                ).",                
         note                =". $db->qstr( $VAR['note']             )."
         WHERE schedule_id   =". $db->qstr( $VAR['schedule_id']      );
    
@@ -433,11 +433,11 @@ function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
     
     // Get the schedule information
     $schedule_details   = get_schedule_details($schedule_id);
-    $client_details   = get_client_details($schedule_details['client_id']);
+    $client_details     = get_client_details($schedule_details['client_id']);
     
-    $start_datetime     = timestamp_to_ics_datetime($schedule_details['start_time']);
-    $end_datetime       = timestamp_to_ics_datetime($schedule_details['end_time']);
-    $current_datetime   = timestamp_to_ics_datetime(time());
+    $start_datetime     = mysql_datetime_to_ics_datetime($schedule_details['start_time']);
+    $end_datetime       = mysql_datetime_to_ics_datetime($schedule_details['end_time']);
+    $current_datetime   = timestamp_to_ics_datetime( time() );
 
     $summary            = prepare_ics_strings('SUMMARY', $client_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
     $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
@@ -544,7 +544,7 @@ function build_ics_description($type, $single_schedule, $client_id, $workorder_i
                         html_to_textarea($single_schedule['note']);
 
         // Contact Information
-        $description .= _gettext("Contact Information")  .''.'\n\n'.
+        $description .= _gettext("Contact Information")  .'\n\n'.
                         _gettext("Company")              .': '   .$client_details['display_name'].'\n\n'.
                         _gettext("Contact")              .': '   .$client_details['first_name'].' '.$client_details['last_name'].'\n\n'.
                         _gettext("Phone")                .': '   .$client_details['primary_phone'].'\n\n'.
@@ -577,16 +577,16 @@ function build_ics_description($type, $single_schedule, $client_id, $workorder_i
                         '<div>'.$single_schedule['note'].'</div>';        
 
         // Contact Information
-        $description .= '<p><strong>'._gettext("Contact Information").'</strong></p>'.
+        $description .= '<p><strong>'._gettext("Contact Information").':</strong></p>'.
                         '<p>'.
-                        '<strong>'._gettext("Company")   .':</strong> '  .$client_details['display_name'].'<br>'.
-                        '<strong>'._gettext("Contact")   .':</strong> '  .$client_details['first_name'].' '.$client_details['last_name'].'<br>'.              
-                        '<strong>'._gettext("Phone")     .':</strong> '  .$client_details['primary_phone'].'<br>'.
-                        '<strong>'._gettext("Mobile")    .':</strong> '  .$client_details['mobile_phone'].'<br>'.
-                        '<strong>'._gettext("Website")   .':</strong> '  .$client_details['website'].
-                        '<strong>'._gettext("Email")     .':</strong> '  .$client_details['email'].'<br>'.                        
+                            '<strong>'._gettext("Company")   .':</strong> '  .$client_details['display_name'].'<br>'.
+                            '<strong>'._gettext("Contact")   .':</strong> '  .$client_details['first_name'].' '.$client_details['last_name'].'<br>'.              
+                            '<strong>'._gettext("Phone")     .':</strong> '  .$client_details['primary_phone'].'<br>'.
+                            '<strong>'._gettext("Mobile")    .':</strong> '  .$client_details['mobile_phone'].'<br>'.
+                            '<strong>'._gettext("Website")   .':</strong> '  .$client_details['website'].'<br>'.
+                            '<strong>'._gettext("Email")     .':</strong> '  .$client_details['email'].'<br>'.                        
                         '</p>'.                
-                        '<p><strong>'._gettext("Contact Information").'Address: </strong></p>'.
+                        '<p><strong>'._gettext("Address").': </strong><br></p>'.
                         build_html_adddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']);
         
         // Close HTML Wrapper
@@ -600,7 +600,7 @@ function build_ics_description($type, $single_schedule, $client_id, $workorder_i
 }
 
 ##################################################
-# Convert Timestamp into .ics compatible  format #
+# Convert Timestamp into .ics compatible format  #
 ##################################################
 
 // Converts a unix timestamp to an ics-friendly format
@@ -610,8 +610,25 @@ function build_ics_description($type, $single_schedule, $client_id, $workorder_i
 //
 // Also note that we are using "H" instead of "g" because iCalendar's Time format
 // requires 24-hour time (see RFC 5545 section 3.3.12 for info).
+
 function timestamp_to_ics_datetime($timestamp) {
     return date('Ymd\THis\Z', $timestamp);
+}
+
+##################################################
+# Convert Timestamp into .ics compatible format  #
+##################################################
+
+// Converts a unix timestamp to an ics-friendly format
+// NOTE: "Z" means that this timestamp is a UTC timestamp. If you need
+// to set a locale, remove the "\Z" and modify DTEND, DTSTAMP and DTSTART
+// with TZID properties (see RFC 5545 section 3.3.5 for info)
+//
+// Also note that we are using "H" instead of "g" because iCalendar's Time format
+// requires 24-hour time (see RFC 5545 section 3.3.12 for info).
+
+function mysql_datetime_to_ics_datetime($mysql_date) {
+    return date('Ymd\THis\Z', strtotime($mysql_date));
 }
 
 ##################################################
@@ -722,17 +739,14 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
     $db = QFactory::getDbo();
     $calendar_matrix = '';
     
-    // Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, $start_month, $start_day, $start_year);
-    $company_day_end   = mktime(get_company_details('closing_hour'), get_company_details('closing_minute'), 59, $start_month, $start_day, $start_year);    
-    /* Same as above but my code - Get the start and end time of the calendar schedule to be displayed, Office hours only - (unix timestamp)
-    $company_day_start = datetime_to_timestamp($current_schedule_date, get_company_details('opening_hour'), 0, 0, $clock = '24');
-    $company_day_end   = datetime_to_timestamp($current_schedule_date, get_company_details('closing_hour'), 59, 0, $clock = '24');*/
-      
+    // Get the start and end time of the calendar schedule to be displayed, Office hours only
+    $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+    $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+    
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql ="SELECT 
         ".PRFX."schedule_records.*,
-        IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS display_name
+        IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name
             
         FROM ".PRFX."schedule_records
             
@@ -741,8 +755,8 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
         INNER JOIN ".PRFX."client_records
         ON ".PRFX."workorder_records.client_id = ".PRFX."client_records.client_id
             
-        WHERE ".PRFX."schedule_records.start_time >= ".$company_day_start."
-        AND ".PRFX."schedule_records.start_time <= ".$company_day_end."
+        WHERE ".PRFX."schedule_records.start_time >= ".$db->qstr($company_day_start)."
+        AND ".PRFX."schedule_records.start_time <= ".$db->qstr($company_day_end)."
         AND ".PRFX."schedule_records.employee_id =".$db->qstr($employee_id)."
         ORDER BY ".PRFX."schedule_records.start_time
         ASC";
@@ -758,8 +772,8 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
             'schedule_id'           => $rs->fields['schedule_id'],
             'client_display_name'   => $rs->fields['client_display_name'],
             'workorder_id'          => $rs->fields['workorder_id'],
-            'start_time'            => $rs->fields['start_time'],
-            'end_time'              => $rs->fields['end_time'],
+            'start_time'            => strtotime($rs->fields['start_time']),
+            'end_time'              => strtotime($rs->fields['end_time']),
             'note'                  => $rs->fields['note']            
             ));
         $rs->MoveNext();
@@ -775,20 +789,27 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
         </tr>\n";
     
     // Set the Schedule item array counter
-    $i = 0;
+    $i = 0;/* RIGHT CELL */
     
-    // Length of calendar times slots/segments
-    $time_slot_length   = 900;
+    // Length of Matrix Time Slots (15mins = 15 x 60 = 900)
+    $time_slot_length = 900;
     
-    // Needed for the loop advancement
-    $matrixStartTime    = $company_day_start;
+    // Set Matrix start time
+    $matrixRowStartTime = strtotime($company_day_start);
     
-    // Cycle through the Business day in 15 minute segments (set at the bottom) - you take off the $time_slot_length to prevent an additional slot at the end
-    while($matrixStartTime <= $company_day_end - $time_slot_length) {        
+    // Set Matrix end time
+    $company_day_end = strtotime($company_day_end);
+    
+    // Take off the $time_slot_length to prevent the last slot at the end
+    $company_day_end -= $time_slot_length;
+    
+    // Cycle through the records and build the Matrix in the defined range
+    while($matrixRowStartTime <= $company_day_end) {  
 
         /*
          * There are 2 segment/row types: Whole Hour, Hour With minutes
          * Both have different Styles
+         * 
          * Left Cells = Time
          * Right Cells = Blank || Clickable Links || Schedule Item
          * each ROW is assigned a date and are seperated by 15 minutes
@@ -797,23 +818,27 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
         /* Start ROW */
         $calendar_matrix .= "<tr>\n";        
 
-        /* Schedule Block ROW */
+        /* Schedule Item Row */
         
-        // If the ROW is within the time range of the schedule item (assuming a schedule object has been created)          
-        if(!empty($scheduleObject[$i]) && $matrixStartTime >= $scheduleObject[$i]['start_time'] && $matrixStartTime <= $scheduleObject[$i]['end_time']) {
+        // If the ROW is within the time range of the schedule item (assuming a schedule object has been created)
+        if(!empty($scheduleObject[$i]) && $matrixRowStartTime >= $scheduleObject[$i]['start_time']) {
             
-            /* LEFT CELL*/           
-            
-            // Make the left column blank when there is a schedule item
-            $calendar_matrix .= "<td></td>\n";           
+            // Build the Schedule Block (If the ROW is the same as the schedule item's start time - Schedule record is only put in the first matching row)
+            if($matrixRowStartTime == $scheduleObject[$i]['start_time']) {
+                
+                /* LEFT CELL*/            
 
-            /* RIGHT CELL */
-            
-            // Build the Schedule Block (If the ROW is the same as the schedule item's start time)
-            if($matrixStartTime == $scheduleObject[$i]['start_time']){
+                //$calendar_matrix .= "<td></td>\n";
+                $calendar_matrix .= "<td class=\"menutd2\" align=\"center\"><span style=\"color: green;\">";
+                $calendar_matrix .= date("H:i", $scheduleObject[$i]['start_time']);
+                $calendar_matrix .= "<br/>-<br/>";
+                $calendar_matrix .= date("H:i", $scheduleObject[$i]['end_time']);
+                $calendar_matrix .= "</span></td>\n";                       
+
+                /* RIGHT CELL */
 
                 // Open CELL and add clickable link (to workorder) for CELL
-                $calendar_matrix .= "<td class=\"menutd2\" align=\"center\" >\n";
+                $calendar_matrix .= "<td class=\"menutd2\" align=\"center\">\n";
 
                 // Schedule Item Title
                 $calendar_matrix .= "<b><font color=\"red\">"._gettext("Work Order")." ".$scheduleObject[$i]['workorder_id']." "._gettext("for")." ". $scheduleObject[$i]['client_display_name']."</font></b><br>\n";
@@ -828,53 +853,70 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
                 $calendar_matrix .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
                 $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
                 if(!get_workorder_details($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
-                    $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ".
-                                    "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("Export")."</a></b> - ".
-                                    "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
+                    $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ";
+                    $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("Export")."</a></b> - ";
+                    $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
                 }
 
                 // Close CELL
                 $calendar_matrix .= "</td>\n";                
-                
-            }           
+            
+            }
+            
+            // Advance the Schedule item counter (The minus of a single time slot allows items to end at 11.15 and the next obne start at 11.15 etc..)         
+            if($matrixRowStartTime >= ($scheduleObject[$i]['end_time'] - $time_slot_length)) { $i++; }
             
         /* Empty ROW */
             
-        } else {  
+        } else {
             
-            // If just viewing/no workorder_id -  no clickable links to create schedule items
-            if(!$workorder_id) {
-                if(date('i',$matrixStartTime) == 0) {
-                    $calendar_matrix .= "<td class=\"olotd\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
-                    $calendar_matrix .= "<td class=\"olotd\"></td>\n";
-                } else {
-                    $calendar_matrix .= "<td class=\"olotd4\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
-                    $calendar_matrix .= "<td class=\"olotd4\"></td>\n";
-                }
+            /* LEFT CELL*/ 
             
-            // If workorder_id is present enable clickable links
-            } else {            
-                if(date('i',$matrixStartTime) == 0) {
-                    $calendar_matrix .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"><b>&nbsp;".date("H:i", $matrixStartTime)."</b></td>\n";
-                    $calendar_matrix .= "<td class=\"olotd\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
-                } else {
-                    $calendar_matrix .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\">&nbsp;".date("H:i", $matrixStartTime)."</td>\n";
-                    $calendar_matrix .= "<td class=\"olotd4\" onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"></td>\n";
-                }                
-            }          
+            // Open Cell
+            $calendar_matrix .= "<td class=\"olotd\"";
             
-        }
-
+            // Add clickable link if workorder is present
+            $calendar_matrix .= $workorder_id ? " onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixRowStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"" : '';
+            
+            // Close opening <td>
+            $calendar_matrix .= ">&nbsp;";
+            
+            // If the hour = 00 then bold it
+            $calendar_matrix .= date('i',$matrixRowStartTime) == 0 ? "<b>" : '';
+            
+            // Add Time
+            $calendar_matrix .= date("H:i", $matrixRowStartTime);
+            
+            // If the hour = 00 then bold it
+            $calendar_matrix .= date('i',$matrixRowStartTime) == 0 ? "</b>" : '';
+            
+            // Close Cell
+            $calendar_matrix .= "</td>\n";
+            
+            /* RIGHT CELL */
+            
+            // Open Cell
+            $calendar_matrix .= "<td class=\"olotd\"";
+            
+            // Add clickable link if workorder is present
+            $calendar_matrix .= $workorder_id ? " onClick=\"window.location='index.php?component=schedule&page_tpl=new&start_year={$start_year}&start_month={$start_month}&start_day={$start_day}&start_time=".date("H:i", $matrixRowStartTime)."&employee_id=".$employee_id."&workorder_id=".$workorder_id."'\"" : '';
+            
+            // Close opening <td>
+            $calendar_matrix .= ">&nbsp;";
+            
+            // Close Cell
+            $calendar_matrix .= "</td>\n";                    
+            
+        }        
+        
         /* Close ROW */
+        
         $calendar_matrix .= "</tr>\n";             
         
-        /* Loop Advancement */        
-        
-        // Advance the schedule counter to the next schedule item if the schedule end time has been reached
-        if(!empty($scheduleObject[$i]) && $matrixStartTime >= $scheduleObject[$i]['end_time']) { $i++; }
-
-        // Advance matrixStartTime by 15 minutes before restarting loop to create 15 minute segements        
-        $matrixStartTime += $time_slot_length;      
+        /* Loop Advancement */
+                
+        // Advance matrixStartTime by $time_slot_length (Set at top)       
+        $matrixRowStartTime += $time_slot_length;      
        
     }
 
@@ -887,34 +929,35 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
 }
 
 ############################################
-#   validate schedule start and end time   #
+#   Validate schedule start and end time   #
 ############################################
 
-function validate_schedule_times($start_date, $start_timestamp, $end_timestamp, $employee_id, $schedule_id = null) {    
+function validate_schedule_times($start_date, $start_time, $end_time, $employee_id, $schedule_id = null) {    
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();    
     
-    $company_day_start = datetime_to_timestamp($start_date, get_company_details('opening_hour'), get_company_details('opening_minute'), '0', '24');
-    $company_day_end   = datetime_to_timestamp($start_date, get_company_details('closing_hour'), get_company_details('closing_minute'), '0', '24');
+    // Get the start and end time of the calendar schedule to be displayed, Office hours only
+    $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_date);
+    $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_date);
     
-    // Add the second I removed to correct extra segment issue
-    $end_timestamp += 1;
+    // Prevents Schedule Start and End times getting confused
+    $end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
      
     // If start time is after end time show message and stop further processing
-    if($start_timestamp > $end_timestamp) {        
+    if($start_time > $end_time) {        
         $smarty->assign('warning_msg', _gettext("Schedule ends before it starts."));
         return false;
     }
 
     // If the start time is the same as the end time show message and stop further processing
-    if($start_timestamp == $end_timestamp) {       
+    if($start_time == $end_time) {       
         $smarty->assign('warning_msg', _gettext("Start Time and End Time are the Same."));        
         return false;
     }
 
     // Check the schedule is within Company Hours    
-    if($start_timestamp < $company_day_start || $end_timestamp > $company_day_end) {            
+    if($start_time < $company_day_start || $end_time > $company_day_end) {            
         $smarty->assign('warning_msg', _gettext("You cannot book work outside of company hours"));    
         return false;
     }    
@@ -923,8 +966,8 @@ function validate_schedule_times($start_date, $start_timestamp, $end_timestamp, 
     $sql = "SELECT
             schedule_id, start_time, end_time
             FROM ".PRFX."schedule_records
-            WHERE start_time >= ".$company_day_start."
-            AND end_time <=".$company_day_end."
+            WHERE start_time >= ".$db->qstr($company_day_start)."
+            AND end_time <=".$db->qstr($company_day_end)."
             AND employee_id =".$db->qstr($employee_id)."
             ORDER BY start_time
             ASC";
@@ -934,19 +977,22 @@ function validate_schedule_times($start_date, $start_timestamp, $end_timestamp, 
     }   
     
     // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
-    while (!$rs->EOF){
+    while (!$rs->EOF) {
+        
+        // Prevents Schedule Start and End times getting confused
+        $rs->fields['end_time'] = (new DateTime($rs->fields['end_time']))->modify('-1 second')->format('Y-m-d H:i:s');
         
         // Check the schedule is not getting updated
         if($schedule_id != $rs->fields['schedule_id']) {
 
             // Check if this schedule item ends after another item has started      
-            if($start_timestamp <= $rs->fields['start_time'] && $end_timestamp >= $rs->fields['start_time']) {                        
+            if($start_time <= $rs->fields['start_time'] && $end_time >= $rs->fields['start_time']) {                        
                 $smarty->assign('warning_msg', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
                 return false;           
             }
 
             // Check if this schedule item starts before another item has finished
-            if($start_timestamp >= $rs->fields['start_time'] && $start_timestamp <= $rs->fields['end_time']) {                    
+            if($start_time >= $rs->fields['start_time'] && $start_time <= $rs->fields['end_time']) {                    
                 $smarty->assign('warning_msg', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
                 return false;
             }

@@ -143,7 +143,7 @@ function insert_refund($VAR) {
     $sql = "INSERT INTO ".PRFX."refund_records SET
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
-            date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
+            date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
@@ -230,7 +230,7 @@ function update_refund($VAR) {
     $sql = "UPDATE ".PRFX."refund_records SET
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
-            date             =". $db->qstr( date_to_timestamp($VAR['date']) ).",
+            date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
@@ -246,7 +246,7 @@ function update_refund($VAR) {
     } else {
         
         // Log activity        
-        $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("updated.");
+        $record = _gettext("Refund Record").' '.$VAR['refund_id'].' '._gettext("updated.");
         write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
         
         return true;

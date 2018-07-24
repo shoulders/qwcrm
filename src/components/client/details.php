@@ -24,9 +24,9 @@ if(!isset($VAR['client_id']) || !$VAR['client_id']) {
 }
 
 // Build the page
-$smarty->assign('client_types',           get_client_types()                                                                                                 );
-$smarty->assign('client_details',         get_client_details($VAR['client_id'])                                                                                 );
-$smarty->assign('client_notes',           get_client_notes($VAR['client_id'])                                                                                   );
+$smarty->assign('client_types',             get_client_types()                                                                                                    );
+$smarty->assign('client_details',           get_client_details($VAR['client_id'])                                                                                 );
+$smarty->assign('client_notes',             get_client_notes($VAR['client_id'])                                                                                   );
 
 $smarty->assign('workorder_statuses',       get_workorder_statuses()                                                                                             );
 $smarty->assign('workorders_open',          display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', null, $VAR['client_id'])          );

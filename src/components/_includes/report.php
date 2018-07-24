@@ -42,30 +42,20 @@ defined('_QWEXEC') or die;
 /** Clients **/
 
 #####################################
-#    Get Client Overall Stats     #
+#    Get Client Overall Stats       #
 #####################################
 
 function get_client_overall_stats() {
     
     /** Dates **/
-
-    $dateObject = new DateTime();
-    //$date_today = $dateObject->getTimestamp();
+    
+    $dateObject = new DateTime();    
 
     $dateObject->modify('first day of this month');
-    $date_month_start = $dateObject->getTimestamp();
+    $date_month_start = $dateObject->format('Y-m-d');
 
     $dateObject->modify('last day of this month');
-    $date_month_end = $dateObject->getTimestamp();
-
-    //$dateObject->modify('first day of this year');
-    //$date_year_start = $dateObject->getTimestamp();
-
-    //$dateObject->modify('last day of this year');
-    //$date_year_end = $dateObject->getTimestamp();
-
-    //if($requested_period === 'month')   {$period = mktime(0,0,0,date('m'),0,date('Y'));} - not used for reference only
-    //if($requested_period === 'year')    {$period = mktime(0,0,0,0,0,date('Y'));} - not used for reference only
+    $date_month_end = $dateObject->format('Y-m-d');
 
     $date_year_start    = get_company_details('year_start');
     $date_year_end      = get_company_details('year_end');
@@ -81,7 +71,7 @@ function get_client_overall_stats() {
 }
 
 #############################################
-#    Count Clients                        #
+#    Count Clients                          #
 #############################################
 
 function count_clients($status, $start_date = null, $end_date = null) { 
@@ -96,9 +86,9 @@ function count_clients($status, $start_date = null, $end_date = null) {
         $whereTheseRecords .= " AND ".PRFX."client_records.active= ".$db->qstr($status);            
     }
         
-    // Filter by Create Data
+    // Filter by Create Date
     if($start_date && $end_date) {
-        $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date + 86399);
+        $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date);
     }
     
     $sql = "SELECT COUNT(*) AS count
@@ -210,13 +200,13 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
     if($status == 'closed') {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date + 86399);
+            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
         }
         
     } else {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date + 86399);
+            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
         }
         
     }
@@ -370,13 +360,13 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
     if($status == 'closed') {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date + 86399);
+            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
         } 
         
     } else {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date + 86399);
+            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
         }
         
     }

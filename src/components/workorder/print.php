@@ -29,12 +29,12 @@ $client_details   = get_client_details($workorder_details['client_id']);
 
 /// Assign Variables
 $smarty->assign('company_details',      get_company_details()                                        );
-$smarty->assign('employee_details',     get_user_details($workorder_details['employee_id'])        );
-$smarty->assign('client_details',     $client_details                                               );
-$smarty->assign('workorder_details',    $workorder_details                                              );
-$smarty->assign('client_types',       get_client_types()                                         );
+$smarty->assign('employee_details',     get_user_details($workorder_details['employee_id'])          );
+$smarty->assign('client_details',       $client_details                                              );
+$smarty->assign('workorder_details',    $workorder_details                                           );
+$smarty->assign('client_types',         get_client_types()                                           );
 $smarty->assign('workorder_statuses',   get_workorder_statuses()                                     );
-$smarty->assign('workorder_notes',      display_workorder_notes($VAR['workorder_id'])                     );
+$smarty->assign('workorder_notes',      display_workorder_notes($VAR['workorder_id'])                );
 $smarty->assign('workorder_schedules',  display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['workorder_id'])  );
 
 // Technician Workorder Slip Print Routine

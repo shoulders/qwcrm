@@ -35,32 +35,62 @@ defined('_QWEXEC') or die;
 // This is in the main include.php file
 
 ##########################################
-#      Get Start and End Times           #
+#      Get Company Opening Hours         # // smarty/datetime/timestamp
 ##########################################
 
-function get_company_start_end_times($time_event) {
+function get_company_opening_hours($event, $type, $date = null) {
     
-    $db = QFactory::getDbo();
+    // Convert Date to time stamp
+    if($date) { 
+        $date_timestamp = strtotime($date);        
+    }
+
+    // Smarty Time Format
+    if($type == 'smartytime') {
+        
+        // return opening time in correct format for smartytime builder
+        if($event == 'opening_time') {
+            return get_company_details('opening_hour').':'.get_company_details('opening_minute').':00';
+        }
+
+        // return closing time in correct format for smartytime builder
+        if($event == 'closing_time') {
+            return get_company_details('closing_hour').':'.get_company_details('closing_minute').':00';
+        }   
+        
+    }
     
-    $sql = "SELECT opening_hour, opening_minute, closing_hour, closing_minute FROM ".PRFX."company_options";
-
-    if(!$rs = $db->Execute($sql)) {
-         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the company start and end times."));
-    } else {        
-
-        $companyTime = $rs->GetRowAssoc();
+    // MySQL DATETIME format
+    if($type == 'datetime') {
 
         // return opening time in correct format for smarty time builder
-        if($time_event == 'opening_time') {
-            return $companyTime['opening_hour'].':'.$companyTime['opening_minute'].':00';
+        if($event == 'opening_time') {            
+            //return $date.' '.get_company_details('opening_hour').':'.get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME            
+            return build_mysql_datetime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
         }
 
         // return closing time in correct format for smarty time builder
-        if($time_event == 'closing_time') {
-            return $companyTime['closing_hour'].':'.$companyTime['closing_minute'].':00';
+        if($event == 'closing_time') {
+            //return $date.' '.get_company_details('closing_hour').':'.get_company_details('closing_minute');  // This only allows the use of DATE and not DATETIME
+            
+            return build_mysql_datetime(get_company_details('closing_hour'), get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
+        }
+    }
+    
+    // Unix Timestamp
+    if($type == 'timestamp') {
+
+        // return opening time in correct format for smarty time builder
+        if($event == 'opening_time') {
+            return mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
         }
 
-    }
+        // return closing time in correct format for smarty time builder
+        if($event == 'closing_time') {
+            return mktime(get_company_details('closing_hour'), get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
+        }   
+        
+    }    
     
 }
 
@@ -92,10 +122,6 @@ function update_company_details($VAR) {
         $new_logo_filepath = upload_logo();
     }
     
-    // Convert the dates before submission to prevent errors
-    //$VAR['year_start'] = date_to_timestamp($VAR['year_start']);
-    //$VAR['year_end']   = date_to_timestamp($VAR['year_end']);
-    
     $sql .= "UPDATE ".PRFX."company_options SET
             company_name            =". $db->qstr( $VAR['company_name']                     ).",";
     
@@ -121,8 +147,8 @@ function update_company_details($VAR) {
             tax_type                =". $db->qstr( $VAR['tax_type']                         ).",
             tax_rate                =". $db->qstr( $VAR['tax_rate']                         ).",
             vat_number              =". $db->qstr( $VAR['vat_number']                       ).",
-            year_start              =". $db->qstr( date_to_timestamp($VAR['year_start'])    ).",
-            year_end                =". $db->qstr( date_to_timestamp($VAR['year_end'])      ).",
+            year_start              =". $db->qstr( date_to_mysql_date($VAR['year_start'])   ).",
+            year_end                =". $db->qstr( date_to_mysql_date($VAR['year_end'])     ).",
             welcome_msg             =". $db->qstr( $VAR['welcome_msg']                      ).",
             currency_symbol         =". $db->qstr( htmlentities($VAR['currency_symbol'])    ).",
             currency_code           =". $db->qstr( $VAR['currency_code']                    ).",

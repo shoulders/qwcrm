@@ -33,7 +33,7 @@ if(!check_giftcert_can_be_edited($VAR['giftcert_id'])) {
 if(isset($VAR['submit'])) {
     
     // Create a new gift certificate
-    update_giftcert($VAR['giftcert_id'], date_to_timestamp($VAR['date_expires']), $VAR['amount'], $VAR['note']);
+    update_giftcert($VAR['giftcert_id'], $VAR['date_expires'], $VAR['amount'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id']);    
@@ -41,8 +41,8 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Build the page    
-    $smarty->assign('client_details', get_client_details(get_giftcert_details($VAR['giftcert_id'], 'client_id'))); 
-    $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                              );
-    $smarty->assign('giftcert_details', get_giftcert_details($VAR['giftcert_id']));
+    $smarty->assign('client_details',    get_client_details(get_giftcert_details($VAR['giftcert_id'], 'client_id'))); 
+    $smarty->assign('giftcert_statuses', get_giftcert_statuses());
+    $smarty->assign('giftcert_details',  get_giftcert_details($VAR['giftcert_id']));
     $BuildPage .= $smarty->fetch('giftcert/edit.tpl');
 }

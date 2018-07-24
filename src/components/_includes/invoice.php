@@ -241,14 +241,14 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
     
     $sql = "INSERT INTO ".PRFX."invoice_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            client_id     =". $db->qstr( $client_id                         ).",
+            client_id       =". $db->qstr( $client_id                           ).",
             workorder_id    =". $db->qstr( $workorder_id                        ).",
-            date            =". $db->qstr( time()                               ).",
-            due_date        =". $db->qstr( time()                               ).",            
+            date            =". $db->qstr( mysql_date()                         ).",
+            due_date        =". $db->qstr( mysql_date()                         ).",            
             discount_rate   =". $db->qstr( $discount_rate                       ).",
             tax_type        =". $db->qstr( $tax_type                            ).",
             tax_rate        =". $db->qstr( $tax_rate                            ).",
-            open_date       =". $db->qstr( time()                               ).",
+            open_date       =". $db->qstr( mysql_datetime()                     ).",
             status          =". $db->qstr( 'pending'                            ).",   
             is_closed       =". $db->qstr( 0                                    ); 
 
@@ -608,10 +608,10 @@ function update_invoice_static_values($invoice_id, $date, $due_date, $discount_r
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."invoice_records SET
-            date                =". $db->qstr( date_to_timestamp($date)     ).",
-            due_date            =". $db->qstr( date_to_timestamp($due_date) ).",
-            discount_rate       =". $db->qstr( $discount_rate               )."               
-            WHERE invoice_id    =". $db->qstr( $invoice_id                  );
+            date                =". $db->qstr( date_to_mysql_date($date)     ).",
+            due_date            =". $db->qstr( date_to_mysql_date($due_date) ).",
+            discount_rate       =". $db->qstr( $discount_rate                )."               
+            WHERE invoice_id    =". $db->qstr( $invoice_id                   );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
@@ -766,7 +766,7 @@ function update_invoice_last_active($invoice_id = null) {
     if(!$invoice_id) { return; }
     
     $sql = "UPDATE ".PRFX."invoice_records SET
-            last_active=".$db->qstr(time())."
+            last_active=".$db->qstr( mysql_datetime() )."
             WHERE invoice_id=".$db->qstr($invoice_id);
     
     if(!$rs = $db->Execute($sql)) {

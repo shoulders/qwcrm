@@ -16,7 +16,7 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
     
     $config = QFactory::getConfig();
     $smarty = QFactory::getSmarty();  // This is required for the required files/templates grabbed here
-    $user = QFactory::getUser();
+    $user   = QFactory::getUser();
     
     // This varible holds the page as it is built
     $BuildPage = '';

@@ -18,7 +18,7 @@ if(!isset($VAR['giftcert_id']) || !$VAR['giftcert_id']) {
 }
 
 // Build the page
-$smarty->assign('client_details',         get_client_details(get_giftcert_details($VAR['giftcert_id'], 'client_id'))               );
+$smarty->assign('client_details',           get_client_details(get_giftcert_details($VAR['giftcert_id'], 'client_id'))                   );
 $smarty->assign('employee_display_name',    get_user_details(get_giftcert_details($VAR['giftcert_id'], 'employee_id'), 'display_name')   );
 $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                      );
 $smarty->assign('giftcert_details',         get_giftcert_details($VAR['giftcert_id'])                                                    );

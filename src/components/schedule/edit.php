@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
@@ -51,20 +52,20 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Get the Schedule Record
-    $schedule_item = get_schedule_details($VAR['schedule_id']);
+    $schedule_details = get_schedule_details($VAR['schedule_id']);
     
-    // Corrects the extra time segment issue    
-    $end_time = $schedule_item['end_time'] + 1;
+    // Aligns the time with the minute segments
+    //$end_time = (new DateTime($schedule_details['end_time']))->modify('+1 second')->format('Y-m-d H:i:s');  // should this be minus?
     
-    $smarty->assign('employee_id',      $schedule_item['employee_id']                           );    
-    $smarty->assign('client_id',      $schedule_item['client_id']                           );
-    $smarty->assign('workorder_id',     $schedule_item['workorder_id']                          );
-    $smarty->assign('start_date',       timestamp_to_date($schedule_item['start_time'])         );       
-    $smarty->assign('start_time',       date('H:i', $schedule_item['start_time'])               );         
-    $smarty->assign('end_date',         timestamp_to_date($schedule_item['end_time'])           );         
-    $smarty->assign('end_time',         date('H:i', $end_time)                                  );   
-    $smarty->assign('note',             $schedule_item['note']                                 );
-    $smarty->assign('active_employees', get_active_users('employees')                      );
+    $smarty->assign('employee_id',      $schedule_details['employee_id']    );    
+    $smarty->assign('client_id',        $schedule_details['client_id']      );
+    $smarty->assign('workorder_id',     $schedule_details['workorder_id']   );
+    $smarty->assign('start_date',       $schedule_details['start_time']     );       
+    $smarty->assign('start_time',       $schedule_details['start_time']     );         
+    $smarty->assign('end_date',         $schedule_details['end_time']       );         
+    $smarty->assign('end_time',         $schedule_details['end_time']       );   
+    $smarty->assign('note',             $schedule_details['note']           );
+    $smarty->assign('active_employees', get_active_users('employees')       );
     
 }
 
