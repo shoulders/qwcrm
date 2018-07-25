@@ -60,6 +60,23 @@ function configure_php_error_reporting() {
 /** Other Functions **/
 
 ################################################
+#         Load Whoops Error Handler            #  // This replaces the PHP default error handler
+################################################
+
+function load_whoops($run_whoops = false) {
+    
+    if($run_whoops) {    
+        $whoops = new \Whoops\Run;
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
+        $whoops->register();
+        //trigger_error("Number cannot be larger than 10"); // This can be used to simulate an error*/
+    }
+    
+    return;
+    
+}
+
+################################################
 #    WSOD Mitigation                           #  // Use these when you get a white screen error 
 ################################################
 

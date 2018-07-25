@@ -19,7 +19,7 @@ if(!isset($VAR['supplier_id']) || !$VAR['supplier_id']) {
 if(isset($VAR['submit'])) {    
         
     // update the supplier record
-    update_supplier($VAR['supplier_id'], $VAR);
+    update_supplier($VAR);
     
     // load the supplier details apge
     force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier updated successfully."));     

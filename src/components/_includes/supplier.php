@@ -254,7 +254,7 @@ function get_supplier_types() {
 #     Update Record                 #
 #####################################
 
-function update_supplier($supplier_id, $VAR) {
+function update_supplier($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -275,7 +275,7 @@ function update_supplier($supplier_id, $VAR) {
             country        =". $db->qstr( $VAR['country']       ).",
             description    =". $db->qstr( $VAR['description']   ).", 
             note           =". $db->qstr( $VAR['note']          )."
-            WHERE supplier_id = ". $db->qstr( $supplier_id );                        
+            WHERE supplier_id = ". $db->qstr( $VAR['supplier_id'] );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));

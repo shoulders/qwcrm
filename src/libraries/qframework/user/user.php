@@ -223,7 +223,7 @@ class JUser
             // Initialise
             $this->id = 0;
             $this->sendEmail = 0;
-            $this->aid = 0;         // not used in QWcrm currently
+            //$this->aid = 0;         // not used in QWcrm
             $this->guest = 1;
         }
         
@@ -799,7 +799,7 @@ class JUser
             // Initialise
             $this->id = 0;
             $this->sendEmail = 0;
-            $this->aid = 0;     // not used in QWcrm currently
+            //$this->aid = 0;     // not used in QWcrm
             $this->guest = 1;
         }
     }    
