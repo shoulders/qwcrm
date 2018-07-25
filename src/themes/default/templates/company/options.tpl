@@ -293,9 +293,9 @@
                                                                                 <tr>
                                                                                     <td>                                                                
                                                                                         <strong>Placeholders</strong><br>
-                                                                                        {literal}{client_display_name}{/literal} = {t}Client's name{/t}<br>
-                                                                                        {literal}{client_first_name}{/literal} = {t}Client's contact first name{/t}<br> 
-                                                                                        {literal}{client_last_name}{/literal} = {t}Client's contact last name{/t}<br> 
+                                                                                        {literal}{client_display_name}{/literal} = {t}Company or Client's name (automatic){/t}<br>
+                                                                                        {literal}{client_first_name}{/literal} = {t}Client's/Contact's first name{/t}<br> 
+                                                                                        {literal}{client_last_name}{/literal} = {t}Client's/Contact's last name{/t}<br> 
                                                                                         {literal}{client_credit_terms}{/literal} = {t}Client's credit terms{/t} 
                                                                                     </td>
                                                                                 </tr>
@@ -325,9 +325,9 @@
                                                                                 <tr>
                                                                                     <td>                                                                
                                                                                         <strong>Placeholders</strong><br>
-                                                                                        {literal}{client_display_name}{/literal} = {t}Client's name{/t}<br>
-                                                                                        {literal}{client_first_name}{/literal} = {t}Client's contact first name{/t}<br> 
-                                                                                        {literal}{client_last_name}{/literal} = {t}Client's contact last name{/t}<br> 
+                                                                                        {literal}{client_display_name}{/literal} = {t}Company or Client's name (automatic){/t}<br>
+                                                                                        {literal}{client_first_name}{/literal} = {t}Client's/Contact's first name{/t}<br> 
+                                                                                        {literal}{client_last_name}{/literal} = {t}Client's/Contact's last name{/t}<br> 
                                                                                         {literal}{client_credit_terms}{/literal} = {t}Client's credit terms{/t} 
                                                                                     </td>
                                                                                 </tr>

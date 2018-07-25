@@ -11,13 +11,13 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_PAGE_TITLE{/t}</title>   
+    <title>{t}WORKORDER_PRINT_CLIENT_WORKORDER_SLIP_PAGE_TITLE{/t}</title>   
         
     <!-- PDF Subject -->
-    <meta name="description" content="{t}WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_DESCRIPTION{/t}">
+    <meta name="description" content="{t}WORKORDER_PRINT_CLIENT_WORKORDER_SLIP_META_DESCRIPTION{/t}">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{t}WORKORDER_PRINT_CUSTOMER_WORKORDER_SLIP_META_KEYWORDS{/t}">
+    <meta name="keywords" content="{t}WORKORDER_PRINT_CLIENT_WORKORDER_SLIP_META_KEYWORDS{/t}">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       

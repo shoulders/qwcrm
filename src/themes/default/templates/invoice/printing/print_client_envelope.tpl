@@ -11,13 +11,13 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}INVOICE_PRINT_CUSTOMER_ENVELOPE_PAGE_TITLE{/t}</title>   
+    <title>{t}INVOICE_PRINT_CLIENT_ENVELOPE_PAGE_TITLE{/t}</title>   
         
     <!-- PDF Subject -->
-    <meta name="description" content="{t}INVOICE_PRINT_CUSTOMER_ENVELOPE_META_DESCRIPTION{/t}">
+    <meta name="description" content="{t}INVOICE_PRINT_CLIENT_ENVELOPE_PAGE_DESCTIPTION{/t}">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{t}INVOICE_PRINT_CUSTOMER_ENVELOPE_META_KEYWORDS{/t}">
+    <meta name="keywords" content="{t}INVOICE_PRINT_CLIENT_ENVELOPE_META_KEYWORDS{/t}">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       
