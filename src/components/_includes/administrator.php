@@ -497,6 +497,7 @@ function reset_acl_permissions() {
                 ('giftcert:new', 1, 1, 0, 0, 1, 1, 0, 0, 0),
                 ('giftcert:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
                 ('giftcert:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+                ('giftcert:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
                 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),                
