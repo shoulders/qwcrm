@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'administrator.php');
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'setup.php');
+require(INCLUDES_DIR.'setup/migrate/myitcrm/migrate.php');
 require(INCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
@@ -206,7 +207,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '6') {
         $config = QFactory::getConfig();
         
         // install the database file and load the next page
-        if(migrate_database($config->db_prefix, $config->myitcrm_prefix)) {
+        if(myitcrm_migrate_database($config->db_prefix, $config->myitcrm_prefix)) {
             
             // remove MyITCRM prefix from the config file
             delete_qwcrm_config_setting('myitcrm_prefix');
