@@ -361,7 +361,7 @@ function execute_sql_file_lines($sql_file) {
 }
 
 ############################################
-#  Write a record to the Setup Log         #    // Cannot be turned off - install/migrate/upgrade
+#  Write a record to the Setup Log         #  // Cannot be turned off - install/migrate/upgrade
 ############################################
 
 function write_record_to_setup_log($setup_type, $record, $database_error = null, $sql_query = null) {
@@ -397,7 +397,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 }
 
 ############################################
-#  Check the database connection works     #
+#  Check the database connection works     #  // new version of ADOdb might not need error_reporting(0)
 ############################################
 
 function check_database_connection_details($db_host, $db_user, $db_pass, $db_name) {

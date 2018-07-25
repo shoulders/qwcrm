@@ -112,7 +112,7 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
             ".PRFX."workorder_records.status AS workorder_status
                
             FROM ".PRFX."workorder_records
-            LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_records.employee_id   = ".PRFX."user_records.user_id
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_records.employee_id = ".PRFX."user_records.user_id
             LEFT JOIN ".PRFX."client_records ON ".PRFX."workorder_records.client_id = ".PRFX."client_records.client_id                 
             ".$whereTheseRecords."
             GROUP BY ".PRFX."workorder_records.".$order_by."

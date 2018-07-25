@@ -61,16 +61,16 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     if($usertype) {
         
         if($usertype == 'client') { 
-            $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr('7');}            
+            $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr(7);}            
         
         if($usertype == 'employee') {
             
-            $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr('1');
-            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('2');
-            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('3');
-            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('4');
-            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('5');
-            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr('6');
+            $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr(1);
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(2);
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(3);
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(4);
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(5);
+            $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(6);
             
         }
         
@@ -298,7 +298,8 @@ function get_user_id_by_username($username) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$db->qstr($username);    
+    $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$db->qstr($username);
+    
     if(!$rs = $db->execute($sql)){
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
     } else {
@@ -351,7 +352,7 @@ function get_usergroups($user_type = null) {
     
     // Filter the results by user type client/employee
     if($user_type === 'employees') {$sql .= " WHERE user_type='1'";}
-    if($user_type === 'clients') {$sql .= " WHERE user_type='2'";}    
+    if($user_type === 'clients')   {$sql .= " WHERE user_type='2'";}    
     if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
     
     if(!$rs = $db->Execute($sql)) {
@@ -381,7 +382,7 @@ function get_active_users($user_type = null) {
         WHERE active='1'";
     
     // Filter the results by user type client/employee
-    if($user_type === 'clients') {$sql .= " AND is_employee='0'";}
+    if($user_type === 'clients')   {$sql .= " AND is_employee='0'";}
     if($user_type === 'employees') {$sql .= " AND is_employee='1'";}
        
     if(!$rs = $db->Execute($sql)) {
@@ -506,6 +507,7 @@ function delete_user($user_id) {
             postEmulationWrite('warning_msg', _gettext("You can not delete the last administrator user account."));        
             return false;
         }
+        
     }
 
     // Check if user has created any workorders
@@ -1093,9 +1095,8 @@ function authorise_password_reset($token) {
     $sql = "UPDATE ".PRFX."user_reset
             SET
             reset_code              =". $db->qstr( $reset_code              ).",
-            reset_code_expiry_time  =". $db->qstr( $reset_code_expiry_time  )."                   
-            
-            WHERE token= ".$db->qstr($token);
+            reset_code_expiry_time  =". $db->qstr( $reset_code_expiry_time  )."            
+            WHERE token             =". $db->qstr( $token                   );
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
@@ -1179,7 +1180,7 @@ function validate_reset_token($token) {
     $smarty = QFactory::getSmarty();
     
     // check for previous tokens for this user and delete them
-    $sql = "SELECT * FROM ".PRFX."user_reset WHERE token=".$db->qstr($token);
+    $sql = "SELECT * FROM ".PRFX."user_reset WHERE token =".$db->qstr($token);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
@@ -1222,7 +1223,7 @@ function validate_reset_code($reset_code) {
     $smarty = QFactory::getSmarty();
     
     // Check for previous tokens for this user and delete them
-    $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code=".$db->qstr($reset_code);
+    $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));

@@ -743,7 +743,7 @@ function update_invoice_closed_status($invoice_id, $new_closed_status) {
     if($new_closed_status == 'closed') {
         
         $sql = "UPDATE ".PRFX."invoice_records SET
-                close_date          =". $db->qstr( time()           ).",
+                close_date          =". $db->qstr( mysql_datetime() ).",
                 is_closed           =". $db->qstr( 1                )."
                 WHERE invoice_id    =". $db->qstr( $invoice_id      );
     }    

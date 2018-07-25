@@ -103,7 +103,7 @@ function get_company_opening_hours($event, $type, $date = null) {
 function update_company_details($VAR) {
 
     $db = QFactory::getDbo();
-    $smarty = QFactory::getSmarty();    
+    //$smarty = QFactory::getSmarty();    
     $sql = '';
     
     // compensate for installation and migration

@@ -202,8 +202,8 @@ function insert_client_note($client_id, $note) {
     
     $sql = "INSERT INTO ".PRFX."client_notes SET            
             employee_id =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            client_id =". $db->qstr( $client_id                         ).",
-            date        =". $db->qstr( mysql_datetime()                    ).",
+            client_id   =". $db->qstr( $client_id                           ).",
+            date        =". $db->qstr( mysql_datetime()                     ).",
             note        =". $db->qstr( $note                                );
 
     if(!$rs = $db->Execute($sql)) {
@@ -281,7 +281,7 @@ function get_client_note($client_note_id, $item = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."client_notes WHERE client_note_id=".$db->qstr( $client_note_id );    
+    $sql = "SELECT * FROM ".PRFX."client_notes WHERE client_note_id=".$db->qstr($client_note_id);    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the client note."));
@@ -315,7 +315,7 @@ function get_client_notes($client_id) {
             
             FROM ".PRFX."client_notes
             LEFT JOIN ".PRFX."user_records ON ".PRFX."client_notes.employee_id = ".PRFX."user_records.user_id
-            WHERE ".PRFX."client_notes.client_id=".$db->qstr( $client_id );
+            WHERE ".PRFX."client_notes.client_id=".$db->qstr($client_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the client's notes."));
@@ -376,7 +376,7 @@ function update_client($VAR) {
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
             note            =". $db->qstr( $VAR['note']             )."
-            WHERE client_id  =". $db->qstr( $VAR['client_id']   );
+            WHERE client_id  =". $db->qstr( $VAR['client_id']       );
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Client's details."));
@@ -537,7 +537,7 @@ function delete_client_note($client_note_id) {
     $client_id = get_client_note($client_note_id, 'client_id');
     $employee_id = get_client_note($client_note_id, 'employee_id');
     
-    $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$db->qstr( $client_note_id );
+    $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$db->qstr($client_note_id);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the client note."));
