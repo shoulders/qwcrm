@@ -219,7 +219,7 @@ function get_payment_details($payment_id, $item = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."payment_records  WHERE payment_id=".$db->qstr($payment_id);
+    $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$db->qstr($payment_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));

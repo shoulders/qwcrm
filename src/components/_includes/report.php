@@ -79,7 +79,7 @@ function count_clients($status, $start_date = null, $end_date = null) {
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = " WHERE client_id >= '0'";
+    $whereTheseRecords = "WHERE ".PRFX."client_records.client_id\n";    
     
     // Restrict by Status
     if($status != 'all') {        
@@ -155,7 +155,7 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = " WHERE workorder_id >= '1'";
+    $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";  
     
     // Restrict by Status
     if($status != 'all') {
@@ -237,7 +237,7 @@ function count_schedules($workorder_id = null) {
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = " WHERE schedule_id";
+    $whereTheseRecords = "WHERE ".PRFX."schedule_records.schedule_id\n";  
 
     // Filter by workorder_id
     if($workorder_id) {
@@ -315,7 +315,7 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = " WHERE invoice_id >= '0'";
+    $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";  
     
     // Restrict by Status
     if($status != 'all') {
@@ -400,7 +400,7 @@ function sum_invoices_value($status, $value_name, $start_date = null, $end_date 
     $db = QFactory::getDbo();
         
     // Default Action
-    $whereTheseRecords = " WHERE invoice_id >= '0'";
+    $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n"; 
     
     // Restrict by Status
     if($status != 'all') {
@@ -601,7 +601,7 @@ function count_expenses($invoice_id = null, $start_date = null, $end_date = null
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = " WHERE expense_id";
+    $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
         
     // Filter by invoice_id
     if($invoice_id) {
@@ -639,7 +639,7 @@ function sum_expenses_value($value_name, $start_date, $end_date) {
     
     $sql = "SELECT SUM(".PRFX."expense_records.$value_name) AS sum
             FROM ".PRFX."expense_records
-            WHERE date  >= ".$db->qstr($start_date)." AND date  <= ".$db->qstr($end_date);
+            WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
@@ -662,7 +662,7 @@ function count_refunds($invoice_id = null, $start_date = null, $end_date = null)
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = " WHERE refund_id";
+    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
         
     // Filter by invoice_id
     if($invoice_id) {
