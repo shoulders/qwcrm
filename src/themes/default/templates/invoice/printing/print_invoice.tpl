@@ -71,7 +71,7 @@
                     <tr>
                         <td width="100%" align="center"><img src="{$company_logo}" height="100" alt="" border="0"></td>
                     </tr>
-                    <tr><td style="text-align:center"><b>{$company_details.display_name}</b></td></tr>
+                    <tr><td style="text-align:center"><b>{$company_details.company_name}</b></td></tr>
                 </table>
             </td>
 

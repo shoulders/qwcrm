@@ -35,7 +35,7 @@
             <td align="center"><img src="{$company_logo}" width="150px" alt="" border="0"></td>
         </tr>
         <tr>
-            <td style="text-align:center">{$company_details.display_name}</td>
+            <td style="text-align:center">{$company_details.company_name}</td>
         </tr>
 
         <!-- Divider -->
