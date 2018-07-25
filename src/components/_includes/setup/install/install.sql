@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 25, 2018 at 04:27 PM
+-- Generation Time: Jul 25, 2018 at 04:55 PM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 5.6.21
 
@@ -131,7 +131,7 @@ CREATE TABLE `#__company_options` (
 --
 
 INSERT INTO `#__company_options` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
-('', 'media/logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '0000-00-00', '0000-00-00', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Client Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%d/%m/%Y', 10, 0, 17, 0, '<p>{logo}</p>\n<p>QuantumWarp</p>\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\n<p><strong>Tel:</strong> 07777 123456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {client_first_name} {client_last_name}</p>\r\n<p>This is an invoice for the recent work at {client_company}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
+('', 'logo.png', '', '', '', '', '', '', '', '', '', '', '', '', '0.00', '', '0000-00-00', '0000-00-00', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Client Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '', '', '%Y-%m-%d', 10, 0, 17, 0, '<p>{logo}</p>\r\n<p>QuantumWarp</p>\r\n<p><strong>Address:</strong><br />QWcrm House<br />Easy Street<br />London<br />SW1A 1AA</p>\r\n<p><strong>Tel:</strong> 07777 123 456<br /><strong>Web:</strong> <a href="https://quantumwarp.com/">quantumwarp.com</a></p>', 1, '<p>Hi {client_first_name} {client_last_name}</p>\r\n<p>This is an invoice for the recent work at {client_display_name}.</p>\r\n<p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
 
 -- --------------------------------------------------------
 
@@ -1069,6 +1069,12 @@ ALTER TABLE `#__payment_accepted_methods`
 --
 ALTER TABLE `#__payment_credit_cards`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__payment_options`
+--
+ALTER TABLE `#__payment_options`
+  ADD PRIMARY KEY (`bank_account_name`);
 
 --
 -- Indexes for table `#__payment_purchase_methods`
