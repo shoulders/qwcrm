@@ -13,15 +13,15 @@ require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'setup.php');
 require(INCLUDES_DIR.'user.php');
 
-// Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'install', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+/* Prevent direct access to this page
+if(!check_page_accessed_via_qwcrm('setup', 'install', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {         // is it because there is a force_page()
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process
 if(!check_page_accessed_via_qwcrm('setup', 'install') ) {
     write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
-}
+}*/
 
 // Stage 1 - Database Connection -->
 if(isset($VAR['stage']) && $VAR['stage'] == '1') {
@@ -29,7 +29,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '1') {
     if($VAR['submit'] == 'stage1') {
         
         // test the supplied database connection details
-        if(check_database_connection_details($VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
+        if(verify_database_connection_details($VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
             
             // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);
@@ -46,7 +46,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '1') {
             $smarty->assign('qwcrm_config', $VAR);
             $smarty->assign('stage', '1');
             
-            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings.")); - error done by check_database_connection_details()
+            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings.")); // error done by verify_database_connection_details();
             write_record_to_setup_log('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
             
             
@@ -125,6 +125,10 @@ if(isset($VAR['stage']) && $VAR['stage'] == '4') {
 
     // load the next page
     if($VAR['submit'] == 'stage4') {
+        
+        // Prefill Company Financial dates
+        set_record_value(PRFX.'company_options', 'year_start', mysql_date()) ;
+        set_record_value(PRFX.'company_options', 'year_end', timestamp_mysql_date(strtotime('+1 year'))) ;
         $VAR['stage'] = '5';    
     
     // load the page  
@@ -140,7 +144,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '4') {
 
 // Stage 5 - Company Details
 if(isset($VAR['stage']) && $VAR['stage'] == '5') {   
-        
+    
     // submit the company details and load the next page
     if($VAR['submit'] == 'stage5') {
         
@@ -152,8 +156,9 @@ if(isset($VAR['stage']) && $VAR['stage'] == '5') {
     // load the page    
     } else {
         
-        $smarty->assign('date_format', get_company_details('date_format'));
+        $smarty->assign('date_formats', get_date_formats());
         $smarty->assign('company_details', get_company_details());
+        $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
         $smarty->assign('stage', '5');
         
     }

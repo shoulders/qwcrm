@@ -35,7 +35,7 @@ function load_defines() {
     define('LIBRARIES_DIR',             'libraries/'                                        );
     define('LOGS_DIR',                  'logs/'                                             );
     define('PLUGINS_DIR',               'plugins/'                                          );
-    define('SETUP_DIR',                 INCLUDES_DIR.'components/setup/'                    );
+    define('SETUP_DIR',                 INCLUDES_DIR.'setup/'                               );
 
     define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'                             );
 
@@ -47,8 +47,8 @@ function load_defines() {
     define('QW_MEDIA_DIR',              QWCRM_BASE_PATH.MEDIA_DIR                           );
 
     // Theme Folders
-    if($QConfig->theme_name) {
-        define('THEME_NAME',            QFactory::getConfig()->get('$QConfig->theme_name')  );   
+    if(QFactory::getConfig()->get('theme_name')) {
+        define('THEME_NAME',            QFactory::getConfig()->get('theme_name')            );   
     } else {
         define('THEME_NAME',            'default'                                           );      
     }

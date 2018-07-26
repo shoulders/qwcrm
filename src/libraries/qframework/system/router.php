@@ -19,6 +19,11 @@ function get_page_controller(&$VAR = null) {
     $config = QFactory::getConfig();    
     $user = QFactory::getUser();
     
+    // Setup is in progress (install/migrate/upgrade), skip validations (because no database access)
+    if(isset($VAR['component'], $VAR['page_tpl']) && ($VAR['component'] == 'setup' && ($VAR['page_tpl'] == 'choice' || $VAR['page_tpl'] == 'install' || $VAR['page_tpl'] == 'migrate' || $VAR['page_tpl'] == 'upgrade'))) {
+        goto page_controller_return;
+    }
+    
     // Maintenance Mode
     if($config->get('maintenance')) {
 
@@ -80,8 +85,8 @@ function get_page_controller(&$VAR = null) {
 
         }
         
-    }
-
+    }    
+    
     page_controller_check:    
     
     // Check the requested page with the current usergroup against the ACL for authorisation, if it fails set page 403
@@ -96,7 +101,9 @@ function get_page_controller(&$VAR = null) {
         $VAR['page_tpl']    = '403';        
         $VAR['theme']       = 'off';
         
-    }    
+    }
+    
+    page_controller_return:
         
     // Return the page display controller for the requested page    
     return COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';

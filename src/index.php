@@ -46,13 +46,6 @@ require(QFRAMEWORK_DIR.'qframework.php');
 QFactory::loadQwcrm($VAR);
 
 ################################################
-#         Test QWCRM Enviroment                #
-################################################
-
-// Verify QWcrm is installed correctly
-//verify_qwcrm_install_state();
-
-################################################
 #         Initialise QWCRM                     #
 ################################################
 

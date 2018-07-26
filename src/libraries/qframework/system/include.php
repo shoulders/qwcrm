@@ -21,60 +21,6 @@ defined('_QWEXEC') or die;
 
 /* Get Functions */
 
-
-################################################
-#   Get MySQL version                          #
-################################################
-
-function get_mysql_version() {
-    
-    $db = QFactory::getDbo();
-    
-    // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
-    //$db->ServerInfo();
-    
-    // Extract and return the MySQL version - print_r() this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
-    preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $db->_connectionID->server_info, $matches);
-    return $matches[1];    
-    
-}
-
-################################################
-#  Get QWcrm version number from the database  #
-################################################
-
-function get_qwcrm_database_version_number() {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
-    
-    try
-    {        
-        if($rs = $db->execute($sql)) {
-            
-           return $rs->fields['database_version'];
-            
-        }
-        
-    }
-    
-    catch (Exception $e)
-    {
-        
-        //force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not retrieve the QWcrm database version."));
-        
-        //echo $e->msg;
-        //var_dump($e);
-        //adodb_backtrace($e->gettrace());        
-        //$smarty->assign('warning_msg', $e->msg);       
-        
-        return 'setup_failed';
-              
-    }
-    
-}
-
 ##########################
 #  Get Company details   #
 ##########################
@@ -600,16 +546,17 @@ function prepare_error_data($type, $data = null) {
 #  Verify QWcrm install state and set routing as needed  #
 ##########################################################
 
-function verify_qwcrm_install_state() {
+function verify_qwcrm_install_state(&$VAR) {
     
-    $db = QFactory::getDbo();
-
-    /* General Checks */    
+    /* Is a QWcrm installation or MyITCRM migration in progress */
     
-    /* Installation / Migration */
+    // Installation is fine
+    if (is_file('configuration.php') && !is_dir('components/_includes/setup')) {      
+        return;        
+    }
     
-    // If there is no configuration file load setup:choice (if not refered from setup:choice)       
-    if(!is_file('configuration.php') && !check_page_accessed_via_qwcrm('setup', 'choice')) {        
+    // Fresh Installation/Migrate/Upgrade (1st Run)
+    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm('setup', 'choice')) {        
         $_POST['component'] = 'setup';
         $_POST['page_tpl']  = 'choice';
         $_POST['theme']     = 'menu_off';        
@@ -617,8 +564,8 @@ function verify_qwcrm_install_state() {
         return;        
     }
     
-    // if installation is in progress
-    if(check_page_accessed_via_qwcrm('setup', 'install') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {        
+    // Installation is in progress
+    elseif ($_GET['setup'] != 'finished' && $_POST['setup'] != 'finished' && check_page_accessed_via_qwcrm('setup', 'install')) {        
         $_POST['component'] = 'setup';
         $_POST['page_tpl']  = 'install';
         $_POST['theme']     = 'menu_off';        
@@ -626,8 +573,8 @@ function verify_qwcrm_install_state() {
         return;        
     }
     
-    // if migration is in progress
-    if(check_page_accessed_via_qwcrm('setup', 'migrate') && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished') {
+    // Migration is in progress
+    elseif ($_GET['setup'] != 'finished' && $_POST['setup'] != 'finished' && check_page_accessed_via_qwcrm('setup', 'migrate')) {
         $_POST['component'] = 'setup';
         $_POST['page_tpl']  = 'migrate';
         $_POST['theme']     = 'menu_off';        
@@ -635,82 +582,89 @@ function verify_qwcrm_install_state() {
         return;        
     }
     
-    /* QWcrm System Checks */
-    
-    // Test the database connection is valid
-    if(!$db->isConnected()) {
-        die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');
+    // Upgrade is in progress
+    elseif ($_GET['setup'] != 'finished' && $_POST['setup'] != 'finished' && check_page_accessed_via_qwcrm('setup', 'upgrade')) {
+        $_POST['component'] = 'setup';
+        $_POST['page_tpl']  = 'upgrade';
+        $_POST['theme']     = 'menu_off';        
+        define('QWCRM_SETUP', 'upgrade'); 
+        return;        
     }
     
-    // Check the MySQL version is high enough to run QWcrm
-    if (version_compare(get_mysql_version(), QWCRM_MINIMUM_MYSQL, '<')) {
-        die('<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version().'</div>');
-    }
-            
-    /* Compare the QWcrm file system and database versions - if mismatch load upgrade for further instructions? */
+    // Appears to be a valid installation but the setup directory is still present
+    elseif (is_file('configuration.php') && is_dir('components/_includes/setup')) {
+        
+        // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
+        compare_qwcrm_filesystem_and_database($VAR);    
     
-    // get the QWcrm database version number
+    // fallback option for those situations I have not thought about
+    } else {
+    
+        die('<div style="color: red;">'._gettext("Something went wrong with your installation of QWcrm. You might have an invalid configuration.php").'</div>'); 
+        
+    }
+ 
+}
+
+#########################################################
+#  Compare the QWcrm file system and database versions  #
+#########################################################
+
+function compare_qwcrm_filesystem_and_database(&$VAR) {
+    
+    // Get the QWcrm database version number (assumes database connection is good)
     $qwcrm_database_version = get_qwcrm_database_version_number();
-        
-    // If the versions dont match do further checks
-    if(version_compare($qwcrm_database_version, QWCRM_VERSION, '!=')) {
-        
-        /* Never installed - run install
-        if($qwcrm_database_version == '') { 
-            force_page('setup', 'install');
-        }*/
-        
-        // Setup failed / Invalid configuration.php
-        if($qwcrm_database_version == 'setup_failed') { 
-            die('<div style="color: red;">'._gettext("A previous setup attempt never completed successfully and/or there is an invalid configuration.php file present or the database prefix is wrong.").'</div>');            
-        }
-        
-        // Failed upgrade
-        if($qwcrm_database_version == '0.0.0') { 
-            die('<div style="color: red;">'._gettext("The upgrade never completed successfully. Check the upgrade and error logs.").'</div>');
-        }
-        
-        // If the file system is older than the database
-        if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '<')) {             
-            die('<div style="color: red;">'._gettext("The file system is older than the database. Check the logs and your settings.").'</div>');
-        }
-        
-        // If the file system is newer than the database - run upgrade
-        if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            $_POST['component']     = 'setup';
-            $_POST['page_tpl']      = 'upgrade';
-            $_POST['theme']         = 'menu_off';
-            define('QWCRM_SETUP', 'upgrade'); 
-            return;
-        }      
-        
+
+    // File System and Database versions match(not needed handles in opening if statement, left for reference)
+    if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {             
+        die('<div style="color: red;">'._gettext("You must delete the 'Setup' directory before you can use QWcrm.").'<strong>components/_includes/setup</strong>'.'</div>');            
+    } 
+    
+    // If the file system is newer than the database - run upgrade
+    if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
+        $VAR['component']     = 'setup';
+        $VAR['page_tpl']      = 'upgrade';
+        $VAR['theme']         = 'menu_off';
+        define('QWCRM_SETUP', 'upgrade'); 
+        return;
     }
-    
-    // Has been installed but the setup directory is still present  
-    /*if(is_dir('setup') ) {
-        die('<div style="color: red;">'._gettext("The setup directory exists!! Please rename or remove the setup directory.").'</div>');       
-    }*/
-    
-    /* has been installed but the installation directory is still present  
-    if(is_dir('install') ) {
-        die('<div style="color: red;">'._gettext("The install Directory Exists!! Please Rename or remove the install directory.").'</div>');       
+
+    // Setup failed / Invalid configuration.php
+    if($qwcrm_database_version == 'setup_failed') { 
+        die('<div style="color: red;">'._gettext("A previous setup attempt never completed successfully and/or there is an invalid configuration.php file present or the database prefix is wrong.").'</div>');            
     }
+
+    // Failed upgrade
+    if($qwcrm_database_version == '0.0.0') { 
+        die('<div style="color: red;">'._gettext("The upgrade never completed successfully. Check the upgrade and error logs.").'</div>');
+    }
+
+    // If the file system is older than the database
+    if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '<')) {             
+        die('<div style="color: red;">'._gettext("The file system is older than the database. Check the logs and your settings.").'</div>');
+    }
+
+    return;
     
-    // has been installed but the upgrade directory is still present  
-    if(is_dir('upgrade') ) {
-        die('<div style="color: red;">'._gettext("The Upgrade Directory Exists!! Please Rename or remove the upgrade directory.").'</div>');     
-    }  */
+}
+
+################################################
+#  Get QWcrm version number from the database  #
+################################################
+
+function get_qwcrm_database_version_number() {
     
-    // Check configured template is compatible
-    if(!check_template_is_compatible()) {
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
+      
+    if($rs = $db->execute($sql)) {
+
+       return $rs->fields['database_version'];
+
+    } else {
         
-        // Get template details
-        $template_details = parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
-        
-        echo _gettext("The configured template is not supported by this version of QWcrm.").'<br>';
-        echo _gettext("Your current version of QWcrm is").' '.QWCRM_VERSION.'<br>';
-        echo _gettext("The template supports QWcrm versions in the range").': '.$template_details['qwcrm_min_version'].' -> '.$template_details['qwcrm_max_version'];
-        die();
+        return 'setup_failed';
         
     }
     
@@ -748,6 +702,23 @@ function check_template_is_compatible() {
     }
     
     return true;
+    
+}
+
+################################################
+#   Get MySQL version                          #
+################################################
+
+function get_mysql_version() {
+    
+    $db = QFactory::getDbo();    
+    
+    // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
+    //$db->ServerInfo();
+    
+    // Extract and return the MySQL version - print_r() this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
+    preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $db->_connectionID->server_info, $matches);
+    return $matches[1];    
     
 }
 
@@ -815,12 +786,8 @@ function parse_xml_file_into_array($file) {
 /* Logging */
 
 ############################################
-#  Write a record to the Access Log        #
+#  Write a record to the Access Log        #  // This will create an apache compatible access log (Combined Log Format)
 ############################################
-
-/*
- * This will create an apache compatible access log (Combined Log Format)
- */
 
 function write_record_to_access_log() {    
     
@@ -1112,6 +1079,26 @@ function timestamp_to_date($timestamp) {
             
     }
 
+}
+
+#####################################################
+#   Convert a timestamp into MySQL DATE Format      #
+#####################################################
+
+function timestamp_mysql_date($timestamp) {       
+     
+   return date('Y-m-d', $timestamp);
+      
+}
+
+#####################################################
+#   Convert a timestamp into MySQL DATETIME Format  #  // not currently used
+#####################################################
+
+function timestamp_mysql_datetime($timestamp) {       
+     
+   return date('Y-m-d H:i:s', $timestamp);
+      
 }
 
 ############################################

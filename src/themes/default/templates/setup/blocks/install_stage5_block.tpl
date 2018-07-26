@@ -57,8 +57,12 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Logo{/t}:</b></td>
                                                                         <td>
-                                                                            <input type="file" name="logo" accept=".png, .jpg, .jpeg, .gif">
-                                                                            <img src="{$company_details.logo}" height="50px" alt="{t}Company Logo{/t}">
+                                                                            <input name="logo" type="file" accept=".png, .jpg, .jpeg, .gif">
+                                                                            {if $company_details.logo}
+                                                                                <img src="{$company_logo}" height="50px" alt="{t}Company Logo{/t}">
+                                                                            {else}
+                                                                                {t}No company logo has been set!{/t}
+                                                                            {/if}
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
@@ -196,12 +200,11 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Date Format{/t}:</b></td>
                                                                         <td>
-                                                                            <select name="date_format" class="olotd5">
-                                                                                <option value="%d/%m/%Y"{if $company_details.date_format == '%d/%m/%Y'} selected{/if}>dd/mm/yyyy</option>                                                            
-                                                                                <option value="%m/%d/%Y"{if $company_details.date_format == '%m/%d/%Y'} selected{/if}>mm/dd/yyyy</option>
-                                                                                <option value="%d/%m/%y"{if $company_details.date_format == '%d/%m/%y'} selected{/if}>dd/mm/yy</option>
-                                                                                <option value="%m/%d/%y"{if $company_details.date_format == '%m/%d/%y'} selected{/if}>mm/dd/yy</option>
-                                                                            </select>
+                                                                            <select name="date_format" class="olotd5"> 
+                                                                                {section name=d loop=$date_formats}    
+                                                                                    <option value="{$date_formats[d].date_format_key}"{if $company_details.date_format == $date_formats[d].date_format_key} selected{/if}>{t}{$date_formats[d].display_name}{/t}</option>
+                                                                                {/section}    
+                                                                            </select> 
                                                                         </td>
                                                                     </tr>                                                        
                                                                 </table>                                                                                               

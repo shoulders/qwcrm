@@ -104,13 +104,14 @@ class QFactory {
      *
      */    
     public static function loadQwcrm(&$VAR)
-    {        
+    {                
         load_defines();                                                     // Load System Constants
-        force_ssl(QFactory::getConfig()->get('force_ssl'));                 // Redirect ot SSL (if enabled)
+        force_ssl(QFactory::getConfig()->get('force_ssl'));                 // Redirect to SSL (if enabled)
         configure_php_error_reporting();                                    // Configure PHP error reporting
         require(VENDOR_DIR.'autoload.php');                                 // Load dependencies via composer
-        load_whoops(QFactory::getConfig()->get('error_handler_whoops'));    // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)
-        load_language();                                                    // Load Language  (now in include)        
+        load_whoops(QFactory::getConfig()->get('error_handler_whoops'));    // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)        
+        load_language();                                                    // Load Language  (now in include)
+        verify_qwcrm_install_state($VAR);                                   // Verify Installation state (install/migrate/upgrade/complete)
         load_system_variables($VAR);                                        // Load the system variables
 
         return;
@@ -512,7 +513,9 @@ class QFactory {
      */
     protected static function createDbo()
     {        
+        
         $conf = self::getConfig();
+        $smarty = self::getSmarty();        
         
         /* ADODB Options */
 
@@ -521,6 +524,10 @@ class QFactory {
 
         // $ADODB_FETCH_MODE - This is a global variable that determines how arrays are retrieved by recordsets. 
         //$ADODB_FETCH_MODE = ADODB_FETCH_NUM; 
+        
+        // Also see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:adonewconnection
+        // http://adodb.org/dokuwiki/doku.php?id=v5:reference:reference_index - full list of command
+        // Basic instructions in vendor/adodb-php/README.md
 
         /* -- */
 
@@ -538,16 +545,17 @@ class QFactory {
         */
         
         $db = ADONewConnection('mysqli');
-        
-        // This is needed to allow install/migration/upgrade
-        if($conf->get('db_host') && $conf->get('db_user') || $conf->get('db_name') && $conf->get('db_name')) {
+        //$db->debug = true;       
 
-            // Get current PHP error reporting level
-            $reporting_level = error_reporting();
+        // Get current PHP error reporting level (not needed with this version of ADOdb)
+        //$reporting_level = error_reporting();
 
-            // Disable PHP error reporting (works globally)
-            error_reporting(0);
+        // Disable PHP error reporting (works globally) (not needed with this version of ADOdb)
+        //error_reporting(0);
 
+        // ADOdb will show as connected if null values are sent to $db->connect  ?? - This is needed to allow install/migration
+        if ($conf->get('db_host') && $conf->get('db_user') && $conf->get('db_name')) {
+            
             // Create ADOdb database connection - and collection exceptions
             try
             {        
@@ -557,30 +565,55 @@ class QFactory {
             catch (Exception $e)
             {
                 // Re-Enable PHP error reporting
-                error_reporting($reporting_level);
+                //error_reporting($reporting_level); (not needed with this version of ADOdb)
 
-                //echo $e->msg;
-                //var_dump($e);
-                //adodb_backtrace($e->gettrace());        
-                //$smarty->assign('warning_msg', $e->msg);
-                
+                if($conf->get('test_db_connection')) {
+                    //echo $e->msg;
+                    //var_dump($e);
+                    //adodb_backtrace($e->gettrace());
+                    $conf->set('test_db_connection', false);
+                    $smarty->assign('warning_msg', prepare_error_data('error_database_connection', $e->msg));
+                }
+
+                return false;
+
+            }       
+
+            // Re-Enable PHP error reporting (not needed with this version of ADOdb)
+            //error_reporting($reporting_level);
+
+            // Return the connection status
+            if(!$db->isConnected()) {
+
+                // Testing Database Connection only, has failed
+                if($conf->get('test_db_connection')) {
+
+                    $smarty->assign('warning_msg', prepare_error_data('error_database_connection', $db->ErrorMsg()));
+                    $conf->set('test_db_connection', false);
+                    return false;
+
+                // Valid installation, Database Connection has failed
+                } elseif (is_file('configuration.php') && !is_dir('components/_includes/setup')) {
+
+                    die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');
+
+                }                
+
+            }
+            
+            // If testing connection, set as passed
+            if($conf->get('test_db_connection')) {
+                $conf->set('test_db_connection', 'passed');
                 return false;
             }
-
-            // Re-Enable PHP error reporting
-            error_reporting($reporting_level);
-
-            /* Return the connection status
-            if(!$db->isConnected()) {        
-                die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');      
-            }*/
-
-        } 
+            
+            return $db;
         
-        return $db;
+        }
+        
+        return false;
     
     }
-    
 /****************** Smarty Object ******************/
     
     /**

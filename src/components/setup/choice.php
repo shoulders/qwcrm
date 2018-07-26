@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'setup.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    die(_gettext("No Direct Access Allowed."));
+    die(_gettext("No Direct Access Allowed. choice.php"));
 }
 
 // Build the page

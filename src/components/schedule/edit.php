@@ -54,9 +54,6 @@ if(isset($VAR['submit'])) {
     // Get the Schedule Record
     $schedule_details = get_schedule_details($VAR['schedule_id']);
     
-    // Aligns the time with the minute segments
-    //$end_time = (new DateTime($schedule_details['end_time']))->modify('+1 second')->format('Y-m-d H:i:s');  // should this be minus?
-    
     $smarty->assign('employee_id',      $schedule_details['employee_id']    );    
     $smarty->assign('client_id',        $schedule_details['client_id']      );
     $smarty->assign('workorder_id',     $schedule_details['workorder_id']   );

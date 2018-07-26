@@ -20,23 +20,56 @@
 
 defined('_QWEXEC') or die;
 
-/** Mandatory Code **/
-
-/** Display Functions **/
-
-/** Insert Functions **/
-
-/** Get Functions **/
-
-/** Update Functions **/
-
-/** Close Functions **/
-
-/** Delete Functions **/
-
-/** Other Functions **/
-
 /** Common **/
+
+#########################################################
+#   Set a value in a specified record where there       #
+#########################################################
+
+function set_record_value($select_table, $record_column, $record_new_value) {
+    
+    $db = QFactory::getDbo();    
+    global $executed_sql_results;
+    global $setup_error_flag;
+    
+    $sql = "UPDATE $select_table SET
+            $record_column =". $db->qstr( $record_new_value );
+
+    if(!$rs = $db->execute($sql)) { 
+        
+        // Set the setup global error flag
+        $setup_error_flag = true;
+        
+        // Log message
+        $record = _gettext("Failed to set the value").' '._gettext("for the record").' `'.$record_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
+
+        // Output message via smarty
+        $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+        $executed_sql_results .= '<div>&nbsp;</div>';
+        
+        // Log message to setup log        
+        write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+        
+        return false;
+        
+    } else {
+        
+        // Log message
+        $record = _gettext("Successfully updated the value").' '._gettext("for the record").' `'.$record_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
+                
+        // Output message via smarty - to reduce onscreen output i have disabled success output, it is still logged
+        //$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+        //$executed_sql_results .= '<div>&nbsp;</div>';
+        
+        // Log message to setup log        
+        write_record_to_setup_log('correction', $record);
+        
+        return true;
+        
+        
+    }    
+    
+}
 
 #########################################################
 #       update a value in a specified record            #
@@ -360,6 +393,57 @@ function execute_sql_file_lines($sql_file) {
         
 }
 
+####################################################################
+#  Verify the database connection works with the supplied details  #
+####################################################################
+
+function verify_database_connection_details($db_host, $db_user, $db_pass, $db_name) {
+    
+    $conf = QFactory::getConfig();
+    
+    // This allows me to re-use this to test the database connection
+    $conf->set('db_host', $db_host);
+    $conf->set('db_user', $db_user);
+    $conf->set('db_pass', $db_pass);
+    $conf->set('db_name', $db_name);
+    
+    // Set an error trap
+    $conf->set('test_db_connection', 'test');
+    
+    // fire up the database connection
+    QFactory::getDbo();
+    
+    // This function will generate the error messages upstream as needed
+    if($conf->get('test_db_connection') == 'passed') {
+    
+        return true;
+
+    } else {  
+
+        return false;  
+
+    }
+ 
+}
+
+#########################################################
+#  Check the MySQL version is high enough to run QWcrm  #
+#########################################################
+
+function validate_qwcrm_minimum_mysql_version() {
+    
+    $smarty = QFactory::getSmarty();
+
+    if (version_compare(get_mysql_version(), QWCRM_MINIMUM_MYSQL, '<')) {
+        $msg = '<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version().'</div>';
+        $smarty->assign('warning_msg', $msg);
+        return false;
+        //die($msg);
+    }
+    
+    return true;
+          
+}
 ############################################
 #  Write a record to the Setup Log         #  // Cannot be turned off - install/migrate/upgrade
 ############################################
@@ -397,59 +481,6 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 }
 
 ############################################
-#  Check the database connection works     #  // new version of ADOdb might not need error_reporting(0)
-############################################
-
-function check_database_connection_details($db_host, $db_user, $db_pass, $db_name) {
-    
-    $db = QFactory::getDbo();
-    $smarty = QFactory::getSmarty();
-    
-    // Get current PHP error reporting level
-    $reporting_level = error_reporting();
-    
-    // Disable PHP error reporting (works globally)
-    error_reporting(0);
-    
-    // Create ADOdb database connection - and collect exception if it occurs
-    try
-    {        
-        $db->Connect($db_host, $db_user, $db_pass, $db_name);
-    }    
-    
-    catch (Exception $e)
-    {
-        
-        // Re-Enable PHP error reporting
-        error_reporting($reporting_level);
-        
-        //echo $e->msg;
-        //var_dump($e);
-        //adodb_backtrace($e->gettrace());
-        $smarty->assign('warning_msg', $e->msg);
-        
-        return false;
-              
-    }
-    
-    // Re-Enable PHP error reporting
-    error_reporting($reporting_level);
-    
-    // Return the connection status
-    if(!$db->isConnected()) {           
-        
-        $smarty->assign('warning_msg', prepare_error_data('database_connection_error', $db->ErrorMsg()));
-        return false;     
-        
-    } else {  
-        
-        return true;  
-        
-    }
-    
-}
-
-############################################
 #         Submit config settings           #
 ############################################
 
@@ -459,7 +490,11 @@ function submit_qwcrm_config_settings($VAR) {
     unset($VAR['page']);
     unset($VAR['submit']);
     unset($VAR['stage']);
-    unset($VAR['theme']);
+    unset($VAR['theme']);    
+    unset($VAR['component']);
+    unset($VAR['page_tpl']);
+    unset($VAR['information_msg']);
+    unset($VAR['warning_msg']);   
     
     update_qwcrm_config($VAR);
     
@@ -493,38 +528,6 @@ function generate_database_prefix($not_this_prefix = null) {
 }
 
 /** Install **/
-
-############################################
-#   Set workorder start number             #
-############################################
-
-function set_workorder_start_number($start_number) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$db->qstr($start_number);
-
-    $db->execute($sql);    
-    
-    return;
-    
-}
-
-############################################
-#   Set invoice start number               #
-############################################
-
-function set_invoice_start_number($start_number) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$db->qstr($start_number);
-
-    $db->execute($sql);   
-    
-    return;
-    
-}
 
 ############################################
 #   Install database                       # // this imports a phpMyAdmin .sql exported file (preg_match method)
@@ -587,6 +590,38 @@ function install_database() {
         
     }
    
+}
+
+############################################
+#   Set workorder start number             #
+############################################
+
+function set_workorder_start_number($start_number) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$db->qstr($start_number);
+
+    $db->execute($sql);    
+    
+    return;
+    
+}
+
+############################################
+#   Set invoice start number               #
+############################################
+
+function set_invoice_start_number($start_number) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$db->qstr($start_number);
+
+    $db->execute($sql);   
+    
+    return;
+    
 }
 
 /** Migrate **/

@@ -31,9 +31,6 @@ function load_system_variables(&$VAR) {
     #   Set Global PHP Values      #
     ################################ 
 
-    // Make sure $VAR exist as an array, $VAR is not always created upstream. - delete when ready
-    //$VAR = isset($VAR) ? $VAR : array();
-
     // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
         $VAR = array_merge($_POST, $_GET, $VAR, postEmulationReturnStore());    

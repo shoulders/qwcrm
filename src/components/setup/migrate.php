@@ -30,7 +30,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '1') {
     if($VAR['submit'] == 'stage1') {
         
         // test the supplied database connection details
-        if(check_database_connection_details($VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
+        if(verify_database_connection_details($VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
             
             // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);            
@@ -46,7 +46,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '1') {
             $smarty->assign('qwcrm_config', $VAR);            
             $smarty->assign('stage', '1');
             
-            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings.")); - error done by check_database_connection_details()
+            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings.")); - error done by verify_database_connection_details()
             write_record_to_setup_log('migrate', _gettext("Failed to connect to the database with the supplied credentials.")); 
             
         }
