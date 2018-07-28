@@ -425,14 +425,12 @@ function update_user($VAR) {
     
     $db = QFactory::getDbo();
     
-    $sql = "UPDATE ".PRFX."user_records SET
-        client_id           =". $db->qstr( $VAR['client_id']                            ).", 
+    $sql = "UPDATE ".PRFX."user_records SET        
         username            =". $db->qstr( $VAR['username']                             ).",
         email               =". $db->qstr( $VAR['email']                                ).",
         usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
         active              =". $db->qstr( $VAR['active']                               ).",                    
-        require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-        is_employee         =". $db->qstr( $VAR['is_employee']                          ).",        
+        require_reset       =". $db->qstr( $VAR['require_reset']                        ).",               
         first_name          =". $db->qstr( $VAR['first_name']                           ).",
         last_name           =". $db->qstr( $VAR['last_name']                            ).",
         work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
@@ -461,7 +459,7 @@ function update_user($VAR) {
         
         // Update last active record
         // - update_user_last_active($user_id);
-        if($VAR['client_id']) {
+        if(get_user_details($VAR['user_id'], 'client_id')) {
             update_client_last_active($VAR['client_id']);
         }
         

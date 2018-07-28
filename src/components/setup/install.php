@@ -23,32 +23,40 @@ if(!check_page_accessed_via_qwcrm('setup', 'install') ) {
     write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 }*/
 
+// AJAX Actions
+if($VAR['action'] == 'delete_setup_files') {
+    delete_setup_files();
+    die();
+}
+// Send a Test Mail
+if(isset($VAR['send_test_mail'])) {
+    if(check_page_accessed_via_qwcrm('administrator', 'config')) {
+        send_test_mail();
+    }
+    die();    
+}
+
 // Stage 1 - Database Connection -->
 if(isset($VAR['stage']) && $VAR['stage'] == '1') {
     
     if($VAR['submit'] == 'stage1') {
         
         // test the supplied database connection details
-        if(verify_database_connection_details($VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
+        if(verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
             
-            // Record details into the config file and display success message and load the next page       
-            submit_qwcrm_config_settings($VAR);
-            $VAR['stage'] = '2';
             $smarty->assign('information_msg', _gettext("Database connection successful."));
-            
+            create_config_file_from_default();
+            update_qwcrm_config($VAR['qwcrm_config']);           
             write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
-            
+            $VAR['stage'] = '2';
         
-        // load the page
+        // load the page - Error message done by verify_database_connection_details();
         } else {
             
             // reload the database connection page with the details and error message
-            $smarty->assign('qwcrm_config', $VAR);
-            $smarty->assign('stage', '1');
-            
-            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings.")); // error done by verify_database_connection_details();
+            $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);                       
             write_record_to_setup_log('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
-            
+            $smarty->assign('stage', '1');             
             
         }
         
@@ -62,26 +70,20 @@ if(isset($VAR['stage']) && $VAR['stage'] == '2') {
     // submit the config settings and load the next page
     if($VAR['submit'] == 'stage2') {
                  
-        // correct missing secret varibles
-        $VAR['session_name']        = JUserHelper::genRandomPassword(16);
-        $VAR['secret_key']          = JUserHelper::genRandomPassword(32);
+        // Correct missing secret varibles
+        $VAR['qwcrm_config']['session_name']        = JUserHelper::genRandomPassword(16);
+        $VAR['qwcrm_config']['secret_key']          = JUserHelper::genRandomPassword(32);
         
-        submit_qwcrm_config_settings($VAR);
+        update_qwcrm_config($VAR['qwcrm_config']);
         write_record_to_setup_log('install', _gettext("Config settings have been added to the config file."));
         $VAR['stage'] = '3';
     
     // load the page
     } else {
         
-        // Set default mandatory values - This makes it easier for users only
-        $VAR['theme_name']          = 'default';
-        $VAR['google_server']       = 'https://www.google.com/';
-        $VAR['session_lifetime']    = '15';
-        $VAR['cookie_lifetime']     = '60';
-        $VAR['cookie_token_length'] = '16';
-        $VAR['db_prefix']           = generate_database_prefix();
+        $VAR['qwcrm_config']['db_prefix'] = generate_database_prefix();
     
-        $smarty->assign('qwcrm_config', $VAR);        
+        $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);        
         $smarty->assign('stage', '2');
         
     }
@@ -98,17 +100,17 @@ if(isset($VAR['stage']) && $VAR['stage'] == '3') {
         // install the database file and load the next page
         if(install_database()) {
             
-            $record = _gettext("The database installed successfully.");
+            $record = _gettext("The database installed successfully.");            
+            $smarty->assign('information_msg', $record); 
             write_record_to_setup_log('install', $record);
-            $smarty->assign('information_msg', $record);            
             $VAR['stage'] = '4';            
         
         // load the page with the error message      
         } else {            
               
-           $record = _gettext("The database failed to install.");           
-           write_record_to_setup_log('install', $record);           
-           $smarty->assign('warning_msg', $record);           
+           $record = _gettext("The database failed to install.");                      
+           $smarty->assign('warning_msg', $record);
+           write_record_to_setup_log('install', $record);
            $VAR['stage'] = '4';
            
         }        
@@ -127,8 +129,8 @@ if(isset($VAR['stage']) && $VAR['stage'] == '4') {
     if($VAR['submit'] == 'stage4') {
         
         // Prefill Company Financial dates
-        set_record_value(PRFX.'company_options', 'year_start', mysql_date()) ;
-        set_record_value(PRFX.'company_options', 'year_end', timestamp_mysql_date(strtotime('+1 year'))) ;
+        update_record_value(PRFX.'company_options', 'year_start', mysql_date()) ;
+        update_record_value(PRFX.'company_options', 'year_end', timestamp_mysql_date(strtotime('+1 year')));
         $VAR['stage'] = '5';    
     
     // load the page  
@@ -155,6 +157,8 @@ if(isset($VAR['stage']) && $VAR['stage'] == '5') {
         
     // load the page    
     } else {
+        
+        // date format is not set in the javascript date picker because i am manipulating stages not pages
         
         $smarty->assign('date_formats', get_date_formats());
         $smarty->assign('company_details', get_company_details());
@@ -198,14 +202,39 @@ if(isset($VAR['stage']) && $VAR['stage'] == '7') {
         insert_user($VAR);
         write_record_to_setup_log('install', _gettext("The administrator account has been created."));
         write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
-        //$VAR['stage'] = '8';
-        
-        force_page('user', 'login', 'setup=finished&information_msg='._gettext("The QWcrm installation process has completed successfully.").' '._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
+        $smarty->assign('information_msg', _gettext("The QWcrm installation process has completed successfully."));
+        $VAR['stage'] = '8';        
     
     // load the page
     } else {
     
         // Set mandatory default values
+        $smarty->assign('user_locations', get_user_locations());
+        $smarty->assign('is_employee', '1');    
+        $smarty->assign('stage', '7');
+        
+    }
+    
+}
+
+// Stage 8 - Delete Setup files
+if(isset($VAR['stage']) && $VAR['stage'] == '8') {
+    
+    
+    
+    // create the administrator and load the next page
+    if($VAR['submit'] == 'stage8') { 
+       
+        delete_setup_files();        
+        //$VAR['stage'] = '9';
+        
+        force_page('user', 'login', 'setup=finished&information_msg='._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
+    
+    // load the page
+    } else {
+    
+        // Set mandatory default values
+        $smarty->assign('user_locations', get_user_locations());
         $smarty->assign('is_employee', '1');    
         $smarty->assign('stage', '7');
         

@@ -889,7 +889,7 @@ CREATE TABLE `#__version` (
 --
 
 INSERT INTO `#__version` (`database_version`) VALUES
-('3.0.0');
+('3.1.0');
 
 -- --------------------------------------------------------
 

@@ -62,27 +62,28 @@
                                                                                             &nbsp;-&nbsp;{t}The user type cannot be changed.{/t}
                                                                                         </td>                                                                                        
                                                                                     </tr>
-                                                                                    <tr{if $is_employee} style="display: none;"{/if}>
-                                                                                        <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
-                                                                                        <td>
-                                                                                            {if !$is_employee}
-                                                                                                <a href="index.php?component=client&page_tpl=details&client_id={$client_id}">{$client_display_name}</a>
-                                                                                                <input type="hidden" name="client_id" value="{$client_id}">
-                                                                                            {else}                                                                                                
+                                                                                    {if $is_employee}
+                                                                                        <tr>
+                                                                                            <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
+                                                                                            <td>
+                                                                                                <select name="based" class="olotd5">
+                                                                                                    {section name=l loop=$user_locations}    
+                                                                                                        <option value="{$user_locations[l].user_location_id}"{if $user_details.based == $user_locations[l].user_location_id} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
+                                                                                                    {/section} 
+                                                                                                </select>
                                                                                                 <input type="hidden" name="client_id" value="">
-                                                                                            {/if}
-                                                                                        </td>                                                                                        
-                                                                                    </tr>
-                                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
-                                                                                        <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                                        <td>
-                                                                                            <select name="based" class="olotd5">
-                                                                                                {section name=l loop=$user_locations}    
-                                                                                                    <option value="{$user_locations[l].user_location_id}">{t}{$user_locations[l].display_name}{/t}</option>
-                                                                                                {/section} 
-                                                                                            </select>
-                                                                                        </td>
-                                                                                    </tr>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    {else}
+                                                                                        <tr>
+                                                                                            <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
+                                                                                            <td>
+                                                                                                <a href="index.php?component=client&page_tpl=details&client_id={$user_details.client_id}">{$client_display_name}</a>                                                                                               
+                                                                                                <input type="hidden" name="client_id" value="{$client_id}">
+                                                                                                <input type="hidden" name="based" value="onsite">                                                                                               
+                                                                                            </td>                                                                                        
+                                                                                        </tr>
+                                                                                    {/if}                                                                                    
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>

@@ -5,7 +5,7 @@ class QConfig {
     public $db_user = '';
     public $db_pass = '';
     public $db_prefix = '';
-    public $sef = '0';
+    
     public $gzip = '0';
     public $maintenance = '0';
     public $theme_name = 'default';
@@ -48,12 +48,12 @@ class QConfig {
     public $qwcrm_email_transport_log = '0';
     public $error_reporting = 'default';
     public $error_page_raw_output = '0';
-    public $error_handler_whoops = '1';
+    
     public $qwcrm_debug = '0';
     public $qwcrm_advanced_debug = '0';
     public $qwcrm_smarty_debugging = '0';
     public $smarty_debugging = '0';
-    public $smarty_debugging_ctrl = 'NONE';
+    public $smarty_debugging_ctrl = '0';
     public $smarty_force_compile = '0';
     public $smarty_force_cache = '0';
     public $smarty_caching = '0';

@@ -259,9 +259,11 @@ if(isset($VAR['stage']) && $VAR['stage'] == '8') {
     // create the administrator and load the next page
     if($VAR['submit'] == 'stage8') {
                 
-        // Insert the record - if the username or email have not been used
-        if (check_user_username_exists($VAR['username'], get_user_details($VAR['user_id'], 'username')) ||
-            check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))) {     
+        // Check if the username or email have been used (the extra vareiable is to ignore the users current username and email to prevent submission errors when only updating other values)
+        if (
+                check_user_username_exists($VAR['username'], get_user_details($VAR['user_id'], 'username')) ||
+                check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))
+           ) {     
 
             // send the posted data back to smarty
             $user_details = $VAR;
@@ -269,9 +271,8 @@ if(isset($VAR['stage']) && $VAR['stage'] == '8') {
             // Reload the page with the POST'ed data
             $smarty->assign('user_details', $user_details);        
             
-            // Set mandatory default values
-            $smarty->assign('is_employee', '1');       
-            $smarty->assign('stage', '8');          // this reloads the admin create page
+            // Set mandatory default values                   
+            $smarty->assign('stage', '8');
 
         } else {    
 
@@ -291,6 +292,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '8') {
     } else {
     
         // Set mandatory default values
+        $smarty->assign('user_locations', get_user_locations());
         $smarty->assign('is_employee', '1');        
         $smarty->assign('stage', '8');
         

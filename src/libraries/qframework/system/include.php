@@ -34,11 +34,23 @@ defined('_QWEXEC') or die;
 function get_company_details($item = null) {
     
     $db = QFactory::getDbo();
+        
+    // This is a fallback to make diagnosing critical database failure - This is the first function loaded for $date_format
+    if (!$db->isConnected()) {
+        die('<div style="color: red;">'._gettext("Something went wrong with your QWcrm database connection, it is not connected. You might have an invalid configuration.php,").' '._gettext("Error occured at").' '.__FUNCTION__.'()</div>');
+    }
     
     $sql = "SELECT * FROM ".PRFX."company_options";
     
-    if(!$rs = $db->execute($sql)) {        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+    if(!$rs = $db->execute($sql)) { 
+        
+        // Part of the fallback
+        if($item == 'date_format') {
+            die('<div style="color: red;">'._gettext("Something went wrong executing an SQL query, check your Prefix. You might have an invalid configuration.php,").' '._gettext("Error occured at").' '.__FUNCTION__.'()</div>');
+        }
+        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));
+        
     } else {
         
         if($item === null) {
@@ -548,6 +560,11 @@ function prepare_error_data($type, $data = null) {
 
 function verify_qwcrm_install_state(&$VAR) {
     
+    // this is run at the end
+    //force_page('user', 'login', 'setup=finished&information_msg='._gettext("The QWcrm installation process has completed successfully.").' '._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
+    // so how do i use && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished'
+    // maybe finish - true - i want a final page that deletes the setup folder
+    
     /* Is a QWcrm installation or MyITCRM migration in progress */
     
     // Installation is fine
@@ -555,39 +572,72 @@ function verify_qwcrm_install_state(&$VAR) {
         return;        
     }
     
+    // Installation/Migration has finished
+    elseif (isset($_GET['setup']) && $_GET['setup'] == 'finished') {      
+        return;        
+    }
+    
     // Fresh Installation/Migrate/Upgrade (1st Run)
     elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm('setup', 'choice')) {        
         $_POST['component'] = 'setup';
         $_POST['page_tpl']  = 'choice';
-        $_POST['theme']     = 'menu_off';        
-        define('QWCRM_SETUP', 'install');        
+        $_POST['theme']     = 'menu_off';
+        
+        // This allows the use of the database ASAP in the setup process
+        if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
+            define('QWCRM_SETUP', 'database_allowed'); 
+        } else {
+            define('QWCRM_SETUP', 'install'); 
+        }
+        
         return;        
     }
     
     // Installation is in progress
-    elseif ($_GET['setup'] != 'finished' && $_POST['setup'] != 'finished' && check_page_accessed_via_qwcrm('setup', 'install')) {        
+    elseif (check_page_accessed_via_qwcrm('setup', 'install')) {        
         $_POST['component'] = 'setup';
         $_POST['page_tpl']  = 'install';
-        $_POST['theme']     = 'menu_off';        
-        define('QWCRM_SETUP', 'install'); 
+        $_POST['theme']     = 'menu_off';
+        
+        // This allows the use of the database ASAP in the setup process
+        if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
+            define('QWCRM_SETUP', 'database_allowed'); 
+        } else {
+            define('QWCRM_SETUP', 'install'); 
+        }  
+        
         return;        
     }
     
     // Migration is in progress
-    elseif ($_GET['setup'] != 'finished' && $_POST['setup'] != 'finished' && check_page_accessed_via_qwcrm('setup', 'migrate')) {
+    elseif (check_page_accessed_via_qwcrm('setup', 'migrate')) {
         $_POST['component'] = 'setup';
         $_POST['page_tpl']  = 'migrate';
-        $_POST['theme']     = 'menu_off';        
-        define('QWCRM_SETUP', 'install'); 
+        $_POST['theme']     = 'menu_off';
+        
+        // This allows the use of the database ASAP in the setup process
+        if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
+            define('QWCRM_SETUP', 'database_allowed'); 
+        } else {
+            define('QWCRM_SETUP', 'install'); 
+        }
+        
         return;        
     }
     
     // Upgrade is in progress
-    elseif ($_GET['setup'] != 'finished' && $_POST['setup'] != 'finished' && check_page_accessed_via_qwcrm('setup', 'upgrade')) {
+    elseif (check_page_accessed_via_qwcrm('setup', 'upgrade')) {
         $_POST['component'] = 'setup';
         $_POST['page_tpl']  = 'upgrade';
-        $_POST['theme']     = 'menu_off';        
-        define('QWCRM_SETUP', 'upgrade'); 
+        $_POST['theme']     = 'menu_off';
+        
+        // This allows the use of the database ASAP in the setup process (might not be needed because database exits)
+        if (QFactory::getDbo()->isConnected() && defined('PRFX') && get_qwcrm_database_version_number()) {
+            define('QWCRM_SETUP', 'database_allowed'); 
+        } else {
+            define('QWCRM_SETUP', 'upgrade'); 
+        } 
+        
         return;        
     }
     
@@ -630,7 +680,7 @@ function compare_qwcrm_filesystem_and_database(&$VAR) {
     }
 
     // Setup failed / Invalid configuration.php
-    if($qwcrm_database_version == 'setup_failed') { 
+    if($qwcrm_database_version == false) { 
         die('<div style="color: red;">'._gettext("A previous setup attempt never completed successfully and/or there is an invalid configuration.php file present or the database prefix is wrong.").'</div>');            
     }
 
@@ -664,7 +714,7 @@ function get_qwcrm_database_version_number() {
 
     } else {
         
-        return 'setup_failed';
+        return false;
         
     }
     

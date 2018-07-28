@@ -651,44 +651,44 @@ function myitcrm_migrate_database_correction_workorder($qwcrm_prefix, $myitcrm_p
 
             // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 6 (closed)
             if($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '6') {                    
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_without_invoice');
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'workorder', 'status', 'closed_without_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                update_record_value($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
             }
 
             // WORK_ORDER_STATUS = 6 (closed), WORK_ORDER_CURRENT_STATUS = 8 (payment made)
             elseif($myitcrm_record['my_work_order_status'] == '6' && $myitcrm_record['my_work_order_current_status'] == '8') {                    
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_with_invoice');
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'workorder', 'status', 'closed_with_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                update_record_value($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
             }
 
             // WORK_ORDER_STATUS = 9 (pending), WORK_ORDER_CURRENT_STATUS = 7 (awaiting payment)
             elseif($myitcrm_record['my_work_order_status'] == '9' && $myitcrm_record['my_work_order_current_status'] == '7') {                    
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'closed_with_invoice');
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'workorder', 'status', 'closed_with_invoice', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                update_record_value($qwcrm_prefix.'workorder', 'is_closed', '1', 'workorder_id', $myitcrm_record['qw_workorder_id']);
             }
 
             // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 1 (created)
             elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '1') {                    
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'unassigned');
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'workorder', 'status', 'unassigned', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                update_record_value($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
             }
 
             // WORK_ORDER_STATUS = 10 (open), WORK_ORDER_CURRENT_STATUS = 2 (assigned)
             elseif($myitcrm_record['my_work_order_status'] == '10' && $myitcrm_record['my_work_order_current_status'] == '2') {                    
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'assigned');
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'workorder', 'status', 'assigned', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                update_record_value($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
             }
 
             // Uncaught records / default
             else {                    
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'status', 'failed_to_migrate');
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'workorder', 'status', 'failed_to_migrate', 'workorder_id', $myitcrm_record['qw_workorder_id']);
+                update_record_value($qwcrm_prefix.'workorder', 'is_closed', '0', 'workorder_id', $myitcrm_record['qw_workorder_id']);
             }
 
             /* invoice_id */
 
             if($myitcrm_record['my_invoice_id'] != '') {
-                update_record_value($qwcrm_prefix.'workorder', 'workorder_id', $myitcrm_record['qw_workorder_id'], 'invoice_id', $myitcrm_record['my_invoice_id']);                
+                update_record_value($qwcrm_prefix.'workorder', 'invoice_id', $myitcrm_record['my_invoice_id'], 'workorder_id', $myitcrm_record['qw_workorder_id']);                
             }
 
             // Advance the INSERT loop to the next record
@@ -752,38 +752,38 @@ function myitcrm_migrate_database_correction_invoice($qwcrm_prefix) {
             
             /* net_amount */
             $net_amount = $qwcrm_record['sub_total'] - $qwcrm_record['discount'];
-            update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'net_amount', $net_amount);            
+            update_record_value($qwcrm_prefix.'invoice', 'net_amount', $net_amount, 'invoice_id', $qwcrm_record['invoice_id']);            
 
             /* status and is_closed*/
             
             // no amount on invoice
             if($qwcrm_record['gross_amount'] == '0') {                    
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'pending');
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0'); 
+                update_record_value($qwcrm_prefix.'invoice', 'status', 'pending', 'invoice_id', $qwcrm_record['invoice_id']);
+                update_record_value($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']); 
             }
             
             // if unpaid
             elseif($qwcrm_record['paid_amount'] == '0') {                    
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'unpaid');
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'invoice', 'status', 'unpaid', 'invoice_id', $qwcrm_record['invoice_id']);
+                update_record_value($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
             }
             
             // if there are partial payments
             elseif($qwcrm_record['paid_amount'] < $qwcrm_record['gross_amount'] && $qwcrm_record['paid_amount'] != '0') {                    
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'partially_paid');
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'invoice', 'status', 'partially_paid', 'invoice_id', $qwcrm_record['invoice_id']);
+                update_record_value($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
             }
             
             // if fully paid
             elseif($qwcrm_record['paid_amount'] == $qwcrm_record['gross_amount']) {                    
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'paid');
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '1');
+                update_record_value($qwcrm_prefix.'invoice', 'status', 'paid', 'invoice_id', $qwcrm_record['invoice_id']);
+                update_record_value($qwcrm_prefix.'invoice', 'is_closed', '1', 'invoice_id', $qwcrm_record['invoice_id']);
             }            
 
             // Uncaught records / default
             else {                    
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'status', 'failed_to_migrate');
-                update_record_value($qwcrm_prefix.'invoice', 'invoice_id', $qwcrm_record['invoice_id'], 'is_closed', '0');
+                update_record_value($qwcrm_prefix.'invoice', 'status', 'failed_to_migrate', 'invoice_id', $qwcrm_record['invoice_id']);
+                update_record_value($qwcrm_prefix.'invoice', 'is_closed', '0', 'invoice_id', $qwcrm_record['invoice_id']);
             }
 
             // Advance the INSERT loop to the next record
@@ -849,9 +849,9 @@ function myitcrm_migrate_database_correction_giftcert($qwcrm_prefix) {
             
             // no amount on invoice
             if($qwcrm_record['date_redeemed'] == '') {                    
-                update_record_value($qwcrm_prefix.'giftcert', 'giftcert_id', $qwcrm_record['giftcert_id'], 'is_redeemed', '0');                               
+                update_record_value($qwcrm_prefix.'giftcert', 'is_redeemed', '0', 'giftcert_id', $qwcrm_record['giftcert_id']);                               
             } else {
-                update_record_value($qwcrm_prefix.'giftcert', 'giftcert_id', $qwcrm_record['giftcert_id'], 'is_redeemed', '1');
+                update_record_value($qwcrm_prefix.'giftcert', 'is_redeemed', '1', 'giftcert_id', $qwcrm_record['giftcert_id']);
             }
             
             // Advance the INSERT loop to the next record
@@ -924,7 +924,7 @@ function myitcrm_migrate_database_correction_schedule($qwcrm_prefix, $myitcrm_pr
             $myitcrm_record = $rs->GetRowAssoc(); 
 
             /* customer_id */
-            update_record_value($qwcrm_prefix.'schedule', 'schedule_id', $myitcrm_record['qw_schedule_id'], 'customer_id', $myitcrm_record['my_customer_id']);
+            update_record_value($qwcrm_prefix.'schedule', 'customer_id', $myitcrm_record['my_customer_id'], 'schedule_id', $myitcrm_record['qw_schedule_id']);
             
             // Advance the INSERT loop to the next record
             $rs->MoveNext();           
@@ -986,7 +986,7 @@ function myitcrm_migrate_database_correction_user($qwcrm_prefix, $myitcrm_prefix
             $qwcrm_record = $rs->GetRowAssoc(); 
 
             // Sanitise user's usernames - remove all spaces
-            update_record_value($qwcrm_prefix.'user', 'user_id', $qwcrm_record['user_id'], 'username', str_replace(' ', '.', $qwcrm_record['username']));            
+            update_record_value($qwcrm_prefix.'user', 'username', str_replace(' ', '.', $qwcrm_record['username']), 'user_id', $qwcrm_record['user_id']);            
             
             // Advance the INSERT loop to the next record
             $rs->MoveNext();           

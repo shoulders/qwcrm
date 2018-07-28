@@ -23,7 +23,12 @@ function load_defines() {
     // Information and Configuration
     define('QWCRM_VERSION' ,            '3.0.0'                                             );
     define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                                             );
-    define('PRFX',                      QFactory::getConfig()->get('db_prefix')             );
+    
+    // This allows the use of the database ASAP in the setup process
+    if($db_prefix = QFactory::getConfig()->get('db_prefix')) {
+        define('PRFX',                  $db_prefix                                          );
+    }
+    //define('PRFX',                      QFactory::getConfig()->get('db_prefix')             );
 
     // System Folders
     define('CACHE_DIR',                 'cache/'                                            );

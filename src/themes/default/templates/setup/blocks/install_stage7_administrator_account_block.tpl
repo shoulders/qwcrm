@@ -1,10 +1,4 @@
-<!-- migrate_stage8_block.tpl -->
-{*
- * @package   QWcrm
- * @author    Jon Brown https://quantumwarp.com/
- * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
- * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
-*}
+<!-- install_stage7_administrator_account_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -19,17 +13,17 @@
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 8 - Create an Administrator{/t}</td>
-                    {*<td class="menuhead2" width="20%" align="right" valign="middle">                        
+                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 7 - Create an Administrator{/t}</td>
+                    <td class="menuhead2" width="20%" align="right" valign="middle">                        
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
-                    </td>*}
+                    </td>
                 </tr>
                 <tr>
-                    <td class="menutd2">
+                    <td class="menutd2" colspan="2">
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form action="index.php?component=setup&page_tpl=migrate" method="post" name="new_user" id="new_user" onsubmit="return confirmPasswordsMatch();"> 
+                                    <form action="index.php?component=setup&page_tpl=install" method="post" name="new_user" id="new_user" onsubmit="return confirmPasswordsMatch();"> 
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">
@@ -47,10 +41,6 @@
                                                                         <td align="left">
                                                                             <table>
                                                                                 <tbody align="left">
-                                                                                    <tr>
-                                                                                        <td align="right"><strong>{t}Display Name{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                                        <td><input name="display_name" class="olotd5" value="{$user_details.display_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
-                                                                                    </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}First Name{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td><input name="first_name" class="olotd5" value="{$user_details.first_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
@@ -71,28 +61,18 @@
                                                                                             {/if}
                                                                                             &nbsp;-&nbsp;{t}The user type cannot be changed.{/t}
                                                                                         </td>                                                                                        
-                                                                                    </tr>
-                                                                                    <tr{if $is_employee} style="display: none;"{/if}>
-                                                                                        <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
-                                                                                        <td>
-                                                                                            {if !$is_employee}
-                                                                                                <a href="index.php?component=client&page_tpl=details&client_id={$client_id}">{$client_display_name}</a>
-                                                                                                <input type="hidden" name="client_id" value="{$client_id}">
-                                                                                            {else}                                                                                                
-                                                                                                <input type="hidden" name="client_id" value="">
-                                                                                            {/if}
-                                                                                        </td>                                                                                        
-                                                                                    </tr>
-                                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+                                                                                    </tr>                                                                                    
+                                                                                    <tr>
                                                                                         <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            <select name="based" class="olotd5">                                                                                                    
-                                                                                                <option value="1" {if $user_details.based == 1 } selected{/if}>{t}Office{/t}</option>
-                                                                                                <option value="2" {if $user_details.based == 2 } selected{/if}>{t}Home{/t}</option>
-                                                                                                <option value="3" {if $user_details.based == 3 } selected{/if}>{t}OnSite{/t}</option>
+                                                                                            <select name="based" class="olotd5">
+                                                                                                {section name=l loop=$user_locations}    
+                                                                                                    <option value="{$user_locations[l].user_location_id}"{if $user_details.based == $user_locations[l].user_location_id} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
+                                                                                                {/section} 
                                                                                             </select>
+                                                                                            <input type="hidden" name="client_id" value="">
                                                                                         </td>
-                                                                                    </tr>
+                                                                                    </tr>                                                                                                                                                                       
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
@@ -133,7 +113,7 @@
                                                                                                 {section name=b loop=$usergroups}
                                                                                                     <option value="{$usergroups[b].usergroup_id}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].usergroup_display_name}</option>
                                                                                                 {/section}
-                                                                                            </select>*}      
+                                                                                            </select>*}
                                                                                             <input type="hidden" name="usergroup" value="1">
                                                                                             {t}Administrator{/t}
                                                                                         </td>
@@ -141,9 +121,9 @@
                                                                                     <tr>
                                                                                         <td colspan="1" align="right"><b>{t}Status{/t}</b></td>
                                                                                         <td>
-                                                                                            {*<select name="status" class="olotd5">
-                                                                                                <option value="0" {if $user_details.active == '0'} selected {/if}>{t}Blocked{/t}</option>
+                                                                                            {*<select name="active" class="olotd5">                                                                                                
                                                                                                 <option value="1" {if $user_details.active == '1'} selected {/if}>{t}Active{/t}</option>
+                                                                                                <option value="0" {if $user_details.active == '0'} selected {/if}>{t}Blocked{/t}</option>
                                                                                             </select>*}
                                                                                             <input type="hidden" name="active" value="1">
                                                                                             {t}Active{/t}
@@ -255,8 +235,8 @@
                                                                     
                                                                     <tr>                                                                        
                                                                         <td colspan="2">
-                                                                            <input type="hidden" name="stage" value="8">                                                                            
-                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="stage8">{t}Next{/t}</button>
+                                                                            <input type="hidden" name="stage" value="7">                                                                            
+                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="stage7">{t}Next{/t}</button>
                                                                         </td>
                                                                     </tr>
                                                                     

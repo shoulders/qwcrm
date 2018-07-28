@@ -23,17 +23,21 @@ defined('_QWEXEC') or die;
 /** Common **/
 
 #########################################################
-#   Set a value in a specified record where there       #
+#       update a value in a specified record            #  // with and without 'WHERE' clause
 #########################################################
 
-function set_record_value($select_table, $record_column, $record_new_value) {
+function update_record_value($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null) {
     
     $db = QFactory::getDbo();    
     global $executed_sql_results;
     global $setup_error_flag;
     
     $sql = "UPDATE $select_table SET
-            $record_column =". $db->qstr( $record_new_value );
+            $select_column =". $db->qstr($record_new_value);
+    
+    if($where_column) {    
+        $sql .=  "\nWHERE $where_column =". $db->qstr($where_record);
+    }
 
     if(!$rs = $db->execute($sql)) { 
         
@@ -41,8 +45,12 @@ function set_record_value($select_table, $record_column, $record_new_value) {
         $setup_error_flag = true;
         
         // Log message
-        $record = _gettext("Failed to set the value").' '._gettext("for the record").' `'.$record_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
-
+        if($where_column) {
+            $record = _gettext("Failed to update the record value").' `'.$select_column.'` '._gettext("where the records were matched in the columm").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';
+        } else {            
+            $record = _gettext("Failed to update the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
+        }
+        
         // Output message via smarty
         $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
         $executed_sql_results .= '<div>&nbsp;</div>';
@@ -54,59 +62,13 @@ function set_record_value($select_table, $record_column, $record_new_value) {
         
     } else {
         
-        // Log message
-        $record = _gettext("Successfully updated the value").' '._gettext("for the record").' `'.$record_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
-                
-        // Output message via smarty - to reduce onscreen output i have disabled success output, it is still logged
-        //$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
-        //$executed_sql_results .= '<div>&nbsp;</div>';
+        // Log message             
+        if($where_column) {
+            $record = _gettext("Successfully updated the record value").' `'.$select_column.'` '._gettext("where the records were matched in the columm").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';            
+        } else {            
+            $record = _gettext("Successfully updated the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
+        }
         
-        // Log message to setup log        
-        write_record_to_setup_log('correction', $record);
-        
-        return true;
-        
-        
-    }    
-    
-}
-
-#########################################################
-#       update a value in a specified record            #
-#########################################################
-
-function update_record_value($select_table, $select_column, $record_identifier, $record_column, $record_new_value) {
-    
-    $db = QFactory::getDbo();    
-    global $executed_sql_results;
-    global $setup_error_flag;
-    
-    $sql = "UPDATE $select_table SET
-            $record_column         =". $db->qstr( $record_new_value )."                      
-            WHERE $select_column   =". $db->qstr( $record_identifier  );
-
-    if(!$rs = $db->execute($sql)) { 
-        
-        // Set the setup global error flag
-        $setup_error_flag = true;
-        
-        // Log message
-        $record = _gettext("Failed to update the value").' '._gettext("for the record").' `'.$record_identifier.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the columm").' `'.$record_column.'` '._gettext("from the table").' `'.$select_table.'` ';
-
-        // Output message via smarty
-        $executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-        $executed_sql_results .= '<div>&nbsp;</div>';
-        
-        // Log message to setup log        
-        write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
-        
-        return false;
-        
-    } else {
-        
-        // Log message
-        $record = _gettext("Successfully updated the value").' '._gettext("for the record").' `'.$record_identifier.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the columm").' `'.$record_column.'` '._gettext("from the table").' `'.$select_table.'` ';
-                
         // Output message via smarty - to reduce onscreen output i have disabled success output, it is still logged
         //$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
         //$executed_sql_results .= '<div>&nbsp;</div>';
@@ -524,6 +486,28 @@ function generate_database_prefix($not_this_prefix = null) {
     }
     
     return $prefix;
+    
+}
+
+#############################################################
+#   Create a config file from the appropriate setup file    #
+#############################################################
+
+function create_config_file_from_default($config_type = 'install') {
+    
+    if($config_type == 'myitcrm') {        
+        $file = SETUP_DIR.'migrate/myitcrm/myitcrm-configuration.php';        
+    }
+    
+    if($config_type == 'install') {        
+            $file = SETUP_DIR.'install/default-configuration.php';        
+        }    
+    
+    $newfile = 'configuration.php';
+
+    if (!copy($file, $newfile)) {
+        die(_gettext("failed to copy"));
+    }
     
 }
 

@@ -37,6 +37,7 @@
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="3" width="100%">&nbsp;{t}Common{/t}</td>
                                                                     </tr>
+                                                                    
                                                                     <tr>
                                                                         <td align="left">
                                                                             <table>
@@ -52,37 +53,34 @@
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
                                                                                         <td>
-                                                                                            {if !$is_employee}
-                                                                                                <span style="color: red; font-weight: 900;">{t}Client{/t}</span>
-                                                                                                <input type="hidden" name="is_employee" value="0">
-                                                                                            {else}
+                                                                                            {if $is_employee}
                                                                                                 <span style="color: red; font-weight: 900;">{t}Employee{/t}</span>
-                                                                                                <input type="hidden" name="is_employee" value="1">
+                                                                                            {else}
+                                                                                                <span style="color: red; font-weight: 900;">{t}Client{/t}</span>                                                                                                 
                                                                                             {/if}
                                                                                             &nbsp;-&nbsp;{t}The user type cannot be changed.{/t}
                                                                                         </td>                                                                                        
                                                                                     </tr>
-                                                                                    <tr{if $is_employee} style="display: none;"{/if}>
-                                                                                        <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
-                                                                                        <td>
-                                                                                            {if !$is_employee}
+                                                                                    {if $is_employee}
+                                                                                        <tr>
+                                                                                            <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
+                                                                                            <td>
+                                                                                                <select name="based" class="olotd5">
+                                                                                                    {section name=l loop=$user_locations}    
+                                                                                                        <option value="{$user_locations[l].user_location_id}"{if $user_details.based == $user_locations[l].user_location_id} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
+                                                                                                    {/section} 
+                                                                                                </select>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    {else}
+                                                                                        <tr>
+                                                                                            <td align="right"><strong>{t}Client{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
+                                                                                            <td>
                                                                                                 <a href="index.php?component=client&page_tpl=details&client_id={$user_details.client_id}">{$client_display_name}</a>                                                                                               
-                                                                                                <input type="hidden" name="client_id" value="{$user_details.client_id}">
-                                                                                            {else}                                                                                                
-                                                                                                <input type="hidden" name="client_id" value="">
-                                                                                            {/if}
-                                                                                        </td>                                                                                        
-                                                                                    </tr>
-                                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
-                                                                                        <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                                        <td>
-                                                                                            <select name="based" class="olotd5">
-                                                                                                {section name=l loop=$user_locations}    
-                                                                                                    <option value="{$user_locations[l].user_location_id}"{if $user_details.based == $user_locations[l].user_location_id} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
-                                                                                                {/section} 
-                                                                                            </select>
-                                                                                        </td>
-                                                                                    </tr>
+                                                                                                <input type="hidden" name="based" value="onsite">                                                                                                
+                                                                                            </td>                                                                                        
+                                                                                        </tr>
+                                                                                    {/if}                                                                                    
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
@@ -93,6 +91,7 @@
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="3" width="100%">&nbsp;{t}Account{/t}</td>
                                                                     </tr>
+                                                                    
                                                                     <tr>
                                                                         <td align="left">
                                                                             <table>
@@ -155,6 +154,7 @@
                                                                     <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Work{/t}</td>
                                                                     </tr>
+                                                                    
                                                                     <tr{if !$is_employee} style="display: none;"{/if}>
                                                                         <td colspan="2" align="left">
                                                                             <table>
@@ -179,6 +179,7 @@
                                                                     <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Home{/t}</td>
                                                                     </tr>
+                                                                    
                                                                     <tr{if !$is_employee} style="display: none;"{/if}>
                                                                         <td colspan="2" align="left">
                                                                             <table>
@@ -224,6 +225,7 @@
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="2">{t}Note{/t}</td>
                                                                     </tr>
+                                                                    
                                                                     <tr>
                                                                         <td colspan="2">
                                                                             <table>

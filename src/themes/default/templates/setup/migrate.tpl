@@ -28,79 +28,88 @@
                                         {if $stage == '1' || !$stage}                                        
                                             <tr>
                                                 <td>                                                                                                  
-                                                    {include file='setup/blocks/migrate_stage1_block.tpl'}
+                                                    {include file='setup/blocks/migrate_stage1_database_connection_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 1a - Database connection and test (MyITCRM) -->
-                                        {if $stage == '1a'}                                        
-                                            <tr>
-                                                <td>                                                                                                  
-                                                    {include file='setup/blocks/migrate_stage1a_block.tpl'}
-                                                </td>
-                                            </tr>
-                                        {/if}
-                                        
-                                        <!-- Stage 2 - Main Config Settings -->
+                                        <!-- Stage 2 - MyITCRM Database connection and test -->
                                         {if $stage == '2'}                                        
                                             <tr>
-                                                <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage2_block.tpl'}
+                                                <td>                                                                                                  
+                                                    {include file='setup/blocks/migrate_stage2_myitcrm_database_connection_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 3 - Install the Database -->
+                                        <!-- Stage 3 - Config Settings -->
                                         {if $stage == '3'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage3_block.tpl'}
+                                                    {include file='setup/blocks/migrate_stage3_config_settings_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 4 - Database Install Results -->
+                                        <!-- Stage 4 - Install the Database -->
                                         {if $stage == '4'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage4_block.tpl'}
+                                                    {include file='setup/blocks/migrate_stage4_database_install_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 5 - Company Details -->
+                                        <!-- Stage 5 - Database Installation Results -->
                                         {if $stage == '5'}                                        
                                             <tr>
-                                                <td>                                                                                                   
-                                                    {include file='setup/blocks/migrate_stage5_block.tpl'}
+                                                <td>                                                                                                 
+                                                    {include file='setup/blocks/migrate_stage5_database_results_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 6 - Migrate MyITCRM Data -->
+                                        <!-- Stage 6 - Company Options -->
                                         {if $stage == '6'}                                        
                                             <tr>
-                                                <td>
-                                                    {include file='setup/blocks/migrate_stage6_block.tpl'}
+                                                <td>                                                                                                   
+                                                    {include file='setup/blocks/migrate_stage6_company_options_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 7 - MyITCRM Database Miogration Results -->
+                                        <!-- Stage 7 - MyITCRM Database Migration -->
                                         {if $stage == '7'}                                        
                                             <tr>
-                                                <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage7_block.tpl'}
+                                                <td>
+                                                    {include file='setup/blocks/migrate_stage7_myitcrm_database_migrate_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 8 - Create an administrator account -->
+                                        <!-- Stage 8 - MyITCRM Database Migration Results -->
+                                        {if $stage == '8'}                                        
+                                            <tr>
+                                                <td>                                                                                                 
+                                                    {include file='setup/blocks/migrate_stage8_myitcrm_database_results_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 9 - Create an Administrator Account -->
+                                        {if $stage == '9'}                                        
+                                            <tr>
+                                                <td>
+                                                    {include file='setup/blocks/migrate_stage9_administrator_account_block.tpl'}
+                                                </td>
+                                            </tr>
+                                        {/if}
+                                        
+                                        <!-- Stage 10 - Delete Setup Files -->
                                         {if $stage == '8'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/migrate_stage8_block.tpl'}
+                                                    {include file='setup/blocks/migrate_stage10_delete_setup_files_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

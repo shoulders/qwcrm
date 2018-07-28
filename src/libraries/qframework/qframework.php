@@ -581,7 +581,7 @@ class QFactory {
 
             // Re-Enable PHP error reporting (not needed with this version of ADOdb)
             //error_reporting($reporting_level);
-
+            
             // Return the connection status
             if(!$db->isConnected()) {
 
