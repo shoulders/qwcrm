@@ -15,14 +15,12 @@ require(INCLUDES_DIR.'setup/migrate/myitcrm/migrate.php');
 require(INCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'setup')  || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'index')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process
-if(!check_page_accessed_via_qwcrm('setup', 'migrate') ) {
-    write_record_to_setup_log('migrate', _gettext("QWcrm migration from MyITCRM has begun."));
-}
+write_record_to_setup_log('migrate', _gettext("QWcrm migration from MyITCRM has begun."));
 
 // Stage 1 - Database Connection -->
 if(isset($VAR['stage']) && $VAR['stage'] == '1') {

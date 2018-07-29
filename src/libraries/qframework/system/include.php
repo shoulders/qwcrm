@@ -37,7 +37,13 @@ function get_company_details($item = null) {
         
     // This is a fallback to make diagnosing critical database failure - This is the first function loaded for $date_format
     if (!$db->isConnected()) {
-        die('<div style="color: red;">'._gettext("Something went wrong with your QWcrm database connection, it is not connected. You might have an invalid configuration.php,").' '._gettext("Error occured at").' '.__FUNCTION__.'()</div>');
+        die('
+                <div style="color: red;">'.
+                _gettext("Something went wrong with your QWcrm database connection and it is not connected.").'<br>'.
+                _gettext("Check to see if your Prefix is correct, if not you might have a configuration.php file that should not be present or is corrupt.").'<br>'.
+                _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong>'.
+                '</div>'
+            );
     }
     
     $sql = "SELECT * FROM ".PRFX."company_options";
@@ -46,7 +52,13 @@ function get_company_details($item = null) {
         
         // Part of the fallback
         if($item == 'date_format') {
-            die('<div style="color: red;">'._gettext("Something went wrong executing an SQL query, check your Prefix. You might have an invalid configuration.php,").' '._gettext("Error occured at").' '.__FUNCTION__.'()</div>');
+            die('
+                    <div style="color: red;">'.
+                    _gettext("Something went wrong executing an SQL query.").'<br>'.
+                    _gettext("Check to see if your Prefix is correct, if not you might have a configuration.php file that should not be present or is corrupt.").'<br>'.
+                    _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong><br>'.
+                    '</div>'
+               );
         }
         
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));
@@ -574,34 +586,9 @@ function verify_qwcrm_install_state(&$VAR) {
     // Installation/Migration has finished
     if (isset($VAR['setup']) && $VAR['setup'] == 'finished') {      
         return;        
-    }
     
-    /*Redirect to choice page (optional)
-    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm() && !isset($VAR['component'], $VAR['page_tpl'])) {        
-        
-        force_page('setup', 'choice');
-             
-    }*/
-    
-    // Fresh Installation/Migrate/Upgrade (1st Run)
-    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm()) {
-        
-        $VAR['component'] = 'setup';
-        $VAR['page_tpl']  = 'choice';
-        $VAR['theme']     = 'menu_off';
-        
-        // This allows the use of the database ASAP in the setup process
-        if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
-            define('QWCRM_SETUP', 'database_allowed'); 
-        } else {
-            define('QWCRM_SETUP', 'install'); 
-        }
-        
-        return;       
-    }
-   
     // Installation is in progress
-    elseif (check_page_accessed_via_qwcrm('setup', 'install') || check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) { 
+    } elseif ((isset($VAR['action']) && check_page_accessed_via_qwcrm('setup', 'install')) || check_page_accessed_via_qwcrm('setup', 'install', 'index')) {     
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'install';
@@ -615,18 +602,9 @@ function verify_qwcrm_install_state(&$VAR) {
         }  
         
         return;        
-    }
-    
-    // Appears to be a valid installation but the setup directory is still present
-    elseif (is_file('configuration.php') && is_dir('components/_includes/setup')) {
-        
-        // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
-        compare_qwcrm_filesystem_and_database($VAR);      
-    
-    }
     
     // Migration is in progress
-    elseif (check_page_accessed_via_qwcrm('setup', 'migrate') || check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
+    } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'index')) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'migrate';
@@ -640,10 +618,9 @@ function verify_qwcrm_install_state(&$VAR) {
         }
         
         return;        
-    }
     
     // Upgrade is in progress
-    elseif (check_page_accessed_via_qwcrm('setup', 'upgrade')) {
+    } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade')) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'upgrade';
@@ -656,12 +633,50 @@ function verify_qwcrm_install_state(&$VAR) {
             define('QWCRM_SETUP', 'upgrade'); 
         } 
         
-        return;        
+        return;
+        
+    /*Redirect to choice page (optional)
+    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm() && !isset($VAR['component'], $VAR['page_tpl'])) {        
+        
+        force_page('setup', 'choice');
+             
+    }*/        
+        
+    // Fresh Installation/Migrate/Upgrade (1st Run)
+    } elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm()) {
+        
+        // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
+        $VAR['component'] = isset($VAR['component']) ? $VAR['component'] : 'setup';
+        $VAR['page_tpl']  = isset($VAR['page_tpl'])  ? $VAR['page_tpl']  : 'choice';
+        
+        // theme should always be off
+        $VAR['theme']     = 'menu_off';
+        
+        // This allows the use of the database ASAP in the setup process
+        if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
+            define('QWCRM_SETUP', 'database_allowed'); 
+        } else {
+            define('QWCRM_SETUP', 'install'); 
+        }
+        
+        return;       
+    
+        
+    // Appears to be a valid installation but the setup directory is still present
+    } elseif (is_file('configuration.php') && is_dir('components/_includes/setup')) {
+        
+        // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
+        compare_qwcrm_filesystem_and_database($VAR);    
       
     // Fallback option for those situations I have not thought about
     } else {
     
-        die('<div style="color: red;">'._gettext("Something went wrong with your installation of QWcrm. You might have an invalid configuration.php").'</div>'); 
+        die('
+                <div style="color: red;">'.
+                _gettext("Something went wrong with your installation of QWcrm.").'<br>'.
+                _gettext("You might have a configuration.php file that should not be present or is corrupt.").
+                '</div>'
+            ); 
         
     }
  

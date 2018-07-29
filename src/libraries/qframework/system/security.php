@@ -20,11 +20,6 @@ function force_ssl($force_ssl_config) {
 
 }
 
-// add security routines here
-// post get varible sanitisation
-// url checking,
-// sql injection
-
 /** Other Functions **/
 
 ############################################
@@ -33,33 +28,53 @@ function force_ssl($force_ssl_config) {
 
 function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null) {
    
-    // If override is set, return true
+    // Get Referer
+    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
+    
+    /* BOF Access Rules */
+    
+    // Override - Return true always
     if($access_rule == 'override') {
         return true;        
-    }
+    }    
     
-    // Get Referer
-    $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null; 
-    
-    // Setup Access Rule
-    if($access_rule == 'setup') {
-        
-        // Allow direct access during setup
-        if(!$referer) { return true; }
-        
-        // Allow the referer to be the homepage - needed when coming from setup:choice
-        if(preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'$|U', $referer)) {
+    // Index - Allows the specified page and homepage
+    if($access_rule == 'index') {
+                
+        // Allow the referer to be the homepage (sef/nonsef)
+        if(preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index/.php)?$|U', $referer)) {
             return true;            
         }   
     
     }
     
+    // Setup - Allows page access during a setup process but not direct access
+    if($access_rule == 'setup') {
+        
+        if(defined('QWCRM_SETUP') && !confirm_direct_access($component, $page_tpl)) {
+            return true;            
+        } else {
+            return false;        
+        }        
+    
+    }    
+    
+    // No Referer - Allows direct access when no referer (not currently used)
+    if($access_rule == 'no_referer') {
+        
+        // Allow direct access during setup
+        if(!$referer) { return true; } 
+    
+    }
+    
+    /* EOF Access Rules */
+    
     // If no referer (the page was not accessed via QWcrm) and if a setup procedure is not occuring
     if(!$referer) { return false; }           
     
-    // Allow the referer to be the homepage - needed when coming from setup:choice
+    // Allow the referer to be the homepage (sef/nonsef)
     if($component == 'index.php' && !$page_tpl) {        
-        return preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'$|U', $referer);            
+        return preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index/.php)?$|U', $referer);            
     }
     
     // Check if a 'SPECIFIC' QWcrm page is the referer
@@ -72,6 +87,26 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     } else {        
         return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);        
     }
+    
+    return false;
+    
+}
+
+##################################################
+#   Has the requested page been access directly  #
+##################################################
+
+function confirm_direct_access($component, $page_tpl) {
+    
+    if($_SERVER['REQUEST_URI'] === build_url_from_variables($component, $page_tpl, $url_length = 'relative')) {
+        
+        return true;
+        
+    } else{
+        
+        return false;
+        
+    }   
     
 }
 

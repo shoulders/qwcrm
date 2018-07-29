@@ -109,7 +109,7 @@
                                         {if $stage == '8'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/migrate_stage10_delete_setup_files_block.tpl'}
+                                                    {include file='setup/blocks/migrate_stage10_delete_setup_folder_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

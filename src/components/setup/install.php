@@ -13,28 +13,18 @@ require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'setup.php');
 require(INCLUDES_DIR.'user.php');
 
-/* Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'install', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {         // is it because there is a force_page()
+// Prevent direct access to this page
+if(!check_page_accessed_via_qwcrm('setup', 'install', 'index')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Log message to setup log - only when starting the process
-if(!check_page_accessed_via_qwcrm('setup', 'install') ) {
-    write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
-}*/
+write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 
-// AJAX Actions
-// Delete Setup files
-if(isset($VAR['stage'], $VAR['action']) && $VAR['stage'] == '8' && $VAR['action'] == 'delete_setup_files' && check_page_accessed_via_qwcrm('setup', 'install')) {
-    delete_setup_files();
+// Delete Setup files Action
+if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'install')) {
+    delete_setup_folder();
 }
-// Send a Test Mail
-/*if(isset($VAR['send_test_mail'])) {
-    if(check_page_accessed_via_qwcrm('administrator', 'config')) {
-        send_test_mail();
-    }
-    die();    
-}*/
 
 // Stage 1 - Database Connection -->
 if(isset($VAR['stage']) && $VAR['stage'] == '1') {
@@ -221,8 +211,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '8') {
     
     // Create the administrator and load the next page
     if($VAR['submit'] == 'stage8') {              
-              
-        //force_page('user', 'login', 'setup=finished&information_msg='._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
+        
         //$VAR['stage'] = '9';  
     
     // load the page

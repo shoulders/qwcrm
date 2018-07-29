@@ -530,8 +530,8 @@ function delete_setup_folder() {
         // Hide the delete button
         toggle_element_by_id('remove_setup_folder', 'hide');
         
-        // Display the goto to login page button
-        toggle_element_by_id('goto_login_page_button', 'show');
+        // Display the success message and login button
+        toggle_element_by_id('setup_folder_removed', 'show');
         
         // Output the system message to the browser
         ajax_output_notifications_onscreen($system_message, '');
@@ -539,8 +539,8 @@ function delete_setup_folder() {
     } else {
 
         // Build failure message
-        $record = _gettext("The Setup folder has not been deleted.");
-        $system_message = _gettext("The Setup folder has not been deleted.");
+        $record = _gettext("The Setup folder failed to be deleted.");
+        $system_message = _gettext("The Setup folder has not been deleted. You need to delete the folder manually.");
         
         // Hide the delete button
         toggle_element_by_id('delete_setup_folder_button', 'hide');
@@ -569,37 +569,18 @@ function removeDirectory($directory) {
         die(_gettext("Do not delete the root folder and files!!!"));        
     }            
     
-    // This is useful to try the script without deletions
-    echo '<strong>supplied: '.$directory.' :: </strong><br>';
-    
-    // This pattern scans within the folder for objects, can add an extra slash when not required
-    //$objects = glob($directory . '/*');  
-	
-    // This pattern scans within the folder for objects + GLOB_MARK adds a slash to directories returned (if required), can add an extra cycle
+    // This pattern scans within the folder for objects + GLOB_MARK adds a slash to directories returned
     $objects = glob($directory . '*', GLOB_MARK);
-    
-    // This pattern scans within the folder for objects + GLOB_MARK adds a slash to directories returned (if required), can add an extra slash when not required
-    //$objects = glob($directory . '/*', GLOB_MARK);
     
     // Cycle through the objects discovered in the directory
     foreach ($objects as $object) {        
 
-        //is_dir($object) ? removeDirectory($object) : unlink($object);
-
-        // This is useful to try the script without deletions
-        if(is_dir($object)) {
-            echo 'directory: '.$object.'<br><br><br><br>';
-            removeDirectory($object);
-        } else {
-
-            echo 'file: '.$object.'<br>';
-
-        }
+        is_dir($object) ? removeDirectory($object) : unlink($object);
 
     }
     
     // Remove the supplied directory now it is empty
-    //return rmdir($directory) ? true : false;   
+    return rmdir($directory) ? true : false;   
     
 }
 

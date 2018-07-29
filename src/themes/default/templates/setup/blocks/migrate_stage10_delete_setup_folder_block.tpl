@@ -1,4 +1,4 @@
-<!-- migrate_stage10_delete_setup_files_block.tpl -->
+<!-- migrate_stage10_delete_setup_folder_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -6,14 +6,13 @@
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
-<script>{include file="../`$theme_js_dir_finc`editor-config.js"}</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 10 - Delete Setup Files{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 10 - Delete Setup Folder{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
                 </tr>
                 <tr>
@@ -43,12 +42,6 @@
                                                                         </td>
                                                                     </tr>
                                                                     
-                                                                    <script>
-                                                
-                                                                        // Disable the submit button
-                                                                        disableSubmitButton();                                               
-                                                
-                                                                    </script>
                                                                     
                                                                 </table>                                                                
                                                             </td>

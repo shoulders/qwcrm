@@ -91,7 +91,7 @@
                                         {if $stage == '8'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/install_stage8_delete_setup_files_block.tpl'}
+                                                    {include file='setup/blocks/install_stage8_delete_setup_folder_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
