@@ -11,6 +11,12 @@ defined('_QWEXEC') or die;
 
 /** Mandatory Code **/
 
+/** Other Functions **/
+
+############################################
+#  Force SSL/HTTPS (if enabled)            #
+############################################
+
 function force_ssl($force_ssl_config) {
     
     // Force SSL/HTTPS if enabled - add base path stuff here
@@ -19,8 +25,6 @@ function force_ssl($force_ssl_config) {
     }
 
 }
-
-/** Other Functions **/
 
 ############################################
 #  Check page has been internally refered  #

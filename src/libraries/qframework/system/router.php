@@ -19,8 +19,14 @@ function get_page_controller(&$VAR = null) {
     $config = QFactory::getConfig();    
     $user = QFactory::getUser();
     
-    // Setup is in progress (install/migrate/upgrade), skip validations (because no database access)
-    if(isset($VAR['component'], $VAR['page_tpl']) && ($VAR['component'] == 'setup' && ($VAR['page_tpl'] == 'choice' || $VAR['page_tpl'] == 'install' || $VAR['page_tpl'] == 'migrate' || $VAR['page_tpl'] == 'upgrade'))) {
+    // Setup is in progress (install/migrate/upgrade), skip validations (because no database access etc..)
+    if(
+        defined('QWCRM_SETUP') &&
+        isset($VAR['component'], $VAR['page_tpl']) &&
+        $VAR['component'] == 'setup' &&
+        ($VAR['page_tpl'] == 'choice' || $VAR['page_tpl'] == 'install' || $VAR['page_tpl'] == 'migrate' || $VAR['page_tpl'] == 'upgrade')
+    )
+    {
         goto page_controller_return;
     }
     
@@ -105,7 +111,7 @@ function get_page_controller(&$VAR = null) {
     
     page_controller_return:
         
-    // Return the page display controller for the requested page    
+    // Return the page display controller for the requested page        
     return COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
     
 }

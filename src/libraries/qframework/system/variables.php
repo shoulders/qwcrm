@@ -24,12 +24,8 @@ function load_system_variables(&$VAR) {
     // $QConfig->sef                                            // Only works for the QConfig class I made in the root
 
     ##########################################################
-    #   Assign the User's Variables to PHP and Smarty        #
+    #   Assign Global PHP Variables                          #
     ##########################################################
-
-    ################################
-    #   Set Global PHP Values      #
-    ################################ 
 
     // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
@@ -38,11 +34,7 @@ function load_system_variables(&$VAR) {
         $VAR = array_merge($_POST, $_GET, $VAR);
     }
 
-    ##########################################
-    #   Set Global PHP Values from QWcrm     #  // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on 
-    ##########################################
-
-    // Set Date Format
+    // Set Date Format - If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
     if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
         define('DATE_FORMAT', get_company_details('date_format'));
     }

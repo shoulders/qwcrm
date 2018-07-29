@@ -42,7 +42,7 @@ function load_defines() {
     define('LIBRARIES_DIR',             'libraries/'                                        );
     define('LOGS_DIR',                  'logs/'                                             );
     define('PLUGINS_DIR',               'plugins/'                                          );
-    define('SETUP_DIR',                 INCLUDES_DIR.'setup/'                               );
+    define('SETUP_DIR',                 'setup/'                                            );
 
     define('VENDOR_DIR',                LIBRARIES_DIR.'vendor/'                             );
 

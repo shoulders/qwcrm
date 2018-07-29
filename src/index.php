@@ -63,7 +63,7 @@ set_user_smarty_variables();
 #         Build Page and Content               #
 ################################################
 
-// Get the page controller - no user has been set to calculate what page to load
+// Get the page controller
 $page_controller = get_page_controller($VAR);
 
 // Build the page

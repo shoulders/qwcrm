@@ -576,7 +576,7 @@ function verify_qwcrm_install_state(&$VAR) {
     /* Is a QWcrm installation or MyITCRM migration in progress */
     
     // Installation is fine
-    if (is_file('configuration.php') && !is_dir('components/_includes/setup')) {      
+    if (is_file('configuration.php') && !is_dir(SETUP_DIR)) {      
         return;        
     }
     
@@ -593,6 +593,7 @@ function verify_qwcrm_install_state(&$VAR) {
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'install';
         $VAR['theme']     = 'menu_off';
+        //$VAR['page_controller'] = COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
         
         // This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
@@ -609,6 +610,7 @@ function verify_qwcrm_install_state(&$VAR) {
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'migrate';
         $VAR['theme']     = 'menu_off';
+        //$VAR['page_controller'] = COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
         
         // This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
@@ -625,6 +627,7 @@ function verify_qwcrm_install_state(&$VAR) {
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'upgrade';
         $VAR['theme']     = 'menu_off';
+        //$VAR['page_controller'] = COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
         
         // This allows the use of the database ASAP in the setup process (might not be needed because database exits)
         if (QFactory::getDbo()->isConnected() && defined('PRFX') && get_qwcrm_database_version_number()) {
@@ -643,14 +646,12 @@ function verify_qwcrm_install_state(&$VAR) {
     }*/        
         
     // Fresh Installation/Migrate/Upgrade (1st Run)
-    } elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm()) {
+    } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !check_page_accessed_via_qwcrm()) {
         
         // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
-        $VAR['component'] = isset($VAR['component']) ? $VAR['component'] : 'setup';
-        $VAR['page_tpl']  = isset($VAR['page_tpl'])  ? $VAR['page_tpl']  : 'choice';
-        
-        // theme should always be off
-        $VAR['theme']     = 'menu_off';
+        $VAR['component'] = 'setup';
+        $VAR['page_tpl']  = 'choice';
+        $VAR['theme']     = 'menu_off';        
         
         // This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
@@ -663,7 +664,7 @@ function verify_qwcrm_install_state(&$VAR) {
     
         
     // Appears to be a valid installation but the setup directory is still present
-    } elseif (is_file('configuration.php') && is_dir('components/_includes/setup')) {
+    } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
         
         // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
         compare_qwcrm_filesystem_and_database($VAR);    
@@ -1323,7 +1324,47 @@ function escape_for_javascript($text){
 ##############################################
 
 function toggle_element_by_id($element_id, $action = 'hide') {
-   
+  
+    /* JQuery Version */
+    if($action == 'hide') {
+        
+        echo '
+        <script>                
+            $("#'.$element_id.'").hide();
+        </script>';
+        
+    } 
+    
+    if ($action == 'show') {
+        
+        echo '
+        <script>              
+
+            $("#'.$element_id.'").show();              
+
+        </script>';
+               
+    }
+    
+    if($action == 'disable') {
+        
+        echo '
+        <script>                
+            $("#'.$element_id.'").prop("disabled", true);
+        </script>';
+        
+    } 
+    
+    if ($action == 'enable') {
+        
+        echo '
+        <script>
+            $("#'.$element_id.'").prop("disabled", false);
+        </script>';
+               
+    }
+    
+    /* Javascript Version (for reference only) 
     if($action == 'hide') {
         
         echo '
@@ -1348,7 +1389,7 @@ function toggle_element_by_id($element_id, $action = 'hide') {
 
             </script>';
                
-    }
+    }*/
     
 }
 
