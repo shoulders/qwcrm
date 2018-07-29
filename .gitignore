@@ -4,7 +4,7 @@
 /src/libraries/vendor/
 /src/logs/
 /src/media/
-/src/nbproject/
+/src/-setup/
 /src/configuration.php
 /.php_cs.cache
 /tmp/

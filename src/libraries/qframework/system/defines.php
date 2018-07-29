@@ -8,22 +8,14 @@
 
 defined('_QWEXEC') or die;
 
-function load_defines() {
-    
-    // Get Root Folder and Physical path info (moved from index.php)    
-    define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);                         // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\ || /home/myuser/public_html/develop/qwcrm/
-    define('QWCRM_PROTOCOL', 'http' . (isset($_SERVER['HTTPS']) ? 's' : '') . '://');   // QWcrm Protocol - http:// || https://    
-    define('QWCRM_DOMAIN', $_SERVER['HTTP_HOST']);                                      // QWcrm Domain - quantumwarp.com    
-    define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));      // QWcrm Base Path - /develop/qwcrm/    
-    define('QWCRM_PART_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.'/');                          // QWcrm Part URL  - http(s)://quantumwarp.com/
-    define('QWCRM_FULL_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_BASE_PATH);              // QWcrm Full URL  - http(s)://quantumwarp.com/develop/qwcrm/
+function load_defines() {   
 
     // Misc
     //define('SEP',                       DIRECTORY_SEPARATOR             );            // on windows = '\'
     //define('SEP',                       '/'                             );
 
     // Information and Configuration
-    define('QWCRM_VERSION' ,            '3.0.0'                                             );
+    define('QWCRM_VERSION' ,            '3.1.0'                                             );
     define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                                             );
     
     // This allows the use of the database ASAP in the setup process

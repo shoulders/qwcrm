@@ -694,7 +694,11 @@ function compare_qwcrm_filesystem_and_database(&$VAR) {
 
     // File System and Database versions match(not needed handles in opening if statement, left for reference)
     if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {             
-        die('<div style="color: red;">'._gettext("You must delete the 'Setup' directory before you can use QWcrm.").'<strong>components/_includes/setup</strong>'.'</div>');            
+        die('<div style="color: red;">'.
+            _gettext("You must delete the 'Setup' directory before you can use QWcrm.").'<br>'.
+            '<strong>'.QWCRM_PART_URL.SETUP_DIR.'</strong><br>'.
+            '<strong>'.QWCRM_PHYSICAL_PATH.SETUP_DIR.'</strong>'.
+            '</div>');            
     } 
     
     // If the file system is newer than the database - run upgrade
