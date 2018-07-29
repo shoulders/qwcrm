@@ -152,7 +152,7 @@
                                         <tr id="install_next" style="display: none;">
                                             <td>
                                                 <div>{t escape=no}SETUP_INSTALL_MESSAGE{/t}</div>
-                                                <p><a href="index.php?component=setup&page_tpl=install"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
+                                                <p><button type="button" class="olotd4" onclick="window.location.href='index.php?component=setup&page_tpl=install';">{t}Next{/t}</button></p>
                                             </td>
                                         </tr>                                        
                                         
@@ -160,7 +160,7 @@
                                         <tr id="migrate_next" style="display: none;">
                                             <td>
                                                 <div>{t escape=no}SETUP_MIGRATE_MESSAGE{/t}</div>
-                                                <p><a href="index.php?component=setup&page_tpl=migrate"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
+                                                <p><button type="button" class="olotd4" onclick="window.location.href='index.php?component=setup&page_tpl=migrate';">{t}Next{/t}</button></p>
                                             </td>
                                         </tr>                                         
                                         
@@ -168,7 +168,7 @@
                                         <tr id="upgrade_next" style="display: none;">
                                             <td>
                                                 <div>{t escape=no}SETUP_UPGRADE_MESSAGE{/t}</div>
-                                                <p><a href="index.php?component=setup&page_tpl=upgrade"><button type="submit" name="submit" value="update">{t}Next{/t}</button></a></p>
+                                                <p><button type="button" class="olotd4" onclick="window.location.href='index.php?component=setup&page_tpl=upgrade';">{t}Next{/t}</button></p>
                                             </td>
                                         </tr>*}                                                                            
                                         

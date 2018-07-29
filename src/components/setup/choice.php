@@ -11,9 +11,9 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'setup.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
-    die(_gettext("No Direct Access Allowed. choice.php"));
-}
+/*f(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup') || !defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    die(_gettext("No Direct Access Allowed."));
+}*/
 
 // Build the page
 $BuildPage .= $smarty->fetch('setup/choice.tpl');

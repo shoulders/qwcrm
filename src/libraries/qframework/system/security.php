@@ -32,9 +32,11 @@ function force_ssl($force_ssl_config) {
 ############################################
 
 function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null) {
-    
+   
     // If override is set, return true
-    if($access_rule == 'override') {return true;}
+    if($access_rule == 'override') {
+        return true;        
+    }
     
     // Get Referer
     $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null; 
@@ -45,14 +47,21 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
         // Allow direct access during setup
         if(!$referer) { return true; }
         
-        // Allow the referer to be the homepage (nonsef only) - needed when coming from setup:choice
-        if(preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH.'$', '/').'/U', $referer)) { return true; }
-        
-    }    
+        // Allow the referer to be the homepage - needed when coming from setup:choice
+        if(preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'$|U', $referer)) {
+            return true;            
+        }   
+    
+    }
     
     // If no referer (the page was not accessed via QWcrm) and if a setup procedure is not occuring
-    if(!$referer && $access_rule) { return false; }    
-        
+    if(!$referer) { return false; }           
+    
+    // Allow the referer to be the homepage - needed when coming from setup:choice
+    if($component == 'index.php' && !$page_tpl) {        
+        return preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'$|U', $referer);            
+    }
+    
     // Check if a 'SPECIFIC' QWcrm page is the referer
     if($component && $page_tpl) {       
 
@@ -60,10 +69,8 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
         return preg_match('/^'.preg_quote(build_url_from_variables($component, $page_tpl, 'absolute', 'auto'), '/').'/U', $referer);
         
     // Check if 'ANY' QWcrm page is the referer (returns true/false as needed)
-    } else {
-        
-        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);       
-        
+    } else {        
+        return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);        
     }
     
 }

@@ -51,14 +51,9 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
-                                                                                        <td>
-                                                                                            {if !$is_employee}
-                                                                                                <span style="color: red; font-weight: 900;">{t}Client{/t}</span>
-                                                                                                <input type="hidden" name="is_employee" value="0">
-                                                                                            {else}
-                                                                                                <span style="color: red; font-weight: 900;">{t}Employee{/t}</span>
-                                                                                                <input type="hidden" name="is_employee" value="1">
-                                                                                            {/if}
+                                                                                        <td>                                                                                            
+                                                                                            <span style="color: red; font-weight: 900;">{t}Employee{/t}</span>
+                                                                                            <input type="hidden" name="is_employee" value="1">                                                                                            
                                                                                             &nbsp;-&nbsp;{t}The user type cannot be changed.{/t}
                                                                                         </td>                                                                                        
                                                                                     </tr>                                                                                    
@@ -119,26 +114,27 @@
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td colspan="1" align="right"><b>{t}Status{/t}</b></td>
+                                                                                        <td><input type="hidden" name="active" value="1"></td>
+                                                                                        {*<td colspan="1" align="right"><b>{t}Status{/t}</b></td>
                                                                                         <td>
-                                                                                            {*<select name="active" class="olotd5">                                                                                                
+                                                                                            <select name="active" class="olotd5">                                                                                                
                                                                                                 <option value="1" {if $user_details.active == '1'} selected {/if}>{t}Active{/t}</option>
                                                                                                 <option value="0" {if $user_details.active == '0'} selected {/if}>{t}Blocked{/t}</option>
-                                                                                            </select>*}
-                                                                                            <input type="hidden" name="active" value="1">
+                                                                                            </select>
+                                                                                            
                                                                                             {t}Active{/t}
-                                                                                        </td>
+                                                                                        </td>*}
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td colspan="1" align="right"><b>{t}Require Reset{/t}</b></td>
+                                                                                        <td><input type="hidden" name="require_reset" value="0"></td>
+                                                                                        {*<td colspan="1" align="right"><b>{t}Require Reset{/t}</b></td>
                                                                                         <td>
-                                                                                            {*<select name="require_reset" class="olotd5">
+                                                                                            <select name="require_reset" class="olotd5">
                                                                                                 <option value="0" {if $user_details.require_reset == '0'} selected {/if}>{t}No{/t}</option>
                                                                                                 <option value="1" {if $user_details.require_reset == '1'} selected {/if}>{t}Yes{/t}</option>
-                                                                                            </select>*}
-                                                                                            <input type="hidden" name="require_reset" value="0">
+                                                                                            </select>                                                                                            
                                                                                             {t}No{/t}
-                                                                                        </td>
+                                                                                        </td>*}
                                                                                     </tr>                                                                                    
                                                                                     
                                                                                 </tbody>

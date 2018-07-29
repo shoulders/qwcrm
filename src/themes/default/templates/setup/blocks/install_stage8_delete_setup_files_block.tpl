@@ -32,23 +32,28 @@
                                                                     
                                                                     <!-- Common -->
                                                                     
-                                                                                                                   
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div id="remove_setup_folder">
+                                                                                
+                                                                                <!-- Remove Setup folder message -->
+                                                                                <p style="text-align: center;">
+                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER.{/t}</strong><br />
+                                                                                    {t}You will not be able to use QWcrm until the Setup folder has been removed. This is a security feature of QWcrm!{/t}
+                                                                                </p>                                                                                    
+
+                                                                                <!-- Delete Setup folder Button -->       
+                                                                                <button id="delete_setup_folder_button" type="button" style="margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=install&stage=8action=delete_setup_folder', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
+                                                                                
+                                                                            </div>
+                                                                            
+                                                                            <!-- Goto Login Page Button -->                                                                    
+                                                                            <button id="goto_login_page_button" type="button" style="display: none;" onclick="window.location.href='index.php?component=user&page_tpl=login';">{t}Login{/t}</button>
                                                                     
-                                                                    <!-- Submit Button -->
-                                                                    
-                                                                    <tr>                                                                        
-                                                                        <td colspan="2">
-                                                                            <input type="hidden" name="stage" value="10">                                                                            
-                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="stage10">{t}Next{/t}</button>
+                                                                            
                                                                         </td>
-                                                                    </tr>
+                                                                    </tr>      
                                                                     
-                                                                    <script>
-                                                
-                                                                        // Disable the submit button
-                                                                        disableSubmitButton();                                               
-                                                
-                                                                    </script>
                                                                     
                                                                 </table>                                                                
                                                             </td>

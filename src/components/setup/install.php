@@ -24,17 +24,17 @@ if(!check_page_accessed_via_qwcrm('setup', 'install') ) {
 }*/
 
 // AJAX Actions
-if($VAR['action'] == 'delete_setup_files') {
+// Delete Setup files
+if(isset($VAR['stage'], $VAR['action']) && $VAR['stage'] == '8' && $VAR['action'] == 'delete_setup_files' && check_page_accessed_via_qwcrm('setup', 'install')) {
     delete_setup_files();
-    die();
 }
 // Send a Test Mail
-if(isset($VAR['send_test_mail'])) {
+/*if(isset($VAR['send_test_mail'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         send_test_mail();
     }
     die();    
-}
+}*/
 
 // Stage 1 - Database Connection -->
 if(isset($VAR['stage']) && $VAR['stage'] == '1') {
@@ -209,8 +209,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '7') {
     } else {
     
         // Set mandatory default values
-        $smarty->assign('user_locations', get_user_locations());
-        $smarty->assign('is_employee', '1');    
+        $smarty->assign('user_locations', get_user_locations());           
         $smarty->assign('stage', '7');
         
     }
@@ -220,23 +219,18 @@ if(isset($VAR['stage']) && $VAR['stage'] == '7') {
 // Stage 8 - Delete Setup files
 if(isset($VAR['stage']) && $VAR['stage'] == '8') {
     
-    
-    
-    // create the administrator and load the next page
-    if($VAR['submit'] == 'stage8') { 
-       
-        delete_setup_files();        
-        //$VAR['stage'] = '9';
-        
-        force_page('user', 'login', 'setup=finished&information_msg='._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
+    // Create the administrator and load the next page
+    if($VAR['submit'] == 'stage8') {              
+              
+        //force_page('user', 'login', 'setup=finished&information_msg='._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
+        //$VAR['stage'] = '9';  
     
     // load the page
     } else {
     
         // Set mandatory default values
-        $smarty->assign('user_locations', get_user_locations());
-        $smarty->assign('is_employee', '1');    
-        $smarty->assign('stage', '7');
+        $smarty->assign('user_locations', get_user_locations());           
+        $smarty->assign('stage', '8');
         
     }
     

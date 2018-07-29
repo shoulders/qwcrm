@@ -560,11 +560,7 @@ function prepare_error_data($type, $data = null) {
 
 function verify_qwcrm_install_state(&$VAR) {
     
-    // this is run at the end
-    //force_page('user', 'login', 'setup=finished&information_msg='._gettext("The QWcrm installation process has completed successfully.").' '._gettext("Please login with the administrator account you have just created."), 'get', 'nonsef');
-    // so how do i use && $_GET['setup'] != 'finished' && $_POST['setup'] != 'finished'
-    // maybe finish - true - i want a final page that deletes the setup folder
-    
+       
     /* Is a QWcrm installation or MyITCRM migration in progress */
     
     // Installation is fine
@@ -572,16 +568,27 @@ function verify_qwcrm_install_state(&$VAR) {
         return;        
     }
     
+    // Merge the variables
+    $VAR = array_merge($_POST, $_GET, $VAR);         
+    
     // Installation/Migration has finished
-    elseif (isset($_GET['setup']) && $_GET['setup'] == 'finished') {      
+    if (isset($VAR['setup']) && $VAR['setup'] == 'finished') {      
         return;        
     }
     
+    /*Redirect to choice page (optional)
+    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm() && !isset($VAR['component'], $VAR['page_tpl'])) {        
+        
+        force_page('setup', 'choice');
+             
+    }*/
+    
     // Fresh Installation/Migrate/Upgrade (1st Run)
-    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm('setup', 'choice')) {        
-        $_POST['component'] = 'setup';
-        $_POST['page_tpl']  = 'choice';
-        $_POST['theme']     = 'menu_off';
+    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm()) {
+        
+        $VAR['component'] = 'setup';
+        $VAR['page_tpl']  = 'choice';
+        $VAR['theme']     = 'menu_off';
         
         // This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
@@ -590,14 +597,15 @@ function verify_qwcrm_install_state(&$VAR) {
             define('QWCRM_SETUP', 'install'); 
         }
         
-        return;        
+        return;       
     }
-    
+   
     // Installation is in progress
-    elseif (check_page_accessed_via_qwcrm('setup', 'install')) {        
-        $_POST['component'] = 'setup';
-        $_POST['page_tpl']  = 'install';
-        $_POST['theme']     = 'menu_off';
+    elseif (check_page_accessed_via_qwcrm('setup', 'install') || check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) { 
+        
+        $VAR['component'] = 'setup';
+        $VAR['page_tpl']  = 'install';
+        $VAR['theme']     = 'menu_off';
         
         // This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
@@ -609,11 +617,20 @@ function verify_qwcrm_install_state(&$VAR) {
         return;        
     }
     
+    // Appears to be a valid installation but the setup directory is still present
+    elseif (is_file('configuration.php') && is_dir('components/_includes/setup')) {
+        
+        // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
+        compare_qwcrm_filesystem_and_database($VAR);      
+    
+    }
+    
     // Migration is in progress
-    elseif (check_page_accessed_via_qwcrm('setup', 'migrate')) {
-        $_POST['component'] = 'setup';
-        $_POST['page_tpl']  = 'migrate';
-        $_POST['theme']     = 'menu_off';
+    elseif (check_page_accessed_via_qwcrm('setup', 'migrate') || check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
+        
+        $VAR['component'] = 'setup';
+        $VAR['page_tpl']  = 'migrate';
+        $VAR['theme']     = 'menu_off';
         
         // This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
@@ -627,9 +644,10 @@ function verify_qwcrm_install_state(&$VAR) {
     
     // Upgrade is in progress
     elseif (check_page_accessed_via_qwcrm('setup', 'upgrade')) {
-        $_POST['component'] = 'setup';
-        $_POST['page_tpl']  = 'upgrade';
-        $_POST['theme']     = 'menu_off';
+        
+        $VAR['component'] = 'setup';
+        $VAR['page_tpl']  = 'upgrade';
+        $VAR['theme']     = 'menu_off';
         
         // This allows the use of the database ASAP in the setup process (might not be needed because database exits)
         if (QFactory::getDbo()->isConnected() && defined('PRFX') && get_qwcrm_database_version_number()) {
@@ -639,15 +657,8 @@ function verify_qwcrm_install_state(&$VAR) {
         } 
         
         return;        
-    }
-    
-    // Appears to be a valid installation but the setup directory is still present
-    elseif (is_file('configuration.php') && is_dir('components/_includes/setup')) {
-        
-        // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
-        compare_qwcrm_filesystem_and_database($VAR);    
-    
-    // fallback option for those situations I have not thought about
+      
+    // Fallback option for those situations I have not thought about
     } else {
     
         die('<div style="color: red;">'._gettext("Something went wrong with your installation of QWcrm. You might have an invalid configuration.php").'</div>'); 
@@ -1289,6 +1300,40 @@ function escape_for_javascript($text){
     $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
     
     return $text;
+    
+}
+
+##############################################
+#  Output email notifications onscreen       #   // this is needed for messages when pages are requested via ajax (emails/config)
+##############################################
+
+function toggle_element_by_id($element_id, $action = 'hide') {
+   
+    if($action == 'hide') {
+        
+        echo '
+            <script>                
+
+                var x = document.getElementById("'.$element_id.'");
+                if (x.style.display !== "none") {
+                    x.style.display = "none";
+                }             
+
+            </script>';
+        
+    } elseif ($action == 'show') {
+        
+        echo '
+            <script>              
+
+                var x = document.getElementById("'.$element_id.'");
+                if (x.style.display !== "block") {
+                    x.style.display = "block";
+                }               
+
+            </script>';
+               
+    }
     
 }
 
