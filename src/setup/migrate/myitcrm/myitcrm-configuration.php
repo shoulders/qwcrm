@@ -1,0 +1,63 @@
+<?php
+class QConfig {
+    public $db_host = '';
+    public $db_name = '';
+    public $db_user = '';
+    public $db_pass = '';
+    public $db_prefix = '';
+    
+    public $gzip = '0';
+    public $maintenance = '0';
+    public $theme_name = 'default';
+    public $default_language = 'en_GB';
+    public $autodetect_language = '1';
+    public $google_server = 'https://www.google.co.uk/';
+    public $email_online = '1';
+    public $email_mailer = 'phpmail';
+    public $email_mailfrom = '';
+    public $email_fromname = 'From QWcrm';
+    public $email_replyto = '';
+    public $email_replytoname = 'Reply to QWcrm';
+    public $email_sendmail_path = '';
+    public $email_smtp_host = '';
+    public $email_smtp_port = '';
+    public $email_smtp_security = '';
+    public $email_smtp_auth = '0';
+    public $email_smtp_username = '';
+    public $email_smtp_password = '';
+    public $secret_key = '';
+    public $force_ssl = '0';
+    public $recaptcha = '0';
+    public $recaptcha_site_key = '';
+    public $recaptcha_secret_key = '';
+    public $session_handler = 'database';
+    public $session_name = '';
+    public $session_lifetime = '15';
+    public $shared_session = '0';
+    public $remember_me = '1';
+    public $cookie_lifetime = '60';
+    public $cookie_token_length = '16';
+    public $cookie_domain = '';
+    public $cookie_path = '';
+    public $workorder_history_notes = '1';
+    public $qwcrm_access_log = '0';
+    public $qwcrm_activity_log = '0';
+    public $qwcrm_error_log = '0';
+    public $qwcrm_sql_logging = '0';
+    public $qwcrm_email_error_log = '0';
+    public $qwcrm_email_transport_log = '0';
+    public $error_reporting = 'default';
+    public $error_page_raw_output = '0';
+    
+    public $qwcrm_debug = '0';
+    public $qwcrm_advanced_debug = '0';
+    public $qwcrm_smarty_debugging = '0';
+    public $smarty_debugging = '0';
+    public $smarty_debugging_ctrl = '0';
+    public $smarty_force_compile = '0';
+    public $smarty_force_cache = '0';
+    public $smarty_caching = '0';
+    public $smarty_cache_lifetime = '3600';
+    public $smarty_cache_modified_check = '0';
+    public $smarty_cache_locking = '0';    
+}
