@@ -91,7 +91,7 @@ function onlySearch(e) {
 
 // Names
 function onlyName(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,'-", true);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.,'-&", true);
 }
 
 // Phone Numbers
