@@ -1,4 +1,4 @@
-<!-- install_stage8_delete_setup_folder_block.tpl -->
+<!-- install_delete_setup_folder_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -11,7 +11,7 @@
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 8 - Delete Setup Folder{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Delete Setup Folder{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
                 </tr>
                 <tr>
@@ -36,9 +36,10 @@
                                                                                 
                                                                                 <!-- Remove Setup folder message -->
                                                                                 <p style="text-align: center;">
-                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER.{/t}</strong><br />
+                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER.{/t}</strong>
+                                                                                    <br />
                                                                                     {t}You will not be able to use QWcrm until the Setup folder has been removed. This is a security feature of QWcrm!{/t}
-                                                                                </p>                                                                                    
+                                                                                </p>
 
                                                                                 <!-- Delete Setup folder Button -->       
                                                                                 <button id="delete_setup_folder_button" type="button" style="display: block; margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=install&action=delete_setup_folder&theme=off', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
@@ -47,7 +48,7 @@
                                                                             
                                                                             <div id="setup_folder_removed" style="display: none;">
                                                                                 
-                                                                                <!-- Setup folder removede message -->
+                                                                                <!-- Setup folder removed message -->
                                                                                 <p style="text-align: center;">
                                                                                     <strong>{t}Please login with the administrator account you have just created.{/t}</strong><br />                                                                                    
                                                                                 </p> 

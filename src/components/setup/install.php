@@ -13,52 +13,62 @@ require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'setup.php');
 require(INCLUDES_DIR.'user.php');
 
+// Get stage from the submit button
+$VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
+
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup', 'install', 'index')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
-// Log message to setup log - only when starting the process
-write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
+// Log message to setup log - only when starting the process - this start every page loads
+//write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 
 // Delete Setup files Action
 if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'install')) {
     delete_setup_folder();
 }
 
-// Stage 1 - Database Connection -->
-if(isset($VAR['stage']) && $VAR['stage'] == '1') {
+
+// Database Connection
+if($VAR['stage'] == 'database_connection') {
     
-    if($VAR['submit'] == 'stage1') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection') {
         
-        // test the supplied database connection details
+        // Test the supplied database connection details and store details if successful
         if(verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
             
             $smarty->assign('information_msg', _gettext("Database connection successful."));
             create_config_file_from_default();
             update_qwcrm_config($VAR['qwcrm_config']);           
             write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
-            $VAR['stage'] = '2';
+            $VAR['stage'] = 'database_prefix';
         
         // load the page - Error message done by verify_database_connection_details();
         } else {
             
-            // reload the database connection page with the details and error message
+            // reload the database connection page with the entered values and error message
             $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);                       
             write_record_to_setup_log('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
-            $smarty->assign('stage', '1');             
+            $smarty->assign('stage', 'database_connection');             
             
         }
+        
+    // load the page
+    } else {
+        
+        $smarty->assign('stage', 'database_connection');
         
     }
     
 }
 
-// Stage 2 - Config Settings
-if(isset($VAR['stage']) && $VAR['stage'] == '2') {    
+
+// Database Prefix (and other Config Settings
+if($VAR['stage'] == 'database_prefix') {    
     
     // submit the config settings and load the next page
-    if($VAR['submit'] == 'stage2') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'database_prefix') {
                  
         // Correct missing secret varibles
         $VAR['qwcrm_config']['session_name']        = JUserHelper::genRandomPassword(16);
@@ -66,7 +76,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '2') {
         
         update_qwcrm_config($VAR['qwcrm_config']);
         write_record_to_setup_log('install', _gettext("Config settings have been added to the config file."));
-        $VAR['stage'] = '3';
+        $VAR['stage'] = 'database_install';
     
     // load the page
     } else {
@@ -74,16 +84,17 @@ if(isset($VAR['stage']) && $VAR['stage'] == '2') {
         $VAR['qwcrm_config']['db_prefix'] = generate_database_prefix();
     
         $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);        
-        $smarty->assign('stage', '2');
+        $smarty->assign('stage', 'database_prefix');
         
     }
     
 }
 
-// Stage 3 - Install the database
-if(isset($VAR['stage']) && $VAR['stage'] == '3') {    
+
+// Install the database
+if($VAR['stage'] == 'database_install') {    
     
-    if($VAR['submit'] == 'stage3') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'database_install') {
        
         write_record_to_setup_log('install', _gettext("Starting Database installation."));
         
@@ -93,7 +104,7 @@ if(isset($VAR['stage']) && $VAR['stage'] == '3') {
             $record = _gettext("The database installed successfully.");            
             $smarty->assign('information_msg', $record); 
             write_record_to_setup_log('install', $record);
-            $VAR['stage'] = '4';            
+            $VAR['stage'] = 'database_results';            
         
         // load the page with the error message      
         } else {            
@@ -101,27 +112,28 @@ if(isset($VAR['stage']) && $VAR['stage'] == '3') {
            $record = _gettext("The database failed to install.");                      
            $smarty->assign('warning_msg', $record);
            write_record_to_setup_log('install', $record);
-           $VAR['stage'] = '4';
+           $VAR['stage'] = 'database_results';
            
         }        
     
     // load the page
     } else {
-        $smarty->assign('stage', '3');        
+        $smarty->assign('stage', 'database_install');        
     }
     
 }
 
-// Stage 4 - Database Installation Results
-if(isset($VAR['stage']) && $VAR['stage'] == '4') { 
+
+// Database Installation Results
+if($VAR['stage'] == 'database_results') { 
 
     // load the next page
-    if($VAR['submit'] == 'stage4') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'database_results') {
         
         // Prefill Company Financial dates
         update_record_value(PRFX.'company_options', 'year_start', mysql_date()) ;
         update_record_value(PRFX.'company_options', 'year_end', timestamp_mysql_date(strtotime('+1 year')));
-        $VAR['stage'] = '5';    
+        $VAR['stage'] = 'company_options';    
     
     // load the page  
     } else {
@@ -129,21 +141,23 @@ if(isset($VAR['stage']) && $VAR['stage'] == '4') {
         // Output Execution results to the screen
         global $executed_sql_results;
         $smarty->assign('executed_sql_results' ,$executed_sql_results);        
-        $smarty->assign('stage', '4');
+        $smarty->assign('stage', 'database_results');
+        
     }
     
 }
 
-// Stage 5 - Company Details
-if(isset($VAR['stage']) && $VAR['stage'] == '5') {   
+
+// Company Options
+if($VAR['stage'] == 'company_options') {   
     
     // submit the company details and load the next page
-    if($VAR['submit'] == 'stage5') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'company_options') {
         
         // upload_company details
         update_company_details($VAR);
-        write_record_to_setup_log('install', _gettext("Company details inserted."));
-        $VAR['stage'] = '6';
+        write_record_to_setup_log('install', _gettext("Company options inserted."));
+        $VAR['stage'] = 'start_numbers';
         
     // load the page    
     } else {
@@ -151,79 +165,83 @@ if(isset($VAR['stage']) && $VAR['stage'] == '5') {
         // date format is not set in the javascript date picker because i am manipulating stages not pages
         
         $smarty->assign('date_formats', get_date_formats());
-        $smarty->assign('company_details', get_company_details());
+        $smarty->assign('company_options', get_company_details());
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
-        $smarty->assign('stage', '5');
+        $smarty->assign('stage', 'company_options');
         
     }
+    
 }
 
-// Stage 6 - Work Order and Invoice Start Numbers
-if(isset($VAR['stage']) && $VAR['stage'] == '6') {  
+
+// Work Order and Invoice Start Numbers
+if($VAR['stage'] == 'start_numbers') {  
     
     // submit the workorder and invoice start numbers if supplied, then load the next page
-    if($VAR['submit'] == 'stage6') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'start_numbers') {
         
-        if($VAR['workorder_start_number'] != '') {
+        if($VAR['workorder_start_number']) {
             set_workorder_start_number($VAR['workorder_start_number']);
             write_record_to_setup_log('install', _gettext("Starting Work Order number has been set."));
         }
         
-        if($VAR['invoice_start_number'] != '') {
+        if($VAR['invoice_start_number']) {
             set_invoice_start_number($VAR['invoice_start_number']);
             write_record_to_setup_log('install', _gettext("Starting Invoice number has been set."));
         }
         
-        $VAR['stage'] = '7';
+        $VAR['stage'] = 'administrator_account';
     
     // load the page
     } else {
-        $smarty->assign('stage', '6');
+        $smarty->assign('stage', 'start_numbers');
     }
         
 }
 
-// Stage 7 - Create an Administrator
-if(isset($VAR['stage']) && $VAR['stage'] == '7') {
+
+// Create an Administrator account
+if($VAR['stage'] == 'administrator_account') {
     
     // create the administrator and load the next page
-    if($VAR['submit'] == 'stage7') {  
+    if(isset($VAR['submit']) && $VAR['submit'] == 'administrator_account') {
        
         insert_user($VAR);
         write_record_to_setup_log('install', _gettext("The administrator account has been created."));
         write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
         $smarty->assign('information_msg', _gettext("The QWcrm installation process has completed successfully."));
-        $VAR['stage'] = '8';        
+        $VAR['stage'] = 'delete_setup_folder';        
     
     // load the page
     } else {
     
         // Set mandatory default values
         $smarty->assign('user_locations', get_user_locations());           
-        $smarty->assign('stage', '7');
+        $smarty->assign('stage', 'administrator_account');
         
     }
     
 }
 
-// Stage 8 - Delete Setup files
-if(isset($VAR['stage']) && $VAR['stage'] == '8') {
+
+// Delete Setup folder
+if($VAR['stage'] == 'delete_setup_folder') {
     
-    // Create the administrator and load the next page
-    if($VAR['submit'] == 'stage8') {              
+    // There is not submit action on this stage
+    if(isset($VAR['submit']) && $VAR['submit'] == 'delete_setup_folder') {
         
-        //$VAR['stage'] = '9';  
-    
+        //$VAR['stage'] = 'unknown';
+   
     // load the page
     } else {
     
-        // Set mandatory default values
-        $smarty->assign('user_locations', get_user_locations());           
-        $smarty->assign('stage', '8');
+        // Set mandatory default values               
+        $smarty->assign('stage', 'delete_setup_folder');
         
     }
     
 }
+
 
 // Build the page
 $BuildPage .= $smarty->fetch('setup/install.tpl');

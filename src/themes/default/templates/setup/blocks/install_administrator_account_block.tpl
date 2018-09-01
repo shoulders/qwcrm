@@ -1,4 +1,4 @@
-<!-- install_stage7_administrator_account_block.tpl -->
+<!-- install_administrator_account_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -13,7 +13,7 @@
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 7 - Create an Administrator{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Create an Administrator{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
@@ -231,8 +231,7 @@
                                                                     
                                                                     <tr>                                                                        
                                                                         <td colspan="2">
-                                                                            <input type="hidden" name="stage" value="7">                                                                            
-                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="stage7">{t}Next{/t}</button>
+                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="administrator_account">{t}Next{/t}</button>
                                                                         </td>
                                                                     </tr>
                                                                     

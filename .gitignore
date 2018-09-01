@@ -6,6 +6,7 @@
 /src/media/
 /src/-setup/
 /src/configuration.php
+/src/-configuration.php
 /.php_cs.cache
 /tmp/
 /src/.htaccess

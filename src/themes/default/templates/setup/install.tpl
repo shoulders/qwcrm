@@ -24,74 +24,74 @@
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">                                        
                                         
-                                        <!-- Stage 1 - Database connection and test -->
-                                        {if $stage == '1' || !$stage}                                        
+                                        <!-- Database Connection and test -->
+                                        {if $stage == 'database_connection' || !$stage}                                        
                                             <tr>
                                                 <td>                                                                                                  
-                                                    {include file='setup/blocks/install_stage1_database_connection_block.tpl'}
+                                                    {include file='setup/blocks/install_database_connection_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 2 - Config Settings -->
-                                        {if $stage == '2'}                                        
+                                        <!-- Database Prefix (and other Config Settings) -->
+                                        {if $stage == 'database_prefix'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/install_stage2_config_settings_block.tpl'}
+                                                    {include file='setup/blocks/install_database_prefix_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 3 - Install the Database -->
-                                        {if $stage == '3'}                                        
+                                        <!-- Install the Database -->
+                                        {if $stage == 'database_install'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/install_stage3_database_install_block.tpl'}
+                                                    {include file='setup/blocks/install_database_install_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 4 - Database Installation Results -->
-                                        {if $stage == '4'}                                        
+                                        <!-- Database Installation Results -->
+                                        {if $stage == 'database_results'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/install_stage4_database_results_block.tpl'}
+                                                    {include file='setup/blocks/install_database_results_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 5 - Company Options -->
-                                        {if $stage == '5'}                                        
+                                        <!-- Company Options -->
+                                        {if $stage == 'company_options'}                                        
                                             <tr>
                                                 <td>                                                                                                   
-                                                    {include file='setup/blocks/install_stage5_company_options_block.tpl'}
+                                                    {include file='setup/blocks/install_company_options_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 6 - Workorder/Invoice Start Numbers -->
-                                        {if $stage == '6'}                                        
+                                        <!-- Start Numbers (Workorder/Invoice ) -->
+                                        {if $stage == 'start_numbers'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/install_stage6_wo_inv_start_numbers_block.tpl'}
+                                                    {include file='setup/blocks/install_start_numbers_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 7 - Create an Administrator Account -->
-                                        {if $stage == '7'}                                        
+                                        <!-- Create an Administrator Account -->
+                                        {if $stage == 'administrator_account'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/install_stage7_administrator_account_block.tpl'}
+                                                    {include file='setup/blocks/install_administrator_account_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 8 - Delete Setup Files -->
-                                        {if $stage == '8'}                                        
+                                        <!-- Delete Setup Folder -->
+                                        {if $stage == 'delete_setup_folder'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/install_stage8_delete_setup_folder_block.tpl'}
+                                                    {include file='setup/blocks/install_delete_setup_folder_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

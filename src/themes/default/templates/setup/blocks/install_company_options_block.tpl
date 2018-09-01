@@ -1,4 +1,4 @@
-<!-- options.tpl -->
+<!-- install_company_options.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -40,7 +40,7 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 5 - Company Options{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Company Options{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}COMPANY_OPTIONS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}COMPANY_OPTIONS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
@@ -220,11 +220,11 @@
                                                                                 <tbody align="left">
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Currency Symbol{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                        <td><input name="currency_symbol" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" required onkeydown="return onlyCurrencySymbol(event);"></td>
+                                                                                        <td><input name="currency_symbol" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" placeholder="&pound;" required onkeydown="return onlyCurrencySymbol(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Currency Code{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                        <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
+                                                                                        <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" placeholder="GBP" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Date Format{/t}:</b></td>
@@ -269,8 +269,7 @@
 
                                                                     <tr>
                                                                         <td>
-                                                                            <input type="hidden" name="stage" value="5">
-                                                                            <button class="olotd5" type="submit" name="submit" value="stage5">{t}Next{/t}</button>
+                                                                            <button class="olotd5" type="submit" name="submit" value="company_options">{t}Next{/t}</button>
                                                                         </td>
                                                                     </tr>
 

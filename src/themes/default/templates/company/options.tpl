@@ -217,11 +217,11 @@
                                                                             <table cellpadding="5" cellspacing="0">                                                        
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Currency Symbol{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="currency_symbol" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" required onkeydown="return onlyCurrencySymbol(event);"></td>
+                                                                                    <td><input name="currency_symbol" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" placeholder="&pound;" required onkeydown="return onlyCurrencySymbol(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Currency Code{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
+                                                                                    <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" placeholder="GBP" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Date Format{/t}:</b></td>

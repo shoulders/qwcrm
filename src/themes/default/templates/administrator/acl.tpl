@@ -44,8 +44,12 @@
                                                     <!-- Module:Page -->
                                                         <td class="olotd4"><b>{$acl[i].page}</b></td>
                                                     
-                                                    {if $acl[i].page == 'core:403' || $acl[i].page == 'core:404' || $acl[i].page == 'core:error' || $acl[i].page == 'core:home' || $acl[i].page == 'core:maintenance' || $acl[i].page == 'user:login'}
-                                                        
+                                                    {* Mandatory Permissions - Always enabled *}
+                                                    {if
+                                                        $acl[i].page == 'core:403' || $acl[i].page == 'core:404' || $acl[i].page == 'core:error' || $acl[i].page == 'core:home' || $acl[i].page == 'core:maintenance' || $acl[i].page == 'user:login' ||
+                                                        $acl[i].page == 'setup:choice' || $acl[i].page == 'setup:install' || $acl[i].page == 'setup:migrate' || $acl[i].page == 'setup:upgrade'
+                                                    }
+                                                                                                                
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Manager]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Supervisor]" type="hidden" value="1">{t}Yes{/t}</td>
@@ -55,7 +59,20 @@
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Client]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Guest]" type="hidden" value="1">{t}Yes{/t}</td>
                                                         <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Public]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        
+                                                    
+                                                    {* Mandatory Permissions - Only Administrator enabled
+                                                    {elseif $acl[i].page == 'setup:choice' || $acl[i].page == 'setup:install' || $acl[i].page == 'setup:migrate' || $acl[i].page == 'setup:upgrade'}
+                                                    
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Manager]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Supervisor]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Technician]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Clerical]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Counter]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Client]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Guest]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Public]" type="hidden" value="0">{t}No{/t}</td>*}
+                                                    
                                                     {else}
                                                         
                                                         <!-- Administrator -->

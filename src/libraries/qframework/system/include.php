@@ -638,7 +638,7 @@ function verify_qwcrm_install_state(&$VAR) {
         
         return;
         
-    /*Redirect to choice page (optional)
+    /* Redirect to choice page (optional)
     elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm() && !isset($VAR['component'], $VAR['page_tpl'])) {        
         
         force_page('setup', 'choice');
@@ -693,12 +693,15 @@ function compare_qwcrm_filesystem_and_database(&$VAR) {
     $qwcrm_database_version = get_qwcrm_database_version_number();
 
     // File System and Database versions match(not needed handles in opening if statement, left for reference)
-    if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {             
-        die('<div style="color: red;">'.
+    if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {
+        
+        die(
+            '<div style="color: red;">'.
             _gettext("You must delete the 'Setup' directory before you can use QWcrm.").'<br>'.
             '<strong>'.QWCRM_PART_URL.SETUP_DIR.'</strong><br>'.
             '<strong>'.QWCRM_PHYSICAL_PATH.SETUP_DIR.'</strong>'.
-            '</div>');            
+            '</div>'
+            );            
     } 
     
     // If the file system is newer than the database - run upgrade

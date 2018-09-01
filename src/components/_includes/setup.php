@@ -22,6 +22,12 @@ defined('_QWEXEC') or die;
 
 /** Common **/
 
+
+// Only allow the use of these functions when the /setup/ folder exists.
+if (!is_dir(SETUP_DIR)) {      
+    die(_gettext("You cannot use these functions without the setup folder."));        
+}
+
 #########################################################
 #       update a value in a specified record            #  // with and without 'WHERE' clause
 #########################################################
@@ -363,7 +369,7 @@ function verify_database_connection_details($db_host, $db_user, $db_pass, $db_na
     
     $conf = QFactory::getConfig();
     
-    // This allows me to re-use this to test the database connection
+    // This allows me to re-use config registrythis to test the database connection
     $conf->set('db_host', $db_host);
     $conf->set('db_user', $db_user);
     $conf->set('db_pass', $db_pass);
@@ -372,7 +378,7 @@ function verify_database_connection_details($db_host, $db_user, $db_pass, $db_na
     // Set an error trap
     $conf->set('test_db_connection', 'test');
     
-    // fire up the database connection
+    // Fire up the database connection
     QFactory::getDbo();
     
     // This function will generate the error messages upstream as needed

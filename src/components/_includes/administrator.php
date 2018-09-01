@@ -129,13 +129,10 @@ function update_acl($permissions) {
             //'core:dashboard'  => array('Administrator' => '1', 'Manager' => '1', 'Supervisor' => '1', 'Technician' =>'1', 'Clerical' => '1', 'Counter' => '1', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
             
             // Administrator Only
-            //'administrator:acl' => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
-
-            // Permissions always removed for all
-            'setup:install'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:choice'      => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:migrate'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
-            'setup:upgrade'     => array('Administrator' => '0', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0')
+            'setup:install'     => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:choice'      => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:migrate'     => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0'),
+            'setup:upgrade'     => array('Administrator' => '1', 'Manager' => '0', 'Supervisor' => '0', 'Technician' =>'0', 'Clerical' => '0', 'Counter' => '0', 'Client' => '0', 'Guest' => '0', 'Public' => '0')
 
         ); 
 
@@ -149,7 +146,7 @@ function update_acl($permissions) {
                 `Technician`    =". $db->qstr( $page_permission['Technician']     ).",
                 `Clerical`      =". $db->qstr( $page_permission['Clerical']       ).",
                 `Counter`       =". $db->qstr( $page_permission['Counter']        ).",
-                `Client`      =". $db->qstr( $page_permission['Client']       ).",
+                `Client`        =". $db->qstr( $page_permission['Client']         ).",
                 `Guest`         =". $db->qstr( $page_permission['Guest']          ).",
                 `Public`        =". $db->qstr( $page_permission['Public']         )."
                 WHERE `page`    =". $db->qstr( $page_name                         ).";";
@@ -532,10 +529,10 @@ function reset_acl_permissions() {
                 ('schedule:icalendar', 1, 1, 1, 1, 0, 0, 0, 0, 0),
                 ('schedule:new', 1, 1, 1, 1, 0, 0, 0, 0, 0),
                 ('schedule:search', 1, 1, 1, 1, 0, 0, 0, 0, 0),
-                ('setup:choice', 0, 0, 0, 0, 0, 0, 0, 0, 0),
-                ('setup:install', 0, 0, 0, 0, 0, 0, 0, 0, 0),
-                ('setup:migrate', 0, 0, 0, 0, 0, 0, 0, 0, 0),
-                ('setup:upgrade', 0, 0, 0, 0, 0, 0, 0, 0, 0),
+                ('setup:choice', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('setup:install', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('setup:migrate', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                ('setup:upgrade', 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 ('supplier:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
                 ('supplier:details', 1, 1, 1, 1, 1, 0, 0, 0, 0),
                 ('supplier:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),

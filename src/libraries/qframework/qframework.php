@@ -567,11 +567,11 @@ class QFactory {
                 // Re-Enable PHP error reporting
                 //error_reporting($reporting_level); (not needed with this version of ADOdb)
 
-                if($conf->get('test_db_connection')) {
+                if($conf->get('test_db_connection') == 'test') {
                     //echo $e->msg;
                     //var_dump($e);
                     //adodb_backtrace($e->gettrace());
-                    $conf->set('test_db_connection', false);
+                    $conf->set('test_db_connection', 'failed');
                     $smarty->assign('warning_msg', prepare_error_data('error_database_connection', $e->msg));
                 }
 
@@ -582,35 +582,43 @@ class QFactory {
             // Re-Enable PHP error reporting (not needed with this version of ADOdb)
             //error_reporting($reporting_level);
             
-            // Return the connection status
-            if(!$db->isConnected()) {
-
-                // Testing Database Connection only, has failed
-                if($conf->get('test_db_connection')) {
-
+            // If just testing the database connection
+            if($conf->get('test_db_connection') == 'test') {
+                
+                if(!$db->isConnected()) {
+                    
+                    // Database connection failed
                     $smarty->assign('warning_msg', prepare_error_data('error_database_connection', $db->ErrorMsg()));
-                    $conf->set('test_db_connection', false);
-                    return false;
-
+                    $conf->set('test_db_connection', 'failed');
+                    return;
+                    
+                } else {
+                    
+                    // Database connection succeeded
+                    $conf->set('test_db_connection', 'passed');
+                    return;
+                    
+                }                
+                
+            }
+            
+            // Database connection failed (rigged to allow installtion)
+            if(!$db->isConnected()) {           
+                
                 // Valid installation, Database Connection has failed
-                } elseif (is_file('configuration.php') && !is_dir('components/_includes/setup')) {
+                if (is_file('configuration.php') && !is_dir('components/_includes/setup')) {
 
                     die('<div style="color: red;">'._gettext("There is a database connection issue. Check your settings in the config file.").'<br><br>'.$db->ErrorMsg().'</div>');
 
-                }                
+                }           
 
-            }
-            
-            // If testing connection, set as passed
-            if($conf->get('test_db_connection')) {
-                $conf->set('test_db_connection', 'passed');
-                return false;
-            }
+            }            
             
             return $db;
         
         }
         
+        // If the database connection values have not all been supplied
         return false;
     
     }
