@@ -19,24 +19,24 @@
                             {$executed_sql_results}
                         </td>
                     </tr>                    
-                    {if $setup_error_flag}
+                    {if !$setup_error_flag}
                         <tr>
                             <td colspan="2" style="text-align: center;">
-                                <strong><span style="color: red">{t}There was a fault with the database migration. The data might be compromised.{/t}</span></strong>
+                                <strong>{t}The database migration was successful. You need to manually delete your old MyITCRM tables once you have completed the migration process.{/t}</strong>
                             </td>
                         </tr>
-                    {else}
                         <tr>
-                            <td colspan="2" style="text-align: center;">
-                                <strong>{t}The database migration was successful. You need to manually delete your old MyITCRM tables once you have completed this process.{/t}</strong>
-                            </td>
-                        </tr>                        
-                    {/if}    
-                    <tr>
                         <td colspan="2" style="text-align: center;">
                             <button class="olotd5" type="submit" name="submit" value="database_migrate_results">{t}Next{/t}</button>
                         </td>
-                    </tr>                                       
+                    </tr>                        
+                    {else}
+                        <tr>
+                            <td colspan="2" style="text-align: center;">
+                                <strong><span style="color: red">{t}You cannot continue because there was a fault with the database migration. The data might be compromised. Examine the setup.log for further information.{/t}</span></strong>
+                            </td>
+                        </tr>
+                    {/if}                                                          
                 </table>
             </td>
         </tr>

@@ -13,7 +13,7 @@
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 9 - Create an Administrator{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Create an Administrator{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}USER_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}USER_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
@@ -51,9 +51,9 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}User Type{/t}</strong><span style="color: #ff0000">*</span></td>                                                                                        
-                                                                                        <td>
+                                                                                        <td>                                                                                            
                                                                                             <span style="color: red; font-weight: 900;">{t}Employee{/t}</span>
-                                                                                            <input type="hidden" name="is_employee" value="1">
+                                                                                            <input type="hidden" name="is_employee" value="1">                                                                                            
                                                                                             &nbsp;-&nbsp;{t}The user type cannot be changed.{/t}
                                                                                         </td>                                                                                        
                                                                                     </tr>                                                                                    
@@ -67,7 +67,7 @@
                                                                                             </select>
                                                                                             <input type="hidden" name="client_id" value="">
                                                                                         </td>
-                                                                                    </tr>                                                                                    
+                                                                                    </tr>                                                                                                                                                                       
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
@@ -120,9 +120,10 @@
                                                                                             <select name="active" class="olotd5">                                                                                                
                                                                                                 <option value="1" {if $user_details.active == '1'} selected {/if}>{t}Active{/t}</option>
                                                                                                 <option value="0" {if $user_details.active == '0'} selected {/if}>{t}Blocked{/t}</option>
-                                                                                            </select>                                                                                            
-                                                                                            {t}Active{/t}*}
-                                                                                        </td>
+                                                                                            </select>
+                                                                                            
+                                                                                            {t}Active{/t}
+                                                                                        </td>*}
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td><input type="hidden" name="require_reset" value="0"></td>
@@ -132,8 +133,8 @@
                                                                                                 <option value="0" {if $user_details.require_reset == '0'} selected {/if}>{t}No{/t}</option>
                                                                                                 <option value="1" {if $user_details.require_reset == '1'} selected {/if}>{t}Yes{/t}</option>
                                                                                             </select>                                                                                            
-                                                                                            {t}No{/t}*}
-                                                                                        </td>
+                                                                                            {t}No{/t}
+                                                                                        </td>*}
                                                                                     </tr>                                                                                    
                                                                                     
                                                                                 </tbody>

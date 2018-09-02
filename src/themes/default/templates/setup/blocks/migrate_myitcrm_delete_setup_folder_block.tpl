@@ -1,11 +1,10 @@
-<!-- migrate_delete_setup_folder_block.tpl -->
+<!-- migrate_myitcrm_delete_setup_folder_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-<script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -31,17 +30,37 @@
                                                                     
                                                                     <!-- Common -->
                                                                     
-                                                                                                                   
-                                                                    
-                                                                    <!-- Submit Button -->
-                                                                    
-                                                                    <tr>                                                                        
-                                                                        <td colspan="2">
-                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="stage10">{t}Next{/t}</button>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div id="remove_setup_folder">
+                                                                                
+                                                                                <!-- Remove Setup folder message -->
+                                                                                <p style="text-align: center;">
+                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER.{/t}</strong>
+                                                                                    <br />
+                                                                                    {t}You will not be able to use QWcrm until the Setup folder has been removed. This is a security feature of QWcrm!{/t}
+                                                                                </p>
+
+                                                                                <!-- Delete Setup folder Button -->       
+                                                                                <button id="delete_setup_folder_button" type="button" style="display: block; margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=migrate&action=delete_setup_folder&theme=off', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
+                                                                                
+                                                                            </div>
+                                                                            
+                                                                            <div id="setup_folder_removed" style="display: none;">
+                                                                                
+                                                                                <!-- Setup folder removed message -->
+                                                                                <p style="text-align: center;">
+                                                                                    <strong>{t}Please login with the administrator account you have just created.{/t}</strong><br />                                                                                    
+                                                                                </p> 
+                                                                                
+                                                                                <!-- Goto Login Page Button -->                                                                    
+                                                                                <button id="login_page_button" type="button" style="display: block; margin: auto auto;" onclick="window.location.href='index.php?component=user&page_tpl=login';">{t}Login{/t}</button>
+                                                                            
+                                                                            </div>
+                                                                            
                                                                         </td>
-                                                                    </tr>
-                                                                    
-                                                                    
+                                                                    </tr>      
+                                                                                                                                        
                                                                 </table>                                                                
                                                             </td>
                                                     </table>

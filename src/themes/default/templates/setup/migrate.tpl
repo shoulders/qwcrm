@@ -24,7 +24,7 @@
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">                                        
                                         
-                                        <!-- Database connection and test -->
+                                        <!-- Database connection and test (QWcrm) -->
                                         {if $stage == 'database_connection_qwcrm' || !$stage}                                        
                                             <tr>
                                                 <td>                                                                                                  
@@ -33,7 +33,7 @@
                                             </tr>
                                         {/if}
                                         
-                                        <!-- MyITCRM Database connection and test -->
+                                        <!-- Database connection and test (MyITCRM) -->
                                         {if $stage == 'database_connection_myitcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                  
@@ -51,7 +51,7 @@
                                             </tr>
                                         {/if}
                                         
-                                        <!-- QWcrm Install the Database -->
+                                        <!-- Install the Database (QWcrm) -->
                                         {if $stage == 'database_install_qwcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                 
@@ -60,7 +60,7 @@
                                             </tr>
                                         {/if}
                                         
-                                        <!-- QWcrm Database Installation Results -->
+                                        <!-- Database Installation Results (QWcrm) -->
                                         {if $stage == 'database_install_results_qwcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                 

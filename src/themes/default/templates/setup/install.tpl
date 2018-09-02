@@ -33,11 +33,11 @@
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Database Prefix (and other Config Settings) -->
-                                        {if $stage == 'database_prefix'}                                        
+                                        <!-- Config Settings -->
+                                        {if $stage == 'config_settings'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/install_database_prefix_block.tpl'}
+                                                    {include file='setup/blocks/install_config_settings_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
