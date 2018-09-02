@@ -55,7 +55,7 @@
                                         {if $stage == 'database_install_qwcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_myitcrm_database_install_block_qwcrm.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_install_qwcrm_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
@@ -64,7 +64,7 @@
                                         {if $stage == 'database_install_results_qwcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_myitcrm_database_results_qwcrm_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_install_results_qwcrm_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

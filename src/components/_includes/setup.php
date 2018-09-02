@@ -499,7 +499,7 @@ function generate_database_prefix($not_this_prefix = null) {
 #   Create a config file from the appropriate setup file    #
 #############################################################
 
-function create_config_file_from_default($config_type = 'install') {
+function create_config_file_from_default($config_type) {
     
     if($config_type == 'myitcrm') {        
         $file = SETUP_DIR.'migrate/myitcrm/myitcrm-configuration.php';        
@@ -596,14 +596,20 @@ function removeDirectory($directory) {
 #   Install database                       # // this imports a phpMyAdmin .sql exported file (preg_match method)
 ############################################
 
-function install_database() {
+function install_database($database_type) {
     
     $smarty = QFactory::getSmarty();
     global $executed_sql_results;
     global $setup_error_flag;  
     
-    // Run the install.sql
-    execute_sql_file(SETUP_DIR.'install/install.sql');
+    // Run the appropriate database SQL
+    if($database_type == 'install') {
+        execute_sql_file(SETUP_DIR.'install/install.sql');
+    } elseif($database_type == 'myitcrm') {
+        execute_sql_file(SETUP_DIR.'migrate/myitcrm/migrate.sql');
+    } else {
+        $setup_error_flag = true;
+    }
     
     /* Final stuff */
     

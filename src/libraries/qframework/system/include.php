@@ -588,7 +588,7 @@ function verify_qwcrm_install_state(&$VAR) {
         return;        
     
     // Installation is in progress
-    } elseif ((isset($VAR['action']) && check_page_accessed_via_qwcrm('setup', 'install')) || check_page_accessed_via_qwcrm('setup', 'install', 'index')) {     
+    } elseif (check_page_accessed_via_qwcrm('setup', 'install', 'index-page-match', $VAR['component'], $VAR['page_tpl'])) { 
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'install';
@@ -605,7 +605,7 @@ function verify_qwcrm_install_state(&$VAR) {
         return;        
     
     // Migration is in progress
-    } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'index')) {
+    } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'index-page-match', $VAR['component'], $VAR['page_tpl'])) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'migrate';
@@ -622,7 +622,7 @@ function verify_qwcrm_install_state(&$VAR) {
         return;        
     
     // Upgrade is in progress
-    } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade')) {
+    } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade', 'index-page-match', $VAR['component'], $VAR['page_tpl'])) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'upgrade';

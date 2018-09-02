@@ -77,7 +77,7 @@
                                                                                 <tbody align="left">
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Company Name{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                        <td><input name="company_name" class="olotd5" value="{$company_details.company_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
+                                                                                        <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Logo{/t}:</b></td>

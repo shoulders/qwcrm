@@ -55,7 +55,7 @@ function get_myitcrm_company_details($item = null) {
     $config = QFactory::getConfig();
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".$config->myitcrm_prefix."TABLE_COMPANY";
+    $sql = "SELECT * FROM ".$config->get('myitcrm_prefix')."TABLE_COMPANY";
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get MyITCRM company details."));        
@@ -85,7 +85,7 @@ function get_merged_company_details() {
     $myitcrm_company_details            = get_myitcrm_company_details();
     
     $merged['display_name']             = $myitcrm_company_details['COMPANY_NAME'];
-    $merged['logo']                     = '';
+    $merged['logo']                     = 'logo.png';
     $merged['address']                  = $myitcrm_company_details['COMPANY_ADDRESS'];
     $merged['city']                     = $myitcrm_company_details['COMPANY_CITY'];
     $merged['state']                    = $myitcrm_company_details['COMPANY_STATE'];
@@ -100,8 +100,8 @@ function get_merged_company_details() {
     $merged['tax_type']                 = $qwcrm_company_details['tax_type'];
     $merged['tax_rate']                 = $qwcrm_company_details['tax_rate'];
     $merged['vat_number']               = '';
-    $merged['year_start']               = '';
-    $merged['year_end']                 = '';
+    $merged['year_start']               = time();
+    $merged['year_end']                 = time();
     $merged['welcome_msg']              = $qwcrm_company_details['welcome_msg'];
     $merged['currency_symbol']          = $myitcrm_company_details['COMPANY_CURRENCY_SYMBOL'];
     $merged['currency_code']            = $myitcrm_company_details['COMPANY_CURRENCY_CODE'];

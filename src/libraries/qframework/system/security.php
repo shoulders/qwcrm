@@ -30,7 +30,7 @@ function force_ssl($force_ssl_config) {
 #  Check page has been internally refered  #
 ############################################
 
-function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null) {
+function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $access_rule = null, $v_component = null, $v_page_tpl =null) {
    
     // Get Referer
     $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
@@ -43,7 +43,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     }    
     
     // Index - Allows the specified page and homepage
-    if($access_rule == 'index') {
+    if($access_rule == 'index-allowed') {
                 
         // Allow the referer to be the homepage (sef/nonsef)
         if(preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index/.php)?$|U', $referer)) {
@@ -51,6 +51,25 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
         }   
     
     }
+    
+    // Index and Page Match - Allows the specified page and homepage if there are matching routing variables to the specified page
+    if($access_rule == 'index-page-match') {               
+        
+        if(
+                
+            // Allow the referer to be the homepage (sef/nonsef) + supplied component and page must match
+            preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index/.php)?$|U', $referer) &&
+            $component == $v_component &&
+            $page_tpl == $v_page_tpl
+                
+        ) { 
+            
+            return true;
+                
+        }   
+    
+    }
+    
     
     // Setup - Allows page access during a setup process but not direct access
     if($access_rule == 'setup') {

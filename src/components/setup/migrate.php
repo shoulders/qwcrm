@@ -15,7 +15,7 @@ require(SETUP_DIR.'migrate/myitcrm/migrate.php');
 require(INCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'index')) {
+if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'index-allowed')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
@@ -37,24 +37,21 @@ if($VAR['stage'] == 'database_connection_qwcrm') {
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection_qwcrm') {
         
         // test the supplied database connection details
-        if(verify_database_connection_details($VAR['db_host'], $VAR['db_user'], $VAR['db_pass'], $VAR['db_name'])) {
+        if(verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
             
-            // Record details into the config file and display success message and load the next page       
-            submit_qwcrm_config_settings($VAR);            
-            $VAR['stage'] = 'database_connection_myitcrm';
-            $smarty->assign('information_msg', _gettext("Database connection successful."));
-            
+            $smarty->assign('information_msg', _gettext("QWcrm Database connection successful."));
+            create_config_file_from_default('myitcrm');
+            update_qwcrm_config($VAR['qwcrm_config']);  
             write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
-        
-        // Load the page with error
+            $VAR['stage'] = 'database_connection_myitcrm';
+            
+        // Load the page - Error message done by verify_database_connection_details();
         } else {
             
             // reload the database connection page with the details and error message
-            $smarty->assign('qwcrm_config', $VAR);            
-            $smarty->assign('stage', 'database_connection_qwcrm');
-            
-            //$smarty->assign('warning_msg', _gettext("There is a database connection issue. Check your settings.")); - error done by verify_database_connection_details()
-            write_record_to_setup_log('migrate', _gettext("Failed to connect to the database with the supplied credentials.")); 
+            $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);                      
+            write_record_to_setup_log('migrate', _gettext("Failed to connect to the database with the supplied credentials."));
+            $smarty->assign('stage', 'database_connection_qwcrm');  
             
         }
         
@@ -118,7 +115,7 @@ if($VAR['stage'] == 'config_settings') {
     // Load the page
     } else {
         
-        $VAR['qwcrm_config']['db_prefix'] = generate_database();
+        $VAR['qwcrm_config']['db_prefix'] = generate_database_prefix();
     
         $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);        
         $smarty->assign('stage', 'config_settings');
@@ -136,7 +133,7 @@ if($VAR['stage'] == 'database_install_qwcrm') {
         write_record_to_setup_log('migrate', _gettext("Starting Database installation."));
         
         // install the database file and load the next page
-        if(install_database()) {
+        if(install_database('myitcrm')) {
             
             $record = _gettext("The database installed successfully.");
             $smarty->assign('information_msg', $record);
@@ -190,7 +187,7 @@ if($VAR['stage'] == 'company_details') {
     // submit the company details and load the next page
     if(isset($VAR['submit']) && $VAR['submit'] == 'company_details') {
         
-        // Add missing information
+        // Add missing information to the form submission
         $company_details = get_company_details();
         $VAR['welcome_msg']             = $company_details['welcome_msg'];
         $VAR['email_signature']         = $company_details['email_signature'];
@@ -209,6 +206,7 @@ if($VAR['stage'] == 'company_details') {
         // date format is not set in the javascript date picker because i am manipulating stages not pages
                 
         $smarty->assign('company_details', get_merged_company_details());
+        
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
         $smarty->assign('date_formats', get_date_formats());
         $smarty->assign('stage', 'company_details');             
@@ -228,7 +226,7 @@ if($VAR['stage'] == 'database_migrate') {
         $config = QFactory::getConfig();
         
         // install the database file and load the next page
-        if(myitcrm_migrate_database($config->db_prefix, $config->myitcrm_prefix)) {
+        if(myitcrm_migrate_database($config->get('db_prefix'), $config->get('myitcrm_prefix'))) {
             
             // remove MyITCRM prefix from the config file
             delete_qwcrm_config_setting('myitcrm_prefix');            
@@ -270,7 +268,7 @@ if($VAR['stage'] == 'database_migrate_results') {
         // Output Execution results to the screen
         global $executed_sql_results;
         $smarty->assign('executed_sql_results' ,$executed_sql_results);        
-        $smarty->assign('stage', 'datbases_migrate_results');
+        $smarty->assign('stage', 'datbase_migrate_results');
     }
     
 }

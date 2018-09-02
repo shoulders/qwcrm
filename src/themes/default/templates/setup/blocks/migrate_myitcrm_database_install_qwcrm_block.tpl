@@ -1,4 +1,4 @@
-<!-- migrate_myitcrm_database_install_block_qwcrm.tpl -->
+<!-- migrate_myitcrm_database_install_qwcrm_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
