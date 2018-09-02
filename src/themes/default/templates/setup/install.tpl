@@ -52,19 +52,19 @@
                                         {/if}
                                         
                                         <!-- Database Installation Results -->
-                                        {if $stage == 'database_results'}                                        
+                                        {if $stage == 'database_install_results'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/install_database_results_block.tpl'}
+                                                    {include file='setup/blocks/install_database_install_results_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
                                         <!-- Company Options -->
-                                        {if $stage == 'company_options'}                                        
+                                        {if $stage == 'company_details'}                                        
                                             <tr>
                                                 <td>                                                                                                   
-                                                    {include file='setup/blocks/install_company_options_block.tpl'}
+                                                    {include file='setup/blocks/install_company_details_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

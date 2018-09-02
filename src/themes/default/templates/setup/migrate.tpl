@@ -24,92 +24,92 @@
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">                                        
                                         
-                                        <!-- Stage 1 - Database connection and test -->
-                                        {if $stage == '1' || !$stage}                                        
+                                        <!-- Database connection and test -->
+                                        {if $stage == 'database_connection_qwcrm' || !$stage}                                        
                                             <tr>
                                                 <td>                                                                                                  
-                                                    {include file='setup/blocks/migrate_stage1_database_connection_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 2 - MyITCRM Database connection and test -->
-                                        {if $stage == '2'}                                        
+                                        <!-- MyITCRM Database connection and test -->
+                                        {if $stage == 'database_connection_myitcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                  
-                                                    {include file='setup/blocks/migrate_stage2_myitcrm_database_connection_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_connection_myitcrm_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 3 - Config Settings -->
-                                        {if $stage == '3'}                                        
+                                        <!-- Config Settings -->
+                                        {if $stage == 'config_settings'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage3_config_settings_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_config_settings_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 4 - Install the Database -->
-                                        {if $stage == '4'}                                        
+                                        <!-- QWcrm Install the Database -->
+                                        {if $stage == 'database_install_qwcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage4_database_install_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_install_block_qwcrm.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 5 - Database Installation Results -->
-                                        {if $stage == '5'}                                        
+                                        <!-- QWcrm Database Installation Results -->
+                                        {if $stage == 'database_install_results_qwcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage5_database_results_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_results_qwcrm_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 6 - Company Options -->
-                                        {if $stage == '6'}                                        
+                                        <!-- Company Details -->
+                                        {if $stage == 'company_details'}                                        
                                             <tr>
                                                 <td>                                                                                                   
-                                                    {include file='setup/blocks/migrate_stage6_company_options_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_company_details_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 7 - MyITCRM Database Migration -->
-                                        {if $stage == '7'}                                        
+                                        <!-- MyITCRM Database Migration -->
+                                        {if $stage == 'database_migrate'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/migrate_stage7_myitcrm_database_migrate_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_migrate_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 8 - MyITCRM Database Migration Results -->
-                                        {if $stage == '8'}                                        
+                                        <!-- MyITCRM Database Migration Results -->
+                                        {if $stage == 'database_migrate_results'}                                        
                                             <tr>
                                                 <td>                                                                                                 
-                                                    {include file='setup/blocks/migrate_stage8_myitcrm_database_results_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_database_migrate_results_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 9 - Create an Administrator Account -->
-                                        {if $stage == '9'}                                        
+                                        <!-- Create an Administrator Account -->
+                                        {if $stage == 'administrator_account'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/migrate_stage9_administrator_account_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_administrator_account_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Stage 10 - Delete Setup Files -->
-                                        {if $stage == '8'}                                        
+                                        <!-- Delete Setup Files -->
+                                        {if $stage == 'delete_setup_folder'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/migrate_stage10_delete_setup_folder_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_delete_setup_folder_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

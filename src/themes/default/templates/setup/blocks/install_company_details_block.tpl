@@ -1,4 +1,4 @@
-<!-- options.tpl -->
+<!-- install_company_details.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -40,9 +40,9 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Stage 6 - Company Options{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Company Details{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}COMPANY_OPTIONS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}COMPANY_OPTIONS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}COMPANY_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}COMPANY_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -50,7 +50,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                        
-                                    <form method="post" action="index.php?component=setup&page_tpl=migrate" enctype="multipart/form-data" onsubmit="return validateTaxRate('{t}You must set a Tax Rate when you have enabled a Tax Type.{/t}');">
+                                    <form method="post" action="index.php?component=setup&page_tpl=install" enctype="multipart/form-data" onsubmit="return validateTaxRate('{t}You must set a Tax Rate when you have enabled a Tax Type.{/t}');">
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">
@@ -185,12 +185,12 @@
                                                                                                 } );                                                        
                                                                                             </script>                                                    
                                                                                         </td>
-                                                                                    </tr>
+                                                                                    </tr>                                                                                    
                                                                                     <tr>
                                                                                         <td>
                                                                                             <input type="hidden" name="welcome_msg" value="{$company_details.welcome_msg}">                                                                                                                                                                       
                                                                                         </td>
-                                                                                    </tr> 
+                                                                                    </tr>
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
@@ -241,18 +241,8 @@
                                                                         </td>
                                                                     </tr>
                                                                     
-                                                                    <!-- Email Messages -->                                                                    
+                                                                    <!-- Email Messages -->                                                                   
                                                                     
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input type="hidden" name="email_signature" value="{$company_details.email_signature}">
-                                                                            <input type="hidden" name="email_signature_active" value="1">
-                                                                            <input type="hidden" name="email_msg_workorder" value="">
-                                                                            <input type="hidden" name="email_msg_invoice" value="{$company_details.email_msg_invoice}">                                                                            
-                                                                        </td>
-                                                                    </tr>                                           
-                                                                    
-
                                                                     <!-- Update Button -->
                                                                     
                                                                     <tr>
@@ -269,8 +259,7 @@
 
                                                                     <tr>
                                                                         <td>
-                                                                            <input type="hidden" name="stage" value="6">
-                                                                            <button class="olotd5" type="submit" name="submit" value="stage6">{t}Next{/t}</button>
+                                                                            <button class="olotd5" type="submit" name="submit" value="company_details">{t}Next{/t}</button>
                                                                         </td>
                                                                     </tr>
 

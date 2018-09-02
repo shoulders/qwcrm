@@ -122,7 +122,7 @@ function update_company_details($VAR) {
         $new_logo_filepath = upload_logo();
     }
     
-    $sql .= "UPDATE ".PRFX."company_options SET
+    $sql .= "UPDATE ".PRFX."company_record SET
             company_name            =". $db->qstr( $VAR['company_name']                     ).",";
     
     if($VAR['delete_logo']) {
@@ -187,7 +187,7 @@ function update_company_hours($openingTime, $closingTime) {
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
     
-    $sql = "UPDATE ".PRFX."company_options SET
+    $sql = "UPDATE ".PRFX."company_record SET
             opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
             opening_minute  =". $db->qstr( $openingTime['Time_Minute']   ).",
             closing_hour    =". $db->qstr( $closingTime['Time_Hour']     ).",

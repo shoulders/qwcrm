@@ -46,7 +46,7 @@ function get_company_details($item = null) {
             );
     }
     
-    $sql = "SELECT * FROM ".PRFX."company_options";
+    $sql = "SELECT * FROM ".PRFX."company_record";
     
     if(!$rs = $db->execute($sql)) { 
         

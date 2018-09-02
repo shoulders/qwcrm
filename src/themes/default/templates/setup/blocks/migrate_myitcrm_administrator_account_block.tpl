@@ -1,4 +1,4 @@
-<!-- migrate_stage9_administrator_account_block.tpl -->
+<!-- migrate_myitcrm_administrator_account_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -230,8 +230,7 @@
                                                                     
                                                                     <tr>                                                                        
                                                                         <td colspan="2">
-                                                                            <input type="hidden" name="stage" value="9">                                                                            
-                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="stage9">{t}Next{/t}</button>
+                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="administrator_account">{t}Next{/t}</button>
                                                                         </td>
                                                                     </tr>
                                                                     

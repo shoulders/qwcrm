@@ -104,7 +104,7 @@ if($VAR['stage'] == 'database_install') {
             $record = _gettext("The database installed successfully.");            
             $smarty->assign('information_msg', $record); 
             write_record_to_setup_log('install', $record);
-            $VAR['stage'] = 'database_results';            
+            $VAR['stage'] = 'database_install_results';            
         
         // load the page with the error message      
         } else {            
@@ -112,7 +112,7 @@ if($VAR['stage'] == 'database_install') {
            $record = _gettext("The database failed to install.");                      
            $smarty->assign('warning_msg', $record);
            write_record_to_setup_log('install', $record);
-           $VAR['stage'] = 'database_results';
+           $VAR['stage'] = 'database_install_results';
            
         }        
     
@@ -125,15 +125,15 @@ if($VAR['stage'] == 'database_install') {
 
 
 // Database Installation Results
-if($VAR['stage'] == 'database_results') { 
+if($VAR['stage'] == 'database_install_results') { 
 
     // load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_results') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'database_install_results') {
         
         // Prefill Company Financial dates
-        update_record_value(PRFX.'company_options', 'year_start', mysql_date()) ;
-        update_record_value(PRFX.'company_options', 'year_end', timestamp_mysql_date(strtotime('+1 year')));
-        $VAR['stage'] = 'company_options';    
+        update_record_value(PRFX.'company_record', 'year_start', mysql_date()) ;
+        update_record_value(PRFX.'company_record', 'year_end', timestamp_mysql_date(strtotime('+1 year')));
+        $VAR['stage'] = 'company_details';    
     
     // load the page  
     } else {
@@ -141,7 +141,7 @@ if($VAR['stage'] == 'database_results') {
         // Output Execution results to the screen
         global $executed_sql_results;
         $smarty->assign('executed_sql_results' ,$executed_sql_results);        
-        $smarty->assign('stage', 'database_results');
+        $smarty->assign('stage', 'database_install_results');
         
     }
     
@@ -149,12 +149,20 @@ if($VAR['stage'] == 'database_results') {
 
 
 // Company Options
-if($VAR['stage'] == 'company_options') {   
+if($VAR['stage'] == 'company_details') {   
     
     // submit the company details and load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'company_options') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'company_details') {
         
-        // upload_company details
+        // Add missing information
+        $company_details = get_company_details();
+        $VAR['welcome_msg']             = $company_details['welcome_msg'];
+        $VAR['email_signature']         = $company_details['email_signature'];
+        $VAR['email_signature_active']  = $company_details['email_signature_active'];
+        $VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
+        $VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
+                
+        // update company details and load next stage
         update_company_details($VAR);
         write_record_to_setup_log('install', _gettext("Company options inserted."));
         $VAR['stage'] = 'start_numbers';
@@ -165,9 +173,9 @@ if($VAR['stage'] == 'company_options') {
         // date format is not set in the javascript date picker because i am manipulating stages not pages
         
         $smarty->assign('date_formats', get_date_formats());
-        $smarty->assign('company_options', get_company_details());
+        $smarty->assign('company_details', get_company_details());
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
-        $smarty->assign('stage', 'company_options');
+        $smarty->assign('stage', 'company_details');
         
     }
     
