@@ -105,11 +105,11 @@
                                             </tr>
                                         {/if}
                                         
-                                        <!-- Delete Setup Files -->
-                                        {if $stage == 'delete_setup_folder'}                                        
+                                        <!-- Start the upgrade procedure -->
+                                        {if $stage == 'upgrade_confirmation'}                                        
                                             <tr>
                                                 <td>
-                                                    {include file='setup/blocks/migrate_myitcrm_delete_setup_folder_block.tpl'}
+                                                    {include file='setup/blocks/migrate_myitcrm_upgrade_confirmation_block.tpl'}
                                                 </td>
                                             </tr>
                                         {/if}

@@ -1,4 +1,4 @@
-<!-- migrate_myitcrm_delete_setup_folder_block.tpl -->
+<!-- migrate_myitcrm_upgrade_confirmation_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -11,7 +11,7 @@
         <td>
             <table width="900" cellpadding="5" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Delete Setup Folder{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Start the Upgrade procedure{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle"></td>
                 </tr>
                 <tr>
@@ -32,29 +32,17 @@
                                                                     
                                                                     <tr>
                                                                         <td>
-                                                                            <div id="remove_setup_folder">
+                                                                            <div id="upgrade_confirmation">
                                                                                 
-                                                                                <!-- Remove Setup folder message -->
+                                                                                <!-- Upgrade Confirmation Message -->
                                                                                 <p style="text-align: center;">
-                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER.{/t}</strong>
+                                                                                    <strong>{t}Migration from MyITCRM is Complete, but an upgrade is still required.{/t}</strong>
                                                                                     <br />
-                                                                                    {t}You will not be able to use QWcrm until the Setup folder has been removed. This is a security feature of QWcrm!{/t}
+                                                                                    {t}When you click next the upgrade procedure will start and is straight forward.{/t}
                                                                                 </p>
-
-                                                                                <!-- Delete Setup folder Button -->       
-                                                                                <button id="delete_setup_folder_button" type="button" style="display: block; margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=migrate&action=delete_setup_folder&theme=off', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
                                                                                 
-                                                                            </div>
-                                                                            
-                                                                            <div id="setup_folder_removed" style="display: none;">
-                                                                                
-                                                                                <!-- Setup folder removed message -->
-                                                                                <p style="text-align: center;">
-                                                                                    <strong>{t}Please login with the administrator account you have just created.{/t}</strong><br />                                                                                    
-                                                                                </p> 
-                                                                                
-                                                                                <!-- Goto Login Page Button -->                                                                    
-                                                                                <button id="login_page_button" type="button" style="display: block; margin: auto auto;" onclick="window.location.href='index.php?component=user&page_tpl=login';">{t}Login{/t}</button>
+                                                                                <!-- Upgrade Confirmation Button -->                                                                    
+                                                                                <button id="upgrade_confirmation_button" type="button" style="display: block; margin: auto auto;" onclick="window.location.href='index.php';">{t}Start Upgrade{/t}</button>
                                                                             
                                                                             </div>
                                                                             

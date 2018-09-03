@@ -13,10 +13,8 @@ require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'setup.php');
 require(INCLUDES_DIR.'user.php');
 
-
-
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'install', 'index-allowed')) {
+if(!check_page_accessed_via_qwcrm('setup', 'install', 'index_allowed')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
@@ -41,7 +39,7 @@ if($VAR['stage'] == 'database_connection') {
         if(verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
             
             $smarty->assign('information_msg', _gettext("Database connection successful."));
-            create_config_file_from_default('install');
+            create_config_file_from_default(SETUP_DIR.'install/default-configuration.php');
             update_qwcrm_config($VAR['qwcrm_config']);           
             write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = 'config_settings';
@@ -101,7 +99,7 @@ if($VAR['stage'] == 'database_install') {
         write_record_to_setup_log('install', _gettext("Starting Database installation."));
         
         // install the database file and load the next page
-        if(install_database('install')) {
+        if(install_database(SETUP_DIR.'install/install.sql')) {
             
             $record = _gettext("The database installed successfully.");            
             $smarty->assign('information_msg', $record); 

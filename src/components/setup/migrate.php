@@ -11,17 +11,12 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'administrator.php');
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'setup.php');
-require(SETUP_DIR.'migrate/myitcrm/migrate.php');
+require(SETUP_DIR.'migrate/myitcrm/myitcrm-migrate.php');
 require(INCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'index-allowed')) {
+if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'index_allowed')) {
     die(_gettext("No Direct Access Allowed."));
-}
-
-// Delete Setup files Action
-if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'install')) {
-    delete_setup_folder();
 }
 
 // Get 'stage' from the submit button
@@ -40,7 +35,7 @@ if($VAR['stage'] == 'database_connection_qwcrm') {
         if(verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
             
             $smarty->assign('information_msg', _gettext("QWcrm Database connection successful."));
-            create_config_file_from_default('myitcrm');
+            create_config_file_from_default(SETUP_DIR.'migrate/myitcrm/myitcrm-configuration.php');
             update_qwcrm_config($VAR['qwcrm_config']);  
             write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = 'database_connection_myitcrm';
@@ -133,7 +128,7 @@ if($VAR['stage'] == 'database_install_qwcrm') {
         write_record_to_setup_log('migrate', _gettext("Starting Database installation."));
         
         // install the database file and load the next page
-        if(install_database('myitcrm')) {
+        if(install_database(SETUP_DIR.'migrate/myitcrm/myitcrm-migrate.sql')) {
             
             $record = _gettext("The database installed successfully.");
             $smarty->assign('information_msg', $record);
@@ -164,9 +159,6 @@ if($VAR['stage'] == 'database_install_results_qwcrm') {
     // load the next page
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_install_results_qwcrm') {
         
-        // Prefill Company Financial dates
-        update_record_value(PRFX.'company_record', 'year_start', mysql_date()) ;
-        update_record_value(PRFX.'company_record', 'year_end', timestamp_mysql_date(strtotime('+1 year')));
         $VAR['stage'] = 'company_details';      
     
     // Load the page  
@@ -188,7 +180,8 @@ if($VAR['stage'] == 'company_details') {
     if(isset($VAR['submit']) && $VAR['submit'] == 'company_details') {
         
         // Add missing information to the form submission
-        $company_details = get_company_details();
+        $company_details = get_company_details_migrate_myitcrm();
+        $VAR['logo']                    = $company_details['logo'];
         $VAR['welcome_msg']             = $company_details['welcome_msg'];
         $VAR['email_signature']         = $company_details['email_signature'];
         $VAR['email_signature_active']  = $company_details['email_signature_active'];
@@ -196,7 +189,7 @@ if($VAR['stage'] == 'company_details') {
         $VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
                 
         // update company details and load next stage
-        update_company_details($VAR);
+        update_company_details_migrate_myitcrm($VAR);
         write_record_to_setup_log('migrate', _gettext("Company options inserted."));
         $VAR['stage'] = 'database_migrate';
         
@@ -204,11 +197,12 @@ if($VAR['stage'] == 'company_details') {
     } else {
         
         // date format is not set in the javascript date picker because i am manipulating stages not pages
-                
-        $smarty->assign('company_details', get_merged_company_details());
         
-        $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
-        $smarty->assign('date_formats', get_date_formats());
+        $company_details = get_merged_company_details();
+        
+        $smarty->assign('company_details', $company_details);        
+        $smarty->assign('company_logo', QW_MEDIA_DIR . $company_details['logo'] );
+        $smarty->assign('date_format', get_company_details_migrate_myitcrm('date_format'));
         $smarty->assign('stage', 'company_details');             
         
     }
@@ -268,7 +262,7 @@ if($VAR['stage'] == 'database_migrate_results') {
         // Output Execution results to the screen
         global $executed_sql_results;
         $smarty->assign('executed_sql_results' ,$executed_sql_results);        
-        $smarty->assign('stage', 'datbase_migrate_results');
+        $smarty->assign('stage', 'database_migrate_results');
     }
     
 }
@@ -282,8 +276,8 @@ if($VAR['stage'] == 'administrator_account') {
                 
         // Check if the username or email have been used (the extra vareiable is to ignore the users current username and email to prevent submission errors when only updating other values)
         if (
-                check_user_username_exists($VAR['username'], get_user_details($VAR['user_id'], 'username')) ||
-                check_user_email_exists($VAR['email'], get_user_details($VAR['user_id'], 'email'))
+                migrate_myitcrm_check_user_username_exists($VAR['username'], migrate_myitcrm_get_user_details($VAR['user_id'], 'username')) ||
+                migrate_myitcrm_check_user_email_exists($VAR['email'], migrate_myitcrm_get_user_details($VAR['user_id'], 'email'))
            ) {     
 
             // send the posted data back to smarty
@@ -298,12 +292,12 @@ if($VAR['stage'] == 'administrator_account') {
         } else {    
 
             // Insert user record (and return the new ID)
-            insert_user($VAR);
+            migrate_myitcrm_insert_user($VAR);
 
             write_record_to_setup_log('migrate', _gettext("The administrator account has been created."));
             write_record_to_setup_log('migrate', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
             $smarty->assign('information_msg', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
-            $VAR['stage'] = 'delete_setup_folder';        
+            $VAR['stage'] = 'upgrade_confirmation';        
 
         }
         
@@ -311,18 +305,17 @@ if($VAR['stage'] == 'administrator_account') {
     } else {
     
         // Set mandatory default values
-        $smarty->assign('user_locations', get_user_locations());               
         $smarty->assign('stage', 'administrator_account');
         
     }
     
 }
 
-// Delete Setup folder
-if($VAR['stage'] == 'delete_setup_folder') {
+// Upgrade Confirmation
+if($VAR['stage'] == 'upgrade_confirmation') {
     
     // There is not submit action on this stage
-    if(isset($VAR['submit']) && $VAR['submit'] == 'delete_setup_folder') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'upgrade_confirmation') {
         
         //$VAR['stage'] = 'unknown';
    
@@ -330,7 +323,7 @@ if($VAR['stage'] == 'delete_setup_folder') {
     } else {
     
         // Set mandatory default values               
-        $smarty->assign('stage', 'delete_setup_folder');
+        $smarty->assign('stage', 'upgrade_confirmation');
         
     }
     

@@ -42,6 +42,10 @@
                                                                             <table>
                                                                                 <tbody align="left">
                                                                                     <tr>
+                                                                                        <td align="right"><strong>{t}Display Name{/t}</strong><span style="color: #ff0000">*</span></td>
+                                                                                        <td><input name="display_name" class="olotd5" value="{$user_details.display_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
+                                                                                    </tr>
+                                                                                    <tr>
                                                                                         <td align="right"><strong>{t}First Name{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td><input name="first_name" class="olotd5" value="{$user_details.first_name}" type="text" maxlength="20" required onkeydown="return onlyName(event);"></td>
                                                                                     </tr>
@@ -61,11 +65,11 @@
                                                                                         <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td>
                                                                                             <select name="based" class="olotd5">
-                                                                                                {section name=l loop=$user_locations}    
-                                                                                                    <option value="{$user_locations[l].user_location_id}"{if $user_details.based == $user_locations[l].user_location_id} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
-                                                                                                {/section} 
+                                                                                                <option value="1" {if $user_details.based == 1 } selected{/if}>{t}Office{/t}</option>
+                                                                                                <option value="2" {if $user_details.based == 2 } selected{/if}>{t}Home{/t}</option>
+                                                                                                <option value="3" {if $user_details.based == 3 } selected{/if}>{t}OnSite{/t}</option>
                                                                                             </select>
-                                                                                            <input type="hidden" name="client_id" value="">
+                                                                                            <input type="hidden" name="customer_id" value="">
                                                                                         </td>
                                                                                     </tr>                                                                                                                                                                       
                                                                                 </tbody>
@@ -211,7 +215,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     
-                                                                    <!-- note -->
+                                                                    <!-- Note -->
                                                                     
                                                                     <tr class="row2">
                                                                         <td class="menuhead" colspan="2">{t}Note{/t}</td>
@@ -221,7 +225,7 @@
                                                                             <table>
                                                                                 <tr>
                                                                                     <td align="left"><strong>{t}Note{/t}</strong></td>
-                                                                                    <td><textarea name="note" class="olotd5" cols="50" rows="2">{$user_details.note}</textarea></td> 
+                                                                                    <td><textarea name="notes" class="olotd5" cols="50" rows="2">{$user_details.note}</textarea></td> 
                                                                                 </tr>                                                                                
                                                                             </table>
                                                                         </td>

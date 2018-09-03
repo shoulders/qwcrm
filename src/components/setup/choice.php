@@ -15,5 +15,8 @@ if(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
+// Define the setup type for smarty - currently only used for 'upgrade'
+isset($VAR['setup_type']) ? $smarty->assign('setup_type', $VAR['setup_type']) : $smarty->assign('setup_type', null);
+
 // Build the page
 $BuildPage .= $smarty->fetch('setup/choice.tpl');

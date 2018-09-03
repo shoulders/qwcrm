@@ -135,32 +135,43 @@
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                         
-                                        <tr>
-                                            <td>                                                                                                  
-                                                {t}Choose choose whether you want to install a fresh copy of QWcrm or migrate from MyITCRM{/t}
-                                            </td>
-                                        </tr> 
+                                        {if $setup_type != 'upgrade'}
+                                            <tr>
+                                                <td>                                                                                                  
+                                                    {t}Choose choose whether you want to install a fresh copy of QWcrm or migrate from MyITCRM{/t}
+                                                </td>
+                                            </tr> 
+
+                                            <!-- Install QWcrm -->   
+                                            <tr>
+                                                <td>                                                
+                                                    <button id="setup_install_button" href="javascript:void(0)">{t}Install QWcrm{/t}</button>                                                
+                                                </td>
+                                            </tr>                                   
+
+                                            <!-- Migrate from MyITCRM -->  
+                                            <tr id="">
+                                                <td>                                                                                                 
+                                                    <button id="setup_migrate_button" href="javascript:void(0)">{t}Migrate from MyITCRM{/t}</button> 
+                                                </td>
+                                            </tr>
+                                            
+                                        {else}
+                                            
+                                             <!-- Upgrade QWcrm -->
+                                             
+                                            <tr>
+                                                <td>                                                                                                  
+                                                    {t}There is an upgrade pending for QWcrm and needs to be applied before you can use this software.{/t}
+                                                </td>
+                                            </tr> 
                                         
-                                        <!-- Install QWcrm -->   
-                                        <tr>
-                                            <td>                                                
-                                                <button id="setup_install_button" href="javascript:void(0)">{t}Install QWcrm{/t}</button>                                                
-                                            </td>
-                                        </tr>                                   
-                                        
-                                        <!-- Migrate from MyITCRM -->  
-                                        <tr id="">
-                                            <td>                                                                                                 
-                                                <button id="setup_migrate_button" href="javascript:void(0)">{t}Migrate from MyITCRM{/t}</button> 
-                                            </td>
-                                        </tr>                                          
-                                        
-                                        {*<!-- Upgrade QWcrm -->                                         
-                                        <tr>
-                                            <td>                                                                                                 
-                                                <button id="setup_upgrade_button" href="javascript:void(0)">{t}Upgrade QWcrm{/t}</button> 
-                                            </td>
-                                        </tr>*}                             
+                                            <tr>
+                                                <td>                                                                                                 
+                                                    <button id="setup_upgrade_button" type="button" class="olotd4" onclick="window.location.href='index.php?component=setup&page_tpl=upgrade';">{t}Upgrade QWcrm{/t}</button>
+                                                </td>
+                                            </tr>
+                                        {/if}                                        
                                         
                                     </table>
                                 </td>

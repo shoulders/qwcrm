@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'setup.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'setup')) {
+if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
     die(_gettext("No Direct Access Allowed."));
 }
 

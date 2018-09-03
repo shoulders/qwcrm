@@ -32,7 +32,7 @@
                                                                     
                                                                     <tr>
                                                                         <td>
-                                                                            <div id="remove_setup_folder">
+                                                                            <div id="delete_setup_folder">
                                                                                 
                                                                                 <!-- Remove Setup folder message -->
                                                                                 <p style="text-align: center;">

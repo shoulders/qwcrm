@@ -499,20 +499,12 @@ function generate_database_prefix($not_this_prefix = null) {
 #   Create a config file from the appropriate setup file    #
 #############################################################
 
-function create_config_file_from_default($config_type) {
-    
-    if($config_type == 'myitcrm') {        
-        $file = SETUP_DIR.'migrate/myitcrm/myitcrm-configuration.php';        
-    }
-    
-    if($config_type == 'install') {        
-            $file = SETUP_DIR.'install/default-configuration.php';        
-        }    
+function create_config_file_from_default($config_file) {
     
     $newfile = 'configuration.php';
 
-    if (!copy($file, $newfile)) {
-        die(_gettext("failed to copy"));
+    if (!copy($config_file, $newfile)) {
+        die(_gettext("Failed to copy configuration file."));
     }
     
 }
@@ -534,7 +526,7 @@ function delete_setup_folder() {
         $system_message = _gettext("The Setup folder has been deleted successfully.");
         
         // Hide the delete button
-        toggle_element_by_id('remove_setup_folder', 'hide');
+        toggle_element_by_id('delete_setup_folder', 'hide');
         
         // Display the success message and login button
         toggle_element_by_id('setup_folder_removed', 'show');
@@ -596,20 +588,14 @@ function removeDirectory($directory) {
 #   Install database                       # // this imports a phpMyAdmin .sql exported file (preg_match method)
 ############################################
 
-function install_database($database_type) {
+function install_database($database_file) {
     
     $smarty = QFactory::getSmarty();
     global $executed_sql_results;
     global $setup_error_flag;  
     
-    // Run the appropriate database SQL
-    if($database_type == 'install') {
-        execute_sql_file(SETUP_DIR.'install/install.sql');
-    } elseif($database_type == 'myitcrm') {
-        execute_sql_file(SETUP_DIR.'migrate/myitcrm/migrate.sql');
-    } else {
-        $setup_error_flag = true;
-    }
+    // Execute the database SQL
+    execute_sql_file($database_file);
     
     /* Final stuff */
     

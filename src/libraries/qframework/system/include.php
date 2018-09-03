@@ -48,20 +48,24 @@ function get_company_details($item = null) {
     
     $sql = "SELECT * FROM ".PRFX."company_record";
     
-    if(!$rs = $db->execute($sql)) { 
+    if(!$rs = $db->execute($sql)) {          
         
         // Part of the fallback
-        if($item == 'date_format') {
+        if($item == 'date_format') {            
+            
+            // This is first database Query that will fail if there are issues with the database connection          
             die('
                     <div style="color: red;">'.
                     _gettext("Something went wrong executing an SQL query.").'<br>'.
                     _gettext("Check to see if your Prefix is correct, if not you might have a configuration.php file that should not be present or is corrupt.").'<br>'.
-                    _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong><br>'.
+                    _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong> '._gettext("when trying to get the variable").' <strong>date_format</strong>'.'<br>'.
                     '</div>'
                );
-        }
+            
+            }        
         
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));
+        // Any other lookup error
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
         
     } else {
         
@@ -583,69 +587,58 @@ function verify_qwcrm_install_state(&$VAR) {
     // Merge the variables
     $VAR = array_merge($_POST, $_GET, $VAR);         
     
-    // Installation/Migration has finished
+    // Installation/Migration/Upgrade has finished
     if (isset($VAR['setup']) && $VAR['setup'] == 'finished') {      
         return;        
     
+        
     // Installation is in progress
-    } elseif (check_page_accessed_via_qwcrm('setup', 'install', 'index-page-match', $VAR['component'], $VAR['page_tpl'])) { 
+    } elseif (check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'install';
-        $VAR['theme']     = 'menu_off';
-        //$VAR['page_controller'] = COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
+        $VAR['theme']     = 'menu_off';        
         
-        // This allows the use of the database ASAP in the setup process
+        /* This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
             define('QWCRM_SETUP', 'database_allowed'); 
         } else {
             define('QWCRM_SETUP', 'install'); 
-        }  
+        }*/
+        define('QWCRM_SETUP', 'install');  
         
         return;        
     
-    // Migration is in progress
-    } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'index-page-match', $VAR['component'], $VAR['page_tpl'])) {
+        
+    // Migration is in progress (but if migration is passing to upgrade, ignore)
+    } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'migrate';
         $VAR['theme']     = 'menu_off';
-        //$VAR['page_controller'] = COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
-        
-        // This allows the use of the database ASAP in the setup process
-        if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
-            define('QWCRM_SETUP', 'database_allowed'); 
-        } else {
-            define('QWCRM_SETUP', 'install'); 
-        }
+        define('QWCRM_SETUP', 'install'); 
         
         return;        
     
+        
     // Upgrade is in progress
-    } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade', 'index-page-match', $VAR['component'], $VAR['page_tpl'])) {
+    } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'upgrade';
-        $VAR['theme']     = 'menu_off';
-        //$VAR['page_controller'] = COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
-        
-        // This allows the use of the database ASAP in the setup process (might not be needed because database exits)
-        if (QFactory::getDbo()->isConnected() && defined('PRFX') && get_qwcrm_database_version_number()) {
-            define('QWCRM_SETUP', 'database_allowed'); 
-        } else {
-            define('QWCRM_SETUP', 'upgrade'); 
-        } 
+        $VAR['theme']     = 'menu_off';        
+        define('QWCRM_SETUP', 'install');
         
         return;
         
     /* Redirect to choice page (optional)
-    elseif (!is_file('configuration.php') && is_dir('components/_includes/setup') && !check_page_accessed_via_qwcrm() && !isset($VAR['component'], $VAR['page_tpl'])) {        
+    elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !check_page_accessed_via_qwcrm() && !isset($VAR['component'], $VAR['page_tpl'])) {        
         
         force_page('setup', 'choice');
              
     }*/        
         
-    // Fresh Installation/Migrate/Upgrade (1st Run)
+    // Choice - Fresh Installation/Migrate/Upgrade (1st Run) or refered from the migration process
     } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !check_page_accessed_via_qwcrm()) {
         
         // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
@@ -653,12 +646,13 @@ function verify_qwcrm_install_state(&$VAR) {
         $VAR['page_tpl']  = 'choice';
         $VAR['theme']     = 'menu_off';        
         
-        // This allows the use of the database ASAP in the setup process
+        /* This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
             define('QWCRM_SETUP', 'database_allowed'); 
         } else {
             define('QWCRM_SETUP', 'install'); 
-        }
+        }*/
+        define('QWCRM_SETUP', 'install');
         
         return;       
     
@@ -689,10 +683,12 @@ function verify_qwcrm_install_state(&$VAR) {
 
 function compare_qwcrm_filesystem_and_database(&$VAR) {
     
+    $smarty = QFactory::getSmarty();
+    
     // Get the QWcrm database version number (assumes database connection is good)
     $qwcrm_database_version = get_qwcrm_database_version_number();
 
-    // File System and Database versions match(not needed handles in opening if statement, left for reference)
+    // File System and Database versions match(not needed handles in opening 'if' statement, left for reference)
     if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {
         
         die(
@@ -704,12 +700,22 @@ function compare_qwcrm_filesystem_and_database(&$VAR) {
             );            
     } 
     
-    // If the file system is newer than the database - run upgrade
+    /* If the file system is newer than the database - run upgrade (this loads setup:upgrade directly)
     if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
         $VAR['component']     = 'setup';
         $VAR['page_tpl']      = 'upgrade';
         $VAR['theme']         = 'menu_off';
-        define('QWCRM_SETUP', 'upgrade'); 
+        define('QWCRM_SETUP', 'install'); 
+        return;
+    }*/
+    
+    // If the file system is newer than the database - run upgrade (this loads setup:choice but flags it as an upgrade directly)
+    if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
+        $VAR['component']     = 'setup';
+        $VAR['page_tpl']      = 'choice';
+        $VAR['theme']         = 'menu_off';
+        $VAR['setup_type']    = 'upgrade';
+        define('QWCRM_SETUP', 'install'); 
         return;
     }
 

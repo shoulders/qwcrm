@@ -80,23 +80,6 @@
                                                                                         <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td align="right"><b>{t}Logo{/t}:</b></td>
-                                                                                        <td>
-                                                                                            <input name="logo" type="file" accept=".png, .jpg, .jpeg, .gif">
-                                                                                            {if $company_details.logo}
-                                                                                                <img src="{$company_logo}" height="50px" alt="{t}Company Logo{/t}">
-                                                                                            {else}
-                                                                                                {t}No company logo has been set!{/t}
-                                                                                            {/if}
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td align="right"></td>
-                                                                                        <td>
-                                                                                            <input type="checkbox" name="delete_logo" value="1">{t}Delete Logo{/t}
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
                                                                                         <td align="right"><b>{t}Address{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                         <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
                                                                                     </tr>
@@ -227,14 +210,15 @@
                                                                                         <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" placeholder="GBP" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td align="right"><b>{t}Date Format{/t}:</b></td>
+                                                                                        <td align="right"><b>{t}Date Format{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            <select name="date_format" class="olotd5"> 
-                                                                                                {section name=d loop=$date_formats}    
-                                                                                                    <option value="{$date_formats[d].date_format_key}"{if $company_details.date_format == $date_formats[d].date_format_key} selected{/if}>{t}{$date_formats[d].display_name}{/t}</option>
-                                                                                                {/section}    
-                                                                                            </select> 
-                                                                                        </td>
+                                                                                            <select name="date_format" class="olotd5">
+                                                                                                <option value="%d/%m/%Y"{if $company_details.date_format == '%d/%m/%Y'} selected{/if}>dd/mm/yyyy</option>                                                            
+                                                                                                <option value="%m/%d/%Y"{if $company_details.date_format == '%m/%d/%Y'} selected{/if}>mm/dd/yyyy</option>
+                                                                                                <option value="%d/%m/%y"{if $company_details.date_format == '%d/%m/%y'} selected{/if}>dd/mm/yy</option>
+                                                                                                <option value="%m/%d/%y"{if $company_details.date_format == '%m/%d/%y'} selected{/if}>mm/dd/yy</option>
+                                                                                            </select>
+                                                                                        </td>                                                                                        
                                                                                     </tr> 
                                                                                 </tbody>
                                                                             </table>
