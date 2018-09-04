@@ -311,6 +311,7 @@ if($VAR['stage'] == 'administrator_account') {
     
 }
 
+
 // Upgrade Confirmation
 if($VAR['stage'] == 'upgrade_confirmation') {
     
@@ -328,6 +329,7 @@ if($VAR['stage'] == 'upgrade_confirmation') {
     }
     
 }
+
 
 // Build the page
 $BuildPage .= $smarty->fetch('setup/migrate.tpl');
