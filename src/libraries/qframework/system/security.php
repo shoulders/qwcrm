@@ -34,7 +34,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
    
     // Get Referer
     $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
-    
+
     /* BOF Access Rules */
     
     // Override - Return true always
@@ -46,13 +46,13 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     if($access_rule == 'index_allowed') {
                 
         // Allow the referer to be the homepage (sef/nonsef)
-        if(preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index/.php)?$|U', $referer)) {
+        if(preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index\.php)?$|U', $referer)) {
             return true;
         }   
     
     }
     
-    // Routing variables Match the accepted referering page and has been refered by QWcrm
+    // Routing variables Match the accepted referering page and has been refered by any QWcrm page
     if($access_rule == 'refered-index_allowed-route_matched') {               
         
         // Check to see if the routing variables match the expected referering page
@@ -65,7 +65,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
         
     }
     
-    // Routing variables Match the accepted referering page (Page still needs to be refered from QWcrm) -- NOT CURRENTLY USED
+    // Routing variables must match the specified routing variables (not currently used)
     if($access_rule == 'refered-index_allowed-route_unmatched') {               
         
         // Check to see if the routing variables match the expected referering page
@@ -78,7 +78,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
 
     }
     
-    // Setup - Allows page access during a setup process but not direct access
+    // Allows page access during a setup process but block direct access
     if($access_rule == 'setup') {
         
         if(defined('QWCRM_SETUP') && !confirm_direct_access($component, $page_tpl)) {
@@ -89,7 +89,22 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     
     }    
     
-    // No Referer - Allows direct access when no referer (not currently used)
+    // Only allow access if the routing variables match the accpeted refering page
+    if($access_rule == 'no_referer-route_matched') {
+        
+        // Allow direct access during setup
+        if($referer) { return false; } 
+        
+        // Check to see if the routing variables match the expected page
+        if($component == $var_component && $page_tpl == $var_page_tpl) {
+            return false;          
+        }      
+
+        return true;
+            
+    }
+    
+    // Allow direct access when no referer (not currently used)
     if($access_rule == 'no_referer') {
         
         // Allow direct access during setup
@@ -97,14 +112,26 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     
     }
     
+    // If there is no refering page, do not allow routing (prevents incorrect loading of pages i.e. upgrade process)
+    if($access_rule == 'no_referer-routing_disallowed') {
+        
+        // Check to see if the routing variables match the expected referering page
+        if($var_component && $var_page_tpl) {
+            return false;          
+        } else {
+            return true;
+        }
+    
+    }
+    
     /* EOF Access Rules */
     
-    // If no referer (the page was not accessed via QWcrm) and if a setup procedure is not occuring
-    if(!$referer) { return false; }           
-    
+    // If no referer (direct access) and if a setup procedure is not occuring block access
+    if(!$referer) { return false; }   
+        
     // Allow the referer to be the homepage (sef/nonsef)
     if($component == 'index.php' && !$page_tpl) {        
-        return preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index/.php)?$|U', $referer);            
+        return preg_match('|^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'(index\.php)?$|U', $referer);            
     }
     
     // Check if a 'SPECIFIC' QWcrm page is the referer
@@ -117,7 +144,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     } else {        
         return preg_match('/^'.preg_quote(QWCRM_PROTOCOL . QWCRM_DOMAIN . QWCRM_BASE_PATH, '/').'/U', $referer);        
     }
-    
+        
     return false;
     
 }

@@ -575,8 +575,7 @@ function prepare_error_data($type, $data = null) {
 ##########################################################
 
 function verify_qwcrm_install_state(&$VAR) {
-    
-       
+           
     /* Is a QWcrm installation or MyITCRM migration in progress */
     
     // Installation is fine
@@ -585,7 +584,11 @@ function verify_qwcrm_install_state(&$VAR) {
     }
     
     // Merge the variables
-    $VAR = array_merge($_POST, $_GET, $VAR);         
+    $VAR = array_merge($_POST, $_GET, $VAR);
+    
+    // Prevent undefined variable errors
+    $VAR['component'] = isset($VAR['component']) ? $VAR['component'] : null;
+    $VAR['page_tpl']  = isset($VAR['page_tpl'])  ? $VAR['page_tpl']  : null;
     
     // Installation/Migration/Upgrade has finished
     if (isset($VAR['setup']) && $VAR['setup'] == 'finished') {      
@@ -660,6 +663,17 @@ function verify_qwcrm_install_state(&$VAR) {
     // Appears to be a valid installation but the setup directory is still present
     } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
         
+        // Prevent direct access to this page
+        if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', $VAR['component'], $VAR['page_tpl'])) {
+            die(_gettext("No Direct Access Allowed."));
+        }
+        
+        // Allow only root or index.php
+        if($_SERVER['REQUEST_URI'] != QWCRM_BASE_PATH && $_SERVER['REQUEST_URI'] != QWCRM_BASE_PATH.'index.php') {
+            header('HTTP/1.1 404 Not Found');
+            die(_gettext("This page does not exist."));
+        }
+        
         // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
         compare_qwcrm_filesystem_and_database($VAR);    
       
@@ -682,8 +696,6 @@ function verify_qwcrm_install_state(&$VAR) {
 #########################################################
 
 function compare_qwcrm_filesystem_and_database(&$VAR) {
-    
-    $smarty = QFactory::getSmarty();
     
     // Get the QWcrm database version number (assumes database connection is good)
     $qwcrm_database_version = get_qwcrm_database_version_number();

@@ -31,7 +31,7 @@ write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 
 
 // Database Connection
-if($VAR['stage'] == 'database_connection') {
+if($VAR['stage'] == 'database_connection' || !isset($VAR['stage'])) {
     
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection') {
         

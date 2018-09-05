@@ -22,11 +22,16 @@ defined('_QWEXEC') or die;
 
 /** Common **/
 
-
 // Only allow the use of these functions when the /setup/ folder exists.
 if (!is_dir(SETUP_DIR)) {      
     die(_gettext("You cannot use these functions without the setup folder."));        
 }
+
+// Prevent undefined variable errors
+$setup_error_flag = null;
+$error_flag = null;
+QFactory::getSmarty()->assign('setup_error_flag', $setup_error_flag);
+QFactory::getSmarty()->assign('error_flag', $error_flag);
 
 #########################################################
 #       update a value in a specified record            #  // with and without 'WHERE' clause

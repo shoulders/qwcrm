@@ -9,44 +9,71 @@
 
 /** Migrate MyITCRM v2.9.3 **/
 
-// This file contains all specific routines for the migration
+// This file contains all specific routines for the migrationmodified for the QWcrm v3.0.0 database
+
+defined('_QWEXEC') or die;
 
 class MigrateMyitcrm {
 
-    /** Misc **/
+    /** Mandatory Code **/
 
-    #########################################################
-    #   check myitcrm database is accessible and is 2.9.3   #
-    #########################################################
+    /** Display Functions **/
 
-    public static function check_myitcrm_database_connection($myitcrm_prefix) {
+    /** Insert Functions **/
+
+    #####################################
+    #    Insert new user                #
+    #####################################
+
+    public static function insert_user($VAR) {
 
         $db = QFactory::getDbo();
 
-        $sql = "SELECT VERSION_ID FROM ".$myitcrm_prefix."VERSION WHERE VERSION_ID = '293'";
+        $sql = "INSERT INTO ".PRFX."user SET
+                customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
+                username            =". $db->qstr( $VAR['username']                             ).",
+                password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
+                email               =". $db->qstr( $VAR['email']                                ).",
+                usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
+                active              =". $db->qstr( $VAR['active']                               ).",
+                register_date       =". $db->qstr( time()                                       ).",   
+                require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
+                is_employee         =". $db->qstr( $VAR['is_employee']                          ).",              
+                display_name        =". $db->qstr( $VAR['display_name']                         ).",
+                first_name          =". $db->qstr( $VAR['first_name']                           ).",
+                last_name           =". $db->qstr( $VAR['last_name']                            ).",
+                work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
+                work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
+                work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
+                home_primary_phone  =". $db->qstr( $VAR['home_primary_phone']                   ).",
+                home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
+                home_email          =". $db->qstr( $VAR['home_email']                           ).",
+                home_address        =". $db->qstr( $VAR['home_address']                         ).",
+                home_city           =". $db->qstr( $VAR['home_city']                            ).",  
+                home_state          =". $db->qstr( $VAR['home_state']                           ).",
+                home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
+                home_country        =". $db->qstr( $VAR['home_country']                         ).", 
+                based               =". $db->qstr( $VAR['based']                                ).",  
+                notes               =". $db->qstr( $VAR['notes']                                );                 
 
-        if(!$rs = $db->execute($sql)) {        
-
-            // output message failed to connect to the myitcrm database
-            return false;
-
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
         } else {
 
-            if($rs->RecordCount() != 1) {
+            // Get user_id
+            $user_id = $db->Insert_ID();
 
-                //output error message database is not 293
-                return false;
+            // Log activity
+            $record = _gettext("Administrator Account").' '.$user_id.' ('.self::get_user_details($user_id, 'username').') '._gettext("for").' '.self::get_user_details($user_id, 'display_name').' '._gettext("created").'.';
+            write_record_to_setup_log('migrate', $record);
 
-            } else {
-
-                // myitcrm database is sutiable for migration
-                return true;
-
-            }
+            return $user_id;
 
         }
 
     }
+
+    /** Get Functions **/
 
     ##########################
     #  Get Company details   #
@@ -58,7 +85,7 @@ class MigrateMyitcrm {
      * supply the required field name for a single item or all for all items as an array.
      */
 
-    public static function get_company_details_migrate_myitcrm($item = null) {
+    public static function get_company_details($item = null) {
 
         $db = QFactory::getDbo();
 
@@ -99,7 +126,7 @@ class MigrateMyitcrm {
     #  Get MyITCRM company details   #
     ##################################
 
-    public static function get_myitcrm_company_details($item = null) {
+    public static function get_company_details_myitcrm($item = null) {
 
         $config = QFactory::getConfig();
         $db = QFactory::getDbo();
@@ -124,13 +151,96 @@ class MigrateMyitcrm {
 
     }
 
-    /** Update Functions **/
+    ##############################################
+    #  Merge QWcrm and MyITCRM company details   #
+    ##############################################
 
+    public static function get_company_details_merged() {
+
+        $qwcrm_company_details              = self::get_company_details();
+        $myitcrm_company_details            = self::get_company_details_myitcrm();
+
+        $merged['display_name']             = $myitcrm_company_details['COMPANY_NAME'];
+        $merged['logo']                     = 'logo.png';
+        $merged['address']                  = $myitcrm_company_details['COMPANY_ADDRESS'];
+        $merged['city']                     = $myitcrm_company_details['COMPANY_CITY'];
+        $merged['state']                    = $myitcrm_company_details['COMPANY_STATE'];
+        $merged['zip']                      = $myitcrm_company_details['COMPANY_ZIP'];
+        $merged['country']                  = $myitcrm_company_details['COMPANY_COUNTRY'];
+        $merged['primary_phone']            = $myitcrm_company_details['COMPANY_PHONE'];
+        $merged['mobile_phone']             = $myitcrm_company_details['COMPANY_MOBILE'];
+        $merged['fax']                      = $myitcrm_company_details['COMPANY_FAX'];
+        $merged['email']                    = $myitcrm_company_details['COMPANY_EMAIL'];
+        $merged['website']                  = '';
+        $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];    
+        $merged['tax_type']                 = $qwcrm_company_details['tax_type'];
+        $merged['tax_rate']                 = $qwcrm_company_details['tax_rate'];
+        $merged['vat_number']               = '';
+        $merged['year_start']               = time();
+        $merged['year_end']                 = strtotime('+1 year');
+        //$merged['welcome_msg']              = $qwcrm_company_details['welcome_msg'];
+        $merged['currency_symbol']          = $myitcrm_company_details['COMPANY_CURRENCY_SYMBOL'];
+        $merged['currency_code']            = $myitcrm_company_details['COMPANY_CURRENCY_CODE'];
+        $merged['date_format']              = $myitcrm_company_details['COMPANY_DATE_FORMAT'];
+        //$merged['email_signature']          = $qwcrm_company_details['email_signature'];
+        //$merged['email_signature_active']   = $qwcrm_company_details['email_signature_active'];
+        //$merged['email_msg_invoice']        = $qwcrm_company_details['email_msg_invoice'];
+        //$merged['email_msg_workorder']      = $qwcrm_company_details['email_msg_workorder'];
+
+        // NB: the remmed out items are not on the setup company_details page so are added in via myitcrm-migrate.php
+
+        return $merged;
+
+    }
+    
+    #####################################
+    #     Get User Details              # 
+    #####################################
+
+    public static function get_user_details($user_id = null, $item = null) {
+
+        $db = QFactory::getDbo();
+
+        // This allows for workorder:status to work
+        if(!$user_id){
+            return;        
+        }
+
+        $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$db->qstr($user_id);
+
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+        } else {
+
+            if($item === null) {
+
+                return $rs->GetRowAssoc();
+
+            } else {
+
+                if($item === null){
+
+                    return $rs->GetRowAssoc();
+
+                } else {
+
+                    return $rs->fields[$item];   
+
+                } 
+
+            } 
+
+        }
+
+    }
+
+    /** Update Functions **/
+    
     #############################
     #  Update Company details   #
     #############################
 
-    public static function update_company_details_migrate_myitcrm($VAR) {
+    public static function update_company_details($VAR) {
 
         $db = QFactory::getDbo();
         //$smarty = QFactory::getSmarty();    
@@ -138,32 +248,12 @@ class MigrateMyitcrm {
 
         // compensate for installation and migration
         if(!defined('DATE_FORMAT')) {
-            define('DATE_FORMAT', get_company_details_migrate_myitcrm('date_format'));
+            define('DATE_FORMAT', self::get_company_details('date_format'));
         } 
 
-        // Delete logo if selected and no new logo is presented
-        if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
-            delete_logo();        
-        }
-
-        // A new logo is supplied, delete old and upload new
-        if($_FILES['logo']['name']) {
-            delete_logo();
-            $new_logo_filepath = upload_logo();
-        }
-
         $sql .= "UPDATE ".PRFX."company SET
-                display_name            =". $db->qstr( $VAR['display_name']                     ).",";
-
-        if($VAR['delete_logo']) {
-            $sql .="logo                =''                                                     ,";
-        }
-
-        if(!empty($_FILES['logo']['name'])) {
-            $sql .="logo                = ". $db->qstr( $new_logo_filepath  ).",";
-        }
-
-        $sql .="address                 =". $db->qstr( $VAR['address']                          ).",
+                display_name            =". $db->qstr( $VAR['display_name']                     ).",
+                address                 =". $db->qstr( $VAR['address']                          ).",
                 city                    =". $db->qstr( $VAR['city']                             ).",
                 state                   =". $db->qstr( $VAR['state']                            ).",
                 zip                     =". $db->qstr( $VAR['zip']                              ).",
@@ -207,55 +297,17 @@ class MigrateMyitcrm {
 
     }
 
-    ##############################################
-    #  Merge QWcrm and MyITCRM company details   #
-    ##############################################
+    /** Close Functions **/
 
-    public static function get_merged_company_details() {
-
-        $qwcrm_company_details              = get_company_details_migrate_myitcrm();
-        $myitcrm_company_details            = get_myitcrm_company_details();
-
-        $merged['display_name']             = $myitcrm_company_details['COMPANY_NAME'];
-        $merged['logo']                     = 'logo.png';
-        $merged['address']                  = $myitcrm_company_details['COMPANY_ADDRESS'];
-        $merged['city']                     = $myitcrm_company_details['COMPANY_CITY'];
-        $merged['state']                    = $myitcrm_company_details['COMPANY_STATE'];
-        $merged['zip']                      = $myitcrm_company_details['COMPANY_ZIP'];
-        $merged['country']                  = $myitcrm_company_details['COMPANY_COUNTRY'];
-        $merged['primary_phone']            = $myitcrm_company_details['COMPANY_PHONE'];
-        $merged['mobile_phone']             = $myitcrm_company_details['COMPANY_MOBILE'];
-        $merged['fax']                      = $myitcrm_company_details['COMPANY_FAX'];
-        $merged['email']                    = $myitcrm_company_details['COMPANY_EMAIL'];
-        $merged['website']                  = '';
-        $merged['company_number']           = $myitcrm_company_details['COMPANY_ABN'];    
-        $merged['tax_type']                 = $qwcrm_company_details['tax_type'];
-        $merged['tax_rate']                 = $qwcrm_company_details['tax_rate'];
-        $merged['vat_number']               = '';
-        $merged['year_start']               = time();
-        $merged['year_end']                 = strtotime('+1 year');
-        //$merged['welcome_msg']              = $qwcrm_company_details['welcome_msg'];
-        $merged['currency_symbol']          = $myitcrm_company_details['COMPANY_CURRENCY_SYMBOL'];
-        $merged['currency_code']            = $myitcrm_company_details['COMPANY_CURRENCY_CODE'];
-        $merged['date_format']              = $myitcrm_company_details['COMPANY_DATE_FORMAT'];
-        //$merged['email_signature']          = $qwcrm_company_details['email_signature'];
-        //$merged['email_signature_active']   = $qwcrm_company_details['email_signature_active'];
-        //$merged['email_msg_invoice']        = $qwcrm_company_details['email_msg_invoice'];
-        //$merged['email_msg_workorder']      = $qwcrm_company_details['email_msg_workorder'];
-
-        // NB: the remmed out items are not on the setup company_details page so are added in via myitcrm-migrate.php
-
-        return $merged;
-
-    }
+    /** Delete Functions **/
 
     /** Migration Routines **/
-
+    
     ############################################
     #   Migrate myitcrm database               #
     ############################################
 
-    public static function myitcrm_migrate_database($qwcrm_prefix, $myitcrm_prefix) {
+    public static function migrate_myitcrm_database($qwcrm_prefix, $myitcrm_prefix) {
 
         $smarty = QFactory::getSmarty();
         global $executed_sql_results;
@@ -416,7 +468,7 @@ class MigrateMyitcrm {
         migrate_table($qwcrm_prefix.'invoice', $myitcrm_prefix.'TABLE_INVOICE', $column_mappings);
 
         // Change tax_type to selected Company Tax Type for all migrated invoices - This is an assumption
-        update_column_values($qwcrm_prefix.'invoice', 'tax_type', '', get_company_details_migrate_myitcrm('tax_type'));
+        update_column_values($qwcrm_prefix.'invoice', 'tax_type', '', self::get_company_details('tax_type'));
 
         // change close dates from zero to ''
         update_column_values($qwcrm_prefix.'invoice', 'close_date', '0', '');
@@ -609,7 +661,7 @@ class MigrateMyitcrm {
         update_column_values($qwcrm_prefix.'user', 'require_reset', '*', '1');
 
         // Reset all user passwords (passwords will all be random and unknown)
-        migrate_myitcrm_reset_all_user_passwords();
+        self::reset_all_user_passwords();
 
         /* Workorder */
 
@@ -656,19 +708,19 @@ class MigrateMyitcrm {
         /* Corrections */
 
         // Workorder
-        myitcrm_migrate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix);
+        self::database_correction_workorder($qwcrm_prefix, $myitcrm_prefix);
 
         // Invoice
-        myitcrm_migrate_database_correction_invoice($qwcrm_prefix);
+        self::database_correction_invoice($qwcrm_prefix);
 
         // Giftcert
-        myitcrm_migrate_database_correction_giftcert($qwcrm_prefix);
+        self::database_correction_giftcert($qwcrm_prefix);
 
         // Schedule
-        myitcrm_migrate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix);
+        self::database_correction_schedule($qwcrm_prefix, $myitcrm_prefix);
 
         // User
-        myitcrm_migrate_database_correction_user($qwcrm_prefix);
+        self::database_correction_user($qwcrm_prefix);
 
         /* Final stuff */
 
@@ -722,13 +774,13 @@ class MigrateMyitcrm {
 
     }
 
-    /* Corrections */
+    /** Database Corrections **/
 
     ############################################
     #   Correct migrated workorder data        #
     ############################################
 
-    public static function myitcrm_migrate_database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
+    public static function database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
 
         $db = QFactory::getDbo();
         global $executed_sql_results;
@@ -854,7 +906,7 @@ class MigrateMyitcrm {
     #   Correct migrated invoice data          #
     ############################################
 
-    public static function myitcrm_migrate_database_correction_invoice($qwcrm_prefix) {
+    public static function database_correction_invoice($qwcrm_prefix) {
 
         $db = QFactory::getDbo();
         global $executed_sql_results;
@@ -885,7 +937,7 @@ class MigrateMyitcrm {
                 $qwcrm_record = $rs->GetRowAssoc();
 
                 /* net_amount */
-                $net_amount = $qwcrm_record['sub_total'] - $qwcrm_record['discount'];
+                $net_amount = $qwcrm_record['sub_total'] - $qwcrm_record['discount_amount'];
                 update_record_value($qwcrm_prefix.'invoice', 'net_amount', $net_amount, 'invoice_id', $qwcrm_record['invoice_id']);            
 
                 /* status and is_closed*/
@@ -949,7 +1001,7 @@ class MigrateMyitcrm {
     #   Correct migrated giftcert data         #
     ############################################
 
-    public static function myitcrm_migrate_database_correction_giftcert($qwcrm_prefix) {
+    public static function database_correction_giftcert($qwcrm_prefix) {
 
         $db = QFactory::getDbo();
         global $executed_sql_results;
@@ -1017,7 +1069,7 @@ class MigrateMyitcrm {
     #   Correct migrated schedule data         #
     ############################################
 
-    public static function myitcrm_migrate_database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
+    public static function database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
 
         $db = QFactory::getDbo();
         global $executed_sql_results;
@@ -1089,7 +1141,7 @@ class MigrateMyitcrm {
     #   Correct migrated user data             #
     ############################################
 
-    public static function myitcrm_migrate_database_correction_user($qwcrm_prefix) {
+    public static function database_correction_user($qwcrm_prefix) {
 
         $db = QFactory::getDbo();
         global $executed_sql_results;
@@ -1146,12 +1198,48 @@ class MigrateMyitcrm {
         return;
 
     }
+    
 
+    /** Other Functions **/
+    
+    #########################################################
+    #   check myitcrm database is accessible and is 2.9.3   #
+    #########################################################
+
+    public static function check_myitcrm_database_connection($myitcrm_prefix) {
+
+        $db = QFactory::getDbo();
+
+        $sql = "SELECT VERSION_ID FROM ".$myitcrm_prefix."VERSION WHERE VERSION_ID = '293'";
+
+        if(!$rs = $db->execute($sql)) {        
+
+            // output message failed to connect to the myitcrm database
+            return false;
+
+        } else {
+
+            if($rs->RecordCount() != 1) {
+
+                //output error message database is not 293
+                return false;
+
+            } else {
+
+                // myitcrm database is sutiable for migration
+                return true;
+
+            }
+
+        }
+
+    }
+    
     #####################################
     #    Reset all user's passwords     #   // database structure is different in 3.0.1
     #####################################
 
-    public static function migrate_myitcrm_reset_all_user_passwords() { 
+    public static function reset_all_user_passwords() { 
 
         $db = QFactory::getDbo();
 
@@ -1166,7 +1254,7 @@ class MigrateMyitcrm {
             while(!$rs->EOF) { 
 
                 // Reset User's password
-                migrate_myitcrm_reset_user_password($rs->fields['user_id']);
+                self::reset_user_password($rs->fields['user_id']);
 
                 // Advance the INSERT loop to the next record            
                 $rs->MoveNext();            
@@ -1174,7 +1262,7 @@ class MigrateMyitcrm {
             }
 
             // Log activity        
-            write_record_to_setup_log('migrate', _gettext("All User Account passwords have been reset."));
+            write_record_to_setup_log('migrate', _gettext("All User Account passwords have been reset."));            
 
             return;
 
@@ -1186,7 +1274,7 @@ class MigrateMyitcrm {
     #    Reset a user's password        #    
     #####################################
 
-    public static function migrate_myitcrm_reset_user_password($user_id, $password = null) { 
+    public static function reset_user_password($user_id, $password = null) { 
 
         $db = QFactory::getDbo();
 
@@ -1206,24 +1294,7 @@ class MigrateMyitcrm {
         } else {
 
             // Log activity 
-            $record = _gettext("User Account").' '.$user_id.' '._gettext("password has been reset.");
-            write_record_to_activity_log($record, $user_id);
-
-            // Update last active record
             // n/a
-
-
-            /* Log activity 
-            write_record_to_setup_log(_gettext("All user passwords have been reset"), $user_id);
-
-            /*$record = _gettext("User Account").' '.$user_id.' ('.get_user_details($user_id, 'display_name').') '._gettext("password has been reset.");
-            write_record_to_activity_log($record, $user_id);
-
-            // Update last active record
-            // - update_user_last_active($user_id);
-            if(get_user_details($user_id, 'client_id')) {
-                update_client_last_active(get_user_details($user_id, 'client_id'));
-            }*/
 
             return;
 
@@ -1231,17 +1302,11 @@ class MigrateMyitcrm {
 
     }
 
-
-
-
-
-
-
     #################################################
     #    Check if username already exists           #
     #################################################
 
-    public static function migrate_myitcrm_check_user_username_exists($username, $current_username = null) {
+    public static function check_user_username_exists($username, $current_username = null) {
 
         $db = QFactory::getDbo();
         $smarty = QFactory::getSmarty();
@@ -1271,56 +1336,13 @@ class MigrateMyitcrm {
 
         } 
 
-    }
-
-
-    #####################################
-    #     Get User Details              # 
-    #####################################
-
-    public static function migrate_myitcrm_get_user_details($user_id = null, $item = null) {
-
-        $db = QFactory::getDbo();
-
-        // This allows for workorder:status to work
-        if(!$user_id){
-            return;        
-        }
-
-        $sql = "SELECT * FROM ".PRFX."user WHERE user_id =".$db->qstr($user_id);
-
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
-        } else {
-
-            if($item === null) {
-
-                return $rs->GetRowAssoc();
-
-            } else {
-
-                if($item === null){
-
-                    return $rs->GetRowAssoc();
-
-                } else {
-
-                    return $rs->fields[$item];   
-
-                } 
-
-        } 
-
-        }
-
-    }
-
-
+    } 
+    
     ######################################################
     #  Check if an email address has already been used   #
     ######################################################
 
-    public static function migrate_myitcrm_check_user_email_exists($email, $current_email = null) {
+    public static function check_user_email_exists($email, $current_email = null) {
 
         $db = QFactory::getDbo();
         $smarty = QFactory::getSmarty();
@@ -1352,70 +1374,7 @@ class MigrateMyitcrm {
 
         } 
 
-    }
-
-    #####################################
-    #    Insert new user                #
-    #####################################
-
-    public static function migrate_myitcrm_insert_user($VAR) {
-
-        $db = QFactory::getDbo();
-
-        $sql = "INSERT INTO ".PRFX."user SET
-                customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
-                username            =". $db->qstr( $VAR['username']                             ).",
-                password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
-                email               =". $db->qstr( $VAR['email']                                ).",
-                usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-                active              =". $db->qstr( $VAR['active']                               ).",
-                register_date       =". $db->qstr( time()                                       ).",   
-                require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-                is_employee         =". $db->qstr( $VAR['is_employee']                          ).",              
-                display_name        =". $db->qstr( $VAR['display_name']                         ).",
-                first_name          =". $db->qstr( $VAR['first_name']                           ).",
-                last_name           =". $db->qstr( $VAR['last_name']                            ).",
-                work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
-                work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
-                work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
-                home_primary_phone  =". $db->qstr( $VAR['home_primary_phone']                   ).",
-                home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
-                home_email          =". $db->qstr( $VAR['home_email']                           ).",
-                home_address        =". $db->qstr( $VAR['home_address']                         ).",
-                home_city           =". $db->qstr( $VAR['home_city']                            ).",  
-                home_state          =". $db->qstr( $VAR['home_state']                           ).",
-                home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
-                home_country        =". $db->qstr( $VAR['home_country']                         ).", 
-                based               =". $db->qstr( $VAR['based']                                ).",  
-                notes               =". $db->qstr( $VAR['notes']                                );                 
-
-        if(!$rs = $db->Execute($sql)) {
-            $check_me = $db->ErrorMsg();
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
-        } else {
-
-            // Get user_id
-            $user_id = $db->Insert_ID();
-
-            // Update last active record
-            // - update_user_last_active($user_id);
-            if($VAR['client_id']) {
-                update_client_last_active($VAR['client_id']);
-            }
-
-            // Log activity
-            if($VAR['customer_id']) {
-                $user_type = _gettext("Customer");
-            } else {
-                $user_type = _gettext("Employee");
-            }        
-            //$record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.migrate_myitcrm_get_user_details($user_id, 'display_name').' '._gettext("created").'.';
-            //write_record_to_activity_log($record, $user_id);
-
-            return $user_id;
-
-        }
-
-    }
+    }    
 
 }
+

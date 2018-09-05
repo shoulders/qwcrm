@@ -5,6 +5,7 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
+
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="../`$theme_js_dir_finc`editor-config.js"}</script>
 
@@ -148,10 +149,10 @@
                                                                     
                                                                     <!-- Work -->
                                                                     
-                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr class="row2">
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Work{/t}</td>
                                                                     </tr>
-                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>
@@ -172,10 +173,10 @@
                                                                     
                                                                     <!-- Home -->
                                                                     
-                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr class="row2">
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Home{/t}</td>
                                                                     </tr>
-                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>
@@ -224,8 +225,8 @@
                                                                         <td colspan="2">
                                                                             <table>
                                                                                 <tr>
-                                                                                    <td align="left"><strong>{t}Note{/t}</strong></td>
-                                                                                    <td><textarea name="notes" class="olotd5" cols="50" rows="2">{$user_details.note}</textarea></td> 
+                                                                                    <td align="left"><strong>{t}Notes{/t}</strong></td>
+                                                                                    <td><textarea name="notes" class="olotd5" cols="50" rows="2">{$user_details.notes}</textarea></td>                                                                                    
                                                                                 </tr>                                                                                
                                                                             </table>
                                                                         </td>

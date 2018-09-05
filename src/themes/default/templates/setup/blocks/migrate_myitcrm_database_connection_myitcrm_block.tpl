@@ -20,7 +20,7 @@
                     <tr>
                         <td align="right"><b>{t}MyITCRM Database Tables Prefix{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="myitcrm_prefix" class="olotd5" size="6" value="{$qwcrm_config.myitcrm_prefix}" type="text" maxlength="6" placeholder="myit_" required onkeydown="return onlyMysqlDatabaseName(event);"/>                            
+                            <input name="myitcrm_prefix" class="olotd5" size="6" value="" type="text" maxlength="6" placeholder="myit_" required onkeydown="return onlyMysqlDatabaseName(event);"/>                            
                         </td>
                     </tr>
                     <tr>
