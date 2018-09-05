@@ -10,10 +10,14 @@ defined('_QWEXEC') or die;
 
 require_once(INCLUDES_DIR.'core_theme.php');
 
-/* Display Date and Time */
+// Display Date and Time
 $smarty->assign('todays_display_date', date('l, j F Y'));
 
-/* Add a welcome message based on time */
-$smarty->assign('greeting_msg', greeting_message_based_on_time($user->login_display_name));
+//Add a welcome message based on time
+if(!defined('QWCRM_SETUP')) {
+    $smarty->assign('greeting_msg', greeting_message_based_on_time($user->login_display_name));    
+} else {
+    $smarty->assign('greeting_msg', greeting_message_based_on_time(null)); 
+}
 
 $BuildPage .= $smarty->fetch('core/blocks/theme_header_block.tpl');

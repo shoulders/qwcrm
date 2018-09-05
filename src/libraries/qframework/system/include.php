@@ -601,13 +601,6 @@ function verify_qwcrm_install_state(&$VAR) {
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'install';
         $VAR['theme']     = 'menu_off';        
-        
-        /* This allows the use of the database ASAP in the setup process
-        if (defined('PRFX') && QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
-            define('QWCRM_SETUP', 'database_allowed'); 
-        } else {
-            define('QWCRM_SETUP', 'install'); 
-        }*/
         define('QWCRM_SETUP', 'install');  
         
         return;        

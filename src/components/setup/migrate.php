@@ -313,7 +313,7 @@ if($VAR['stage'] == 'administrator_account') {
     } else {
         
         // Prevent undefined variable errors
-        $qwcrm_config = array
+        $user_details = array
                             (
                                 'display_name' => null,
                                 'first_name' => null,
@@ -340,7 +340,7 @@ if($VAR['stage'] == 'administrator_account') {
                                 'notes' => null        
                             );
         
-        $smarty->assign('qwcrm_config', $qwcrm_config); 
+        $smarty->assign('user_details', $user_details); 
     
         // Set mandatory default values
         $smarty->assign('stage', 'administrator_account');

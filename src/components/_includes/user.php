@@ -631,7 +631,7 @@ function check_user_username_exists($username, $current_username = null) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', _gettext("The Username").', '.$username.' ,'._gettext("already exists! Please use a different one."));
+            $smarty->assign('warning_msg', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
             
             return true;
             

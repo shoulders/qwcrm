@@ -11,3 +11,5 @@
 /tmp/
 /src/.htaccess
 /src/off.htaccess
+/src/cache/
+/src/language/en_GB/LC_MESSAGES/

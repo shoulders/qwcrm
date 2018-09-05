@@ -22,7 +22,6 @@ function load_defines() {
     if($db_prefix = QFactory::getConfig()->get('db_prefix')) {
         define('PRFX',                  $db_prefix                                          );
     }
-    //define('PRFX',                      QFactory::getConfig()->get('db_prefix')             );
 
     // System Folders
     define('CACHE_DIR',                 'cache/'                                            );

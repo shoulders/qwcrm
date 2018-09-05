@@ -243,7 +243,7 @@ class MigrateMyitcrm {
     public static function update_company_details($VAR) {
 
         $db = QFactory::getDbo();
-        //$smarty = QFactory::getSmarty();    
+        $smarty = QFactory::getSmarty();    
         $sql = '';
 
         // compensate for installation and migration
@@ -282,11 +282,8 @@ class MigrateMyitcrm {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
         } else {       
 
-            // Refresh company logo
-            //$smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
-
             // Assign success message
-            //$smarty->assign('information_msg', _gettext("Company details updated."));
+            $smarty->assign('information_msg', _gettext("Company details updated."));
 
             // Log activity
             write_record_to_setup_log('migrate', _gettext("Company details updated."));
@@ -1324,7 +1321,7 @@ class MigrateMyitcrm {
 
             if($result_count >= 1) {
 
-                $smarty->assign('warning_msg', _gettext("The Username").', '.$username.' ,'._gettext("already exists! Please use a different one."));
+                $smarty->assign('warning_msg', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
 
                 return true;
 

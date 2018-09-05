@@ -18,6 +18,10 @@ if(!check_page_accessed_via_qwcrm('setup', 'install', 'index_allowed')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
+// Prevent undefined variable errors && Get 'stage' from the submit button
+$VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
+$smarty->assign('stage', $VAR['stage']);
+
 // Delete Setup files Action
 if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'install')) {
     delete_setup_folder();
@@ -57,6 +61,16 @@ if($VAR['stage'] == 'database_connection' || !isset($VAR['stage'])) {
     // Load the page
     } else {        
         
+        // Prevent undefined variable errors
+        $qwcrm_config = array
+                            (
+                                'db_host' => null,
+                                'db_name' => null,
+                                'db_user' => null,
+                                'db_pass' => null
+                            );
+        
+        $smarty->assign('qwcrm_config', $qwcrm_config);
         $smarty->assign('stage', 'database_connection');  
         
     }
@@ -174,6 +188,7 @@ if($VAR['stage'] == 'company_details') {
                 
         $smarty->assign('company_details', get_company_details());
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
+        $smarty->assign('date_format', get_company_details('date_format'));
         $smarty->assign('date_formats', get_date_formats());
         $smarty->assign('stage', 'company_details');
         
@@ -222,8 +237,36 @@ if($VAR['stage'] == 'administrator_account') {
     
     // Load the page
     } else {
+        
+        // Prevent undefined variable errors
+        $user_details = array
+                            (
+                                'first_name' => null,
+                                'last_name' => null,
+                                'is_employee' => null,
+                                'based' => null,
+                                'email' => null,
+                                'username' => null,
+                                'password' => null,
+                                'usergroup' => null,
+                                'active' => null,
+                                'require_reset' => null,
+                                'work_primary_phone' => null,
+                                'work_mobile_phone' => null,
+                                'work_fax' => null,
+                                'home_primary_phone' => null,
+                                'home_mobile_phone' => null,
+                                'home_email' => null,
+                                'home_address' => null,
+                                'home_city' => null,
+                                'home_state' => null,
+                                'home_zip' => null,
+                                'home_country' => null,
+                                'note' => null        
+                            );
     
         // Set mandatory default values
+        $smarty->assign('user_details', $user_details); 
         $smarty->assign('user_locations', get_user_locations());           
         $smarty->assign('stage', 'administrator_account');
         

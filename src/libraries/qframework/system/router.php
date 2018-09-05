@@ -16,8 +16,8 @@ defined('_QWEXEC') or die;
 
 function get_page_controller(&$VAR = null) {        
     
-    $config = QFactory::getConfig();    
-    $user = QFactory::getUser();
+    $config = QFactory::getConfig();
+    if(!defined('QWCRM_SETUP')) { $user = QFactory::getUser(); }
     
     // Setup is in progress (install/migrate/upgrade), skip validations (because no database access etc..)
     if(

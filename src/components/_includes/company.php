@@ -103,8 +103,11 @@ function get_company_opening_hours($event, $type, $date = null) {
 function update_company_details($VAR) {
 
     $db = QFactory::getDbo();
-    //$smarty = QFactory::getSmarty();    
+    $smarty = QFactory::getSmarty();    
     $sql = '';
+    
+    // Prevent undefined variable errors
+    $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;    
     
     // compensate for installation and migration
     if(!defined('DATE_FORMAT')) {
@@ -167,7 +170,7 @@ function update_company_details($VAR) {
         //$smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
         
         // Assign success message
-        //$smarty->assign('information_msg', _gettext("Company details updated."));
+        $smarty->assign('information_msg', _gettext("Company details updated."));
         
         // Log activity        
         write_record_to_activity_log(_gettext("Company details updated."));

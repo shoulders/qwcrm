@@ -87,8 +87,10 @@ $BuildPage = get_page_content($page_controller, $startTime, $VAR);
 #         Logging                              #
 ################################################
 
-// Update the Logged in User's Last Active Times 
-update_user_last_active(QFactory::getUser()->get('login_user_id'));
+// Update the Logged in User's Last Active Times
+if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {    
+    update_user_last_active(QFactory::getUser()->get('login_user_id'));    
+}
 
 // Access Logging
 if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {

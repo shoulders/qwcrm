@@ -103,15 +103,20 @@ function load_system_variables(&$VAR) {
 function set_user_smarty_variables() {
     
     $smarty = QFactory::getSmarty();
-    $user = QFactory::getUser();    
     
-    $smarty->assign('login_user_id',            $user->login_user_id          );
-    $smarty->assign('login_username',           $user->login_username         );
-    $smarty->assign('login_usergroup_id',       $user->login_usergroup_id     );
-    $smarty->assign('login_display_name',       $user->login_display_name     );
-    $smarty->assign('login_token',              $user->login_token            );
-    $smarty->assign('login_is_employee',        $user->login_is_employee      );
-    $smarty->assign('login_client_id',          $user->login_client_id        );
+    if(!defined('QWCRM_SETUP')) {
+    
+        $user = QFactory::getUser();    
+    
+        $smarty->assign('login_user_id',            $user->login_user_id          );
+        $smarty->assign('login_username',           $user->login_username         );
+        $smarty->assign('login_usergroup_id',       $user->login_usergroup_id     );
+        $smarty->assign('login_display_name',       $user->login_display_name     );
+        $smarty->assign('login_token',              $user->login_token            );
+        $smarty->assign('login_is_employee',        $user->login_is_employee      );
+        $smarty->assign('login_client_id',          $user->login_client_id        );
+    
+    }
     
     return;
     

@@ -144,10 +144,10 @@
                                                                     
                                                                     <!-- Work -->
                                                                     
-                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr class="row2">
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Work{/t}</td>
                                                                     </tr>
-                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>
@@ -168,10 +168,10 @@
                                                                     
                                                                     <!-- Home -->
                                                                     
-                                                                    <tr class="row2"{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr class="row2">
                                                                         <td class="menuhead" colspan="2">&nbsp;{t}Home{/t}</td>
                                                                     </tr>
-                                                                    <tr{if !$is_employee} style="display: none;"{/if}>
+                                                                    <tr>
                                                                         <td colspan="2" align="left">
                                                                             <table>
                                                                                 <tr>

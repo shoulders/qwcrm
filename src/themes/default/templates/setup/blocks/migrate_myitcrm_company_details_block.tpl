@@ -169,11 +169,6 @@
                                                                                             </script>                                                    
                                                                                         </td>
                                                                                     </tr>                                                                                    
-                                                                                    <tr>
-                                                                                        <td>
-                                                                                            <input type="hidden" name="welcome_msg" value="{$company_details.welcome_msg}">                                                                                                                                                                       
-                                                                                        </td>
-                                                                                    </tr>
                                                                                 </tbody>
                                                                             </table>
                                                                         </td>
