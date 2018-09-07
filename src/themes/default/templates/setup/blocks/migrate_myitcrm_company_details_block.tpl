@@ -80,6 +80,23 @@
                                                                                         <td><input name="display_name" class="olotd5" value="{$company_details.display_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
+                                                                                        <td align="right"><b>{t}Logo{/t}:</b></td>
+                                                                                        <td>
+                                                                                            <input name="logo" type="file" accept=".png, .jpg, .jpeg, .gif">
+                                                                                            {if $company_details.logo}
+                                                                                                <img src="{$company_logo}" height="50px" alt="{t}Company Logo{/t}">
+                                                                                            {else}
+                                                                                                {t}No company logo has been set!{/t}
+                                                                                            {/if}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td align="right"></td>
+                                                                                        <td>
+                                                                                            <input type="checkbox" name="delete_logo" value="1">{t}Delete Logo{/t}
+                                                                                        </td>
+                                                                                    </tr>                                                                                    
+                                                                                    <tr>
                                                                                         <td align="right"><b>{t}Address{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                         <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
                                                                                     </tr>

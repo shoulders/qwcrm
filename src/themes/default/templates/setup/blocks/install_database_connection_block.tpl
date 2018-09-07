@@ -18,7 +18,7 @@
                     <!-- Database --> 
 
                     <tr class="row2">
-                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Enter your database connection details III{/t}</td>
+                        <td class="menuhead" colspan="5" width="100%">&nbsp;{t}Enter your database connection details{/t}</td>
                     </tr>
 
                     <tr>

@@ -37,7 +37,9 @@ class PlgAuthenticationQwcrm
      */
     public function onUserAuthenticate($credentials, $options, &$response)
     {
+                
         $response->type = 'Qwcrm';
+        $result = null;
 
         // Joomla does not like blank passwords
         if (empty($credentials['password']))

@@ -29,9 +29,9 @@ if (!is_dir(SETUP_DIR)) {
 
 // Prevent undefined variable errors
 $setup_error_flag = null;
-$error_flag = null;
+$executed_sql_results = null;
 QFactory::getSmarty()->assign('setup_error_flag', $setup_error_flag);
-QFactory::getSmarty()->assign('error_flag', $error_flag);
+QFactory::getSmarty()->assign('executed_sql_results', $executed_sql_results);
 
 #########################################################
 #       update a value in a specified record            #  // with and without 'WHERE' clause
@@ -40,8 +40,8 @@ QFactory::getSmarty()->assign('error_flag', $error_flag);
 function update_record_value($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null) {
     
     $db = QFactory::getDbo();    
-    global $executed_sql_results;
     global $setup_error_flag;
+    global $executed_sql_results;
     
     $sql = "UPDATE $select_table SET
             $select_column =". $db->qstr($record_new_value);
@@ -149,8 +149,7 @@ function update_column_values($table, $column, $current_value, $new_value) {
         // Log message to setup log        
         write_record_to_setup_log('correction', $record);
         
-        return true;
-        
+        return true;        
         
     }    
     
@@ -166,7 +165,8 @@ function execute_sql_file($sql_file) {
     
     $db = QFactory::getDbo();    
     global $executed_sql_results;
-    global $setup_error_flag;    
+    global $setup_error_flag;
+    $error_flag = null;    
     
     // Load the SQL file into memory as string
     $sql_file = file_get_contents($sql_file);
@@ -264,7 +264,8 @@ function execute_sql_file_lines($sql_file) {
     
     $db = QFactory::getDbo();
     global $executed_sql_results;
-    global $setup_error_flag;    
+    global $setup_error_flag;
+    $error_flag = null;     
     
     // Temporary variable, used to store current query
     $sql = '';
@@ -695,6 +696,7 @@ function migrate_table($qwcrm_table, $myitcrm_table, $column_mappings) {
     $db = QFactory::getDbo();
     global $executed_sql_results;
     global $setup_error_flag;
+    $error_flag = null;
     
     // Add division to seperate table migration function results
     $executed_sql_results .= '<div>&nbsp;</div>';

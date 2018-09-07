@@ -77,7 +77,7 @@ if($VAR['stage'] == 'database_connection_myitcrm') {
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection_myitcrm') {
         
         // test the supplied database connection details
-        if(MigrateMyitcrm::check_myitcrm_database_connection($VAR['myitcrm_prefix'])) {
+        if(MyitcrmMigrate::check_myitcrm_database_connection($VAR['myitcrm_prefix'])) {
             
             // Record details into the config file and display success message and load the next page       
             submit_qwcrm_config_settings($VAR);            
@@ -190,17 +190,20 @@ if($VAR['stage'] == 'company_details') {
     // submit the company details and load the next page
     if(isset($VAR['submit']) && $VAR['submit'] == 'company_details') {
         
+        $company_details = MyitcrmMigrate::get_company_details();
+        
         // Add missing information to the form submission
-        $company_details = MigrateMyitcrm::get_company_details();
-        $VAR['logo']                    = $company_details['logo'];
         $VAR['welcome_msg']             = $company_details['welcome_msg'];
         $VAR['email_signature']         = $company_details['email_signature'];
         $VAR['email_signature_active']  = $company_details['email_signature_active'];
         $VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
         $VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
-                
+           
+        // Set the date format required for update_company_details()
+        defined('DATE_FORMAT') ?: define('DATE_FORMAT', MyitcrmMigrate::get_company_details('date_format'));
+        
         // update company details and load next stage
-        MigrateMyitcrm::update_company_details($VAR);
+        MyitcrmMigrate::update_company_details($VAR);
         write_record_to_setup_log('migrate', _gettext("Company options inserted."));
         $VAR['stage'] = 'database_migrate';
         
@@ -209,11 +212,15 @@ if($VAR['stage'] == 'company_details') {
         
         // date format is not set in the javascript date picker because i am manipulating stages not pages
         
-        $company_details = MigrateMyitcrm::get_company_details_merged();
+        $company_details = MyitcrmMigrate::get_company_details_merged();
         
+        // Update the logo in the database with the merged value
+        update_record_value(PRFX.'company', 'logo', $company_details['logo']);
+        
+        // Assign Smarty variables
         $smarty->assign('company_details', $company_details);        
         $smarty->assign('company_logo', QW_MEDIA_DIR . $company_details['logo'] );
-        $smarty->assign('date_format', MigrateMyitcrm::get_company_details('date_format'));
+        $smarty->assign('date_format', MyitcrmMigrate::get_company_details('date_format'));
         $smarty->assign('stage', 'company_details');             
         
     }
@@ -231,7 +238,7 @@ if($VAR['stage'] == 'database_migrate') {
         $config = QFactory::getConfig();
         
         // install the database file and load the next page
-        if(MigrateMyitcrm::migrate_myitcrm_database($config->get('db_prefix'), $config->get('myitcrm_prefix'))) {
+        if(MyitcrmMigrate::migrate_myitcrm_database($config->get('db_prefix'), $config->get('myitcrm_prefix'))) {
             
             // remove MyITCRM prefix from the config file
             delete_qwcrm_config_setting('myitcrm_prefix');            
@@ -286,7 +293,7 @@ if($VAR['stage'] == 'administrator_account') {
     if(isset($VAR['submit']) && $VAR['submit'] == 'administrator_account') {
                 
         // Check if the username or email have been used (the extra variable is to ignore the users current username and email to prevent submission errors when only updating other values)
-        if (MigrateMyitcrm::check_user_username_exists($VAR['username']) || MigrateMyitcrm::check_user_email_exists($VAR['email'])) {     
+        if (MyitcrmMigrate::check_user_username_exists($VAR['username']) || MyitcrmMigrate::check_user_email_exists($VAR['email'])) {     
 
             // send the posted data back to smarty
             $user_details = $VAR;
@@ -294,13 +301,14 @@ if($VAR['stage'] == 'administrator_account') {
             // Reload the page with the POST'ed data
             $smarty->assign('user_details', $user_details);        
             
-            // Set mandatory default values                   
+            // Set mandatory default values
+            $smarty->assign('date_format', MyitcrmMigrate::get_company_details('date_format'));
             $smarty->assign('stage', 'administrator_account');
 
         } else {    
 
             // Insert user record (and return the new ID)
-            MigrateMyitcrm::insert_user($VAR);
+            MyitcrmMigrate::insert_user($VAR);
 
             write_record_to_setup_log('migrate', _gettext("The administrator account has been created."));
             write_record_to_setup_log('migrate', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
@@ -338,11 +346,11 @@ if($VAR['stage'] == 'administrator_account') {
                                 'home_zip' => null,
                                 'home_country' => null,
                                 'notes' => null        
-                            );
-        
+                            );        
         $smarty->assign('user_details', $user_details); 
     
         // Set mandatory default values
+        $smarty->assign('date_format', MyitcrmMigrate::get_company_details('date_format'));
         $smarty->assign('stage', 'administrator_account');
         
     }

@@ -73,10 +73,12 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
     page_build_end:
     
     // Process Page links
-    //page_links_acl_replace($BuildPage);
-    page_links_acl_removal($BuildPage);
-    page_links_sdmenu_cleanup($BuildPage);        
-        
+    if(!defined('QWCRM_SETUP')) {  
+        //page_links_acl_replace($BuildPage);
+        page_links_acl_removal($BuildPage);
+        page_links_sdmenu_cleanup($BuildPage);        
+    }
+    
     // Will error out if there are any issues with content replacement
     if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
         echo __gettext("Backtrack limit was exhausted!");

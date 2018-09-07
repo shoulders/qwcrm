@@ -104,15 +104,10 @@ function update_company_details($VAR) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();    
-    $sql = '';
+    $sql = null;
     
     // Prevent undefined variable errors
     $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;    
-    
-    // compensate for installation and migration
-    if(!defined('DATE_FORMAT')) {
-        define('DATE_FORMAT', get_company_details('date_format'));
-    } 
            
     // Delete logo if selected and no new logo is presented
     if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
@@ -133,7 +128,7 @@ function update_company_details($VAR) {
     }
                 
     if(!empty($_FILES['logo']['name'])) {
-        $sql .="logo                = ". $db->qstr( $new_logo_filepath  ).",";
+        $sql .="logo                =". $db->qstr( $new_logo_filepath                       ).",";
     }
     
     $sql .="address                 =". $db->qstr( $VAR['address']                          ).",
@@ -260,6 +255,7 @@ function delete_logo() {
     }
     
 }
+
 ##########################
 #  Upload Company Logo   #
 ##########################

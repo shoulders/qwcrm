@@ -13,7 +13,7 @@
 
 defined('_QWEXEC') or die;
 
-class MigrateMyitcrm {
+class MyitcrmMigrate {
 
     /** Mandatory Code **/
 
@@ -244,16 +244,38 @@ class MigrateMyitcrm {
 
         $db = QFactory::getDbo();
         $smarty = QFactory::getSmarty();    
-        $sql = '';
+        $sql = null;
+        
+        // Prevent undefined variable errors
+        $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;
 
-        // compensate for installation and migration
-        if(!defined('DATE_FORMAT')) {
-            define('DATE_FORMAT', self::get_company_details('date_format'));
-        } 
+        // Delete logo if selected and no new logo is presented
+        if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
+            self::delete_logo();        
+        }
 
+        // A new logo is supplied, delete old and upload new
+        if($_FILES['logo']['name']) {
+            self::delete_logo();
+            $new_logo_filepath = self::upload_logo();
+        }
+    
         $sql .= "UPDATE ".PRFX."company SET
-                display_name            =". $db->qstr( $VAR['display_name']                     ).",
-                address                 =". $db->qstr( $VAR['address']                          ).",
+                display_name            =". $db->qstr( $VAR['display_name']                     ).",";
+                    
+        if($VAR['delete_logo']) {
+            $sql .="logo                =''                                                     ,";
+        }
+
+        if(!empty($_FILES['logo']['name'])) {
+            $sql .="logo                =". $db->qstr( $new_logo_filepath                       ).",";
+        }
+        
+        /*if(isset($VAR['logo']) && is_string($VAR['logo'])) {
+            $sql .="logo                =". $db->qstr( $VAR['logo']                             ).",";
+        }*/
+
+        $sql .="address                 =". $db->qstr( $VAR['address']                          ).",
                 city                    =". $db->qstr( $VAR['city']                             ).",
                 state                   =". $db->qstr( $VAR['state']                            ).",
                 zip                     =". $db->qstr( $VAR['zip']                              ).",
@@ -1371,7 +1393,88 @@ class MigrateMyitcrm {
 
         } 
 
-    }    
+    }
+
+    ##########################
+    #  Delete Company Logo   #
+    ##########################
+
+    public static function delete_logo() {
+
+        // Only delete a logo if there is one set
+        if(self::get_company_details('logo')) {
+
+            // Build the full logo file path
+            $logo_file = parse_url(MEDIA_DIR . self::get_company_details('logo'), PHP_URL_PATH);
+
+            // Perform the deletion
+            unlink($logo_file);
+
+        }
+
+    }
+
+    ##########################
+    #  Upload Company Logo   #
+    ##########################
+
+    public static function upload_logo() {
+
+        $db = QFactory::getDbo();
+
+        // Logo - Only process if there is an image uploaded
+        if($_FILES['logo']['size'] > 0) {
+
+            // Allowed extensions
+            $allowedExts = array('png', 'jpg', 'jpeg', 'gif');
+
+            // Get file extension
+            $filename_info = pathinfo($_FILES['logo']['name']);
+            $extension = $filename_info['extension'];
+
+            // Rename Logo Filename to logo.xxx (keeps original image extension)
+            $new_logo_filename = 'logo.' . $extension;       
+
+            // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
+            if ((($_FILES['logo']['type'] == 'image/gif')
+                    || ($_FILES['logo']['type'] == 'image/jpeg')
+                    || ($_FILES['logo']['type'] == 'image/jpg')
+                    || ($_FILES['logo']['type'] == 'image/pjpeg')
+                    || ($_FILES['logo']['type'] == 'image/x-png')
+                    || ($_FILES['logo']['type'] == 'image/png'))
+                    && ($_FILES['logo']['size'] < 2048000)
+                    && in_array($extension, $allowedExts)) {
+
+                // Check for file submission errors and echo them
+                if ($_FILES['logo']['error'] > 0 ) {
+                    echo _gettext("Return Code").': ' . $_FILES['logo']['error'] . '<br />';                
+
+                // If no errors then move the file from the PHP temporary storage to the logo location
+                } else {
+                    move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);              
+                }
+
+                // return the filename with a random query to allow for caching issues
+                return $new_logo_filename . '?' . strtolower(JUserHelper::genRandomPassword(3));
+
+            // If file is invalid then load the error page  
+            } else {
+
+                /*
+                echo "Upload: "    . $_FILES['company_logo']['name']           . '<br />';
+                echo "Type: "      . $_FILES['company_logo']['type']           . '<br />';
+                echo "Size: "      . ($_FILES['company_logo']['size'] / 1024)  . ' Kb<br />';
+                echo "Temp file: " . $_FILES['company_logo']['tmp_name']       . '<br />';
+                echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
+                 */   
+
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+
+            }
+
+        }
+
+    }   
 
 }
 

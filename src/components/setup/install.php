@@ -145,7 +145,7 @@ if($VAR['stage'] == 'database_install_results') {
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_install_results') {
         
         // Prefill Company Financial dates
-        update_record_value(PRFX.'company_record', 'year_start', mysql_date()) ;
+        update_record_value(PRFX.'company_record', 'year_start', mysql_date());
         update_record_value(PRFX.'company_record', 'year_end', timestamp_mysql_date(strtotime('+1 year')));
         $VAR['stage'] = 'company_details';    
     
@@ -174,9 +174,12 @@ if($VAR['stage'] == 'company_details') {
         $VAR['email_signature']         = $company_details['email_signature'];
         $VAR['email_signature_active']  = $company_details['email_signature_active'];
         $VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
-        $VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
-                
-        // update company details and load next stage
+        $VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];                
+        
+        // Set the date format required for update_company_details()
+        defined('DATE_FORMAT') ?: define('DATE_FORMAT', get_company_details('date_format'));
+        
+        // update company details and load next stage      
         update_company_details($VAR);
         write_record_to_setup_log('install', _gettext("Company options inserted."));
         $VAR['stage'] = 'start_numbers';
@@ -266,6 +269,7 @@ if($VAR['stage'] == 'administrator_account') {
                             );
     
         // Set mandatory default values
+        $smarty->assign('date_format', get_company_details('date_format'));
         $smarty->assign('user_details', $user_details); 
         $smarty->assign('user_locations', get_user_locations());           
         $smarty->assign('stage', 'administrator_account');
