@@ -34,6 +34,7 @@ if (isset($VAR['submit']) && isset($VAR['email']) && $VAR['email']) {
     
     // Prevent direct access to this page (when submitting form)
     if(!check_page_accessed_via_qwcrm('user', 'reset')) {
+        header('HTTP/1.1 403 Forbidden');
         die(_gettext("No Direct Access Allowed."));
     }
 
@@ -90,6 +91,7 @@ if (isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {
     
     // Prevent direct access to this page (when submitting form)
     if(!check_page_accessed_via_qwcrm('user', 'reset')) {
+        header('HTTP/1.1 403 Forbidden');
         die(_gettext("No Direct Access Allowed."));
     }
 
@@ -124,6 +126,7 @@ if (isset($VAR['submit']) && isset($VAR['reset_code']) && $VAR['reset_code'] && 
     
     // Prevent direct access to this page
     if(!check_page_accessed_via_qwcrm('user', 'reset')) {
+        header('HTTP/1.1 403 Forbidden');
         die(_gettext("No Direct Access Allowed."));
     }       
     

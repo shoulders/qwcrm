@@ -592,8 +592,7 @@ function verify_qwcrm_install_state(&$VAR) {
     
     // Installation/Migration/Upgrade has finished
     if (isset($VAR['setup']) && $VAR['setup'] == 'finished') {      
-        return;        
-    
+        return;    
         
     // Installation is in progress
     } elseif (check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
@@ -634,8 +633,20 @@ function verify_qwcrm_install_state(&$VAR) {
              
     }*/        
         
-    // Choice - Fresh Installation/Migrate/Upgrade (1st Run) or refered from the migration process
+    // Choice - Fresh Installation/Migrate/Upgrade (1st Run) (or refered from the migration process)
     } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !check_page_accessed_via_qwcrm()) {
+        
+        // Prevent direct access to this page
+        if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', $VAR['component'], $VAR['page_tpl'])) {
+            header('HTTP/1.1 403 Forbidden');
+            die(_gettext("No Direct Access Allowed."));
+        }
+        
+        // Allow only root or index.php
+        if($_SERVER['REQUEST_URI'] != QWCRM_BASE_PATH && $_SERVER['REQUEST_URI'] != QWCRM_BASE_PATH.'index.php') {
+            header('HTTP/1.1 404 Not Found');
+            die(_gettext("This page does not exist."));
+        }        
         
         // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
         $VAR['component'] = 'setup';
@@ -651,21 +662,21 @@ function verify_qwcrm_install_state(&$VAR) {
         define('QWCRM_SETUP', 'install');
         
         return;       
-    
-        
+            
     // Appears to be a valid installation but the setup directory is still present
     } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
         
         // Prevent direct access to this page
         if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', $VAR['component'], $VAR['page_tpl'])) {
+            header('HTTP/1.1 403 Forbidden');
             die(_gettext("No Direct Access Allowed."));
-        }
-        
+        }        
+
         // Allow only root or index.php
-        if($_SERVER['REQUEST_URI'] != QWCRM_BASE_PATH && $_SERVER['REQUEST_URI'] != QWCRM_BASE_PATH.'index.php') {
+        if(!check_page_accessed_via_qwcrm(null, null, 'root_only')) {
             header('HTTP/1.1 404 Not Found');
             die(_gettext("This page does not exist."));
-        }
+        }               
         
         // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
         compare_qwcrm_filesystem_and_database($VAR);    

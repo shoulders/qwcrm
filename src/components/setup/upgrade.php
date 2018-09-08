@@ -12,6 +12,7 @@ require(INCLUDES_DIR.'setup.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
+    header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 

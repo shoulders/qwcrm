@@ -35,7 +35,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
     // Get Referer
     $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : null;
 
-    /* BOF Access Rules */
+    /* General Rules */
     
     // Override - Return true always
     if($access_rule == 'override') {
@@ -51,6 +51,68 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
         }   
     
     }
+    
+    // Allows page access during a setup process but block direct access
+    if($access_rule == 'setup') {
+        
+        if(defined('QWCRM_SETUP') && !confirm_direct_access($component, $page_tpl)) {
+            return true;            
+        } else {
+            return false;        
+        }        
+    
+    }
+    
+    // Only allow root (../ or ../index.php)
+    if($access_rule == 'root_only') {
+        
+        // Allow direct access during setup
+        if($_SERVER['REQUEST_URI'] == QWCRM_BASE_PATH || $_SERVER['REQUEST_URI'] == QWCRM_BASE_PATH.'index.php') {             
+            return true;            
+        } else {            
+            return false;            
+        }
+    
+    }
+    
+    /* No Referer Rules */
+    
+    // Allow direct access when no referer (not currently used)
+    if($access_rule == 'no_referer') {
+        
+        // Allow direct access during setup
+        if(!$referer) { return true; } 
+    
+    }
+    
+    // Only allow access if the routing variables match the accpeted refering page
+    if($access_rule == 'no_referer-route_matched') {
+        
+        // Allow direct access during setup
+        if($referer) { return false; } 
+        
+        // Check to see if the routing variables match the expected page
+        if($component == $var_component && $page_tpl == $var_page_tpl) {
+            return false;          
+        }      
+
+        return true;
+            
+    }
+        
+    // If there is no refering page, do not allow routing (prevents incorrect loading of pages i.e. upgrade process)
+    if($access_rule == 'no_referer-routing_disallowed') {
+        
+        // Check to see if the routing variables match the expected referering page
+        if($var_component && $var_page_tpl) {
+            return false;          
+        } else {
+            return true;
+        }
+    
+    }
+    
+    /* Refered Rules */
     
     // Routing variables Match the accepted referering page and has been refered by any QWcrm page
     if($access_rule == 'refered-index_allowed-route_matched') {               
@@ -78,53 +140,7 @@ function check_page_accessed_via_qwcrm($component = null, $page_tpl = null, $acc
 
     }
     
-    // Allows page access during a setup process but block direct access
-    if($access_rule == 'setup') {
-        
-        if(defined('QWCRM_SETUP') && !confirm_direct_access($component, $page_tpl)) {
-            return true;            
-        } else {
-            return false;        
-        }        
-    
-    }    
-    
-    // Only allow access if the routing variables match the accpeted refering page
-    if($access_rule == 'no_referer-route_matched') {
-        
-        // Allow direct access during setup
-        if($referer) { return false; } 
-        
-        // Check to see if the routing variables match the expected page
-        if($component == $var_component && $page_tpl == $var_page_tpl) {
-            return false;          
-        }      
-
-        return true;
-            
-    }
-    
-    // Allow direct access when no referer (not currently used)
-    if($access_rule == 'no_referer') {
-        
-        // Allow direct access during setup
-        if(!$referer) { return true; } 
-    
-    }
-    
-    // If there is no refering page, do not allow routing (prevents incorrect loading of pages i.e. upgrade process)
-    if($access_rule == 'no_referer-routing_disallowed') {
-        
-        // Check to see if the routing variables match the expected referering page
-        if($var_component && $var_page_tpl) {
-            return false;          
-        } else {
-            return true;
-        }
-    
-    }
-    
-    /* EOF Access Rules */
+    /* Default Rules */
     
     // If no referer (direct access) and if a setup procedure is not occuring block access
     if(!$referer) { return false; }   

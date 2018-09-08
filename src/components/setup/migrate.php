@@ -16,6 +16,7 @@ require(INCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'index_allowed')) {
+    header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 

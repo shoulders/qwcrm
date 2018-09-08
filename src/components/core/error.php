@@ -21,6 +21,7 @@ $VAR['error_enable_override'] = isset($VAR['error_enable_override']) ? $VAR['err
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm(null, null, $VAR['error_enable_override'])) {
+    header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 

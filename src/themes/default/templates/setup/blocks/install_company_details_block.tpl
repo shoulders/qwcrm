@@ -227,7 +227,7 @@
                                                                                         <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" placeholder="GBP" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td align="right"><b>{t}Date Format{/t}:</b></td>
+                                                                                        <td align="right"><b>{t}Date Format{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                         <td>
                                                                                             <select name="date_format" class="olotd5"> 
                                                                                                 {section name=d loop=$date_formats}    

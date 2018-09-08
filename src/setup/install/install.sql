@@ -676,7 +676,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('client:note_new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('client:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('company:business_hours', 1, 1, 0, 0, 0, 0, 0, 0, 0),
-('company:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('company:edit', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:404', 1, 1, 1, 1, 1, 1, 1, 1, 1),
 ('core:dashboard', 1, 1, 1, 1, 1, 1, 0, 0, 0),
