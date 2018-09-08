@@ -57,7 +57,7 @@ QFactory::loadQwcrm($VAR);
 #         Initialise QWCRM                     #
 ################################################
 
-if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+if(!defined('QWCRM_SETUP')) {
     
     // Start the QFramework 
     $app = new QFactory;
@@ -88,12 +88,12 @@ $BuildPage = get_page_content($page_controller, $startTime, $VAR);
 ################################################
 
 // Update the Logged in User's Last Active Times
-if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {    
+if(!defined('QWCRM_SETUP')) {    
     update_user_last_active(QFactory::getUser()->get('login_user_id'));    
 }
 
 // Access Logging
-if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install')) {
+if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP'))) {
     
     // This logs QWcrm page load details to the access log
     if(QFactory::getConfig()->get('qwcrm_access_log')){

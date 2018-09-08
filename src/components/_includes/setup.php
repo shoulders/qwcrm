@@ -425,7 +425,7 @@ function validate_qwcrm_minimum_mysql_version() {
 function write_record_to_setup_log($setup_type, $record, $database_error = null, $sql_query = null) {
     
     // Install and migrate does not have username or login_user_id available
-    if(defined('QWCRM_SETUP') && QWCRM_SETUP == 'install') {
+    if(defined('QWCRM_SETUP')) {
         $username = '-';
         $login_user_id = '-';
     } else {

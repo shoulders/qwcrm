@@ -384,7 +384,7 @@ function check_page_acl($component, $page_tpl, $user = null) {
     if($user == null) { $user = QFactory::getUser(); }
     
     // If installing
-    if(defined('QWCRM_SETUP') && (QWCRM_SETUP == 'install' || QWCRM_SETUP == 'upgrade')) { return true; }
+    if(defined('QWCRM_SETUP')) { return true; }
     
     // Usergroup Error catching - you cannot use normal error logging as it will cause a loop (should not be needed now)
     if($user->login_usergroup_id == '') {

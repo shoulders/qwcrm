@@ -28,14 +28,14 @@ function load_system_variables(&$VAR) {
     ##########################################################
 
     // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
-    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    if(!defined('QWCRM_SETUP')) {
         $VAR = array_merge($_POST, $_GET, $VAR, postEmulationReturnStore());    
     } else {
         $VAR = array_merge($_POST, $_GET, $VAR);
     }
 
     // Set Date Format - If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
-    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    if(!defined('QWCRM_SETUP')) {
         define('DATE_FORMAT', get_company_details('date_format'));
     }
 
@@ -70,7 +70,7 @@ function load_system_variables(&$VAR) {
     isset($VAR['schedule_id'])  ? $smarty->assign('schedule_id', $VAR['schedule_id'])   : $smarty->assign('schedule_id', null);
    
     // Used throughout the site
-    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    if(!defined('QWCRM_SETUP')) {
         $smarty->assign('currency_sym', get_company_details('currency_symbol')     );
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
         $smarty->assign('date_format',  DATE_FORMAT                                );

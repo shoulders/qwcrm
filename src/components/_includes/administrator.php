@@ -387,7 +387,7 @@ function process_config_data($new_config) {
     $current_config = get_qwcrm_config_from_file();
     
     // Purge the database session table if we are changing to the database handler.
-    if(!defined('QWCRM_SETUP') || QWCRM_SETUP != 'install') {
+    if(!defined('QWCRM_SETUP')) {
         
         // Get the database object
         $db = QFactory::getDbo();
