@@ -77,11 +77,11 @@ if($VAR['stage'] == 'database_connection_myitcrm') {
     
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection_myitcrm') {
         
-        // test the supplied database connection details
-        if(MyitcrmMigrate::check_myitcrm_database_connection($VAR['myitcrm_prefix'])) {
+        // Test the supplied database connection details
+        if(MyitcrmMigrate::check_myitcrm_database_connection($VAR['qwcrm_config']['myitcrm_prefix'])) {
             
             // Record details into the config file and display success message and load the next page       
-            submit_qwcrm_config_settings($VAR);            
+            update_qwcrm_config($VAR['qwcrm_config']);           
             write_record_to_setup_log('migrate', _gettext("Connected successfully to the MyITCRM database with the supplied prefix and added it to the config file."));  
             $smarty->assign('information_msg', _gettext("MyITCRM database connection successful."));
             $VAR['stage'] = 'config_settings';
@@ -89,8 +89,8 @@ if($VAR['stage'] == 'database_connection_myitcrm') {
         // Load the page with error
         } else {
             
-            // reload the database connection page with the details and error message
-            $smarty->assign('qwcrm_config', $VAR);
+            // Reload the database connection page with the details and error message
+            $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);
             $smarty->assign('warning_msg', _gettext("The MyITCRM database is either missing or the prefix is wrong."));
             write_record_to_setup_log('migrate', _gettext("Failed to connect to the MyITCRM database with the supplied prefix.")); 
             $smarty->assign('stage', 'database_connection_myitcrm');
@@ -100,6 +100,13 @@ if($VAR['stage'] == 'database_connection_myitcrm') {
     // Load the page
     } else {
         
+        // Prevent undefined variable errors
+        $qwcrm_config = array
+                            (
+                                'myitcrm_prefix' => null,
+                            );
+        
+        $smarty->assign('qwcrm_config', $qwcrm_config);
         $smarty->assign('stage', 'database_connection_myitcrm');
     }
 }

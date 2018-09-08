@@ -455,7 +455,7 @@ function write_record_to_setup_log($setup_type, $record, $database_error = null,
 }
 
 ############################################
-#         Submit config settings           #
+#         Submit config settings           #  // not currently used
 ############################################
 
 function submit_qwcrm_config_settings($VAR) {
