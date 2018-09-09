@@ -377,6 +377,9 @@ if($VAR['stage'] == 'upgrade_confirmation') {
     // Load the page
     } else {
     
+        // Clean up after setup process 
+        setup_finished();
+        
         // Set mandatory default values               
         $smarty->assign('stage', 'upgrade_confirmation');
         

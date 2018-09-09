@@ -16,8 +16,14 @@ if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
-// Log message to setup log - only when starting the process
-write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has begun."));
+$setup = new Setup($BuildPage);
 
-// Build the page
-$BuildPage .= $smarty->fetch('setup/upgrade.tpl');
+// set version number to 0.0.0'
+
+// Build a List of all of the upgrade version steps
+$upgrade_steps = $setup->get_upgrade_steps();
+
+// Process each upgrade step
+process_upgrade_steps($upgrade_steps);
+
+// successfull message ?

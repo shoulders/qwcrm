@@ -30,6 +30,33 @@
 
 defined('_QWEXEC') or die;
 
+/* Insert */
+
+############################################
+#   Insert a single QWcrm setting file     #
+############################################
+
+function insert_qwcrm_config_setting($key, $value) {
+    
+    // Get a fresh copy of the current settings as an array        
+    $qwcrm_config = get_qwcrm_config_from_file();
+    
+    // Add the key/value pair into the object
+    $qwcrm_config[$key] = $value;
+    
+    // Prepare the config file content
+    $qwcrm_config = build_config_file_content($qwcrm_config);
+    
+    // Write the configuration file.
+    write_config_file($qwcrm_config);
+    
+    // Log activity
+    write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));    
+
+    return true;
+    
+}
+
 /* Get Functions */
 
 ############################################
@@ -75,6 +102,31 @@ function get_acl_permissions() {
 }
 
 /* Update Functions */
+
+############################################
+#   Uodate a single QWcrm setting file     #
+############################################
+
+function update_qwcrm_config_setting($key, $value) {
+    
+    // Get a fresh copy of the current settings as an array        
+    $qwcrm_config = get_qwcrm_config_from_file();
+    
+    // Add the key/value pair into the object
+    $qwcrm_config[$key] = $value;
+    
+    // Prepare the config file content
+    $qwcrm_config = build_config_file_content($qwcrm_config);
+    
+    // Write the configuration file.
+    write_config_file($qwcrm_config);
+    
+    // Log activity
+    write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');    
+
+    return true;
+    
+}
 
 #################################
 #   Update ACL Permissions      #
@@ -198,7 +250,7 @@ function update_qwcrm_config($new_config) {
 /* Delete Functions */
 
 ############################################
-#   Update the QWcrm settings file         #
+#   Update s QWcrm setting                 #
 ############################################
 
 function delete_qwcrm_config_setting($key) {

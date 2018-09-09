@@ -688,7 +688,7 @@ class QFactory {
         //$smarty->compileAllTemplates();                   // this is a really cool feature and useful for translations
         //$smarty->clearAllCache();                         // clears all of the cache
         //$smarty->clear_cache()();                         // clear individual cache files (or groups)
-        //$smarty->clearCompiledTemplate();                 // Clears the compile dirctory
+        //$smarty->clearCompiledTemplate();                 // Clears the compile directory
         
         return $smarty;
     

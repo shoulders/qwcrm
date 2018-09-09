@@ -283,7 +283,7 @@ if($VAR['stage'] == 'administrator_account') {
 // Delete Setup folder
 if($VAR['stage'] == 'delete_setup_folder') {
     
-    // There is not submit action on this stage
+    // There is a submit action on this stage
     if(isset($VAR['submit']) && $VAR['submit'] == 'delete_setup_folder') {
         
         //$VAR['stage'] = 'unknown';
@@ -291,6 +291,9 @@ if($VAR['stage'] == 'delete_setup_folder') {
     // Load the page
     } else {
     
+        // Clean up after setup process 
+        setup_finished();
+        
         // Set mandatory default values               
         $smarty->assign('stage', 'delete_setup_folder');
         

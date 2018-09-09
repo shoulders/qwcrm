@@ -590,12 +590,8 @@ function verify_qwcrm_install_state(&$VAR) {
     $VAR['component'] = isset($VAR['component']) ? $VAR['component'] : null;
     $VAR['page_tpl']  = isset($VAR['page_tpl'])  ? $VAR['page_tpl']  : null;
     
-    // Installation/Migration/Upgrade has finished
-    if (isset($VAR['setup']) && $VAR['setup'] == 'finished') {      
-        return;    
-        
     // Installation is in progress
-    } elseif (check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
+    if (check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
         
         $VAR['component'] = 'setup';
         $VAR['page_tpl']  = 'install';
