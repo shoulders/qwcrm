@@ -20,36 +20,28 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'setup.php');
+require(INCLUDES_DIR.'administrator.php');
 
 // Only allow the use of these functions when the /setup/ folder exists.
 if (!is_dir(SETUP_DIR)) {      
     die(_gettext("You cannot use these functions without the setup folder."));        
 }
 
-class Setup {
+class QSetup {
 
-    protected $setup_error_flag = null;
-    protected $executed_sql_results = null;
-    protected $build_page = null;
-    protected $smarty = null;
+    public static $setup_error_flag = null;
+    public static $executed_sql_results = null;    
+    protected $smarty = null;    
     
-    public function __construct(&$VAR, &$BuildPage) {
+    public function __construct(&$VAR) {
         
         $this->smarty = QFactory::getSmarty();
-        $this->build_page = $BuildPage;
-        
+                
         // Prevent undefined variable errors && Get 'stage' from the submit button
         $VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
         $this->smarty->assign('stage', $VAR['stage']);
-        
-        $this->smarty>assign('setup_error_flag', $this->setup_error_flag);
-        $this->smarty->assign('executed_sql_results', $this->executed_sql_results);
-        
-        // Log message to setup log - only when starting the process
-        write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has begun."));
-        
-        $BuildPage .= $this->smarty->fetch('setup/upgrade.tpl');
+        $this->smarty->assign('setup_error_flag', self::$setup_error_flag);
+        $this->smarty->assign('executed_sql_results', self::$executed_sql_results);       
         
     }
     
@@ -62,7 +54,7 @@ class Setup {
     public function setup_finished() {
 
         // Clear the Smarty cache
-        $this->clearAllCache();
+        $this->smarty->clearAllCache();
 
         // Clear the compiled templates directory
         $this->smarty->clearCompiledTemplate();
@@ -176,7 +168,7 @@ class Setup {
     public function removeDirectory($directory) {
 
         // Safety first
-        if(!$directory || $directory == '/') {
+        if(!$directory || $directory = '' || $directory == '/') {
             die(_gettext("Do not delete the root folder and files!!!"));        
         }            
 
@@ -218,7 +210,7 @@ class Setup {
     /** Database Common **/
 
     #########################################################
-    #       update a value in a specified record            #  // with and without 'WHERE' clause
+    #       Update a value in a specified record            #  // with and without 'WHERE' clause
     #########################################################
 
     public function update_record_value($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null) {
@@ -235,7 +227,7 @@ class Setup {
         if(!$rs = $db->execute($sql)) { 
 
             // Set the setup global error flag
-            $this->setup_error_flag = true;
+            self::$setup_error_flag = true;
 
             // Log message
             if($where_column) {
@@ -245,11 +237,11 @@ class Setup {
             }
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-            $this->executed_sql_results .= '<div>&nbsp;</div>';
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
 
             return false;
 
@@ -263,14 +255,13 @@ class Setup {
             }
 
             // Output message via smarty - to reduce onscreen output i have disabled success output, it is still logged
-            //$this->executed_sql_results .= '<div style="color: green">'.$record.'</div>';
-            //$this->executed_sql_results .= '<div>&nbsp;</div>';
+            //self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            //self::$executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('correction', $record);
+            $this->write_record_to_setup_log('correction', $record);
 
             return true;
-
 
         }    
 
@@ -300,17 +291,17 @@ class Setup {
         if(!$rs = $db->execute($sql)) { 
 
             // Set the setup global error flag
-            $this->setup_error_flag = true;
+            self::$setup_error_flag = true;
 
             // Log message
             $record = _gettext("Failed to update the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the columm").' `'.$column.'` '._gettext("from the table").' `'.$table.'` ';
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-            $this->executed_sql_results .= '<div>&nbsp;</div>';        
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';        
 
             // Log message to setup log        
-            write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
 
             return false;
 
@@ -323,11 +314,11 @@ class Setup {
             $record = _gettext("Successfully updated the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the columm").' `'.$column.'` '._gettext("from the the table").' `'.$table.'` - '._gettext("Records Processed").': '.$affected_rows;
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div style="color: green">'.$record.'</div>';
-            $this->executed_sql_results .= '<div>&nbsp;</div>';
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('correction', $record);
+            $this->write_record_to_setup_log('correction', $record);
 
             return true;        
 
@@ -358,7 +349,7 @@ class Setup {
         // Remove comment lines starting with --
         $sql_file = preg_replace('/^--.*\n/m', '', $sql_file);
 
-        // Psrse the SQL commands
+        // Parse the SQL commands
         preg_match_all('/^[A-Z].*;\n/msU', $sql_file, $sql_statements);
 
         // Loop through preg_match() result
@@ -371,7 +362,7 @@ class Setup {
             if(!$rs = $db->Execute($sql)) {
 
                 // Set the setup global error flag
-                $this->setup_error_flag = true;
+                self::$setup_error_flag = true;
 
                 // Set the local error flag
                 $local_error_flag = true;
@@ -380,10 +371,10 @@ class Setup {
                 $record = _gettext("Error performing SQL query").' : '. $query_name['0'];
 
                 // Output message via smarty
-                $this->executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                 // Log message to setup log            
-                write_record_to_setup_log('install', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('install', $record, $db->ErrorMsg(), $sql);
 
 
             } else {
@@ -392,10 +383,10 @@ class Setup {
                 $record = _gettext("Performed SQL query successfully").' : '. $query_name['0'];
 
                 // Output message via smarty
-                $this->executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+                self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
 
                 // Log message to setup log            
-                write_record_to_setup_log('install', $record);
+                $this->write_record_to_setup_log('install', $record);
 
             }
 
@@ -408,10 +399,10 @@ class Setup {
             $record = _gettext("One or more SQL rule has failed. Check the logs.");
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('install', $record);
+            $this->write_record_to_setup_log('install', $record);
 
             return false;
 
@@ -421,10 +412,10 @@ class Setup {
             $record = _gettext("All SQL rules have run successfully.");
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('install', $record);
+            $this->write_record_to_setup_log('install', $record);
 
             return true;
 
@@ -440,27 +431,32 @@ class Setup {
 
     public function execute_sql_file_lines($sql_file) {
 
-        $db = QFactory::getDbo();
-        $local_error_flag = null;     
+        $db = QFactory::getDbo();            
 
-        // Temporary variable, used to store current query
-        $sql = '';
+        // Prevent undefined variable errors
+        $local_error_flag = null; 
+        $sql = null;
+        $query_name = null;
 
-        // Read in entire file (will be line by because of below)
+        // Read in entire file (will be loaded from file line by because of below)
         $lines = file($sql_file);
 
         // Loop through each line  - file() loads each line in one by one
         foreach ($lines as $line)
         {        
-            // Skip it if the line is empty
+            // Skip it if the line is empty   /// add if all spaces
             if ($line == '') {
                 continue;
             }
-
+            
             // Skip it if it's a comment ( -- or /* )
-            if(substr($line, 0, 2) == '--' || substr($line,0,2) == '/*') {
+            if(substr($line, 0, 2) == '--' || substr($line, 1, 1) == '*' || substr($line, 2, 2) == '*/') {
                 continue;            
             }
+            
+            // Replace new lines with a space
+            $line = str_replace("\r", ' ', $line);
+            $line = str_replace("\n", ' ', $line);
 
             // Replace database prefix placeholder with required prefix
             $line = str_replace('#__', PRFX, $line);
@@ -471,14 +467,20 @@ class Setup {
             // If it has a semicolon at the end, it's the end of the query
             if (substr(trim($line), -1, 1) == ';')
             {            
-                // Get rule name for output
-                preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
-
+                // Get rule name from complete SQL query
+                if(preg_match('/(SET|DROP|UPDATE|SELECT)/U', $sql)) {
+                    preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);                    
+                }
+                
+                if(!isset($query_name['0'])) {
+                    $query_name['0'] = 'aaaaaaaaaa';   
+                }
+                            
                 // Perform the query
                 if(!$rs = $db->Execute($sql)) {
 
                     // Set the setup global error flag
-                    $this->setup_error_flag = true;
+                    self::$setup_error_flag = true;
 
                     // Set the local error flag
                     $local_error_flag = true;
@@ -487,10 +489,10 @@ class Setup {
                     $record = _gettext("Error performing SQL query").' : '. $query_name['0'];
 
                     // Output message via smarty
-                    $this->executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
 
                     // Log message to setup log                
-                    write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);                              
+                    $this->write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);                              
 
                 } else {
 
@@ -498,18 +500,23 @@ class Setup {
                     $record = _gettext("Performed SQL query successfully").' : '. $query_name['0'];
 
                     // Output message via smarty
-                    $this->executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+                    self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
 
                     // Log message to setup log                
-                    write_record_to_setup_log('upgrade', $record);
+                    $this->write_record_to_setup_log('upgrade', $record);
 
                 }            
 
-                // Reset templine variable to empty ready for the next line
+                // Reset temp SQL variable to empty ready for the next line
                 $sql = '';
+                
+                // Reset Query name
+                $query_name = '';
 
             }        
 
+            continue;
+            
         } 
 
         // Closing result statement
@@ -519,10 +526,10 @@ class Setup {
             $record = _gettext("One or more SQL rule has failed. Check the logs.");
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div style="color: red;">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: red;">'.$record.'</div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('upgrade', $record);
+            $this->write_record_to_setup_log('upgrade', $record);
 
             return false;
 
@@ -532,10 +539,10 @@ class Setup {
             $record = _gettext("All SQL rules have run successfully.");
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div style="color: green;">'.$record.'</div>';
+            self::$executed_sql_results .= '<div style="color: green;">'.$record.'</div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('upgrade', $record);
+            $this->write_record_to_setup_log('upgrade', $record);
 
             return true;
 
@@ -629,22 +636,22 @@ class Setup {
     public function install_database($database_file) {
 
         // Execute the database SQL
-        execute_sql_file($database_file);
+        $this->execute_sql_file($database_file);
 
         /* Final stuff */
 
         // Final statement
-        if($this->setup_error_flag) {
+        if(self::$setup_error_flag) {
 
             // Log message
             $record = _gettext("The database installation process failed, check the logs.");
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div>&nbsp;</div>';
-            $this->executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('install', $record);
+            $this->write_record_to_setup_log('install', $record);
 
         } else {
 
@@ -652,16 +659,16 @@ class Setup {
             $record = _gettext("The database installation process was successful.");
 
             // Output message via smarty
-            $this->executed_sql_results .= '<div>&nbsp;</div>';
-            $this->executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
 
             // Log message to setup log        
-            write_record_to_setup_log('install', $record);
+            $this->write_record_to_setup_log('install', $record);
 
         }    
 
         // Return reflecting the installation status
-        if($this->setup_error_flag) {
+        if(self::$setup_error_flag) {
 
             /* installation failed */
 
@@ -725,16 +732,16 @@ class Setup {
         $local_error_flag = null;
 
         // Add division to seperate table migration function results
-        $this->executed_sql_results .= '<div>&nbsp;</div>';
+        self::$executed_sql_results .= '<div>&nbsp;</div>';
 
         // Log message
         $record = _gettext("Beginning the migration of MyITCRM data into the QWcrm table").': `'.$qwcrm_table.'`';       
 
         // Result message
-        $this->executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+        self::$executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
 
         // Log message to setup log                
-        write_record_to_setup_log('migrate', $record);        
+        $this->write_record_to_setup_log('migrate', $record);        
 
        /* load the records from MyITCRM */
 
@@ -749,10 +756,10 @@ class Setup {
             $record = _gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$db->ErrorMsg();        
 
             // Result message
-            $this->executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
+            self::$executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
 
             // Log message to setup log                
-            write_record_to_setup_log('migrate', $record);        
+            $this->write_record_to_setup_log('migrate', $record);        
 
             // output error, could not load table so all of this table was skipped
             return false;
@@ -832,10 +839,10 @@ class Setup {
                     $record = _gettext("Error migrating a MyITCRM record into QWcrm");
 
                     // Result message
-                    $this->executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$db->ErrorMsg().'</span></div>';                
+                    self::$executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$db->ErrorMsg().'</span></div>';                
 
                     // Log message to setup log                
-                    write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);                
+                    $this->write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);                
 
 
 
@@ -852,10 +859,10 @@ class Setup {
                     $record = _gettext("Successfully migrated a MyITCRM record into QWcrm");
 
                     // Result message
-                    $this->executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
+                    self::$executed_sql_results .= '<div><span style="color: green">'.$record.'</span></div>';
 
                     // Log message to setup log                
-                    write_record_to_setup_log('migrate', $record);
+                    $this->write_record_to_setup_log('migrate', $record);
 
                     */                
 
@@ -870,28 +877,28 @@ class Setup {
             }// EOF While Loop
 
             // Output Record counters        
-            $this->executed_sql_results .= '<div><span style="color: blue">'._gettext("MyITCRM Records Processed").': '.$records_processed.'</span></div>';
-            $this->executed_sql_results .= '<div><span style="color: red">'._gettext("Records Failed To Migrate").': '.$records_failed.'</span></div>';
-            $this->executed_sql_results .= '<div><span style="color: green">'._gettext("Records Successfuly Migrated").': '.$records_successful.'</span></div>';        
+            self::$executed_sql_results .= '<div><span style="color: blue">'._gettext("MyITCRM Records Processed").': '.$records_processed.'</span></div>';
+            self::$executed_sql_results .= '<div><span style="color: red">'._gettext("Records Failed To Migrate").': '.$records_failed.'</span></div>';
+            self::$executed_sql_results .= '<div><span style="color: green">'._gettext("Records Successfuly Migrated").': '.$records_successful.'</span></div>';        
 
             // if there has been an error
             if($local_error_flag) {
 
                 // Set the setup global error flag
-                $this->setup_error_flag = true;
+                self::$setup_error_flag = true;
 
                 // Log message
                 $record = _gettext("Error migrating some records into QWcrm table").': `'.$qwcrm_table.'`';
                 $record_additional = ' - '._gettext("MyITCRM Records Processed").': '.$records_processed.' - '._gettext("Records Failed To Migrate").': '.$records_failed.' - '._gettext("Records Successfuly Migrated").': '.$records_successful;
 
                 // Result message
-                $this->executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
+                self::$executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
 
                 // Add division to seperate table migration function results
-                $this->executed_sql_results .= '<div>&nbsp;</div>';
+                self::$executed_sql_results .= '<div>&nbsp;</div>';
 
                 // Log message to setup log                
-                write_record_to_setup_log('migrate', $record.$record_additional);
+                $this->write_record_to_setup_log('migrate', $record.$record_additional);
 
                 return false;
 
@@ -903,13 +910,13 @@ class Setup {
                 $record_additional = ' - '._gettext("MyITCRM Records Processed").': '.$records_processed.' - '._gettext("Records Failed To Migrate").': '.$records_failed.' - '._gettext("Records Successfuly Migrated").': '.$records_successful;
 
                 // Result message
-                $this->executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
+                self::$executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
 
                 // Add division to seperate table migration function results
-                $this->executed_sql_results .= '<div>&nbsp;</div>';
+                self::$executed_sql_results .= '<div>&nbsp;</div>';
 
                 // Log message to setup log                
-                write_record_to_setup_log('migrate', $record.$record_additional);
+                $this->write_record_to_setup_log('migrate', $record.$record_additional);
 
                 return true;
 
@@ -925,7 +932,7 @@ class Setup {
     #   Get upgrade steps                      #
     ############################################
 
-    public function get_upgrade_steps() {
+    public static function get_upgrade_steps() {
         
         $upgrade_steps = array();
         $current_db_version = get_qwcrm_database_version_number();
@@ -939,8 +946,11 @@ class Setup {
         // Cycle through the directories discovered
         foreach ($directories as $directory) {        
 
-            // Is the verion number less than or equal to the Current DB Version
-            if(version_compare ($directory, $current_db_version, '>' )) {
+            // Remove path from directory and just leave the directory name
+            $directory = basename($directory);
+            
+            // Remove uneeded upgrade steps) - Is the version number less than or equal to the Current DB Version
+            if(version_compare($directory, $current_db_version, '>')) {
                 
                 // Add to the new array
                 $upgrade_steps[] = $directory;
@@ -963,21 +973,21 @@ class Setup {
     #   Process upgrade steps                  #
     ############################################
 
-    public function process_upgrade_steps($upgrade_steps) {
+    public static function process_upgrade_steps(&$VAR, $upgrade_steps = null) {
         
         // Cycle through each step
         foreach ($upgrade_steps as $upgrade_step) {        
 
             // Include the upgrade.php
-            require(SETUP_DIR.'/upgrade/'.$upgrade_step.'/upgrade_routines.php');
+            require(SETUP_DIR.'upgrade/'.$upgrade_step.'/upgrade_routines.php');
             
             // Build Class name
             $class_name = 'Upgrade'.$upgrade_step;
             
             // Instantiate the step's class (this runs the upgrade routines)
-            $upgrade_process = new $class_name;
+            $upgrade_process = new $class_name($VAR);
             
-            // unset the class to save memory
+            // Unset the class to save memory
             unset($upgrade_process);
            
         }
@@ -985,17 +995,165 @@ class Setup {
         return;
         
     }
-
-    ############################################
-    #   Upgrade database                       #
-    ############################################
-
-    public function upgrade_database() {
-
+    
+    // Convert a timestamp `column` to a MySQL DATE `column`
+    public function column_timestamp_to_mysql_date($table, $column_primary_key, $column_timestamp) {
+        
         $db = QFactory::getDbo();
+        $mysql_date = null;
+        $temp_prfx = 'temp_';
+        
+        // Create a new timestamp_column for the new DATE values
+        $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATE NOT NULL AFTER `".$column_timestamp."`";        
+        if(!$rs = $db->execute($sql)) { 
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create a temporary column."));            
+        }              
+        
+        // Loop through all of the timestamps, calculate the correct Date and enter it into the temporary timestamp column
+        $sql = "SELECT * FROM ".$table;
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all records from the table called").' '.$table);        
+        } else {
 
-        // not done yet
+            // Loop through all records and 
+            while(!$rs->EOF) { 
 
+                // Convert the timestamp into the correct MySQL DATE
+                $mysql_date = $this->timestamp_to_mysql_date_offset_aware($rs->fields[$column_timestamp]);
+
+                // Update the temporary column record
+                $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_date."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
+                if(!$temp_rs = $db->execute($sql)) { 
+                    force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create update a record."));            
+                } 
+                                
+                // Clear the MySQL date holder
+                $mysql_date = null;
+                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }        
+                
+            // Remove the orginal timestamp column
+            $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
+            if(!$rs = $db->execute($sql)) { 
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to remove the original column."));            
+            }
+
+            // Rename temporary column (temp_xxx) to the original column name
+            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATE NOT NULL";
+            if(!$rs = $db->execute($sql)) { 
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to rename the temporary column to the original column name."));            
+            }
+
+            return;        
+        
+        }
+    
     }
+    
+    // Convert a timestamp a MySQL DATE whilst compensating for (GMT/BST) || (Winter/Summer) offsets
+    public function timestamp_to_mysql_date_offset_aware($timestamp) {
+        
+        // If there is no timestamp return an empty MySQL DATE
+        if($timestamp == '') {
+            return '0000-00-00';
+        }
+        
+        // If the timestamp already is a proper date in the format xxxx/xx/xx 00:00 then timestamp is correct 'as is' (there is no offset)
+        if(preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} 00:00:00$/', date('Y-m-d H:i:s', $timestamp))) {              
+            return timestamp_mysql_date($timestamp);           
+        }
+        
+        // Calculate backward difference
+        $backward = $timestamp - 86400;         // This removes 24 hours from the timestamp - This ensures that a difference exists for calculations
+        $backward = date('Y-m-d', $backward);   // Convert the timestamp into a string which removes the hours and minutes
+        $backward = strtotime($backward);       // Convert back to a timestamp, but now it is a perfect date xx/xx/xx 00:00 (with no hours or minutes i.e. 00:00)      
+        $backward = $backward - $timestamp;     // This calculates the difference in seconds between the backwards date and the timestamp date
+        $backward = $backward % 86400;          // This removes all full days (86400 seconds) from the difference and leaves the remainder which is the offset
+        
+        // Calculate the forward difference
+        $forward = $timestamp + 86400;          // This adds 24 hours to the timestamp - This ensures that a difference exists for calculations
+        $forward = date('Y-m-d', $forward);     // Convert the timestamp into a string which removes the hours and minutes
+        $forward = strtotime($forward);         // Convert back to a timestamp, but now it is a perfect date xx/xx/xx 00:00 (with no hours or minutes i.e. 00:00)       
+        $forward = $forward - $timestamp;       // This calculates the difference in seconds between the backwards date and the timestamp date
+        $forward = $forward % 86400;            // This removes all full days (86400 seconds) from the difference and leaves the remainder which is the offset
+        
+        // The correct direction will have the smallest difference and therefore will have the correct offset (ignores -ve & +ve)
+        if(abs($backward) < abs($forward)) {            
+            $offset = $backward;
+        } elseif(abs($backward) > abs($forward))  {            
+            $offset = $forward;          
+        } else {            
+            // If there is no difference, the date is already correct (I have already checked for this with preg_match() at the top) 
+            $offset = 0;
+        }
 
+        // Apply the selected time offset too correct the timestamp
+        $corrected_timestamp = $timestamp + $offset;
+     
+        // Return the correct date in MySQL DATE format
+        return timestamp_mysql_date($corrected_timestamp);        
+        
+    }
+    
+    // Convert a timestamp `column` to a MySQL DATETIME `column`
+    public function column_timestamp_to_mysql_datetime($table, $column_primary_key, $column_timestamp) {
+        
+        $db = QFactory::getDbo();
+        $mysql_datetime = null;
+        $temp_prfx = 'temp_';
+        
+        // Create a new datetime_column for the new DATETIME values
+        $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATETIME NOT NULL AFTER `".$column_timestamp."`";        
+        if(!$rs = $db->execute($sql)) { 
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create a temporary column."));            
+        }              
+        
+        // Loop through all of the timestamps, calculate the correct Datetime and enter them into the temporary column
+        $sql = "SELECT * FROM ".$table;
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all records from the table called").' '.$table);        
+        } else {
+
+            // Loop through all records and 
+            while(!$rs->EOF) { 
+
+                // Convert the timestamp into the correct MySQL DATETIME
+                $mysql_datetime = timestamp_mysql_datetime($rs->fields[$column_timestamp]);
+
+                // Update the temporary column record
+                $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_datetime."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
+                if(!$temp_rs = $db->execute($sql)) { 
+                    force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create update a record."));            
+                } 
+                                
+                // Clear the MySQL date holder
+                $mysql_datetime = null;
+                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }        
+                
+            // Remove the orginal timestamp column
+            $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
+            if(!$rs = $db->execute($sql)) { 
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to remove the original column."));            
+            }
+
+            // Rename temporary column (temp_xxx) to the original column name
+            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATETIME NOT NULL";
+            if(!$rs = $db->execute($sql)) { 
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to rename the temporary column to the original column name."));            
+            }
+
+            return;        
+        
+        }
+    
+    }    
+    
+    
 }

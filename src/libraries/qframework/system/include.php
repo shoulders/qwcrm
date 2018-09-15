@@ -760,13 +760,13 @@ function get_qwcrm_database_version_number() {
     
     $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
       
-    if($rs = $db->execute($sql)) {
+    if(!$rs = $db->execute($sql)) {
 
-       return $rs->fields['database_version'];
+       return false;
 
     } else {
         
-        return false;
+        return $rs->fields['database_version'];
         
     }
     
@@ -1189,7 +1189,16 @@ function timestamp_to_date($timestamp) {
 
 function timestamp_mysql_date($timestamp) {       
      
-   return date('Y-m-d', $timestamp);
+   // If there is no timestamp return an empty MySQL DATE
+    if($timestamp == '') {
+        
+        return '0000-00-00';
+        
+    } else {        
+        
+        return date('Y-m-d', $timestamp);
+        
+    }
       
 }
 
@@ -1197,9 +1206,18 @@ function timestamp_mysql_date($timestamp) {
 #   Convert a timestamp into MySQL DATETIME Format  #  // not currently used
 #####################################################
 
-function timestamp_mysql_datetime($timestamp) {       
-     
-   return date('Y-m-d H:i:s', $timestamp);
+function timestamp_mysql_datetime($timestamp) { 
+    
+    // If there is no timestamp retunr an empty MySQL DATETIME
+    if($timestamp == '') {
+        
+        return '0000-00-00 00:00:00';
+        
+    } else {
+        
+        return date('Y-m-d H:i:s', $timestamp);
+        
+    }   
       
 }
 

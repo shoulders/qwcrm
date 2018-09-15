@@ -41,6 +41,9 @@ function insert_qwcrm_config_setting($key, $value) {
     // Get a fresh copy of the current settings as an array        
     $qwcrm_config = get_qwcrm_config_from_file();
     
+    // Load the QConfig as an array
+    //$qwconfig = get_object_vars(new QConfig);     
+    
     // Add the key/value pair into the object
     $qwcrm_config[$key] = $value;
     
@@ -60,11 +63,14 @@ function insert_qwcrm_config_setting($key, $value) {
 /* Get Functions */
 
 ############################################
-#   get current config details from file   #
+#   get current config details from file   #  // This is not actually loading the file
 ############################################
 
 function get_qwcrm_config_from_file() {
 
+    // Refresh the configuration cache before loading
+    wincache_refresh_if_changed('configuration.php');
+    
     // Load the config if it exists
     if(is_file('configuration.php')) {
 
