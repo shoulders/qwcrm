@@ -22,6 +22,7 @@
         <li>reCAPTCHA PHP library | v1.1.3 | BSD-3-Clause | https://github.com/google/recaptcha/</li>        
         <li>PHP Barcode Generator | v0.2.1 | LGPL-3.0 | https://github.com/picqer/php-barcode-generator</li>
         <li>Joomla Session, Authentication and User code (Adapted) | v3.7.0 | GPL v2 (or later) | https://www.joomla.org/ | QFramework session, authentication and user handler</li>
+        <li>Joomla Registry (has remove() function) | v3.8.12 | GPL v2 (or later) | https://www.joomla.org/ | QFramework Registry</li>
         <li>motranslator | v3.3 | GPL-2.0 (or later) | https://github.com/phpmyadmin/motranslator | Translation API for PHP using Gettext MO files</li>
 
         <li>Default Template</li>

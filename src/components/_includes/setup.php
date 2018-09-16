@@ -20,8 +20,6 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'administrator.php');
-
 // Only allow the use of these functions when the /setup/ folder exists.
 if (!is_dir(SETUP_DIR)) {      
     die(_gettext("You cannot use these functions without the setup folder."));        
@@ -81,8 +79,9 @@ class QSetup {
         // prepare database error for the log
         $database_error = prepare_error_data('database_error', $database_error);   
 
-        // prepare SQL statement for the log
-        $sql_query = prepare_error_data('sql_query_for_log', $sql_query);    
+        // prepare SQL statement for the log (I have disabled logging SQL for security reasons)
+        //$sql_query = prepare_error_data('sql_query_for_log', $sql_query);    
+        $sql_query = '';
 
         // Build log entry - perhaps use the apache time stamp below
         $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.$login_user_id.','.QWCRM_VERSION.','.$setup_type.',"'.$record.'","'.$database_error.'","'.$sql_query.'"'."\r\n";
@@ -203,7 +202,7 @@ class QSetup {
         unset($VAR['information_msg']);
         unset($VAR['warning_msg']);   
 
-        update_qwcrm_config($VAR);
+        update_qwcrm_config_settings_file($VAR);
 
     }
 
@@ -431,8 +430,8 @@ class QSetup {
 
     public function execute_sql_file_lines($sql_file) {
 
-        $db = QFactory::getDbo();            
-
+        $db = QFactory::getDbo();
+        
         // Prevent undefined variable errors
         $local_error_flag = null; 
         $sql = null;
@@ -444,8 +443,18 @@ class QSetup {
         // Loop through each line  - file() loads each line in one by one
         foreach ($lines as $line)
         {        
-            // Skip it if the line is empty   /// add if all spaces
+            // Skip if the line is empty
             if ($line == '') {
+                continue;
+            }
+            
+            // Skip if the line just has newline characters
+            if (preg_match("/^[\r|\n]+$/U", $line)) {
+                continue;
+            }
+            
+            // Skip if only spaces with optional newline characters
+            if (preg_match('/^[ ]+[\r\n]$/U', $line)) {
                 continue;
             }
             
@@ -492,7 +501,7 @@ class QSetup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
 
                     // Log message to setup log                
-                    $this->write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);                              
+                    $this->write_record_to_setup_log('upgrade', $record, $db->ErrorNo().$db->ErrorMsg(), $sql);                              
 
                 } else {
 
@@ -996,23 +1005,61 @@ class QSetup {
         
     }
     
-    // Convert a timestamp `column` to a MySQL DATE `column`
-    public function column_timestamp_to_mysql_date($table, $column_primary_key, $column_timestamp) {
+    ##############################################################
+    #   Convert a timestamp `column` to a MySQL DATE `column`    #
+    ##############################################################
+    
+     public function column_timestamp_to_mysql_date($table, $column_primary_key, $column_timestamp) {
         
         $db = QFactory::getDbo();
         $mysql_date = null;
         $temp_prfx = 'temp_';
+        $local_error_flag = null;
         
-        // Create a new timestamp_column for the new DATE values
+        // Create a temp column for the new DATE values
         $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATE NOT NULL AFTER `".$column_timestamp."`";        
         if(!$rs = $db->execute($sql)) { 
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create a temporary column."));            
+                        
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to create a temporary column called").' `'.$temp_prfx.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);            
+           
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
         }              
         
         // Loop through all of the timestamps, calculate the correct Date and enter it into the temporary timestamp column
         $sql = "SELECT * FROM ".$table;
         if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all records from the table called").' '.$table);        
+                        
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select the records from the column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+            
         } else {
 
             // Loop through all records and 
@@ -1024,12 +1071,24 @@ class QSetup {
                 // Update the temporary column record
                 $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_date."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
                 if(!$temp_rs = $db->execute($sql)) { 
-                    force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create update a record."));            
+                                        
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Log Message
+                    $record = _gettext("Failed to update the record").' `'.$column_primary_key.'` '._gettext("in the column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;                    
+                    
                 } 
                                 
-                // Clear the MySQL date holder
-                $mysql_date = null;
-                
                 // Advance the INSERT loop to the next record            
                 $rs->MoveNext();            
 
@@ -1038,22 +1097,253 @@ class QSetup {
             // Remove the orginal timestamp column
             $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
             if(!$rs = $db->execute($sql)) { 
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to remove the original column."));            
+                                
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+                
+                // Log Message
+                $record = _gettext("Failed to remove the original column").' `'.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                
+                // Log message to setup log
+                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                
+                // The process has failed so stop any further proccesing
+                goto process_end;
+                
             }
 
             // Rename temporary column (temp_xxx) to the original column name
             $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATE NOT NULL";
             if(!$rs = $db->execute($sql)) { 
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to rename the temporary column to the original column name."));            
-            }
+                                
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+                
+                // Log Message
+                $record = _gettext("Failed to rename the temporary column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("to").' `'.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
 
-            return;        
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                
+                // Log message to setup log
+                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                
+                // The process has failed so stop any further proccesing
+                goto process_end;
+                
+            }            
         
         }
+        
+        process_end:
+        
+        // The conversion of the column, success and failed messages. 
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to covert the column").' `'.$column_timestamp.'` '._gettext("from `timestamp` to MySQL `DATE`").' '._gettext("in the table").' `'.$table.'`. '._gettext("Check the previous error for the cause.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully converted the column").' `'.$column_timestamp.'` '._gettext("from `timestamp` to MySQL `DATE`").' '._gettext("in the table").' `'.$table.'`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }        
     
     }
     
-    // Convert a timestamp a MySQL DATE whilst compensating for (GMT/BST) || (Winter/Summer) offsets
+    ##############################################################
+    #  Convert a timestamp `column` to a MySQL DATETIME `column` #
+    ##############################################################
+    
+    public function column_timestamp_to_mysql_datetime($table, $column_primary_key, $column_timestamp) {
+        
+        $db = QFactory::getDbo();
+        $mysql_datetime = null;
+        $temp_prfx = 'temp_';
+        $local_error_flag = null;
+        
+        // Create a new temp column for the new DATETIME values
+        $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATETIME NOT NULL AFTER `".$column_timestamp."`";        
+        if(!$rs = $db->execute($sql)) { 
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to create a temporary column called").' `'.$temp_prfx.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+           
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        }              
+        
+        // Loop through all of the timestamps, calculate the correct Datetime and enter them into the temporary column
+        $sql = "SELECT * FROM ".$table;
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `'.$table.'`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records and 
+            while(!$rs->EOF) { 
+
+                // Convert the timestamp into the correct MySQL DATETIME
+                $mysql_datetime = timestamp_mysql_datetime($rs->fields[$column_timestamp]);
+
+                // Update the temporary column record
+                $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_datetime."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Log Message
+                    $record = _gettext("Failed to update the record").' `'.$column_primary_key.'` '._gettext("in the column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }        
+                
+            // Remove the orginal timestamp column
+            $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
+            if(!$rs = $db->execute($sql)) {
+                
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+                
+                // Log Message
+                $record = _gettext("Failed to remove the original column").' `'.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                
+                // Log message to setup log
+                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                
+                // The process has failed so stop any further proccesing
+                goto process_end;   
+                
+            }
+
+            // Rename temporary column (temp_xxx) to the original column name
+            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATETIME NOT NULL";
+            if(!$rs = $db->execute($sql)) {
+                
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+                
+                // Log Message
+                $record = _gettext("Failed to rename the temporary column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("to").' `'.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                
+                // Log message to setup log
+                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                
+                // The process has failed so stop any further proccesing
+                goto process_end;
+                
+            }
+
+        }
+        
+        process_end:
+        
+        // The conversion of the column, success and failed messages. 
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to covert the column").' `'.$column_timestamp.'` '._gettext("from `timestamp` to MySQL `DATETIME`").' '._gettext("in the table").' `'.$table.'`. '._gettext("Check the previous error for the cause.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully converted the column").' `'.$column_timestamp.'` '._gettext("from `timestamp` to MySQL `DATETIME`").' '._gettext("in the table").' `'.$table.'`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    } 
+    
+    ##################################################################################################
+    #  Convert a timestamp a MySQL DATE whilst compensating for (GMT/BST) || (Winter/Summer) offsets #
+    ##################################################################################################
+    
     public function timestamp_to_mysql_date_offset_aware($timestamp) {
         
         // If there is no timestamp return an empty MySQL DATE
@@ -1096,64 +1386,7 @@ class QSetup {
         // Return the correct date in MySQL DATE format
         return timestamp_mysql_date($corrected_timestamp);        
         
-    }
-    
-    // Convert a timestamp `column` to a MySQL DATETIME `column`
-    public function column_timestamp_to_mysql_datetime($table, $column_primary_key, $column_timestamp) {
-        
-        $db = QFactory::getDbo();
-        $mysql_datetime = null;
-        $temp_prfx = 'temp_';
-        
-        // Create a new datetime_column for the new DATETIME values
-        $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATETIME NOT NULL AFTER `".$column_timestamp."`";        
-        if(!$rs = $db->execute($sql)) { 
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create a temporary column."));            
-        }              
-        
-        // Loop through all of the timestamps, calculate the correct Datetime and enter them into the temporary column
-        $sql = "SELECT * FROM ".$table;
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all records from the table called").' '.$table);        
-        } else {
-
-            // Loop through all records and 
-            while(!$rs->EOF) { 
-
-                // Convert the timestamp into the correct MySQL DATETIME
-                $mysql_datetime = timestamp_mysql_datetime($rs->fields[$column_timestamp]);
-
-                // Update the temporary column record
-                $sql = "UPDATE `".$table."` SET `".$temp_prfx.$column_timestamp."` = '".$mysql_datetime."' WHERE `".$table."`.`".$column_primary_key."` = '".$rs->fields[$column_primary_key]."';";
-                if(!$temp_rs = $db->execute($sql)) { 
-                    force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to create update a record."));            
-                } 
-                                
-                // Clear the MySQL date holder
-                $mysql_datetime = null;
-                
-                // Advance the INSERT loop to the next record            
-                $rs->MoveNext();            
-
-            }        
-                
-            // Remove the orginal timestamp column
-            $sql = "ALTER TABLE `".$table."` DROP `".$column_timestamp."`";
-            if(!$rs = $db->execute($sql)) { 
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to remove the original column."));            
-            }
-
-            // Rename temporary column (temp_xxx) to the original column name
-            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATETIME NOT NULL";
-            if(!$rs = $db->execute($sql)) { 
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to rename the temporary column to the original column name."));            
-            }
-
-            return;        
-        
-        }
-    
     }    
     
-    
+
 }

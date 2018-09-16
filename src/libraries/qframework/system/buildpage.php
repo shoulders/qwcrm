@@ -81,7 +81,7 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
     
     // Will error out if there are any issues with content replacement
     if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
-        echo __gettext("Backtrack limit was exhausted!");
+        echo _gettext("Backtrack limit was exhausted!");
     }
 
     // Convert to SEF

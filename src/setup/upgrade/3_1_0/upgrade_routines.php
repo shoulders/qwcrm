@@ -24,7 +24,7 @@ class Upgrade3_1_0 extends QSetup {
         // Perform the upgrade
         $this->pre_database();
         $this->process_database();
-        $this->post_database();
+        //$this->post_database();
                         
     }    
     
@@ -52,8 +52,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
         
         // Config File
-        insert_qwcrm_config_setting('sef', '0');
-        insert_qwcrm_config_setting('error_handler_whoops', '1');
+        //insert_qwcrm_config_setting('sef', '0');
+        //insert_qwcrm_config_setting('error_handler_whoops', '1');
         update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
         
         // Convert timestamps to MySQL DATE

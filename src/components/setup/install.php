@@ -48,7 +48,7 @@ if($VAR['stage'] == 'database_connection' || !isset($VAR['stage'])) {
             
             $smarty->assign('information_msg', _gettext("Database connection successful."));
             $qsetup->create_config_file_from_default(SETUP_DIR.'install/install_configuration.php');
-            update_qwcrm_config($VAR['qwcrm_config']);           
+            update_qwcrm_config_settings_file($VAR['qwcrm_config']);           
             $qsetup->write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = 'config_settings';
         
@@ -92,7 +92,7 @@ if($VAR['stage'] == 'config_settings') {
         $VAR['qwcrm_config']['session_name']        = JUserHelper::genRandomPassword(16);
         $VAR['qwcrm_config']['secret_key']          = JUserHelper::genRandomPassword(32);
         
-        update_qwcrm_config($VAR['qwcrm_config']);
+        update_qwcrm_config_settings_file($VAR['qwcrm_config']);
         $qsetup->write_record_to_setup_log('install', _gettext("Config settings have been added to the config file."));
         $VAR['stage'] = 'database_install';
     

@@ -46,7 +46,7 @@ if($VAR['stage'] == 'database_connection_qwcrm' || !isset($VAR['stage'])) {
             
             $smarty->assign('information_msg', _gettext("QWcrm Database connection successful."));
             $MigrateMyitcrm->create_config_file_from_default(SETUP_DIR.'migrate/myitcrm/migrate_configuration.php');
-            update_qwcrm_config($VAR['qwcrm_config']);  
+            update_qwcrm_config_settings_file($VAR['qwcrm_config']);  
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = 'database_connection_myitcrm';
             
@@ -89,7 +89,7 @@ if($VAR['stage'] == 'database_connection_myitcrm') {
         if($MigrateMyitcrm->check_myitcrm_database_connection($VAR['qwcrm_config']['myitcrm_prefix'])) {
             
             // Record details into the config file and display success message and load the next page       
-            update_qwcrm_config($VAR['qwcrm_config']);           
+            update_qwcrm_config_settings_file($VAR['qwcrm_config']);           
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the MyITCRM database with the supplied prefix and added it to the config file."));  
             $smarty->assign('information_msg', _gettext("MyITCRM database connection successful."));
             $VAR['stage'] = 'config_settings';
@@ -130,7 +130,7 @@ if($VAR['stage'] == 'config_settings') {
         $VAR['qwcrm_config']['session_name']        = JUserHelper::genRandomPassword(16);
         $VAR['qwcrm_config']['secret_key']          = JUserHelper::genRandomPassword(32);
         
-        update_qwcrm_config($VAR['qwcrm_config']);
+        update_qwcrm_config_settings_file($VAR['qwcrm_config']);
         $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Config settings have been added to the config file."));
         $VAR['stage'] = 'database_install_qwcrm';
     

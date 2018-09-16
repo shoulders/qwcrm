@@ -545,7 +545,7 @@ class QFactory {
         */
         
         $db = ADONewConnection('mysqli');
-        //$db->debug = true;       
+        //$db->debug = true;  // This delvers a lot of information to the screen about failed SQL queries
 
         // Get current PHP error reporting level (not needed with this version of ADOdb)
         //$reporting_level = error_reporting();

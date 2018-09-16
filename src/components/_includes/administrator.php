@@ -38,14 +38,14 @@ defined('_QWEXEC') or die;
 
 function insert_qwcrm_config_setting($key, $value) {
     
+    // Add the setting into the Registry
+    QFactory::getConfig()->set($key, $value);
+    
     // Get a fresh copy of the current settings as an array        
-    $qwcrm_config = get_qwcrm_config_from_file();
+    $qwcrm_config = get_qwcrm_config_settings();  
     
-    // Load the QConfig as an array
-    //$qwconfig = get_object_vars(new QConfig);     
-    
-    // Add the key/value pair into the object
-    $qwcrm_config[$key] = $value;
+    // Add the key/value pair into the array
+    //$qwcrm_config[$key] = $value;
     
     // Prepare the config file content
     $qwcrm_config = build_config_file_content($qwcrm_config);
@@ -62,29 +62,31 @@ function insert_qwcrm_config_setting($key, $value) {
 
 /* Get Functions */
 
-############################################
-#   get current config details from file   #  // This is not actually loading the file
-############################################
+################################################
+#   get current config settings as and array   #  // This is not actually loading the file, if config settings exist configuration.php is already attached
+################################################
 
-function get_qwcrm_config_from_file() {
+function get_qwcrm_config_settings() {
 
-    // Refresh the configuration cache before loading
-    wincache_refresh_if_changed('configuration.php');
-    
-    // Load the config if it exists
+    // Verify the configuration.php file exists
     if(is_file('configuration.php')) {
 
-        // Load the configuration settings
+        // Load the configuration settings file (if not already)
         require_once('configuration.php');     
+        
+        // Use the config settings in the live Registry 
+        if($registry_object = QFactory::getConfig()->toObject()) {
+            return get_object_vars($registry_object);
+        }
     
-        // Return the config values if defined
+        // Return the config settings directly from configuration.php
         if(class_exists('QConfig')) {            
             return get_object_vars(new QConfig);
         } 
         
     }
         
-    // if config does not exist (i.e. install)
+    // If config does not exist (i.e. install)
     return array();
     
 }
@@ -110,16 +112,19 @@ function get_acl_permissions() {
 /* Update Functions */
 
 ############################################
-#   Uodate a single QWcrm setting file     #
+#   Update a single QWcrm setting file     #
 ############################################
 
 function update_qwcrm_config_setting($key, $value) {
     
+    // Update a setting into the Registry
+    QFactory::getConfig()->set($key, $value);
+    
     // Get a fresh copy of the current settings as an array        
-    $qwcrm_config = get_qwcrm_config_from_file();
+    $qwcrm_config = get_qwcrm_config_settings();
     
     // Add the key/value pair into the object
-    $qwcrm_config[$key] = $value;
+    //$qwcrm_config[$key] = $value;
     
     // Prepare the config file content
     $qwcrm_config = build_config_file_content($qwcrm_config);
@@ -224,10 +229,10 @@ function update_acl($permissions) {
 #   Update the QWcrm settings file         #
 ############################################
 
-function update_qwcrm_config($new_config) {
+function update_qwcrm_config_settings_file($new_config) {
     
     // Get a fresh copy of the current settings as an array        
-    $current_config = get_qwcrm_config_from_file();
+    $current_config = get_qwcrm_config_settings();
     
     // Perform miscellaneous options based on configuration settings/changes.
     $new_config = process_config_data($new_config);
@@ -261,11 +266,14 @@ function update_qwcrm_config($new_config) {
 
 function delete_qwcrm_config_setting($key) {
     
-    // Get a fresh copy of the current settings as an array        
-    $qwcrm_config = get_qwcrm_config_from_file();
+    // Remove the setting from the Registry
+    QFactory::getConfig()->remove($key);
     
-    // Remove the key from the object
-    unset($qwcrm_config[$key]);
+    // Get a fresh copy of the current settings as an array        
+    $qwcrm_config = get_qwcrm_config_settings();
+    
+    // Remove the key from the array
+    //unset($qwcrm_config[$key]);
     
     // Prepare the config file content
     $qwcrm_config = build_config_file_content($qwcrm_config);
@@ -442,7 +450,7 @@ function write_config_file($content)
 function process_config_data($new_config) {    
     
     // Get a fresh copy of the current settings as an array        
-    $current_config = get_qwcrm_config_from_file();
+    $current_config = get_qwcrm_config_settings();
     
     // Purge the database session table if we are changing to the database handler.
     if(!defined('QWCRM_SETUP')) {

@@ -39,9 +39,10 @@ function get_company_details($item = null) {
     if (!$db->isConnected()) {
         die('
                 <div style="color: red;">'.
-                _gettext("Something went wrong with your QWcrm database connection and it is not connected.").'<br>'.
-                _gettext("Check to see if your Prefix is correct, if not you might have a configuration.php file that should not be present or is corrupt.").'<br>'.
-                _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong>'.
+                _gettext("Something went wrong with your QWcrm database connection and it is not connected.").'<br><br>'.
+                _gettext("Check to see if your Prefix is correct, if not, you might have a").' <strong>configuration.php</strong> '._gettext("file that should not be present or is corrupt.").'<br><br>'.
+                _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong><br><br>'.
+                '<strong>'._gettext("Database Error Message").':</strong> '.$db->ErrorMsg().
                 '</div>'
             );
     }
@@ -56,9 +57,10 @@ function get_company_details($item = null) {
             // This is first database Query that will fail if there are issues with the database connection          
             die('
                     <div style="color: red;">'.
-                    _gettext("Something went wrong executing an SQL query.").'<br>'.
-                    _gettext("Check to see if your Prefix is correct, if not you might have a configuration.php file that should not be present or is corrupt.").'<br>'.
-                    _gettext("Error occured at").' <strong>'.__FUNCTION__.'()</strong> '._gettext("when trying to get the variable").' <strong>date_format</strong>'.'<br>'.
+                    _gettext("Something went wrong executing an SQL query.").'<br><br>'.
+                    _gettext("Check to see if your Prefix is correct, if not, you might have a").' <strong>configuration.php</strong> '._gettext("file that should not be present or is corrupt.").'<br><br>'.
+                    _gettext("Error occured at").' <strong>function '.__FUNCTION__.'()</strong> '._gettext("when trying to get the variable").' <strong>date_format</strong>'.'<br><br>'.
+                    '<strong>'._gettext("Database Error Message").':</strong> '.$db->ErrorMsg().
                     '</div>'
                );
             

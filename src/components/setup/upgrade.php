@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'administrator.php');
 require(INCLUDES_DIR.'setup.php');
 
 // Prevent direct access to this page
@@ -36,8 +37,6 @@ $qsetup->write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has begun.
 
 
 
-
-
 ##################################################
 
 // Temp for testing
@@ -48,16 +47,16 @@ $VAR['submit'] = 'database_upgrade_qwcrm';
 
 
 // Check Compatability tests - add a refresh button and a next when all tests pass
-if($VAR['stage'] == 'qwcrm_compatibility' || !isset($VAR['stage'])) {
+if($VAR['stage'] == 'compatibility_tests' || !isset($VAR['stage'])) {
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'qwcrm_compatibility') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'compatibility_tests') {
         
         // Test the supplied database connection details and store details if successful
         if($qsetup->verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
             
             $smarty->assign('information_msg', _gettext("Database connection successful."));
             $qsetup->create_config_file_from_default(SETUP_DIR.'upgrade/upgrade-configuration.php');
-            update_qwcrm_config($VAR['qwcrm_config']);           
+            update_qwcrm_config_settings_file($VAR['qwcrm_config']);           
             $qsetup->write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = 'config_settings';
         

@@ -38,7 +38,7 @@ if(isset($VAR['clear_smarty_cache'])) {
 // Update Config details
 if(isset($VAR['submit'])) {   
     
-    if(update_qwcrm_config($VAR['qwcrm_config'])) {
+    if(update_qwcrm_config_settings_file($VAR['qwcrm_config'])) {
         
         // Compensate for SEF change  
         $url_sef = $VAR['qwcrm_config']['sef'] ? 'sef' : 'nonsef';
@@ -73,7 +73,7 @@ if(isset($VAR['submit'])) {
 } else {
 
     // No data submitted so just load the current config settings
-    $smarty->assign('qwcrm_config', get_qwcrm_config_from_file() );
+    $smarty->assign('qwcrm_config', get_qwcrm_config_settings() );
 
 }
 

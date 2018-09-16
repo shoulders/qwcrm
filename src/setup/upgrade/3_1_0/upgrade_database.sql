@@ -17,7 +17,6 @@ DROP TABLE `#__payment_purchase_methods`;
 DROP TABLE `#__refund_types`;
 DROP TABLE `#__supplier_types`;
 
-
 --
 -- Rename Tables
 --
@@ -40,8 +39,11 @@ RENAME TABLE `#__payment_system_methods` TO `#__payment_accepted_methods`;
 RENAME TABLE `#__payment_manual_methods` TO `#__payment_purchase_methods`;
 RENAME TABLE `#__user_acl` TO `#__user_acl_page`;
 
-
 -- --------------------------------------------------------
+
+--
+-- Create Tables
+--
 
 --
 -- Table structure for table `#__client_types`
@@ -158,7 +160,6 @@ INSERT INTO `#__payment_accepted_methods` (`id`, `accepted_method_id`, `display_
 ALTER TABLE `#__payment_accepted_methods`
   ADD PRIMARY KEY (`id`);
 
-
 -- --------------------------------------------------------
 
 --
@@ -198,7 +199,6 @@ INSERT INTO `#__payment_purchase_methods` (`id`, `purchase_method_id`, `display_
 ALTER TABLE `#__payment_purchase_methods`
   ADD PRIMARY KEY (`id`);
 
-
 -- --------------------------------------------------------
 
 --
@@ -231,8 +231,6 @@ INSERT INTO `#__refund_types` (`id`, `refund_type_id`, `display_name`) VALUES
 --
 ALTER TABLE `#__refund_types`
   ADD PRIMARY KEY (`refund_type_id`);
-
-
 
 -- --------------------------------------------------------
 
@@ -281,7 +279,6 @@ INSERT INTO `#__supplier_types` (`id`, `supplier_type_id`, `display_name`) VALUE
 ALTER TABLE `#__supplier_types`
   ADD PRIMARY KEY (`id`);
 
-
 -- --------------------------------------------------------
 
 --
@@ -312,8 +309,6 @@ INSERT INTO `#__user_locations` (`id`, `user_location_id`, `display_name`) VALUE
 --
 ALTER TABLE `#__user_locations`
   ADD PRIMARY KEY (`id`);
-
-
 
 -- --------------------------------------------------------
 
@@ -349,8 +344,6 @@ INSERT INTO `#__payment_credit_cards` (`id`, `card_key`, `display_name`, `active
 ALTER TABLE `#__payment_credit_cards`
   ADD PRIMARY KEY (`id`);
 
-
-
 -- --------------------------------------------------------
 
 --
@@ -383,7 +376,6 @@ INSERT INTO `#__date_formats` (`id`, `date_format_key`, `display_name`) VALUES
 --
 ALTER TABLE `#__date_formats`
   ADD PRIMARY KEY (`id`);
-
 
 -- --------------------------------------------------------
 
@@ -419,13 +411,7 @@ INSERT INTO `qw_giftcert_statuses` (`id`, `status_key`, `display_name`) VALUES
 ALTER TABLE `qw_giftcert_statuses`
   ADD PRIMARY KEY (`id`);
 
-
-
 -- --------------------------------------------------------
--- --------------------------------------------------------
-
-
-
 
 --
 -- Rename 'notes' to 'note'
@@ -441,6 +427,7 @@ ALTER TABLE `#__user_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLL
 --
 -- Rename 'display_name' to 'company_name'
 --
+
 ALTER TABLE `#__company_record` CHANGE `display_name` `company_name` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__client_records` CHANGE `display_name` `company_name` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `display_name` `company_name` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
@@ -458,8 +445,6 @@ ALTER TABLE `#__payment_records` CHANGE `customer_id` `client_id` VARCHAR(10) CH
 ALTER TABLE `#__schedule_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__user_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 ALTER TABLE `#__workorder_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-
-
 
 --
 -- Misc Column Changes
@@ -482,7 +467,6 @@ ALTER TABLE `#__invoice_parts` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL;
 ALTER TABLE `#__giftcert_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date_redeemed`;
 ALTER TABLE `#__invoice_records` DROP `paid_date`;
 ALTER TABLE `#__user_records` DROP `display_name`;
-
 
 --
 -- ACL changes
