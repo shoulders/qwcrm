@@ -293,6 +293,9 @@ if($VAR['stage'] == 'delete_setup_folder') {
     // Load the page
     } else {
     
+        // Log message to setup log - only when starting the process - this start every page loads
+        $qsetup->write_record_to_setup_log('upgrade', _gettext("QWcrm installation has finished."));
+        
         // Clean up after setup process 
         $qsetup->setup_finished();
         

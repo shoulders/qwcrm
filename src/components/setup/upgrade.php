@@ -32,10 +32,6 @@ if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_pag
     $qsetup->delete_setup_folder();
 }
 
-// Log message to setup log - only when starting the process - this start every page loads
-$qsetup->write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has begun."));
-
-
 
 ##################################################
 
@@ -49,24 +45,15 @@ $VAR['submit'] = 'database_upgrade_qwcrm';
 // Check Compatability tests - add a refresh button and a next when all tests pass
 if($VAR['stage'] == 'compatibility_tests' || !isset($VAR['stage'])) {
     
+    
+    
     if(isset($VAR['submit']) && $VAR['submit'] == 'compatibility_tests') {
         
         // Test the supplied database connection details and store details if successful
         if($qsetup->verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
-            
-            $smarty->assign('information_msg', _gettext("Database connection successful."));
-            $qsetup->create_config_file_from_default(SETUP_DIR.'upgrade/upgrade-configuration.php');
-            update_qwcrm_config_settings_file($VAR['qwcrm_config']);           
-            $qsetup->write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
-            $VAR['stage'] = 'config_settings';
-        
-        // Load the page - Error message done by verify_database_connection_details();
+                           
         } else {
-            
-            // reload the database connection page with the entered values and error message
-            $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);                       
-            $qsetup->write_record_to_setup_log('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
-            $smarty->assign('stage', 'database_connection');             
+                                   
             
         }
         
@@ -82,8 +69,11 @@ if($VAR['stage'] == 'compatibility_tests' || !isset($VAR['stage'])) {
                                 'db_pass' => null
                             );
         
-        $smarty->assign('qwcrm_config', $qwcrm_config);
-        $smarty->assign('stage', 'database_connection');  
+        // Log message to setup log
+        $qsetup->write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has begun"));
+
+        // Load the page            
+        $smarty->assign('stage', 'compatibility_tests'); 
         
     }
     
@@ -142,6 +132,9 @@ if($VAR['stage'] == 'delete_setup_folder') {
    
     // Load the page
     } else {
+        
+        // Log message to setup log - only when starting the process - this start every page loads
+        $qsetup->write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has finished."));
     
         // Clean up after setup process 
         $qsetup->setup_finished();

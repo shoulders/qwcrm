@@ -77,7 +77,7 @@ class QSetup {
         }
 
         // prepare database error for the log
-        $database_error = prepare_error_data('database_error', $database_error);   
+        $database_error = prepare_error_data('error_database', $database_error);   
 
         // prepare SQL statement for the log (I have disabled logging SQL for security reasons)
         //$sql_query = prepare_error_data('sql_query_for_log', $sql_query);    
@@ -257,8 +257,8 @@ class QSetup {
             //self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
             //self::$executed_sql_results .= '<div>&nbsp;</div>';
 
-            // Log message to setup log        
-            $this->write_record_to_setup_log('correction', $record);
+            // Log message to setup log (if enabled this can cause setup to take much longer to run)   
+            //$this->write_record_to_setup_log('correction', $record);
 
             return true;
 
@@ -326,7 +326,7 @@ class QSetup {
     }
 
     ############################################
-    #   Execute SQL File (preg_match method)   # // this imports a phpMyAdmin .sql exported file
+    #   Execute SQL File (preg_match method)   # // this imports a phpMyAdmin .sql exported file (loads all the SQL file into memory)
     ############################################
 
     // https://stackoverflow.com/questions/19751354/how-to-import-sql-file-in-mysql-database-using-php
@@ -358,7 +358,7 @@ class QSetup {
             preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
 
            // Perform the query
-            if(!$rs = $db->Execute($sql)) {
+            if(!$db->Execute($sql)) {
 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -423,7 +423,7 @@ class QSetup {
     }
 
     ############################################
-    #   Execute SQL File (line by line)        #  //  file() loads line by line, good for large imports - not currently used
+    #   Execute SQL File (line by line)        #  //  file() loads line by line, good for large imports (loads all the SQL file into memory)
     ############################################
 
     // https://stackoverflow.com/questions/19751354/how-to-import-sql-file-in-mysql-database-using-php
@@ -476,18 +476,72 @@ class QSetup {
             // If it has a semicolon at the end, it's the end of the query
             if (substr(trim($line), -1, 1) == ';')
             {            
-                // Get rule name from complete SQL query
-                if(preg_match('/(SET|DROP|UPDATE|SELECT)/U', $sql)) {
-                    preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);                    
+                
+                /* Build a Query Name from the SQL query  */
+                
+                // Generic- Gives short and neat Rule Names
+                if(preg_match('/^(DROP|RENAME|CREATE|INSERT|ALTER|UPDATE|DELETE)/U', $sql)) {
+                    //$query_name = rtrim($sql, ';');  //'Unrecognised SQL Command' 'Unnamed SQL Query'
+                    $query_name = preg_match('/^.*`'.PRFX.'.*`/U', $sql, $matches) ? $matches[0] : _gettext("Unrecognised SQL Command");                    
+                    goto eof_query_name_building;
                 }
                 
-                if(!isset($query_name['0'])) {
-                    $query_name['0'] = 'aaaaaaaaaa';   
+                /* Not using separate rule matching at the minute, I will delete this if i dont use it.
+                
+                // DROP
+                if(preg_match('/^DROP/U', $sql)) {
+                    $query_name = $sql;
+                    goto eof_query_name_building;
                 }
-                            
+                
+                // RENAME
+                if(preg_match('/^RENAME/U', $sql)) {
+                    $query_name = $sql;
+                    goto eof_query_name_building;
+                }
+                
+                // CREATE
+                if(preg_match('/^CREATE/U', $sql)) {
+                    $query_name = $sql;
+                    goto eof_query_name_building;
+                }
+                
+                // INSERT
+                if(preg_match('/^INSERT/U', $sql)) {
+                    $query_name = $sql;
+                    goto eof_query_name_building;
+                }
+                
+                // ALTER
+                if(preg_match('/^ALTER/U', $sql)) {
+                    $query_name = $sql;
+                    goto eof_query_name_building;
+                }
+                
+                // UPDATE
+                if(preg_match('/^UPDATE/U', $sql)) {
+                    $query_name = $sql;
+                    goto eof_query_name_building;
+                }
+                
+                // DELETE
+                if(preg_match('/^DELETE/U', $sql)) {
+                    $query_name = $sql;
+                    goto eof_query_name_building;
+                }
+                
+                // Default Rule Name
+                if(!isset($query_name)) {
+                    $query_name = _gettext("Unrecognised SQL Command");   
+                }*/
+                
+                eof_query_name_building:
+                    
+                /* EOF Rule Name Building */                
+                 
                 // Perform the query
-                if(!$rs = $db->Execute($sql)) {
-
+                if(!$db->Execute($sql)) {
+                    
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
 
@@ -495,18 +549,18 @@ class QSetup {
                     $local_error_flag = true;
 
                     // Log message
-                    $record = _gettext("Error performing SQL query").' : '. $query_name['0'];
-
+                    $record = _gettext("Error performing SQL query").' : '. $query_name;
+                    
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
 
                     // Log message to setup log                
-                    $this->write_record_to_setup_log('upgrade', $record, $db->ErrorNo().$db->ErrorMsg(), $sql);                              
+                    $this->write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);
 
                 } else {
 
                     // Log message
-                    $record = _gettext("Performed SQL query successfully").' : '. $query_name['0'];
+                    $record = _gettext("Performed SQL query successfully").' : '. $query_name;
 
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -1009,12 +1063,18 @@ class QSetup {
     #   Convert a timestamp `column` to a MySQL DATE `column`    #
     ##############################################################
     
-     public function column_timestamp_to_mysql_date($table, $column_primary_key, $column_timestamp) {
+     public function column_timestamp_to_mysql_date($table, $column_timestamp, $column_primary_key) {
         
         $db = QFactory::getDbo();
         $mysql_date = null;
         $temp_prfx = 'temp_';
         $local_error_flag = null;
+        $column_comment = null;
+        
+        // Get Column Comment if present
+        if ($column_comment = $this->column_get_comment($table, $column_timestamp)) {
+            $column_comment = "COMMENT '$column_comment' ";
+        }
         
         // Create a temp column for the new DATE values
         $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATE NOT NULL AFTER `".$column_timestamp."`";        
@@ -1116,7 +1176,7 @@ class QSetup {
             }
 
             // Rename temporary column (temp_xxx) to the original column name
-            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATE NOT NULL";
+            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATE NOT NULL ".$column_comment;
             if(!$rs = $db->execute($sql)) { 
                                 
                 // Set the setup global error flag
@@ -1177,12 +1237,18 @@ class QSetup {
     #  Convert a timestamp `column` to a MySQL DATETIME `column` #
     ##############################################################
     
-    public function column_timestamp_to_mysql_datetime($table, $column_primary_key, $column_timestamp) {
+    public function column_timestamp_to_mysql_datetime($table, $column_timestamp, $column_primary_key) {
         
         $db = QFactory::getDbo();
         $mysql_datetime = null;
         $temp_prfx = 'temp_';
         $local_error_flag = null;
+        $column_comment = null;
+        
+        // Get Column Comment if present
+        if ($column_comment = $this->column_get_comment($table, $column_timestamp)) {
+            $column_comment = "COMMENT '$column_comment' ";
+        }
         
         // Create a new temp column for the new DATETIME values
         $sql = "ALTER TABLE `".$table."` ADD `".$temp_prfx.$column_timestamp."` DATETIME NOT NULL AFTER `".$column_timestamp."`";        
@@ -1283,7 +1349,7 @@ class QSetup {
             }
 
             // Rename temporary column (temp_xxx) to the original column name
-            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATETIME NOT NULL";
+            $sql = "ALTER TABLE `".$table."` CHANGE `temp_".$column_timestamp."` `".$column_timestamp."` DATETIME NOT NULL ".$column_comment;
             if(!$rs = $db->execute($sql)) {
                 
                 // Set the setup global error flag
@@ -1347,7 +1413,7 @@ class QSetup {
     public function timestamp_to_mysql_date_offset_aware($timestamp) {
         
         // If there is no timestamp return an empty MySQL DATE
-        if($timestamp == '') {
+        if(!$timestamp) {
             return '0000-00-00';
         }
         
@@ -1387,6 +1453,31 @@ class QSetup {
         return timestamp_mysql_date($corrected_timestamp);        
         
     }    
+        
+    ############################
+    # Get MySQL Column Comment #
+    ############################
+    
+    public function column_get_comment($table, $column) {
+        
+        $db = QFactory::getDbo();
+    
+        $sql = "SELECT column_comment
+                FROM information_schema.columns
+                WHERE table_name = '$table'
+                AND column_name LIKE '$column'";
+        
+        if(!$rs = $db->execute($sql)) { 
+            
+            return false;      
+            
+        } else {
+            
+            return $rs->fields['column_comment'];
+            
+        }
+        
+    }
     
 
 }

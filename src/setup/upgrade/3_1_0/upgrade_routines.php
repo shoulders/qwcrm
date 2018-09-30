@@ -24,7 +24,7 @@ class Upgrade3_1_0 extends QSetup {
         // Perform the upgrade
         $this->pre_database();
         $this->process_database();
-        //$this->post_database();
+        $this->post_database();
                         
     }    
     
@@ -57,40 +57,43 @@ class Upgrade3_1_0 extends QSetup {
         update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
         
         // Convert timestamps to MySQL DATE
-        $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'company_name', 'year_start');
-        $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'company_name', 'year_end');
-        $this->column_timestamp_to_mysql_date(PRFX.'expense_records', 'expense_id', 'date');
-        $this->column_timestamp_to_mysql_date(PRFX.'giftcert_records', 'giftcert_id', 'date_expires');
-        $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'invoice_id', 'date');
-        $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'invoice_id', 'due_date');
-        $this->column_timestamp_to_mysql_date(PRFX.'payment_records', 'payment_id', 'date');
-        $this->column_timestamp_to_mysql_date(PRFX.'refund_records', 'refund_id', 'date');
+        $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_start', 'company_name');
+        $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_end', 'company_name');
+        $this->column_timestamp_to_mysql_date(PRFX.'expense_records', 'date', 'expense_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'giftcert_records', 'date_expires', 'giftcert_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'date', 'invoice_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'due_date', 'invoice_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'payment_records', 'date', 'payment_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'refund_records', 'date', 'refund_id');
         
         // Convert timestamps to MySQL DATETIME
-        $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'client_note_id', 'date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'client_id', 'create_date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'client_id', 'last_active');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'giftcert_records', 'giftcert_id', 'date_created');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'giftcert_records', 'giftcert_id', 'date_redeemed');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'invoice_id', 'open_date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'invoice_id', 'close_date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'invoice_id', 'last_active');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'schedule_id', 'start_time');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'schedule_id', 'end_time');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'user_id', 'last_active');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'user_id', 'register_date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'user_id', 'last_reset_time');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_history', 'history_id', 'date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_notes', 'workorder_note_id', 'date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'workorder_id', 'open_date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'workorder_id', 'close_date');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'workorder_id', 'last_active');
-               
-        // Update database version number (Done here beacause all database changes have been done)
+        $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'date', 'client_note_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'create_date', 'client_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'last_active', 'client_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'giftcert_records', 'date_created', 'giftcert_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'giftcert_records', 'date_redeemed', 'giftcert_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'open_date', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'close_date', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'start_time', 'schedule_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'end_time', 'schedule_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_active', 'user_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'register_date', 'user_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_reset_time', 'user_id');        
+        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_history', 'date', 'history_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_notes', 'date', 'workorder_note_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'open_date', 'workorder_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'close_date', 'workorder_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
+        
+        // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
         
+        // Log message to setup log
+        $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;
+        $this->write_record_to_setup_log('upgrade', $record);
+        
     }
-    
- 
+     
     
 }

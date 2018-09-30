@@ -32,10 +32,6 @@ $smarty->assign('stage', $VAR['stage']);
 // Create a Setup Object
 $MigrateMyitcrm = new MigrateMyitcrm($VAR);
 
-// Log message to setup log - only when starting the process
-$MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("QWcrm migration from MyITCRM has begun."));
-
-
 // Database Connection (QWcrm)
 if($VAR['stage'] == 'database_connection_qwcrm' || !isset($VAR['stage'])) {    
     
@@ -44,7 +40,7 @@ if($VAR['stage'] == 'database_connection_qwcrm' || !isset($VAR['stage'])) {
         // test the supplied database connection details
         if($MigrateMyitcrm->verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
             
-            $smarty->assign('information_msg', _gettext("QWcrm Database connection successful."));
+            $smarty->assign('information_msg', _gettext("Database connection successful."));
             $MigrateMyitcrm->create_config_file_from_default(SETUP_DIR.'migrate/myitcrm/migrate_configuration.php');
             update_qwcrm_config_settings_file($VAR['qwcrm_config']);  
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
@@ -75,6 +71,9 @@ if($VAR['stage'] == 'database_connection_qwcrm' || !isset($VAR['stage'])) {
         $smarty->assign('qwcrm_config', $qwcrm_config); 
         $smarty->assign('stage', 'database_connection_qwcrm');
         
+        // Log message to setup log - only when starting the process
+        $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("QWcrm migration from MyITCRM has begun."));
+        
     }
     
 }
@@ -90,7 +89,7 @@ if($VAR['stage'] == 'database_connection_myitcrm') {
             
             // Record details into the config file and display success message and load the next page       
             update_qwcrm_config_settings_file($VAR['qwcrm_config']);           
-            $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the MyITCRM database with the supplied prefix and added it to the config file."));  
+            $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the MyITCRM database with the supplied prefix."));  
             $smarty->assign('information_msg', _gettext("MyITCRM database connection successful."));
             $VAR['stage'] = 'config_settings';
         
@@ -382,6 +381,9 @@ if($VAR['stage'] == 'upgrade_confirmation') {
    
     // Load the page
     } else {
+        
+        // Log message to setup log - only when starting the process - this start every page loads
+        $qsetup->write_record_to_setup_log('upgrade', _gettext("MyITCRM to QWcrm migration has finished."));
     
         // Clean up after setup process 
         $MigrateMyitcrm->setup_finished();

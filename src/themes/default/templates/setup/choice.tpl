@@ -168,7 +168,7 @@
                                         
                                             <tr>
                                                 <td>                                                                                                 
-                                                    <button id="setup_upgrade_button" type="button" class="olotd4" onclick="window.location.href='index.php?component=setup&page_tpl=upgrade';">{t}Upgrade QWcrm{/t}</button>
+                                                    <button id="setup_upgrade_button" type="button" class="olotd4" onclick="window.location.href='index.php?component=setup&page_tpl=upgrade';">{t}Start QWcrm Upgrade{/t}</button>
                                                 </td>
                                             </tr>
                                         {/if}                                        

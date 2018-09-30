@@ -27,7 +27,7 @@
                     <tr>
                         <td align="right"><b>{t}Database Tables Prefix{/t}</b> <span style="color: blue">*</span></td>
                         <td>
-                            <input name="qwcrm_config[db_prefix]" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" required onkeydown="return onlyMysqlDatabaseName(event);" />
+                            <input name="qwcrm_config[db_prefix]" class="olotd5" size="6" value="{$qwcrm_config.db_prefix}" type="text" maxlength="6" placeholder="qw_" required onkeydown="return onlyMysqlDatabaseName(event);" />
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Tables Prefix{/t}</strong></div><hr><div>{t escape=tooltip}The prefix used for your database tables, created during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
