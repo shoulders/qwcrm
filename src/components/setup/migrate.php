@@ -42,7 +42,16 @@ if($VAR['stage'] == 'database_connection_qwcrm' || !isset($VAR['stage'])) {
             
             $smarty->assign('information_msg', _gettext("Database connection successful."));
             $MigrateMyitcrm->create_config_file_from_default(SETUP_DIR.'migrate/myitcrm/migrate_configuration.php');
-            update_qwcrm_config_settings_file($VAR['qwcrm_config']);  
+            
+            // Load the Config settings from the new configuration.php
+            get_qwcrm_config_settings();
+            
+            // Update the Database Credentials
+            update_qwcrm_config_setting('db_host', $VAR['qwcrm_config']['db_host']);
+            update_qwcrm_config_setting('db_user', $VAR['qwcrm_config']['db_user']);
+            update_qwcrm_config_setting('db_pass', $VAR['qwcrm_config']['db_pass']);
+            update_qwcrm_config_setting('db_name', $VAR['qwcrm_config']['db_name']);
+            
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
             $VAR['stage'] = 'database_connection_myitcrm';
             
@@ -203,10 +212,9 @@ if($VAR['stage'] == 'company_details') {
         
     // submit the company details and load the next page
     if(isset($VAR['submit']) && $VAR['submit'] == 'company_details') {
-        
-        $company_details = $MigrateMyitcrm->get_company_details();
-        
+                
         // Add missing information to the form submission
+        $company_details = $MigrateMyitcrm->get_company_details();
         $VAR['welcome_msg']             = $company_details['welcome_msg'];
         $VAR['email_signature']         = $company_details['email_signature'];
         $VAR['email_signature_active']  = $company_details['email_signature_active'];
@@ -228,7 +236,7 @@ if($VAR['stage'] == 'company_details') {
         
         $company_details = $MigrateMyitcrm->get_company_details_merged();
         
-        // Update the logo in the database with the merged value
+        // Update the logo in the database with the merged value (this allows the logo to be displayed)
         $MigrateMyitcrm->update_record_value(PRFX.'company', 'logo', $company_details['logo']);
         
         // Assign Smarty variables
@@ -383,7 +391,7 @@ if($VAR['stage'] == 'upgrade_confirmation') {
     } else {
         
         // Log message to setup log - only when starting the process - this start every page loads
-        $qsetup->write_record_to_setup_log('upgrade', _gettext("MyITCRM to QWcrm migration has finished."));
+        $MigrateMyitcrm->write_record_to_setup_log('upgrade', _gettext("MyITCRM to QWcrm migration has finished."));
     
         // Clean up after setup process 
         $MigrateMyitcrm->setup_finished();

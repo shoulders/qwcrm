@@ -62,27 +62,27 @@ function insert_qwcrm_config_setting($key, $value) {
 
 /* Get Functions */
 
-################################################
-#   get current config settings as and array   #  // This is not actually loading the file, if config settings exist configuration.php is already attached
-################################################
+###################################################################
+#  Load Config settings from file or use the registry if present  #
+###################################################################
 
 function get_qwcrm_config_settings() {
 
     // Verify the configuration.php file exists
     if(is_file('configuration.php')) {
 
-        // Load the configuration settings file (if not already)
-        require_once('configuration.php');     
+        // if QConfig class does not exist, get the config settings directly from configuration.php and build a new Config Registry
+        if(!class_exists('QConfig')) {
+            require_once('configuration.php');
+            QFactory::$config = null;
+            QFactory::getConfig();
+            //return get_object_vars(new QConfig);
+        } 
         
         // Use the config settings in the live Registry 
         if($registry_object = QFactory::getConfig()->toObject()) {
             return get_object_vars($registry_object);
         }
-    
-        // Return the config settings directly from configuration.php
-        if(class_exists('QConfig')) {            
-            return get_object_vars(new QConfig);
-        } 
         
     }
         

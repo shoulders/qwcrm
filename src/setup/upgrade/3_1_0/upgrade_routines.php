@@ -43,7 +43,12 @@ class Upgrade3_1_0 extends QSetup {
     
     public function post_database() {
         
-        // Data
+        // Config File
+        insert_qwcrm_config_setting('sef', '0');
+        insert_qwcrm_config_setting('error_handler_whoops', '0');
+        update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
+        
+        // Change record types
         $this->update_column_values(PRFX.'expense_records', 'type', 'broadband', 'telco');
         $this->update_column_values(PRFX.'expense_records', 'type', 'landline', 'telco');
         $this->update_column_values(PRFX.'expense_records', 'type', 'mobile_phone', 'telco');
@@ -51,10 +56,10 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
         $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
         
-        // Config File
-        //insert_qwcrm_config_setting('sef', '0');
-        //insert_qwcrm_config_setting('error_handler_whoops', '1');
-        update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
+        // Reverse blocked account values because of the rename active --> blocked
+        $this->update_column_values(PRFX.'giftcert_records', 'blocked', '0', '9');
+        $this->update_column_values(PRFX.'giftcert_records', 'blocked', '1', '0');
+        $this->update_column_values(PRFX.'giftcert_records', 'blocked', '9', '0');        
         
         // Convert timestamps to MySQL DATE
         $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_start', 'company_name');

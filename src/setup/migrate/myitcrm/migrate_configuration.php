@@ -4,8 +4,7 @@ class QConfig {
     public $db_name = '';
     public $db_user = '';
     public $db_pass = '';
-    public $db_prefix = '';
-    
+    public $db_prefix = '';    
     public $gzip = '0';
     public $maintenance = '0';
     public $theme_name = 'default';
@@ -47,8 +46,7 @@ class QConfig {
     public $qwcrm_email_error_log = '0';
     public $qwcrm_email_transport_log = '0';
     public $error_reporting = 'default';
-    public $error_page_raw_output = '0';
-    
+    public $error_page_raw_output = '0';    
     public $qwcrm_debug = '0';
     public $qwcrm_advanced_debug = '0';
     public $qwcrm_smarty_debugging = '0';

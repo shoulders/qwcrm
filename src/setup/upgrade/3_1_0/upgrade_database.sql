@@ -377,3 +377,9 @@ ALTER TABLE `#__invoice_parts` MODIFY COLUMN `qty` decimal(10, 2) NOT NULL DEFAU
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
 ALTER TABLE `#__user_records` COLLATE = utf8_unicode_ci;
 ALTER TABLE `#__user_reset` COLLATE = utf8_unicode_ci;
+
+--
+-- Change from int(10) to int(11)
+--
+
+ALTER TABLE `qw_client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;
