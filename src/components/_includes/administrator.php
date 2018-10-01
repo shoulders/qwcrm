@@ -71,7 +71,7 @@ function get_qwcrm_config_settings() {
     // Verify the configuration.php file exists
     if(is_file('configuration.php')) {
 
-        // if QConfig class does not exist, get the config settings directly from configuration.php and build a new Config Registry
+        // if QConfig class does not exist, get the config settings directly from configuration.php and build a new Config Registry (This is needed for setup)
         if(!class_exists('QConfig')) {
             require_once('configuration.php');
             QFactory::$config = null;

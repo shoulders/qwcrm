@@ -112,7 +112,9 @@ function display_expenses($order_by, $direction, $use_pages = false, $records_pe
     /* Return the records */
          
     if(!$rs = $db->Execute($sql)) {
+        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching expense records."));
+        
     } else {
         
         $records = $rs->GetArray();   // do i need to add the check empty
