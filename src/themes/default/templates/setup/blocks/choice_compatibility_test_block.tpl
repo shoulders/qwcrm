@@ -18,7 +18,7 @@
                     <!-- Software Versions (PHP/MySQL/MariaDB) -->
 
                     <tr>
-                        <td align="center" colspan="2"><h2><strong>{t}PHP Extensions{/t}</strong></h2></td>                        
+                        <td align="center" colspan="2"><h2><strong>{t}Software Versions{/t}</strong></h2></td>                        
                     </tr>                    
                     {foreach from=$compatibility_results.software_versions item=software_version}
                         <tr>
