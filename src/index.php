@@ -11,11 +11,10 @@
 #################################################
 
 // Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
-define('QWCRM_MINIMUM_PHP', '5.5.0');
+define('QWCRM_MINIMUM_PHP', '5.6.21');
 
-// Check the PHP version is high enough to run QWcrm
-if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')){
-    //die(_gettext("QWcrm requires PHP").' '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' '._gettext("Your current version is").' '.PHP_VERSION);
+// Check the PHP version is high enough to run QWcrm (cant use _gettext() here)
+if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' Your current version is '.PHP_VERSION);
 }
 
@@ -33,9 +32,9 @@ define('QWCRM_BASE_PATH', str_replace('index.php', '', $_SERVER['PHP_SELF']));  
 define('QWCRM_PART_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.'/');                          // QWcrm Part URL  - http(s)://quantumwarp.com/
 define('QWCRM_FULL_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_BASE_PATH);              // QWcrm Full URL  - http(s)://quantumwarp.com/develop/qwcrm/
 
-#################################################
-# Debuging Information Start Varible Acqusition #
-#################################################
+###################################################
+# Debugging Information Start Variable Acqusition #
+###################################################
 
 // Save the start time and memory usage.
 $startTime = microtime(1);

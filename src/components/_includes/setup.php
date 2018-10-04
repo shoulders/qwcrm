@@ -1478,6 +1478,95 @@ class QSetup {
         }
         
     }
+        
+    ###########################################################
+    # Test Server Enviroment for compatibility to setup QWcrm #
+    ###########################################################
+    
+    public function test_server_enviroment_compatibility() {
+        
+        // Green = Passed
+        // Yellow = Warning
+        // Red = Failed
+        
+        $compatibility_results = array();
+        $compatibility_results['compatibility_status'] = true;
+        
+        /* Software Versions (PHP/MySQL/MariaDB) */
+        
+        // PHP
+        $compatibility_results['software_versions']['php']['name'] = _gettext("PHP");
+        $compatibility_results['software_versions']['php']['minimum'] = QWCRM_MINIMUM_PHP;
+        if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '>=')) {            
+            $compatibility_results['software_versions']['php']['status'] = 'passed';            
+        } else {            
+            $compatibility_results['software_versions']['php']['status'] = 'failed';
+            $compatibility_results['compatibility_status'] = false;
+        }
+        
+        /* PHP Extensions */
+        
+        // http://php.net/manual/en/extensions.php
+        
+        // intl
+        $compatibility_results['php_extensions']['intl']['name'] = _gettext("Internationalization (intl)");        
+        if(extension_loaded('intl')) {            
+            $compatibility_results['php_extensions']['intl']['status'] = 'passed';            
+        } else {            
+            $compatibility_results['php_extensions']['intl']['status'] = 'warning';            
+        }
+   
+        // openssl
+        $compatibility_results['php_extensions']['openssl']['name'] = _gettext("OpenSSL (openssl)");
+        if(extension_loaded('openssl')) {
+            $compatibility_results['php_extensions']['openssl']['status'] = 'passed';            
+        } else {
+            $compatibility_results['php_extensions']['openssl']['status'] = 'failed';            
+            $compatibility_results['compatibility_status'] = false;
+        }
+        
+        // curl
+        $compatibility_results['php_extensions']['curl']['name'] = _gettext("cURL (curl)");        
+        if(extension_loaded('curl')) {
+            $compatibility_results['php_extensions']['curl']['status'] = 'passed';            
+        } else {
+            $compatibility_results['php_extensions']['curl']['status'] = 'failed';            
+            $compatibility_results['compatibility_status'] = false;
+        } 
+        
+        /* PHP Settings (php.ini) */
+        
+        // allow_url_fopen
+        $compatibility_results['php_settings']['allow_url_fopen']['name'] = _gettext("allow_url_fopen");
+        if(ini_get('allow_url_fopen')) {
+            $compatibility_results['php_settings']['allow_url_fopen']['status'] = 'passed';            
+        } else {
+            $compatibility_results['php_settings']['allow_url_fopen']['status'] = 'failed';            
+            $compatibility_results['compatibility_status'] = false;
+        }
+                
+        /* PHP Functions */
+        
+        // file_get_contents
+        $compatibility_results['php_functions']['file_get_contents']['name'] = _gettext("file_get_contents()");
+        if(function_exists('file_get_contents')) {
+            $compatibility_results['php_functions']['file_get_contents']['status'] = 'passed';            
+        } else {
+            $compatibility_results['php_functions']['file_get_contents']['status'] = 'failed';            
+            $compatibility_results['compatibility_status'] = false;
+        }
+        
+        /* locale_accept_from_http
+        $compatibility_results['php_extensions']['locale_accept_from_http']['name'] = _gettext("locale_accept_from_http()");        
+        if(function_exists('locale_accept_from_http')) {
+            $compatibility_results['functions']['locale_accept_from_http']['status'] = 'passed';            
+        } else {
+            $compatibility_results['functions']['locale_accept_from_http']['status'] = 'warning';            
+        }*/
+        
+        return $compatibility_results;     
+        
+    }   
     
 
 }

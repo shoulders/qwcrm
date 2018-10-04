@@ -11,7 +11,7 @@
         // Accept License
 
         // Enable 'Accept License' button when license is agreed to (both .click() and .change() work)
-        $("#accept_license_checkbox").click( function() {
+        $("#setup_accept_license_checkbox").click( function() {
             
             // If this method is called, the default action of the event will not be triggered.
             //event.preventDefault();
@@ -19,32 +19,42 @@
             // Both these methods work. Always use .prop() to add or remove properties
             
             // if the checkbox is ticked
-            if($("#accept_license_checkbox").is(':checked')) {
-                $("#accept_license_button").prop("disabled", false);              
+            if($("#setup_accept_license_checkbox").is(':checked')) {
+                $("#setup_accept_license_button").prop("disabled", false);              
             } else {                
-                $("#accept_license_button").prop("disabled", true);
+                $("#setup_accept_license_button").prop("disabled", true);
             }
             
             /* if the checkbox is ticked
             if((this.checked)) {
-                $("#accept_license_button").prop("disabled", false);              
+                $("#setup_accept_license_button").prop("disabled", false);              
             } else {                
-                $("#accept_license_button").prop("disabled", true);
+                $("#setup_accept_license_button").prop("disabled", true);
             }*/
         
         } );
         
-        // Accept License - Hide license agreement and unhide setup buttons when license is accepted
-        $("#accept_license_button").click(function(event) {
-            
-            // If this method is called, the default action of the event will not be triggered.
-            //event.preventDefault();
+        // Accept License - Hide license agreement and unhide compatibility block
+        $("#setup_accept_license_button").click(function(event) {
             
             // if the checkbox is ticked
-            if($("#accept_license_checkbox").is(':checked')) {
-                $("#accept_license_block").hide();
-                $("#setup_buttons_block").show();
+            if($("#setup_accept_license_checkbox").is(':checked')) {
+                $("#setup_accept_license_block").hide();
+                $("#setup_compatibility_test_block").show();
             }
+        
+        } );
+        
+        // If enviroment is compatible the next button will be enabled, hide compatibily tests and show Setup Buttons
+        $("#setup_compatibility_test_next_button").click(function(event) {
+            
+            // This prevents the default action of the element (i.e. button)
+            event.preventDefault();
+            
+            // Do these
+            $("#setup_compatibility_test_block").hide();
+            $("#setup_buttons_block").show();
+            
         
         } );
         
@@ -110,7 +120,7 @@
                             
                             <!-- Accept License -->
                             
-                            <tr id="accept_license_block">
+                            <tr id="setup_accept_license_block">
                                 <td>
                                     <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                                         <tr>
@@ -121,13 +131,21 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <p><input type="checkbox" id="accept_license_checkbox">{t}I have read and understood the license.{/t}</p>
-                                                <button id="accept_license_button" href="javascript:void(0)" disabled>{t}Accept License{/t}</button>
+                                                <p><input type="checkbox" id="setup_accept_license_checkbox">{t}I have read and understood the license.{/t}</p>
+                                                <button id="setup_accept_license_button" href="javascript:void(0)" disabled>{t}Accept License{/t}</button>
                                             </td>
                                         </tr>
                                     </table>                                    
                                 </td>                                
                             </tr>
+                            
+                            <!-- Setup Compatibility Test -->                            
+                                                                  
+                            <tr id="setup_compatibility_test_block" style="display: none;">
+                                <td>                                                                                                  
+                                    {include file='setup/blocks/choice_compatibility_test_block.tpl'}
+                                </td>
+                            </tr>                                       
                                         
                             <!-- Setup Selection Buttons -->
                             

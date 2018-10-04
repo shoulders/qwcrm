@@ -737,3 +737,30 @@ div.sdmenu div a:hover {
     color: #fff;
     text-decoration: none;
 }
+
+/* Compatibility Badges - https://www.w3schools.com/css/css3_buttons.asp */
+
+.cbadge {
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 5px 7.5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    width: 60px;
+}
+
+.cbadge.cpassed {
+    background-color: #00C851;
+}
+
+.cbadge.cwarning {
+    background-color: #ffbb33;
+}
+
+.cbadge.cfailed {
+    background-color: #ff4444;
+}
