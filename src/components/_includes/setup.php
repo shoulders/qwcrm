@@ -39,7 +39,10 @@ class QSetup {
         $VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
         $this->smarty->assign('stage', $VAR['stage']);
         $this->smarty->assign('setup_error_flag', self::$setup_error_flag);
-        $this->smarty->assign('executed_sql_results', self::$executed_sql_results);       
+        $this->smarty->assign('executed_sql_results', self::$executed_sql_results);
+        
+        // Set Max Execution time to 5 Minutes
+        ini_set('max_execution_time', 300);
         
     }
     
