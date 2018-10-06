@@ -4,7 +4,6 @@
 /src/libraries/vendor/
 /src/logs/
 /src/media/
-/src/setup/
 /src/-setup/
 /src/configuration.php
 /src/-configuration.php
@@ -12,5 +11,3 @@
 /tmp/
 /src/.htaccess
 /src/off.htaccess
-/src/cache/
-/src/language/en_GB/LC_MESSAGES/
