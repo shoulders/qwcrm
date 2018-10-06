@@ -1481,95 +1481,305 @@ class QSetup {
         }
         
     }
-        
+    
     ###########################################################
     # Test Server Enviroment for compatibility to setup QWcrm #
     ###########################################################
     
     public function test_server_enviroment_compatibility() {
         
-        // Green = Passed
-        // Yellow = Warning
-        // Red = Failed
-        
         $compatibility_results = array();
-        $compatibility_results['compatibility_status'] = true;
         
-        /* Software Versions (PHP/MySQL/MariaDB) */
+        // https://www.w3schools.com/php/func_array_walk.asp
         
-        // PHP
-        $compatibility_results['software_versions']['php']['name'] = _gettext("PHP");
-        $compatibility_results['software_versions']['php']['minimum'] = QWCRM_MINIMUM_PHP;
-        if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '>=')) {            
-            $compatibility_results['software_versions']['php']['status'] = 'passed';            
-        } else {            
-            $compatibility_results['software_versions']['php']['status'] = 'failed';
-            $compatibility_results['compatibility_status'] = false;
-        }
+        // Walk through php_options and convert objects into arrays
+        $php_options = $this->getPhpOptions();
+        array_walk($php_options, function(&$value) {
+            $value = get_object_vars($value);
+        });
         
-        /* PHP Extensions */
+        // Walk through php_options and convert objects into arrays
+        $php_settings = $this->getPhpSettings();
+        array_walk($php_settings, function(&$value) {
+            $value = get_object_vars($value);
+        });
         
-        // http://php.net/manual/en/extensions.php
+        // Build the result to be returned       
+        $compatibility_results['php_options'] = $php_options;
+        $compatibility_results['php_settings'] = $php_settings;        
+        $compatibility_results['compatibility_status'] = $this->getPhpOptionsSufficient();
         
-        // intl
-        $compatibility_results['php_extensions']['intl']['name'] = _gettext("Internationalization (intl)");        
-        if(extension_loaded('intl')) {            
-            $compatibility_results['php_extensions']['intl']['status'] = 'passed';            
-        } else {            
-            $compatibility_results['php_extensions']['intl']['status'] = 'warning';            
-        }
-   
-        // openssl
-        $compatibility_results['php_extensions']['openssl']['name'] = _gettext("OpenSSL (openssl)");
-        if(extension_loaded('openssl')) {
-            $compatibility_results['php_extensions']['openssl']['status'] = 'passed';            
-        } else {
-            $compatibility_results['php_extensions']['openssl']['status'] = 'failed';            
-            $compatibility_results['compatibility_status'] = false;
-        }
+        return $compatibility_results;
         
-        // curl
-        $compatibility_results['php_extensions']['curl']['name'] = _gettext("cURL (curl)");        
-        if(extension_loaded('curl')) {
-            $compatibility_results['php_extensions']['curl']['status'] = 'passed';            
-        } else {
-            $compatibility_results['php_extensions']['curl']['status'] = 'failed';            
-            $compatibility_results['compatibility_status'] = false;
-        } 
-        
-        /* PHP Settings (php.ini) */
-        
-        // allow_url_fopen
-        $compatibility_results['php_settings']['allow_url_fopen']['name'] = _gettext("allow_url_fopen");
-        if(ini_get('allow_url_fopen')) {
-            $compatibility_results['php_settings']['allow_url_fopen']['status'] = 'passed';            
-        } else {
-            $compatibility_results['php_settings']['allow_url_fopen']['status'] = 'failed';            
-            $compatibility_results['compatibility_status'] = false;
-        }
-                
-        /* PHP Functions */
-        
-        // file_get_contents
-        $compatibility_results['php_functions']['file_get_contents']['name'] = _gettext("file_get_contents()");
-        if(function_exists('file_get_contents')) {
-            $compatibility_results['php_functions']['file_get_contents']['status'] = 'passed';            
-        } else {
-            $compatibility_results['php_functions']['file_get_contents']['status'] = 'failed';            
-            $compatibility_results['compatibility_status'] = false;
-        }
-        
-        /* locale_accept_from_http
-        $compatibility_results['php_extensions']['locale_accept_from_http']['name'] = _gettext("locale_accept_from_http()");        
-        if(function_exists('locale_accept_from_http')) {
-            $compatibility_results['functions']['locale_accept_from_http']['status'] = 'passed';            
-        } else {
-            $compatibility_results['functions']['locale_accept_from_http']['status'] = 'warning';            
-        }*/
-        
-        return $compatibility_results;     
-        
-    }   
-    
+    }
+     
+    /**
+     * Gets PHP options.
+     *
+     * @return  array  Array of PHP config options
+     *
+     * @since   3.1
+     */
+    public function getPhpOptions()
+    {
+        $options = array();
 
+        // Check the PHP Version.
+        $option = new stdClass;
+        $option->label  = _gettext("PHP Version").' >=  '.QWCRM_MINIMUM_PHP;
+        $option->state  = version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '>=');
+        $option->notice = null;
+        $options[] = $option;
+
+        // Check for magic quotes gpc.
+        $option = new stdClass;
+        $option->label  = _gettext("Magic Quotes GPC Off");
+        $option->state  = (ini_get('magic_quotes_gpc') == false);
+        $option->notice = null;
+        $options[] = $option;
+        
+        // Check for register globals.
+        $option = new stdClass;
+        $option->label  = _gettext("Register Globals Off");
+        $option->state  = (ini_get('register_globals') == false);
+        $option->notice = null;
+        $options[] = $option;
+        
+        /* Check for zlib support.
+        $option = new stdClass;
+        $option->label  = _gettext("Native ZIP support");
+        $option->state  = extension_loaded('zlib');
+        $option->notice = null;
+        $options[] = $option;*/
+        
+        // Check for XML support.
+        $option = new stdClass;
+        $option->label  = _gettext("XML Support");
+        $option->state  = extension_loaded('xml');
+        $option->notice = null;
+        $options[] = $option;
+        
+        /* Check for database support.
+        // We are satisfied if there is at least one database driver available.
+        $available = JDatabaseDriver::getConnectors();
+        $option = new stdClass;
+        $option->label  = _gettext("Database Support:");
+        $option->label .= '<br />(' . implode(', ', $available) . ')';
+        $option->state  = count($available);
+        $option->notice = null;
+        $options[] = $option;*/
+
+        // Check for mbstring options.
+        if (extension_loaded('mbstring'))
+        {
+            // Check for default MB language.
+            $option = new stdClass;
+            $option->label  = _gettext("MB Language is Default");
+            $option->state  = strtolower(ini_get('mbstring.language')) === 'neutral';
+            $option->notice = $option->state ? null : _gettext("PHP mbstring language is not set to neutral. This can be set locally by entering <strong>php_value mbstring.language neutral</strong> in your <code>.htaccess</code> file.");
+            $options[] = $option;
+
+            // Check for MB function overload.
+            $option = new stdClass;
+            $option->label  = _gettext("MB String Overload Off");
+            $option->state  = ini_get('mbstring.func_overload') == 0;
+            $option->notice = $option->state ? null : _gettext("PHP mbstring function overload is set. This can be turned off locally by entering <strong>php_value mbstring.func_overload 0</strong> in your <code>.htaccess</code> file.");
+            $options[] = $option;
+        }
+
+        /* Check for a missing native parse_ini_file implementation.
+        $option = new stdClass;
+        $option->label  = _gettext("INI Parser Support");
+        $option->state  = $this->getIniParserAvailability();
+        $option->notice = null;
+        $options[] = $option;*/
+
+        // Check for missing native json_encode / json_decode support.
+        $option = new stdClass;
+        $option->label  = _gettext("JSON Support");
+        $option->state  = function_exists('json_encode') && function_exists('json_decode');
+        $option->notice = null;
+        $options[] = $option;
+
+        /* Check for configuration file writable.
+        $writable = (is_writable('configuration.php')
+            || (!file_exists('configuration.php') && is_writable(QWCRM_BASE_PATH)));
+
+        $option = new stdClass;
+        $option->label  = 'configuration.php '._gettext("Writeable");
+        $option->state  = $writable;
+        $option->notice = $option->state ? null : _gettext("The 'configuration.php' file is either present and cannot be written too or you do not have permission to the 'configuration.php' in your QWcrm directory.");
+        $options[] = $option;*/
+                
+        // MY Extensions        
+        
+        // Check for OpenSSL (openssl)
+        $option = new stdClass;
+        $option->label  = _gettext("OpenSSL Support");
+        $option->state  = extension_loaded('openssl');
+        $option->notice = $option->state ? null : _gettext("The PHP Extension 'openssl' needs to be enabled. OpenSSL is required for https:// protocol. ");
+        $options[] = $option;
+        
+        // Check for cURL (curl)
+        $option = new stdClass;
+        $option->label  = _gettext("cURL Support");
+        $option->state  = extension_loaded('curl');
+        $option->notice = $option->state ? null : _gettext("The PHP Extension 'curl' needs to be enabled.");
+        $options[] = $option;        
+               
+        // MY Settings
+        
+        // Check for allow_url_fopen support        
+        $option = new stdClass;
+        $option->label  = _gettext("allow_url_fopen On");
+        $option->state  = (bool) ini_get('allow_url_fopen');
+        $option->notice = $option->state ? null : _gettext("The PHP Setting 'allow_url_fopen' needs to be enabled.");
+        $options[] = $option;
+        
+        /* Check for max_execution_time support (seconds)
+        $minimum_max_execution_time = 300;
+        $option = new stdClass;        
+        $option->label  = _gettext("max_execution_time").' >= '.$minimum_max_execution_time.'s';
+        $option->state  = version_compare((int) ini_get('max_execution_time'), $minimum_max_execution_time, '>=');
+        $option->notice = $option->state ? null : _gettext("The current Maximum Execution Time is").': '.(int) ini_get('max_execution_time').'s';
+        $options[] = $option;*/
+        
+        /* Check for Minimum RAM (MB)
+        $minimum_memory_limit = 32;
+        $option = new stdClass;        
+        $option->label  = _gettext("Minimum RAM").' >= '.$minimum_memory_limit.'MB';
+        $option->state  = version_compare((int) ini_get('memory_limit'), $minimum_memory_limit, '>=');
+        $option->notice = $option->state ? null : _gettext("The current Memory Limit is").': '.(int) ini_get('memory_limit').'MB';
+        $options[] = $option;*/  
+        
+        // MY Functions        
+        
+        // Check for file_get_contents() support
+        $option = new stdClass;
+        $option->label  = _gettext("file_get_contents() Enabled");
+        $option->state  = function_exists('file_get_contents');
+        $option->notice = $option->state ? null : _gettext("The PHP Function 'file_get_contents()' needs to be enabled.");
+        $options[] = $option;
+        
+        return $options;
+
+    }
+
+    /**
+     * Checks if all of the mandatory PHP options are met.
+     *
+     * @return  boolean  True on success.
+     *
+     * @since   3.1
+     */
+    public function getPhpOptionsSufficient()
+    {
+        $result  = true;
+        $options = $this->getPhpOptions();
+
+        foreach ($options as $option)
+        {
+            if (!$option->state)
+            {
+                $result  = false;
+            }
+        }
+
+        return $result;
+        
+    }
+    
+    /**
+     * Gets PHP Settings.
+     *
+     * @return  array
+     *
+     * @since   3.1
+     */
+    public function getPhpSettings()
+    {
+        $settings = array();
+
+        // Check for safe mode.
+        $setting = new stdClass;
+        $setting->label = _gettext("Safe Mode");
+        $setting->state = (bool) ini_get('safe_mode');
+        $setting->recommended = false;
+        $setting->notice = null;
+        $settings[] = $setting;
+
+        // Check for display errors.
+        $setting = new stdClass;
+        $setting->label = _gettext("Display Errors");
+        $setting->state = (bool) ini_get('display_errors');
+        $setting->recommended = false;
+        $setting->notice = null;
+        $settings[] = $setting;
+
+        // Check for file uploads.
+        $setting = new stdClass;
+        $setting->label = _gettext("File Uploads");
+        $setting->state = (bool) ini_get('file_uploads');
+        $setting->recommended = true;
+        $setting->notice = null;
+        $settings[] = $setting;
+
+        // Check for magic quotes runtimes.
+        $setting = new stdClass;
+        $setting->label = _gettext("Magic Quotes Runtime");
+        $setting->state = (bool) ini_get('magic_quotes_runtime');
+        $setting->recommended = false;
+        $setting->notice = null;
+        $settings[] = $setting;
+
+        // Check for output buffering.
+        $setting = new stdClass;
+        $setting->label = _gettext("Output Buffering");
+        $setting->state = (int) ini_get('output_buffering') !== 0;
+        $setting->recommended = false;
+        $setting->notice = null;
+        $settings[] = $setting;
+
+        // Check for session auto-start.
+        $setting = new stdClass;
+        $setting->label = _gettext("Session Auto Start");
+        $setting->state = (bool) ini_get('session.auto_start');
+        $setting->recommended = false;
+        $setting->notice = null;
+        $settings[] = $setting;
+
+        // Check for native ZIP support.
+        $setting = new stdClass;
+        $setting->label = _gettext("Zlib Compression Support");
+        $setting->state = function_exists('zip_open') && function_exists('zip_read');
+        $setting->recommended = true;
+        $setting->notice = null;
+        $settings[] = $setting;
+        
+        // My Extensions
+        
+        // Check for Internationalization (intl)
+        $setting = new stdClass;
+        $setting->label  = _gettext("Internationalization Support");
+        $setting->state  = extension_loaded('intl');
+        $setting->recommended = true;
+        $setting->notice = $setting->state ? null : _gettext("Internationalization support is required for automatic language detection. ");
+        $settings[] = $setting;
+        
+        // My Settings
+        
+        // My Functions
+        
+        // Check for locale_accept_from_http() support
+        $setting = new stdClass;
+        $setting->label  = _gettext("locale_accept_from_http()");
+        $setting->state  = function_exists('locale_accept_from_http');        
+        $setting->recommended = true;
+        $setting->notice = $setting->state ? null : _gettext("The PHP Function 'locale_accept_from_http()' is required for automatic language detection. ");
+        $settings[] = $setting;
+        
+        return $settings;
+        
+    }
+    
 }

@@ -740,6 +740,10 @@ div.sdmenu div a:hover {
 
 /* Compatibility Badges - https://www.w3schools.com/css/css3_buttons.asp */
 
+.clabel {
+    font-size: 11px;    
+}
+
 .cbadge {
     border: none;
     border-radius: 8px;
@@ -748,7 +752,7 @@ div.sdmenu div a:hover {
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 11px;
     margin: 4px 2px;
     width: 60px;
 }

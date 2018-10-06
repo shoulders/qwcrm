@@ -15,90 +15,78 @@
             <td class="menutd2">
                 <table width="600" class="olotable" cellpadding="5" cellspacing="0" border="0">
 
-                    <!-- Software Versions (PHP/MySQL/MariaDB) -->
+                    <!-- Pre-Installation Check -->
 
                     <tr>
-                        <td align="center" colspan="2"><h2><strong>{t}Software Versions{/t}</strong></h2></td>                        
-                    </tr>                    
-                    {foreach from=$compatibility_results.software_versions item=software_version}
-                        <tr>
-                            <td align="right" width="50%">
-                                <span style="font-size: 16px;">{$software_version.name}</span>
-                            </td>
-                            <td>             
-                                {if $software_version.status == 'passed'}<span class="cbadge cpassed">{t}Passed{/t}</span>{/if}
-                                {if $software_version.status == 'warning'}<span class="cbadge cwarning">{t}Warning{/t}</span>{/if}
-                                {if $software_version.status == 'failed'}<span class="cbadge cfailed">{t}Failed{/t}</span>{/if}                                
-                            </td>
-                        </tr>                        
-                    {/foreach}
-                    <tr>
-                        <td colspan="2" style="text-align: center;">{t}These are the minimum version of software that QWcrm needs.{/t}</td>
+                        <td align="center" colspan="2">
+                            <h2><strong>{t}Pre-Installation Check{/t}</strong></h2>
+                            <p>{t escape=no}If any of these items are not supported (marked as <span class="cbadge cfailed">No</span>) then please take actions to correct them. You can't install QWcrm until your setup meets the requirements below.{/t}</p>
+                        </td>                        
                     </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                {foreach from=$compatibility_results.php_options item=php_option}
+                                    <tr>
+                                        <td align="right" width="50%">
+                                            <span class="clabel">{$php_option.label}</span>                                
+                                        </td>
+                                        <td>             
+                                            {if $php_option.state === true}<span class="cbadge cpassed">{t}Yes{/t}</span>{/if}                                
+                                            {if $php_option.state === false}
+                                                <span class="cbadge cfailed">{t}No{/t}</span>
+                                                {if $php_option.notice}
+                                                    <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div>{$php_option.notice|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                                                {/if}
+                                            {/if}                                
+                                        </td>
+                                    </tr>                        
+                                {/foreach}
+                            </table>
+                        <td>
+                    </tr>                    
                                         
-                    <!-- PHP Extensions -->
-
+                    <!-- Recommended Settings -->
+                    <tr class="row2">
+                        <td class="menuhead" colspan="2" width="100%">&nbsp;</td>
+                    </tr> 
                     <tr>
-                        <td align="center" colspan="2"><h2><strong>{t}PHP Extensions{/t}</strong></h2></td>                        
-                    </tr>                    
-                    {foreach from=$compatibility_results.php_extensions item=php_extension}
-                        <tr>
-                            <td align="right" width="50%">
-                                <span style="font-size: 16px;">{$php_extension.name}</span>
-                            </td>
-                            <td>             
-                                {if $php_extension.status == 'passed'}<span class="cbadge cpassed">{t}Passed{/t}</span>{/if}
-                                {if $php_extension.status == 'warning'}<span class="cbadge cwarning">{t}Warning{/t}</span>{/if}
-                                {if $php_extension.status == 'failed'}<span class="cbadge cfailed">{t}Failed{/t}</span>{/if}                                
-                            </td>
-                        </tr>                        
-                    {/foreach}
-                    <tr>
-                        <td colspan="2" style="text-align: center;">{t}These are PHP Extensions that need to be enabled on a server level for QWcrm to work.{/t}</td>
+                        <td align="center" colspan="3">
+                            <h2><strong>{t}Recommended Settings{/t}</strong></h2>
+                            <p>{t}These settings are recommended for PHP to ensure full compatibility with QWcrm. However, QWcrm will still operate if your settings do not quite match the recommended configuration.{/t}</p>
+                        </td>                        
                     </tr>
-                    
-                    <!-- PHP Settings -->
-                    
                     <tr>
-                        <td align="center" colspan="2"><h2><strong>{t}PHP Settings{/t}</strong></h2></td>                        
+                        <td>
+                            <table>
+                                <tr>
+                                    <td align="center"><strong>{t}Directive{/t}</strong></td>
+                                    <td align="center"><strong>{t}Recommended{/t}</strong></td>
+                                    <td align="center"><strong>{t}Actual{/t}</strong></td>
+                                </tr>
+                                {foreach from=$compatibility_results.php_settings item=php_setting}                        
+                                    <tr>
+                                        <td>
+                                            <span class="clabel">{$php_setting.label}<br></span>                                
+                                        </td>
+                                        <td>             
+                                            {if $php_setting.recommended === true}<span class="cbadge cpassed">{t}On{/t}</span>{/if}
+                                            {if $php_setting.recommended === false}<span class="cbadge cpassed">{t}Off{/t}</span>{/if}                                                             
+                                        </td>
+                                        <td>
+                                            <span class="cbadge {if $php_setting.state === $php_setting.recommended}cpassed{else}cwarning{/if}">
+                                                {if $php_setting.state}{t}On{/t}{else}{t}Off{/t}{/if}                                                
+                                            </span>
+                                            {if $php_setting.state !== $php_setting.recommended && $php_setting.notice}
+                                                <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div>{$php_setting.notice|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                                            {/if}
+                                        </td>
+                                    </tr>                        
+                                {/foreach}
+                            </table>
+                        </td>
                     </tr>
-                    {foreach from=$compatibility_results.php_settings item=php_setting}
-                        <tr>
-                            <td align="right" width="50%">
-                                <span style="font-size: 16px;">{$php_setting.name}</span>
-                            </td>
-                            <td>             
-                                {if $php_setting.status == 'passed'}<span class="cbadge cpassed">{t}Passed{/t}</span>{/if}
-                                {if $php_setting.status == 'warning'}<span class="cbadge cwarning">{t}Warning{/t}</span>{/if}
-                                {if $php_setting.status == 'failed'}<span class="cbadge cfailed">{t}Failed{/t}</span>{/if}                                
-                            </td>
-                        </tr>                        
-                    {/foreach}
-                    <tr>
-                        <td colspan="2" style="text-align: center;">{t}You need to modified the servers php.ini file or create an override file to enable the required PHP settings.{/t}</td>
-                    </tr>
-                    
-                    <!-- PHP Functions -->
-                    
-                    <tr>
-                        <td align="center" colspan="2"><h2><strong>{t}PHP Functions{/t}</strong></h2></td>                        
-                    </tr>
-                    {foreach from=$compatibility_results.php_functions item=php_function}
-                        <tr>
-                            <td align="right" width="50%">
-                                <span style="font-size: 16px;">{$php_function.name}</span>
-                            </td>
-                            <td>             
-                                {if $php_function.status == 'passed'}<span class="cbadge cpassed">{t}Passed{/t}</span>{/if}
-                                {if $php_function.status == 'warning'}<span class="cbadge cwarning">{t}Warning{/t}</span>{/if}
-                                {if $php_function.status == 'failed'}<span class="cbadge cfailed">{t}Failed{/t}</span>{/if}                                
-                            </td>
-                        </tr>                        
-                    {/foreach}
-                    <tr>
-                        <td colspan="2" style="text-align: center;">{t}PHP Functions are usually not present because the appropriate PHP Extension is not installed or your hosting provider has blocked it by disabling it in the servers php.ini file.{/t}</td>
-                    </tr>
-                                    
+                                                        
                     <!-- Next Button -->
 
                     <tr class="row2">
@@ -106,6 +94,7 @@
                     </tr>                    
                     <tr>
                         <td colspan="2" style="text-align: center;">
+                            {if !$compatibility_results.compatibility_status}<p>{t}You need to fix your Server Enviroment before you can install QWcrm.{/t}</p>{/if}
                             <button id="setup_compatibility_test_next_button" href="javascript:void(0)"{if !$compatibility_results.compatibility_status} disabled{/if}>{t}Next{/t}</button>
                         </td>
                     </tr> 
