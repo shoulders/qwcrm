@@ -47,6 +47,31 @@ class QSetup {
     }
     
     /** Common (not database) **/
+    
+    ############################
+    # Get MySQL Column Comment #
+    ############################
+    
+    public function get_column_comment($table, $column) {
+        
+        $db = QFactory::getDbo();
+    
+        $sql = "SELECT column_comment
+                FROM information_schema.columns
+                WHERE table_name = '$table'
+                AND column_name LIKE '$column'";
+        
+        if(!$rs = $db->execute($sql)) { 
+            
+            return false;      
+            
+        } else {
+            
+            return $rs->fields['column_comment'];
+            
+        }
+        
+    }
 
     ############################################
     #   Clean up after setup process           #
@@ -1075,7 +1100,7 @@ class QSetup {
         $column_comment = null;
         
         // Get Column Comment if present
-        if ($column_comment = $this->column_get_comment($table, $column_timestamp)) {
+        if ($column_comment = $this->get_column_comment($table, $column_timestamp)) {
             $column_comment = "COMMENT '$column_comment' ";
         }
         
@@ -1249,7 +1274,7 @@ class QSetup {
         $column_comment = null;
         
         // Get Column Comment if present
-        if ($column_comment = $this->column_get_comment($table, $column_timestamp)) {
+        if ($column_comment = $this->get_column_comment($table, $column_timestamp)) {
             $column_comment = "COMMENT '$column_comment' ";
         }
         
@@ -1455,32 +1480,7 @@ class QSetup {
         // Return the correct date in MySQL DATE format
         return timestamp_mysql_date($corrected_timestamp);        
         
-    }    
-        
-    ############################
-    # Get MySQL Column Comment #
-    ############################
-    
-    public function column_get_comment($table, $column) {
-        
-        $db = QFactory::getDbo();
-    
-        $sql = "SELECT column_comment
-                FROM information_schema.columns
-                WHERE table_name = '$table'
-                AND column_name LIKE '$column'";
-        
-        if(!$rs = $db->execute($sql)) { 
-            
-            return false;      
-            
-        } else {
-            
-            return $rs->fields['column_comment'];
-            
-        }
-        
-    }
+    } 
     
     ###########################################################
     # Test Server Enviroment for compatibility to setup QWcrm #
