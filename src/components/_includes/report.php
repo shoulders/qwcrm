@@ -711,3 +711,64 @@ function sum_refunds_value($value_name, $start_date, $end_date) {
     }   
     
 }
+
+/** Otherincomes **/
+
+#########################################
+#     Count Other Incomes               #  // Currently only used in invoice delete check (when it was refunds)
+#########################################
+
+function count_otherincomes($invoice_id = null, $start_date = null, $end_date = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."otherincome_records.refund_id\n";  
+        
+    // Filter by invoice_id
+    if($invoice_id) {
+        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
+    }
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."otherincome_records
+            ".$whereTheseRecords;    
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Other Incomes."));
+        
+    } else {      
+        
+        return $rs->fields['count'];
+        
+    }
+    
+}
+
+#########################################
+#  Sum selected value of Other Incomes  #
+#########################################
+
+function sum_otherincomes_value($value_name, $start_date, $end_date) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT SUM(".PRFX."otherincome_records.$value_name) AS sum
+            FROM ".PRFX."otherincome_records
+            WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Other Incomes."));
+    } else {
+        
+        return $rs->fields['sum'];
+        
+    }   
+    
+}

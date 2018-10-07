@@ -65,12 +65,6 @@
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$otherincome_details.gross_amount}</td>
                                         </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$otherincome_details.invoice_id}">{$otherincome_details.invoice_id}</a></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>                                        
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>

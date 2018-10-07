@@ -9,7 +9,6 @@
 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr>
         <td class="olohead">{t}Other Income ID{/t}</td>
-        <td class="olohead">{t}INV ID{/t}</td>
         <td class="olohead">{t}Payee{/t}</td>
         <td class="olohead">{t}Date{/t}</td>
         <td class="olohead">{t}Type{/t}</td>
@@ -26,7 +25,6 @@
         <!-- This allows double clicking on a row and opens the corresponding otherincome view details -->
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=otherincome&page_tpl=details&otherincome_id={$display_otherincomes[r].otherincome_id}';" class="row1">                                                                
             <td class="olotd4" nowrap><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_otherincomes[r].otherincome_id}">{$display_otherincomes[r].otherincome_id}</a></td>                                                                
-            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_otherincomes[r].invoice_id}">{$display_otherincomes[r].invoice_id}</a></td>
             <td class="olotd4" nowrap>{$display_otherincomes[r].payee}</td>                                                                
             <td class="olotd4" nowrap>{$display_otherincomes[r].date|date_format:$date_format}</td>                                                                
             <td class="olotd4" nowrap>

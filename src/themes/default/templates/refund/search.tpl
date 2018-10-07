@@ -35,7 +35,9 @@
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>
+                                                                        <option value="client_id"{if $search_category == 'client_id'} selected{/if}>{t}Client ID{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
+                                                                        <option value="giftcert_id"{if $search_category == 'giftcert_id'} selected{/if}>{t}Giftcert ID{/t}</option>
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>                                                                        
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>

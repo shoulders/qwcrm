@@ -24,35 +24,35 @@
                             <!-- Current Work Order Stats (Global) -->
                             <tr>
                                 <td>
-                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$global_workorder_stats block_title=_gettext("Current Work Order Stats")|cat:" ("|cat:gettext("Global")|cat:")"} 
+                                    {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$global_workorder_stats block_title=_gettext("Current Work Order Stats")|cat:" ("|cat:_gettext("Global")|cat:")"} 
                                 </td>
                             </tr>                            
                             
                             <!-- Overall Work Order Stats (Global) -->
                             <tr>
                                 <td>
-                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$global_workorder_overall_stats block_title=_gettext("Overall Work Order Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                             
+                                    {include file='workorder/blocks/display_workorder_overall_stats_block.tpl' workorder_overall_stats=$global_workorder_overall_stats block_title=_gettext("Overall Work Order Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                             
                                 </td>
                             </tr>                      
                             
                             <!-- Current Invoice Stats (Global) -->
                             <tr>
                                 <td>
-                                    {include file='invoice/blocks/display_invoice_stats_block.tpl' invoice_stats=$global_invoice_stats block_title=_gettext("Current Invoice Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                            
+                                    {include file='invoice/blocks/display_invoice_stats_block.tpl' invoice_stats=$global_invoice_stats block_title=_gettext("Current Invoice Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                            
                                 </td>
                             </tr>
                             
                             <!-- Overall Invoice Stats (Global) -->
                             <tr>
                                 <td>
-                                    {include file='invoice/blocks/display_invoice_overall_stats_block.tpl' invoice_overall_stats=$global_invoice_overall_stats block_title=_gettext("Overall Invoice Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                              
+                                    {include file='invoice/blocks/display_invoice_overall_stats_block.tpl' invoice_overall_stats=$global_invoice_overall_stats block_title=_gettext("Overall Invoice Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                              
                                 </td>
                             </tr>                                                        
                             
                             <!-- Client Stats (Global) -->
                             <tr>
                                 <td>
-                                    {include file='client/blocks/display_client_overall_stats_block.tpl' client_overall_stats=$global_client_overall_stats block_title=_gettext("Overall Client Stats")|cat:" ("|cat:gettext("Global")|cat:")"}                                             
+                                    {include file='client/blocks/display_client_overall_stats_block.tpl' client_overall_stats=$global_client_overall_stats block_title=_gettext("Overall Client Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                             
                                 </td>
                             </tr>
                             

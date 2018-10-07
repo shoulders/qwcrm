@@ -152,7 +152,7 @@
                 <!-- Company -->
                     <div class="menugroup">
                         <span>{t}Company{/t}</span>                        
-                        <a href="index.php?component=company&page_tpl=options"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Options{/t}</a>                        
+                        <a href="index.php?component=company&page_tpl=edit"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>                        
                         <a href="index.php?component=company&page_tpl=business_hours"><img src="{$theme_images_dir}icons/clock.gif" alt="" border="0" height="14" width="14" /> {t}Business Hours{/t}</a>
                         <a href="index.php?component=invoice&page_tpl=prefill_items"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Invoice Prefill{/t}</a>                                
                     </div>

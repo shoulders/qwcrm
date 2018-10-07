@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.0.0\n"
-"POT-Creation-Date: 2018-10-06 15:15+0100\n"
-"PO-Revision-Date: 2018-10-06 15:20+0100\n"
+"POT-Creation-Date: 2018-10-06 17:43+0100\n"
+"PO-Revision-Date: 2018-10-06 17:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -1657,9 +1657,9 @@ msgstr ""
 #: themes/default/templates/supplier/search.tpl:46
 #: themes/default/templates/workorder/search.tpl:47
 #: themes/default/templates/workorder/status.tpl:13
+#: -setup/migrate/myitcrm/migrate_routines.php:74
 #: components/_includes/client.php:420 components/_includes/schedule.php:844
 #: components/invoice/print.php:116 components/schedule/icalendar.php:52
-#: setup/migrate/myitcrm/migrate_routines.php:74
 msgid "for"
 msgstr ""
 
@@ -1670,6 +1670,7 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:123
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:135
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:147
+#: themes/default/templates/core/blocks/theme_menu_block.tpl:155
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:167
 #: themes/default/templates/expense/details.tpl:15
 #: themes/default/templates/giftcert/blocks/display_giftcerts_block.tpl:56
@@ -2493,9 +2494,10 @@ msgid "COMPANY_EDIT_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/company/edit.tpl:45
-#, fuzzy
-#| msgid "COMPANY_EDIT_HELP_CONTENT"
-msgid "COMPANY_RECORD_HELP_CONTENT"
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:45
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:45
+#: language/_gettext_only/pages.php:105
+msgid "COMPANY_EDIT_HELP_CONTENT"
 msgstr "Configure your company information."
 
 #: themes/default/templates/company/edit.tpl:50
@@ -2995,10 +2997,6 @@ msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:142
 msgid "Other Income"
-msgstr ""
-
-#: themes/default/templates/core/blocks/theme_menu_block.tpl:155
-msgid "Options"
 msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:157
@@ -5327,12 +5325,6 @@ msgstr ""
 msgid "Home Email"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:45
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:45
-#: language/_gettext_only/pages.php:105
-msgid "COMPANY_EDIT_HELP_CONTENT"
-msgstr "Configure your company information."
-
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:208
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:203
 msgid "Localisation"
@@ -6509,6 +6501,190 @@ msgid ""
 "invoice."
 msgstr ""
 
+#: -setup/migrate/myitcrm/migrate_routines.php:67
+#: components/_includes/user.php:204
+msgid "Failed to insert the user record into the database."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:74
+msgid "Administrator Account"
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:74
+#: components/_includes/user.php:222
+msgid "created"
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:106
+msgid "NB: This is the MyITCRM migrate version of this function."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:107
+msgid "Something went wrong executing an SQL query."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:108
+msgid ""
+"Check to see if your Prefix is correct, if not you might have a "
+"configuration.php file that should not be present or is corrupt."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:109
+msgid "Error occured at"
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:109
+msgid "when trying to get the variable"
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:114
+msgid "Failed to get company details."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:144
+msgid "Failed to get MyITCRM company details."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:219
+#: components/_includes/user.php:249
+msgid "Failed to get the user details."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:310
+#: components/_includes/company.php:161
+msgid "Failed to update the company details."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:314
+#: -setup/migrate/myitcrm/migrate_routines.php:318
+#: components/_includes/company.php:168 components/_includes/company.php:171
+#: components/company/edit.php:23
+msgid "Company details updated."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:756
+msgid "The database migration process failed, check the logs."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:768
+msgid "The database migration process was successful."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:813
+msgid "Starting the correction of the migrated `workorder` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:849
+msgid "Failed to return the matching Work Orders."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:911
+msgid "Finished the correction of the migrated `workorder` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:938
+msgid "Starting the correction of the migrated `invoice` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:951
+msgid "Failed to return the matching Invoices."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1005
+msgid "Finished the correction of the migrated `invoice` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1032
+msgid "Starting the correction of the migrated `giftcert` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1045
+msgid "Failed to return the matching Gift Certificates."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1072
+msgid "Finished the correction of the migrated `giftcert` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1099
+msgid "Starting the correction of the migrated `schedule` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1122
+msgid "Failed to return the matching Schedules."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1143
+msgid "Finished the correction of the migrated `schedule` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1170
+msgid "Starting the correction of the migrated `user` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1183
+msgid "Failed to return the matching Users."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1204
+msgid "Finished the correction of the migrated `user` data in QWcrm."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1266
+#: components/_includes/user.php:769
+msgid "Failed to read all users from the database."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1282
+#: components/_includes/user.php:785
+msgid "All User Account passwords have been reset."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1309
+#: components/_includes/user.php:738 components/_includes/user.php:1100
+#: components/_includes/user.php:1297
+msgid "Failed to add password reset authorization."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1336
+#: components/_includes/user.php:627
+msgid "Failed to check if the username exists."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1343
+#: components/_includes/user.php:634
+msgid "The Username"
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1343
+#: components/_includes/user.php:634
+msgid "already exists! Please use a different one."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1372
+#: components/_includes/user.php:664
+msgid "Failed to check if the email address has been used."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1380
+#: components/_includes/user.php:672
+msgid "The email address has already been used. Please use a different one."
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1446
+#: components/_includes/company.php:292 components/_includes/invoice.php:1099
+msgid "Return Code"
+msgstr ""
+
+#: -setup/migrate/myitcrm/migrate_routines.php:1467
+#: components/_includes/company.php:313
+msgid "Failed to update logo because the submitted file was invalid."
+msgstr ""
+
+#: -setup/upgrade/3_1_0/upgrade_routines.php:98
+msgid "Database has now been upgraded to"
+msgstr ""
+
 #: components/_includes/administrator.php:57
 #: components/_includes/administrator.php:136
 #: components/_includes/administrator.php:285
@@ -6718,18 +6894,6 @@ msgid ""
 "Failed to check the submitted Display Name for duplicates in the database."
 msgstr ""
 
-#: components/_includes/company.php:161
-#: setup/migrate/myitcrm/migrate_routines.php:310
-msgid "Failed to update the company details."
-msgstr ""
-
-#: components/_includes/company.php:168 components/_includes/company.php:171
-#: components/company/edit.php:23
-#: setup/migrate/myitcrm/migrate_routines.php:314
-#: setup/migrate/myitcrm/migrate_routines.php:318
-msgid "Company details updated."
-msgstr ""
-
 #: components/_includes/company.php:195
 msgid "Failed to update the company hours."
 msgstr ""
@@ -6744,16 +6908,6 @@ msgstr ""
 
 #: components/_includes/company.php:232
 msgid "Start Time is the same as End Time."
-msgstr ""
-
-#: components/_includes/company.php:292 components/_includes/invoice.php:1099
-#: setup/migrate/myitcrm/migrate_routines.php:1446
-msgid "Return Code"
-msgstr ""
-
-#: components/_includes/company.php:313
-#: setup/migrate/myitcrm/migrate_routines.php:1467
-msgid "Failed to update logo because the submitted file was invalid."
 msgstr ""
 
 #: components/_includes/core.php:32
@@ -7789,25 +7943,10 @@ msgstr ""
 msgid "Failed to return the matching user records."
 msgstr ""
 
-#: components/_includes/user.php:204
-#: setup/migrate/myitcrm/migrate_routines.php:67
-msgid "Failed to insert the user record into the database."
-msgstr ""
-
 #: components/_includes/user.php:222 components/_includes/user.php:467
 #: components/_includes/user.php:560 components/_includes/user.php:743
 #: components/_includes/user.php:1075
 msgid "User Account"
-msgstr ""
-
-#: components/_includes/user.php:222
-#: setup/migrate/myitcrm/migrate_routines.php:74
-msgid "created"
-msgstr ""
-
-#: components/_includes/user.php:249
-#: setup/migrate/myitcrm/migrate_routines.php:219
-msgid "Failed to get the user details."
 msgstr ""
 
 #: components/_includes/user.php:304
@@ -7882,31 +8021,6 @@ msgstr ""
 msgid "Failed build and return and User list."
 msgstr ""
 
-#: components/_includes/user.php:627
-#: setup/migrate/myitcrm/migrate_routines.php:1336
-msgid "Failed to check if the username exists."
-msgstr ""
-
-#: components/_includes/user.php:634
-#: setup/migrate/myitcrm/migrate_routines.php:1343
-msgid "The Username"
-msgstr ""
-
-#: components/_includes/user.php:634
-#: setup/migrate/myitcrm/migrate_routines.php:1343
-msgid "already exists! Please use a different one."
-msgstr ""
-
-#: components/_includes/user.php:664
-#: setup/migrate/myitcrm/migrate_routines.php:1372
-msgid "Failed to check if the email address has been used."
-msgstr ""
-
-#: components/_includes/user.php:672
-#: setup/migrate/myitcrm/migrate_routines.php:1380
-msgid "The email address has already been used. Please use a different one."
-msgstr ""
-
 #: components/_includes/user.php:698
 msgid "Failed to check if the client already has a login."
 msgstr ""
@@ -7915,24 +8029,8 @@ msgstr ""
 msgid "The client already has a login."
 msgstr ""
 
-#: components/_includes/user.php:738 components/_includes/user.php:1100
-#: components/_includes/user.php:1297
-#: setup/migrate/myitcrm/migrate_routines.php:1309
-msgid "Failed to add password reset authorization."
-msgstr ""
-
 #: components/_includes/user.php:743
 msgid "password has been reset."
-msgstr ""
-
-#: components/_includes/user.php:769
-#: setup/migrate/myitcrm/migrate_routines.php:1266
-msgid "Failed to read all users from the database."
-msgstr ""
-
-#: components/_includes/user.php:785
-#: setup/migrate/myitcrm/migrate_routines.php:1282
-msgid "All User Account passwords have been reset."
 msgstr ""
 
 #: components/_includes/user.php:807
@@ -8977,20 +9075,14 @@ msgid "COMPANY_BUSINESS_HOURS_META_KEYWORDS"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:101
-#, fuzzy
-#| msgid "COMPANY_EDIT_HELP_TITLE"
 msgid "COMPANY_EDIT_PAGE_TITLE"
-msgstr "Help"
+msgstr "Edit Company Details"
 
 #: language/_gettext_only/pages.php:102
-#, fuzzy
-#| msgid "PAYMENT_EDIT_META_DESCRIPTION"
 msgid "COMPANY_EDIT_META_DESCRIPTION"
 msgstr "-"
 
 #: language/_gettext_only/pages.php:103
-#, fuzzy
-#| msgid "PAYMENT_EDIT_META_KEYWORDS"
 msgid "COMPANY_EDIT_META_KEYWORDS"
 msgstr "-"
 
@@ -10252,111 +10344,10 @@ msgstr ""
 msgid "Wholesale"
 msgstr ""
 
-#: setup/migrate/myitcrm/migrate_routines.php:74
-msgid "Administrator Account"
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:106
-msgid "NB: This is the MyITCRM migrate version of this function."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:107
-msgid "Something went wrong executing an SQL query."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:108
-msgid ""
-"Check to see if your Prefix is correct, if not you might have a "
-"configuration.php file that should not be present or is corrupt."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:109
-msgid "Error occured at"
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:109
-msgid "when trying to get the variable"
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:114
-msgid "Failed to get company details."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:144
-msgid "Failed to get MyITCRM company details."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:756
-msgid "The database migration process failed, check the logs."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:768
-msgid "The database migration process was successful."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:813
-msgid "Starting the correction of the migrated `workorder` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:849
-msgid "Failed to return the matching Work Orders."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:911
-msgid "Finished the correction of the migrated `workorder` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:938
-msgid "Starting the correction of the migrated `invoice` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:951
-msgid "Failed to return the matching Invoices."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1005
-msgid "Finished the correction of the migrated `invoice` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1032
-msgid "Starting the correction of the migrated `giftcert` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1045
-msgid "Failed to return the matching Gift Certificates."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1072
-msgid "Finished the correction of the migrated `giftcert` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1099
-msgid "Starting the correction of the migrated `schedule` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1122
-msgid "Failed to return the matching Schedules."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1143
-msgid "Finished the correction of the migrated `schedule` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1170
-msgid "Starting the correction of the migrated `user` data in QWcrm."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1183
-msgid "Failed to return the matching Users."
-msgstr ""
-
-#: setup/migrate/myitcrm/migrate_routines.php:1204
-msgid "Finished the correction of the migrated `user` data in QWcrm."
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:98
-msgid "Database has now been upgraded to"
-msgstr ""
+#, fuzzy
+#~| msgid "COMPANY_EDIT_HELP_CONTENT"
+#~ msgid "COMPANY_RECORD_HELP_CONTENT"
+#~ msgstr "Configure your company information."
 
 #~ msgid "COMPANY_OPTIONS_HELP_TITLE"
 #~ msgstr "Help"

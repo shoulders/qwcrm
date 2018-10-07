@@ -20,7 +20,7 @@ if(isset($VAR['submit'])) {
     update_company_details($VAR);
     
     // Reload Company options and display a success message
-    force_page('company', 'options', 'information_msg='._gettext("Company details updated."));
+    force_page('company', 'edit', 'information_msg='._gettext("Company details updated."));
     
 }
 

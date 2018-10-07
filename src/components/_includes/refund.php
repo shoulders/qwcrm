@@ -141,7 +141,9 @@ function insert_refund($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."refund_records SET
+            client_id        =". $db->qstr( $VAR['client_id']               ).",
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
+            giftcert_id      =". $db->qstr( $VAR['giftcert_id']             ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",
@@ -228,7 +230,9 @@ function update_refund($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."refund_records SET
+            client_id        =". $db->qstr( $VAR['client_id']               ).",
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
+            giftcert_id      =". $db->qstr( $VAR['giftcert_id']             ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",

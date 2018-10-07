@@ -141,7 +141,6 @@ function insert_otherincome($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."otherincome_records SET
-            invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",
@@ -159,7 +158,7 @@ function insert_otherincome($VAR) {
         
         // Log activity        
         $record = _gettext("Refund Record").' '.$db->Insert_ID().' '._gettext("created.");
-        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
+        write_record_to_activity_log($record, null, null, null, null);
         
         return $db->Insert_ID();
         
@@ -228,7 +227,6 @@ function update_otherincome($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."otherincome_records SET
-            invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",
@@ -239,7 +237,7 @@ function update_otherincome($VAR) {
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
             note             =". $db->qstr( $VAR['note']                    )."
-            WHERE otherincome_id  =". $db->qstr( $VAR['otherincome_id']               );                        
+            WHERE otherincome_id  =". $db->qstr( $VAR['otherincome_id']     );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the otherincome details."));
@@ -247,7 +245,7 @@ function update_otherincome($VAR) {
         
         // Log activity        
         $record = _gettext("Refund Record").' '.$VAR['otherincome_id'].' '._gettext("updated.");
-        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
+        write_record_to_activity_log($record, null, null, null, null);
         
         return true;
       
@@ -267,9 +265,6 @@ function delete_otherincome($otherincome_id) {
     
     $db = QFactory::getDbo();
     
-    // Get invoice_id before deleting the record
-    $invoice_id = get_otherincome_details($otherincome_id, 'invoice_id');
-    
     $sql = "DELETE FROM ".PRFX."otherincome_records WHERE otherincome_id=".$db->qstr($otherincome_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -278,7 +273,7 @@ function delete_otherincome($otherincome_id) {
         
         // Log activity        
         $record = _gettext("Refund Record").' '.$otherincome_id.' '._gettext("deleted.");
-        write_record_to_activity_log($record, null, null, null, $invoice_id);
+        write_record_to_activity_log($record, null, null, null, null);
         
         return true;
         
@@ -289,7 +284,7 @@ function delete_otherincome($otherincome_id) {
 /** Other Functions **/
    
 ##########################################
-#      Last Record Look Up               #
+#      Last Record Look Up               #  // This migth not be needed
 ##########################################
 
 function last_otherincome_id_lookup() {
