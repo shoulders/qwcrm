@@ -132,23 +132,27 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Opened{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$opened_invoices}</b></font></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>{t}Pending{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$pending_invoices}</b></font></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>{t}Unpaid{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$unpaid_invoices}</b></font></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><b>{t}Partially Paid{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$partially_paid_invoices}</b></font></td>
-                                                                    </tr>
+                                                                        <td><font color="red"<b> {$invoices_opened}</b></font></td>
+                                                                    </tr>                                                                    
                                                                     <tr>
                                                                         <td><b>{t}Paid{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$paid_invoices}</b></font></td>
+                                                                        <td><font color="red"<b> {$invoices_paid}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Partially Refunded{/t}:</b></td>
+                                                                        <td><font color="red"<b> </b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Refunded{/t}:</b></td>
+                                                                        <td><font color="red"<b> </b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Cancelled{/t}:</b></td>
+                                                                        <td><font color="red"<b> </b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Closed{/t}:</b></td>
+                                                                        <td><font color="red"<b> {$invoices_closed}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -178,7 +182,8 @@
                                                             <td class="olohead">{t}Labour{/t}</td>
                                                             <td class="olohead">{t}Parts{/t}</td>                                                        
                                                             <td class="olohead">{t}Expenses{/t}</td>
-                                                            <td class="olohead">{t}Refunds{/t}</td>                                                        
+                                                            <td class="olohead">{t}Refunds{/t}</td>
+                                                            <td class="olohead">{t}Other Income{/t}</td>
                                                         </tr>
                                                         <tr>
 
@@ -194,7 +199,7 @@
                                                                         <td><font color="red"<b>{if $labour_items_count == ''}0{else}{$labour_items_count}{/if}</b></font></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Sub{/t}:</b></td>
+                                                                        <td><b>{t}Sub{/t} {t}[N]{/t}:</b></td>
                                                                         <td><font color="red"<b>{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
@@ -212,7 +217,7 @@
                                                                         <td><font color="red"<b>{if $parts_items_count == ''}0{else}{$parts_items_count}{/if}</b></font></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Sub{/t}:</b></td>
+                                                                        <td><b>{t}Sub{/t} {t}[N]{/t}:</b></td>
                                                                         <td><font color="red"<b>{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
@@ -252,7 +257,25 @@
                                                                         <td><font color="red"<b>{$currency_sym}{$refund_gross_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
-                                                            </td>                                                        
+                                                            </td>   
+                                                            
+                                                            <!-- Other Income -->
+                                                            <td class="olotd4" valign="top">
+                                                                <table>
+                                                                    <tr>
+                                                                        <td><b>{t}Net{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}VAT{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_vat_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td><b>{t}Gross{/t}:</b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td> 
 
                                                         </tr>
                                                     </table>
@@ -288,18 +311,17 @@
                                                             <td class="olotd4" valign="top">
                                                                 <table>
                                                                     <tr>
-                                                                        <td><b>{t}Sub Total{/t}:</b></td>
+                                                                        <td><b>{t}Sub Total{/t} {t}[N]{/t}:</b></td>
                                                                         <td><font color="red"<b>{$currency_sym}{$invoice_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Discount{/t}:</b></td>
+                                                                        <td><b>{t}Discount{/t} {t}[N]{/t}:</b></td>
                                                                         <td><font color="red"<b>{$currency_sym}{$invoice_discount_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}:</b></td>
                                                                         <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
-                                                                    </tr>
-                                                                    
+                                                                    </tr>                                                                    
                                                                     {*<tr>
                                                                         <td><b>{if $tax_type == 'vat'}{t}VAT{/t}{elseif $tax_type == 'sales'}{t}Sales Tax{/t}{else}{t}Sales Tax{/t} / {t}VAT{/t}{/if}:</b></td>                                                                    
                                                                         <td><font color="red"<b>{$currency_sym}{$invoice_tax_amount|string_format:"%.2f"}</b></font></td>

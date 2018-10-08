@@ -88,7 +88,7 @@ function count_clients($status, $start_date = null, $end_date = null) {
         
     // Filter by Create Date
     if($start_date && $end_date) {
-        $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date);
+        $whereTheseRecords .= " AND create_date >= ".$db->qstr($start_date)." AND create_date <= ".$db->qstr($end_date.' 23:59:59');
     }
     
     $sql = "SELECT COUNT(*) AS count
@@ -200,13 +200,13 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
     if($status == 'closed') {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date.' 23:59:59');
         }
         
     } else {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date.' 23:59:59');
         }
         
     }
@@ -229,7 +229,7 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
 /** Schedules **/
 
 ############################################
-#    Count schedule items                  #  // Currently only used in schedule delete check
+#    Count Schedule items                  #  // Currently only used in schedule delete check
 ############################################
 
 function count_schedules($workorder_id = null) {
@@ -360,13 +360,13 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
     if($status == 'closed') {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date.' 23:59:59');
         } 
         
     } else {
         
         if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date);
+            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date.' 23:59:59');
         }
         
     }
@@ -398,7 +398,7 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
 function sum_invoices_value($status, $value_name, $start_date = null, $end_date = null, $tax_type = null) {
     
     $db = QFactory::getDbo();
-        
+    
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n"; 
     
@@ -528,6 +528,9 @@ function sum_labour_items($value_name, $start_date, $end_date) {
 function count_parts_items($start_date, $end_date) {
     
     $db = QFactory::getDbo();
+    
+    // Compensate for datetime    
+    $end_date = $end_date.' 23:59:59';
     
     $sql = "SELECT SUM(qty) AS count
             FROM ".PRFX."invoice_parts

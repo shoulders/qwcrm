@@ -26,11 +26,13 @@ if(isset($VAR['submit'])) {
     $smarty->assign('wo_closed',                    count_workorders('closed', null, $start_date, $end_date)               );    
          
     // Invoices
-    $smarty->assign('opened_invoices',              count_invoices('opened', null, $start_date, $end_date)                 );    
-    $smarty->assign('pending_invoices',             count_invoices('pending', null, $start_date, $end_date)                );
-    $smarty->assign('unpaid_invoices',              count_invoices('unpaid', null, $start_date, $end_date)                 );
-    $smarty->assign('partially_paid_invoices',      count_invoices('partially_paid', null, $start_date, $end_date)         );
-    $smarty->assign('paid_invoices',                count_invoices('paid', null, $start_date, $end_date)                   );
+    $smarty->assign('invoices_opened',              count_invoices('opened', null, $start_date, $end_date)                 );    
+    $smarty->assign('invoices_paid',                count_invoices('paid', null, $start_date, $end_date)                   );
+    //$smarty->assign('invoices_cancelled',           count_invoices('cancelled', null, $start_date, $end_date)              );
+    //$smarty->assign('invoices_refunded',            count_invoices('refunded', null, $start_date, $end_date)               );
+    //$smarty->assign('invoices_partially_refunded',  count_invoices('partially_refunded', null, $start_date, $end_date)     );
+    $smarty->assign('invoices_closed',              count_invoices('closed', null, $start_date, $end_date)                 );
+    
     
     /* Advanced Statistics */
     
@@ -93,8 +95,8 @@ if(isset($VAR['submit'])) {
 
     // VAT    
     $vat_total_in = $invoice_vat_tax_amount  + $otherincome_vat_amount;
-    $vat_total_out = $expense_vat_amount - $refund_vat_amount;
-    $vat_balance = ($invoice_vat_tax_amount  + $otherincome_vat_amount) - ($expense_vat_amount - $refund_vat_amount);    
+    $vat_total_out = $expense_vat_amount + $refund_vat_amount;
+    $vat_balance = ($invoice_vat_tax_amount  + $otherincome_vat_amount) - ($expense_vat_amount + $refund_vat_amount);    
     $smarty->assign('vat_invoice',      $invoice_vat_tax_amount );
     $smarty->assign('vat_otherincome',  $otherincome_vat_amount );
     $smarty->assign('vat_expense',      $expense_vat_amount     );
