@@ -32,11 +32,6 @@ if(isset($VAR['change_employee'])) {
     force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
 }
 
-// Delete a Work Order
-if(isset($VAR['delete'])) {    
-    force_page('workorder', 'delete', 'workorder_id='.$VAR['workorder_id']);
-}
-
 /* Remove unallowed status for manual change */
 
 // Get status list

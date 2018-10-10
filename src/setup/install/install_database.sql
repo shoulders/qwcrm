@@ -375,9 +375,54 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 (4, 'paid', 'Paid'),
 (5, 'in_dispute', 'In Dispute'),
 (6, 'overdue', 'Overdue'),
-(7, 'cancelled', 'Cancelled'),
+(7, 'collections', 'Collections'),
 (8, 'refunded', 'Refunded'),
-(9, 'collections', 'Collections');
+(9, 'cancelled', 'Cancelled'),
+(10, 'deleted', 'Deleted');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__otherincome_records`
+--
+
+CREATE TABLE `#__otherincome_records` (
+  `otherincome_id` int(10) NOT NULL,
+  `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `date` date NOT NULL,
+  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `items` text COLLATE utf8_unicode_ci NOT NULL,
+  `note` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__otherincome_types`
+--
+
+CREATE TABLE `#__otherincome_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `otherincome_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__otherincome_types`
+--
+
+INSERT INTO `#__otherincome_types` (`id`, `otherincome_type_id`, `display_name`) VALUES
+(1, 'cancelled_services', 'Cancelled Services'),
+(2, 'commission', 'Commission'),
+(3, 'credit_note', 'Credit Note'),
+(4, 'interest', 'Interest'),
+(5, 'other', 'Other'),
+(6, 'returned_goods', 'Returned Goods');
 
 -- --------------------------------------------------------
 
@@ -508,8 +553,9 @@ CREATE TABLE `#__payment_records` (
 
 CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `giftcert_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -517,7 +563,6 @@ CREATE TABLE `#__refund_records` (
   `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `items` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -538,11 +583,8 @@ CREATE TABLE `#__refund_types` (
 --
 
 INSERT INTO `#__refund_types` (`id`, `refund_type_id`, `display_name`) VALUES
-(1, 'credit_note', 'Credit Note'),
-(2, 'other', 'Other'),
-(3, 'proxy_invoice', 'Proxy Invoice'),
-(4, 'returned_goods', 'Returned Goods'),
-(5, 'returned_services', 'Returned Services');
+(1, 'giftcert', 'Gift Certificate'),
+(2, 'invoice', 'Invoice');
 
 -- --------------------------------------------------------
 
@@ -1057,6 +1099,18 @@ ALTER TABLE `#__invoice_records`
 --
 ALTER TABLE `#__invoice_statuses`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__otherincome_records`
+--
+ALTER TABLE `#__otherincome_records`
+  ADD PRIMARY KEY (`otherincome_id`);
+
+--
+-- Indexes for table `#__otherincome_types`
+--
+ALTER TABLE `#__otherincome_types`
+  ADD PRIMARY KEY (`otherincome_type_id`);
 
 --
 -- Indexes for table `#__payment_accepted_methods`

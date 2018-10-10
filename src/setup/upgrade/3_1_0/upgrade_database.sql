@@ -11,6 +11,7 @@
 
 DROP TABLE `#__customer_types`;
 DROP TABLE `#__expense_types`;
+DROP TABLE `#__invoice_statuses`;
 DROP TABLE `#__payment_system_methods`;
 DROP TABLE `#__payment_credit_cards`;
 DROP TABLE `#__payment_manual_methods`;
@@ -29,7 +30,7 @@ RENAME TABLE `#__giftcert` TO `#__giftcert_records`;
 RENAME TABLE `#__invoice` TO `#__invoice_records`;
 RENAME TABLE `#__payment` TO `#__payment_options`;
 RENAME TABLE `#__payment_transactions` TO `#__payment_records`;
-RENAME TABLE `#__refund` TO `#__refund_records`;
+RENAME TABLE `#__refund` TO `#__otherincome_records`;
 RENAME TABLE `#__schedule` TO `#__schedule_records`;
 RENAME TABLE `#__supplier` TO `#__supplier_records`;
 RENAME TABLE `#__user` TO `#__user_records`;
@@ -90,6 +91,30 @@ INSERT INTO `#__expense_types` (`id`, `expense_type_id`, `display_name`) VALUES
 ALTER TABLE `#__expense_types` ADD PRIMARY KEY (`id`);
 
 --
+-- Create Table `#__invoice_statuses`
+--
+
+CREATE TABLE `#__invoice_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'pending', 'Pending'),
+(2, 'unpaid', 'Unpaid'),
+(3, 'partially_paid', 'Partially Paid'),
+(4, 'paid', 'Paid'),
+(5, 'in_dispute', 'In Dispute'),
+(6, 'overdue', 'Overdue'),
+(7, 'collections', 'Collections'),
+(8, 'refunded', 'Refunded'),
+(9, 'cancelled', 'Cancelled'),
+(10, 'deleted', 'Deleted');
+
+ALTER TABLE `#__invoice_statuses` ADD PRIMARY KEY (`id`);
+
+--
 -- Create Table `#__payment_accepted_methods`
 --
 
@@ -136,6 +161,27 @@ INSERT INTO `#__payment_purchase_methods` (`id`, `purchase_method_id`, `display_
 ALTER TABLE `#__payment_purchase_methods` ADD PRIMARY KEY (`id`);
 
 --
+-- Create Table `#__refund_records`
+--
+
+CREATE TABLE `#__refund_records` (
+  `refund_id` int(10) NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `giftcert_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `date` date NOT NULL,
+  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `note` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `#__refund_records` ADD PRIMARY KEY (`refund_id`);
+
+--
 -- Create Table `#__refund_types`
 --
 
@@ -146,11 +192,8 @@ CREATE TABLE `#__refund_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `#__refund_types` (`id`, `refund_type_id`, `display_name`) VALUES
-(1, 'credit_note', 'Credit Note'),
-(2, 'other', 'Other'),
-(3, 'proxy_invoice', 'Proxy Invoice'),
-(4, 'returned_goods', 'Returned Goods'),
-(5, 'returned_services', 'Returned Services');
+(1, 'giftcert', 'Gift Certificate'),
+(2, 'invoice', 'Invoice');
 
 ALTER TABLE `#__refund_types` ADD PRIMARY KEY (`refund_type_id`);
 
@@ -244,7 +287,7 @@ INSERT INTO `#__date_formats` (`id`, `date_format_key`, `display_name`) VALUES
 ALTER TABLE `#__date_formats` ADD PRIMARY KEY (`id`);
 
 --
--- Create Table `qw_giftcert_statuses`
+-- Create Table `#__giftcert_statuses`
 --
 
 CREATE TABLE `#__giftcert_statuses` (
@@ -269,10 +312,10 @@ ALTER TABLE `#__giftcert_statuses` ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `#__client_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__expense_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__refund_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__otherincome_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__schedule_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__user_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 
 --
 -- Rename 'display_name' to 'company_name'
@@ -293,7 +336,7 @@ ALTER TABLE `#__giftcert_records` CHANGE `customer_id` `client_id` VARCHAR(20) C
 ALTER TABLE `#__invoice_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__schedule_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__user_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__workorder_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 
 --
@@ -339,6 +382,7 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:open
 
 ALTER TABLE `#__invoice_records` DROP `paid_date`;
 ALTER TABLE `#__user_records` DROP `display_name`;
+ALTER TABLE `#__otherincome_records` DROP `invoice_id`;
 
 --
 -- Add Columns
@@ -360,6 +404,7 @@ ALTER TABLE `#__user_acl_page` CHANGE `Customer` `Client` INT(1) NOT NULL DEFAUL
 ALTER TABLE `#__giftcert_records` CHANGE `is_redeemed` `redeemed` INT(1) NOT NULL DEFAULT '0' AFTER `active`;
 ALTER TABLE `#__giftcert_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `redeemed`;
 ALTER TABLE `#__giftcert_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__otherincome_records` CHANGE `refund_type_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- Convert from integer to currency
@@ -382,4 +427,4 @@ ALTER TABLE `#__user_reset` COLLATE = utf8_unicode_ci;
 -- Change from int(10) to int(11)
 --
 
-ALTER TABLE `qw_client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;

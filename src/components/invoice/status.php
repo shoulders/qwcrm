@@ -35,11 +35,6 @@ if(isset($VAR['change_employee'])) {
     force_page('invoice', 'status&invoice_id='.$VAR['invoice_id']);
 }
 
-// Delete a Work Order
-if(isset($VAR['delete'])) {    
-    force_page('invoice', 'delete', 'invoice_id='.$VAR['invoice_id']);
-}
-
 /* Remove dormant invoice statuses (for now) */
 
 // Get status list
@@ -52,9 +47,10 @@ unset($statuses[2]);    // 'partially_paid'
 unset($statuses[3]);    // 'paid'    
 unset($statuses[4]);    // 'in_dispute'
 unset($statuses[5]);    // 'overdue'
-unset($statuses[6]);    // 'cancelled'
+unset($statuses[6]);    // 'collections'
 unset($statuses[7]);    // 'refunded'
-unset($statuses[8]);    // 'collections'
+unset($statuses[8]);    // 'cancelled'
+unset($statuses[9]);    // 'deleted'
 
 //  Remaps the array ID's - Because of how smarty works you need to maintain the array internal number system
 foreach($statuses as $status) {
@@ -65,13 +61,16 @@ foreach($statuses as $status) {
 
 // Build the page with the current status from the database
 
-$smarty->assign('allowed_to_change_status',     check_invoice_status_can_be_changed($VAR['invoice_id'])       );
-$smarty->assign('allowed_to_change_employee',   !get_invoice_details($VAR['invoice_id'], 'is_closed')         );
-$smarty->assign('allowed_to_delete',            check_invoice_can_be_deleted($VAR['invoice_id'])              );
-$smarty->assign('active_employees',             get_active_users('employees')                          );
-$smarty->assign('invoice_statuses',             $edited_statuses                                            );
-$smarty->assign('invoice_status',               get_invoice_details($VAR['invoice_id'], 'status')             );
-$smarty->assign('assigned_employee_id',         $assigned_employee_id                                       );
-$smarty->assign('assigned_employee_details',    get_user_details($assigned_employee_id)                );
+$smarty->assign('allowed_to_change_status',     check_invoice_status_can_be_changed($VAR['invoice_id']) );
+$smarty->assign('allowed_to_change_employee',   !get_invoice_details($VAR['invoice_id'], 'is_closed')   );
+$smarty->assign('allowed_to_refund',            check_invoice_can_be_refunded($VAR['invoice_id'])       );
+$smarty->assign('allowed_to_cancel',            check_invoice_can_be_cancelled($VAR['invoice_id'])      );
+$smarty->assign('allowed_to_delete',            check_invoice_can_be_deleted($VAR['invoice_id'])        );
+$smarty->assign('active_employees',             get_active_users('employees')                           );
+$smarty->assign('invoice_statuses',             $edited_statuses                                        );
+$smarty->assign('invoice_status',               get_invoice_details($VAR['invoice_id'], 'status')       );
+$smarty->assign('invoice_status_display_name',  get_invoice_status_display_name(get_invoice_details($VAR['invoice_id'], 'status')));
+$smarty->assign('assigned_employee_id',         $assigned_employee_id                                   );
+$smarty->assign('assigned_employee_details',    get_user_details($assigned_employee_id)                 );
 
 $BuildPage .= $smarty->fetch('invoice/status.tpl');

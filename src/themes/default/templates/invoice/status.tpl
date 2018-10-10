@@ -22,22 +22,21 @@
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">{t}Assign To{/t}</td>
-                                <td class="olohead" align="center">{t}Delete{/t}</td>
+                                <td class="olohead" align="center">{t}Assign To{/t}</td>                                
                             </tr>
                             <tr>
                             
                                 <!-- Assign Status Update -->
                                 <td class="olotd4" align="center" width="33%">
-                                    {if $allowed_to_change_status}
-                                        <p>&nbsp;</p>                                    
-                                        <form action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}" method="post" name="new_invoice_status" id="new_invoice_status">
+                                    <p><b>{t}Current Status{/t}:</b> {$invoice_status_display_name}</p>
+                                    {if $allowed_to_change_status}                                                                               
+                                        <form action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}" method="get" name="new_invoice_status" id="new_invoice_status">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
                                                 {section name=s loop=$invoice_statuses}    
                                                     <option value="{$invoice_statuses[s].status_key}"{if $invoice_status == $invoice_statuses[s].status_key} selected{/if}>{t}{$invoice_statuses[s].display_name}{/t}</option>
                                                 {/section}                                            
-                                            </select>                                                                                       
+                                            </select>
                                             <p>&nbsp;</p>
                                             <input type="hidden" name="updated_by" value="{$login_user_id}"> 
                                             <input class="olotd4" name="change_status" value="{t}Update{/t}" type="submit" />                                                                      
@@ -51,7 +50,7 @@
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_change_employee}                                        
                                         <p>&nbsp;</p>  
-                                        <form method="post" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
+                                        <form method="get" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
                                             <select class="olotd4" name="target_employee_id">
                                                 {section name=i loop=$active_employees}
                                                     <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
@@ -64,14 +63,46 @@
                                         {t}This invoice cannot have it's assigned employee changed because it's current state does not allow it.{/t}
                                     {/if}
                                 </td>
+                                
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="menutd2" colspan="2">                        
+                        <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
+                            <tr>
+                                <td class="olohead" align="center">{t}Refund{/t}</td>
+                                <td class="olohead" align="center">{t}Cancel{/t}</td>
+                                <td class="olohead" align="center">{t}Delete{/t}</td>
+                            </tr>
+                            <tr>
+                            
+                                <!-- Refund invoice Button -->
+                                <td class="olotd4" align="center" width="33%" height="150"> 
+                                    <!-- if invoice is open and does not have any payments -->                                        
+                                    {if $allowed_to_refund}
+                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to refund this invoice?{/t}')) window.location.href='index.php?component=refund&page_tpl=new&invoice_id={$invoice_id}';">{t}Refund{/t}</button>                                        
+                                    {else}
+                                        {t}This invoice cannot be refunded. You can only refund the invoice if it is paid and is not cancelled or deleted.{/t}
+                                    {/if}                                        
+                                </td> 
+
+                                <!-- Cancel invoice Button -->
+                                <td class="olotd4" align="center" width="33%"> 
+                                    <!-- if invoice is open and does not have any payments -->                                        
+                                    {if $allowed_to_cancel}
+                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to cancel this invoice?{/t}')) window.location.href='index.php?component=invoice&page_tpl=cancel&invoice_id={$invoice_id}';">{t}Refund{/t}</button>                                                                                   
+                                    {else}
+                                        {t}This invoice cannot be cancelled. You can only cancel the invoice if it is open and does not have any payments.{/t}
+                                    {/if}                                        
+                                </td> 
 
                                 <!-- Delete invoice Button -->                        
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_delete}
-                                        <form method="post" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this invoice?{/t}');">                                            
-                                        </form>                                            
+                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to delete this invoice?{/t}')) window.location.href='index.php?component=invoice&page_tpl=delete&invoice_id={$invoice_id}';">{t}Delete{/t}</button>
                                     {else}
                                         {t}This invoice cannot be deleted. You can only delete the invoice if it is open and does not have any payments.{/t}
                                     {/if}                                        
@@ -80,7 +111,7 @@
                             </tr>
                         </table>
                     </td>
-                </tr>
+                </tr>                
             </table>
         </td>
     </tr>

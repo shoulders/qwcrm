@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'payment.php');
 
@@ -27,7 +28,9 @@ if(isset($VAR['submit'])) {
 }   
 
 // Build the page
+$refund_details = get_refund_details($VAR['refund_id']);
 $smarty->assign('refund_types', get_refund_types());
 $smarty->assign('payment_methods', get_payment_purchase_methods());
-$smarty->assign('refund_details', get_refund_details($VAR['refund_id']));
+$smarty->assign('refund_details', $refund_details);
+$smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));
 $BuildPage .= $smarty->fetch('refund/edit.tpl');

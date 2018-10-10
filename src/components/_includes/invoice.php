@@ -1205,7 +1205,6 @@ function export_invoice_prefill_items_csv() {
     
 }
 
- 
 ##########################################################
 #  Check if the invoice status is allowed to be changed  #
 ##########################################################
@@ -1217,19 +1216,37 @@ function export_invoice_prefill_items_csv() {
     
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has payments and is partially paid."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($invoice_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has payments and is paid."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has payments and is paid."));
+        return false;        
+    }
+    
+    // Is refunded
+    if($invoice_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($invoice_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($invoice_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been deleted."));
         return false;        
     }
         
     // Has payments
     if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because it has payments."));
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has payments."));
         return false;        
     }
 
@@ -1237,9 +1254,109 @@ function export_invoice_prefill_items_csv() {
     return true;     
      
  }
- 
+
 ###############################################################
-#   Check to see if the invoice can be deleted              #
+#   Check to see if the invoice can be refunded               #
+###############################################################
+
+function check_invoice_can_be_refunded($invoice_id) {
+    
+    // Get the invoice details
+    $invoice_details = get_invoice_details($invoice_id);
+    
+    // No payments
+    if(empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
+        return false;        
+    }
+    
+    // Is partially paid
+    if($invoice_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
+        return false;
+    }
+        
+    // Is refunded
+    if($invoice_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($invoice_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($invoice_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
+        return false;        
+    }    
+
+    /* Has Refunds - should not be needed
+    if(count_refunds($invoice_id) > 0) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
+        return false;
+    }*/
+     
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the invoice can be refunded               #  // this is not started/finished but just a placeholder for now
+###############################################################
+
+function check_invoice_can_be_cancelled($invoice_id) {
+    
+    // Get the invoice details
+    $invoice_details = get_invoice_details($invoice_id);
+    
+    // Has payments
+    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice has payments."));
+        return false;        
+    }
+    
+    // Is partially paid
+    if($invoice_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice is partially paid."));
+        return false;
+    }
+        
+    // Is refunded
+    if($invoice_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($invoice_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has already been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($invoice_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been deleted."));
+        return false;        
+    }    
+
+    /* Has Refunds - should not be needed
+    if(count_refunds($invoice_id) > 0) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
+        return false;
+    }*/
+     
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the invoice can be deleted                #
 ###############################################################
 
 function check_invoice_can_be_deleted($invoice_id) {
@@ -1263,7 +1380,25 @@ function check_invoice_can_be_deleted($invoice_id) {
     if($invoice_details['status'] == 'paid') {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments and is paid."));
         return false;        
-    }    
+    }
+    
+    // Is refunded
+    if($invoice_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($invoice_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($invoice_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it already been deleted."));
+        return false;        
+    }
     
     // Has payments
     if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
@@ -1274,14 +1409,14 @@ function check_invoice_can_be_deleted($invoice_id) {
     /*
     // Has Labour
     if(!empty(get_invoice_labour_items($invoice_id))) {
-       postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
-       return false;          
+        postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
+        return false;          
     }    
     
     // Has Parts
     if(!empty(get_invoice_parts_items($invoice_id))) {
-       postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
-       return false;          
+        postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
+        return false;          
     }
     */
     
@@ -1291,11 +1426,11 @@ function check_invoice_can_be_deleted($invoice_id) {
         return false;
     }
         
-    // Has Refunds
+    /* Has Refunds - should not be needed
     if(count_refunds($invoice_id) > 0) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has refunds."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has been refunded."));
         return false;
-    }
+    }*/
      
     // All checks passed
     return true;

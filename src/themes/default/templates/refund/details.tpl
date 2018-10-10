@@ -34,8 +34,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Payee{/t}</b></td>
-                                            <td class="menutd">{$refund_details.payee}</td>
+                                            <td class="menutd"><b>{t}Client ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$refund_details.client_id}</a></td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$refund_details.net_amount}</td>
                                         </tr>                                        
@@ -66,28 +66,11 @@
                                             <td class="menutd">{$currency_sym} {$refund_details.gross_amount}</td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Client ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$refund_details.client_id}</a></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr> 
-                                        <tr>
                                             <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a></td>
                                             <td class="menutd"><b>{t}Giftcert ID{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$refund_details.giftcert_id}">{$refund_details.giftcert_id}</a></td>                                            
                                         </tr>                                        
-                                        <tr class="row2">
-                                            <td class="menutd" colspan="4"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Items{/t}</b></td>
-                                            <td class="menutd" colspan="3"></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd" colspan="3">{$refund_details.items}</td>
-                                            <td class="menutd"></td>
-                                        </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                        

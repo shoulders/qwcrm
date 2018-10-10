@@ -146,7 +146,7 @@ function page_links_acl_replace(&$BuildPage) {
 function page_links_acl_removal(&$BuildPage) {
     
     // This allows for <a>...</a> being split over several lines. The opening <a .....> must be on one line - This is also optimized with atomic groups
-    $BuildPage = preg_replace_callback('/<(?>a|button|input)[^\r\n]*["\'](index\.php[^\r\n]*)["\'][^\r\n]*>.*<\/(?>a|button|input)>/Us',
+    $BuildPage = preg_replace_callback('/<(?>a|button|input|form)[^\r\n]*["\'](index\.php[^\r\n]*)["\'][^\r\n]*>.*<\/(?>a|button|input|form)>/Us',
         function($matches) {
             
             // Check to see if user is allowed to use the link

@@ -31,7 +31,7 @@
                                 <td class="olotd4" align="center" width="33%">                                    
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>
-                                        <form action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}" method="post" name="new_workorder_status" id="new_workorder_status">
+                                        <form method="get" action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}" name="new_workorder_status" id="new_workorder_status">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
                                                 {section name=s loop=$workorder_statuses}    
@@ -53,7 +53,7 @@
                                         <!-- If the employee is assigned to this workorder and it is not closed, or no one is assigned, or the user is an admin - show a dropdown list and update button, else show the assigned employee details instead -->
                                         {if ($assigned_employee_id == $login_user_id && $workorder_status != 6) || $assigned_employee_id == '' || $login_usergroup_id <= 3}
                                             <p>&nbsp;</p>  
-                                            <form method="post" action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}">
+                                            <form method="get" action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}">
                                                 <select class="olotd4" name="target_employee_id">
                                                     {section name=i loop=$active_employees}
                                                         <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
@@ -75,9 +75,7 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if work order is created and open, you can delete it, otherwise you cannot -->                                        
                                     {if $allowed_to_delete}
-                                        <form method="post" action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this Workorder?{/t}');">
-                                        </form>                                            
+                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to delete this Workorder?{/t}')) window.location.href='index.php?component=workorder&page_tpl=delete&workorder_id={$workorder_id}';">{t}Delete{/t}</button>                                                                                
                                     {else}
                                         {t}This work order cannot be deleted. You can only delete the work order if it's status is either unassigned or management and the work order has no invoice.{/t}
                                     {/if}                                        

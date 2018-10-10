@@ -143,8 +143,7 @@ function insert_refund($VAR) {
     $sql = "INSERT INTO ".PRFX."refund_records SET
             client_id        =". $db->qstr( $VAR['client_id']               ).",
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
-            giftcert_id      =". $db->qstr( $VAR['giftcert_id']             ).",
-            payee            =". $db->qstr( $VAR['payee']                   ).",
+            giftcert_id      =". $db->qstr( $VAR['giftcert_id']             ).",            
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
@@ -152,7 +151,6 @@ function insert_refund($VAR) {
             vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
-            items            =". $db->qstr( $VAR['items']                   ).",
             note             =". $db->qstr( $VAR['note']                    );
 
     if(!$rs = $db->Execute($sql)) {
@@ -232,8 +230,7 @@ function update_refund($VAR) {
     $sql = "UPDATE ".PRFX."refund_records SET
             client_id        =". $db->qstr( $VAR['client_id']               ).",
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",
-            giftcert_id      =". $db->qstr( $VAR['giftcert_id']             ).",
-            payee            =". $db->qstr( $VAR['payee']                   ).",
+            giftcert_id      =". $db->qstr( $VAR['giftcert_id']             ).",            
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             type             =". $db->qstr( $VAR['type']                    ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
@@ -241,7 +238,6 @@ function update_refund($VAR) {
             vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
-            items            =". $db->qstr( $VAR['items']                   ).",
             note             =". $db->qstr( $VAR['note']                    )."
             WHERE refund_id  =". $db->qstr( $VAR['refund_id']               );                        
             
