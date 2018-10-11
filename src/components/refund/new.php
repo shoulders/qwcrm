@@ -57,10 +57,14 @@ if((isset($VAR['submit']))) {
     // Invoice version
     if(isset($VAR['invoice_id'])) {
         
+        // Make sure the invoice is allowed to be refunded
+        if(!check_invoice_can_be_refunded($invoice_id)) {
+            force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'information_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be refunded."));
+        }
+        
         $invoice_details = get_invoice_details($VAR['invoice_id']);
         
         // Build array
-        $refund_details['payee'] = 'Fix me - line 61';
         $refund_details['date'] = date('Y-m-d');
         $refund_details['client_id'] = $invoice_details['client_id'];
         $refund_details['invoice_id'] = $invoice_details['invoice_id'];
@@ -77,11 +81,16 @@ if((isset($VAR['submit']))) {
         $client_display_name = get_client_details($invoice_details['client_id'], 'display_name');        
         
     // Gift Certificate version    
-    } elseif ($VAR['invoice_id']) {
+    } elseif (isset($VAR['giftcert_id'])) {
+        
+        // Make sure the giftcert is allowed to be refunded
+        if(!check_giftcert_can_be_refunded($invoice_id)) {
+            force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'information_msg='._gettext("Gift Certificate").': '.$VAR['giftcert_id'].' '._gettext("cannot be refunded."));
+        }
         
         $giftcert_details = get_giftcert_details($VAR['giftcert_id']);
         
-        $refund_details['payee'] = 'Fix me - line 82';
+        // Build array
         $refund_details['date'] = date('Y-m-d');
         $refund_details['client_id'] = $giftcert_details['client_id'];
         $refund_details['invoice_id'] = null;

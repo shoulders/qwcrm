@@ -42,9 +42,13 @@ function display_refunds($order_by, $direction, $use_pages = false, $records_per
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";
+    $havingTheseRecords = '';
     
-    // Restrict results by search category and search term
-    if($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
+    // Restrict results by search category (client) and search term
+    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        
+    // Restrict results by search category (employee) and search term
+    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
     
     /* Filter the Records */  
     
@@ -56,10 +60,18 @@ function display_refunds($order_by, $direction, $use_pages = false, $records_per
     
     /* The SQL code */
     
-    $sql =  "SELECT * 
-            FROM ".PRFX."refund_records                                                   
+    $sql =  "SELECT
+            ".PRFX."refund_records.*,
+                
+            IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name
+
+            FROM ".PRFX."refund_records
+                
+            LEFT JOIN ".PRFX."client_records ON ".PRFX."refund_records.client_id = ".PRFX."client_records.client_id  
+                
             ".$whereTheseRecords."            
             GROUP BY ".PRFX."refund_records.".$order_by."
+            ".$havingTheseRecords."
             ORDER BY ".PRFX."refund_records.".$order_by."
             ".$direction;           
     

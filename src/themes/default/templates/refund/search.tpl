@@ -10,7 +10,7 @@
         <td>
             <table width="700" cellpadding="4" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Search Refunds{/t}</td>
+                    <td class="menuhead2" width="80%">&nbsp;&nbsp;{t}Search Client Refunds{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}REFUND_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}REFUND_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -36,6 +36,7 @@
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="refund_id"{if $search_category == 'refund_id'} selected{/if}>{t}Refund ID{/t}</option>
                                                                         <option value="client_id"{if $search_category == 'client_id'} selected{/if}>{t}Client ID{/t}</option>
+                                                                        <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Name{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="giftcert_id"{if $search_category == 'giftcert_id'} selected{/if}>{t}Giftcert ID{/t}</option>                                                                                                                                              
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>

@@ -41,7 +41,7 @@
                                                             <td colspan="3">{$refund_id}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Client ID{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td align="right"><b>{t}Client{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td colspan="3">
                                                                 <a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a>
                                                                 <input id="client_id" name="client_id" class="olotd5" size="5" value="{$refund_details.client_id}" type="hidden">

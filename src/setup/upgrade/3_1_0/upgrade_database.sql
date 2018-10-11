@@ -312,6 +312,7 @@ ALTER TABLE `#__giftcert_statuses` ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `#__client_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__expense_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__giftcert_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__otherincome_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__schedule_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
@@ -346,6 +347,7 @@ ALTER TABLE `#__workorder_records` CHANGE `customer_id` `client_id` VARCHAR(10) 
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
 ('core:403', '1', '1', '1', '1', '1', '1', '1', '1', '1'),
 ('giftcert:status', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
+('invoice:cancel', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('invoice:overview', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:delete', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
 ('payment:details', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
@@ -403,8 +405,13 @@ ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10)
 ALTER TABLE `#__user_acl_page` CHANGE `Customer` `Client` INT(1) NOT NULL DEFAULT '0';
 ALTER TABLE `#__giftcert_records` CHANGE `is_redeemed` `redeemed` INT(1) NOT NULL DEFAULT '0' AFTER `active`;
 ALTER TABLE `#__giftcert_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `redeemed`;
-ALTER TABLE `#__giftcert_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__otherincome_records` CHANGE `refund_type_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- Insert Data
+--
+
+INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES ('10', 'deleted', 'Deleted');
 
 --
 -- Convert from integer to currency

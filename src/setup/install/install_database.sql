@@ -740,6 +740,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:delete_labour', 1, 1, 1, 1, 1, 0, 0, 0, 0),
 ('invoice:delete_parts', 1, 1, 1, 1, 1, 0, 0, 0, 0),

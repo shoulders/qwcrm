@@ -614,6 +614,7 @@ function update_invoice_static_values($invoice_id, $date, $due_date, $discount_r
             WHERE invoice_id    =". $db->qstr( $invoice_id                   );
 
     if(!$rs = $db->execute($sql)){        
+        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice dates and discount rate."));
         
     } else {
@@ -633,6 +634,65 @@ function update_invoice_static_values($invoice_id, $date, $due_date, $discount_r
         update_invoice_last_active($invoice_id);
         
     }
+    
+}
+
+#####################################
+#     update invoice (full)         #
+#####################################
+
+function update_invoice_full($VAR, $doNotLog = false) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "UPDATE ".PRFX."invoice_records SET     
+            employee_id         =". $db->qstr( $VAR['employee_id']     ).", 
+            client_id           =". $db->qstr( $VAR['client_id']       ).",
+            workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",
+            date                =". $db->qstr( $VAR['date']            ).",
+            due_date            =". $db->qstr( $VAR['due_date']        ).", 
+            discount_rate       =". $db->qstr( $VAR['discount_rate']   ).",
+            tax_type            =". $db->qstr( $VAR['tax_type']        ).",   
+            tax_rate            =". $db->qstr( $VAR['tax_rate']        ).",   
+            sub_total           =". $db->qstr( $VAR['sub_total']       ).",    
+            discount_amount     =". $db->qstr( $VAR['discount_amount'] ).",   
+            net_amount          =". $db->qstr( $VAR['net_amount']      ).",
+            tax_amount          =". $db->qstr( $VAR['tax_amount']      ).",             
+            gross_amount        =". $db->qstr( $VAR['gross_amount']    ).", 
+            paid_amount         =". $db->qstr( $VAR['paid_amount']     ).",
+            balance             =". $db->qstr( $VAR['balance']         ).",
+            open_date           =". $db->qstr( $VAR['open_date']       ).",
+            close_date          =". $db->qstr( $VAR['close_date']      ).",
+            last_active         =". $db->qstr( $VAR['last_active']     ).",
+            status              =". $db->qstr( $VAR['status']          ).",
+            is_closed           =". $db->qstr( $VAR['is_closed']       )."            
+            WHERE invoice_id    =". $db->qstr( $VAR['invoice_id']      );
+
+    if(!$rs = $db->execute($sql)) {        
+        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the invoice."));
+        
+    } else {
+    
+        if (!$doNotLog) {
+            
+            // Create a Workorder History Note  
+            insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+
+            // Log activity        
+            $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
+            write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+
+            // Update last active record    
+            update_client_last_active($db, $VAR['client_id']);
+            update_workorder_last_active($db, $VAR['workorder_id']);
+            update_invoice_last_active($db, $VAR['invoice_id']);        
+        
+        }
+        
+    } 
+    
+    return true;
     
 }
 
@@ -688,12 +748,12 @@ function update_invoice_status($invoice_id, $new_status) {
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Work Order Status."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice Status."));
         
     } else {    
     
         // Update invoice 'is_closed' boolean
-        if($new_status == 'cancelled' || $new_status == 'paid') {
+        if($new_status == 'paid' || $new_status == 'refunded' || $new_status == 'cancelled' || $new_status == 'deleted') {
             update_invoice_closed_status($invoice_id, 'closed');
         } else {
             update_invoice_closed_status($invoice_id, 'open');
@@ -777,6 +837,39 @@ function update_invoice_last_active($invoice_id = null) {
 
 /** Close Functions **/
 
+#####################################
+#   Cancel Invoice                  # // This does not delete information i.e. client went bust and did not pay
+#####################################
+
+function cancel_invoice($invoice_id) {
+    
+    // make sure the invoice can be cancelled
+    if(!check_invoice_can_be_cancelled($invoice_id)) {        
+        return false;
+    }
+    
+    // Change the invoice status to deleted (I do this here to maintain consistency)
+    update_invoice_status($invoice_id, 'cancelled');
+    
+    // Get invoice details before deleting
+    $invoice_details = get_invoice_details($invoice_id);    
+        
+    // Create a Workorder History Note  
+    insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+
+    // Log activity        
+    $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+
+    // Update last active record
+    update_client_last_active($invoice_details['client_id']);
+    update_workorder_last_active($invoice_details['workorder_id']);
+    update_invoice_last_active($invoice_details['invoice_id']);
+
+    return true;
+    
+}
+
 /** Delete Functions **/
 
 #####################################
@@ -786,24 +879,49 @@ function update_invoice_last_active($invoice_id = null) {
 function delete_invoice($invoice_id) {
     
     $db = QFactory::getDbo();
-    
-    // Get invoice details before deleting
-    $invoice_details = get_invoice_details($invoice_id);
-    
+        
     // make sure the invoice can be deleted 
     if(!check_invoice_can_be_deleted($invoice_id)) {        
         return false;
     }
     
+    // Change the invoice status to deleted (I do this here to maintain consistency)
+    update_invoice_status($invoice_id, 'deleted');
+    
+    // Get invoice details before deleting
+    $invoice_details = get_invoice_details($invoice_id);
+    
     // Delete parts and labour
     delete_invoice_labour_items($invoice_id);
     delete_invoice_parts_items($invoice_id);
     
-    // delete the invoice primary record
-    $sql = "DELETE FROM ".PRFX."invoice_records WHERE invoice_id=".$db->qstr($invoice_id);
-
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the invoice."));
+    // Build the data to replace the invoice record (some stuff has just been updated with update_invoice_status())
+    $deleted_invoice_details = array(
+                                    'invoice_id'        =>  $invoice_details['invoice_id'],
+                                    'employee_id'       =>  null,
+                                    'client_id'         =>  null,
+                                    'workorder_id'      =>  null,
+                                    'date'              =>  '0000-00-00',
+                                    'due_date'          =>  '0000-00-00',        
+                                    'discount_rate'     =>  '0.00',
+                                    'tax_type'          =>  null,
+                                    'tax_rate'          =>  '0.00',
+                                    'sub_total'         =>  '0.00',
+                                    'discount_amount'   =>  '0.00',        
+                                    'net_amount'        =>  '0.00',
+                                    'tax_amount'        =>  '0.00',
+                                    'gross_amount'      =>  '0.00',
+                                    'paid_amount'       =>  '0.00',
+                                    'balance'           =>  '0.00',
+                                    'open_date'         =>  $invoice_details['open_date'],
+                                    'close_date'        =>  $invoice_details['close_date'],
+                                    'last_active'       =>  $invoice_details['last_active'],
+                                    'status'            =>  $invoice_details['status'],
+                                    'is_closed'         =>  $invoice_details['is_closed']        
+                                    );
+    
+    if(!update_invoice_full($deleted_invoice_details, true)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), null, _gettext("Failed to delete the invoice."));
     } else {
         
         // Update the workorder to remove the invoice_id
@@ -821,7 +939,8 @@ function delete_invoice($invoice_id) {
                 
         // Update last active record
         update_client_last_active($invoice_details['client_id']);
-        update_workorder_last_active($invoice_details['workorder_id']);              
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($invoice_details['invoice_id']);
         
         return true;
         
@@ -1294,11 +1413,11 @@ function check_invoice_can_be_refunded($invoice_id) {
         return false;        
     }    
 
-    /* Has Refunds - should not be needed
+    // Has Refunds (should not be needed)
     if(count_refunds($invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
         return false;
-    }*/
+    }
      
     // All checks passed
     return true;
@@ -1306,19 +1425,13 @@ function check_invoice_can_be_refunded($invoice_id) {
 }
 
 ###############################################################
-#   Check to see if the invoice can be refunded               #  // this is not started/finished but just a placeholder for now
+#   Check to see if the invoice can be cancelled              #  // this is not started/finished but just a placeholder for now
 ###############################################################
 
 function check_invoice_can_be_cancelled($invoice_id) {
     
     // Get the invoice details
     $invoice_details = get_invoice_details($invoice_id);
-    
-    // Has payments
-    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice has payments."));
-        return false;        
-    }
     
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
@@ -1343,12 +1456,18 @@ function check_invoice_can_be_cancelled($invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been deleted."));
         return false;        
     }    
+    
+    // Has payments
+    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice has payments."));
+        return false;        
+    }
 
-    /* Has Refunds - should not be needed
+    // Has Refunds (should not be needed)
     if(count_refunds($invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
         return false;
-    }*/
+    }
      
     // All checks passed
     return true;
@@ -1407,13 +1526,13 @@ function check_invoice_can_be_deleted($invoice_id) {
     }
 
     /*
-    // Has Labour
+    // Has Labour (these will get deleted anyway)
     if(!empty(get_invoice_labour_items($invoice_id))) {
         postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has labour items."));
         return false;          
     }    
     
-    // Has Parts
+    // Has Parts (these will get deleted anyway)
     if(!empty(get_invoice_parts_items($invoice_id))) {
         postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has parts."));
         return false;          
@@ -1426,11 +1545,11 @@ function check_invoice_can_be_deleted($invoice_id) {
         return false;
     }
         
-    /* Has Refunds - should not be needed
+    // Has Refunds (should not be needed)
     if(count_refunds($invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has been refunded."));
         return false;
-    }*/
+    }
      
     // All checks passed
     return true;

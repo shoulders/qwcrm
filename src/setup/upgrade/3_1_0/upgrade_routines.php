@@ -52,7 +52,10 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'expense_records', 'type', 'broadband', 'telco');
         $this->update_column_values(PRFX.'expense_records', 'type', 'landline', 'telco');
         $this->update_column_values(PRFX.'expense_records', 'type', 'mobile_phone', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'advertising', 'marketing');
+        $this->update_column_values(PRFX.'expense_records', 'type', 'advertising', 'marketing');        
+        //$this->update_column_values(PRFX.'otherincome_records', 'type', 'credit_note', 'other');
+        $this->update_column_values(PRFX.'otherincome_records', 'type', 'proxy_invoice', 'other');
+        $this->update_column_values(PRFX.'otherincome_records', 'type', 'returned_services', 'cancelled_services');        
         $this->update_column_values(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
         $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
         

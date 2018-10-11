@@ -92,7 +92,7 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_cancel}
-                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to cancel this invoice?{/t}')) window.location.href='index.php?component=invoice&page_tpl=cancel&invoice_id={$invoice_id}';">{t}Refund{/t}</button>                                                                                   
+                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to cancel this invoice? All records relating to this invoice will be kept.{/t}')) window.location.href='index.php?component=invoice&page_tpl=cancel&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>                                                                                   
                                     {else}
                                         {t}This invoice cannot be cancelled. You can only cancel the invoice if it is open and does not have any payments.{/t}
                                     {/if}                                        
@@ -102,7 +102,7 @@
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_delete}
-                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to delete this invoice?{/t}')) window.location.href='index.php?component=invoice&page_tpl=delete&invoice_id={$invoice_id}';">{t}Delete{/t}</button>
+                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to delete this invoice? All records relating to this invoice will be removed.{/t}')) window.location.href='index.php?component=invoice&page_tpl=delete&invoice_id={$invoice_id}';">{t}Delete{/t}</button>
                                     {else}
                                         {t}This invoice cannot be deleted. You can only delete the invoice if it is open and does not have any payments.{/t}
                                     {/if}                                        

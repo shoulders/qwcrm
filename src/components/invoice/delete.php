@@ -30,7 +30,7 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
 if(!delete_invoice($VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
-    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id']);
+    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'].'information_msg='._gettext("The invoice failed to be deleted."));
     
     
 } else {   
