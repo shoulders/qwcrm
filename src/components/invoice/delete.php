@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'workorder.php');
@@ -26,11 +27,14 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
+// Check the Gift Certificates do not prevent the invoice from getting deleted (if present)
+check_giftcerts_allow_invoice_deletion($VAR['invoice_id']);
+
 // Delete Invoice
 if(!delete_invoice($VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
-    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'].'information_msg='._gettext("The invoice failed to be deleted."));
+    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id'], 'information_msg='._gettext("The invoice failed to be deleted."));
     
     
 } else {   

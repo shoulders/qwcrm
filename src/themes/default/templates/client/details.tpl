@@ -58,21 +58,36 @@
                                             <div id="tab_4_contents" class="tab_contents">
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_pending block_title=_gettext("Pending")}
                                                 <br>
-                                                <br>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_unpaid block_title=_gettext("Unpaid")}
-                                                <br>
                                                 <br>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_partially_paid block_title=_gettext("Partially Paid")}
                                                 <br>
-                                                <br>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_paid block_title=_gettext("Paid")}
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_in_dispute block_title=_gettext("In Dispute")}
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_overdue block_title=_gettext("Overdue")}
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_collections block_title=_gettext("Collections")}
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_refunded block_title=_gettext("Refunded")}
+                                                <br>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_cancelled block_title=_gettext("Cancelled")}
                                             </div>
 
                                             <!-- Tab 5 Contents (Gift Certificates) -->
                                             <div id="tab_5_contents" class="tab_contents">
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_unused block_title=_gettext("Unused Gift Certificates")}
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_unused block_title=_gettext("Unused")}
                                                 <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed Gift Certificates")}
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed")}
+                                                <br>
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_suspended block_title=_gettext("Suspended")}
+                                                <br>
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_expired block_title=_gettext("Expired")}
+                                                <br>
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_refunded block_title=_gettext("Refunded")}
+                                                <br>
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_cancelled block_title=_gettext("Cancelled")}
                                             </div>
 
                                             <!-- Tab 6 Contents (Client Notes) -->

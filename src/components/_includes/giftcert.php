@@ -182,14 +182,17 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
 #   Insert Gift Certificate     #
 #################################
 
-function insert_giftcert($client_id, $date_expires, $amount, $note) {
+function insert_giftcert($invoice_id, $date_expires, $amount, $note) {
     
     $db = QFactory::getDbo();
+    $invoice_details = get_invoice_details($invoice_id);
     
     $sql = "INSERT INTO ".PRFX."giftcert_records SET 
             giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            client_id       =". $db->qstr( $client_id                           ).",
+            client_id       =". $db->qstr( $invoice_details['client_id']        ).",
+            workorder_id    =". $db->qstr( $invoice_details['workorder_id']     ).",
+            invoice_id      =". $db->qstr( $invoice_details['invoice_id']       ).",
             date_created    =". $db->qstr( mysql_datetime()                     ).",
             date_expires    =". $db->qstr( date_to_mysql_date($date_expires)    ).",            
             status          =". $db->qstr( 'unused'                             ).",  
@@ -203,13 +206,18 @@ function insert_giftcert($client_id, $date_expires, $amount, $note) {
     } else {
         
         $giftcert_id = $db->Insert_ID();
+        
+        // Recalculate the invoice totals and update them
+        recalculate_invoice($invoice_details['invoice_id']);
 
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.';      
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id']);
         
-        // Update last active record    
-        update_client_last_active($client_id);
+        // Update last active record
+        update_client_last_active($invoice_details['client_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($invoice_details['invoice_id']);       
         
         return $giftcert_id ;
         
@@ -336,12 +344,17 @@ function update_giftcert($giftcert_id, $date_expires, $amount, $note) {
         
         $giftcert_details = get_giftcert_details($giftcert_id);
         
+        // Recalculate the invoice totals and update them
+        recalculate_invoice($giftcert_details['invoice_id']);
+        
         // Log activity
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['client_id']);
 
-        // Update last active record    
+        // Update last active record
         update_client_last_active($giftcert_details['client_id']);
+        update_workorder_last_active($giftcert_details['workorder_id']);
+        update_invoice_last_active($giftcert_details['invoice_id']);
         
         return;
         
@@ -401,37 +414,139 @@ function update_giftcert_status($giftcert_id, $new_status, $silent = false) {
 
 /** Close Functions **/
 
+#####################################
+#   Refund Giftcert                 #
+#####################################
+
+function refund_giftcert($giftcert_id) {
+    
+    // make sure the giftcert can be cancelled
+    if(!check_giftcert_can_be_refunded($giftcert_id)) {
+        
+        // Load the relevant invoice page with failed message
+        force_page('invoice', 'edit&invoice_id='.get_giftcert_details($giftcert_id, 'invoice_id'), 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be refunded."));
+        
+    }
+    
+    // Change the giftcert status to refunded (I do this here to maintain consistency)
+    update_giftcert_status($giftcert_id, 'refunded');
+    
+    // Get giftcert details before deleting
+    $giftcert_details = get_giftcert_details($giftcert_id);    
+        
+    // Create a Workorder History Note  
+    insert_workorder_history_note($giftcert_details['giftcert_id'], _gettext("Invoice").' '.$giftcert_id.' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.');
+
+    // Log activity        
+    $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("for Invoice").' '.$giftcert_details['invoice_id'].' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.';
+    write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['client_id'], $giftcert_details['workorder_id'], $giftcert_id);
+
+    // Update last active record
+    update_client_last_active($giftcert_details['client_id']);
+    update_workorder_last_active($giftcert_details['workorder_id']);
+    update_invoice_last_active($giftcert_details['invoice_id']);
+
+    return true;
+    
+}
+
+##############################
+#  Cancel Gift Certificate   #  // update and set blocked as you cannot really delete an issued Gift Certificate  
+##############################
+
+function cancel_giftcert($giftcert_id) {     
+    
+    $giftcert_details = get_giftcert_details($giftcert_id);    
+    
+    if(!check_giftcert_can_be_cancelled($giftcert_id)) {
+        
+        // Load the relevant invoice page with failed message
+        force_page('invoice', 'edit&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be cancelled."));
+        
+    } else {
+        
+        // Change the giftcert status to cancelled (I do this here to maintain log consistency)
+        update_giftcert_status($giftcert_id, 'cancelled', true);
+        
+        // Recalculate the invoice totals and update them
+        recalculate_invoice($giftcert_details['invoice_id']);
+
+        // Log activity        
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['client_id']);
+
+        // Update last active record
+        update_client_last_active($giftcert_details['client_id']);
+        update_workorder_last_active($giftcert_details['workorder_id']);
+        update_invoice_last_active($giftcert_details['invoice_id']);
+
+        return true;        
+        
+    }
+        
+}
+
 /** Delete Functions **/
 
 ##############################
-#  Delete Gift Certificate   #
+#  Delete Gift Certificate   #  // remove some information and set blocked as you cannot really delete an issued Gift Certificate  
 ##############################
 
 function delete_giftcert($giftcert_id) {     
     
     $db = QFactory::getDbo();
+    $giftcert_details = get_giftcert_details($giftcert_id);    
     
-    // update and set blocked as you cannot really delete an issued Gift Certificate
-    
-    $sql = "UPDATE ".PRFX."giftcert_records SET blocked='1' WHERE giftcert_id=".$db->qstr($giftcert_id);
-
-    if(!$db->execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Gift Certificate."));
+    if(!check_giftcert_can_be_deleted($giftcert_id)) {
+        
+        // Load the relevant invoice page with failed message
+        force_page('invoice', 'edit&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be deleted."));
         
     } else {
         
-        $client_details = get_giftcert_details($giftcert_id);
+        // Change the giftcert status to deleted (I do this here to maintain log consistency)
+        update_giftcert_status($giftcert_id, 'deleted', true);
         
-        // Log activity        
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $client_details['employee_id'], $client_details['client_id']);
-        
-        // Update last active record        
-        update_client_last_active($client_details['client_id']);
-        
-        return;
+        $sql = "UPDATE ".PRFX."giftcert_records SET
+            giftcert_code       =". $db->qstr( $giftcert_details['giftcert_code']   ).",
+            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            client_id           =   NULL,
+            workorder_id        =   NULL,
+            invoice_id          =   NULL,
+            redeemed_invoice_id =   NULL,
+            date_created        =". $db->qstr( $giftcert_details['date_created']    ).",
+            date_expires        =   '0000-00-00',
+            date_redeemed       =   '0000-00-00 00:00:00',
+            status              =   'deleted',
+            redeemed            =   '0',
+            blocked             =   '1',
+            amount              =   '0.00',
+            note                =   NULL
+            WHERE giftcert_id =". $db->qstr($giftcert_id);        
 
-    }            
+        if(!$db->execute($sql)) {
+            
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Gift Certificate."));
+
+        } else {
+
+            // Recalculate the invoice totals and update them
+            recalculate_invoice($giftcert_details['invoice_id']);
+
+            // Log activity        
+            $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
+            write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['client_id']);
+
+            // Update last active record
+            update_client_last_active($giftcert_details['client_id']);
+            update_workorder_last_active($giftcert_details['workorder_id']);
+            update_invoice_last_active($giftcert_details['invoice_id']);
+
+            return true;
+
+        }
+    
+    }
         
 }
 
@@ -446,22 +561,19 @@ function validate_giftcert_for_payment($giftcert_id) {
     // Check if blocked
     if(get_giftcert_details($giftcert_id, 'blocked')) {
         //force_page('core','error', 'error_msg='._gettext("This gift certificate is blocked"));
-        return false;
-        
+        return false;        
     }
 
-    // Check if expired
+    // Check if expired - This does a live check for exipry as it is not always upto date
     if(validate_giftcert_is_expired($giftcert_id)) {
         //force_page('core', 'error', 'warning_msg='._gettext("This gift certificate is expired."));        
-        return false;
-        
+        return false;        
     }
     
-    // Check if unused status
+    // Check if unused
         if(get_giftcert_details($giftcert_id, 'status') !== 'unused') {
         //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is unused."));
-        return false;
-        
+        return false;        
     }    
     
     return true;
@@ -490,31 +602,32 @@ function generate_giftcert_code() {
 #   Redeem the gift certificate against an invoice   #
 ######################################################
 
-function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
+function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id) {
     
     $db = QFactory::getDbo();
     
-    // Get the associated workorder if there is one
-    $workorder_id = get_invoice_details($invoice_id, 'workorder_id');
-    
     $sql = "UPDATE ".PRFX."giftcert_records SET
-            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            workorder_id        =". $db->qstr( $workorder_id    ).",
-            invoice_id          =". $db->qstr( $invoice_id      ).",
-            date_redeemed       =". $db->qstr( mysql_datetime() ).",
-            redeemed            =". $db->qstr( 1                ).",            
-            blocked             =". $db->qstr( 1                )."
-            WHERE giftcert_id   =". $db->qstr( $giftcert_id     );
+            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
+            redeemed_invoice_id =". $db->qstr( $redeemed_invoice_id                 ).",
+            date_redeemed       =". $db->qstr( mysql_datetime()                     ).",
+            redeemed            =". $db->qstr( 1                                    ).",            
+            blocked             =". $db->qstr( 1                                    )."
+            WHERE giftcert_id   =". $db->qstr( $giftcert_id                         );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
     } else {
         
-        $client_details = get_client_details(get_giftcert_details($giftcert_id, 'client_id'));
+        $giftcert_details = get_giftcert_details($giftcert_id);
+        $client_details = get_client_details($giftcert_details['client_id']);
         
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$client_details['display_name'].'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_details['client_id'], null, $invoice_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $giftcert_details['client_id'], null, $redeemed_invoice_id);
+        
+        // Update last active record
+        update_client_last_active($giftcert_details['client_id']);        
+        update_invoice_last_active($giftcert_details['invoice_id']);
         
     }
     
@@ -534,16 +647,22 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been redeemed."));
         return false;        
     }
+        
+    // Is Refunded
+    if($giftcert_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
+        return false;        
+    }
     
     // Is Cancelled
     if($giftcert_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been cancelled."));
         return false;        
     }
-        
-    // Is Refunded
-    if($giftcert_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
+    
+    // Is Deleted
+    if($giftcert_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been deleted."));
         return false;        
     }
 
@@ -558,36 +677,48 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
 
  function check_giftcert_status_can_be_changed($giftcert_id) {
      
-    // Get the giftcert details
-    $giftcert_details = get_giftcert_details($giftcert_id);
+    // Get the giftcert status
+    $status = get_giftcert_details($giftcert_id, 'status');
     
     // Unused and Expired
-    if($giftcert_details['status'] == 'unused' && validate_giftcert_is_expired($giftcert_id)) {
+    if($status == 'unused' && validate_giftcert_is_expired($giftcert_id)) {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
         return false;        
     }
     
     // Is Redeemed
-    if($giftcert_details['status'] == 'redeemed') {
+    if($status == 'redeemed') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been redeemed."));
         return false;        
     }   
     
+    // Is Suspended
+    if($status == 'suspended') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been suspended."));
+        return false;        
+    } 
+    
     // Is Expired
-    if($giftcert_details['status'] == 'expired') {
+    if($status == 'expired') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
+        return false;        
+    }    
+        
+    // Is Refunded
+    if($status == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
-    if($giftcert_details['status'] == 'cancelled') {
+    if($status == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been cancelled."));
         return false;        
     }
-        
-    // Is Refunded
-    if($giftcert_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
+    
+    // Is Deleted
+    if($status == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been deleted."));
         return false;        
     }
 
@@ -602,24 +733,86 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id) {
 
 function check_giftcert_can_be_cancelled($giftcert_id) {
     
-    // Get the giftcert details
-    $giftcert_details = get_giftcert_details($giftcert_id);
+    // Get the giftcert status
+    $status = get_giftcert_details($giftcert_id, 'status');
     
     // Is Redeemed
-    if($giftcert_details['status'] == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been redeemed."));
+    if($status == 'redeemed') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been redeemed."));
+        return false;        
+    }
+    
+    // Is Suspended
+    if($status == 'suspended') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been suspended."));
+        return false;        
+    }
+            
+    // Is Refunded
+    if($status == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
-    if($giftcert_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been cancelled."));
+    if($status == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been cancelled."));
         return false;        
     }
-        
+    
+    // Is Deleted
+    if($status == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been deleted."));
+        return false;        
+    }
+
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the giftcert can be cancelled             #
+###############################################################
+
+function check_giftcert_can_be_deleted($giftcert_id) {
+    
+    // Get the giftcert status
+    $status = get_giftcert_details($giftcert_id, 'status');
+    
+    // Is Redeemed
+    if($status == 'redeemed') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been redeemed."));
+        return false;        
+    }
+    
+    // Is Suspended
+    if($status == 'suspended') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it is suspended."));
+        return false;        
+    }
+    
+    // Is Expired
+    if($status == 'expired') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has expired."));
+        return false;        
+    }
+            
     // Is Refunded
-    if($giftcert_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
+    if($status == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been refunded."));
+        return false;        
+    }
+    
+    // Is Cancelled
+    if($status == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been cancelled."));
+        return false;        
+    }
+    
+    // Is Deleted
+    if($status == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been deleted."));
         return false;        
     }
 
@@ -648,6 +841,12 @@ function check_giftcert_can_be_refunded($giftcert_id) {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been redeemed."));
         return false;        
     }
+        
+    // Is Suspended
+    if($giftcert_details['status'] == 'suspended') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
+        return false;        
+    }  
     
     // Is Expired
     if($giftcert_details['status'] == 'expired') {
@@ -655,23 +854,24 @@ function check_giftcert_can_be_refunded($giftcert_id) {
         return false;        
     }
     
-    // Is Suspended
-    if($giftcert_details['status'] == 'suspended') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
+    // Is Refunded
+    if($giftcert_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
         return false;        
-    }  
+    }
     
     // Is Cancelled
     if($giftcert_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been cancelled."));
         return false;        
     }
-        
-    // Is Refunded
-    if($giftcert_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
+    
+    // Is Deleted
+    if($giftcert_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been deleted."));
         return false;        
     }
+        
 
     // All checks passed
     return true;
@@ -725,4 +925,114 @@ function validate_giftcert_is_expired($giftcert_id) {
         
     }
     
+}
+
+#####################################
+#   Sum Giftcert Invoice Sub Total  #  // All statuses should be summed up, deleted giftcerts do not have an invoice_id anyway so are ignored
+#####################################
+
+function giftcerts_sub_total($invoice_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."giftcert_records WHERE invoice_id=" . $db->qstr($invoice_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice gift certificate sub total."));
+    } else {
+        
+        return  $rs->fields['sub_total_sum'];
+        
+    }
+  
+}
+
+###########################################################################
+# Check an invoices giftcerts do not prevent the invoice getting deleted  #
+###########################################################################
+
+function check_giftcerts_allow_invoice_deletion($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+    $giftcerts_allow_deletion = true;
+    
+    $sql = "SELECT *
+            FROM ".PRFX."giftcert_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            $giftcert_details = $rs->GetRowAssoc();        
+
+            // Check the Giftcert to see if it can be deleted
+            if(!check_giftcert_can_be_deleted($giftcert_details['giftcert_id'])) {                    
+                $giftcerts_allow_deletion = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        // Check to if any giftcerts prevent the invoice from being deleted
+        if(!$giftcerts_allow_deletion) {            
+            force_page('invoice', 'edit&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+        } else {
+            
+            return true;
+            
+        }
+
+    }
+
+}
+
+############################################################################
+# Check an invoices giftcerts do not prevent the invoice getting cancelled #
+############################################################################
+
+function check_giftcerts_allow_invoice_cancellation($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+    $giftcerts_allow_cancellation = true;
+    
+    $sql = "SELECT *
+            FROM ".PRFX."giftcert_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Gift Certificates."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            $giftcert_details = $rs->GetRowAssoc();        
+
+            // Check the Giftcert to see if it can be deleted
+            if(!check_giftcert_can_be_deleted($giftcert_details['giftcert_id'])) {                    
+                $giftcerts_allow_cancellation = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        // Check to if any giftcerts prevent the invoice from being deleted
+        if(!$giftcerts_allow_cancellation) {            
+            force_page('invoice', 'edit&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+        } else {
+            
+            return true;
+            
+        }
+
+    }
+
 }

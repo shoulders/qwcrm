@@ -12,15 +12,19 @@ require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'refund.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'workorder.php');
+
+$refund_details = array();
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('refund', 'new') && !check_page_accessed_via_qwcrm('invoice', 'status')) {
+if(!check_page_accessed_via_qwcrm('refund', 'new') && !check_page_accessed_via_qwcrm('invoice', 'edit')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
-// Check if we have an invoice_id or giftcert_id but not both (not when submitting from refunds:new)
+// Check if we have an invoice_id or giftcert_id but not both (not when submitting from refund:new)
 if(    
     (!isset($VAR['invoice_id']) || !$VAR['invoice_id']) && (!isset($VAR['giftcert_id']) || !$VAR['giftcert_id'] && !isset($VAR['submit'])) ||
     (isset($VAR['invoice_id']) && isset($VAR['giftcert_id']) && !isset($VAR['submit']))        
@@ -28,37 +32,16 @@ if(
     force_page('refund', 'search', 'warning_msg='._gettext("Not a valid refund operation."));
 } 
 
-// If details submitted insert record, if none are submitted load new.tpl and populate values
-if((isset($VAR['submit']))) {
 
-    // validate refund submission here i.e. can it be redunded
-    //check to make sure the giftcert or the invoice id have not been refunded
-    // re-validate the invoice and giftcert status
+/* Invoice Refunds */
+
+if (isset($VAR['invoice_id'])) {
     
-    // insert the refund and get the refund_id
-    $VAR['refund_id'] = insert_refund($VAR);
-        
-    if (isset($VAR['submitandnew'])){
+    // Load refund page with the invoice refund details
+    if (!isset($VAR['submit'])) {
 
-        // Load New Refund page
-        force_page('refund', 'new', 'information_msg='._gettext("Refund added successfully.")); 
-
-    } else {
-
-        // Load Refund Details page
-        force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'information_msg='._gettext("Refund added successfully."));        
-
-    }
-         
-} else {
-    
-    $refund_details = array();
-        
-    // Invoice version
-    if(isset($VAR['invoice_id'])) {
-        
         // Make sure the invoice is allowed to be refunded
-        if(!check_invoice_can_be_refunded($invoice_id)) {
+        if(!check_invoice_can_be_refunded($VAR['invoice_id'])) {
             force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'information_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be refunded."));
         }
         
@@ -78,13 +61,36 @@ if((isset($VAR['submit']))) {
         $refund_details['note'] = _gettext("This is a refund for an Invoice.");
         
         // Get Client display_name
-        $client_display_name = get_client_details($invoice_details['client_id'], 'display_name');        
+        $client_display_name = get_client_details($invoice_details['client_id'], 'display_name'); 
         
-    // Gift Certificate version    
-    } elseif (isset($VAR['giftcert_id'])) {
+    // Process the submitted refund 
+    } else {        
         
+        if(!refund_invoice($VAR['invoice_id'])) {    
+
+            // Load the invoice details page with error
+            force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'].'&information_msg='._gettext("The invoice failed to be refunded."));
+
+        } else {   
+
+            // load the invoice search page with success message
+            force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully."));
+
+        }
+        
+    }
+    
+}
+
+/* Gift Certificate Refunds */
+
+if (isset($VAR['giftcert_id'])) {
+    
+    // Load refund page with the giftcert refund details
+    if (!isset($VAR['submit'])) {
+
         // Make sure the giftcert is allowed to be refunded
-        if(!check_giftcert_can_be_refunded($invoice_id)) {
+        if(!check_giftcert_can_be_refunded($VAR['giftcert_id'])) {
             force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'information_msg='._gettext("Gift Certificate").': '.$VAR['giftcert_id'].' '._gettext("cannot be refunded."));
         }
         
@@ -104,14 +110,27 @@ if((isset($VAR['submit']))) {
         $refund_details['note'] = _gettext("This is a refund for a Gift Certificate.");
         
         // Get Client display_name
-        $client_display_name = get_client_details($giftcert_details['client_id'], 'display_name');        
-    
-    // Fall back possition
-    } else {
-        // do nohing here
-    }    
+        $client_display_name = get_client_details($giftcert_details['client_id'], 'display_name'); 
+        
+    // Process the submitted refund 
+    } else {        
+        
+        if(!refund_giftcert($VAR['giftcert_id'])) {    
+
+            // Load the giftcert details page with error
+            force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'].'&information_msg='._gettext("The gift certificate failed to be refunded."));
+
+        } else {   
+
+            // load the giftcert search page with success message
+            force_page('giftcert', 'search', 'information_msg='._gettext("The gift certificate has been refunded successfully."));
+
+        }
+        
+    }
     
 }
+
 
 // Predict the next refund_id
 $new_record_id = last_refund_id_lookup() +1;

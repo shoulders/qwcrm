@@ -10,11 +10,19 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'giftcert.php');
+require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'workorder.php');
 
-// Check if we have a client_id
-if(!isset($VAR['client_id']) || !$VAR['client_id']) {
-    force_page('client', 'search', 'warning_msg='._gettext("No Client ID supplied."));
+// Prevent direct access to this page
+if(!check_page_accessed_via_qwcrm('giftcert', 'new') && !check_page_accessed_via_qwcrm('invoice', 'edit')) {
+    header('HTTP/1.1 403 Forbidden');
+    die(_gettext("No Direct Access Allowed."));
+}
+
+// Check if we have an invoice_id
+if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
+    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
 // Check if giftcert payment method is enabled
@@ -26,14 +34,13 @@ if(!check_payment_method_is_active('gift_certificate')) {
 if(isset($VAR['submit'])) {   
         
     // Create a new gift certificate
-    $VAR['giftcert_id'] = insert_giftcert($VAR['client_id'], $VAR['date_expires'], $VAR['amount'], $VAR['note']);
+    $VAR['giftcert_id'] = insert_giftcert($VAR['invoice_id'], $VAR['date_expires'], $VAR['amount'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
-    force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id']);
+    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
 
-} else {
-    
-    // Build the page
-    $smarty->assign('client_details', get_client_details($VAR['client_id']));
-    $BuildPage .= $smarty->fetch('giftcert/new.tpl');
 }
+    
+// Build the page
+$smarty->assign('client_details', get_client_details(get_invoice_details($VAR['invoice_id'], 'client_id')));
+$BuildPage .= $smarty->fetch('giftcert/new.tpl');

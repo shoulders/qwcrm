@@ -38,12 +38,21 @@ $smarty->assign('invoices_pending',         display_invoices('invoice_id', 'DESC
 $smarty->assign('invoices_unpaid',          display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'unpaid', null, $VAR['client_id'])            );
 $smarty->assign('invoices_partially_paid',  display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'partially_paid', null, $VAR['client_id'])    );
 $smarty->assign('invoices_paid',            display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'paid', null, $VAR['client_id'])              );
-$smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                                               );
+$smarty->assign('invoices_in_dispute',      display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'in_dispute', null, $VAR['client_id'])        );
+$smarty->assign('invoices_overdue',         display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'overdue', null, $VAR['client_id'])           );
+$smarty->assign('invoices_collections',     display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'collections', null, $VAR['client_id'])       );
+$smarty->assign('invoices_refunded',        display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'refunded', null, $VAR['client_id'])          );
+$smarty->assign('invoices_cancelled',       display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'cancelled', null, $VAR['client_id'])         );
+$smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                                                         );
 
-$smarty->assign('giftcerts_unused',         display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'unused', null, $VAR['client_id'])         );
-$smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, $VAR['client_id'])         );
+$smarty->assign('giftcerts_unused',         display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'unused', null, $VAR['client_id'])          );
+$smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, $VAR['client_id'])        );
+$smarty->assign('giftcerts_suspended',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'suspended', null, $VAR['client_id'])       );
+$smarty->assign('giftcerts_expired',        display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'expired', null, $VAR['client_id'])         );
+$smarty->assign('giftcerts_refunded',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'refunded', null, $VAR['client_id'])        );
+$smarty->assign('giftcerts_cancelled',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'cancelled', null, $VAR['client_id'])       );
 
-$smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['client_id'], $user->login_user_id)                                                    );
+$smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['client_id'], $user->login_user_id)                                                     );
 
 
 $BuildPage .= $smarty->fetch('client/details.tpl');

@@ -228,6 +228,7 @@ CREATE TABLE `#__giftcert_records` (
   `client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `redeemed_invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `date_created` datetime NOT NULL,
   `date_expires` date NOT NULL,
   `date_redeemed` datetime NOT NULL,
@@ -257,10 +258,11 @@ CREATE TABLE `#__giftcert_statuses` (
 INSERT INTO `#__giftcert_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unused', 'Unused'),
 (2, 'redeemed', 'Redeemed'),
-(3, 'expired', 'Expired'),
-(4, 'suspended', 'Suspended'),
-(5, 'cancelled', 'Cancelled'),
-(6, 'refunded', 'Refunded');
+(3, 'suspended', 'Suspended'),
+(4, 'expired', 'Expired'),
+(5, 'refunded', 'Refunded'),
+(6, 'cancelled', 'Cancelled'),
+('7', 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -333,6 +335,7 @@ CREATE TABLE `#__invoice_records` (
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `refund_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `due_date` date NOT NULL,
   `discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',

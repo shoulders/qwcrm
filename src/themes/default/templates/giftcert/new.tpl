@@ -35,6 +35,13 @@
                                                 <td><a href="index.php?component=client&page_tpl=details&client_id={$client_id}">{$client_details.display_name}</a></td>
                                             </tr>
                                             <tr>
+                                                <td><b>{t}Invoice{/t}</b></td>
+                                                <td>
+                                                    <a href="index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}">{$invoice_id}</a>
+                                                    <input name="invoice_id" value="{$invoice_id}" type="hidden" />
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
                                                     <input id="date_expires" name="date_expires" class="olotd4" size="10" value="" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
@@ -59,8 +66,7 @@
                                                 <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="note"></textarea></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">
-                                                    <input name="client_id" value="{$client_id}" type="hidden" />
+                                                <td colspan="2">                                                    
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_id}';">{t}Cancel{/t}</button>
                                                 </td>

@@ -474,34 +474,42 @@
                                     </td>
                                 </tr>
 
-                                <!-- Function Buttons --> 
-                                {if $invoice_details.gross_amount > 0 }
-                                    <tr>
-                                        <td>                                    
-                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
-                                                <tr>
-                                                    <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="menutd2">
+                                <!-- Function Buttons -->                                 
+                                <tr>
+                                    <td>                                    
+                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" id="payments_log">
+                                            <tr>
+                                                <td class="menuhead2">&nbsp;{t}Function Buttons{/t}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="menutd2">
 
-                                                        <!-- Print Buttons -->   
+                                                    <!-- Print Buttons -->  
+                                                    {if $invoice_details.gross_amount > 0 }                                                             
                                                         <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
                                                         <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                         <button type="button" onclick="confirmChoice('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
                                                         <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=client_envelope&theme=print');">{t}Print Client Envelope{/t}</button>                                            
+                                                        <br>
+                                                        <br>
+                                                    {/if}
 
-                                                        {if $invoice_details.balance > 0}
-                                                            <!-- Receive Payment Button -->
-                                                            <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
-                                                        {/if}
+                                                    <!-- Add Gift Certificate Button -->
+                                                    {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}  
+                                                        <button type="button" onclick="location.href='index.php?component=giftcert&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Gift Certificate{/t}</button>
+                                                    {/if}
 
-                                                    </td>
-                                                </tr>
-                                            </table>                                                
-                                        </td>
-                                    </tr>
-                                {/if}
+                                                    <!-- Receive Payment Button -->
+                                                    {if $invoice_details.balance > 0}                                                            
+                                                        <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                    {/if}
+
+                                                </td>
+                                            </tr>
+                                        </table>                                                
+                                    </td>
+                                </tr>
+                                
 
                                 <!-- Payments -->                                
                                 <tr>
@@ -644,6 +652,16 @@
                                             </tr>
                                         </table>
                                     </td>
+                                </tr>
+                                
+                                <!-- Gift Certificates -->                                
+                                <tr>
+                                    <td>                                                
+                                        {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$display_giftcerts block_title=_gettext("Gift Certificates")}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" style="text-align:right;"><b>{t}Gift Certificates Sub Total{/t}</b> {$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>                                    
                                 </tr>
 
                                 <!-- Totals Section -->

@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
 
@@ -19,10 +20,12 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
+$invoice_details = get_invoice_details($VAR['invoice_id']);
+
 // Prefill Items
 $smarty->assign('company_details',          get_company_details()                                                                    );
-$smarty->assign('client_details',           get_client_details(get_invoice_details($VAR['invoice_id'], 'client_id'))             );
-$smarty->assign('workorder_details',        get_workorder_details(get_invoice_details($VAR['invoice_id'], 'workorder_id'))           );
+$smarty->assign('client_details',           get_client_details($invoice_details['client_id'])             );
+$smarty->assign('workorder_details',        get_workorder_details($invoice_details['workorder_id'])           );
 $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id'])                                                       );
 
 // Invoice Items
@@ -33,10 +36,17 @@ $smarty->assign('parts_items',              get_invoice_parts_items($VAR['invoic
 $smarty->assign('labour_sub_total',         labour_sub_total($VAR['invoice_id'])                                                          );
 $smarty->assign('parts_sub_total',          parts_sub_total($VAR['invoice_id'])                                                           );
 
+// Refund Details
+if(get_invoice_details($VAR['invoice_id'], 'status') == 'refunded') {
+    $smarty->assign('refund_details', get_refund_details($invoice_details['refund_id']));    
+} else {
+    $smarty->assign('refund_details', null);
+}
+
 // Misc
 $smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])                                                  );
 $smarty->assign('payment_methods',          get_payment_accepted_methods()                                                             );
-$smarty->assign('employee_display_name',    get_user_details(get_invoice_details($VAR['invoice_id'], 'employee_id'),'display_name')  );
+$smarty->assign('employee_display_name',    get_user_details($invoice_details['employee_id'], 'display_name')  );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                   );
 
 // Build the page

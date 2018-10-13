@@ -299,10 +299,11 @@ CREATE TABLE `#__giftcert_statuses` (
 INSERT INTO `#__giftcert_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unused', 'Unused'),
 (2, 'redeemed', 'Redeemed'),
-(3, 'expired', 'Expired'),
-(4, 'suspended', 'Suspended'),
-(5, 'cancelled', 'Cancelled'),
-(6, 'refunded', 'Refunded');
+(3, 'suspended', 'Suspended'),
+(4, 'expired', 'Expired'),
+(5, 'refunded', 'Refunded'),
+(6, 'cancelled', 'Cancelled'),
+(7, 'deleted', 'Deleted');
 
 ALTER TABLE `#__giftcert_statuses` ADD PRIMARY KEY (`id`);
 
@@ -392,6 +393,8 @@ ALTER TABLE `#__otherincome_records` DROP `invoice_id`;
 
 ALTER TABLE `#__giftcert_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
 ALTER TABLE `#__giftcert_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date_redeemed`;
+ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
+ALTER TABLE `#__giftcert_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
 
 --
 -- Rename Columns

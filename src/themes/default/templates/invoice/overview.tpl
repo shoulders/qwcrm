@@ -67,10 +67,10 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="cancelled"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_cancelled block_title=_gettext("Cancelled")}
+                                                <a name="collections"></a>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_collections block_title=_gettext("Collections")}
                                             </td>
-                                        </tr>
+                                        </tr> 
                                         <tr>
                                             <td>
                                                 <a name="refunded"></a>
@@ -79,10 +79,10 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a name="collections"></a>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_collections block_title=_gettext("Collections")}
+                                                <a name="cancelled"></a>
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_cancelled block_title=_gettext("Cancelled")}
                                             </td>
-                                        </tr>                                        
+                                        </tr>                                                                               
                                     </table>
                                 </td>
                             </tr>

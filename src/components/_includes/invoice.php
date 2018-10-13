@@ -649,6 +649,7 @@ function update_invoice_full($VAR, $doNotLog = false) {
             employee_id         =". $db->qstr( $VAR['employee_id']     ).", 
             client_id           =". $db->qstr( $VAR['client_id']       ).",
             workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",
+            refund_id           =". $db->qstr( $VAR['refund_id']       ).",   
             date                =". $db->qstr( $VAR['date']            ).",
             due_date            =". $db->qstr( $VAR['due_date']        ).", 
             discount_rate       =". $db->qstr( $VAR['discount_rate']   ).",
@@ -848,10 +849,10 @@ function cancel_invoice($invoice_id) {
         return false;
     }
     
-    // Change the invoice status to deleted (I do this here to maintain consistency)
+    // Change the invoice status to cancelled (I do this here to maintain consistency)
     update_invoice_status($invoice_id, 'cancelled');
     
-    // Get invoice details before deleting
+    // Get invoice details before cancelling
     $invoice_details = get_invoice_details($invoice_id);    
         
     // Create a Workorder History Note  
@@ -859,6 +860,39 @@ function cancel_invoice($invoice_id) {
 
     // Log activity        
     $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+
+    // Update last active record
+    update_client_last_active($invoice_details['client_id']);
+    update_workorder_last_active($invoice_details['workorder_id']);
+    update_invoice_last_active($invoice_details['invoice_id']);
+
+    return true;
+    
+}
+
+#####################################
+#   Refund Invoice                  #
+#####################################
+
+function refund_invoice($invoice_id) {
+    
+    // make sure the invoice can be refunded
+    if(!check_invoice_can_be_refunded($invoice_id)) {
+        return false;
+    }
+    
+    // Change the invoice status to refunded (I do this here to maintain consistency)
+    update_invoice_status($invoice_id, 'refunded');
+    
+    // Get invoice details before refunding
+    $invoice_details = get_invoice_details($invoice_id);    
+        
+    // Create a Workorder History Note  
+    insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.');
+
+    // Log activity        
+    $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.';
     write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
     // Update last active record
@@ -885,7 +919,7 @@ function delete_invoice($invoice_id) {
         return false;
     }
     
-    // Change the invoice status to deleted (I do this here to maintain consistency)
+    // Change the invoice status to deleted (I do this here to maintain log consistency)
     update_invoice_status($invoice_id, 'deleted');
     
     // Get invoice details before deleting
@@ -898,13 +932,14 @@ function delete_invoice($invoice_id) {
     // Build the data to replace the invoice record (some stuff has just been updated with update_invoice_status())
     $deleted_invoice_details = array(
                                     'invoice_id'        =>  $invoice_details['invoice_id'],
-                                    'employee_id'       =>  null,
-                                    'client_id'         =>  null,
-                                    'workorder_id'      =>  null,
+                                    'employee_id'       =>  NULL,
+                                    'client_id'         =>  NULL,
+                                    'workorder_id'      =>  NULL,
+                                    'refund_id'         =>  NULL,
                                     'date'              =>  '0000-00-00',
                                     'due_date'          =>  '0000-00-00',        
                                     'discount_rate'     =>  '0.00',
-                                    'tax_type'          =>  null,
+                                    'tax_type'          =>  NULL,
                                     'tax_rate'          =>  '0.00',
                                     'sub_total'         =>  '0.00',
                                     'discount_amount'   =>  '0.00',        
@@ -916,8 +951,8 @@ function delete_invoice($invoice_id) {
                                     'open_date'         =>  $invoice_details['open_date'],
                                     'close_date'        =>  $invoice_details['close_date'],
                                     'last_active'       =>  $invoice_details['last_active'],
-                                    'status'            =>  $invoice_details['status'],
-                                    'is_closed'         =>  $invoice_details['is_closed']        
+                                    'status'            =>  'deleted',
+                                    'is_closed'         =>  '1'        
                                     );
     
     if(!update_invoice_full($deleted_invoice_details, true)){        
@@ -1090,7 +1125,7 @@ function delete_invoice_prefill_item($invoice_prefill_id) {
 /** Other Functions **/
 
 #####################################
-#   Sum Labour Sub Totals           #
+#   Sum Labour Invoice Sub Total    #
 #####################################
 
 function labour_sub_total($invoice_id) {
@@ -1110,7 +1145,7 @@ function labour_sub_total($invoice_id) {
 }
 
 #####################################
-#   Sum Parts Sub Total             #
+#   Sum Parts Invoice Sub Total     #
 #####################################
 
 function parts_sub_total($invoice_id) {
@@ -1139,7 +1174,7 @@ function recalculate_invoice($invoice_id) {
     
     $invoice_details        = get_invoice_details($invoice_id);
     
-    $items_sub_total        = labour_sub_total($invoice_id) + parts_sub_total($invoice_id);
+    $items_sub_total        = labour_sub_total($invoice_id) + parts_sub_total($invoice_id) + giftcerts_sub_total($invoice_id);
     $payments_sub_total     = payments_sub_total($invoice_id);
     $discount_amount        = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
     $net_amount             = $items_sub_total - $discount_amount;
@@ -1162,7 +1197,7 @@ function recalculate_invoice($invoice_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the invoice totals."));
     } else {
      
-        /* update invoice status - only change if there is a change in status */
+        /* update invoice status - only change if there is a change in status */        
         
         // No invoiceable amount, set to pending (if not already)
         if($gross_amount == 0 && $invoice_details['status'] != 'pending') {
@@ -1175,7 +1210,7 @@ function recalculate_invoice($invoice_id) {
         }
         
         // Has invoiceable amount with some payment(s), set to partially paid (if not already)
-        elseif($gross_amount > 0 && $gross_amount > $payments_sub_total && $invoice_details['status'] != 'partially_paid') {            
+        elseif($gross_amount > 0 && $gross_amount > $payments_sub_total && $payments_sub_total > 0 && $invoice_details['status'] != 'partially_paid') {            
             update_invoice_status($invoice_id, 'partially_paid');
         }
         
