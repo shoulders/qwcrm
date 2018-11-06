@@ -11,18 +11,28 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'payment.php');
 
 // Prevent undefined variable errors
-$VAR['credit_card'] = isset($VAR['credit_card']) ? $VAR['credit_card'] : null;
-$VAR['cheque'] = isset($VAR['cheque']) ? $VAR['cheque'] : null;
-$VAR['cash'] = isset($VAR['cash']) ? $VAR['cash'] : null;
-$VAR['gift_certificate'] = isset($VAR['gift_certificate']) ? $VAR['gift_certificate'] : null;
-$VAR['paypal'] = isset($VAR['paypal']) ? $VAR['paypal'] : null;
-$VAR['direct_deposit'] = isset($VAR['direct_deposit']) ? $VAR['direct_deposit'] : null;
+$VAR['bank_transfer']['send'] = isset($VAR['bank_transfer']['send']) ? $VAR['bank_transfer']['send'] : null;
+$VAR['bank_transfer']['receive'] = isset($VAR['bank_transfer']['receive']) ? $VAR['bank_transfer']['receive'] : null;
+$VAR['card']['send'] = isset($VAR['card']['send']) ? $VAR['card']['send'] : null;
+$VAR['card']['receive'] = isset($VAR['card']['receive']) ? $VAR['card']['receive'] : null;
+$VAR['cash']['send'] = isset($VAR['cash']['send']) ? $VAR['cash']['send'] : null;
+$VAR['cash']['receive'] = isset($VAR['cash']['receive']) ? $VAR['cash']['receive'] : null;
+$VAR['cheque']['send'] = isset($VAR['cheque']['send']) ? $VAR['cheque']['send'] : null;
+$VAR['cheque']['receive'] = isset($VAR['cheque']['receive']) ? $VAR['cheque']['receive'] : null;
+$VAR['direct_debit']['send'] = isset($VAR['direct_debit']['send']) ? $VAR['direct_debit']['send'] : null;
+$VAR['direct_debit']['receive'] = isset($VAR['direct_debit']['receive']) ? $VAR['direct_debit']['receive'] : null;
+$VAR['gift_certificate']['send'] = isset($VAR['gift_certificate']['send']) ? $VAR['gift_certificate']['send'] : null;
+$VAR['gift_certificate']['receive'] = isset($VAR['gift_certificate']['receive']) ? $VAR['gift_certificate']['receive'] : null;
+$VAR['other']['send'] = isset($VAR['other']['send']) ? $VAR['other']['send'] : null;
+$VAR['other']['receive'] = isset($VAR['other']['receive']) ? $VAR['other']['receive'] : null;
+$VAR['paypal']['send'] = isset($VAR['paypal']['send']) ? $VAR['paypal']['send'] : null;
+$VAR['paypal']['receive'] = isset($VAR['paypal']['receive']) ? $VAR['paypal']['receive'] : null;
 
 // If changes submited
 if(isset($VAR['submit'])) {
     
     // Update enabled payment methods (checkboxes)
-    update_payment_accepted_methods_statuses($VAR);
+    update_payment_methods_statuses($VAR['payment_methods']);
     
     // Update Payment details
     update_payment_options($VAR);
@@ -36,6 +46,6 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$smarty->assign('payment_accepted_methods', get_payment_accepted_methods() );
-$smarty->assign('payment_options',          get_payment_options()        );
+$smarty->assign('payment_methods',          get_payment_methods() );
+$smarty->assign('payment_options',          get_payment_options() );
 $BuildPage .= $smarty->fetch('payment/options.tpl');

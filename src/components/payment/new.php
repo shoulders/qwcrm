@@ -14,39 +14,104 @@ require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'workorder.php');
 
-// Check if we have an invoice_id
-if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
-    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
+######### referrer based ####################
+
+// Prevent direct access to this page - and Determine whether should 'invoice' or 'refund' payment by referer and then set payment type based on this
+if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
+    
+    // Check if we have an invoice_id
+    if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
+        force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));    
+    }
+    
+    // Set payment type
+    $VAR['type'] = 'invoice';
+    
+} elseif(check_page_accessed_via_qwcrm('refund', 'new')) {
+    
+    // Check if we have an invoice_id
+    if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
+        force_page('refund', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));    
+    }
+    
+    // Set payment type
+    $VAR['type'] = 'refund';
+    
+} elseif(!check_page_accessed_via_qwcrm('payment', 'new')) {
+    header('HTTP/1.1 403 Forbidden');
+    die(_gettext("No Direct Access Allowed."));
 }
 
-// Load the method specific processor upon form submission
+/*################ Variable Based #############################
+
+// Prevent direct access to this page - and Determine whether 'invoice' or 'refund' payment then set payment type
+if(!check_page_accessed_via_qwcrm('invoice', 'edit') || !check_page_accessed_via_qwcrm('refund', 'new') || !check_page_accessed_via_qwcrm('payment', 'new')) {
+    header('HTTP/1.1 403 Forbidden');
+    die(_gettext("No Direct Access Allowed."));
+}
+
+// Check if we have a payment type
+if(!isset($VAR['type']) || !$VAR['type']) {
+    force_page('invoice', 'search', 'warning_msg='._gettext("No Payment Type supplied."));
+}
+
+// Check if we have a correct ID
+switch($VAR['type']) {
+
+    case 'invoice':
+    if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) { force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied.")); }
+    break;
+
+    case 'refund':
+    if(!isset($VAR['refund_id']) || !$VAR['refund_id']) { force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied.")); }
+    break;
+
+    default:
+    force_page('payment', 'search', 'warning_msg='._gettext("Invalid Payment Type."));
+    break;
+
+}
+
+####################################################################*/
+
+
+// Prevent undefined variable errors
+$payment_type = isset($VAR['type']) ? $VAR['type'] : null;
+if(isset($VAR['qpayment']['type'])) { $payment_type = $VAR['qpayment']['type']; }
+$payment_method = isset($VAR['qpayment']['method']) ? $VAR['qpayment']['method'] : null;
+
+// Load the method specific payment method processor upon form submission
 if(isset($VAR['submit'])) {     
     
-    switch($VAR['method_type']) {
+    switch($VAR['qpayment']['method']) {
 
+        case 'cash':
+        require(COMPONENTS_DIR.'payment/methods/method_cash.php');      //////// only done the cash method with new qpayment code
+        break;
+    
+        case 'cheque':
+        require(COMPONENTS_DIR.'payment/methods/method_cheque.php');
+        break;
+    
         case 'credit_card':
         require(COMPONENTS_DIR.'payment/methods/method_credit_card.php');
         break;
 
-        case 'cheque':
-        require(COMPONENTS_DIR.'payment/methods/method_cheque.php');
-        break;
-
-        case 'cash':
-        require(COMPONENTS_DIR.'payment/methods/method_cash.php');
-        break;
+        case 'direct_deposit':
+        require(COMPONENTS_DIR.'payment/methods/method_direct_deposit.php');
+        break;        
 
         case 'gift_certificate':
         require(COMPONENTS_DIR.'payment/methods/method_gift_certificate.php');
-        break;
-
+        break;       
+    
         case 'paypal':
         require(COMPONENTS_DIR.'payment/methods/method_paypal.php');
         break;
-
-        case 'direct_deposit':
-        require(COMPONENTS_DIR.'payment/methods/method_direct_deposit.php');
-        break;    
+    
+        default:
+        force_page('payment', 'search', 'warning_msg='._gettext("Invalid Payment Type."));
+        break;
 
     }
 
@@ -62,8 +127,12 @@ $smarty->assign('client_details',                    get_client_details(get_invo
 $smarty->assign('invoice_details',                   get_invoice_details($VAR['invoice_id'])                                                );
 $smarty->assign('invoice_statuses',                  get_invoice_statuses()                                                                   );
 $smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );
-$smarty->assign('payment_methods',                   get_payment_accepted_methods()                                                             );
-$smarty->assign('payment_accepted_methods_statuses', get_payment_accepted_methods_statuses()                                                      );
+$smarty->assign('payment_method',                    $payment_method                                                             );
+$smarty->assign('payment_type',                      $payment_type                                                                               );
+$smarty->assign('payment_types',                     get_payment_types()                                                             );
+
+$smarty->assign('active_payment_accepted_methods',   get_payment_accepted_methods('active')                                                             );
+//$smarty->assign('active_payment_accepted_methods',   get_payment_accepted_methods('active') ); remove from print invoice aswell and then the include
 $smarty->assign('active_credit_cards',               get_active_credit_cards()                                                                );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');

@@ -836,31 +836,60 @@ function update_invoice_last_active($invoice_id = null) {
     
 }
 
+#################################
+#    Update invoice refund ID   #
+#################################
+
+function update_invoice_refund_id($invoice_id, $refund_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "UPDATE ".PRFX."invoice_records SET
+            refund_id           =".$db->qstr($refund_id)."
+            WHERE invoice_id    =".$db->qstr($invoice_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add a Refund ID to the invoice."));
+    }
+    
+}
+
 /** Close Functions **/
 
 #####################################
-#   Cancel Invoice                  # // This does not delete information i.e. client went bust and did not pay
+#   Refund Invoice                  #
 #####################################
 
-function cancel_invoice($invoice_id) {
+function refund_invoice($refund_details) {
     
-    // make sure the invoice can be cancelled
-    if(!check_invoice_can_be_cancelled($invoice_id)) {        
+    // Make sure the invoice can be refunded
+    if(!check_invoice_can_be_refunded($refund_details['invoice_id'])) {
         return false;
     }
     
-    // Change the invoice status to cancelled (I do this here to maintain consistency)
-    update_invoice_status($invoice_id, 'cancelled');
+    // Get invoice details
+    $invoice_details = get_invoice_details($refund_details['invoice_id']);
     
-    // Get invoice details before cancelling
-    $invoice_details = get_invoice_details($invoice_id);    
+    // Add full payment routine here (currently the payment is assumed to be good, live payments will need more work)
+    
+    // Insert refund record and return refund_id
+    $refund_id = insert_refund($refund_details);
+    
+    // Update invoice record with refund_id
+    update_invoice_refund_id($refund_details['invoice_id'], $refund_id); 
+        
+    // Refund any Gift Certificates
+    refund_invoice_giftcerts($refund_details['invoice_id']);    
+    
+    // Change the invoice status to refunded (I do this here to maintain consistency)
+    update_invoice_status($refund_details['invoice_id'], 'refunded');
         
     // Create a Workorder History Note  
-    insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+    insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$refund_details['invoice_id'].' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.');
 
     // Log activity        
-    $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
-    write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+    $record = _gettext("Invoice").' '.$refund_details['invoice_id'].' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.';
+    write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $refund_details['invoice_id']);
 
     // Update last active record
     update_client_last_active($invoice_details['client_id']);
@@ -872,33 +901,36 @@ function cancel_invoice($invoice_id) {
 }
 
 #####################################
-#   Refund Invoice                  #
+#   Cancel Invoice                  # // This does not delete information i.e. client went bust and did not pay
 #####################################
 
-function refund_invoice($invoice_id) {
+function cancel_invoice($invoice_id) {
     
-    // make sure the invoice can be refunded
-    if(!check_invoice_can_be_refunded($invoice_id)) {
+    // Make sure the invoice can be cancelled
+    if(!check_invoice_can_be_cancelled($invoice_id)) {        
         return false;
     }
     
-    // Change the invoice status to refunded (I do this here to maintain consistency)
-    update_invoice_status($invoice_id, 'refunded');
+    // Get invoice details
+    $invoice_details = get_invoice_details($invoice_id);  
     
-    // Get invoice details before refunding
-    $invoice_details = get_invoice_details($invoice_id);    
+    // Cancel any Gift Certificates
+    cancel_invoice_giftcerts($invoice_id);
+    
+    // Change the invoice status to cancelled (I do this here to maintain consistency)
+    update_invoice_status($invoice_id, 'cancelled');      
         
     // Create a Workorder History Note  
-    insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.');
+    insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
 
     // Log activity        
-    $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was refunded by").' '.QFactory::getUser()->login_display_name.'.';
+    $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
     write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
 
     // Update last active record
     update_client_last_active($invoice_details['client_id']);
     update_workorder_last_active($invoice_details['workorder_id']);
-    update_invoice_last_active($invoice_details['invoice_id']);
+    update_invoice_last_active($invoice_id);
 
     return true;
     
@@ -914,20 +946,23 @@ function delete_invoice($invoice_id) {
     
     $db = QFactory::getDbo();
         
-    // make sure the invoice can be deleted 
+    // Make sure the invoice can be deleted 
     if(!check_invoice_can_be_deleted($invoice_id)) {        
         return false;
     }
     
-    // Change the invoice status to deleted (I do this here to maintain log consistency)
-    update_invoice_status($invoice_id, 'deleted');
-    
-    // Get invoice details before deleting
+    // Get invoice details
     $invoice_details = get_invoice_details($invoice_id);
+    
+    // Delete any Gift Certificates
+    delete_invoice_giftcerts($invoice_id);  
     
     // Delete parts and labour
     delete_invoice_labour_items($invoice_id);
     delete_invoice_parts_items($invoice_id);
+    
+    // Change the invoice status to deleted (I do this here to maintain log consistency)
+    update_invoice_status($invoice_id, 'deleted'); 
     
     // Build the data to replace the invoice record (some stuff has just been updated with update_invoice_status())
     $deleted_invoice_details = array(
@@ -959,14 +994,14 @@ function delete_invoice($invoice_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), null, _gettext("Failed to delete the invoice."));
     } else {
         
-        // Update the workorder to remove the invoice_id
-        update_workorder_invoice_id($invoice_details['workorder_id'], '');
+        // Remove the invoice_if from the related Workorder record (if present)
+        update_workorder_invoice_id($invoice_details['workorder_id'], '');               
         
         // Create a Workorder History Note  
-        insert_workorder_history_note($invoice_details['invoice_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($invoice_id, _gettext("Invoice").' '.$invoice_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
             
         // Log activity        
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_details['invoice_id'].' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("for Work Order").' '.$invoice_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
         
         // Update workorder status
@@ -975,7 +1010,7 @@ function delete_invoice($invoice_id) {
         // Update last active record
         update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
-        update_invoice_last_active($invoice_details['invoice_id']);
+        update_invoice_last_active($invoice_id);
         
         return true;
         
@@ -1410,7 +1445,7 @@ function export_invoice_prefill_items_csv() {
  }
 
 ###############################################################
-#   Check to see if the invoice can be refunded               #
+#   Check to see if the invoice can be refunded (by status)   #
 ###############################################################
 
 function check_invoice_can_be_refunded($invoice_id) {
@@ -1453,6 +1488,12 @@ function check_invoice_can_be_refunded($invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
         return false;
     }
+    
+    // Does the invoice have any Gift Certificates preventing refunding the invoice (i.e. any that have been used)
+    if(!check_invoice_giftcerts_allow_refunding($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Gift Certificates on it prevent this."));
+        return false;
+    }    
      
     // All checks passed
     return true;
@@ -1503,7 +1544,13 @@ function check_invoice_can_be_cancelled($invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
         return false;
     }
-     
+    
+    // Does the invoice have any Gift Certificates preventing cancelling the invoice (i.e. any that have been used)
+    if(!check_invoice_giftcerts_allow_cancellation($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Gift Certificates on it prevent this."));
+        return false;
+    } 
+    
     // All checks passed
     return true;
     
@@ -1585,6 +1632,12 @@ function check_invoice_can_be_deleted($invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has been refunded."));
         return false;
     }
+    
+    // Does the invoice have any Gift Certificates preventing refunding the invoice (i.e. any that have been used)
+    if(!check_invoice_giftcerts_allow_deletion($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Gift Certificates on it prevent this."));
+        return false;
+    } 
      
     // All checks passed
     return true;

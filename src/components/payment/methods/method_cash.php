@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 /* Invoice Processing */
 
 // Validate the basic invoice totals after the payment is applied, then if successful return the results
-if(!$new_invoice_totals = validate_payment_method_totals($VAR['invoice_id'], $VAR['amount'])) {
+if(!$new_invoice_totals = validate_payment_method_totals($VAR['qpayment']['invoice_id'], $VAR['qpayment']['amount'])) {
     
     // Do nothing - Specific Error information has already been set via postEmulation    
     
@@ -25,10 +25,14 @@ if(!$new_invoice_totals = validate_payment_method_totals($VAR['invoice_id'], $VA
     // Live processing goes here
 
     // Create a specific note string (if applicable)
-    $VAR['note'] = $VAR['note'];
+    $note = '';
+    if($VAR['qpayment']['note']) { $note .= '<p>'.$VAR['qpayment']['note'].'</p>'; }
+    $VAR['qpayment']['note'] = $note;
 
+    ///// only inseert the refund if the payment has been successful - i also need to define what happens with 'type' of payment. should i call it 'payment_type'
+    
     // Insert the payment with the calculated information
-    insert_payment($VAR);
+    insert_payment($VAR['qpayment']);
     
     // Assign Success message
     $smarty->assign('information_msg', _gettext("Cash payment added successfully"));

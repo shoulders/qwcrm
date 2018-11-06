@@ -62,6 +62,7 @@ $smarty->assign('allowed_to_delete',            check_workorder_status_allows_fo
 $smarty->assign('active_employees',             get_active_users('employees')                                     );
 $smarty->assign('workorder_statuses',           $edited_statuses                                                  );
 $smarty->assign('workorder_status',             get_workorder_details($VAR['workorder_id'], 'status')             );
+$smarty->assign('workorder_status_display_name',get_workorder_status_display_name(get_workorder_details($VAR['workorder_id'], 'status')));
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                             );
 $smarty->assign('assigned_employee_details',    get_user_details($assigned_employee_id)                           );
 

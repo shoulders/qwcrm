@@ -1,4 +1,4 @@
-<!-- new_payment_credit_card_block.tpl -->
+<!-- new_payment_method_credit_card_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -23,7 +23,7 @@
                     <tr class="olotd4">
                         <td></td>
                         <td>
-                            <input id="credit_card_date" name="date" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                            <input id="credit_card_date" name="qpayment[date]" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
                             <button type="button" id="credit_card_date_button">+</button>
                             <script>                                                        
                                 Calendar.setup( {
@@ -34,24 +34,23 @@
                             </script>                                                    
                         </td>
                         <td>
-                            <select name="card_type" class="olotd4">                     
+                            <select name="qpayment[card_type]" class="olotd4">                     
                                 {section name=c loop=$active_credit_cards}
                                     <option value="{$active_credit_cards[c].card_key}">{$active_credit_cards[c].display_name}</option>
                                 {/section}
                             </select>
                         </td>                        
-                        <td><input name="name_on_card" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
-                        <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                        <td><input name="qpayment[name_on_card]" class="olotd5" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                        <td>{$currency_sym}<input name="qpayment[amount]" class="olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{t}Note{/t}</b></td>
-                        <td colspan="4"><textarea name="note" cols="60" rows="4" class="olotd4"></textarea></td>
+                        <td colspan="4"><textarea name="qpayment[note]" cols="60" rows="4" class="olotd4"></textarea></td>
                     </tr>
                 </table>
-                <p>
-                    <input type="hidden" name="method_name" value="{t}Credit Card{/t}">
-                    <input type="hidden" name="method_type" value="credit_card">               
-                    <button type="submit" name="submit" value="submit">{t}Submit Credit Card Payment{/t}</button>
+                <p>  
+                    <input type="hidden" name="qpayment[type]" value="{$payment_type}">
+                    <input type="hidden" name="qpayment[method]" value="credit_card">                    
                 </p>
             </td>
         </tr>

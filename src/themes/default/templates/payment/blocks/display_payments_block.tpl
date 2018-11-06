@@ -14,6 +14,7 @@
         <td class="olohead"><b>{t}Employee{/t}</b></td>
         <td class="olohead"><b>{t}Client{/t}</b></td>
         <td class="olohead"><b>{t}Date{/t}</b></td>
+        <td class="olohead"><b>{t}Type{/t}</b></td>
         <td class="olohead"><b>{t}Method{/t}</b></td>        
         <td class="olohead"><b>{t}Amount{/t}</b></td>
         <td class="olohead"><b>{t}Note{/t}</b></td>        
@@ -44,6 +45,13 @@
             <!-- Date -->
             <td class="olotd4"> {$display_payments[p].date|date_format:$date_format}</td>
 
+            <!-- Type -->
+            <td class="olotd4" align="center">
+                {section name=t loop=$payment_types}    
+                    {if $display_payments[p].type == $payment_types[t].payment_type_id}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                {/section}
+            </td> 
+            
             <!-- Method -->
             <td class="olotd4" align="center">
                 {section name=m loop=$payment_methods}    

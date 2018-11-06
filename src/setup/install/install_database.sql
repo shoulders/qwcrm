@@ -543,10 +543,31 @@ CREATE TABLE `#__payment_records` (
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
+  `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `qw_payment_types`
+--
+
+CREATE TABLE `qw_payment_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `payment_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `qw_payment_types`
+--
+
+INSERT INTO `qw_payment_types` (`id`, `payment_type_id`, `display_name`) VALUES
+(1, 'invoice', 'Invoice'),
+(2, 'refund', 'Refund');
 
 -- --------------------------------------------------------
 
@@ -557,8 +578,7 @@ CREATE TABLE `#__payment_records` (
 CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `giftcert_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,  
   `date` date NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -586,8 +606,7 @@ CREATE TABLE `#__refund_types` (
 --
 
 INSERT INTO `#__refund_types` (`id`, `refund_type_id`, `display_name`) VALUES
-(1, 'giftcert', 'Gift Certificate'),
-(2, 'invoice', 'Invoice');
+(1, 'invoice', 'Invoice');
 
 -- --------------------------------------------------------
 
@@ -1145,6 +1164,12 @@ ALTER TABLE `#__payment_purchase_methods`
 --
 ALTER TABLE `#__payment_records`
   ADD PRIMARY KEY (`payment_id`);
+
+--
+-- Indexes for table `qw_payment_types`
+--
+ALTER TABLE `qw_payment_types`
+  ADD PRIMARY KEY (`payment_type_id`);
 
 --
 -- Indexes for table `#__refund_records`

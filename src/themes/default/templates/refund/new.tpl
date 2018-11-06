@@ -12,35 +12,6 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-{*<script>
-
-    function calculateTotals(fieldName) {
-        
-        // Get input values
-        var net_amount  = Number(document.getElementById('net_amount').value);
-        var vat_rate    = Number(document.getElementById('vat_rate').value);
-        var vat_amount  = Number(document.getElementById('vat_amount').value);        
-        
-        // Calculations        
-        var auto_vat_amount = (net_amount * (vat_rate/100));        
-        if(fieldName !== 'vat_amount') {
-            var auto_gross_amount = (net_amount + auto_vat_amount);
-        } else {            
-            var auto_gross_amount = (net_amount + vat_amount);
-        }
-        
-        // Set the new vat_amount input value if not editing the vat_amount input field
-        if(fieldName !== 'vat_amount') {
-            document.getElementById('vat_amount').value = auto_vat_amount.toFixed(2);
-        }
-        
-        // Set the new gross_amount input value
-        document.getElementById('gross_amount').value = auto_gross_amount.toFixed(2);        
-    
-    }
-
-</script>*}
-
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>            
@@ -100,15 +71,8 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Invoice ID{/t}</b></td>
                                                                             <td colspan="3">
-                                                                                {if $refund_details.invoice_id}<a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a>{else}{t}n/a{/t}{/if}
-                                                                                <input id="invoice_id" name="invoice_id" class="olotd5" size="5" value="{if $refund_details.invoice_id}{$refund_details.invoice_id}{/if}" type="hidden">
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Giftcert ID{/t}</b></td>                                                                            
-                                                                            <td colspan="3">
-                                                                                {if $refund_details.giftcert_id}<a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$refund_details.giftcert_id}">{$refund_details.giftcert_id}</a>{else}{t}n/a{/t}{/if}
-                                                                                <input id="giftcert_id" name="giftcert_id" class="olotd5" size="5" value="{if $refund_details.giftcert_id}{$refund_details.giftcert_id}{/if}" type="hidden">
+                                                                                <a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a>
+                                                                                <input id="invoice_id" name="invoice_id" value="{$refund_details.invoice_id}" type="hidden">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -131,20 +95,32 @@
                                                                             </td>
                                                                         </tr>                                                                                                          
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span> {$currency_sym}</td>
-                                                                            <td><input id="net_amount" name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$refund_details.net_amount}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('net_amount');"></b></a></td>
+                                                                            <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span> </td>                                                                               
+                                                                            <td>
+                                                                                 {$currency_sym}{$refund_details.net_amount}
+                                                                                <input id="net_amount" name="net_amount" value="{$refund_details.net_amount}" type="hidden">
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</td>
-                                                                            <td><input id="vat_rate" name="vat_rate" class="olotd5" size="5" value="{$refund_details.vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('vat_rate');"/><b>%</b></td>
+                                                                            <td align="right"><b>{t}VAT{/t} {t}Rate{/t}<span style="color: #ff0000"> *</span> </td>
+                                                                            <td>
+                                                                                {$refund_details.vat_rate}%
+                                                                                <input id="vat_rate" name="vat_rate" value="{$refund_details.vat_rate}" type="hidden">
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b> {$currency_sym}</td>
-                                                                            <td><input id="vat_amount" name="vat_amount" class="olotd5" size="10" value="{$refund_details.vat_amount}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('vat_amount');"/></td>
+                                                                            <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td>
+                                                                                {$currency_sym}{$refund_details.vat_amount}
+                                                                                <input id="vat_amount" name="vat_amount" value="{$refund_details.vat_amount}" type="hidden">
+                                                                            </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span> {$currency_sym}</td>
-                                                                            <td><input id="gross_amount" name="gross_amount" class="olotd5" size="10" value="{$refund_details.gross_amount}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                                            <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td>
+                                                                                 {$currency_sym}{$refund_details.gross_amount}
+                                                                                 <input id="gross_amount" name="gross_amount" value="{$refund_details.gross_amount}" type="hidden">
+                                                                            </td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

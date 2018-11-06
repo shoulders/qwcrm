@@ -22,16 +22,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="olotd5" colspan="2">                        
+                    <td class="olotd5" colspan="2">
+                        
                         <table width="100%" border="0" cellpadding="10" cellspacing="0">
-                                        
+
                             <!-- Invoice Details -->
                             <tr>
                                 <td>                                                
                                     {include file='payment/blocks/new_invoice_details_block.tpl'}
                                 </td>
                             </tr>
-                            
+
                             <!-- Cancel Button -->
                             <tr>
                                 <td>                                                
@@ -45,67 +46,29 @@
                                     {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
                                 </td>
                             </tr>                            
-                                
-                            <!-- Active Payment Methods -->
-                            {if $invoice_details.is_closed == 0 && $invoice_details.balance > 0}
-                                
-                                <!-- Cash -->
-                                {if $payment_accepted_methods_statuses.cash}
-                                    <tr>
-                                        <td>                           
-                                            {include file='payment/blocks/new_payment_cash_block.tpl'}                                    
-                                        </td>
-                                    </tr>
-                                {/if}                            
+                        </table>
 
-                                <!-- Cheques -->
-                                {if $payment_accepted_methods_statuses.cheque}  
-                                    <tr>
-                                        <td>                                                                              
-                                            {include file='payment/blocks/new_payment_cheque_block.tpl'}                                    
-                                        </td>
-                                    </tr>
-                                {/if}                            
 
-                                <!-- Credit Cards -->
-                                {if $payment_accepted_methods_statuses.credit_card && $active_credit_cards}
-                                    <tr>
-                                        <td>
-                                            {include file='payment/blocks/new_payment_credit_card_block.tpl'}
-                                        </td>
-                                    </tr>
-                                {/if}                            
-
-                                <!-- Direct Deposit -->
-                                {if $payment_accepted_methods_statuses.direct_deposit}
-                                    <tr>
-                                        <td>                                    
-                                            {include file='payment/blocks/new_payment_direct_deposit_block.tpl'}                                    
-                                        </td>
-                                    </tr>
-                                {/if}                            
-
-                                <!-- Gift Certificates -->
-                                {if $payment_accepted_methods_statuses.gift_certificate}
-                                    <tr>
-                                        <td>
-                                            {include file='payment/blocks/new_payment_gift_certificate_block.tpl'}
-                                        </td>
-                                    </tr>
-                                {/if}
+                        <form method="post" action="index.php?component=payment&page_tpl=new&invoice_id={$invoice_id}">
+                            <table width="100%" border="0" cellpadding="10" cellspacing="0">
                                 
-                                <!-- PayPal -->
-                                {if $payment_accepted_methods_statuses.paypal}
-                                    <tr>
-                                        <td>                                    
-                                            {include file='payment/blocks/new_payment_paypal_block.tpl'}                                    
-                                        </td>
-                                    </tr>
-                                {/if}
+                                <!-- Payment Methods -->
+                                <tr>
+                                    <td>
+                                        {include file='payment/blocks/display_payment_methods_block.tpl'}
+                                    </td>
+                                </tr>                            
+
+                                <!-- Submit Button -->
+                                <tr>
+                                    <td>                                        
+                                        <button type="submit" name="submit" value="submit">{t}Submit Payment{/t}</button>
+                                    </td>
+                                </tr>
                                 
-                            {/if}
-                            
-                        </table>           
+                            </table>
+                        </form>                          
+                        
                     </td>
                 </tr>
             </table>

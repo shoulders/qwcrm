@@ -9,12 +9,12 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'giftcert.php');
+require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'workorder.php');
-require(INCLUDES_DIR.'user.php');
+require(INCLUDES_DIR.'user.php'); // need when changing WO from 'closed_with_invoice' to 'closed_without_invoice'
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
@@ -27,19 +27,20 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
-// Check the Gift Certificates do not prevent the invoice from getting deleted (if present)
-check_giftcerts_allow_invoice_deletion($VAR['invoice_id']);
+// Make sure the invoice is allowed to be deleted
+if(!check_invoice_can_be_deleted($VAR['invoice_id'])) {
+    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be deleted."));
+}
 
 // Delete Invoice
 if(!delete_invoice($VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
-    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id'], 'information_msg='._gettext("The invoice failed to be deleted."));
-    
+    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id'], 'information_msg='._gettext("The invoice failed to be deleted."));    
     
 } else {   
     
-    // load the work order invoice page
+    // Load the invoice search page with success message
     force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been deleted successfully."));
     
 }

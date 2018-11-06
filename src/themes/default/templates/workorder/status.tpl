@@ -28,7 +28,8 @@
                             <tr>
                             
                                 <!-- Assign Status Update -->
-                                <td class="olotd4" align="center" width="33%">                                    
+                                <td class="olotd4" align="center" width="33%">
+                                    <p><b>{t}Current Status{/t}:</b> {$workorder_status_display_name}</p>
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>
                                         <form method="get" action="index.php?component=workorder&page_tpl=status&workorder_id={$workorder_id}" name="new_workorder_status" id="new_workorder_status">

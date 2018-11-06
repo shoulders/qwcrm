@@ -26,15 +26,34 @@
                                     <form method="post" action="index.php?component=payment&page_tpl=options">                                        
                                         <table>
                                             
-                                            <!-- Available Payment Types -->
+                                            <!-- Available Payment Methods -->
                                             <tr>
                                                 <td colspan="2">
                                                     <table>
-                                                        <caption><b><font color="red">{t}Available Payment Types{/t}</font></b></caption>
-                                                        {section name=q loop=$payment_accepted_methods}
+                                                        <caption><b><font color="red">{t}Available Payment Methods{/t}</font></b></caption>
+                                                        <tr>
+                                                            <td>{t}Name{/t}</td>
+                                                            <td>{t}Send{/t}</td>
+                                                            <td>{t}Receive{/t}</td> 
+                                                        </tr>
+                                                        {section name=q loop=$payment_methods}
                                                             <tr>
-                                                                <td colspan="2"><b>{t}{$payment_accepted_methods[q].display_name}{/t}</b></td>
-                                                                <td><input type="checkbox" name="{$payment_accepted_methods[q].accepted_method_id}" {if $payment_accepted_methods[q].active == 1} checked{/if} value="1" class="olotd5"></td>
+                                                                <td>
+                                                                    <b>{t}{$payment_methods[q].display_name}{/t}</b>
+                                                                    <input type="hidden" name="payment_methods[{$payment_methods[q].payment_method_id}][payment_method_id]" value="{$payment_methods[q].payment_method_id}">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].payment_method_id}][send]" value="1" class="olotd5" {if $payment_methods[q].send} checked{/if}{if $payment_methods[q].send_protected} disabled{/if}>
+                                                                    {if $payment_methods[q].send_protected}
+                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].payment_method_id}][send]" value="{$payment_methods[q].send}">
+                                                                    {/if}
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].payment_method_id}][receive]" value="1" class="olotd5" {if $payment_methods[q].receive} checked{/if}{if $payment_methods[q].receive_protected} disabled{/if}>
+                                                                    {if $payment_methods[q].receive_protected}
+                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].payment_method_id}][receive]" value="{$payment_methods[q].receive}">
+                                                                    {/if}
+                                                                </td>
                                                             </tr>
                                                         {/section}
                                                     </table>

@@ -11,8 +11,7 @@
         <td class="olohead">{t}Refund ID{/t}</td>
         <td class="olohead">{t}Client ID{/t}</td>
         <td class="olohead">{t}Name{/t}</td>
-        <td class="olohead">{t}INV ID{/t}</td>
-        <td class="olohead">{t}Giftcert ID{/t}</td>        
+        <td class="olohead">{t}INV ID{/t}</td>              
         <td class="olohead">{t}Date{/t}</td>
         <td class="olohead">{t}Type{/t}</td>
         <td class="olohead">{t}Payment Method{/t}</td>
@@ -29,8 +28,7 @@
             <td class="olotd4" nowrap><a href="index.php?component=refund&page_tpl=details&refund_id={$display_refunds[r].refund_id}">{$display_refunds[r].refund_id}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=client&page_tpl=details&client_id={$display_refunds[r].client_id}">{$display_refunds[r].client_id}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=client&page_tpl=details&client_id={$display_refunds[r].client_id}">{$display_refunds[r].client_display_name}</a></td>
-            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_refunds[r].invoice_id}">{$display_refunds[r].invoice_id}</a></td>
-            <td class="olotd4" nowrap><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_refunds[r].giftcert_id}">{$display_refunds[r].giftcert_id}</a></td>
+            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_refunds[r].invoice_id}">{$display_refunds[r].invoice_id}</a></td>            
             <td class="olotd4" nowrap>{$display_refunds[r].date|date_format:$date_format}</td>                                                                
             <td class="olotd4" nowrap>
                 {section name=s loop=$refund_types}    

@@ -9,13 +9,14 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
 require(INCLUDES_DIR.'payment.php');
 
 // Check if we have a payment_id
-if(!isset($VAR['payment']) || !$VAR['payment_id']) {
+if(!isset($VAR['payment_id']) || !$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }
 

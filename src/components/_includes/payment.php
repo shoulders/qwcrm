@@ -78,6 +78,7 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
             ".PRFX."payment_records.workorder_id,
             ".PRFX."payment_records.invoice_id,
             ".PRFX."payment_records.date,
+            ".PRFX."payment_records.type, 
             ".PRFX."payment_records.method,
             ".PRFX."payment_records.amount,
             ".PRFX."payment_records.note,
@@ -166,21 +167,22 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
 #   Insert Payment         #
 ############################
 
-function insert_payment($VAR) {
+function insert_payment($qpayment) {
     
     $db = QFactory::getDbo();
 
-    $invoice_details = get_invoice_details($VAR['invoice_id']);
+    $invoice_details = get_invoice_details($qpayment['invoice_id']);
     
     $sql = "INSERT INTO ".PRFX."payment_records SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
             client_id       = ".$db->qstr( $invoice_details['client_id']               ).",
             workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
-            invoice_id      = ".$db->qstr( $VAR['invoice_id']                          ).",
-            date            = ".$db->qstr( date_to_mysql_date($VAR['date'])            ).",
-            method          = ".$db->qstr( $VAR['method_type']                         ).",
-            amount          = ".$db->qstr( $VAR['amount']                              ).",
-            note            = ".$db->qstr( $VAR['note']                                );
+            invoice_id      = ".$db->qstr( $qpayment['invoice_id']                          ).",              
+            date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])            ).",
+            type            = ".$db->qstr( $qpayment['type']                                ).",
+            method          = ".$db->qstr( $qpayment['method']                              ).",
+            amount          = ".$db->qstr( $qpayment['amount']                              ).",
+            note            = ".$db->qstr( $qpayment['note']                                );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
@@ -191,19 +193,19 @@ function insert_payment($VAR) {
         $insert_id = $db->Insert_ID();
         
         // Recalculate invoice totals
-        recalculate_invoice($VAR['invoice_id']);
+        recalculate_invoice($qpayment['invoice_id']);
         
         // Create a Workorder History Note       
         insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Payment").' '.$insert_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         $record = _gettext("Payment").' '.$insert_id.' '._gettext("added.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $qpayment['invoice_id']);
         
         // Update last active record    
         update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
-        update_invoice_last_active($VAR['invoice_id']);        
+        update_invoice_last_active($qpayment['invoice_id']);        
                 
     }    
     
@@ -267,8 +269,8 @@ function get_payment_options($item = null) {
     
 }
 
-################################################
-#   Get get accepted payment methods statuses  #
+/*###############################################
+#   Get get accepted payment methods statuses  #  // not used remove when verified
 ################################################
 
 function get_payment_accepted_methods_statuses() {
@@ -287,17 +289,64 @@ function get_payment_accepted_methods_statuses() {
         
     }
     
-}
+}*/
 
-#####################################
-#    Get Accepted Payment methods   #  // These are the payment methods that QWcrm can accept for invoices
-#####################################
 
-function get_payment_accepted_methods() {
+function get_payment_methods($direction = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."payment_accepted_methods";
+    $sql = "";
+    
+    // If the send direction is specified
+    if($direction == 'send') {
+        $sql = "SELECT
+                payment_method_id,
+                display_name,
+                send as active
+                FROM ".PRFX."payment_methods";
+      
+    // If the receive direction is specified    
+    } elseif($direction == 'receive') {
+        $sql = "SELECT
+                payment_method_id,
+                display_name,
+                receive as active
+                FROM ".PRFX."payment_methods";        
+        
+    // Return everything
+    } else {    
+        $sql .= "SELECT * FROM ".PRFX."payment_methods";   
+    }
+    
+    if(!$rs = $db->execute($sql)) {        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
+    } else {
+        
+        if($direction) {
+            
+            return $rs->GetAssoc();
+        
+        } else {
+            
+            return $rs->GetArray();
+            
+        }
+    }    
+    
+}
+
+/*####################################
+#    Get AcceptedPayment methods   #  // These are the payment methods that QWcrm can accept for invoices
+#####################################
+
+function get_payment_accepted_methods($status = null) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT *
+            FROM ".PRFX."payment_accepted_methods\n";    
+    if($status == 'active') { $sql .= "WHERE active = ".$db->qstr(1); }            
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment system methods."));
@@ -328,7 +377,34 @@ function get_payment_purchase_methods() {
         
     }    
     
+}*/
+
+
+
+
+
+#####################################
+#    Get Payment Types              #  // i.e. invoice, refund
+#####################################
+
+function get_payment_types() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."payment_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
+    } else {
+        
+        //return $rs->GetRowAssoc();
+        return $rs->GetArray();
+        
+    }    
+    
 }
+
+
 
 #########################################
 #   Get get active credit cards         #
@@ -394,8 +470,9 @@ function update_payment($VAR) {
             employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
             client_id       = ".$db->qstr( $VAR['client_id']                ).",
             workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
-            invoice_id      = ".$db->qstr( $VAR['invoice_id']               ).",
+            invoice_id      = ".$db->qstr( $VAR['invoice_id']               ).",            
             date            = ".$db->qstr( date_to_mysql_date($VAR['date']) ).",
+            type            = ".$db->qstr( $VAR['type']                     ).",
             method          = ".$db->qstr( $VAR['method']                   ).",
             amount          = ".$db->qstr( $VAR['amount']                   ).",
             note            = ".$db->qstr( $VAR['note']                     )."
@@ -457,36 +534,28 @@ function update_payment_options($VAR) {
 }
 
 #####################################
-#   Update Payment Methods status   #
+#  Update Payment Methods statuses  #
 #####################################
 
-function update_payment_accepted_methods_statuses($VAR) {
+function update_payment_methods_statuses($payment_methods) {
     
     $db = QFactory::getDbo();
     
-    // Array of all valid payment methods (name / active state)
-    $payment_accepted_methods =
-            array(
-                array('accepted_method_id'=>'credit_card',       'active'=>$VAR['credit_card']      ),
-                array('accepted_method_id'=>'cheque',            'active'=>$VAR['cheque']           ),
-                array('accepted_method_id'=>'cash',              'active'=>$VAR['cash']             ),
-                array('accepted_method_id'=>'gift_certificate',  'active'=>$VAR['gift_certificate'] ),
-                array('accepted_method_id'=>'paypal',            'active'=>$VAR['paypal']           ),
-                array('accepted_method_id'=>'direct_deposit',    'active'=>$VAR['direct_deposit']   )    
-            );
-   
     // Loop throught the various payment system methods and update the database
-    foreach($payment_accepted_methods as $payment_method) {
+    foreach($payment_methods as $payment_method) {
         
-        // When not selected no value is sent - this set zero for those
-        if($payment_method['active'] == ''){$payment_method['active'] = '0';}
+        // When not checked, no value is sent so this sets zero for those cases
+        if(!isset($payment_method['send'])) { $payment_method['send'] = '0'; }
+        if(!isset($payment_method['receive'])) { $payment_method['receive'] = '0'; }
         
-        $sql = "UPDATE ".PRFX."payment_accepted_methods
-                SET active=". $db->qstr($payment_method['active'])."
-                WHERE accepted_method_id=". $db->qstr($payment_method['accepted_method_id']); 
+        $sql = "UPDATE ".PRFX."payment_methods
+                SET
+                send                    = ". $db->qstr($payment_method['send']).",
+                receive                 = ". $db->qstr($payment_method['receive'])."
+                WHERE payment_method_id = ". $db->qstr($payment_method['payment_method_id']); 
         
         if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method active state."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method status."));
         }
         
     }

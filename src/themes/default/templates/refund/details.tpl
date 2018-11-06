@@ -68,8 +68,8 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a></td>
-                                            <td class="menutd"><b>{t}Giftcert ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$refund_details.giftcert_id}">{$refund_details.giftcert_id}</a></td>                                            
+                                            <td colspan="2">&nbsp;</td>
+                                            
                                         </tr>                                        
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>

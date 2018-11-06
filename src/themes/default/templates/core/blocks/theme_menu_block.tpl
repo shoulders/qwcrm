@@ -86,9 +86,6 @@
                 <!-- Gift Certificates -->
                 <div class="menugroup">
                     <span>{t}Gift Certificates{/t}</span>
-                    {if $client_id}
-                        <a href="index.php?component=giftcert&page_tpl=new&client_id={$client_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}New{/t}</a>
-                    {/if}
                     <a href="index.php?component=giftcert&page_tpl=search"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
                     {if $giftcert_id}
                         <a href="index.php?component=giftcert&page_tpl=edit&giftcert_id={$giftcert_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>

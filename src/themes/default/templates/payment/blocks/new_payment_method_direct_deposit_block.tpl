@@ -1,4 +1,4 @@
-<!-- new_payment_cheque_block.tpl -->
+<!-- new_payment_method_direct_deposit_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -8,7 +8,7 @@
 <form method="post" action="index.php?component=payment&page_tpl=new&invoice_id={$invoice_id}">
     <table width="100%" cellpadding="4" cellspacing="0" border="0" >
         <tr>
-            <td class="menuhead2">&nbsp;{t}Cheque{/t}</td>
+            <td class="menuhead2">&nbsp;{t}Direct Deposit{/t}</td>
         </tr>
         <tr>
             <td class="menutd2">
@@ -16,34 +16,33 @@
                     <tr class="olotd4">
                         <td class="row2"></td>
                         <td class="row2"><b>{t}Date{/t}</b></td>
-                        <td class="row2"><b>{t}Cheque Number{/t}:</b></td>
-                        <td class="row2"><b>{t}Amount{/t}</b></td>
+                        <td class="row2"><b>{t}Direct Deposit ID{/t}:</b></td>
+                        <td class="row2"><b>{t}Amount{/t}:</b></td>
                     </tr>
                     <tr class="olotd4">
                         <td></td>
                         <td>
-                            <input id="cheque_date" name="date" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
-                            <button type="button" id="cheque_date_button">+</button>
+                            <input id="direct_deposit_date" name="qpayment[date]" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                            <button type="button" id="direct_deposit_date_button">+</button>
                             <script>                                                        
                                 Calendar.setup( {
-                                    trigger     : "cheque_date_button",
-                                    inputField  : "cheque_date",
+                                    trigger     : "direct_deposit_date_button",
+                                    inputField  : "direct_deposit_date",
                                     dateFormat  : "{$date_format}"                                                                                            
                                 } );                                                        
                             </script>                                                    
                         </td>
-                        <td><input name="cheque_number" class="olotd5" type="text" maxlength="15" required onkeydown="return onlyNumber(event);"></td>                        
-                        <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                        <td><input name="qpayment[deposit_reference]" class="olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
+                        <td>{$currency_sym}<input name="qpayment[amount]" class="olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                     </tr>
                     <tr>
                         <td valign="top"><b>{t}Note{/t}</b></td>
-                        <td colspan="3" ><textarea name="note" cols="60" rows="4" class="olotd4"></textarea></td>
+                        <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="olotd4"></textarea></td>
                     </tr>
                 </table>
-                <p>
-                    <input type="hidden" name="method_name" value="{t}Cheque{/t}">
-                    <input type="hidden" name="method_type" value="cheque">                   
-                    <button type="submit" name="submit" value="submit">{t}Submit Cheque Payment{/t}</button>
+                <p>  
+                    <input type="hidden" name="qpayment[type]" value="{$payment_type}">
+                    <input type="hidden" name="qpayment[method]" value="direct_deposit">                    
                 </p>
             </td>
         </tr>

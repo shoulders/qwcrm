@@ -708,7 +708,7 @@ function update_workorder_status($workorder_id, $new_status) {
         
     } else {
         
-        // If status not unassigned and there is not employee set current logged in user as assigned
+        // If there is no employee and status is not 'unassigned', set the current logged in user as the assigned employee
         if($workorder_details['employee_id'] == '' && $new_status != 'unassigned') {
             assign_workorder_to_employee($workorder_id, QFactory::getUser()->login_user_id);
         }
@@ -806,7 +806,7 @@ function update_workorder_invoice_id($workorder_id = null, $invoice_id = null) {
     $db = QFactory::getDbo();
     
     // This prevents invoices with no workorders causing issues
-    if(!$workorder_id || !$invoice_id) { return; }
+    if(!$workorder_id) { return; }
     
     $sql = "UPDATE ".PRFX."workorder_records SET
             invoice_id          =". $db->qstr( $invoice_id      )."

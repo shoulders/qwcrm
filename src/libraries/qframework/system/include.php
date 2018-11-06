@@ -1006,7 +1006,7 @@ function write_record_to_error_log($error_page, $error_type, $error_location, $p
 
     // Write log entry  
     if(!$fp = fopen(ERROR_LOG, 'a')) {        
-        force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Error Log to save the record."));
+        force_error_page('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
     }
     
     fwrite($fp, $log_entry);

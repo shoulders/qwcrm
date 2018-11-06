@@ -52,6 +52,11 @@
                 </span>                
             </td>
         </tr>
+        <tr>
+            <td style="text-align:center">
+                {$currency_sym}{$giftcert_details.amount}
+            </td>
+        </tr>
         
         <!-- Divider -->
         <tr>

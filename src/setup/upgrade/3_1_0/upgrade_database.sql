@@ -161,14 +161,29 @@ INSERT INTO `#__payment_purchase_methods` (`id`, `purchase_method_id`, `display_
 ALTER TABLE `#__payment_purchase_methods` ADD PRIMARY KEY (`id`);
 
 --
+-- Table structure for table `qw_payment_types`
+--
+
+CREATE TABLE `qw_payment_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `payment_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `qw_payment_types` (`id`, `payment_type_id`, `display_name`) VALUES
+(1, 'invoice', 'Invoice'),
+(2, 'refund', 'Refund');
+
+ALTER TABLE `qw_payment_types` ADD PRIMARY KEY (`payment_type_id`);
+
+--
 -- Create Table `#__refund_records`
 --
 
 CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `giftcert_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,  
   `date` date NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -192,8 +207,7 @@ CREATE TABLE `#__refund_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `#__refund_types` (`id`, `refund_type_id`, `display_name`) VALUES
-(1, 'giftcert', 'Gift Certificate'),
-(2, 'invoice', 'Invoice');
+(1, 'invoice', 'Invoice');
 
 ALTER TABLE `#__refund_types` ADD PRIMARY KEY (`refund_type_id`);
 
@@ -391,24 +405,24 @@ ALTER TABLE `#__otherincome_records` DROP `invoice_id`;
 -- Add Columns
 --
 
+ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
 ALTER TABLE `#__giftcert_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
 ALTER TABLE `#__giftcert_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date_redeemed`;
-ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
 ALTER TABLE `#__giftcert_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
-
+ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 --
 -- Rename Columns
 --
 
-ALTER TABLE `#__payment_records` CHANGE `transaction_id` `payment_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__workorder_records` CHANGE `comments` `comment` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__payment_options` CHANGE `bank_transaction_msg` `invoice_direct_deposit_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__payment_options` CHANGE `cheque_payable_to_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__user_acl_page` CHANGE `Customer` `Client` INT(1) NOT NULL DEFAULT '0';
 ALTER TABLE `#__giftcert_records` CHANGE `is_redeemed` `redeemed` INT(1) NOT NULL DEFAULT '0' AFTER `active`;
 ALTER TABLE `#__giftcert_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `redeemed`;
 ALTER TABLE `#__otherincome_records` CHANGE `refund_type_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__payment_options` CHANGE `bank_transaction_msg` `invoice_direct_deposit_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__payment_options` CHANGE `cheque_payable_to_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__payment_records` CHANGE `transaction_id` `payment_id` INT(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__user_acl_page` CHANGE `Customer` `Client` INT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `#__workorder_records` CHANGE `comments` `comment` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 
 --
 -- Insert Data

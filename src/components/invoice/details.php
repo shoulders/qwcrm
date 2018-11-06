@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'user.php');
@@ -31,10 +32,12 @@ $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id
 // Invoice Items
 $smarty->assign('labour_items',             get_invoice_labour_items($VAR['invoice_id'])                                                  );
 $smarty->assign('parts_items',              get_invoice_parts_items($VAR['invoice_id'])                                                   );
+$smarty->assign('display_giftcerts',        display_giftcerts('giftcert_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
 
 // Invoice Totals
 $smarty->assign('labour_sub_total',         labour_sub_total($VAR['invoice_id'])                                                          );
 $smarty->assign('parts_sub_total',          parts_sub_total($VAR['invoice_id'])                                                           );
+$smarty->assign('giftcerts_sub_total',      giftcerts_sub_total($VAR['invoice_id'])                                                       );
 
 // Refund Details
 if(get_invoice_details($VAR['invoice_id'], 'status') == 'refunded') {
@@ -48,6 +51,7 @@ $smarty->assign('display_payments',         display_payments('payment_id', 'DESC
 $smarty->assign('payment_methods',          get_payment_accepted_methods()                                                             );
 $smarty->assign('employee_display_name',    get_user_details($invoice_details['employee_id'], 'display_name')  );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                   );
+$smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                   );
 
 // Build the page
 $BuildPage .= $smarty->fetch('invoice/details.tpl');

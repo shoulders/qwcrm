@@ -92,11 +92,11 @@
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_status}&filter_status={$filter_status}{/if}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                        <option value="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_status}&filter_status={$filter_status}{/if}" {if $page_no == $smarty.section.page.index } selected{/if}>
                                                                             {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}" {if $page_no == $total_pages} selected {/if}>
+                                                                    <option value="index.php?component=invoice&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_status}&filter_status={$filter_status}{/if}" {if $page_no == $total_pages} selected{/if}>
                                                                         {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>

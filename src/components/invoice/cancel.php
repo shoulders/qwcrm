@@ -14,7 +14,6 @@ require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'workorder.php');
-//require(INCLUDES_DIR.'user.php'); - i dont think this is needed
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
@@ -27,8 +26,10 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
-// Check the Gift Certificates do not prevent the invoice getting cancelled (if present)
-check_giftcerts_allow_invoice_cancellation($VAR['invoice_id']);
+// Make sure the invoice is allowed to be cancelled
+if(!check_invoice_can_be_cancelled($VAR['invoice_id'])) {
+    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be cancelled."));
+}
 
 // Delete Invoice
 if(!cancel_invoice($VAR['invoice_id'])) {    
@@ -39,7 +40,7 @@ if(!cancel_invoice($VAR['invoice_id'])) {
     
 } else {   
     
-    // load the invoice search page with success message
+    // Load the invoice search page with success message
     force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been cancelled successfully."));
     
 }

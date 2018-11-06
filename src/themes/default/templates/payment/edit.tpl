@@ -41,19 +41,31 @@
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Employee{/t}</b></td>
-                                                        <td colspan="3"><input name="employee_id" value="{$payment_details.employee_id}" type="hidden">{$employee_display_name}</td>
+                                                        <td colspan="3">
+                                                            <a href="index.php?component=user&page_tpl=details&user_id={$payment_details.employee_id}">{$employee_display_name}</a>
+                                                            <input name="employee_id" value="{$payment_details.employee_id}" type="hidden">                                                            
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Client{/t}</b></td>
-                                                        <td colspan="3"><input name="client_id" value="{$payment_details.client_id}" type="hidden">{$client_display_name}</td>
+                                                        <td colspan="3">
+                                                            <a href="index.php?component=client&page_tpl=details&client_id={$payment_details.client_id}">{$client_display_name}</a>
+                                                            <input name="client_id" value="{$payment_details.client_id}" type="hidden">                                                            
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Workorder ID{/t}</b></td>
-                                                        <td colspan="3"><input name="workorder_id" value="{$payment_details.workorder_id}" type="hidden">{$payment_details.workorder_id}</td>
+                                                        <td colspan="3">
+                                                            <a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.workorder_id}">{$payment_details.workorder_id}</a>
+                                                            <input name="workorder_id" value="{$payment_details.workorder_id}" type="hidden">                                                            
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Invoice ID{/t}</b></td>
-                                                        <td colspan="3"><input name="invoice_id" value="{$payment_details.invoice_id}" type="hidden">{$payment_details.invoice_id}</td>
+                                                        <td colspan="3">
+                                                            <a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a>
+                                                            <input name="invoice_id" value="{$payment_details.invoice_id}" type="hidden">                                                            
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>

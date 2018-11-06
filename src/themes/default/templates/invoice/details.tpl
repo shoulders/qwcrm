@@ -42,8 +42,7 @@
                                             <td class="row2"><b>{t}Status{/t}</b></td>
                                             <td class="row2"><b>{t}Gross{/t}</b></td>
                                             <td class="row2"><b>{t}Balance{/t}</b></td>                                            
-                                            <td class="row2"><b>{t}Date Paid{/t}</b></td>
-                                            
+                                            <td class="row2"><b>{t}Date Paid{/t}</b></td>                                            
                                         </tr>
                                         <tr class="olotd4">
                                             
@@ -240,6 +239,16 @@
                                         </tr>
                                     </table>
                                 </td>
+                            </tr>
+                            
+                            <!-- Gift Certificates -->                                
+                            <tr>
+                                <td>                                                
+                                    {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$display_giftcerts block_title=_gettext("Gift Certificates")}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" style="text-align:right;"><b>{t}Gift Certificates Sub Total{/t}</b> {$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>                                    
                             </tr>
 
                             <!-- Totals Section -->

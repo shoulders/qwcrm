@@ -69,13 +69,6 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Giftcert ID{/t}</b></td>                                                            
-                                                            <td colspan="3">
-                                                                {if $refund_details.giftcert_id}<a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$refund_details.giftcert_id}">{$refund_details.giftcert_id}</a>{else}{t}n/a{/t}{/if}
-                                                                <input id="giftcert_id" name="giftcert_id" class="olotd5" size="5" value="{$refund_details.giftcert_id}" type="hidden">
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>                                                                 
                                                                 {section name=s loop=$refund_types}    

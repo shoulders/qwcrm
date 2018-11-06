@@ -22,7 +22,13 @@
     </tr>
     {section name=i loop=$display_invoices}
         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}';" class="row1">
-            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a></td>
+            <td class="olotd4" nowrap>
+                {if $display_invoices[i].status === 'deleted'}
+                    {$display_invoices[i].invoice_id}
+                {else}
+                    <a href="index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a>
+                {/if}
+            </td>
             <td class="olotd4" nowrap><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_invoices[i].workorder_id}">{$display_invoices[i].workorder_id}</a></td>
             <td class="olotd4" nowrap>{$display_invoices[i].date|date_format:$date_format}</td>            
             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Contact Info{/t}</b></center><hr><b>{t}Contact{/t}: </b>{$display_invoices[i].client_first_name} {$display_invoices[i].client_last_name}<br><b>{t}Phone{/t}: </b>{$display_invoices[i].client_phone}<br><b>{t}Mobile{/t}: </b>{$display_invoices[i].client_mobile_phone}<br><b>{t}Fax{/t}: </b>{$display_invoices[i].client_fax}');" onMouseOut="hideddrivetip();"><a href="index.php?component=client&page_tpl=details&client_id={$display_invoices[i].client_id}"> {$display_invoices[i].client_display_name}</a></td>

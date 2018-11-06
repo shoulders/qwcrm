@@ -1,4 +1,4 @@
-<!-- new_payment_gift_certificate_block.tpl -->
+<!-- new_payment_method_gift_certificate_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -21,7 +21,7 @@
                     <tr class="olotd4">
                         <td></td>
                         <td>
-                            <input id="giftcert_date" name="date" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                            <input id="giftcert_date" name="qpayment[date]" class="olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
                             <button type="button" id="giftcert_date_button">+</button>
                             <script>                                                        
                                 Calendar.setup( {
@@ -31,17 +31,16 @@
                                 } );                                                        
                             </script>                                                    
                         </td>
-                        <td><input name="giftcert_code" class="olotd5" type="text" maxlength="16" required onkeydown="return onlyGiftCertCode(event);"></td> 
+                        <td><input name="qpayment[giftcert_code]" class="olotd5" type="text" maxlength="16" required onkeydown="return onlyGiftCertCode(event);"></td> 
                     </tr>
                     <tr>
                         <td valign="top"><b>{t}Note{/t}</b></td>
-                        <td colspan="2"><textarea name="note" cols="60" rows="4" class="olotd4"></textarea></td>
+                        <td colspan="2"><textarea name="qpayment[note]" cols="60" rows="4" class="olotd4"></textarea></td>
                     </tr>                    
                 </table>
-                <p>
-                    <input type="hidden" name="method_name" value="{t}Gift Certificate{/t}">
-                    <input type="hidden" name="method_type" value="gift_certificate">                 
-                    <button type="submit" name="submit" value="submit">{t}Submit Gift Certificate{/t}</button>
+                <p> 
+                    <input type="hidden" name="qpayment[type]" value="{$payment_type}">
+                    <input type="hidden" name="qpayment[method" value="gift_certificate]">                    
                 </p>
             </td>
         </tr>
