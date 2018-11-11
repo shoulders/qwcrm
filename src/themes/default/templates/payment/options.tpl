@@ -34,7 +34,8 @@
                                                         <tr>
                                                             <td>{t}Name{/t}</td>
                                                             <td>{t}Send{/t}</td>
-                                                            <td>{t}Receive{/t}</td> 
+                                                            <td>{t}Receive{/t}</td>
+                                                            <td>{t}Enabled{/t}</td> 
                                                         </tr>
                                                         {section name=q loop=$payment_methods}
                                                             <tr>
@@ -53,6 +54,9 @@
                                                                     {if $payment_methods[q].receive_protected}
                                                                         <input type="hidden" name="payment_methods[{$payment_methods[q].payment_method_id}][receive]" value="{$payment_methods[q].receive}">
                                                                     {/if}
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].payment_method_id}][enabled]" value="1" class="olotd5" {if $payment_methods[q].enabled} checked{/if}>                                                                    
                                                                 </td>
                                                             </tr>
                                                         {/section}
@@ -90,19 +94,16 @@
                                                 <td colspan="2"><b><font color="red">{t}Paypal Information{/t}</font></b></td>                                                    
                                             </tr>
                                             <tr>
-                                                <td colspan="2">{t}You must have a PayPal Merchant account set and working. Please see https://www.paypal.com/ for more information.{/t}</td>
-                                            </tr>
-                                            <tr>
                                                 <td><b>{t}Paypal Email{/t}</b></td>
                                                 <td><input name="paypal_email" class="olotd5" value="{$payment_options.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
-
+                                            </tr>
                                             <!-- Invoice Messages -->
                                             <tr>
                                                 <td colspan="2"><font color="red"><b>{t}Invoice Messages{/t}</b></font></td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Direct Deposit{/t}</b></td>
-                                                <td><textarea class="olotd5" name="invoice_direct_deposit_msg" cols="50" rows="2" >{$payment_options.invoice_direct_deposit_msg}</textarea><br></td>
+                                                <td><b>{t}Bank Transfer{/t}</b></td>
+                                                <td><textarea class="olotd5" name="invoice_bank_transfer_msg" cols="50" rows="2" >{$payment_options.invoice_bank_transfer_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Cheque{/t}</b></td>

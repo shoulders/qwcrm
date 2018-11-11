@@ -12,6 +12,13 @@
 <script>{include file="../`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script>
     
+    // If the page is reloaded by the system we need to enable the select payment method
+    {if $payment_method}
+        $(document).ready(function() {
+            selectPaymentMethod();
+        } );    
+    {/if}
+    
     // Show selected Payment Method
     function selectPaymentMethod() { 
 
@@ -49,23 +56,80 @@
                         <form method="post" action="index.php?component=payment&page_tpl=new&invoice_id={$invoice_id}">
                             <table width="100%" border="0" cellpadding="10" cellspacing="0" class="olotable">
 
-                                <!-- Select Payment Method -->
+                                <!-- Payment Type -->
                                 <tr>
                                     <td>
-                                        <p>{t}Select Payment Method{/t}</p>
-                                        <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required>                                            
-                                            <option selected hidden disabled></option>
-                                            {section name=s loop=$active_payment_accepted_methods}                                            
-                                                <option value="{$active_payment_accepted_methods[s].accepted_method_id}"{if $active_payment_accepted_methods[s].accepted_method_id === $payment_method} selected{/if}>{t}{$active_payment_accepted_methods[s].display_name}{/t}</option>
-                                            {/section} 
-                                        </select>
-                                    </td> 
+                                        {t}Payment Type{/t}:&nbsp;
+                                        {section name=t loop=$payment_types}    
+                                            {if $payment_type == $payment_types[t].payment_type_id}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                                        {/section}
+                                    </td>
                                 </tr>
+                                
+                                <!-- Select Payment Method -->
+                                {if $payment_methods}
+                                    <tr>
+                                        <td>
+                                            <p>{t}Select Payment Method{/t}</p>
+                                            <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required>                                            
+                                                <option selected hidden disabled></option>
+                                                {section name=s loop=$payment_methods}
+                                                    <option value="{$payment_methods[s].payment_method_id}"{if $payment_methods[s].payment_method_id === $payment_method} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                {/section} 
+                                            </select>
+                                        </td> 
+                                    </tr>
+                                {else}
+                                    <tr>
+                                        <td><span style="color: red;">{t}There are no payment methods available.{/t}</td>
+                                    </tr>
+                                {/if}
 
                                 <!-- Payment Methods -->
                                 <tr>
                                     <td>
 
+                                        <!-- Bank Transfer -->
+                                        <div id="bank_transfer" class="paymentMethod"{if $payment_method !== 'bank_transfer'} hidden{/if}>
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;{t}Bank Transfer{/t}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="menutd2">
+                                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                            <tr class="olotd4">
+                                                                <td class="row2"></td>
+                                                                <td class="row2"><b>{t}Date{/t}</b></td>
+                                                                <td class="row2"><b>{t}Transfer Reference{/t}:</b></td>
+                                                                <td class="row2"><b>{t}Amount{/t}:</b></td>
+                                                            </tr>
+                                                            <tr class="olotd4">
+                                                                <td></td>
+                                                                <td>
+                                                                    <input id="bank_transfer_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
+                                                                    <button type="button" id="bank_transfer_date_button">+</button>
+                                                                    <script>                                                        
+                                                                        Calendar.setup( {
+                                                                            trigger     : "bank_transfer_date_button",
+                                                                            inputField  : "bank_transfer_date",
+                                                                            dateFormat  : "{$date_format}"                                                                                            
+                                                                        } );                                                        
+                                                                    </script>                                                    
+                                                                </td>
+                                                                <td><input name="qpayment[transfer_reference]" class="paymentInput olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
+                                                                <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td valign="top"><b>{t}Note{/t}</b></td>
+                                                                <td colspan="3" ><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>   
+                                                                
                                         <!-- Cash -->
                                         <div id="cash" class="paymentMethod"{if $payment_method !== 'cash'} hidden{/if}>
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0">
@@ -146,11 +210,11 @@
                                             </table>
                                         </div> 
 
-                                        <!-- Credit Card -->
-                                        <div id="credit_card" class="paymentMethod"{if $payment_method !== 'credit_card'} hidden{/if}>
+                                        <!-- Card -->
+                                        <div id="card" class="paymentMethod"{if $payment_method !== 'card'} hidden{/if}>
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                                 <tr>
-                                                    <td class="menuhead2">&nbsp;{t}Credit Card{/t}</td>
+                                                    <td class="menuhead2">&nbsp;{t}Card{/t}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="menutd2">
@@ -165,12 +229,12 @@
                                                             <tr class="olotd4">
                                                                 <td></td>
                                                                 <td>
-                                                                    <input id="credit_card_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
-                                                                    <button type="button" id="credit_card_date_button">+</button>
+                                                                    <input id="card_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
+                                                                    <button type="button" id="card_date_button">+</button>
                                                                     <script>                                                        
                                                                         Calendar.setup( {
-                                                                            trigger     : "credit_card_date_button",
-                                                                            inputField  : "credit_card_date",
+                                                                            trigger     : "card_date_button",
+                                                                            inputField  : "card_date",
                                                                             dateFormat  : "{$date_format}"                                                                                            
                                                                         } );                                                        
                                                                     </script>                                                    
@@ -178,8 +242,8 @@
                                                                 <td>
                                                                     <select name="qpayment[card_type]" class="paymentInput olotd4" required disabled>
                                                                         <option selected hidden disabled></option>
-                                                                        {section name=c loop=$active_credit_cards}
-                                                                            <option value="{$active_credit_cards[c].card_key}">{$active_credit_cards[c].display_name}</option>
+                                                                        {section name=c loop=$payment_active_card_types}
+                                                                            <option value="{$payment_active_card_types[c].card_key}">{$payment_active_card_types[c].display_name}</option>
                                                                         {/section}
                                                                     </select>
                                                                 </td>                        
@@ -196,11 +260,11 @@
                                             </table>
                                         </div>
 
-                                        <!-- Direct Deposit -->
-                                        <div id="direct_deposit" class="paymentMethod"{if $payment_method !== 'direct_deposit'} hidden{/if}>
+                                        <!-- Direct Debit -->
+                                        <div id="direct_debit" class="paymentMethod"{if $payment_method !== 'direct_debit'} hidden{/if}>
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                                 <tr>
-                                                    <td class="menuhead2">&nbsp;{t}Direct Deposit{/t}</td>
+                                                    <td class="menuhead2">&nbsp;{t}Direct Debit{/t}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="menutd2">
@@ -208,23 +272,23 @@
                                                             <tr class="olotd4">
                                                                 <td class="row2"></td>
                                                                 <td class="row2"><b>{t}Date{/t}</b></td>
-                                                                <td class="row2"><b>{t}Direct Deposit ID{/t}:</b></td>
+                                                                <td class="row2"><b>{t}DD Reference{/t}:</b></td>
                                                                 <td class="row2"><b>{t}Amount{/t}:</b></td>
                                                             </tr>
                                                             <tr class="olotd4">
                                                                 <td></td>
                                                                 <td>
-                                                                    <input id="direct_deposit_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
-                                                                    <button type="button" id="direct_deposit_date_button">+</button>
+                                                                    <input id="direct_debit_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
+                                                                    <button type="button" id="bank_transfer_date_button">+</button>
                                                                     <script>                                                        
                                                                         Calendar.setup( {
-                                                                            trigger     : "direct_deposit_date_button",
-                                                                            inputField  : "direct_deposit_date",
+                                                                            trigger     : "direct_debit_date_button",
+                                                                            inputField  : "direct_debit_date",
                                                                             dateFormat  : "{$date_format}"                                                                                            
                                                                         } );                                                        
                                                                     </script>                                                    
                                                                 </td>
-                                                                <td><input name="qpayment[deposit_reference]" class="paymentInput olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
+                                                                <td><input name="qpayment[dd_reference]" class="paymentInput olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
                                                                 <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                                             </tr>
                                                             <tr>
@@ -275,6 +339,45 @@
                                                 </tr>
                                             </table>
                                         </div>
+                                                                
+                                        <!-- Other -->
+                                        <div id="other" class="paymentMethod"{if $payment_method !== 'other'} hidden{/if}>
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0">
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;{t}Other{/t}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="menutd2">
+                                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" width="100%" class="olotable">
+                                                            <tr class="olotd4">
+                                                                <td class="row2"></td>
+                                                                <td class="row2"><b>{t}Date{/t}</b></td>
+                                                                <td class="row2"><b>{t}Amount{/t}</b></td>
+                                                            </tr>
+                                                            <tr class="olotd4">
+                                                                <td></td>
+                                                                <td>
+                                                                    <input id="cash_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
+                                                                    <button type="button" id="cash_date_button">+</button>
+                                                                    <script>                                                        
+                                                                        Calendar.setup( {
+                                                                            trigger     : "other_date_button",
+                                                                            inputField  : "other_date",
+                                                                            dateFormat  : "{$date_format}"                                                                                            
+                                                                        } );                                                        
+                                                                    </script>                                                    
+                                                                </td>
+                                                                <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td valign="top"><b>{t}Note{/t}</b></td>
+                                                                <td colspan="3"><textarea name="qpayment[note]" cols="60" rows="4" class="paymentInput olotd4" disabled></textarea></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
 
                                         <!-- PayPal -->
                                         <div id="paypal" class="paymentMethod"{if $payment_method !== 'paypal'} hidden{/if}>
@@ -315,12 +418,12 @@
                                                     </td>
                                                 </tr>                                                
                                             </table>                                                  
-                                        </div>
+                                        </div>                                        
                                                                 
                                         <!-- Hidden Variables -->                                                
                                         <div hidden> 
                                             <input type="hidden" name="qpayment[invoice_id]" value="{$invoice_id}">
-                                            <input type="hidden" name="qpayment[type]" class="paymentInput" value="{$payment_type}">                                                    
+                                            <input type="hidden" name="qpayment[type]" value="{$payment_type}">                                                    
                                         </div>
 
                                     </td>

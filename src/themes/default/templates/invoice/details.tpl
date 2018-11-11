@@ -42,7 +42,7 @@
                                             <td class="row2"><b>{t}Status{/t}</b></td>
                                             <td class="row2"><b>{t}Gross{/t}</b></td>
                                             <td class="row2"><b>{t}Balance{/t}</b></td>                                            
-                                            <td class="row2"><b>{t}Date Paid{/t}</b></td>                                            
+                                            <td class="row2"><b>{t}Date Closed{/t}</b></td>                                            
                                         </tr>
                                         <tr class="olotd4">
                                             

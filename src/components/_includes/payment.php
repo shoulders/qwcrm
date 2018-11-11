@@ -269,119 +269,40 @@ function get_payment_options($item = null) {
     
 }
 
-/*###############################################
-#   Get get accepted payment methods statuses  #  // not used remove when verified
+################################################
+#   Get get Payment Methods                    #
 ################################################
 
-function get_payment_accepted_methods_statuses() {
+function get_payment_methods($direction = null, $status = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT
-            accepted_method_id, active
-            FROM ".PRFX."payment_accepted_methods";
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get active payment methods."));
-    } else {
-        
-        return $rs->GetAssoc();
-        
-    }
-    
-}*/
-
-
-function get_payment_methods($direction = null) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "";
+    $sql = "SELECT *
+            FROM ".PRFX."payment_methods";
     
     // If the send direction is specified
     if($direction == 'send') {
-        $sql = "SELECT
-                payment_method_id,
-                display_name,
-                send as active
-                FROM ".PRFX."payment_methods";
-      
+        $sql .= "\nWHERE send = '1'";
+              
     // If the receive direction is specified    
-    } elseif($direction == 'receive') {
-        $sql = "SELECT
-                payment_method_id,
-                display_name,
-                receive as active
-                FROM ".PRFX."payment_methods";        
-        
-    // Return everything
-    } else {    
-        $sql .= "SELECT * FROM ".PRFX."payment_methods";   
+    } elseif($direction == 'receive') {        
+        $sql .= "\nWHERE receive = '1'";        
+    }
+    
+    // Only return methods that are enabled
+    if($direction && $status == 'enabled') { 
+        $sql .= "\nAND enabled = '1'";        
     }
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
     } else {
         
-        if($direction) {
-            
-            return $rs->GetAssoc();
-        
-        } else {
-            
-            return $rs->GetArray();
-            
-        }
-    }    
-    
-}
-
-/*####################################
-#    Get AcceptedPayment methods   #  // These are the payment methods that QWcrm can accept for invoices
-#####################################
-
-function get_payment_accepted_methods($status = null) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT *
-            FROM ".PRFX."payment_accepted_methods\n";    
-    if($status == 'active') { $sql .= "WHERE active = ".$db->qstr(1); }            
-
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment system methods."));
-    } else {
-        
-        return $rs->GetArray();
+        return $rs->GetArray();            
         
     }    
     
 }
-
-#####################################
-#    Get Purchase Payment methods   #  // These are the payment methods that are used to purchase things (i.e. expenses)
-#####################################
-
-function get_payment_purchase_methods() {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."payment_purchase_methods";
-
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment manual methods."));
-    } else {
-        
-        //return $rs->GetRowAssoc();
-        return $rs->GetArray();
-        
-    }    
-    
-}*/
-
-
-
-
 
 #####################################
 #    Get Payment Types              #  // i.e. invoice, refund
@@ -404,20 +325,22 @@ function get_payment_types() {
     
 }
 
-
-
 #########################################
 #   Get get active credit cards         #
 #########################################
 
-function get_active_credit_cards() {
+function get_payment_active_card_types() {
     
     $db = QFactory::getDbo();
 
-    $sql = "SELECT card_key, display_name FROM ".PRFX."payment_credit_cards WHERE active='1'";
+    $sql = "SELECT
+            card_key,
+            display_name
+            FROM ".PRFX."payment_card_types
+            WHERE active='1'";
     
     if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active credit cards."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active cards."));
     } else {
         
         $records = $rs->GetArray();
@@ -437,14 +360,14 @@ function get_active_credit_cards() {
 }
 
 #####################################
-#  Get Credit card name from type   #
+#  Get Card name from type          #
 #####################################
 
-function get_credit_card_display_name_from_key($card_key) {
+function get_card_display_name_from_key($card_key) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT display_name FROM ".PRFX."payment_credit_cards WHERE card_key=".$db->qstr($card_key);
+    $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE card_key=".$db->qstr($card_key);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
@@ -519,7 +442,7 @@ function update_payment_options($VAR) {
             bank_sort_code              =". $db->qstr( $VAR['bank_sort_code']               ).",
             bank_iban                   =". $db->qstr( $VAR['bank_iban']                    ).",
             paypal_email                =". $db->qstr( $VAR['paypal_email']                 ).",        
-            invoice_direct_deposit_msg  =". $db->qstr( $VAR['invoice_direct_deposit_msg']   ).",
+            invoice_bank_transfer_msg   =". $db->qstr( $VAR['invoice_bank_transfer_msg']    ).",
             invoice_cheque_msg          =". $db->qstr( $VAR['invoice_cheque_msg']           ).",
             invoice_footer_msg          =". $db->qstr( $VAR['invoice_footer_msg']           );            
 
@@ -547,11 +470,13 @@ function update_payment_methods_statuses($payment_methods) {
         // When not checked, no value is sent so this sets zero for those cases
         if(!isset($payment_method['send'])) { $payment_method['send'] = '0'; }
         if(!isset($payment_method['receive'])) { $payment_method['receive'] = '0'; }
+        if(!isset($payment_method['enabled'])) { $payment_method['enabled'] = '0'; }
         
         $sql = "UPDATE ".PRFX."payment_methods
                 SET
                 send                    = ". $db->qstr($payment_method['send']).",
-                receive                 = ". $db->qstr($payment_method['receive'])."
+                receive                 = ". $db->qstr($payment_method['receive']).",
+                enabled                 = ". $db->qstr($payment_method['enabled'])."   
                 WHERE payment_method_id = ". $db->qstr($payment_method['payment_method_id']); 
         
         if(!$rs = $db->execute($sql)) {
@@ -569,7 +494,7 @@ function update_payment_methods_statuses($payment_methods) {
 /** Delete Functions **/
 
 #####################################
-#    Delete Payement                #
+#    Delete Payment                 #
 #####################################
 
 function delete_payment($payment_id) {
@@ -612,26 +537,33 @@ function delete_payment($payment_id) {
 #      Check if a payment method is active         #
 ####################################################
 
-function check_payment_method_is_active($method) {
+function check_payment_method_is_active($method, $direction = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT active FROM ".PRFX."payment_accepted_methods WHERE accepted_method_id=".$db->qstr($method);   
-    
-    if(!$rs = $db->execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));
-    }
-    
-    if($rs->fields['active'] != 1) {
+    $sql = "SELECT *
+            FROM ".PRFX."payment_methods
+            WHERE payment_method_id=".$db->qstr($method);
         
-        return false;
+    if(!$rs = $db->execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
         
     } else {
+    
+        // If module is disabled, always return disabled for both directions
+        if(!$rs->fields['enabled']) { return false; }
         
+        // If send direction is specified
+        if($direction == 'send') { return $rs->fields['send']; }
+        
+        // If receive direction is specified
+        if($direction == 'receive') { return $rs->fields['receive']; }
+        
+        // Fallback behaviour
         return true;
         
     }
-
+    
 }
 
 #########################################################################

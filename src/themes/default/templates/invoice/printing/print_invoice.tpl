@@ -195,23 +195,11 @@
                             <td align="left" ><font size="-1"><b>{t}Payment Instructions{/t}</b></font></td>
                         </tr>
 
-                        <!-- Cheque -->                        
-                        {if $payment_accepted_methods_statuses.cheque}
-                            <tr>
-                                <td>                                    
-                                    <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>{$payment_options.invoice_cheque_msg}</td>
-                            </tr>
-                        {/if}
-
-                        <!-- Direct Deposit -->
-                        {if $payment_accepted_methods_statuses.direct_deposit}
+                        <!-- Bank Transfer -->
+                        {if $payment_accepted_methods_statuses.bank_transfer}
                             <tr>
                                 <td>
-                                    <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Direct Deposit{/t}</b><br>
+                                    <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Bank Transfer{/t}</b><br>
                                 </td>
                             </tr>
                             <tr>
@@ -225,10 +213,22 @@
                             </tr>
                             <tr>
                                 <td>
-                                    {$payment_options.invoice_direct_deposit_msg}
+                                    {$payment_options.invoice_bank_transfer_msg}
                                 </td>
                             </tr>
                         {/if}
+                        
+                        <!-- Cheque -->                        
+                        {if $payment_accepted_methods_statuses.cheque}
+                            <tr>
+                                <td>                                    
+                                    <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
+                                </td>                                
+                            </tr>
+                            <tr>
+                                <td>{$payment_options.invoice_cheque_msg}</td>
+                            </tr>
+                        {/if}                        
 
                         <!-- PayPal -->
                         {if $payment_accepted_methods_statuses.paypal}

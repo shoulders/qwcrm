@@ -34,7 +34,7 @@ if(isset($VAR['submit'])) {
     // Build the page
     $smarty->assign('client_display_name', get_client_details($payment_details['client_id'], 'display_name'));
     $smarty->assign('employee_display_name', get_user_details($payment_details['employee_id'], 'display_name'));
-    $smarty->assign('payment_methods', get_payment_accepted_methods());
+    $smarty->assign('payment_methods', get_payment_methods('receive'));
     $smarty->assign('payment_details', $payment_details);
     $BuildPage .= $smarty->fetch('payment/edit.tpl');
     

@@ -430,35 +430,10 @@ INSERT INTO `#__otherincome_types` (`id`, `otherincome_type_id`, `display_name`)
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__payment_accepted_methods`
+-- Table structure for table `#__payment_card_types`
 --
 
-CREATE TABLE `#__payment_accepted_methods` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `accepted_method_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `active` int(1) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__payment_accepted_methods`
---
-
-INSERT INTO `#__payment_accepted_methods` (`id`, `accepted_method_id`, `display_name`, `active`) VALUES
-(1, 'cash', 'Cash', 1),
-(2, 'cheque', 'Cheque', 1),
-(3, 'credit_card', 'Credit Card', 1),
-(4, 'direct_deposit', 'Direct Deposit', 1),
-(5, 'gift_certificate', 'Gift Certificate', 1),
-(6, 'paypal', 'PayPal', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__payment_credit_cards`
---
-
-CREATE TABLE `#__payment_credit_cards` (
+CREATE TABLE `#__payment_card_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `card_key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
@@ -466,15 +441,46 @@ CREATE TABLE `#__payment_credit_cards` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `#__payment_credit_cards`
+-- Dumping data for table `#__payment_card_types`
 --
 
-INSERT INTO `#__payment_credit_cards` (`id`, `card_key`, `display_name`, `active`) VALUES
+INSERT INTO `#__payment_card_types` (`id`, `card_key`, `display_name`, `active`) VALUES
 (1, 'visa', 'Visa', 1),
 (2, 'mastercard', 'MasterCard', 1),
 (3, 'american_express', 'American Express', 1),
 (4, 'debit_card', 'Debit Card', 1),
 (5, 'other', 'Other', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__payment_methods`
+--
+
+CREATE TABLE `#__payment_methods` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `payment_method_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `send` int(1) NOT NULL DEFAULT '0',
+  `receive` int(1) NOT NULL DEFAULT '0',
+  `send_protected` int(1) NOT NULL DEFAULT '1' COMMENT 'send cannot be changed',
+  `receive_protected` int(1) NOT NULL DEFAULT '1' COMMENT 'receive cannot be changed',
+  `enabled` int(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__payment_methods`
+--
+
+INSERT INTO `#__payment_methods` (`id`, `payment_method_id`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
+(1, 'bank_transfer', 'Bank Transfer', 1, 1, 0, 0, 0),
+(2, 'card', 'Card', 1, 1, 0, 0, 0),
+(3, 'cash', 'Cash', 1, 1, 0, 0, 1),
+(4, 'cheque', 'Cheque', 1, 1, 0, 0, 0),
+(5, 'direct_debit', 'Direct Debit', 1, 1, 0, 0, 0),
+(6, 'gift_certificate', 'Gift Certificate', 0, 1, 1, 1, 0),
+(7, 'other', 'Other', 0, 1, 1, 0, 0),
+(8, 'paypal', 'PayPal', 1, 1, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -489,7 +495,7 @@ CREATE TABLE `#__payment_options` (
   `bank_sort_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `bank_iban` varchar(34) COLLATE utf8_unicode_ci NOT NULL,
   `paypal_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_direct_deposit_msg` text COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_bank_transfer_msg` text COLLATE utf8_unicode_ci NOT NULL,
   `invoice_cheque_msg` text COLLATE utf8_unicode_ci NOT NULL,
   `invoice_footer_msg` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -498,37 +504,8 @@ CREATE TABLE `#__payment_options` (
 -- Dumping data for table `#__payment_options`
 --
 
-INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `invoice_direct_deposit_msg`, `invoice_cheque_msg`, `invoice_footer_msg`) VALUES
+INSERT INTO `#__payment_options` (`bank_account_name`, `bank_name`, `bank_account_number`, `bank_sort_code`, `bank_iban`, `paypal_email`, `invoice_bank_transfer_msg`, `invoice_cheque_msg`, `invoice_footer_msg`) VALUES
 ('', '', '', '', '', '', '<p>Use your invoice number as the reference ...</p>\r\n<p>This message can be edited in payment options.</p>', '<p>Make cheques payable to ....</p>\r\n<p>This message can be edited in payment options.</p>', '<p>This is a footer message where you can put extra information ...</p>\r\n<p>This message can be edited in payment options.</p>');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__payment_purchase_methods`
---
-
-CREATE TABLE `#__payment_purchase_methods` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `purchase_method_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__payment_purchase_methods`
---
-
-INSERT INTO `#__payment_purchase_methods` (`id`, `purchase_method_id`, `display_name`) VALUES
-(1, 'bank_transfer', 'Bank Transfer'),
-(2, 'card', 'Card'),
-(3, 'cash', 'Cash'),
-(4, 'cheque', 'Cheque'),
-(5, 'credit', 'Credit'),
-(6, 'direct_debit', 'Direct Debit'),
-(7, 'gift_certificate', 'Gift Certificate'),
-(8, 'google_checkout', 'Google Checkout'),
-(9, 'other', 'Other'),
-(10, 'paypal', 'PayPal'),
-(11, 'voucher', 'Voucher');
 
 -- --------------------------------------------------------
 
@@ -552,20 +529,20 @@ CREATE TABLE `#__payment_records` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `qw_payment_types`
+-- Table structure for table `#__payment_types`
 --
 
-CREATE TABLE `qw_payment_types` (
+CREATE TABLE `#__payment_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `payment_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `qw_payment_types`
+-- Dumping data for table `#__payment_types`
 --
 
-INSERT INTO `qw_payment_types` (`id`, `payment_type_id`, `display_name`) VALUES
+INSERT INTO `#__payment_types` (`id`, `payment_type_id`, `display_name`) VALUES
 (1, 'invoice', 'Invoice'),
 (2, 'refund', 'Refund');
 
@@ -1136,15 +1113,15 @@ ALTER TABLE `#__otherincome_types`
   ADD PRIMARY KEY (`otherincome_type_id`);
 
 --
--- Indexes for table `#__payment_accepted_methods`
+-- Indexes for table `#__payment_card_types`
 --
-ALTER TABLE `#__payment_accepted_methods`
+ALTER TABLE `#__payment_card_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `#__payment_credit_cards`
+-- Indexes for table `#__payment_methods`
 --
-ALTER TABLE `#__payment_credit_cards`
+ALTER TABLE `#__payment_methods`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1154,21 +1131,15 @@ ALTER TABLE `#__payment_options`
   ADD PRIMARY KEY (`bank_account_name`);
 
 --
--- Indexes for table `#__payment_purchase_methods`
---
-ALTER TABLE `#__payment_purchase_methods`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `#__payment_records`
 --
 ALTER TABLE `#__payment_records`
   ADD PRIMARY KEY (`payment_id`);
 
 --
--- Indexes for table `qw_payment_types`
+-- Indexes for table `#__payment_types`
 --
-ALTER TABLE `qw_payment_types`
+ALTER TABLE `#__payment_types`
   ADD PRIMARY KEY (`payment_type_id`);
 
 --

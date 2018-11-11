@@ -27,7 +27,7 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
 
 // Check if giftcert payment method is enabled
 if(!check_payment_method_is_active('gift_certificate')) {
-    force_page('index.php', null, 'warning_msg='._gettext("Gift Certificate payment method is not enabled. Goto Payment Options and enable Gift Certificates there."));
+    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("Gift Certificate payment method is not enabled. Goto Payment Options and enable Gift Certificates there."));
 }
 
 // if information submitted - add new gift certificate

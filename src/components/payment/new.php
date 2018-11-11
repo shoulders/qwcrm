@@ -42,7 +42,7 @@ if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
     die(_gettext("No Direct Access Allowed."));
 }
 
-/*################ Variable Based #############################
+/*################ Variable Based ####################keep#########
 
 // Prevent direct access to this page - and Determine whether 'invoice' or 'refund' payment then set payment type
 if(!check_page_accessed_via_qwcrm('invoice', 'edit') || !check_page_accessed_via_qwcrm('refund', 'new') || !check_page_accessed_via_qwcrm('payment', 'new')) {
@@ -74,7 +74,6 @@ switch($VAR['type']) {
 
 ####################################################################*/
 
-
 // Prevent undefined variable errors
 $payment_type = isset($VAR['type']) ? $VAR['type'] : null;
 if(isset($VAR['qpayment']['type'])) { $payment_type = $VAR['qpayment']['type']; }
@@ -85,25 +84,33 @@ if(isset($VAR['submit'])) {
     
     switch($VAR['qpayment']['method']) {
 
+        case 'bank_transfer':
+        require(COMPONENTS_DIR.'payment/methods/method_bank_transfer.php');
+        break;
+    
+        case 'card':
+        require(COMPONENTS_DIR.'payment/methods/method_card.php');
+        break;
+    
         case 'cash':
-        require(COMPONENTS_DIR.'payment/methods/method_cash.php');      //////// only done the cash method with new qpayment code
+        require(COMPONENTS_DIR.'payment/methods/method_cash.php');
         break;
     
         case 'cheque':
         require(COMPONENTS_DIR.'payment/methods/method_cheque.php');
         break;
     
-        case 'credit_card':
-        require(COMPONENTS_DIR.'payment/methods/method_credit_card.php');
-        break;
-
-        case 'direct_deposit':
-        require(COMPONENTS_DIR.'payment/methods/method_direct_deposit.php');
+        case 'direct_debit':
+        require(COMPONENTS_DIR.'payment/methods/method_direct_debit.php');
         break;        
 
         case 'gift_certificate':
         require(COMPONENTS_DIR.'payment/methods/method_gift_certificate.php');
-        break;       
+        break;
+    
+        case 'other':
+        require(COMPONENTS_DIR.'payment/methods/method_other.php');
+        break;
     
         case 'paypal':
         require(COMPONENTS_DIR.'payment/methods/method_paypal.php');
@@ -130,9 +137,7 @@ $smarty->assign('display_payments',                  display_payments('payment_i
 $smarty->assign('payment_method',                    $payment_method                                                             );
 $smarty->assign('payment_type',                      $payment_type                                                                               );
 $smarty->assign('payment_types',                     get_payment_types()                                                             );
-
-$smarty->assign('active_payment_accepted_methods',   get_payment_accepted_methods('active')                                                             );
-//$smarty->assign('active_payment_accepted_methods',   get_payment_accepted_methods('active') ); remove from print invoice aswell and then the include
-$smarty->assign('active_credit_cards',               get_active_credit_cards()                                                                );
+$smarty->assign('payment_methods',                   get_payment_methods('receive', 'enabled')                                                             );
+$smarty->assign('payment_active_card_types',         get_payment_active_card_types()                                                                );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');
