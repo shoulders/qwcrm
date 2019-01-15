@@ -12,13 +12,14 @@
         <td class="olohead">{t}Employee{/t}</td>
         <td class="olohead">{t}WO ID{/t}</td>
         <td class="olohead">{t}Inv ID{/t}</td>
+        <td class="olohead">{t}Payment ID{/t}</td>
         <td class="olohead">{t}Code{/t}</td>
         <td class="olohead">{t}Client{/t}</td>
         <td class="olohead">{t}Expires{/t}</td>
         <td class="olohead">{t}Date Redeemed{/t}</td>        
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Blocked{/t}</td>                
-        <td class="olohead">{t}Amount{/t}</td>
+        <td class="olohead">{t}Amount{/t}</td>        
         <td class="olohead">{t}Redeemed By{/t}</td>
         <td class="olohead">{t}Redeemed Invoice{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
@@ -29,7 +30,8 @@
             <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_id}</a></td>
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_giftcerts[g].employee_id}">{$display_giftcerts[g].employee_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_giftcerts[g].workorder_id}">{$display_giftcerts[g].workorder_id}</a></td>
-            <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_giftcerts[g].invoice_id}">{$display_giftcerts[g].invoice_id}</a></td>
+            <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_giftcerts[g].invoice_id}">{$display_giftcerts[g].invoice_id}</a></td>            
+            <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_giftcerts[g].payment_id}">{$display_giftcerts[g].payment_id}</a></td>            
             <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_code}</a></td>
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_giftcerts[g].client_id}">{$display_giftcerts[g].client_display_name}</a></td>
             <td class="olotd4">{$display_giftcerts[g].date_expires|date_format:$date_format}</td>
@@ -47,14 +49,9 @@
                 {if $display_giftcerts[g].blocked == '0'}{t}No{/t}{/if}
                 {if $display_giftcerts[g].blocked == '1'}{t}Yes{/t}{/if}
             </td>
-            <td class="olotd4">{$currency_sym} {$display_giftcerts[g].amount}</td>
-            
-            
+            <td class="olotd4">{$currency_sym} {$display_giftcerts[g].amount}</td>            
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_giftcerts[g].redeemed_client_id}">{$display_giftcerts[g].redeemed_client_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_giftcerts[g].redeemed_invoice_id}">{$display_giftcerts[g].redeemed_invoice_id}</a></td>
-            
-            
-            
             <td class="olotd4" nowrap>
                 {if $display_giftcerts[g].note != ''}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_giftcerts[g].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">

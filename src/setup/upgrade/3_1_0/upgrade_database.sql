@@ -393,9 +393,12 @@ ALTER TABLE `#__otherincome_records` DROP `invoice_id`;
 ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
 ALTER TABLE `#__giftcert_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
 ALTER TABLE `#__giftcert_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date_redeemed`;
+ALTER TABLE `#__giftcert_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
 ALTER TABLE `#__giftcert_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
 ALTER TABLE `#__giftcert_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_invoice_id`;
 ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
+
+
 --
 -- Rename Columns
 --

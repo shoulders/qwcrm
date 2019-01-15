@@ -464,34 +464,34 @@ function update_giftcert_blocked_status($giftcert_id, $new_blocked_status) {
 #   Redeem the gift certificate against an invoice   #
 ######################################################
 
-function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id) {
+function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id, $payment_id) {
     
     $db = QFactory::getDbo();
     
-    $invoice_details = get_invoice_details($redeemed_invoice_id);
+    $redeemed_client_id = get_invoice_details($redeemed_invoice_id, 'client_id');
     
+    // some information has already been applied (as below) using update_giftcert_status() earlier in the process
     $sql = "UPDATE ".PRFX."giftcert_records SET
-            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            redeemed_client_id  =". $db->qstr( $invoice_details['client_id']        ).",   
-            redeemed_invoice_id =". $db->qstr( $redeemed_invoice_id                 ).",
-            date_redeemed       =". $db->qstr( mysql_datetime()                     ).",
-            redeemed            =". $db->qstr( 1                                    ).",            
-            blocked             =". $db->qstr( 1                                    )."
-            WHERE giftcert_id   =". $db->qstr( $giftcert_id                         );
+            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id       ).",
+            payment_id          =". $db->qstr( $payment_id                              ).",
+            redeemed_client_id  =". $db->qstr( $redeemed_client_id                      ).",   
+            redeemed_invoice_id =". $db->qstr( $redeemed_invoice_id                     ).",
+            date_redeemed       =". $db->qstr( mysql_datetime()                         ).",
+            status              =". $db->qstr( 'redeemed'                               ).",   
+            redeemed            =". $db->qstr( 1                                        ).",            
+            blocked             =". $db->qstr( 1                                        )."
+            WHERE giftcert_id   =". $db->qstr( $giftcert_id                             );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
-    } else {
-        
-        
-        $client_details = get_client_details($invoice_details['client_id']);
+    } else {       
         
         // Log activity        
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$client_details['display_name'].'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_details['client_id'], null, $redeemed_invoice_id);
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.get_client_details($redeemed_client_id, 'display_name').'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $redeemed_client_id, null, $redeemed_invoice_id);
         
         // Update last active record
-        update_client_last_active($client_details['client_id']);        
+        update_client_last_active($redeemed_client_id);        
         update_invoice_last_active($redeemed_invoice_id);
         
     }
@@ -658,7 +658,7 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
         //force_page('core','error', 'error_msg='._gettext("This gift certificate has not been paid for."));
         return false;        
     }
-
+    
     // Check if blocked
     if($giftcert_details['blocked']) {
         //force_page('core','error', 'error_msg='._gettext("This gift certificate is blocked."));

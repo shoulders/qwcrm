@@ -177,12 +177,12 @@ function insert_payment($qpayment) {
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
             client_id       = ".$db->qstr( $invoice_details['client_id']               ).",
             workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
-            invoice_id      = ".$db->qstr( $qpayment['invoice_id']                          ).",              
-            date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])            ).",
-            type            = ".$db->qstr( $qpayment['type']                                ).",
-            method          = ".$db->qstr( $qpayment['method']                              ).",
-            amount          = ".$db->qstr( $qpayment['amount']                              ).",
-            note            = ".$db->qstr( $qpayment['note']                                );
+            invoice_id      = ".$db->qstr( $qpayment['invoice_id']                     ).",              
+            date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])       ).",
+            type            = ".$db->qstr( $qpayment['type']                           ).",
+            method          = ".$db->qstr( $qpayment['method']                         ).",
+            amount          = ".$db->qstr( $qpayment['amount']                         ).",
+            note            = ".$db->qstr( $qpayment['note']                           );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
@@ -205,7 +205,10 @@ function insert_payment($qpayment) {
         // Update last active record    
         update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
-        update_invoice_last_active($qpayment['invoice_id']);        
+        update_invoice_last_active($qpayment['invoice_id']);
+        
+        // Return the payment_id
+        return $insert_id;
                 
     }    
     

@@ -36,6 +36,9 @@ if(!$VAR['qpayment']['giftcert_id'] = get_giftcert_id_by_gifcert_code($VAR['qpay
         } else {
 
             /* Processing */
+            
+            // change the status of the giftcert to prevent further use
+            update_giftcert_status($VAR['qpayment']['giftcert_id'], 'redeemed', true);            
 
             // Live processing goes here
 
@@ -45,15 +48,17 @@ if(!$VAR['qpayment']['giftcert_id'] = get_giftcert_id_by_gifcert_code($VAR['qpay
             $VAR['qpayment']['note'] = $note;
 
             // Insert the payment with the calculated information
-            insert_payment($VAR['qpayment']);
+            $payment_id = insert_payment($VAR['qpayment']);
+            
+            // Update the redeemed Gift Certificate with the missing redemption information
+            update_giftcert_as_redeemed($VAR['qpayment']['giftcert_id'], $VAR['qpayment']['invoice_id'], $payment_id);
 
             // Assign Success message
             $smarty->assign('information_msg', _gettext("Gift Certificate applied successfully"));
 
             /* Post-Processing */
 
-            // Update the Gift Certificate
-            update_giftcert_as_redeemed($VAR['qpayment']['giftcert_id'], $VAR['qpayment']['invoice_id']);
+            
 
             // After a sucessful process redirect to the invoice payment page
             //force_page('invoice', 'details&invoice_id='.$VAR['qpayment']['invoice_id'], 'information_msg=Full Payment made successfully');
