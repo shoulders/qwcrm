@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Gift Certificates         #
 #########################################
 
-function display_giftcerts($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null) {
+function display_giftcerts($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $redeemed_client_id = null, $redeemed_invoice_id = null) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -46,6 +46,9 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     
     // Restrict results by search category (client) and search term
     if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+    
+    // Restrict results by search category (redeemed client) and search term
+    elseif($search_category == 'redeemed_client_display_name') {$havingTheseRecords .= " HAVING redeemed_client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
     // Restrict results by search category (employee) and search term
     elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
@@ -83,32 +86,40 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
     // Restrict by Client
     if($client_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.client_id=".$db->qstr($client_id);}
     
-    // Restrict by Client
+    // Restrict by Workorder
     if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.workorder_id=".$db->qstr($workorder_id);}
     
     // Restrict by Invoice
     if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.invoice_id=".$db->qstr($invoice_id);}
     
+    // Restrict by Redeemed Client
+    if($redeemed_client_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.redeemed_client_id=".$db->qstr($redeemed_client_id);}
+        
+    // Restrict by Redeemed Invoice
+    if($redeemed_invoice_id) {$whereTheseRecords .= " AND ".PRFX."giftcert_records.redeemed_invoice_id=".$db->qstr($redeemed_invoice_id);}
+    
     /* The SQL code */
     
     $sql = "SELECT
-            ".PRFX."giftcert_records.*,
-                
-            IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
-                
-            CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
-                
-            FROM ".PRFX."giftcert_records
-            LEFT JOIN ".PRFX."user_records ON ".PRFX."giftcert_records.employee_id = ".PRFX."user_records.user_id
-            LEFT JOIN ".PRFX."client_records ON ".PRFX."giftcert_records.client_id = ".PRFX."client_records.client_id            
-            ".$whereTheseRecords."
-            GROUP BY ".PRFX."giftcert_records.".$order_by."
-            ".$havingTheseRecords."
-            ORDER BY ".PRFX."giftcert_records.".$order_by."
-            ".$direction;          
+
+        ".PRFX."giftcert_records.*,                            
+        IF(".PRFX."client_records.company_name !='', ".PRFX."client_records.company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,                       
+        CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name,            
+        IF(redeemed_client_records.company_name !='', redeemed_client_records.company_name, CONCAT(redeemed_client_records.first_name, ' ', redeemed_client_records.last_name)) AS redeemed_client_display_name
+
+        FROM ".PRFX."giftcert_records            
+        LEFT JOIN ".PRFX."user_records ON ".PRFX."giftcert_records.employee_id = ".PRFX."user_records.user_id
+        LEFT JOIN ".PRFX."client_records ON ".PRFX."giftcert_records.client_id = ".PRFX."client_records.client_id
+        LEFT JOIN ".PRFX."client_records AS redeemed_client_records ON ".PRFX."giftcert_records.redeemed_client_id = redeemed_client_records.client_id
+
+        ".$whereTheseRecords."
+        GROUP BY ".PRFX."giftcert_records.".$order_by."
+        ".$havingTheseRecords."
+        ORDER BY ".PRFX."giftcert_records.".$order_by."
+        ".$direction;   
 
     /* Restrict by pages */
-        
+    
     if($use_pages) {
         
         // Get the start Record
@@ -167,7 +178,7 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
             return false;
             
         } else {
-            
+           
             return $records;
             
         }
@@ -449,6 +460,44 @@ function update_giftcert_blocked_status($giftcert_id, $new_blocked_status) {
     
 }
 
+######################################################
+#   Redeem the gift certificate against an invoice   #
+######################################################
+
+function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $invoice_details = get_invoice_details($redeemed_invoice_id);
+    
+    $sql = "UPDATE ".PRFX."giftcert_records SET
+            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            redeemed_client_id  =". $db->qstr( $invoice_details['client_id']        ).",   
+            redeemed_invoice_id =". $db->qstr( $redeemed_invoice_id                 ).",
+            date_redeemed       =". $db->qstr( mysql_datetime()                     ).",
+            redeemed            =". $db->qstr( 1                                    ).",            
+            blocked             =". $db->qstr( 1                                    )."
+            WHERE giftcert_id   =". $db->qstr( $giftcert_id                         );
+    
+    if(!$rs = $db->execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
+    } else {
+        
+        
+        $client_details = get_client_details($invoice_details['client_id']);
+        
+        // Log activity        
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$client_details['display_name'].'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_details['client_id'], null, $redeemed_invoice_id);
+        
+        // Update last active record
+        update_client_last_active($client_details['client_id']);        
+        update_invoice_last_active($redeemed_invoice_id);
+        
+    }
+    
+}
+
 /** Close Functions **/
 
 #####################################
@@ -550,6 +599,7 @@ function delete_giftcert($giftcert_id) {
             client_id           =   NULL,
             workorder_id        =   NULL,
             invoice_id          =   NULL,
+            redeemed_client_id  =   NULL,
             redeemed_invoice_id =   NULL,
             date_created        =". $db->qstr( $giftcert_details['date_created']    ).",
             date_expires        =   '0000-00-00',
@@ -590,83 +640,44 @@ function delete_giftcert($giftcert_id) {
 /** Other Functions **/
 
 ##############################################################
-#  Validate the Gift Certificate can be used for a payment   #
+#  Check if the Gift Certificate can be used for a payment   #
 ##############################################################
 
-function validate_giftcert_for_payment($giftcert_id) {
+function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
     
-    // Check if blocked
-    if(get_giftcert_details($giftcert_id, 'blocked')) {
-        //force_page('core','error', 'error_msg='._gettext("This gift certificate is blocked"));
+    $giftcert_details = get_giftcert_details($giftcert_id);
+        
+    // Giftcert can not be used to pay for itself
+    if($giftcert_details['invoice_id'] == $redeem_invoice_id) {
+        //force_page('core','error', 'error_msg='._gettext("This gift certificate cannot be used to pay for itself."));
+        return false;        
+    }
+    
+    // Giftcert must have been paid for
+    if(get_invoice_details($giftcert_details['invoice_id'], 'status') !== 'paid') {
+        //force_page('core','error', 'error_msg='._gettext("This gift certificate has not been paid for."));
         return false;        
     }
 
-    // Check if expired - This does a live check for exipry as it is not always upto date
+    // Check if blocked
+    if($giftcert_details['blocked']) {
+        //force_page('core','error', 'error_msg='._gettext("This gift certificate is blocked."));
+        return false;        
+    }
+
+    // Check if expired - This does a live check for expiry as it is not always upto date
     if(validate_giftcert_is_expired($giftcert_id)) {
-        //force_page('core', 'error', 'warning_msg='._gettext("This gift certificate is expired."));        
+        //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is expired."));        
         return false;        
     }
     
     // Check if unused (any other status causes failure)
-    if(get_giftcert_details($giftcert_id, 'status') !== 'unused') {
+    if($giftcert_details['status'] !== 'unused') {
         //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is unused."));
         return false;        
     }    
     
     return true;
-    
-}
-
-############################################
-#  Generate Random Gift Certificate code   #
-############################################
-
-function generate_giftcert_code() {
-    
-    $acceptedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $max_offset = strlen($acceptedChars)-1;
-    $giftcert_code = '';
-    
-    for($i=0; $i < 16; $i++) {
-        $giftcert_code .= $acceptedChars{mt_rand(0, $max_offset)};
-    }
-    
-    return $giftcert_code;
-    
-}
-
-######################################################
-#   Redeem the gift certificate against an invoice   #
-######################################################
-
-function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "UPDATE ".PRFX."giftcert_records SET
-            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id   ).",            
-            redeemed_invoice_id =". $db->qstr( $redeemed_invoice_id                 ).",
-            date_redeemed       =". $db->qstr( mysql_datetime()                     ).",
-            redeemed            =". $db->qstr( 1                                    ).",            
-            blocked             =". $db->qstr( 1                                    )."
-            WHERE giftcert_id   =". $db->qstr( $giftcert_id                         );
-    
-    if(!$rs = $db->execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Gift Certificate as redeemed."));
-    } else {
-        
-        $giftcert_details = get_giftcert_details($giftcert_id);
-        $client_details = get_client_details($giftcert_details['client_id']);
-        
-        // Log activity        
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.$client_details['display_name'].'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $giftcert_details['client_id'], null, $redeemed_invoice_id);
-        
-        // Update last active record
-        update_client_last_active($giftcert_details['client_id']);        
-        update_invoice_last_active($giftcert_details['invoice_id']);
-        
-    }
     
 }
 
@@ -912,6 +923,24 @@ function check_giftcert_can_be_deleted($giftcert_id) {
 
     // All checks passed
     return true;
+    
+}
+
+############################################
+#  Generate Random Gift Certificate code   #
+############################################
+
+function generate_giftcert_code() {
+    
+    $acceptedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $max_offset = strlen($acceptedChars)-1;
+    $giftcert_code = '';
+    
+    for($i=0; $i < 16; $i++) {
+        $giftcert_code .= $acceptedChars{mt_rand(0, $max_offset)};
+    }
+    
+    return $giftcert_code;
     
 }
 

@@ -29,7 +29,7 @@
                                 
                                 <!-- Client Details -->
                                 <td valign="top" width="50%">
-                                    <p><b>{t}Client{/t} </b><a href="index.php?component=client&page_tpl=details&client_id={$client_details.client_id}">{$client_details.display_name}</a></p>
+                                    <p><b>{t}Client{/t} </b><a href="index.php?component=client&page_tpl=details&client_id={$giftcert_details.client_id}">{$client_details.display_name}</a></p>
                                     <p><strong>{t}Address{/t}</strong></p>
                                     <p>
                                         {$client_details.address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>
@@ -95,7 +95,15 @@
                                                     {if $giftcert_details.status == $giftcert_statuses[s].status_key}{t}{$giftcert_statuses[s].display_name}{/t}{/if}        
                                                 {/section}              
                                             </td>
-                                        </tr>                                        
+                                        </tr>
+                                        <tr>
+                                            <td><b>{t}Redeemed by{/t}</b></td>
+                                            <td><a href="index.php?component=client&page_tpl=details&client_id={$giftcert_details.redeemed_client_id}">{$redeemed_client_display_name}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{t}Redeemed on Invoice{/t}</b></td>
+                                            <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$giftcert_details.redeemed_invoice_id}">{$giftcert_details.redeemed_invoice_id}</a></td>            
+                                        </tr>
                                     </table>                                   
                                 </td>                                
                             </tr>

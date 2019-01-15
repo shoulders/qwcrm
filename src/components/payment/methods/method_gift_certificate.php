@@ -17,9 +17,9 @@ if(!$VAR['qpayment']['giftcert_id'] = get_giftcert_id_by_gifcert_code($VAR['qpay
     $smarty->assign('warning_msg', _gettext("There is no Gift certificate with that code."));
 
     // Make sure the Gift Certificate is valid and then pass the amount to the next process
-    } elseif(!validate_giftcert_for_payment($VAR['qpayment']['giftcert_id'])) {
+    } elseif(!check_giftcert_can_be_redeemed($VAR['qpayment']['giftcert_id'], $VAR['qpayment']['invoice_id'])) {
         
-        $smarty->assign('warning_msg', _gettext("This Gift Certificate is not valid."));        
+        $smarty->assign('warning_msg', _gettext("This Gift Certificate is not valid or cannot be redeemed."));        
         
     } else {       
         

@@ -128,8 +128,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
         ON ".PRFX."invoice_records.invoice_id = labour.invoice_id 
         
         LEFT JOIN (
-            SELECT 
-            ".PRFX."invoice_parts.invoice_id,            
+            SELECT ".PRFX."invoice_parts.invoice_id,            
             GROUP_CONCAT(
                 CONCAT(".PRFX."invoice_parts.qty, ' x ', ".PRFX."invoice_parts.description)                
                 ORDER BY ".PRFX."invoice_parts.invoice_parts_id
