@@ -694,7 +694,7 @@ function verify_qwcrm_install_state(&$VAR) {
 }
 
 #########################################################
-#  Compare the QWcrm file system and database versions  #
+#  Compare the QWcrm file system and database versions  #  // This is only run if the /setup/ dir exists
 #########################################################
 
 function compare_qwcrm_filesystem_and_database(&$VAR) {
@@ -711,7 +711,8 @@ function compare_qwcrm_filesystem_and_database(&$VAR) {
             '<strong>'.QWCRM_PART_URL.SETUP_DIR.'</strong><br>'.
             '<strong>'.QWCRM_PHYSICAL_PATH.SETUP_DIR.'</strong>'.
             '</div>'
-            );            
+            ); 
+        
     } 
     
     /* If the file system is newer than the database - run upgrade (this loads setup:upgrade directly)
