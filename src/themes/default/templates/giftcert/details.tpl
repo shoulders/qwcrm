@@ -62,6 +62,10 @@
                                             <td><a href="index.php?component=invoice&page_tpl=details&invoice_id={$giftcert_details.invoice_id}">{$giftcert_details.invoice_id}</a></td>            
                                         </tr>
                                         <tr>
+                                            <td><b>{t}Payment ID{/t}</b></td>                                            
+                                            <td><a href="index.php?component=payment&page_tpl=details&payment_id={$giftcert_details.payment_id}">{$giftcert_details.payment_id}</a></td>            
+                                        </tr>
+                                        <tr>
                                             <td><b>{t}Code{/t}</b></td>
                                             <td>{$giftcert_details.giftcert_code}</td>
                                         </tr>
