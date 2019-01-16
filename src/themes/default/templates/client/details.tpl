@@ -77,17 +77,9 @@
 
                                             <!-- Tab 5 Contents (Gift Certificates) -->
                                             <div id="tab_5_contents" class="tab_contents">
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_unused block_title=_gettext("Unused")}
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_purchased block_title=_gettext("Purchased")}
                                                 <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed")}
-                                                <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_suspended block_title=_gettext("Suspended")}
-                                                <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_expired block_title=_gettext("Expired")}
-                                                <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_refunded block_title=_gettext("Refunded")}
-                                                <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_cancelled block_title=_gettext("Cancelled")}
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed")}                                                
                                             </div>
 
                                             <!-- Tab 6 Contents (Client Notes) -->

@@ -45,12 +45,9 @@ $smarty->assign('invoices_refunded',        display_invoices('invoice_id', 'DESC
 $smarty->assign('invoices_cancelled',       display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'cancelled', null, $VAR['client_id'])         );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                                                         );
 
-$smarty->assign('giftcerts_unused',         display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'unused', null, $VAR['client_id'])          );
-$smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, $VAR['client_id'])        );
-$smarty->assign('giftcerts_suspended',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'suspended', null, $VAR['client_id'])       );
-$smarty->assign('giftcerts_expired',        display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'expired', null, $VAR['client_id'])         );
-$smarty->assign('giftcerts_refunded',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'refunded', null, $VAR['client_id'])        );
-$smarty->assign('giftcerts_cancelled',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'cancelled', null, $VAR['client_id'])       );
+$smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                                                        );
+$smarty->assign('giftcerts_purchased',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, $VAR['client_id'])              );
+$smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, null, null, null, $VAR['client_id'])        );
 
 $smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['client_id'], $user->login_user_id)                                                     );
 
