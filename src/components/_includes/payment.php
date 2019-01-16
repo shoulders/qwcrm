@@ -69,25 +69,15 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     
     /* The SQL code */
     
-    $sql =  "SELECT                
+    $sql =  "SELECT
+            ".PRFX."payment_records.*,
             IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name,
-                
-            ".PRFX."payment_records.payment_id,
-            ".PRFX."payment_records.employee_id,
-            ".PRFX."payment_records.client_id,
-            ".PRFX."payment_records.workorder_id,
-            ".PRFX."payment_records.invoice_id,
-            ".PRFX."payment_records.date,
-            ".PRFX."payment_records.type, 
-            ".PRFX."payment_records.method,
-            ".PRFX."payment_records.amount,
-            ".PRFX."payment_records.note,
-                
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
                
             FROM ".PRFX."payment_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."payment_records.employee_id   = ".PRFX."user_records.user_id
-            LEFT JOIN ".PRFX."client_records ON ".PRFX."payment_records.client_id = ".PRFX."client_records.client_id                 
+            LEFT JOIN ".PRFX."client_records ON ".PRFX."payment_records.client_id = ".PRFX."client_records.client_id
+                
             ".$whereTheseRecords."
             GROUP BY ".PRFX."payment_records.".$order_by."
             ".$havingTheseRecords."
@@ -181,6 +171,7 @@ function insert_payment($qpayment) {
             date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])       ).",
             type            = ".$db->qstr( $qpayment['type']                           ).",
             method          = ".$db->qstr( $qpayment['method']                         ).",
+            status          = 'valid',
             amount          = ".$db->qstr( $qpayment['amount']                         ).",
             note            = ".$db->qstr( $qpayment['note']                           );
 
@@ -319,6 +310,27 @@ function get_payment_types() {
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
+    } else {
+        
+        //return $rs->GetRowAssoc();
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
+#####################################
+#    Get Payment Statuses           #
+#####################################
+
+function get_payment_statuses() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."payment_statuses";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment statuses."));
     } else {
         
         //return $rs->GetRowAssoc();
@@ -506,8 +518,19 @@ function delete_payment($payment_id) {
     
     // Get payment details before deleting the record
     $payment_details = get_payment_details($payment_id);
-    
-    $sql = "DELETE FROM ".PRFX."payment_records WHERE payment_id=".$db->qstr($payment_id);
+        
+    $sql = "UPDATE ".PRFX."payment_records SET        
+            employee_id     = NULL,
+            client_id       = NULL,
+            workorder_id    = NULL,
+            invoice_id      = NULL,            
+            date            = '0000-00-00',
+            type            = NULL,
+            method          = NULL,
+            status          = 'deleted',
+            amount          = '0.00',
+            note            = NULL
+            WHERE payment_id =". $db->qstr( $payment_id );    
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
@@ -535,6 +558,26 @@ function delete_payment($payment_id) {
 }
 
 /** Other Functions **/
+
+##########################################################
+#  Check if the payment status allows editing            #       
+##########################################################
+
+ function check_payment_can_be_edited($payment_id) {
+     
+    // Get the payment details
+    $payment_details = get_payment_details($payment_id);    
+           
+    // Is Deleted
+    if($payment_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it has been deleted."));
+        return false;        
+    }
+
+    // All checks passed
+    return true;    
+     
+}
 
 ####################################################
 #      Check if a payment method is active         #

@@ -577,6 +577,9 @@ function prepare_error_data($type, $data = null) {
 ##########################################################
 
 function verify_qwcrm_install_state(&$VAR) {
+    
+    // Temporary development override
+    return;
            
     /* Is a QWcrm installation or MyITCRM migration in progress */
     
@@ -690,6 +693,8 @@ function verify_qwcrm_install_state(&$VAR) {
             ); 
         
     }
+    
+    return;
  
 }
 

@@ -524,9 +524,30 @@ CREATE TABLE `#__payment_records` (
   `date` date NOT NULL,
   `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__payment_statuses`
+--
+
+CREATE TABLE `#__payment_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__payment_statuses`
+--
+
+INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'valid', 'Valid'),
+(2, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -753,7 +774,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('invoice:print', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('invoice:search', 1, 1, 1, 0, 1, 1, 0, 0, 0),
 ('invoice:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('payment:delete', 1, 1, 0, 0, 0, 0, 0, 0, 0),
+('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
@@ -1137,6 +1158,12 @@ ALTER TABLE `#__payment_options`
 --
 ALTER TABLE `#__payment_records`
   ADD PRIMARY KEY (`payment_id`);
+
+--
+-- Indexes for table `#__payment_statuses`
+--
+ALTER TABLE `#__payment_statuses`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__payment_types`

@@ -82,15 +82,34 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
+                                                        <td align="right"><b>{t}Type{/t}</b></td>
+                                                        <td colspan="3">
+                                                            {section name=t loop=$payment_types}    
+                                                                {if $payment_details.type == $payment_types[t].payment_type_id}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                                                            {/section}
+                                                            <input name="type" value="{$payment_details.type}" type="hidden"> 
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>
                                                             <select id="method" name="method" class="olotd5">
                                                                 {section name=s loop=$payment_methods}    
                                                                     <option value="{$payment_methods[s].payment_method_id}"{if $payment_details.method == $payment_methods[s].payment_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
-                                                                {/section} 
+                                                                {/section}
+                                                                <input name="method" value="{$payment_details.method}" type="hidden"> 
                                                             </select>
                                                         </td>
-                                                    </tr>
+                                                    </tr>                                                    
+                                                    <tr>
+                                                        <td align="right"><b>{t}Status{/t}</b></td>
+                                                        <td colspan="3">
+                                                            {section name=t loop=$payment_statuses}    
+                                                                {if $payment_details.status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}                    
+                                                            {/section}
+                                                            <input name="status" value="{$payment_details.status}" type="hidden"> 
+                                                        </td>
+                                                    </tr>                                                    
                                                     <tr>
                                                         <td align="right"><b>{t}Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td><input name="amount" class="olotd5" size="10" value="{$payment_details.amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>

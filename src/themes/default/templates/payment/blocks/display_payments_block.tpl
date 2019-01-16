@@ -15,7 +15,8 @@
         <td class="olohead"><b>{t}Client{/t}</b></td>
         <td class="olohead"><b>{t}Date{/t}</b></td>
         <td class="olohead"><b>{t}Type{/t}</b></td>
-        <td class="olohead"><b>{t}Method{/t}</b></td>        
+        <td class="olohead"><b>{t}Method{/t}</b></td>
+        <td class="olohead"><b>{t}Status{/t}</b></td>
         <td class="olohead"><b>{t}Amount{/t}</b></td>
         <td class="olohead"><b>{t}Note{/t}</b></td>        
         <td class="olohead"><b>{t}Action{/t}</b></td>
@@ -57,7 +58,14 @@
                 {section name=m loop=$payment_methods}    
                     {if $display_payments[p].method == $payment_methods[m].payment_method_id}{t}{$payment_methods[m].display_name}{/t}{/if}                         
                 {/section}
-            </td>            
+            </td>
+
+            <!-- Status -->
+            <td class="olotd4" align="center">
+                {section name=t loop=$payment_statuses}    
+                    {if $display_payments[p].status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}                    
+                {/section}
+            </td>             
 
             <!-- Amount -->
             <td class="olotd4" nowrap>{$display_payments[p].amount}</td>

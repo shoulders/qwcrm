@@ -48,12 +48,26 @@
                                             <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a></td>
                                             <td class="menutd" ><b>{t}Date{/t}</b></td>
                                             <td class="menutd">{$payment_details.date|date_format:$date_format}</td>
-                                        </tr>
+                                        </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$payment_methods}    
                                                     {if $payment_details.method == $payment_methods[s].payment_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}   
+                                                {/section}
+                                            </td>
+                                            <td class="menutd"><b>{t}Type{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=t loop=$payment_types}    
+                                                    {if $payment_details.type == $payment_types[t].payment_type_id}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                                                {/section}
+                                            </td>
+                                        </tr>                                        
+                                        <tr>
+                                            <td class="menutd"><b>{t}Status{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=t loop=$payment_statuses}    
+                                                    {if $payment_details.status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}                    
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Amount{/t}</b></td>

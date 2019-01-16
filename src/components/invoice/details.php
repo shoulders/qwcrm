@@ -46,9 +46,13 @@ if(get_invoice_details($VAR['invoice_id'], 'status') == 'refunded') {
     $smarty->assign('refund_details', null);
 }
 
+// Payment Details
+$smarty->assign('payment_types',            get_payment_types()                                                                                 );
+$smarty->assign('payment_methods',          get_payment_methods()                                                             ); 
+$smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
+$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])  );
+
 // Misc
-$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $VAR['invoice_id'])                                                  );
-$smarty->assign('payment_methods',          get_payment_methods()                                                             );
 $smarty->assign('employee_display_name',    get_user_details($invoice_details['employee_id'], 'display_name')  );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                   );
 $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                   );

@@ -682,7 +682,7 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
 }
 
 ##########################################################
-#  Check if the giftcert status is allowed to be changed #
+#  Check if the giftcert status allows editing           #
 ##########################################################
 
  function check_giftcert_can_be_edited($giftcert_id) {

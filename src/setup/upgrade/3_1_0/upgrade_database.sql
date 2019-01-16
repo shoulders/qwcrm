@@ -115,7 +115,7 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 ALTER TABLE `#__invoice_statuses` ADD PRIMARY KEY (`id`);
 
 --
--- Table structure for table `#__payment_methods`
+-- Create Table `#__payment_methods`
 --
 
 CREATE TABLE `#__payment_methods` (
@@ -128,10 +128,6 @@ CREATE TABLE `#__payment_methods` (
   `receive_protected` int(1) NOT NULL DEFAULT '1' COMMENT 'receive cannot be changed',
   `enabled` int(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__payment_methods`
---
 
 INSERT INTO `#__payment_methods` (`id`, `payment_method_id`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
 (1, 'bank_transfer', 'Bank Transfer', 1, 1, 0, 0, 0),
@@ -146,7 +142,23 @@ INSERT INTO `#__payment_methods` (`id`, `payment_method_id`, `display_name`, `se
 ALTER TABLE `#__payment_methods` ADD PRIMARY KEY (`id`);
 
 --
--- Table structure for table `#__payment_types`
+-- Create Table table `#__payment_statuses`
+--
+
+CREATE TABLE `#__payment_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'valid', 'Valid'),
+(2, 'deleted', 'Deleted');
+
+ALTER TABLE `qw_payment_statuses` ADD PRIMARY KEY (`id`);
+
+--
+-- Create Table `#__payment_types`
 --
 
 CREATE TABLE `#__payment_types` (
@@ -349,7 +361,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('giftcert:status', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('invoice:cancel', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('invoice:overview', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
-('payment:delete', '1', '1', '0', '0', '0', '0', '0', '0', '0'),
+('payment:delete', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:details', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:edit', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:search', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
@@ -397,7 +409,7 @@ ALTER TABLE `#__giftcert_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf
 ALTER TABLE `#__giftcert_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
 ALTER TABLE `#__giftcert_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_invoice_id`;
 ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
-
+ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `method`;
 
 --
 -- Rename Columns
