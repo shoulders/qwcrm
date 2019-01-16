@@ -37,7 +37,7 @@
                                             <tr>
                                                 <td><b>{t}Invoice{/t}</b></td>
                                                 <td>
-                                                    <a href="index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}">{$invoice_id}</a>
+                                                    <a href="index.php?component=invoice&page_tpl=details&invoice_id={$invoice_id}">{$invoice_id}</a>
                                                     <input name="invoice_id" value="{$invoice_id}" type="hidden" />
                                                 </td>
                                             </tr>

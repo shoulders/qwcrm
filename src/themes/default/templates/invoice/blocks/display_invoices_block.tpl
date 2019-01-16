@@ -26,7 +26,8 @@
                 {if $display_invoices[i].status === 'deleted'}
                     {$display_invoices[i].invoice_id}
                 {else}
-                    <a href="index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a>
+                    {*<a href="index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a>*}
+                    <a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a>
                 {/if}
             </td>
             <td class="olotd4" nowrap><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_invoices[i].workorder_id}">{$display_invoices[i].workorder_id}</a></td>
