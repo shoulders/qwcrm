@@ -440,4 +440,4 @@ ALTER TABLE `#__user_reset` COLLATE = utf8_unicode_ci;
 -- Change from int(10) to int(11)
 --
 
-ALTER TABLE `#__client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;
+-- ALTER TABLE `#__client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;
