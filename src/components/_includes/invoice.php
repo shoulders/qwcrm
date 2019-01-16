@@ -1243,13 +1243,13 @@ function recalculate_invoice($invoice_id) {
             update_invoice_status($invoice_id, 'unpaid');
         }
         
-        // Has invoiceable amount with some payment(s), set to partially paid (if not already)
-        elseif($gross_amount > 0 && $gross_amount > $payments_sub_total && $payments_sub_total > 0 && $invoice_details['status'] != 'partially_paid') {            
+        // Has invoiceable amount with partially payment, set to partially paid (if not already)
+        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $invoice_details['status'] != 'partially_paid') {            
             update_invoice_status($invoice_id, 'partially_paid');
         }
         
         // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
-        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total  && $invoice_details['status'] != 'paid') {            
+        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $invoice_details['status'] != 'paid') {            
             update_invoice_status($invoice_id, 'paid');
         }        
         
