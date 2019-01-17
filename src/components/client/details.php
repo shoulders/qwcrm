@@ -13,6 +13,7 @@ require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
+require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
@@ -48,6 +49,13 @@ $smarty->assign('invoice_statuses',         get_invoice_statuses()              
 $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                                                        );
 $smarty->assign('giftcerts_purchased',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, $VAR['client_id'])              );
 $smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, null, null, null, $VAR['client_id'])        );
+
+
+$smarty->assign('payment_types',            get_payment_types()                                                                                 );
+$smarty->assign('payment_methods',          get_payment_methods()                                                                               );
+$smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
+$smarty->assign('payments_received',        display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'received', null, null, null, $VAR['client_id'])        );
+$smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'transmitted', null, null, null, $VAR['client_id'])        );
 
 $smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['client_id'], $user->login_user_id)                                                     );
 

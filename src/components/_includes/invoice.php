@@ -1433,7 +1433,7 @@ function export_invoice_prefill_items_csv() {
     }
         
     // Has payments
-    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has payments."));
         return false;        
     }
@@ -1453,7 +1453,7 @@ function check_invoice_can_be_refunded($invoice_id) {
     $invoice_details = get_invoice_details($invoice_id);
     
     // No payments
-    if(empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+    if(empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }
@@ -1533,7 +1533,7 @@ function check_invoice_can_be_cancelled($invoice_id) {
     }    
     
     // Has payments
-    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice has payments."));
         return false;        
     }
@@ -1601,7 +1601,7 @@ function check_invoice_can_be_deleted($invoice_id) {
     }
     
     // Has payments
-    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, $invoice_id))) {
+    if(!empty(display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, $invoice_id))) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments."));
         return false;        
     }

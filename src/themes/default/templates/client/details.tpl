@@ -28,7 +28,8 @@
                                             <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab">{t}Schedules{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Gift Certificates{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Notes{/t}</a></li>                    
+                                            <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Payments{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Notes{/t}</a></li>                    
                                         </ul>
 
                                         <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -81,9 +82,15 @@
                                                 <br>
                                                 {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed")}                                                
                                             </div>
+                                            
+                                            <!-- Tab 6 Contents (Payments) -->
+                                            <div id="tab_6_contents" class="tab_contents">
+                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_received block_title=_gettext("Received")}
+                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_transmitted block_title=_gettext("Transmitted")}
+                                            </div>
 
-                                            <!-- Tab 6 Contents (Client Notes) -->
-                                            <div id="tab_6_contents" class="tab_contents">                        
+                                            <!-- Tab 7 Contents (Client Notes) -->
+                                            <div id="tab_7_contents" class="tab_contents">                        
                                                 {include file='client/blocks/details_notes_block.tpl'}   
                                             </div>
 

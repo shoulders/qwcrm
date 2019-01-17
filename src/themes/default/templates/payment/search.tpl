@@ -55,6 +55,21 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
+                                                                    <b>{t}Filter By Type{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_type" name="filter_type">
+                                                                        <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        <option value="received"{if $filter_type == 'received'} selected{/if}>{t}Received{/t}</option> 
+                                                                        <option value="transmitted"{if $filter_type == 'transmitted'} selected{/if}>{t}Transmitted{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        {section name=m loop=$payment_types}    
+                                                                            <option value="{$payment_types[m].payment_type_id}"{if $filter_method == $payment_types[m].payment_type_id} selected{/if}>{t}{$payment_types[m].display_name}{/t}</option>        
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            <tr>
+                                                            <tr>
+                                                                <td>
                                                                     <b>{t}Filter By Method{/t}</b><br>
                                                                     <select class="olotd5" id="filter_method" name="filter_method">
                                                                         <option value=""{if $filter_method == ''} selected{/if}>{t}None{/t}</option>
@@ -64,6 +79,17 @@
                                                                     </select>
                                                                 </td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Status{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_status" name="filter_status">
+                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        {section name=s loop=$payment_statuses}    
+                                                                            <option value="{$payment_statuses[s].status_key}"{if $filter_status == $payment_statuses[s].status_key} selected{/if}>{t}{$payment_statuses[s].display_name}{/t}</option>        
+                                                                        {/section} 
+                                                                    </select>
+                                                                </td>
+                                                            </tr>                                                           
                                                         </table>
                                                     </div>
                                                 </form>                                                

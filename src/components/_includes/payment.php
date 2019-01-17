@@ -28,7 +28,9 @@ defined('_QWEXEC') or die;
 #  Display all payments the given status            #
 #####################################################
 
-function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null,$method = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+//function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+
+function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -55,8 +57,34 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     
     /* Filter the Records */
     
-    // Restrict by Status
-    if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$db->qstr($method);}        
+    // Restrict by Type
+    if($type) {
+        
+        // All received monies
+        if($type == 'received') {
+            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr('invoice');
+        
+        // All transmitted monies
+        } elseif($type == 'transmitted') {
+            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr('expense')."
+                                    OR ".PRFX."payment_records.type= ".$db->qstr('refund');
+        
+        // Return records for the given type
+        } else {
+            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr($type);
+            
+        }
+        
+    }
+    
+    // Restrict by method
+    if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$db->qstr($method);}
+    
+    // Restrict by status
+    if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$db->qstr($status);}   
 
     // Restrict by Employee
     if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$db->qstr($employee_id);}
@@ -75,7 +103,7 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
                
             FROM ".PRFX."payment_records
-            LEFT JOIN ".PRFX."user_records ON ".PRFX."payment_records.employee_id   = ".PRFX."user_records.user_id
+            LEFT JOIN ".PRFX."user_records ON ".PRFX."payment_records.employee_id = ".PRFX."user_records.user_id
             LEFT JOIN ".PRFX."client_records ON ".PRFX."payment_records.client_id = ".PRFX."client_records.client_id
                 
             ".$whereTheseRecords."
