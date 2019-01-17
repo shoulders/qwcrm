@@ -639,6 +639,56 @@ function delete_giftcert($giftcert_id) {
 
 /** Other Functions **/
 
+###########################################################
+#  Check if the giftcert status is allowed to be changed  #
+###########################################################
+
+ function check_giftcert_status_can_be_changed($giftcert_id) {
+     
+    // Get the giftcert status
+    $status = get_giftcert_details($giftcert_id, 'status');
+        
+    // Unused and Expired
+    if($status == 'unused' && validate_giftcert_is_expired($giftcert_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
+        return false;        
+    }
+    
+    // Is Redeemed
+    if($status == 'redeemed') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been redeemed."));
+        return false;        
+    }   
+    
+    // Is Expired
+    if($status == 'expired') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
+        return false;        
+    }    
+        
+    // Is Refunded
+    if($status == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
+        return false;        
+    }
+    
+    // Is Cancelled
+    if($status == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been cancelled."));
+        return false;        
+    }
+    
+    // Is Deleted
+    if($status == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been deleted."));
+        return false;        
+    }
+    
+    // All checks passed
+    return true;     
+     
+}
+
 ##############################################################
 #  Check if the Gift Certificate can be used for a payment   #
 ##############################################################
@@ -659,12 +709,6 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
         return false;        
     }
     
-    // Check if blocked
-    if($giftcert_details['blocked']) {
-        //force_page('core','error', 'error_msg='._gettext("This gift certificate is blocked."));
-        return false;        
-    }
-
     // Check if expired - This does a live check for expiry as it is not always upto date
     if(validate_giftcert_is_expired($giftcert_id)) {
         //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is expired."));        
@@ -676,6 +720,12 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
         //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is unused."));
         return false;        
     }    
+    
+    // Check if blocked
+    if($giftcert_details['blocked']) {
+        //force_page('core','error', 'error_msg='._gettext("This gift certificate is blocked."));
+        return false;        
+    }
     
     return true;
     
@@ -710,62 +760,6 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
     
     // Is Deleted
     if($giftcert_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been deleted."));
-        return false;        
-    }
-
-    // All checks passed
-    return true;     
-     
-}
-
-###########################################################
-#  Check if the giftcert status is allowed to be changed  #
-###########################################################
-
- function check_giftcert_status_can_be_changed($giftcert_id) {
-     
-    // Get the giftcert status
-    $status = get_giftcert_details($giftcert_id, 'status');
-    
-    // Unused and Expired
-    if($status == 'unused' && validate_giftcert_is_expired($giftcert_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
-        return false;        
-    }
-    
-    // Is Redeemed
-    if($status == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been redeemed."));
-        return false;        
-    }   
-    
-    // Is Suspended
-    if($status == 'suspended') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been suspended."));
-        return false;        
-    } 
-    
-    // Is Expired
-    if($status == 'expired') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
-        return false;        
-    }    
-        
-    // Is Refunded
-    if($status == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been refunded."));
-        return false;        
-    }
-    
-    // Is Cancelled
-    if($status == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been cancelled."));
-        return false;        
-    }
-    
-    // Is Deleted
-    if($status == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been deleted."));
         return false;        
     }

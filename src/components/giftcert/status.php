@@ -38,10 +38,11 @@ $statuses = get_giftcert_statuses();
 // Unset unwanted status
 //unset($statuses[0]);    // 'unused'  
 unset($statuses[1]);      // 'redeemed'  
-unset($statuses[2]);    // 'expired' 
-//unset($statuses[3]);    // 'suspended'    
-unset($statuses[4]);      // 'cancelled'
-unset($statuses[5]);      // 'refunded'
+//unset($statuses[2]);    //  'suspended' 
+unset($statuses[3]);    // 'expired'   
+unset($statuses[4]);      // 'refunded'
+unset($statuses[5]);      // 'cancelled'
+unset($statuses[6]);      // 'deleted'
 
 //  Remaps the array ID's - Because of how smarty works you need to maintain the array internal number system
 foreach($statuses as $status) {
