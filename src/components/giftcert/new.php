@@ -36,7 +36,7 @@ if(isset($VAR['submit'])) {
     // Create a new gift certificate
     $VAR['giftcert_id'] = insert_giftcert($VAR['invoice_id'], $VAR['date_expires'], $VAR['amount'], $VAR['note']);
 
-    // Load the new Gift Certificate's Details page
+    // Load the attached invoice Details page
     force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
 
 }
