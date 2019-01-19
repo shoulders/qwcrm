@@ -59,6 +59,13 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
         $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
         
+        // Change record payment methods
+        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'google_checkout', 'other');
+        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'direct_deposit', 'bank_transfer');
+        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit', 'other');
+        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_card', 'card');
+        $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'voucher', 'other');
+        
         // Reverse blocked account values because of the rename active --> blocked
         $this->update_column_values(PRFX.'giftcert_records', 'blocked', '0', '9');
         $this->update_column_values(PRFX.'giftcert_records', 'blocked', '1', '0');
