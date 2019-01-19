@@ -460,11 +460,16 @@ function get_workorder_notes($workorder_id) {
 #    Get Workorder Statuses         #
 #####################################
 
-function get_workorder_statuses() {
+function get_workorder_statuses($restricted_statuses = false) {
     
     $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."workorder_statuses";
+    
+    // Restrict statuses to those that are allowed to be changed by the user
+    if($restricted_statuses) {
+        $sql .= "\nWHERE status_key NOT IN ('closed_with_invoice')";
+    }
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get work order statuses."));

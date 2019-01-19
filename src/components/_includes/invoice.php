@@ -560,11 +560,16 @@ function get_invoice_prefill_items($type = null, $status = null) {
 #    Get Invoice Statuses           #
 #####################################
 
-function get_invoice_statuses() {
+function get_invoice_statuses($restricted_statuses = false) {
     
     $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."invoice_statuses";
+    
+    // Restrict statuses to those that are allowed to be changed by the user
+    if($restricted_statuses) {
+        $sql .= "\nWHERE status_key NOT IN ('partially_paid', 'paid', 'in_dispute', 'overdue', 'collections', 'refunded', 'cancelled', 'deleted')";
+    }
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice statuses."));

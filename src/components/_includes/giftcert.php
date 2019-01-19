@@ -292,17 +292,22 @@ function get_giftcert_id_by_gifcert_code($giftcert_code) {
 #    Get Giftcert Statuses          #
 #####################################
 
-function get_giftcert_statuses() {
+function get_giftcert_statuses($restricted_statuses = false) {
     
     $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."giftcert_statuses";
+    
+    // Restrict statuses to those that are allowed to be changed by the user
+    if($restricted_statuses) {
+        $sql .= "\nWHERE status_key NOT IN ('redeemed', 'expired', 'refunded', 'cancelled', 'deleted')";
+    }
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Gift Certificate statuses."));
     } else {
         
-        return $rs->GetArray();      
+        return $rs->GetArray();     
         
     }    
     

@@ -30,7 +30,7 @@
                                 <td class="olotd4" align="center" width="33%">
                                     <p><b>{t}Current Status{/t}:</b> {$invoice_status_display_name}</p>
                                     {if $allowed_to_change_status}                                                                               
-                                        <form action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}" method="get" name="new_invoice_status" id="new_invoice_status">
+                                        <form action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}" method="post" name="new_invoice_status" id="new_invoice_status">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
                                                 {section name=s loop=$invoice_statuses}    
@@ -50,7 +50,7 @@
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_change_employee}                                        
                                         <p>&nbsp;</p>  
-                                        <form method="get" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
+                                        <form method="post" action="index.php?component=invoice&page_tpl=status&invoice_id={$invoice_id}">
                                             <select class="olotd4" name="target_employee_id">
                                                 {section name=i loop=$active_employees}
                                                     <option value="{$active_employees[i].user_id}" {if $assigned_employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
