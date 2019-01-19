@@ -451,7 +451,7 @@ function sum_invoices_value($status, $value_name, $start_date = null, $end_date 
 /** Labour **/
 
 #########################
-#  Count labour items   #
+#  Count labour items   #  // not currently used
 #########################
 
 function count_labour_items($start_date, $end_date) {
@@ -522,15 +522,12 @@ function sum_labour_items($value_name, $start_date, $end_date) {
 /** Parts **/
 
 ########################
-#  Count parts items   #
+#  Count parts items   #  // not currently used
 ########################
 
 function count_parts_items($start_date, $end_date) {
     
     $db = QFactory::getDbo();
-    
-    // Compensate for datetime 
-    $end_date = $end_date.' 23:59:59';
     
     $sql = "SELECT SUM(qty) AS count
             FROM ".PRFX."invoice_parts
