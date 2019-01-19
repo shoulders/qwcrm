@@ -58,6 +58,24 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         ajax_clear_onscreen_notifications();
     }
     
+    // Check for a recipient email address
+    if(!$recipient_email) {
+        
+        // Log activity 
+        $record = _gettext("Failed to send email to").' `'._gettext("Not Specified").'` ('.$recipient_name.')';        
+        write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+        
+        // Output the system message to the browser (if allowed)
+        if (!$silent) {
+            $system_message = $record.'<br>'._gettext("There is no email address to send to.");
+            //$smarty->assign('warning_msg', $system_message);
+            ajax_output_notifications_onscreen('', $system_message);
+        }
+        
+        return false;
+        
+    }
+    
     // If email is not enabled, do not send emails
     if(!$config->get('email_online')) {
         

@@ -77,7 +77,7 @@ if($VAR['print_content'] == 'invoice') {
         
     // Email PDF Invoice
     if($VAR['print_type'] == 'email_pdf') {  
-        
+                
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('invoice/printing/print_invoice.tpl');
         
