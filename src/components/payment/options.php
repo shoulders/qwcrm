@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'payment.php');
 
 /* Prevent undefined variable errors (does the same as below)
+ * 
 $VAR['bank_transfer']['send'] = isset($VAR['bank_transfer']['send']) ? $VAR['bank_transfer']['send'] : null;
 $VAR['bank_transfer']['receive'] = isset($VAR['bank_transfer']['receive']) ? $VAR['bank_transfer']['receive'] : null;
 $VAR['bank_transfer']['active'] = isset($VAR['bank_transfer']['active']) ? $VAR['bank_transfer']['active'] : null;

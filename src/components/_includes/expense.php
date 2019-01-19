@@ -154,9 +154,7 @@ function insert_expense($VAR) {
             vat_amount      =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount    =". $db->qstr( $VAR['gross_amount']            ).",
             items           =". $db->qstr( $VAR['items']                   ).",
-            note            =". $db->qstr( $VAR['note']                    );
-                
-            
+            note            =". $db->qstr( $VAR['note']                    );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));

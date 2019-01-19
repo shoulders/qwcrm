@@ -493,6 +493,9 @@ function update_payment_options($VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
     } else {
         
+        // Log activity 
+        // Done in payment:options controller
+        
         return;
         
     }
@@ -523,10 +526,13 @@ function update_payment_methods_statuses($payment_methods) {
                 WHERE payment_method_id = ". $db->qstr($payment_method['payment_method_id']); 
         
         if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a payment method status."));
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
         }
         
     }
+    
+    // Log activity 
+    // Done in payment:options controller
     
     return;
     

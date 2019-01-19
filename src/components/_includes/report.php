@@ -529,7 +529,7 @@ function count_parts_items($start_date, $end_date) {
     
     $db = QFactory::getDbo();
     
-    // Compensate for datetime    
+    // Compensate for datetime 
     $end_date = $end_date.' 23:59:59';
     
     $sql = "SELECT SUM(qty) AS count

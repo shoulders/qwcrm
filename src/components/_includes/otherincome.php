@@ -168,9 +168,9 @@ function insert_otherincome($VAR) {
 
 /** Get Functions **/
 
-##########################
+###############################
 #   Get otherincome details   #
-##########################
+###############################
 
 function get_otherincome_details($otherincome_id, $item = null) {
     
@@ -197,7 +197,7 @@ function get_otherincome_details($otherincome_id, $item = null) {
 }
 
 #####################################
-#    Get Refund Types               #
+#    Get Otherincome Types          #
 #####################################
 
 function get_otherincome_types() {
@@ -219,7 +219,7 @@ function get_otherincome_types() {
 /** Update Functions **/
 
 #####################################
-#     Update otherincome                 #
+#     Update otherincome            #
 #####################################
 
 function update_otherincome($VAR) {

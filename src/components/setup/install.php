@@ -211,12 +211,12 @@ if($VAR['stage'] == 'start_numbers') {
         
         if($VAR['workorder_start_number']) {
             $qsetup->set_workorder_start_number($VAR['workorder_start_number']);
-            $qsetup->write_record_to_setup_log('install', _gettext("Starting Work Order number has been set."));
+            $qsetup->write_record_to_setup_log('install', _gettext("Starting Work Order number has been set to").' '.$VAR['workorder_start_number']);
         }
         
         if($VAR['invoice_start_number']) {
             $qsetup->set_invoice_start_number($VAR['invoice_start_number']);
-            $qsetup->write_record_to_setup_log('install', _gettext("Starting Invoice number has been set."));
+            $qsetup->write_record_to_setup_log('install', _gettext("Starting Invoice number has been set to").' '.$VAR['invoice_start_number']);
         }
         
         $VAR['stage'] = 'administrator_account';

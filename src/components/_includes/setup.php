@@ -649,7 +649,7 @@ class QSetup {
 
         $conf = QFactory::getConfig();
 
-        // This allows me to re-use config registrythis to test the database connection
+        // This allows me to re-use config-registry to test the database connection
         $conf->set('db_host', $db_host);
         $conf->set('db_user', $db_user);
         $conf->set('db_pass', $db_pass);

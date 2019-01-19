@@ -820,7 +820,6 @@ function check_giftcert_can_be_refunded($giftcert_id) {
         return false;        
     }
         
-
     // All checks passed
     return true;
     

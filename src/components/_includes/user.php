@@ -373,13 +373,12 @@ function get_active_users($user_type = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT
-        
-        user_id,
-        CONCAT(first_name, ' ', last_name) AS display_name
-        
-        FROM ".PRFX."user_records
-        WHERE active='1'";
+    $sql = "SELECT        
+            user_id,
+            CONCAT(first_name, ' ', last_name) AS display_name
+
+            FROM ".PRFX."user_records
+            WHERE active='1'";
     
     // Filter the results by user type client/employee
     if($user_type === 'clients')   {$sql .= " AND is_employee='0'";}
@@ -426,27 +425,27 @@ function update_user($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."user_records SET        
-        username            =". $db->qstr( $VAR['username']                             ).",
-        email               =". $db->qstr( $VAR['email']                                ).",
-        usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-        active              =". $db->qstr( $VAR['active']                               ).",                    
-        require_reset       =". $db->qstr( $VAR['require_reset']                        ).",               
-        first_name          =". $db->qstr( $VAR['first_name']                           ).",
-        last_name           =". $db->qstr( $VAR['last_name']                            ).",
-        work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
-        work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
-        work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
-        home_primary_phone  =". $db->qstr( $VAR['home_primary_phone']                   ).",
-        home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
-        home_email          =". $db->qstr( $VAR['home_email']                           ).",
-        home_address        =". $db->qstr( $VAR['home_address']                         ).",
-        home_city           =". $db->qstr( $VAR['home_city']                            ).",  
-        home_state          =". $db->qstr( $VAR['home_state']                           ).",
-        home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
-        home_country        =". $db->qstr( $VAR['home_country']                         ).",
-        based               =". $db->qstr( $VAR['based']                                ).",  
-        note                =". $db->qstr( $VAR['note']                                 )."
-        WHERE user_id= ".$db->qstr($VAR['user_id']);
+            username            =". $db->qstr( $VAR['username']                             ).",
+            email               =". $db->qstr( $VAR['email']                                ).",
+            usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
+            active              =". $db->qstr( $VAR['active']                               ).",                    
+            require_reset       =". $db->qstr( $VAR['require_reset']                        ).",               
+            first_name          =". $db->qstr( $VAR['first_name']                           ).",
+            last_name           =". $db->qstr( $VAR['last_name']                            ).",
+            work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
+            work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
+            work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
+            home_primary_phone  =". $db->qstr( $VAR['home_primary_phone']                   ).",
+            home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
+            home_email          =". $db->qstr( $VAR['home_email']                           ).",
+            home_address        =". $db->qstr( $VAR['home_address']                         ).",
+            home_city           =". $db->qstr( $VAR['home_city']                            ).",  
+            home_state          =". $db->qstr( $VAR['home_state']                           ).",
+            home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
+            home_country        =". $db->qstr( $VAR['home_country']                         ).",
+            based               =". $db->qstr( $VAR['based']                                ).",  
+            note                =". $db->qstr( $VAR['note']                                 )."
+            WHERE user_id= ".$db->qstr($VAR['user_id']);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
@@ -583,6 +582,8 @@ function delete_user($user_id) {
  * GetMenu2('dataset values', 'default option', 'blank 1st record' )
  * 
  * The assigned employee is the default option selected
+ * 
+ * I will use Smarty for this feature
  * 
  */
 
