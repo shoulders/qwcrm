@@ -71,7 +71,7 @@ if($VAR['print_content'] == 'gift_certificate') {
         $pdf_template = $smarty->fetch('giftcert/printing/print_gift_certificate.tpl');
         
         // return the PDF in a variable
-        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        $pdf_as_string = mpdf_output_as_variable($pdf_filename, $pdf_template);
         
         // Build the PDF        
         $attachment['data'] = $pdf_as_string;

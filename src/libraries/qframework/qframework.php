@@ -15,6 +15,7 @@ require QFRAMEWORK_DIR . 'system/defines.php';                      // Load Syst
 require QFRAMEWORK_DIR . 'system/error.php';                        // Configure PHP error reporting
 require QFRAMEWORK_DIR . 'system/include.php';                      // Load System Include
 require QFRAMEWORK_DIR . 'system/security.php';                     // Load QWcrm Security including mandatory security code
+require QFRAMEWORK_DIR . 'system/mpdf.php';                         // Load mPDF functions
 require QFRAMEWORK_DIR . 'system/email.php';                        // Load email transport
 require QFRAMEWORK_DIR . 'system/variables.php';                    // Configure variables to be used by QWcrm
 require QFRAMEWORK_DIR . 'system/router.php';                       // Route the page request

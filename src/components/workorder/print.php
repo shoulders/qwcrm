@@ -73,7 +73,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         
         // Return the PDF in a variable
-        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        $pdf_as_string = mpdf_output_as_variable($pdf_filename, $pdf_template);
         
         // Build the PDF        
         $attachment['data'] = $pdf_as_string;
@@ -132,7 +132,7 @@ if($VAR['print_content'] == 'client_workorder_slip') {
         $pdf_template = $smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
         
         // Return the PDF in a variable
-        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        $pdf_as_string = mpdf_output_as_variable($pdf_filename, $pdf_template);
         
         // Build the PDF        
         $attachment['data'] = $pdf_as_string;
@@ -191,7 +191,7 @@ if($VAR['print_content'] == 'technician_job_sheet') {
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
         
         // Return the PDF in a variable
-        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        $pdf_as_string = mpdf_output_as_variable($pdf_filename, $pdf_template);
         
         // Build the PDF        
         $attachment['data'] = $pdf_as_string;

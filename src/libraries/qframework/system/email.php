@@ -168,12 +168,12 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
     }
     
     // Subject - prefix with the QWcrm company name to all emails
-    $email->setSubject(get_company_details('display_name').' - '.$subject);    
+    $email->setSubject(get_company_details('company_name').' - '.$subject);    
     
     /* Build the message body */
     
-    // Add the email signature (if not a reset email)
-    if(!check_page_accessed_via_qwcrm('user', 'reset') && !check_page_accessed_via_qwcrm('administrator', 'config')) {
+    // Add the email signature if enabled (if not a reset email)
+    if(get_company_details('email_signature_active') && !check_page_accessed_via_qwcrm('user', 'reset') && !check_page_accessed_via_qwcrm('administrator', 'config')) {
         $body .= add_email_signature($email);
     } 
     
@@ -315,28 +315,42 @@ function get_email_message_body($message_name, $client_details) {
 
 function add_email_signature($swift_emailer = null) {
     
-    // only add email signature if enabled
-    if(!get_company_details('email_signature_active')) { return; }
-    
+    $company_details = get_company_details();
+        
     // Load the signature from the database
-    $email_signature = get_company_details('email_signature');
+    $email_signature = $company_details['email_signature'];
+        
+    /* Build Company Logo */
     
     // Build the full logo file path
-    $logo_file = parse_url(MEDIA_DIR . get_company_details('logo'), PHP_URL_PATH);    
-    
+    $logo_file = parse_url(MEDIA_DIR . $company_details['logo'], PHP_URL_PATH);    
+
     // If swiftmailer is going to be used to add image via CID
     if($swift_emailer) {         
-        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath($logo_file)).'" alt="'.get_company_details('display_name').'" width="150">'; 
-        
-        
+        $logo_string = '<img src="'.$swift_emailer->embed(Swift_Image::fromPath($logo_file)).'" alt="'.$company_details['display_name'].'" width="100">'; 
+
     // Load the logo as a standard base64 string image
     } else {        
-        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents($logo_file)).'" alt="'.get_company_details('display_name').'" width="150">'; 
-    }    
-        
-    // Swap the logo placeholders with the new logo string
-    $email_signature  = replace_placeholder($email_signature, '{logo}', $logo_string);
-        
+        $logo_string  = '<img src="data:image/jpeg;base64,'.base64_encode(file_get_contents($logo_file)).'" alt="'.$company_details['display_name'].'" width="100">'; 
+    } 
+    
+    /* */
+    
+    // Build Company Address (html)
+    $company_address = $company_details['address'].'<br>'.$company_details['city'].'<br>'.$company_details['state'].'<br>'.$company_details['zip'];        
+    
+    // Build Company Website (html)
+    $company_website = rtrim($company_details['website'], '/');
+    $company_website = preg_replace("(^https?://)", "", $company_website);
+    $company_website = '<a href="'.$company_details['website'].'">'.$company_website.'</a>';        
+    
+    // Swap placeholders
+    $email_signature  = replace_placeholder($email_signature, '{company_logo}', $logo_string);
+    $email_signature  = replace_placeholder($email_signature, '{company_name}', $company_details['company_name']);
+    $email_signature  = replace_placeholder($email_signature, '{company_address}', $company_address);
+    $email_signature  = replace_placeholder($email_signature, '{company_telephone}', $company_details['telephone']);
+    $email_signature  = replace_placeholder($email_signature, '{company_website}', $company_website);
+            
     // Return the processed signature
     return $email_signature ;
     

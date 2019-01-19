@@ -82,7 +82,7 @@ if($VAR['print_content'] == 'invoice') {
         $pdf_template = $smarty->fetch('invoice/printing/print_invoice.tpl');
         
         // Return the PDF in a variable
-        $pdf_as_string = mpdf_output_as_varible($pdf_filename, $pdf_template);
+        $pdf_as_string = mpdf_output_as_variable($pdf_filename, $pdf_template);
         
         // Build the PDF        
         $attachment['data'] = $pdf_as_string;

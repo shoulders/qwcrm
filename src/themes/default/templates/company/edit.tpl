@@ -262,8 +262,12 @@
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>                                                                
-                                                                                        <strong>Placeholders</strong><br>
-                                                                                        {literal}{logo}{/literal} = {t}Use this to place your logo in the message{/t}                                                               
+                                                                                        <strong>Placeholders</strong><br>                                                                                        
+                                                                                        {literal}{company_logo}{/literal} = {t}Company logo{/t}<br>                                                                                    
+                                                                                        {literal}{company_name}{/literal} = {t}Company name{/t}<br>
+                                                                                        {literal}{company_address}{/literal} = {t}Company address{/t}<br>
+                                                                                        {literal}{company_telephone}{/literal} = {t}Company telephone{/t}<br>
+                                                                                        {literal}{company_website}{/literal} = {t}Company website{/t}
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
