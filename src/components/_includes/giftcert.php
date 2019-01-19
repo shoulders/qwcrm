@@ -515,7 +515,7 @@ function refund_giftcert($giftcert_id) {
     if(!check_giftcert_can_be_refunded($giftcert_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'edit&invoice_id='.get_giftcert_details($giftcert_id, 'invoice_id'), 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be refunded."));
+        force_page('invoice', 'details&invoice_id='.get_giftcert_details($giftcert_id, 'invoice_id'), 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be refunded."));
         
     }
     
@@ -552,7 +552,7 @@ function cancel_giftcert($giftcert_id) {
     if(!check_giftcert_can_be_cancelled($giftcert_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'edit&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be cancelled."));
+        force_page('invoice', 'details&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be cancelled."));
         
     } else {
         
@@ -591,7 +591,7 @@ function delete_giftcert($giftcert_id) {
     if(!check_giftcert_can_be_deleted($giftcert_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'edit&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be deleted."));
+        force_page('invoice', 'details&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be deleted."));
         
     } else {
         
@@ -1083,7 +1083,7 @@ function check_invoice_giftcerts_allow_cancellation($invoice_id) {
         }
         // Check to if any giftcerts prevent the invoice from being deleted
         if(!$giftcerts_allow_cancellation) {            
-            force_page('invoice', 'edit&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+            force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
         } else {
             
             return true;
@@ -1128,7 +1128,7 @@ function check_invoice_giftcerts_allow_deletion($invoice_id) {
         }
         // Check to if any giftcerts prevent the invoice from being deleted
         if(!$giftcerts_allow_deletion) {            
-            force_page('invoice', 'edit&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+            force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
         } else {
             
             return true;

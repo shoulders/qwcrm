@@ -36,7 +36,7 @@ if(!check_invoice_can_be_deleted($VAR['invoice_id'])) {
 if(!delete_invoice($VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
-    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id'], 'information_msg='._gettext("The invoice failed to be deleted."));    
+    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'information_msg='._gettext("The invoice failed to be deleted."));    
     
 } else {   
     

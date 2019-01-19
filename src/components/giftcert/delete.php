@@ -32,11 +32,11 @@ $invoice_id = get_giftcert_details($VAR['giftcert_id'], 'invoice_id');
 if(!delete_giftcert($VAR['giftcert_id'])) {
     
     // Load the relevant invoice page with failed message
-    force_page('invoice', 'edit&invoice_id='.$invoice_id, 'warning_msg='._gettext("Gift Certificate failed to be deleted."));
+    force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("Gift Certificate failed to be deleted."));
     
 } else {
     
     // Load the relevant invoice page with success message
-    force_page('invoice', 'edit&invoice_id='.$invoice_id, 'information_msg='._gettext("Gift Certificate deleted successfully."));
+    force_page('invoice', 'details&invoice_id='.$invoice_id, 'information_msg='._gettext("Gift Certificate deleted successfully."));
 
 }
