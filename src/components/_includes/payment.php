@@ -554,16 +554,16 @@ function delete_payment($payment_id) {
     $payment_details = get_payment_details($payment_id);
         
     $sql = "UPDATE ".PRFX."payment_records SET        
-            employee_id     = NULL,
-            client_id       = NULL,
-            workorder_id    = NULL,
-            invoice_id      = NULL,            
+            employee_id     = '',
+            client_id       = '',
+            workorder_id    = '',
+            invoice_id      = '',            
             date            = '0000-00-00',
-            type            = NULL,
-            method          = NULL,
+            type            = '',
+            method          = '',
             status          = 'deleted',
             amount          = '0.00',
-            note            = NULL
+            note            = ''
             WHERE payment_id =". $db->qstr( $payment_id );    
     
     if(!$rs = $db->Execute($sql)) {

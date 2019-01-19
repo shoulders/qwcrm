@@ -601,11 +601,11 @@ function delete_giftcert($giftcert_id) {
         $sql = "UPDATE ".PRFX."giftcert_records SET
             giftcert_code       =". $db->qstr( $giftcert_details['giftcert_code']   ).",
             employee_id         =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            client_id           =   NULL,
-            workorder_id        =   NULL,
-            invoice_id          =   NULL,
-            redeemed_client_id  =   NULL,
-            redeemed_invoice_id =   NULL,
+            client_id           =   '',
+            workorder_id        =   '',
+            invoice_id          =   '',
+            redeemed_client_id  =   '',
+            redeemed_invoice_id =   '',
             date_created        =". $db->qstr( $giftcert_details['date_created']    ).",
             date_expires        =   '0000-00-00',
             date_redeemed       =   '0000-00-00 00:00:00',
@@ -613,7 +613,7 @@ function delete_giftcert($giftcert_id) {
             redeemed            =   '0',
             blocked             =   '1',
             amount              =   '0.00',
-            note                =   NULL
+            note                =   ''
             WHERE giftcert_id =". $db->qstr($giftcert_id);        
 
         if(!$db->execute($sql)) {
