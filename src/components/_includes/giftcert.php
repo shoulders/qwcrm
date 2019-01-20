@@ -469,18 +469,18 @@ function update_giftcert_blocked_status($giftcert_id, $new_blocked_status) {
 #   Redeem the gift certificate against an invoice   #
 ######################################################
 
-function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id, $payment_id) {
+function update_giftcert_as_redeemed($giftcert_id, $invoice_id, $payment_id) {
     
     $db = QFactory::getDbo();
     
-    $redeemed_client_id = get_invoice_details($redeemed_invoice_id, 'client_id');
+    $giftcert_details = get_invoice_details($invoice_id);    
     
     // some information has already been applied (as below) using update_giftcert_status() earlier in the process
     $sql = "UPDATE ".PRFX."giftcert_records SET
             employee_id         =". $db->qstr( QFactory::getUser()->login_user_id       ).",
             payment_id          =". $db->qstr( $payment_id                              ).",
-            redeemed_client_id  =". $db->qstr( $redeemed_client_id                      ).",   
-            redeemed_invoice_id =". $db->qstr( $redeemed_invoice_id                     ).",
+            redeemed_client_id  =". $db->qstr( $giftcert_details['client_id']           ).",   
+            redeemed_invoice_id =". $db->qstr( $invoice_id                              ).",
             date_redeemed       =". $db->qstr( mysql_datetime()                         ).",
             status              =". $db->qstr( 'redeemed'                               ).",   
             redeemed            =". $db->qstr( 1                                        ).",            
@@ -492,12 +492,13 @@ function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id, $paymen
     } else {       
         
         // Log activity        
-        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.get_client_details($redeemed_client_id, 'display_name').'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $redeemed_client_id, null, $redeemed_invoice_id);
+        $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was redeemed by").' '.get_client_details($giftcert_details['client_id'], 'display_name').'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $giftcert_details['client_id'], null, $invoice_id);
         
         // Update last active record
-        update_client_last_active($redeemed_client_id);        
-        update_invoice_last_active($redeemed_invoice_id);
+        update_client_last_active($giftcert_details['client_id']);        
+        update_workorder_last_active($giftcert_details['workorder_id']);
+        update_invoice_last_active($giftcert_details);        
         
     }
     
