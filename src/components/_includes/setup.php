@@ -1135,6 +1135,9 @@ class QSetup {
             // Set the setup global error flag
             self::$setup_error_flag = true;
             
+            // Set the local error flag
+            $local_error_flag = true;
+            
             // Log Message
             $record = _gettext("Failed to select the records from the column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
             
@@ -1163,6 +1166,9 @@ class QSetup {
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
                     
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
                     // Log Message
                     $record = _gettext("Failed to update the record").' `'.$column_primary_key.'` '._gettext("in the column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
 
@@ -1189,6 +1195,9 @@ class QSetup {
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
                 
+                // Set the local error flag
+                $local_error_flag = true;
+                
                 // Log Message
                 $record = _gettext("Failed to remove the original column").' `'.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
 
@@ -1209,6 +1218,9 @@ class QSetup {
                                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
+                
+                // Set the local error flag
+                $local_error_flag = true;
                 
                 // Log Message
                 $record = _gettext("Failed to rename the temporary column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("to").' `'.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
@@ -1309,6 +1321,9 @@ class QSetup {
             // Set the setup global error flag
             self::$setup_error_flag = true;
             
+            // Set the local error flag
+            $local_error_flag = true;
+            
             // Log Message
             $record = _gettext("Failed to select all the records from the table").' `'.$table.'`.';
             
@@ -1382,6 +1397,9 @@ class QSetup {
                 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
+                
+                // Set the local error flag
+                $local_error_flag = true;
                 
                 // Log Message
                 $record = _gettext("Failed to rename the temporary column").' `'.$temp_prfx.$column_timestamp.'` '._gettext("to").' `'.$column_timestamp.'` '._gettext("in the table").' `'.$table.'`.';
@@ -1781,5 +1799,144 @@ class QSetup {
         return $settings;
         
     }
+ 
+    #################################################################
+    #  Parse Giftcert records and populate with appropriate status  #  // This is after conversion to mysql DATE
+    #################################################################
+
+    function giftcert_parse_records_populate_status() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the giftcert records
+        $sql = "SELECT * FROM ".PRFX."giftcert_records";
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `giftcert_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records, decide and set each giftert's status
+            while(!$rs->EOF) { 
+
+                // Set qualifying giftcerts to redeemed status
+                if($rs->fields['date_redeemed'] != '0000-00-00 00:00:00') {
+                    
+                    $status = 'redeemed';
+                    $redeemed = 1;
+                    $blocked = 1;
+                
+                // Set qualifying giftcerts to expired status
+                } elseif (date("Y-m-d") > $rs->fields['date_expires']) {
+                    
+                    $status = 'expired';
+                    $redeemed = 1;
+                    $blocked = 1;
+                
+                // If not redeemed or expired it must be unused
+                } else {
+                    
+                    $status = 'unused';
+                    $redeemed = 0;
+                    $blocked = 0;
+                    
+                }
+                
+                $sql = "UPDATE `".PRFX."giftcert_records` SET
+                        `status` = ".$status.",
+                        `redemeed` = ".$redeemed.",
+                        `blocked` = ".$blocked."
+                        WHERE `gifcert_id` = ".$rs->fields['giftcert_id'];
+                
+                
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to update the `status` for the gift certificate record").' '.$rs->fields['giftcert_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to complete assigning statuses to all gift certificate records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed assigning statuses to all gift certificate records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    } 
+    
+
+    
+    
+    
+    
+    
     
 }

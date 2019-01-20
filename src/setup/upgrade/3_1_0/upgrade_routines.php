@@ -102,6 +102,9 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'close_date', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
         
+        // Parse Giftcert records and populate with appropriate status
+        $this->giftcert_parse_records_populate_status();
+        
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
         
