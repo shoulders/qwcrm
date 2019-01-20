@@ -104,6 +104,7 @@ class Upgrade3_1_0 extends QSetup {
         
         // Parse Giftcert records and populate with appropriate status
         $this->giftcert_parse_records_populate_status();
+        $this->giftcert_parse_records_populate_workorder_id();
         
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');

@@ -1903,7 +1903,7 @@ class QSetup {
         if($local_error_flag) {            
             
             // Log Message
-            $record = _gettext("Failed to complete assigning statuses to all gift certificate records.");            
+            $record = _gettext("Failed to complete assigning `status` to all gift certificate records.");            
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -1917,7 +1917,7 @@ class QSetup {
         } else {
             
             // Log Message
-            $record = _gettext("Successfully completed assigning statuses to all gift certificate records.");
+            $record = _gettext("Successfully completed assigning `status` to all gift certificate records.");
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -1932,6 +1932,115 @@ class QSetup {
     
     } 
     
+    #######################################################################
+    #  Parse Giftcert records and populate with appropriate workorder_id  #
+    #######################################################################
+
+    function giftcert_parse_records_populate_workorder_id() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the giftcert records
+        $sql = "SELECT * FROM ".PRFX."giftcert_records";
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `giftcert_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records, decide and set each giftert's status
+            while(!$rs->EOF) { 
+                
+                // Get the workorder_id from the relevant invoice record
+                $sql = "SELECT workorder_id FROM ".PRFX."invoice_records WHERE invoice_id = ".$rs->fields['invoice_id'];
+                               
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to update the `workorder_id` for the gift certificate record").' '.$rs->fields['giftcert_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } else {
+                    
+                    // Update gifcert record with the new workorder_id
+                    $this->update_record_value(PRFX.'giftcert_records', 'workorder_id', $temp_rs->fields['workorder_id'], 'giftcert_id', $rs->fields['giftcert_id']);
+                    
+                }
+                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to complete assigning `workorder_id` to all gift certificate records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed assigning `workorder_id` to all gift certificate records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    } 
 
     
     
