@@ -25,7 +25,7 @@ if(!check_payment_method_is_active('gift_certificate')) {
 }
 
 // Check if giftcert can be edited
-if(!check_giftcert_can_be_edited($VAR['giftcert_id'])) {
+if(!check_giftcert_status_allows_editing($VAR['giftcert_id'])) {
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'warning_msg='._gettext("You cannot edit this Gift Certificate because its status does not allow it."));
 }
 

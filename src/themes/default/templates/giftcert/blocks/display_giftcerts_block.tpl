@@ -26,13 +26,13 @@
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=g loop=$display_giftcerts}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}';" class="row1">
-            <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_id}</a></td>
+        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" {if $display_giftcerts[g].status != 'deleted'}onDblClick="window.location='index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}';"{/if} class="row1">
+            <td class="olotd4">{if $display_giftcerts[g].status != 'deleted'}<a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_id}</a>{else}{$display_giftcerts[g].giftcert_id}{/if}</td>
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_giftcerts[g].employee_id}">{$display_giftcerts[g].employee_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_giftcerts[g].workorder_id}">{$display_giftcerts[g].workorder_id}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_giftcerts[g].invoice_id}">{$display_giftcerts[g].invoice_id}</a></td>            
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_giftcerts[g].payment_id}">{$display_giftcerts[g].payment_id}</a></td>            
-            <td class="olotd4"><a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}">{$display_giftcerts[g].giftcert_code}</a></td>
+            <td class="olotd4">{$display_giftcerts[g].giftcert_code}</td>
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_giftcerts[g].client_id}">{$display_giftcerts[g].client_display_name}</a></td>
             <td class="olotd4">{$display_giftcerts[g].date_expires|date_format:$date_format}</td>
             <td class="olotd4">
@@ -58,14 +58,13 @@
                 {/if}
             </td>
             <td class="olotd4">
-                <a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?component=giftcert&page_tpl=edit&giftcert_id={$display_giftcerts[g].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
-                <a href="index.php?component=giftcert&page_tpl=print&giftcert_id={$display_giftcerts[g].giftcert_id}&print_content=gift_certificate&print_type=print_html&theme=print" target="_blank"> 
-                    <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Gift Certificate{/t}');" onMouseOut="hideddrivetip();">
-                </a>
-                <a href="index.php?component=giftcert&page_tpl=delete&giftcert_id={$display_giftcerts[g].giftcert_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Gift Certificate? This will also delete it from the relevant invoice.{/t}');">
-                    <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Gift Certificate{/t}</b>');" onMouseOut="hideddrivetip();">
-                </a>
+                {if $display_giftcerts[g].status != 'deleted'}
+                    <a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$display_giftcerts[g].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/viewmag.gif"  border="0" onMouseOver="ddrivetip('{t}View Details{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                    <a href="index.php?component=giftcert&page_tpl=edit&giftcert_id={$display_giftcerts[g].giftcert_id}"><img src="{$theme_images_dir}icons/16x16/small_edit_employee.gif" border="0" onMouseOver="ddrivetip('{t}Edit{/t}');" onMouseOut="hideddrivetip();"></a>&nbsp;
+                    <a href="index.php?component=giftcert&page_tpl=print&giftcert_id={$display_giftcerts[g].giftcert_id}&print_content=gift_certificate&print_type=print_html&theme=print" target="_blank"> 
+                        <img src="{$theme_images_dir}icons/16x16/fileprint.gif" border="0" onMouseOver="ddrivetip('{t}Print the Gift Certificate{/t}');" onMouseOut="hideddrivetip();">
+                    </a>
+                {/if}
             </td>
         </tr>
     {sectionelse}

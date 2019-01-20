@@ -22,8 +22,8 @@
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">{t}Cancel{/t}</td>
-                                <td class="olohead" align="center">{t}Refund{/t}</td>
+                                <td class="olohead" align="center">&nbsp;</td>
+                                <td class="olohead" align="center">{t}Delete{/t}</td>
                             </tr>
                             <tr>
                             
@@ -56,25 +56,19 @@
                                     {/if}
                                 </td>
 
-                                <!-- Cancel Gift Certificate --> 
+                                <!--  --> 
                                 <td class="olotd4" align="center" width="33%">
-                                    {if $allowed_to_cancel}
-                                        <form method="post" action="index.php?component=giftcert&page_tpl=status">
-                                            <input name="cancel" value="{t}Cancel Gift Certificate{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to cancel this Gift Certificate?{/t}');">                                        
-                                        </form>                                   
-                                    {else}
-                                        {t}This gift certificate cannot be cancelled because it's state does not allow it.{/t}
-                                    {/if}
+                                    <p>&nbsp;</p> 
                                 </td>
 
-                                <!-- Refund Gift Certificate -->                        
+                                <!-- Delete Gift Certificate -->                        
                                 <td class="olotd4" align="center" width="33%">                                                                       
-                                    {if $allowed_to_refund}
-                                        <form method="post" action="index.php?component=giftcert&page_tpl=status">
-                                            <input name="refund" value="{t}Refund{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to refund this gift certificate?{/t}');">                                            
+                                    {if $allowed_to_delete}
+                                        <form method="post" action="index.php?component=giftcert&page_tpl=delete&giftcert_id={$giftcert_id}">
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this gift certificate?{/t}');">                                            
                                         </form>                                            
                                     {else}
-                                        {t}This gift certificate cannot be refunded because it's state does not allow it.{/t}
+                                        {t}This gift certificate cannot be deleted because it's status, or the attached invoice's status does not allow it.{/t}
                                     {/if}                                        
                                 </td>                                
                                 

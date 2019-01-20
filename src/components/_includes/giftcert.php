@@ -512,7 +512,7 @@ function update_giftcert_as_redeemed($giftcert_id, $redeemed_invoice_id, $paymen
 function refund_giftcert($giftcert_id) {
     
     // make sure the giftcert can be cancelled
-    if(!check_giftcert_can_be_refunded($giftcert_id)) {
+    if(!check_giftcert_status_allows_refunding($giftcert_id)) {
         
         // Load the relevant invoice page with failed message
         force_page('invoice', 'details&invoice_id='.get_giftcert_details($giftcert_id, 'invoice_id'), 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be refunded."));
@@ -549,7 +549,7 @@ function cancel_giftcert($giftcert_id) {
     
     $giftcert_details = get_giftcert_details($giftcert_id);    
     
-    if(!check_giftcert_can_be_cancelled($giftcert_id)) {
+    if(!check_giftcert_status_allows_cancellation($giftcert_id)) {
         
         // Load the relevant invoice page with failed message
         force_page('invoice', 'details&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be cancelled."));
@@ -588,7 +588,7 @@ function delete_giftcert($giftcert_id) {
     $db = QFactory::getDbo();
     $giftcert_details = get_giftcert_details($giftcert_id);    
     
-    if(!check_giftcert_can_be_deleted($giftcert_id)) {
+    if(!check_giftcert_status_allows_deletion($giftcert_id)) {
         
         // Load the relevant invoice page with failed message
         force_page('invoice', 'details&invoice_id='.$giftcert_details['invoice_id'], 'warning_msg='._gettext("Gift Certificate").': '.$giftcert_id.' '._gettext("cannot be deleted."));
@@ -740,7 +740,7 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
 #  Check if the giftcert status allows editing           #
 ##########################################################
 
- function check_giftcert_can_be_edited($giftcert_id) {
+ function check_giftcert_status_allows_editing($giftcert_id) {
      
     // Get the giftcert details
     $giftcert_details = get_giftcert_details($giftcert_id);
@@ -775,10 +775,26 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
 }
 
 ###############################################################
-#   Check to see if the giftcert can be refunded              #
+#   Check to see if the giftcert can be deleted               #  // not currently used
 ###############################################################
 
 function check_giftcert_can_be_refunded($giftcert_id) {
+        
+    // This checks the parent invoice and it's associated gift certificates including the supplied giftcert
+    if(!check_invoice_can_be_refunded(get_giftcert_details($giftcert_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the giftcert status allows refunding      #
+###############################################################
+
+function check_giftcert_status_allows_refunding($giftcert_id) {
     
     // Get the giftcert details
     $giftcert_details = get_giftcert_details($giftcert_id);
@@ -824,101 +840,134 @@ function check_giftcert_can_be_refunded($giftcert_id) {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has been deleted."));
         return false;        
     }
-        
+    
     // All checks passed
     return true;
     
 } 
 
 ###############################################################
-#   Check to see if the giftcert can be cancelled             #
+#   Check to see if the giftcert can be cancelled             #  // not currently used
 ###############################################################
 
 function check_giftcert_can_be_cancelled($giftcert_id) {
+        
+    // This checks the parent invoice and it's associated gift certificates including the supplied giftcert
+    if(!check_invoice_can_be_cancelled(get_giftcert_details($giftcert_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be cancelled because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the giftcert status allows cancellation   #
+###############################################################
+
+function check_giftcert_status_allows_cancellation($giftcert_id) {
     
     // Get the giftcert status
-    $status = get_giftcert_details($giftcert_id, 'status');
+    $giftcert_details = get_giftcert_details($giftcert_id);
     
     // Is Redeemed
-    if($status == 'redeemed') {
+    if($giftcert_details['status'] == 'redeemed') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been redeemed."));
         return false;        
     }
     
     // Is Suspended
-    if($status == 'suspended') {
+    if($giftcert_details['status'] == 'suspended') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been suspended."));
         return false;        
     }
             
     // Is Refunded
-    if($status == 'refunded') {
+    if($giftcert_details['status'] == 'refunded') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
-    if($status == 'cancelled') {
+    if($giftcert_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
-    if($status == 'deleted') {
+    if($giftcert_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be cancelled because it has been deleted."));
         return false;        
     }
-
+    
+    
     // All checks passed
     return true;
     
 }
 
 ###############################################################
-#   Check to see if the giftcert can be cancelled             #
+#   Check to see if the giftcert can be deleted               #
 ###############################################################
 
 function check_giftcert_can_be_deleted($giftcert_id) {
+        
+    // This checks the parent invoice and it's associated gift certificates including the supplied giftcert
+    if(!check_invoice_can_be_deleted(get_giftcert_details($giftcert_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the giftcert status allows deletion       #
+###############################################################
+
+function check_giftcert_status_allows_deletion($giftcert_id) {
     
     // Get the giftcert status
-    $status = get_giftcert_details($giftcert_id, 'status');
+    $giftcert_details = get_giftcert_details($giftcert_id);
     
     // Is Redeemed
-    if($status == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been redeemed."));
+    if($giftcert_details['status'] == 'redeemed') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because it has been redeemed."));
         return false;        
     }
     
     // Is Suspended
-    if($status == 'suspended') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it is suspended."));
+    if($giftcert_details['status'] == 'suspended') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because it is suspended."));
         return false;        
     }
     
     // Is Expired
-    if($status == 'expired') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has expired."));
+    if($giftcert_details['status'] == 'expired') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because it has expired."));
         return false;        
     }
             
     // Is Refunded
-    if($status == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been refunded."));
+    if($giftcert_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
-    if($status == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been cancelled."));
+    if($giftcert_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
-    if($status == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be deleted because it has been deleted."));
+    if($giftcert_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The gift certificate cannot be deleted because it has been deleted."));
         return false;        
-    }
-
+    }    
+    
     // All checks passed
     return true;
     
@@ -1032,10 +1081,12 @@ function check_invoice_giftcerts_allow_refunding($invoice_id) {
     } else {
 
         while(!$rs->EOF) {            
+            
+            $giftcert_details = $rs->GetRowAssoc();
 
-            // Check the Giftcert to see if it can be deleted
-            if(!check_giftcert_can_be_refunded($rs->fields['giftcert_id'])) {                    
-                $allow_state = false;
+            // Check the Giftcert to see if it can be refunded
+            if(!check_giftcert_status_allows_refunding($rs->fields['giftcert_id'])) {                    
+                $giftcerts_allow_refunding = false;
             }
 
             // Advance the loop to the next record
@@ -1043,8 +1094,18 @@ function check_invoice_giftcerts_allow_refunding($invoice_id) {
 
         }
         
-        return $allow_state;
-
+        // Check to if any giftcerts prevent the invoice from being deleted
+        if(!$giftcerts_allow_refunding) {            
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be refunded because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Gift Certificate").': '.$giftcert_details['giftcert_id']); 
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+       
     }
 
 }
@@ -1073,7 +1134,7 @@ function check_invoice_giftcerts_allow_cancellation($invoice_id) {
             $giftcert_details = $rs->GetRowAssoc();        
 
             // Check the Giftcert to see if it can be deleted
-            if(!check_giftcert_can_be_deleted($giftcert_details['giftcert_id'])) {                    
+            if(!check_giftcert_status_allows_deletion($giftcert_details['giftcert_id'])) {                    
                 $giftcerts_allow_cancellation = false;
             }
 
@@ -1083,7 +1144,10 @@ function check_invoice_giftcerts_allow_cancellation($invoice_id) {
         }
         // Check to if any giftcerts prevent the invoice from being deleted
         if(!$giftcerts_allow_cancellation) {            
-            force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be cancelled because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Gift Certificate").': '.$giftcert_details['giftcert_id']); 
+            return false;
+            
         } else {
             
             return true;
@@ -1118,7 +1182,7 @@ function check_invoice_giftcerts_allow_deletion($invoice_id) {
             $giftcert_details = $rs->GetRowAssoc();        
 
             // Check the Giftcert to see if it can be deleted
-            if(!check_giftcert_can_be_deleted($giftcert_details['giftcert_id'])) {                    
+            if(!check_giftcert_status_allows_deletion($giftcert_details['giftcert_id'])) {                    
                 $giftcerts_allow_deletion = false;
             }
 
@@ -1128,7 +1192,10 @@ function check_invoice_giftcerts_allow_deletion($invoice_id) {
         }
         // Check to if any giftcerts prevent the invoice from being deleted
         if(!$giftcerts_allow_deletion) {            
-            force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);                               
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Gift Certificate").': '.$giftcert_details['giftcert_id']);
+            return false;
+            
         } else {
             
             return true;

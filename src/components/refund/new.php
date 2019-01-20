@@ -93,7 +93,7 @@ if (isset($VAR['giftcert_id'])) {
     if (!isset($VAR['submit'])) {
 
         // Make sure the giftcert is allowed to be refunded
-        if(!check_giftcert_can_be_refunded($VAR['giftcert_id'])) {
+        if(!check_giftcert_status_allows_refunding($VAR['giftcert_id'])) {
             force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'information_msg='._gettext("Gift Certificate").': '.$VAR['giftcert_id'].' '._gettext("cannot be refunded."));
         }
         

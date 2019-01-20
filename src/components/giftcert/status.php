@@ -11,6 +11,8 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
 
@@ -37,8 +39,7 @@ $statuses = get_giftcert_statuses(true);
 $smarty->assign('allowed_to_change_status',     check_giftcert_status_can_be_changed($VAR['giftcert_id'])       );
 $smarty->assign('giftcert_status',              get_giftcert_details($VAR['giftcert_id'], 'status')             );
 $smarty->assign('giftcert_statuses',            get_giftcert_statuses() );
-$smarty->assign('allowed_to_cancel',            check_giftcert_can_be_cancelled($VAR['giftcert_id'])         );
-$smarty->assign('allowed_to_refund',            check_giftcert_can_be_refunded($VAR['giftcert_id'])              );
+$smarty->assign('allowed_to_delete',            check_giftcert_can_be_deleted($VAR['giftcert_id'])              );
 $smarty->assign('giftcert_edited_statuses',     $statuses );
 
 $BuildPage .= $smarty->fetch('giftcert/status.tpl');
