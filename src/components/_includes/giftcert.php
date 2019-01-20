@@ -355,8 +355,8 @@ function update_giftcert($giftcert_id, $date_expires, $amount, $note) {
 
     } else {
         
-        // Make sure correct expiry status is set (unused/expired) if status allows change
-        validate_giftcert_is_expired($giftcert_id);
+        // Make sure correct expiry status is set (unused/expired)
+        check_giftcert_is_expired($giftcert_id);
         
         $giftcert_details = get_giftcert_details($giftcert_id);
         
@@ -559,9 +559,6 @@ function cancel_giftcert($giftcert_id) {
         // Change the giftcert status to cancelled (I do this here to maintain log consistency)
         update_giftcert_status($giftcert_id, 'cancelled', true);
         
-        // Recalculate the invoice totals and update them
-        recalculate_invoice($giftcert_details['invoice_id']);
-
         // Log activity        
         $record = _gettext("Gift Certificate").' '.$giftcert_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $giftcert_details['employee_id'], $giftcert_details['client_id']);
@@ -654,7 +651,7 @@ function delete_giftcert($giftcert_id) {
     $status = get_giftcert_details($giftcert_id, 'status');
         
     // Unused and Expired
-    if($status == 'unused' && validate_giftcert_is_expired($giftcert_id)) {
+    if($status == 'unused' && check_giftcert_is_expired($giftcert_id)) {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
         return false;        
     }
@@ -715,7 +712,7 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
     }
     
     // Check if expired - This does a live check for expiry as it is not always upto date
-    if(validate_giftcert_is_expired($giftcert_id)) {
+    if(check_giftcert_is_expired($giftcert_id)) {
         //force_page('core', 'error', 'error_msg='._gettext("This gift certificate is expired."));        
         return false;        
     }
@@ -800,7 +797,7 @@ function check_giftcert_status_allows_refunding($giftcert_id) {
     $giftcert_details = get_giftcert_details($giftcert_id);
     
     // Unused and Expired
-    if($giftcert_details['status'] == 'unused' && validate_giftcert_is_expired($giftcert_id)) {
+    if($giftcert_details['status'] == 'unused' && check_giftcert_is_expired($giftcert_id)) {
         //postEmulationWrite('warning_msg', _gettext("The gift certificate status cannot be changed because it has expired."));
         return false;        
     }
@@ -995,7 +992,7 @@ function generate_giftcert_code() {
 #   Check to see if the giftcert is expired     #  // This does a live check to see if the giftcert is expired and tagged as such
 #################################################
 
-function validate_giftcert_is_expired($giftcert_id) {
+function check_giftcert_is_expired($giftcert_id) {
     
     $calculated_status = '';
     
@@ -1068,8 +1065,7 @@ function giftcerts_sub_total($invoice_id) {
 function check_invoice_giftcerts_allow_refunding($invoice_id) {
     
     $db = QFactory::getDbo();    
-    $allow_state = true;
-    
+        
     $sql = "SELECT *
             FROM ".PRFX."giftcert_records
             WHERE invoice_id = ".$invoice_id;
@@ -1082,7 +1078,10 @@ function check_invoice_giftcerts_allow_refunding($invoice_id) {
 
         while(!$rs->EOF) {            
             
-            $giftcert_details = $rs->GetRowAssoc();
+            //$giftcert_details = $rs->GetRowAssoc();
+            
+            // Make sure correct expiry status is set (unused/expired)
+            check_giftcert_is_expired($rs->fields['giftcert_id']);
 
             // Check the Giftcert to see if it can be refunded
             if(!check_giftcert_status_allows_refunding($rs->fields['giftcert_id'])) {                    
@@ -1131,10 +1130,13 @@ function check_invoice_giftcerts_allow_cancellation($invoice_id) {
 
         while(!$rs->EOF) {            
 
-            $giftcert_details = $rs->GetRowAssoc();        
+            //$giftcert_details = $rs->GetRowAssoc(); 
+            
+            // Make sure correct expiry status is set (unused/expired)
+            check_giftcert_is_expired($rs->fields['giftcert_id']);
 
             // Check the Giftcert to see if it can be deleted
-            if(!check_giftcert_status_allows_deletion($giftcert_details['giftcert_id'])) {                    
+            if(!check_giftcert_status_allows_cancellation($rs->fields['giftcert_id'])) {                    
                 $giftcerts_allow_cancellation = false;
             }
 
@@ -1179,10 +1181,13 @@ function check_invoice_giftcerts_allow_deletion($invoice_id) {
 
         while(!$rs->EOF) {            
 
-            $giftcert_details = $rs->GetRowAssoc();        
+            //$giftcert_details = $rs->GetRowAssoc();        
+            
+            // Make sure correct expiry status is set (unused/expired)
+            check_giftcert_is_expired($rs->fields['giftcert_id']);            
 
             // Check the Giftcert to see if it can be deleted
-            if(!check_giftcert_status_allows_deletion($giftcert_details['giftcert_id'])) {                    
+            if(!check_giftcert_status_allows_deletion($rs->fields['giftcert_id'])) {                    
                 $giftcerts_allow_deletion = false;
             }
 
@@ -1260,7 +1265,7 @@ function cancel_invoice_giftcerts($invoice_id) {
 
         while(!$rs->EOF) {            
 
-            // Refund Giftcert
+            // Cancel Giftcert
             cancel_giftcert($rs->fields['giftcert_id']);
 
             // Advance the loop to the next record
