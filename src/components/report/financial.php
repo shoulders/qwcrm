@@ -25,8 +25,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('workorder_stats', get_workorders_stats('overall', $start_date, $end_date)         );
              
     // Invoices
-    $smarty->assign('invoice_stats', get_invoices_stats('all', $start_date, $end_date)                           );
-        
+    $smarty->assign('invoice_stats', get_invoices_stats('all', $start_date, $end_date)                           );       
     
     /* Advanced Statistics */
     

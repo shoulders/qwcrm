@@ -107,7 +107,7 @@
                                                                             <td>
                                                                                 <select id="payment_method" name="payment_method" class="olotd5">
                                                                                     {section name=s loop=$payment_methods}    
-                                                                                        <option value="{$payment_methods[s].purchase_method_id}">{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                                        <option value="{$payment_methods[s].payment_method_id}">{t}{$payment_methods[s].display_name}{/t}</option>
                                                                                     {/section} 
                                                                                 </select>                                                                            
                                                                             </td>

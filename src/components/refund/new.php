@@ -141,7 +141,7 @@ $new_record_id = last_refund_id_lookup() +1;
 // Build the page
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
-$smarty->assign('payment_methods', get_payment_purchase_methods());
+$smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
 $smarty->assign('new_record_id', $new_record_id);
 $smarty->assign('client_display_name', $client_display_name);
 $BuildPage .= $smarty->fetch('refund/new.tpl');

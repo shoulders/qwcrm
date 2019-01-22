@@ -37,7 +37,7 @@
             </td>                                                                
             <td class="olotd4" nowrap>
                 {section name=s loop=$payment_methods}    
-                    {if $display_refunds[r].payment_method == $payment_methods[s].purchase_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}        
+                    {if $display_refunds[r].payment_method == $payment_methods[s].payment_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}        
                 {/section} 
             </td>                                                               
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].net_amount}</td>                                                               

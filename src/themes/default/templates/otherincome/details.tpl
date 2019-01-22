@@ -59,7 +59,7 @@
                                             <td class="menutd"><b>{t}Other Income Payment Method{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$payment_methods}    
-                                                    {if $otherincome_details.payment_method == $payment_methods[s].purchase_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}   
+                                                    {if $otherincome_details.payment_method == $payment_methods[s].payment_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}   
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>

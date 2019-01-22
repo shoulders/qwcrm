@@ -74,8 +74,8 @@
                                                                     <select class="olotd5" id="filter_payment_method" name="filter_payment_method">
                                                                         <option value=""{if $filter_payment_method == ''} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
-                                                                        {section name=t loop=$payment_methods}    
-                                                                            <option value="{$payment_methods[t].purchase_method_id}"{if $filter_payment_method == $payment_methods[t].purchase_method_id} selected{/if}>{t}{$payment_methods[t].display_name}{/t}</option>        
+                                                                        {section name=t loop=$payment_methods_search}    
+                                                                            <option value="{$payment_methods_search[t].payment_method_id}"{if $filter_payment_method == $payment_methods_search[t].payment_method_id} selected{/if}>{t}{$payment_methods_search[t].display_name}{/t}</option>        
                                                                         {/section}
                                                                     </select>
                                                                 </td>

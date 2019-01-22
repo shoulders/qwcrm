@@ -37,6 +37,7 @@ $smarty->assign('search_term',              $VAR['search_term']                 
 $smarty->assign('filter_type',              $VAR['filter_type']                                                                                             );
 $smarty->assign('filter_payment_method',    $VAR['filter_payment_method']                                                                                   );
 $smarty->assign('expense_types',            get_expense_types()                                                                                             );
-$smarty->assign('payment_methods',          get_payment_purchase_methods()                                                                                  );
+$smarty->assign('payment_methods',          get_payment_methods('send')                                                                                     );
+$smarty->assign('payment_methods_search',   get_payment_methods('send', 'enabled')                                                                          );
 $smarty->assign('display_expenses',         display_expenses('expense_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'], $VAR['filter_payment_method']) );
 $BuildPage .= $smarty->fetch('expense/search.tpl');

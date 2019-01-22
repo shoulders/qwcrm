@@ -36,7 +36,8 @@ $smarty->assign('search_category',          $VAR['search_category']             
 $smarty->assign('search_term',              $VAR['search_term']                                                                                             );
 $smarty->assign('filter_type',              $VAR['filter_type']                                                                                             );
 $smarty->assign('filter_payment_method',    $VAR['filter_payment_method']                                                                                   );
-$smarty->assign('otherincome_types',             get_otherincome_types()                                                                                              );
-$smarty->assign('payment_methods',          get_payment_purchase_methods()                                                                                  );
+$smarty->assign('otherincome_types',        get_otherincome_types()                                                                                         );
+$smarty->assign('payment_methods',          get_payment_methods('receive')                                                                                  );
+$smarty->assign('payment_methods_search',   get_payment_methods('receive', 'enabled')                                                                       );
 $smarty->assign('display_otherincomes',  display_otherincomes('otherincome_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'], $VAR['filter_payment_method'])   );
 $BuildPage .= $smarty->fetch('otherincome/search.tpl');

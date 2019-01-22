@@ -190,13 +190,13 @@
                 <table width="530" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                     
                     <!-- Only show payments section if there are valid ones enabled -->
-                    {if $payment_accepted_methods_statuses.cheque || $payment_accepted_methods_statuses.direct_deposit || $payment_accepted_methods_statuses.paypal}
+                    {if $payment_methods_statuses.cheque || $payment_methods_statuses.direct_deposit || $payment_methods_statuses.paypal}
                         <tr>
                             <td align="left" ><font size="-1"><b>{t}Payment Instructions{/t}</b></font></td>
                         </tr>
 
                         <!-- Bank Transfer -->
-                        {if $payment_accepted_methods_statuses.bank_transfer}
+                        {if $payment_methods_statuses.bank_transfer}
                             <tr>
                                 <td>
                                     <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Bank Transfer{/t}</b><br>
@@ -219,7 +219,7 @@
                         {/if}
                         
                         <!-- Cheque -->                        
-                        {if $payment_accepted_methods_statuses.cheque}
+                        {if $payment_methods_statuses.cheque}
                             <tr>
                                 <td>                                    
                                     <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
@@ -231,7 +231,7 @@
                         {/if}                        
 
                         <!-- PayPal -->
-                        {if $payment_accepted_methods_statuses.paypal}
+                        {if $payment_methods_statuses.paypal}
                         <tr>
                             <td>
                                 <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>

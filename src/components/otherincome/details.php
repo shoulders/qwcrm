@@ -18,6 +18,6 @@ if(!isset($VAR['otherincome_id']) || !$VAR['otherincome_id']) {
 
 // Build the page
 $smarty->assign('otherincome_types', get_otherincome_types());
-$smarty->assign('payment_methods', get_payment_purchase_methods());
+$smarty->assign('payment_methods', get_payment_methods('receive'));
 $smarty->assign('otherincome_details', get_otherincome_details($VAR['otherincome_id']));
 $BuildPage .= $smarty->fetch('otherincome/details.tpl');
