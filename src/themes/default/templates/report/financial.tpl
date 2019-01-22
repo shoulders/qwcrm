@@ -118,11 +118,11 @@
                                                                 <table >
                                                                     <tr>
                                                                         <td><b>{t}Opened{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$wo_opened}</b></font></td>
+                                                                        <td><font color="red"<b> {$workorder_stats.count_opened}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Closed{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$wo_closed}</b></font></td>
+                                                                        <td><font color="red"<b> {$workorder_stats.count_closed}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -132,27 +132,27 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Opened{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$invoices_opened}</b></font></td>
+                                                                        <td><font color="red"<b> {$invoice_stats.count_opened}</b></font></td>
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td><b>{t}Paid{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$invoices_paid}</b></font></td>
+                                                                        <td><font color="red"<b> {$invoice_stats.count_paid}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Partially Refunded{/t}:</b></td>
-                                                                        <td><font color="red"<b> </b></font></td>
+                                                                        <td><font color="red"<b> {$invoice_stats.count_partially_paid}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Refunded{/t}:</b></td>
-                                                                        <td><font color="red"<b> </b></font></td>
+                                                                        <td><font color="red"<b> {$invoice_stats.count_refunded}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Cancelled{/t}:</b></td>
-                                                                        <td><font color="red"<b> </b></font></td>
+                                                                        <td><font color="red"<b> {$invoice_stats.count_cancelled}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Closed{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$invoices_closed}</b></font></td>
+                                                                        <td><font color="red"<b> {$invoice_stats.count_closed}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>

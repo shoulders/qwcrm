@@ -21,18 +21,12 @@ if(isset($VAR['submit'])) {
     // Clients
     $smarty->assign('new_clients',                  count_clients($start_date, $end_date)                           );      
     
-    // Workorders   
-    $smarty->assign('wo_opened',                    count_workorders('opened', $start_date, $end_date)               );   
-    $smarty->assign('wo_closed',                    count_workorders('closed', $start_date, $end_date)               );    
-         
+    // Workorders
+    $smarty->assign('workorder_stats', get_workorders_stats('overall', $start_date, $end_date)         );
+             
     // Invoices
-    $smarty->assign('invoices_opened',              count_invoices('opened', $start_date, $end_date)                 );    
-    $smarty->assign('invoices_paid',                count_invoices('paid', $start_date, $end_date)                   );
-    //$smarty->assign('invoices_cancelled',           count_invoices('cancelled', $start_date, $end_date)              );
-    //$smarty->assign('invoices_refunded',            count_invoices('refunded', $start_date, $end_date)               );
-    //$smarty->assign('invoices_partially_refunded',  count_invoices('partially_refunded', $start_date, $end_date)     );
-    $smarty->assign('invoices_closed',              count_invoices('closed', $start_date, $end_date)                 );
-    
+    $smarty->assign('invoice_stats', get_invoices_stats('all', $start_date, $end_date)                           );
+        
     
     /* Advanced Statistics */
     
