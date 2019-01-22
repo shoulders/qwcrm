@@ -29,7 +29,8 @@
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Gift Certificates{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Payments{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Notes{/t}</a></li>                    
+                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Account{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_8_contents" class="tab">{t}Notes{/t}</a></li>                    
                                         </ul>
 
                                         <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -57,23 +58,9 @@
 
                                             <!-- Tab 4 Contents (Invoices) -->
                                             <div id="tab_4_contents" class="tab_contents">
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_pending block_title=_gettext("Pending")}
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_open block_title=_gettext("Open")}
                                                 <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_unpaid block_title=_gettext("Unpaid")}
-                                                <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_partially_paid block_title=_gettext("Partially Paid")}
-                                                <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_paid block_title=_gettext("Paid")}
-                                                <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_in_dispute block_title=_gettext("In Dispute")}
-                                                <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_overdue block_title=_gettext("Overdue")}
-                                                <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_collections block_title=_gettext("Collections")}
-                                                <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_refunded block_title=_gettext("Refunded")}
-                                                <br>
-                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_cancelled block_title=_gettext("Cancelled")}
+                                                {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_closed block_title=_gettext("Closed")}
                                             </div>
 
                                             <!-- Tab 5 Contents (Gift Certificates) -->
@@ -86,11 +73,17 @@
                                             <!-- Tab 6 Contents (Payments) -->
                                             <div id="tab_6_contents" class="tab_contents">
                                                 {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_received block_title=_gettext("Received")}
+                                                <br>
                                                 {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_transmitted block_title=_gettext("Transmitted")}
                                             </div>
+                                            
+                                            <!-- Tab 7 Contents (Account) -->
+                                            <div id="tab_7_contents" class="tab_contents">
+                                                {include file='client/blocks/details_account_block.tpl'}
+                                             </div>
 
-                                            <!-- Tab 7 Contents (Client Notes) -->
-                                            <div id="tab_7_contents" class="tab_contents">                        
+                                            <!-- Tab 8 Contents (Client Notes) -->
+                                            <div id="tab_8_contents" class="tab_contents">                        
                                                 {include file='client/blocks/details_notes_block.tpl'}   
                                             </div>
 

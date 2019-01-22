@@ -28,7 +28,7 @@ if($user->login_is_employee) {
 
     // Misc
     $smarty->assign('welcome_msg', display_welcome_msg());
-    $smarty->assign('employee_workorder_stats', get_workorder_stats('current', $user->login_user_id));
+    $smarty->assign('employee_workorder_stats', get_workorders_stats('current', null, null, $user->login_user_id));
     $smarty->assign('workorder_statuses', get_workorder_statuses());
 
     // Build the page

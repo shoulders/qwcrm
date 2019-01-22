@@ -21,15 +21,15 @@
         <td class="row2"><b>{t}Collections{/t}</b></td>
     </tr>
     <tr class="olotd4">
-        <td>{$invoice_stats.open_count}</td>
-        <td>{$invoice_stats.pending_count}</td>
-        <td>{$invoice_stats.unpaid_count}</td>
-        <td>{$invoice_stats.partially_paid_count}</td>
-        <td>{$invoice_stats.paid_count}</td>
-        <td>{$invoice_stats.in_dispute_count}</td>
-        <td>{$invoice_stats.overdue_count}</td>
-        <td>{$invoice_stats.cancelled_count}</td>
-        <td>{$invoice_stats.refunded_count}</td>
-        <td>{$invoice_stats.collections_count}</td>
+        <td>{$invoice_stats.count_open}</td>
+        <td>{$invoice_stats.count_pending}</td>
+        <td>{$invoice_stats.count_unpaid}</td>
+        <td>{$invoice_stats.count_partially_paid}</td>
+        <td>{$invoice_stats.count_paid}</td>
+        <td>{$invoice_stats.count_in_dispute}</td>
+        <td>{$invoice_stats.count_overdue}</td>
+        <td>{$invoice_stats.count_cancelled}</td>
+        <td>{$invoice_stats.count_refunded}</td>
+        <td>{$invoice_stats.count_collections}</td>
     </tr>
 </table>

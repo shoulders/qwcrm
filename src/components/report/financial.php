@@ -19,19 +19,19 @@ if(isset($VAR['submit'])) {
     $end_date   = date_to_mysql_date($VAR['end_date']);    
     
     // Clients
-    $smarty->assign('new_clients',                  count_clients('all', $start_date, $end_date)                           );      
+    $smarty->assign('new_clients',                  count_clients($start_date, $end_date)                           );      
     
     // Workorders   
-    $smarty->assign('wo_opened',                    count_workorders('opened', null, $start_date, $end_date)               );   
-    $smarty->assign('wo_closed',                    count_workorders('closed', null, $start_date, $end_date)               );    
+    $smarty->assign('wo_opened',                    count_workorders('opened', $start_date, $end_date)               );   
+    $smarty->assign('wo_closed',                    count_workorders('closed', $start_date, $end_date)               );    
          
     // Invoices
-    $smarty->assign('invoices_opened',              count_invoices('opened', null, $start_date, $end_date)                 );    
-    $smarty->assign('invoices_paid',                count_invoices('paid', null, $start_date, $end_date)                   );
-    //$smarty->assign('invoices_cancelled',           count_invoices('cancelled', null, $start_date, $end_date)              );
-    //$smarty->assign('invoices_refunded',            count_invoices('refunded', null, $start_date, $end_date)               );
-    //$smarty->assign('invoices_partially_refunded',  count_invoices('partially_refunded', null, $start_date, $end_date)     );
-    $smarty->assign('invoices_closed',              count_invoices('closed', null, $start_date, $end_date)                 );
+    $smarty->assign('invoices_opened',              count_invoices('opened', $start_date, $end_date)                 );    
+    $smarty->assign('invoices_paid',                count_invoices('paid', $start_date, $end_date)                   );
+    //$smarty->assign('invoices_cancelled',           count_invoices('cancelled', $start_date, $end_date)              );
+    //$smarty->assign('invoices_refunded',            count_invoices('refunded', $start_date, $end_date)               );
+    //$smarty->assign('invoices_partially_refunded',  count_invoices('partially_refunded', $start_date, $end_date)     );
+    $smarty->assign('invoices_closed',              count_invoices('closed', $start_date, $end_date)                 );
     
     
     /* Advanced Statistics */
@@ -76,14 +76,14 @@ if(isset($VAR['submit'])) {
     $smarty->assign('tax_type', get_company_details('tax_type')                                             );
     
     // Invoiced
-    $invoice_sub_total          = sum_invoices_value('all', 'sub_total', $start_date, $end_date             );
-    $invoice_discount_amount    = sum_invoices_value('all', 'discount_amount', $start_date, $end_date       );
-    $invoice_net_amount         = sum_invoices_value('all', 'net_amount', $start_date, $end_date            );    
-    $invoice_sales_tax_amount   = sum_invoices_value('all', 'tax_amount', $start_date, $end_date, 'sales'   );
-    $invoice_vat_tax_amount     = sum_invoices_value('all', 'tax_amount', $start_date, $end_date, 'vat'     );   
-    $invoice_gross_amount       = sum_invoices_value('all', 'gross_amount', $start_date, $end_date          );
-    $received_monies            = sum_invoices_value('all', 'paid_amount', $start_date, $end_date           );
-    $outstanding_balance        = sum_invoices_value('all', 'balance', $start_date, $end_date               );    
+    $invoice_sub_total          = sum_invoices_value('sub_total', null, $start_date, $end_date             );
+    $invoice_discount_amount    = sum_invoices_value('discount_amount', null, $start_date, $end_date       );
+    $invoice_net_amount         = sum_invoices_value('net_amount', null, $start_date, $end_date            );    
+    $invoice_sales_tax_amount   = sum_invoices_value('tax_amount', null, $start_date, $end_date, 'sales'   );
+    $invoice_vat_tax_amount     = sum_invoices_value('tax_amount', null, $start_date, $end_date, 'vat'     );   
+    $invoice_gross_amount       = sum_invoices_value('gross_amount', null, $start_date, $end_date          );
+    $received_monies            = sum_invoices_value('paid_amount', null, $start_date, $end_date           );
+    $outstanding_balance        = sum_invoices_value('balance', null, $start_date, $end_date               );    
     $smarty->assign('invoice_sub_total',        $invoice_sub_total          );       
     $smarty->assign('invoice_discount_amount',  $invoice_discount_amount    ); 
     $smarty->assign('invoice_net_amount',       $invoice_net_amount         );    

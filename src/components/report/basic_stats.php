@@ -11,12 +11,12 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'report.php');
 
 // Global Workorder Stats
-$smarty->assign('global_workorder_stats', get_workorder_stats('current'));
-$smarty->assign('global_workorder_overall_stats', get_workorder_stats('overall'));
+$smarty->assign('global_workorder_stats', get_workorders_stats('current'));
+$smarty->assign('global_workorder_overall_stats', get_workorders_stats('overall'));
 
 // Employee Workorder Stats
-$smarty->assign('employee_workorder_stats', get_workorder_stats('current', $user->login_user_id));
-$smarty->assign('employee_workorder_overall_stats', get_workorder_stats('overall', $user->login_user_id));
+$smarty->assign('employee_workorder_stats', get_workorders_stats('current', null, null, $user->login_user_id));
+$smarty->assign('employee_workorder_overall_stats', get_workorders_stats('overall', null, null, $user->login_user_id));
 
 // Global Invoice Stats
 $smarty->assign('global_invoice_stats', get_invoices_stats('current'));

@@ -690,7 +690,7 @@ function payments_sub_total($invoice_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the payments sub total."));
     } else {
         
-        return $rs->fields['sub_total_sum'];
+        return (float)$rs->fields['sub_total_sum'];
         
     }    
     

@@ -63,9 +63,9 @@ function get_client_overall_stats() {
     /* Build and return array */
     
     return array(
-        "month_count"   =>  count_clients('all', $date_month_start, $date_month_end),
-        "year_count"    =>  count_clients('all', $date_year_start, $date_year_end),
-        "total_count"   =>  count_clients('all')
+        "month_count"   =>  count_clients($date_month_start, $date_month_end),
+        "year_count"    =>  count_clients($date_year_start, $date_year_end),
+        "total_count"   =>  count_clients()
     );
     
 }
@@ -74,7 +74,7 @@ function get_client_overall_stats() {
 #    Count Clients                          #
 #############################################
 
-function count_clients($status, $start_date = null, $end_date = null) { 
+function count_clients($start_date = null, $end_date = null, $status = null) { 
     
     $db = QFactory::getDbo();
     
@@ -82,7 +82,7 @@ function count_clients($status, $start_date = null, $end_date = null) {
     $whereTheseRecords = "WHERE ".PRFX."client_records.client_id\n";    
     
     // Restrict by Status
-    if($status != 'all') {        
+    if($status) {        
         $whereTheseRecords .= " AND ".PRFX."client_records.active= ".$db->qstr($status);            
     }
         
@@ -111,31 +111,49 @@ function count_clients($status, $start_date = null, $end_date = null) {
 #    Get Workorders Stats           #
 #####################################
 
-function get_workorder_stats($record_set, $employee_id = null) {
+function get_workorders_stats($record_set, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
     $stats = array();
-            
+    
+    // Common
+    if($record_set) {
+    
+        $common_stats = array(
+            "count_open"            =>  count_workorders('open', $start_date, $end_date, $employee_id, $client_id)            
+        );
+
+        $stats = array_merge($stats, $common_stats);
+    
+    }
+    
+    // Current
     if($record_set == 'current' || $record_set == 'all') {        
         
-        $current_stats = array(
-            "open_count"                =>  count_workorders('open', $employee_id),
-            "assigned_count"            =>  count_workorders('assigned', $employee_id),
-            "waiting_for_parts_count"   =>  count_workorders('waiting_for_parts', $employee_id),
-            "scheduled_count"           =>  count_workorders('scheduled', $employee_id),
-            "with_client_count"         =>  count_workorders('with_client', $employee_id),
-            "on_hold_count"             =>  count_workorders('on_hold', $employee_id),
-            "management_count"          =>  count_workorders('management', $employee_id)
+        $current_stats = array(            
+            "count_unassigned"              =>  count_workorders('unassigned', $start_date, $end_date, $employee_id, $client_id),
+            "count_assigned"                =>  count_workorders('assigned', $start_date, $end_date, $employee_id, $client_id),
+            "count_waiting_for_parts"       =>  count_workorders('waiting_for_parts', $start_date, $end_date, $employee_id, $client_id),
+            "count_scheduled"               =>  count_workorders('scheduled', $start_date, $end_date, $employee_id, $client_id),
+            "count_with_client"             =>  count_workorders('with_client', $start_date, $end_date, $employee_id, $client_id),
+            "count_on_hold"                 =>  count_workorders('on_hold', $start_date, $end_date, $employee_id, $client_id),
+            "count_management"              =>  count_workorders('management', $start_date, $end_date, $employee_id, $client_id),
+            "count_closed_without_invoice"  =>  count_workorders('closed_without_invoice', $start_date, $end_date, $employee_id, $client_id),
+            "count_closed_with_invoice"     =>  count_workorders('closed_with_invoice', $start_date, $end_date, $employee_id, $client_id)
+            
         );
         
         $stats = array_merge($stats, $current_stats);
     
     }
     
+    // Overall
     if($record_set == 'overall' || $record_set == 'all') {       
         
         $overall_stats = array(
-            "opened_count"  =>  count_workorders('opened', $employee_id),
-            "closed_count"  =>  count_workorders('closed', $employee_id)
+            "count_open"                    =>  count_workorders('open', $start_date, $end_date, $employee_id, $client_id),
+            "count_opened"                  =>  count_workorders('opened', $start_date, $end_date, $employee_id, $client_id),            
+            "count_closed"                  =>  count_workorders('closed', $start_date, $end_date, $employee_id, $client_id)
+            
         );
         
         $stats = array_merge($stats, $overall_stats);
@@ -150,7 +168,7 @@ function get_workorder_stats($record_set, $employee_id = null) {
 #     Count Work Orders                 #
 #########################################
 
-function count_workorders($status, $user_id = null, $start_date = null, $end_date = null) {
+function count_workorders($status = null, $start_date = null, $end_date = null, $employee_id = null, $client_id =null) {
     
     $db = QFactory::getDbo();
     
@@ -158,7 +176,7 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
     $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";  
     
     // Restrict by Status
-    if($status != 'all') {
+    if($status) {
         
         // All Open Status workorders
         if($status == 'open') {
@@ -189,12 +207,7 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
             
         }
         
-    }
-    
-    // Filter by user
-    if($user_id) {
-        $whereTheseRecords .= " AND employee_id=".$db->qstr($user_id);
-    }
+    }   
     
     // Filter by Date
     if($status == 'closed') {
@@ -209,6 +222,16 @@ function count_workorders($status, $user_id = null, $start_date = null, $end_dat
             $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date.' 23:59:59');
         }
         
+    }
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND client_id=".$db->qstr($client_id);
     }
     
     $sql = "SELECT COUNT(*) AS count
@@ -265,37 +288,59 @@ function count_schedules($workorder_id = null) {
 #   Get All invoices stats          #
 #####################################
 
-function get_invoices_stats($record_set, $employee_id = null) {
+function get_invoices_stats($record_set, $start_date = null, $end_date = null, $tax_type = null, $employee_id = null, $client_id = null) {
     
     $stats = array();
     
+    // Common
+    if($record_set) {
+    
+        $common_stats = array(
+            "count_open"            =>  count_invoices('open', $start_date, $end_date, $tax_type, $employee_id, $client_id),            
+        );
+
+        $stats = array_merge($stats, $common_stats);
+    
+    }
+    
+    // Current
     if($record_set == 'current' || $record_set == 'all') {
     
         $current_stats = array(
-            "open_count"            =>  count_invoices('open', $employee_id),
-            "pending_count"         =>  count_invoices('pending', $employee_id),
-            "unpaid_count"          =>  count_invoices('unpaid', $employee_id),
-            "partially_paid_count"  =>  count_invoices('partially_paid', $employee_id),
-            "paid_count"            =>  count_invoices('paid', $employee_id),
-            "in_dispute_count"      =>  count_invoices('in_dispute', $employee_id),
-            "overdue_count"         =>  count_invoices('overdue', $employee_id),
-            "cancelled_count"       =>  count_invoices('cancelled', $employee_id),
-            "refunded_count"        =>  count_invoices('refunded', $employee_id),
-            "collections_count"     =>  count_invoices('collections', $employee_id)
+            "count_pending"         =>  count_invoices('pending', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_unpaid"          =>  count_invoices('unpaid', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_partially_paid"  =>  count_invoices('partially_paid', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_paid"            =>  count_invoices('paid', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_in_dispute"      =>  count_invoices('in_dispute', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_overdue"         =>  count_invoices('overdue', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_collections"     =>  count_invoices('collections', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_refunded"        =>  count_invoices('refunded', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_cancelled"       =>  count_invoices('cancelled', $start_date, $end_date, $tax_type, $employee_id, $client_id)            
         );
 
         $stats = array_merge($stats, $current_stats);
     
     }
     
+    // Overall
     if($record_set == 'overall' || $record_set == 'all') {       
         
         $overall_stats = array(
-            "opened_count"          =>  count_invoices('opened', $employee_id),
-            "closed_count"          =>  count_invoices('closed', $employee_id),
-            "invoiced_total"        =>  sum_invoices_value('all', 'gross_amount'),
-            "received_monies"       =>  sum_invoices_value('all', 'paid_amount'),
-            "outstanding_balance"   =>  sum_invoices_value('all', 'balance')
+            "count_total"           =>  count_invoices(null, $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            //"count_open"            =>  count_invoices('open', $start_date, $end_date, $tax_type, $employee_id, $client_id), 
+            "count_opened"          =>  count_invoices('opened', $start_date, $end_date, $tax_type, $employee_id, $client_id),
+            "count_closed"          =>  count_invoices('closed', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
+            "count_discounted"      =>  count_invoices('discounted', $start_date, $end_date, $tax_type, $employee_id, $client_id),
+            "count_outstanding"     =>  count_invoices('outstanding', $start_date, $end_date, $tax_type, $employee_id, $client_id),
+            "count_deleted"         =>  count_invoices('deleted', $start_date, $end_date, $tax_type, $employee_id, $client_id),
+            
+            "sum_net_amount"        =>  sum_invoices_value('net_amount', null, null, null, null, $client_id),
+            "sum_gross_amount"      =>  sum_invoices_value('gross_amount', null, null, null, null, $client_id),
+            "sum_discounted"        =>  sum_invoices_value('discount_amount', null, null, null, null, $client_id),
+            "sum_paid_amount"       =>  sum_invoices_value('paid_amount', null, null, null, null, $client_id),
+            "sum_cancelled"         =>  sum_invoices_value('gross_amount', 'cancelled', null, null, null, $client_id),
+            "sum_balance"           =>  sum_invoices_value('balance', null, null, null, null, $client_id)
+            
         );
         
         $stats = array_merge($stats, $overall_stats);
@@ -310,7 +355,7 @@ function get_invoices_stats($record_set, $employee_id = null) {
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($status = null, $user_id = null, $start_date = null, $end_date = null, $tax_type = null) {   
+function count_invoices($status = null, $start_date = null, $end_date = null, $tax_type = null, $employee_id = null, $client_id = null) {   
     
     $db = QFactory::getDbo();
     
@@ -318,7 +363,7 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";  
     
     // Restrict by Status
-    if($status != 'all') {
+    if($status) {
         
         // All Open Status invoices
         if($status == 'open') {
@@ -343,6 +388,17 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
             $whereTheseRecords .= " AND ".PRFX."invoice_records.is_closed = '1'";
             //$whereTheseRecords .= " AND ".PRFX."invoice_records.close_date != ''";            
         
+        // All Discounted invoices
+        } elseif($status == 'discounted') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.discount_amount > 0";
+            
+        // All invoices with outstanding balances
+        } elseif($status == 'outstanding') {
+            
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.balance > 0";
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.is_closed = 0";
+                     
         } else {
             
             $whereTheseRecords .= " AND ".PRFX."invoice_records.status= ".$db->qstr($status);                       
@@ -350,12 +406,7 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
         }
         
     }
-    
-    // Filter by user
-    if($user_id) {
-        $whereTheseRecords .= " AND employee_id=".$db->qstr($user_id);
-    }
-    
+        
     // Filter by Date
     if($status == 'closed') {
         
@@ -374,6 +425,16 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
     // Filter by Tax Type
     if($tax_type) {
         $whereTheseRecords .= " AND tax_type=".$db->qstr($tax_type);
+    }
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND client_id=".$db->qstr($client_id);
     }
     
     // Execute the SQL
@@ -395,7 +456,7 @@ function count_invoices($status = null, $user_id = null, $start_date = null, $en
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_value($status, $value_name, $start_date = null, $end_date = null, $tax_type = null) {
+function sum_invoices_value($value_name, $status = null, $start_date = null, $end_date = null, $tax_type = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -403,7 +464,7 @@ function sum_invoices_value($status, $value_name, $start_date = null, $end_date 
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n"; 
     
     // Restrict by Status
-    if($status != 'all') {
+    if($status) {
         
         // Filter by Unpaid Invoices
         if($status == 'open') {
@@ -433,13 +494,23 @@ function sum_invoices_value($status, $value_name, $start_date = null, $end_date 
         $whereTheseRecords .= " AND tax_type=".$db->qstr($tax_type);
     }
     
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND client_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND client_id=".$db->qstr($client_id);
+    }
+    
     // Execute the SQL
     $sql = "SELECT SUM(".PRFX."invoice_records.$value_name) AS sum
             FROM ".PRFX."invoice_records
             ".$whereTheseRecords;                
 
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the invoice discount amounts."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the invoice values."));
     } else {
         
        return $rs->fields['sum']; 
@@ -596,23 +667,23 @@ function sum_parts_value($value_name, $start_date, $end_date) {
 #     Count Expenses                    #  // Currently only used in invoice delete check
 #########################################
 
-function count_expenses($invoice_id = null, $start_date = null, $end_date = null) {
+function count_expenses($start_date = null, $end_date = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
         
-    // Filter by invoice_id
-    if($invoice_id) {
-        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
-    }
-    
     // Filter by Date
     if($start_date && $end_date) {
         $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     }
 
+    // Filter by invoice_id
+    if($invoice_id) {
+        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
+    }
+    
     // Execute the SQL
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."expense_records
@@ -657,21 +728,21 @@ function sum_expenses_value($value_name, $start_date, $end_date) {
 #     Count Refunds                     #  // Currently only used in invoice delete check
 #########################################
 
-function count_refunds($invoice_id = null, $start_date = null, $end_date = null) {
+function count_refunds($start_date = null, $end_date = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
         
-    // Filter by invoice_id
-    if($invoice_id) {
-        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
-    }
-    
     // Filter by Date
     if($start_date && $end_date) {
         $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
+    // Filter by invoice_id
+    if($invoice_id) {
+        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
     }
 
     // Execute the SQL
@@ -715,10 +786,10 @@ function sum_refunds_value($value_name, $start_date, $end_date) {
 /** Otherincomes **/
 
 #########################################
-#     Count Other Incomes               #  // Currently only used in invoice delete check (when it was refunds)
+#     Count Other Incomes               #  // currently not used
 #########################################
 
-function count_otherincomes($invoice_id = null, $start_date = null, $end_date = null) {
+function count_otherincomes($start_date = null, $end_date = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     

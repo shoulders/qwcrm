@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'giftcert.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'payment.php');
@@ -27,7 +28,9 @@ if(!isset($VAR['client_id']) || !$VAR['client_id']) {
 // Build the page
 $smarty->assign('client_types',             get_client_types()                                                                                                    );
 $smarty->assign('client_details',           get_client_details($VAR['client_id'])                                                                                 );
-$smarty->assign('client_notes',             get_client_notes($VAR['client_id'])                                                                                   );
+$smarty->assign('client_notes',             get_client_notes($VAR['client_id'])                                                                                );
+
+$smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['client_id'], $user->login_user_id)                                                     );
 
 $smarty->assign('workorder_statuses',       get_workorder_statuses()                                                                                             );
 $smarty->assign('workorders_open',          display_workorders('workorder_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', null, $VAR['client_id'])          );
@@ -35,21 +38,12 @@ $smarty->assign('workorders_closed',        display_workorders('workorder_id', '
 
 $smarty->assign('display_schedules',        display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, $VAR['client_id'])  );
 
-$smarty->assign('invoices_pending',         display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'pending', null, $VAR['client_id'])           );
-$smarty->assign('invoices_unpaid',          display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'unpaid', null, $VAR['client_id'])            );
-$smarty->assign('invoices_partially_paid',  display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'partially_paid', null, $VAR['client_id'])    );
-$smarty->assign('invoices_paid',            display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'paid', null, $VAR['client_id'])              );
-$smarty->assign('invoices_in_dispute',      display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'in_dispute', null, $VAR['client_id'])        );
-$smarty->assign('invoices_overdue',         display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'overdue', null, $VAR['client_id'])           );
-$smarty->assign('invoices_collections',     display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'collections', null, $VAR['client_id'])       );
-$smarty->assign('invoices_refunded',        display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'refunded', null, $VAR['client_id'])          );
-$smarty->assign('invoices_cancelled',       display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'cancelled', null, $VAR['client_id'])         );
-$smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                                                         );
+$smarty->assign('invoices_open',            display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', null, $VAR['client_id'])           );
+$smarty->assign('invoices_closed',          display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'closed', null, $VAR['client_id'])            );
 
 $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                                                        );
 $smarty->assign('giftcerts_purchased',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, $VAR['client_id'])              );
 $smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, null, null, null, $VAR['client_id'])        );
-
 
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );
 $smarty->assign('payment_methods',          get_payment_methods()                                                                               );
@@ -57,7 +51,16 @@ $smarty->assign('payment_statuses',         get_payment_statuses()              
 $smarty->assign('payments_received',        display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'received', null, null, null, $VAR['client_id'])        );
 $smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'transmitted', null, null, null, $VAR['client_id'])        );
 
-$smarty->assign('GoogleMapString',          build_googlemap_directions_string($VAR['client_id'], $user->login_user_id)                                                     );
+/* upgrade get_invoices_stats() to filter by client_id and use instead of this lot - easy to add
+ * #Also add the extra info like discount, cancelled invoice, filter by client_id
+ * i will need to upgrad the scount function to count invoices with discount or outstanding balance
+ * add in net figures and tax amounts
+ * include all of the invoice stats like reunded, partially refunded, open, closed - basically it should show everything
+ *  */
 
+$smarty->assign('workorder_stats',         get_workorders_stats('overall', null, null, null, $VAR['client_id'])  );
+$smarty->assign('invoice_stats',           get_invoices_stats('all', null, null, null, null, $VAR['client_id'])  );
+
+/* */
 
 $BuildPage .= $smarty->fetch('client/details.tpl');

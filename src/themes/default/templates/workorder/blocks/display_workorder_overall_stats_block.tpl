@@ -13,7 +13,7 @@
         <td class="row2"><b>{t}Closed{/t}</b></td>       
     </tr>
     <tr class="olotd4">
-        <td>{$workorder_overall_stats.opened_count}</td>
-        <td>{$workorder_overall_stats.closed_count}</td>                                    
+        <td>{$workorder_overall_stats.count_opened}</td>
+        <td>{$workorder_overall_stats.count_closed}</td>                                    
     </tr>
 </table>

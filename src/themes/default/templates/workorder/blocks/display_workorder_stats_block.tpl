@@ -18,12 +18,12 @@
         <td class="row2"><b>{t}Management{/t}</b></td>        
     </tr>
     <tr class="olotd4">
-        <td>{$workorder_stats.open_count}</td>
-        <td>{$workorder_stats.assigned_count}</td>
-        <td>{$workorder_stats.waiting_for_parts_count}</td>
-        <td>{$workorder_stats.scheduled_count}</td>
-        <td>{$workorder_stats.with_client_count}</td>
-        <td>{$workorder_stats.on_hold_count}</td>
-        <td>{$workorder_stats.management_count}</td>                                                  
+        <td>{$workorder_stats.count_open}</td>
+        <td>{$workorder_stats.count_assigned}</td>
+        <td>{$workorder_stats.count_waiting_for_parts}</td>
+        <td>{$workorder_stats.count_scheduled}</td>
+        <td>{$workorder_stats.count_with_client}</td>
+        <td>{$workorder_stats.count_on_hold}</td>
+        <td>{$workorder_stats.count_management}</td>                                                  
     </tr>
 </table>

@@ -1488,7 +1488,7 @@ function check_invoice_can_be_refunded($invoice_id) {
     }    
 
     // Has Refunds (should not be needed)
-    if(count_refunds($invoice_id) > 0) {
+    if(count_refunds(null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
         return false;
     }
@@ -1544,7 +1544,7 @@ function check_invoice_can_be_cancelled($invoice_id) {
     }
 
     // Has Refunds (should not be needed)
-    if(count_refunds($invoice_id) > 0) {
+    if(count_refunds(null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
         return false;
     }
@@ -1626,13 +1626,13 @@ function check_invoice_can_be_deleted($invoice_id) {
     */
     
     // Has Expenses
-    if(count_expenses($invoice_id) > 0) {
+    if(count_expenses(null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has expenses."));
         return false;
     }
         
     // Has Refunds (should not be needed)
-    if(count_refunds($invoice_id) > 0) {
+    if(count_refunds(null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has been refunded."));
         return false;
     }
