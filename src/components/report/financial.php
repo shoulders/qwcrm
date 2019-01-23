@@ -12,96 +12,72 @@ require(INCLUDES_DIR.'report.php');
 
 if(isset($VAR['submit'])) {
 
-    /* Basic Statisitics */
+    /* Build Basic Data Set */
 
     // Change dates to proper timestamps
     $start_date = date_to_mysql_date($VAR['start_date']);    
     $end_date   = date_to_mysql_date($VAR['end_date']);    
     
     // Clients
-    $smarty->assign('new_clients',                  count_clients($start_date, $end_date)                           );      
+    $smarty->assign('new_clients', count_clients($start_date, $end_date) );      
     
     // Workorders
-    $smarty->assign('workorder_stats', get_workorders_stats('overall', $start_date, $end_date)         );
+    $smarty->assign('workorder_stats', get_workorders_stats('overall', $start_date, $end_date) );
              
     // Invoices
-    $smarty->assign('invoice_stats', get_invoices_stats('all', $start_date, $end_date)                           );       
-    
-    /* Advanced Statistics */
-    
+    $invoice_stats = get_invoices_stats('all', $start_date, $end_date);
+    $smarty->assign('invoice_stats', $invoice_stats );       
+       
     // Labour
-    $smarty->assign('labour_different_items_count', count_labour_different_items($start_date, $end_date)                   );     
-    $smarty->assign('labour_items_count',           sum_labour_items('qty', $start_date, $end_date)                        );     
-    $smarty->assign('labour_sub_total',             sum_labour_items('sub_total', $start_date, $end_date)                  );   
+    $smarty->assign('labour_stats', get_labour_stats($start_date, $end_date));   
    
     // Parts
-    $smarty->assign('parts_different_items_count',  count_parts_different_items($start_date, $end_date)                    );    
-    $smarty->assign('parts_items_count',            sum_parts_value('qty', $start_date, $end_date)                         );    
-    $smarty->assign('parts_sub_total',              sum_parts_value('sub_total', $start_date, $end_date)                   );
-
+    $smarty->assign('parts_stats', get_parts_stats($start_date, $end_date));
+    
     // Expense    
-    $expense_net_amount     = sum_expenses_value('net_amount', $start_date, $end_date      );
-    $expense_vat_amount     = sum_expenses_value('vat_amount', $start_date, $end_date      );
-    $expense_gross_amount   = sum_expenses_value('gross_amount', $start_date, $end_date    );            
-    $smarty->assign('expense_net_amount',   $expense_net_amount     );
-    $smarty->assign('expense_vat_amount',   $expense_vat_amount     );
-    $smarty->assign('expense_gross_amount', $expense_gross_amount   );
+    $expense_totals = get_expenses_totals($start_date, $end_date);    
+    $smarty->assign('expense_totals', $expense_totals);    
 
     // Refunds
-    $refund_net_amount      = sum_refunds_value('net_amount', $start_date, $end_date       );
-    $refund_vat_amount      = sum_refunds_value('vat_amount', $start_date, $end_date       );
-    $refund_gross_amount    = sum_refunds_value('gross_amount', $start_date, $end_date     );    
-    $smarty->assign('refund_net_amount',    $refund_net_amount      );
-    $smarty->assign('refund_vat_amount',    $refund_vat_amount      );
-    $smarty->assign('refund_gross_amount',  $refund_gross_amount    );
+    $refund_totals = get_refunds_totals($start_date, $end_date);    
+    $smarty->assign('refund_totals', $refund_totals);    
     
     // Otherincomes
-    $otherincome_net_amount      = sum_otherincomes_value('net_amount', $start_date, $end_date       );
-    $otherincome_vat_amount      = sum_otherincomes_value('vat_amount', $start_date, $end_date       );
-    $otherincome_gross_amount    = sum_otherincomes_value('gross_amount', $start_date, $end_date     );    
-    $smarty->assign('otherincome_net_amount',    $otherincome_net_amount      );
-    $smarty->assign('otherincome_vat_amount',    $otherincome_vat_amount      );
-    $smarty->assign('otherincome_gross_amount',  $otherincome_gross_amount    );
+    $otherincome_totals = get_otherincomes_totals($start_date, $end_date);    
+    $smarty->assign('otherincome_totals',   $otherincome_totals);
     
-    /* Revenue Calculations */
-    
-    // Tax Type
-    $smarty->assign('tax_type', get_company_details('tax_type')                                             );
-    
-    // Invoiced
-    $invoice_sub_total          = sum_invoices_value('sub_total', null, $start_date, $end_date             );
-    $invoice_discount_amount    = sum_invoices_value('discount_amount', null, $start_date, $end_date       );
-    $invoice_net_amount         = sum_invoices_value('net_amount', null, $start_date, $end_date            );    
-    $invoice_sales_tax_amount   = sum_invoices_value('tax_amount', null, $start_date, $end_date, 'sales'   );
-    $invoice_vat_tax_amount     = sum_invoices_value('tax_amount', null, $start_date, $end_date, 'vat'     );   
-    $invoice_gross_amount       = sum_invoices_value('gross_amount', null, $start_date, $end_date          );
-    $received_monies            = sum_invoices_value('paid_amount', null, $start_date, $end_date           );
-    $outstanding_balance        = sum_invoices_value('balance', null, $start_date, $end_date               );    
-    $smarty->assign('invoice_sub_total',        $invoice_sub_total          );       
-    $smarty->assign('invoice_discount_amount',  $invoice_discount_amount    ); 
-    $smarty->assign('invoice_net_amount',       $invoice_net_amount         );    
-    $smarty->assign('invoice_sales_tax_amount', $invoice_sales_tax_amount   );
-    $smarty->assign('invoice_vat_tax_amount',   $invoice_vat_tax_amount     );   
-    $smarty->assign('invoice_gross_amount',     $invoice_gross_amount       );
-    $smarty->assign('received_monies',          $received_monies            );
-    $smarty->assign('outstanding_balance',      $outstanding_balance        );
+    /* Revenue Calculations */   
 
     // VAT    
-    $vat_total_in = $invoice_vat_tax_amount  + $otherincome_vat_amount;
-    $vat_total_out = $expense_vat_amount + $refund_vat_amount;
-    $vat_balance = ($invoice_vat_tax_amount  + $otherincome_vat_amount) - ($expense_vat_amount + $refund_vat_amount);    
-    $smarty->assign('vat_invoice',      $invoice_vat_tax_amount );
-    $smarty->assign('vat_otherincome',  $otherincome_vat_amount );
-    $smarty->assign('vat_expense',      $expense_vat_amount     );
-    $smarty->assign('vat_refund',       $refund_vat_amount      );
-    $smarty->assign('vat_total_in',     $vat_total_in           );  
-    $smarty->assign('vat_total_out',    $vat_total_out          );     
-    $smarty->assign('vat_balance',      $vat_balance            );    
+    $vat_total_in = $invoice_stats['sum_vat_tax_amount']  + $otherincome_totals['sum_vat_amount'];
+    $vat_total_out = $expense_totals['sum_vat_amount'] + $refund_totals['sum_vat_amount'];
+    $vat_balance = ($invoice_stats['sum_vat_tax_amount']  + $otherincome_totals['sum_vat_amount']) - ($expense_totals['sum_vat_amount'] + $refund_totals['sum_vat_amount']);    
+    $vat_totals = array(
+            "invoice"       =>  $invoice_stats['sum_vat_tax_amount'],   
+            "otherincome"   =>  $otherincome_totals['sum_vat_amount'],   
+            "expense"       =>  $expense_totals['sum_vat_amount'],   
+            "refund"        =>  $refund_totals['sum_vat_amount'],   
+            "total_in"      =>  $vat_total_in,   
+            "total_out"     =>  $vat_total_out,   
+            "balance"       =>  $vat_balance            
+        );  
+    $smarty->assign('vat_totals', $vat_totals );       
     
-    // Profit  || Profit = Invoiced - (Expenses - Refunds) 
-    $smarty->assign('no_tax_profit',    ($invoice_gross_amount + $otherincome_gross_amount) - ($expense_gross_amount + $refund_gross_amount)  );
-    $smarty->assign('sales_tax_profit', ($invoice_net_amount   + $otherincome_gross_amount) - ($expense_gross_amount + $refund_gross_amount)  );
-    $smarty->assign('vat_tax_profit',   ($invoice_net_amount   + $otherincome_net_amount)   - ($expense_net_amount   + $refund_net_amount)    );
+    // Profit
+    $profit_no_tax_ = ($invoice_stats['sum_gross_amount'] + $otherincome_totals['sum_gross_amount']) - ($expense_totals['sum_gross_amount'] + $refund_totals['sum_gross_amount']);
+    $profit_sales_tax = ($invoice_stats['sum_net_amount']   + $otherincome_totals['sum_gross_amount']) - ($expense_totals['sum_gross_amount'] + $refund_totals['sum_gross_amount']);
+    $profit_vat_tax = ($invoice_stats['sum_net_amount']   + $otherincome_totals['sum_net_amount'])   - ($expense_totals['sum_net_amount']   + $refund_totals['sum_net_amount']);
+    $profit_totals = array(
+            "no_tax"      =>  $invoice_stats['sum_vat_tax_amount'],   
+            "sales_tax"   =>  $otherincome_totals['sum_vat_amount'],   
+            "vat_tax"     =>  $expense_totals['sum_vat_amount']         
+        );
+    $smarty->assign('profit_totals', $profit_totals);    
+    
+    /* Misc */ 
+    
+    // Company Tax Type
+    $smarty->assign('tax_type', get_company_details('tax_type'));
     
     // Enable Report Section
     $smarty->assign('enable_report_section', true);

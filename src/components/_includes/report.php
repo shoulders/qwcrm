@@ -210,19 +210,11 @@ function count_workorders($status = null, $start_date = null, $end_date = null, 
     }   
     
     // Filter by Date
-    if($status == 'closed') {
-        
-        if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date.' 23:59:59');
-        }
-        
-    } else {
-        
-        if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date.' 23:59:59');
-        }
-        
-    }
+    if($status == 'closed' && $start_date && $end_date) {       
+        $whereTheseRecords .= " AND ".PRFX."workorder_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+    } elseif($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."workorder_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+    }     
     
     // Filter by Employee
     if($employee_id) {
@@ -326,20 +318,24 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'overall' || $record_set == 'all') {       
         
         $overall_stats = array(
-            "count_total"           =>  count_invoices(null, $start_date, $end_date, $tax_type, $employee_id, $client_id),   
-            //"count_open"            =>  count_invoices('open', $start_date, $end_date, $tax_type, $employee_id, $client_id), 
+            "count_total"           =>  count_invoices(null, $start_date, $end_date, $tax_type, $employee_id, $client_id),            
             "count_opened"          =>  count_invoices('opened', $start_date, $end_date, $tax_type, $employee_id, $client_id),
             "count_closed"          =>  count_invoices('closed', $start_date, $end_date, $tax_type, $employee_id, $client_id),   
             "count_discounted"      =>  count_invoices('discounted', $start_date, $end_date, $tax_type, $employee_id, $client_id),
             "count_outstanding"     =>  count_invoices('outstanding', $start_date, $end_date, $tax_type, $employee_id, $client_id),
-            "count_deleted"         =>  count_invoices('deleted', $start_date, $end_date, $tax_type, $employee_id, $client_id),
+            "count_deleted"         =>  count_invoices('deleted', $start_date, $end_date, $tax_type, $employee_id, $client_id),            
             
-            "sum_net_amount"        =>  sum_invoices_value('net_amount', null, null, null, null, $client_id),
-            "sum_gross_amount"      =>  sum_invoices_value('gross_amount', null, null, null, null, $client_id),
-            "sum_discounted"        =>  sum_invoices_value('discount_amount', null, null, null, null, $client_id),
-            "sum_paid_amount"       =>  sum_invoices_value('paid_amount', null, null, null, null, $client_id),
-            "sum_cancelled"         =>  sum_invoices_value('gross_amount', 'cancelled', null, null, null, $client_id),
-            "sum_balance"           =>  sum_invoices_value('balance', null, null, null, null, $client_id)
+            "sum_sub_total"         =>  sum_invoices_items('sub_total', null, $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_discount_amount"   =>  sum_invoices_items('discount_amount', null, $start_date, $end_date, null, $employee_id, $client_id),           
+            "sum_net_amount"        =>  sum_invoices_items('net_amount', null, $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_tax_amount"        =>  sum_invoices_items('tax_amount', null, $start_date, $end_date, null, $employee_id, $client_id),           
+            "sum_gross_amount"      =>  sum_invoices_items('gross_amount', null, $start_date, $end_date, null, $employee_id, $client_id),            
+            "sum_paid_amount"       =>  sum_invoices_items('paid_amount', null, $start_date, $end_date, null, $employee_id, $client_id),         
+            "sum_balance"           =>  sum_invoices_items('balance', null, $start_date, $end_date, null, $employee_id, $client_id),         
+            
+            "sum_cancelled"         =>  sum_invoices_items('gross_amount', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_sales_tax_amount"  =>  sum_invoices_items('tax_amount', null, $start_date, $end_date, 'sales', $employee_id, $client_id),
+            "sum_vat_tax_amount"    =>  sum_invoices_items('tax_amount', null, $start_date, $end_date, 'vat', $employee_id, $client_id)            
             
         );
         
@@ -408,19 +404,13 @@ function count_invoices($status = null, $start_date = null, $end_date = null, $t
     }
         
     // Filter by Date
-    if($status == 'closed') {
-        
-        if($start_date && $end_date) {
-            $whereTheseRecords .= " AND close_date >= ".$db->qstr($start_date)." AND close_date <= ".$db->qstr($end_date.' 23:59:59');
-        } 
-        
-    } else {
-        
-        if($start_date && $end_date) {
-            $whereTheseRecords .= " AND open_date >= ".$db->qstr($start_date)." AND open_date <= ".$db->qstr($end_date.' 23:59:59');
-        }
-        
-    }
+    if($status == 'closed' && $start_date && $end_date) {       
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+    } elseif($status == 'opened' && $start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+    } elseif($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+    } 
     
     // Filter by Tax Type
     if($tax_type) {
@@ -456,7 +446,7 @@ function count_invoices($status = null, $start_date = null, $end_date = null, $t
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_value($value_name, $status = null, $start_date = null, $end_date = null, $tax_type = null, $employee_id = null, $client_id = null) {
+function sum_invoices_items($value_name, $status = null, $start_date = null, $end_date = null, $tax_type = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -521,44 +511,55 @@ function sum_invoices_value($value_name, $status = null, $start_date = null, $en
 
 /** Labour **/
 
-#########################
-#  Count labour items   #  // not currently used
-#########################
+#####################################
+#   Get All invoices labour stats   #
+#####################################
 
-function count_labour_items($start_date, $end_date) {
+function get_labour_stats($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT SUM(qty) AS count
-            FROM ".PRFX."invoice_labour
-            INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_labour.invoice_id
-            WHERE ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
-    } else {
-        
-        return $rs->fields['count']; 
-        
-    }   
+    $stats = array(
+        "count_items"    =>  count_labour_items($start_date, $end_date, $employee_id, $client_id),              // Total Different Items
+        "sum_items"      =>  sum_labour_items('qty', $start_date, $end_date, $employee_id, $client_id),         // Total Items
+        "sum_sub_total"  =>  sum_labour_items('sub_total', $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
+    );
+
+    return $stats;
     
 }
 
-###################################
-#  Count different labour items   #
-###################################
+#########################
+#  Count labour items   #
+#########################
 
-function count_labour_different_items($start_date, $end_date) {
+function count_labour_items($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
-    $db = QFactory::getDbo();
+    $db = QFactory::getDbo();    
     
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."invoice_labour.invoice_labour_id\n";    
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+    }
+        
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$db->qstr($client_id);
+    }
+        
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice_labour
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_labour.invoice_id
-            WHERE ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+            ".$whereTheseRecords;    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of labour items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected labour items."));
     } else {
         
         return $rs->fields['count']; 
@@ -571,17 +572,38 @@ function count_labour_different_items($start_date, $end_date) {
 #  Sum selected value of labour items   #
 #########################################
 
-function sum_labour_items($value_name, $start_date, $end_date) {
+function sum_labour_items($value_name, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
-    $db = QFactory::getDbo();
+    $db = QFactory::getDbo();   
     
-    $sql = "SELECT SUM(".PRFX."invoice_labour.$value_name) AS sum
+    // Prevent ambiguous error
+    $value_name = PRFX."invoice_labour.".$value_name;
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."invoice_labour.invoice_labour_id\n"; 
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+    }
+        
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$db->qstr($client_id);
+    }
+    
+    $sql = "SELECT SUM($value_name) AS sum
             FROM ".PRFX."invoice_labour
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_labour.invoice_id
-            WHERE ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+            ".$whereTheseRecords;
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
     } else {
         
         return $rs->fields['sum'];
@@ -592,44 +614,55 @@ function sum_labour_items($value_name, $start_date, $end_date) {
 
 /** Parts **/
 
-########################
-#  Count parts items   #  // not currently used
-########################
+#####################################
+#   Get All invoices parts stats    #
+#####################################
 
-function count_parts_items($start_date, $end_date) {
+function get_parts_stats($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT SUM(qty) AS count
-            FROM ".PRFX."invoice_parts
-            INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_parts.invoice_id
-            WHERE ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of different parts items ordered."));
-    } else {
-        
-        return $rs->fields['count']; 
-        
-    }   
+    $stats = array(
+        "count_items"    =>  count_parts_items($start_date, $end_date, $employee_id, $client_id),              // Total Different Items
+        "sum_items"      =>  sum_parts_items('qty', $start_date, $end_date, $employee_id, $client_id),         // Total Items
+        "sum_sub_total"  =>  sum_parts_items('sub_total', $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
+    );
+
+    return $stats;
     
 }
+        
+########################
+#  Count parts items   #
+########################
 
-##################################
-#  Count different parts items   #
-##################################
-
-function count_parts_different_items($start_date, $end_date) {
+function count_parts_items($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
-    $db = QFactory::getDbo();
+    $db = QFactory::getDbo();    
     
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."invoice_parts.invoice_parts_id\n";    
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+    }
+        
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$db->qstr($client_id);
+    }
+        
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."invoice_parts
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_parts.invoice_id
-            WHERE ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+            ".$whereTheseRecords;    
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of parts items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the total number of selected parts items."));
     } else {
         
         return $rs->fields['count']; 
@@ -637,31 +670,71 @@ function count_parts_different_items($start_date, $end_date) {
     }   
     
 }
+
 
 ###################################
 #  Sum selected value of Parts    #
 ###################################
 
-function sum_parts_value($value_name, $start_date, $end_date) {
+function sum_parts_items($value_name, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
-    $db = QFactory::getDbo();
+    $db = QFactory::getDbo();   
     
-    $sql = "SELECT SUM(".PRFX."invoice_parts.$value_name) AS sum
+    // Prevent ambiguous error
+    $value_name = PRFX."invoice_parts.".$value_name;
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."invoice_parts.invoice_parts_id\n"; 
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+    }
+        
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$db->qstr($client_id);
+    }
+    
+    $sql = "SELECT SUM($value_name) AS sum
             FROM ".PRFX."invoice_parts
             INNER JOIN ".PRFX."invoice_records ON ".PRFX."invoice_records.invoice_id = ".PRFX."invoice_parts.invoice_id
-            WHERE ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+            ".$whereTheseRecords;
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the total number of parts items ordered."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum of labour items selected."));
     } else {
         
         return $rs->fields['sum'];
         
-    }   
+    }  
     
 }
 
 /** Expenses **/
+
+#####################################
+#   Get expense totals              #
+#####################################
+
+function get_expenses_totals($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $stats = array(
+        "count_items"       =>  count_expenses($start_date, $end_date, $employee_id, $client_id),
+        "sum_net_amount"    =>  sum_expenses_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_vat_amount"    =>  sum_expenses_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_gross_amount"  =>  sum_expenses_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+    );
+
+    return $stats;
+    
+}
+
 
 #########################################
 #     Count Expenses                    #  // Currently only used in invoice delete check
@@ -704,13 +777,21 @@ function count_expenses($start_date = null, $end_date = null, $invoice_id = null
 #  Sum selected value of expenses #
 ###################################
 
-function sum_expenses_value($value_name, $start_date, $end_date) {
+function sum_expenses_items($value_name, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
     $sql = "SELECT SUM(".PRFX."expense_records.$value_name) AS sum
             FROM ".PRFX."expense_records
-            WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+            ".$whereTheseRecords; 
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected expenses."));
@@ -724,8 +805,26 @@ function sum_expenses_value($value_name, $start_date, $end_date) {
 
 /** Refunds **/
 
+#####################################
+#   Get refund totals               #
+#####################################
+
+function get_refunds_totals($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $stats = array(
+        "count_items"       =>  count_refunds($start_date, $end_date, $employee_id, $client_id),
+        "sum_net_amount"    =>  sum_refunds_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_vat_amount"    =>  sum_refunds_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_gross_amount"  =>  sum_refunds_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+    );
+
+    return $stats;
+    
+}
+
+
 #########################################
-#     Count Refunds                     #  // Currently only used in invoice delete check
+#     Count Refunds                     #
 #########################################
 
 function count_refunds($start_date = null, $end_date = null, $invoice_id = null) {
@@ -739,19 +838,19 @@ function count_refunds($start_date = null, $end_date = null, $invoice_id = null)
     if($start_date && $end_date) {
         $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     }
-    
+
     // Filter by invoice_id
     if($invoice_id) {
         $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
     }
-
+    
     // Execute the SQL
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."refund_records
             ".$whereTheseRecords;    
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count refunds."));
         
     } else {      
         
@@ -761,17 +860,26 @@ function count_refunds($start_date = null, $end_date = null, $invoice_id = null)
     
 }
 
+
 ###################################
 #  Sum selected value of Refunds  #
 ###################################
 
-function sum_refunds_value($value_name, $start_date, $end_date) {
+function sum_refunds_items($value_name, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
     $sql = "SELECT SUM(".PRFX."refund_records.$value_name) AS sum
             FROM ".PRFX."refund_records
-            WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+            ".$whereTheseRecords; 
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected refunds."));
@@ -783,10 +891,27 @@ function sum_refunds_value($value_name, $start_date, $end_date) {
     
 }
 
-/** Otherincomes **/
+/** Other Incomes **/
+
+#####################################
+#   Get Otherincome  totals         #
+#####################################
+
+function get_otherincomes_totals($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $stats = array(
+        "count_items"       =>  count_otherincomes($start_date, $end_date, $employee_id, $client_id),
+        "sum_net_amount"    =>  sum_otherincomes_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_vat_amount"    =>  sum_otherincomes_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_gross_amount"  =>  sum_otherincomes_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+    );
+
+    return $stats;
+    
+}
 
 #########################################
-#     Count Other Incomes               #  // currently not used
+#     Count Other Incomes               #
 #########################################
 
 function count_otherincomes($start_date = null, $end_date = null, $invoice_id = null) {
@@ -794,25 +919,25 @@ function count_otherincomes($start_date = null, $end_date = null, $invoice_id = 
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."otherincome_records.refund_id\n";  
+    $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
         
-    // Filter by invoice_id
-    if($invoice_id) {
-        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
-    }
-    
     // Filter by Date
     if($start_date && $end_date) {
         $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     }
 
+    // Filter by invoice_id
+    if($invoice_id) {
+        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
+    }
+    
     // Execute the SQL
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."otherincome_records
             ".$whereTheseRecords;    
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Other Incomes."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count other incomes."));
         
     } else {      
         
@@ -826,16 +951,135 @@ function count_otherincomes($start_date = null, $end_date = null, $invoice_id = 
 #  Sum selected value of Other Incomes  #
 #########################################
 
-function sum_otherincomes_value($value_name, $start_date, $end_date) {
+function sum_otherincomes_items($value_name, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
     $sql = "SELECT SUM(".PRFX."otherincome_records.$value_name) AS sum
             FROM ".PRFX."otherincome_records
-            WHERE date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+            ".$whereTheseRecords; 
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Other Incomes."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected other incomes."));
+    } else {
+        
+        return $rs->fields['sum'];
+        
+    }   
+    
+}
+
+/** Suppliers **/
+
+#############################################
+#    Count Suppliers                        #  // not currently used
+#############################################
+
+function count_suppliers() { 
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."supplier_records";
+                           
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
+    } else {
+        
+       return $rs->fields['count']; 
+       
+    }
+    
+}
+
+/** Gift Certificates **/
+
+#####################################
+#   Get giftcert totals             #
+#####################################
+
+function get_giftcerts_totals($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $stats = array(
+        "count_items"       =>  count_giftcerts($start_date, $end_date, $employee_id, $client_id),
+        "sum_net_amount"    =>  sum_giftcerts_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_vat_amount"    =>  sum_giftcerts_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_gross_amount"  =>  sum_giftcerts_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+    );
+
+    return $stats;
+    
+}
+
+
+#########################################
+#     Count giftcerts                   #
+#########################################
+
+function count_giftcerts($start_date = null, $end_date = null, $invoice_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";  
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+
+    // Filter by invoice_id
+    if($invoice_id) {
+        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."giftcert_records
+            ".$whereTheseRecords;    
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count gift certificates."));
+        
+    } else {      
+        
+        return $rs->fields['count'];
+        
+    }
+    
+}
+
+###########################################
+#  Sum selected value of gift certificate #
+###########################################
+
+function sum_giftcerts_items($value_name, $start_date = null, $end_date = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";  
+        
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
+    }
+    
+    $sql = "SELECT SUM(".PRFX."giftcert_records.$value_name) AS sum
+            FROM ".PRFX."giftcert_records
+            ".$whereTheseRecords; 
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected gift certificates."));
     } else {
         
         return $rs->fields['sum'];

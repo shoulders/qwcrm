@@ -191,16 +191,16 @@
                                                             <td class="olotd4" valign="top">
                                                                 <table>
                                                                     <tr>
-                                                                        <td><b>{t}Items{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$labour_different_items_count}</b></font></td>
+                                                                        <td><b>{t}Items{/t}: </b></td>
+                                                                        <td><font color="red"><b>{$labour_stats.count_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Qty{/t}:</b></td>
-                                                                        <td><font color="red"<b>{if $labour_items_count == ''}0{else}{$labour_items_count}{/if}</b></font></td>
+                                                                        <td><b>{t}Qty{/t}: </b></td>
+                                                                        <td><font color="red"<b>{$labour_stats.sum_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Sub{/t} {t}[N]{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                        <td><b>{t}Sub{/t} {t}[N]{/t}: </b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$labour_stats.sum_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -209,16 +209,16 @@
                                                             <td class="olotd4" valign="top">
                                                                 <table>
                                                                     <tr>
-                                                                        <td><b>{t}Items{/t}:</b></td>
-                                                                        <td><font color="red"<b> {$parts_different_items_count}</b></font></td>
+                                                                        <td><b>{t}Items{/t}: </b></td>
+                                                                        <td><font color="red"<b>{$labour_stats.count_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Qty{/t}:</b></td>
-                                                                        <td><font color="red"<b>{if $parts_items_count == ''}0{else}{$parts_items_count}{/if}</b></font></td>
+                                                                        <td><font color="red"<b>{$labour_stats.sum_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Sub{/t} {t}[N]{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                        <td><b>{t}Sub{/t} {t}[N]{/t}: </b></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$labour_stats.sum_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>                                                        
@@ -228,15 +228,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$expense_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$expense_totals.sum_net_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}VAT{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$expense_vat_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$expense_totals.sum_vat_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$expense_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$expense_totals.sum_gross_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -246,15 +246,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$refund_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$refund_totals.sum_net_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}VAT{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$refund_vat_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$refund_totals.sum_vat_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$refund_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$refund_totals.sum_gross_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>   
@@ -264,15 +264,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_totals.sum_net_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}VAT{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_vat_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_totals.sum_vat_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$otherincome_totals.sum_gross_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td> 
@@ -312,15 +312,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Sub Total{/t} {t}[N]{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Discount{/t} {t}[N]{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_discount_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_discount_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_net_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_net_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>                                                                    
                                                                     {*<tr>
                                                                         <td><b>{if $tax_type == 'vat'}{t}VAT{/t}{elseif $tax_type == 'sales'}{t}Sales Tax{/t}{else}{t}Sales Tax{/t} / {t}VAT{/t}{/if}:</b></td>                                                                    
@@ -331,18 +331,18 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Sales Tax{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_sales_tax_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_sales_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}VAT{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_vat_tax_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_vat_tax_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2"></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_gross_amount|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_gross_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><hr></td>
@@ -350,11 +350,11 @@
 
                                                                     <tr>
                                                                         <td><b>{t}Received Monies{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$received_monies|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_paid_amount|string_format:"%.2f"}</b></font></td>
                                                                     </tr> 
                                                                     <tr>
                                                                         <td><b>{t}Outstanding Balance{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$outstanding_balance|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$invoice_stats.sum_balance|string_format:"%.2f"}</b></font></td>
                                                                     </tr> 
                                                                 </table>
                                                             </td>
@@ -367,11 +367,11 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Invoiced{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$vat_invoice|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_totals.invoice|string_format:"%.2f"}</b></font></td>
                                                                     </tr> 
                                                                     <tr>
                                                                         <td><b>{t}Other Income{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$vat_otherincome|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_totals.otherincome|string_format:"%.2f"}</b></font></td>
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td colspan="2"></td>
@@ -381,11 +381,11 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Expenses{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$vat_expense|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_totals.expense|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Refunds{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$vat_refund|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_totals.refund|string_format:"%.2f"}</b></font></td>
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td colspan="2"></td>
@@ -395,15 +395,15 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Total In{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$vat_total_in|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_totals.total_in|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Total Out{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$vat_total_out|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_totals.total_out|string_format:"%.2f"}</b></font></td>
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td><b>{t}Balance{/t}:</b></td>
-                                                                        <td><font color="red"<b>{$currency_sym}{$vat_balance|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"<b>{$currency_sym}{$vat_totals.balance|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td> 
@@ -422,7 +422,7 @@
                                                                         <td style="text-align: center;">
                                                                             <p><strong>{t}No Tax{/t}</strong></p>
                                                                             <p>{t}Profit{/t} = ( {t}Invoiced{/t}{t}[G]{/t} + {t}Other Income{/t}{t}[G]{/t} ) - ( {t}Expenses{/t}{t}[G]{/t} + {t}Refunds{/t}{t}[G]{/t} )</p>                                                                       
-                                                                            <p>{$currency_sym}{$no_tax_profit|string_format:"%.2f"} = ({$currency_sym}{$invoice_gross_amount|string_format:"%.2f"} + {$currency_sym}{$otherincome_gross_amount|string_format:"%.2f"}) - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} + {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>                                                                        
+                                                                            <p>{$currency_sym}{$profit_totals.no_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_gross_amount|string_format:"%.2f"} + {$currency_sym}{$otherincome_totals.sum_gross_amount|string_format:"%.2f"}) - ({$currency_sym}{$expense_totals.sum_gross_amount|string_format:"%.2f"} + {$currency_sym}{$refund_totals.sum_gross_amount|string_format:"%.2f"})</p>                                                                        
                                                                         </td>
                                                                     </tr>
                                                                     
@@ -431,7 +431,7 @@
                                                                         <td style="text-align: center;">                                                                        
                                                                             <p><strong>{t}Sales Tax{/t}</strong></p>
                                                                             <p>{t}Profit{/t} = ( {t}Invoiced{/t}{t}[N]{/t} + {t}Other Income{/t}{t}[G]{/t} ) - ( {t}Expenses{/t}{t}[G]{/t} + {t}Refunds{/t}{t}[G]{/t} )</p> 
-                                                                            <p>{$currency_sym}{$sales_tax_profit|string_format:"%.2f"} = ({$currency_sym}{$invoice_net_amount|string_format:"%.2f"} + {$currency_sym}{$otherincome_gross_amount|string_format:"%.2f"}) - ({$currency_sym}{$expense_gross_amount|string_format:"%.2f"} + {$currency_sym}{$refund_gross_amount|string_format:"%.2f"})</p>
+                                                                            <p>{$currency_sym}{$profit_totals.sales_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_net_amount|string_format:"%.2f"} + {$currency_sym}{$otherincome_totals.sum_gross_amount|string_format:"%.2f"}) - ({$currency_sym}{$expense_totals.sum_gross_amount|string_format:"%.2f"} + {$currency_sym}{$refund_totals.sum_gross_amount|string_format:"%.2f"})</p>
                                                                         </td>
                                                                     </tr>
                                                                     
@@ -440,7 +440,7 @@
                                                                         <td style="text-align: center;">                                                                        
                                                                             <p><strong>{t}VAT{/t}</strong></p>
                                                                             <p>{t}Profit{/t} = ( {t}Invoiced{/t}{t}[N]{/t} + {t}Other Income{/t}{t}[G]{/t} ) - ( {t}Expenses{/t}{t}[N]{/t} + {t}Refunds{/t}{t}[N]{/t} )</p> 
-                                                                            <p>{$currency_sym}{$vat_tax_profit|string_format:"%.2f"} = ({$currency_sym}{$invoice_net_amount|string_format:"%.2f"} + {$currency_sym}{$otherincome_net_amount|string_format:"%.2f"}) - ({$currency_sym}{$expense_net_amount|string_format:"%.2f"} + {$currency_sym}{$refund_net_amount|string_format:"%.2f"})</p>
+                                                                            <p>{$currency_sym}{$profit_totals.vat_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_net_amount|string_format:"%.2f"} + {$currency_sym}{$otherincome_totals.sum_net_amount|string_format:"%.2f"}) - ({$currency_sym}{$expense_totals.sum_net_amount|string_format:"%.2f"} + {$currency_sym}{$refund_totals.sum_net_amount|string_format:"%.2f"})</p>
                                                                         </td>
                                                                     </tr>                                                                                                                               
                                                                 </table>

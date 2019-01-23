@@ -106,7 +106,7 @@
                 
                 <tr>
                     <td><b>{t}Discount{/t} {t}Applied{/t} {t}[N]{/t}:</b></td>
-                    <td><font color="orange"><b>{$currency_sym}{$invoice_stats.sum_discounted|string_format:"%.2f"}</b></font></td>
+                    <td><font color="orange"><b>{$currency_sym}{$invoice_stats.sum_discount_amount|string_format:"%.2f"}</b></font></td>
                 </tr>
                 <tr>
                     <td><b>{t}Cancelled{/t} {t}Invoices{/t} {t}[G]{/t}:</b></td>

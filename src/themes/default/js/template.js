@@ -195,12 +195,12 @@ function keyRestriction(e, allowedCharacters, spacesAllowed = false, copyAndPast
    
 }
 
-// Disable the submit button
+// Disable submit button
 function disableSubmitButton() {
     document.getElementById('submit_button').disabled = true;
 }
 
-// Enable the submit button when ReCaptcha is verified
+// Enable submit button
 function enableSubmitButton() {
     document.getElementById('submit_button').disabled = false;
 }
@@ -294,7 +294,7 @@ function clearSystemMessages() {
     warning.style.display = 'none';
     warning.innerHTML = '';
     
-    // empty the system_message_functions div
+    // Empty the system_message_functions div
     //var system_message_functions = document.getElementById('system_message_functions');
     //system_message_functions.innerHTML = '';
     
