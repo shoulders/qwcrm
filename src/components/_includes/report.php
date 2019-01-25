@@ -1011,9 +1011,9 @@ function get_giftcerts_totals($start_date = null, $end_date = null, $employee_id
     
     $stats = array(
         "count_items"       =>  count_giftcerts($start_date, $end_date, $employee_id, $client_id),
+        "count_items"       =>  count_giftcerts($start_date, $end_date, $employee_id, $client_id),
         "sum_net_amount"    =>  sum_giftcerts_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_vat_amount"    =>  sum_giftcerts_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_gross_amount"  =>  sum_giftcerts_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+        "sum_vat_amount"    =>  sum_giftcerts_items('vat_amount', $start_date, $end_date, $employee_id, $client_id)
     );
 
     return $stats;
@@ -1025,21 +1025,52 @@ function get_giftcerts_totals($start_date = null, $end_date = null, $employee_id
 #     Count giftcerts                   #
 #########################################
 
-function count_giftcerts($start_date = null, $end_date = null, $invoice_id = null) {
+function count_giftcerts($status = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";  
+    
+    // Restrict by Status
+    if($status) {
+        
+        // Open
+        if($status == 'open') {
+            
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.close_date = '0000-00-00 00:00:00'";
+                    
+        // Opened
+        } elseif($status == 'opened') {
+            
+            // do nothing here           
+
+        // Closed
+        } elseif($status == 'closed') {
+            
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.close_date != '0000-00-00 00:00:00'";          
+        
+        } else {
+            
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.status= ".$db->qstr($status);                       
+            
+        }
+        
+    }
         
     // Filter by Date
     if($start_date && $end_date) {
         $whereTheseRecords .= " AND date >= ".$db->qstr($start_date)." AND date <= ".$db->qstr($end_date);
     }
 
-    // Filter by invoice_id
-    if($invoice_id) {
-        $whereTheseRecords .= " AND invoice_id=".$db->qstr($invoice_id);
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND client_id=".$db->qstr($client_id);
     }
     
     // Execute the SQL

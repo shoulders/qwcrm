@@ -64,12 +64,12 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
         // All Active Gift Certificates
         if($status == 'active') {
             
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.blocked != '1'";
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.blocked = 0";
         
         // All Blocked Gift Certificates
         } elseif($status == 'blocked') {
             
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.blocked = '1'";
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.blocked = 1";
         
         // Return Gift Certificates for the given status
         } else {
@@ -193,23 +193,23 @@ function display_giftcerts($order_by, $direction, $use_pages = false, $records_p
 #   Insert Gift Certificate     #
 #################################
 
-function insert_giftcert($invoice_id, $date_expires, $amount, $note) {
+function insert_giftcert($invoice_id, $expiry_date, $amount, $note) {
     
     $db = QFactory::getDbo();
     $invoice_details = get_invoice_details($invoice_id);
     
     $sql = "INSERT INTO ".PRFX."giftcert_records SET 
-            giftcert_code   =". $db->qstr( generate_giftcert_code()             ).",  
-            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            client_id       =". $db->qstr( $invoice_details['client_id']        ).",
-            workorder_id    =". $db->qstr( $invoice_details['workorder_id']     ).",
-            invoice_id      =". $db->qstr( $invoice_details['invoice_id']       ).",
-            date_created    =". $db->qstr( mysql_datetime()                     ).",
-            date_expires    =". $db->qstr( date_to_mysql_date($date_expires)    ).",            
-            status          =". $db->qstr( 'unused'                             ).",  
-            blocked         =". $db->qstr( '0'                                  ).",
-            amount          =". $db->qstr( $amount                              ).",
-            note            =". $db->qstr( $note                                );
+            giftcert_code   =". $db->qstr( generate_giftcert_code()                     ).",  
+            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id           ).",
+            client_id       =". $db->qstr( $invoice_details['client_id']                ).",
+            workorder_id    =". $db->qstr( $invoice_details['workorder_id']             ).",
+            invoice_id      =". $db->qstr( $invoice_details['invoice_id']               ).",
+            open_date       =". $db->qstr( mysql_datetime()                             ).",
+            expiry_date     =". $db->qstr( date_to_mysql_date($expiry_date).' 23:59:59' ).",            
+            status          =". $db->qstr( 'unused'                                     ).",  
+            blocked         =". $db->qstr( '0'                                          ).",
+            amount          =". $db->qstr( $amount                                      ).",
+            note            =". $db->qstr( $note                                        );
 
     if(!$db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the Gift Certificate into the database."));
@@ -339,15 +339,15 @@ function get_giftcert_status_display_name($status_key) {
 #   Update Gift Certificate     #
 #################################
 
-function update_giftcert($giftcert_id, $date_expires, $amount, $note) {
+function update_giftcert($giftcert_id, $expiry_date, $amount, $note) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."giftcert_records SET     
-            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            date_expires    =". $db->qstr( date_to_mysql_date($date_expires)    ).",            
-            amount          =". $db->qstr( $amount                              ).",
-            note            =". $db->qstr( $note                                )."
+            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id           ).",
+            expiry_date     =". $db->qstr( date_to_mysql_date($expiry_date).' 23:59:59' ).",            
+            amount          =". $db->qstr( $amount                                      ).",
+            note            =". $db->qstr( $note                                        )."
             WHERE giftcert_id =". $db->qstr($giftcert_id);
 
     if(!$db->execute($sql)) {
@@ -481,9 +481,9 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id, $payment_id) {
             payment_id          =". $db->qstr( $payment_id                              ).",
             redeemed_client_id  =". $db->qstr( $giftcert_details['client_id']           ).",   
             redeemed_invoice_id =". $db->qstr( $invoice_id                              ).",
-            date_redeemed       =". $db->qstr( mysql_datetime()                         ).",
-            status              =". $db->qstr( 'redeemed'                               ).",   
-            redeemed            =". $db->qstr( 1                                        ).",            
+            redeem_date         =". $db->qstr( mysql_datetime()                         ).", 
+            close_date          =". $db->qstr( mysql_datetime()                         ).",
+            status              =". $db->qstr( 'redeemed'                               ).",                        
             blocked             =". $db->qstr( 1                                        )."
             WHERE giftcert_id   =". $db->qstr( $giftcert_id                             );
     
@@ -598,17 +598,17 @@ function delete_giftcert($giftcert_id) {
         
         $sql = "UPDATE ".PRFX."giftcert_records SET
             giftcert_code       =". $db->qstr( $giftcert_details['giftcert_code']   ).",
-            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            employee_id         =   '',
             client_id           =   '',
             workorder_id        =   '',
             invoice_id          =   '',
             redeemed_client_id  =   '',
             redeemed_invoice_id =   '',
-            date_created        =". $db->qstr( $giftcert_details['date_created']    ).",
-            date_expires        =   '0000-00-00',
-            date_redeemed       =   '0000-00-00 00:00:00',
-            status              =   'deleted',
-            redeemed            =   '0',
+            open_date           =   '0000-00-00 00:00:00',
+            expiry_date         =   '0000-00-00 00:00:00',
+            redeem_date         =   '0000-00-00 00:00:00',
+            close_date          =   '0000-00-00 00:00:00',
+            status              =   'deleted',            
             blocked             =   '1',
             amount              =   '0.00',
             note                =   ''
@@ -1000,7 +1000,7 @@ function check_giftcert_is_expired($giftcert_id) {
     $giftcert_details = get_giftcert_details($giftcert_id);
     
     // If the giftcert is expired 
-    if (strtotime($giftcert_details['date_expires']) < time() ) {
+    if (strtotime($giftcert_details['expiry_date']) < time() ) {
         
         // If the status is not 'expired', update the status silenty (only from unused)
         if ($giftcert_details['status'] == 'unused') {
@@ -1012,7 +1012,7 @@ function check_giftcert_is_expired($giftcert_id) {
     }
     
     // If the giftcert is not expired
-    if (strtotime($giftcert_details['date_expires']) >= time() ) {
+    if (strtotime($giftcert_details['expiry_date']) >= time() ) {
         
         //  If the status has not been updated, update the status silenty (only from expired)
         if ($giftcert_details['status'] == 'expired') {

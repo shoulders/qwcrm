@@ -53,12 +53,12 @@
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
-                                                    <input id="date_expires" name="date_expires" class="olotd4" size="10" value="{$giftcert_details.date_expires|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
-                                                    <button type="button" id="date_expires_button">+</button>
+                                                    <input id="expiry_date" name="expiry_date" class="olotd4" size="10" value="{$giftcert_details.expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                    <button type="button" id="expiry_date_button">+</button>
                                                     <script>                                                       
                                                         Calendar.setup( {
-                                                            trigger     : "date_expires_button",
-                                                            inputField  : "date_expires",
+                                                            trigger     : "expiry_date_button",
+                                                            inputField  : "expiry_date",
                                                             dateFormat  : "{$date_format}"
                                                         } );                                                     
                                                     </script>                                                                                                        

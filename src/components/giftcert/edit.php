@@ -33,7 +33,7 @@ if(!check_giftcert_status_allows_editing($VAR['giftcert_id'])) {
 if(isset($VAR['submit'])) {
     
     // Create a new gift certificate
-    update_giftcert($VAR['giftcert_id'], $VAR['date_expires'], $VAR['amount'], $VAR['note']);
+    update_giftcert($VAR['giftcert_id'], $VAR['expiry_date'], $VAR['amount'], $VAR['note']);
 
     // Load the new Gift Certificate's Details page
     force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id']);    

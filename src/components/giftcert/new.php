@@ -34,7 +34,7 @@ if(!check_payment_method_is_active('gift_certificate')) {
 if(isset($VAR['submit'])) {   
         
     // Create a new gift certificate
-    $VAR['giftcert_id'] = insert_giftcert($VAR['invoice_id'], $VAR['date_expires'], $VAR['amount'], $VAR['note']);
+    $VAR['giftcert_id'] = insert_giftcert($VAR['invoice_id'], $VAR['expiry_date'], $VAR['amount'], $VAR['note']);
 
     // Load the attached invoice Details page
     force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);

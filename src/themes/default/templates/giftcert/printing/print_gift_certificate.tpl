@@ -67,7 +67,7 @@
             <td style="text-align:center">
                 {$barcode}
                 {$giftcert_details.giftcert_code}<br>
-                <strong>{t}Valid Until{/t} {$giftcert_details.date_expires|date_format:$date_format}</strong>
+                <strong>{t}Valid Until{/t} {$giftcert_details.expiry_date|date_format:$date_format}</strong>
             </td>
         </tr>
     </table>

@@ -82,15 +82,15 @@
                                         </tr>
                                         <tr>
                                             <td><b>{t}Created on{/t}</b></td>
-                                            <td>{$giftcert_details.date_created|date_format:$date_format}</td>
+                                            <td>{$giftcert_details.open_date|date_format:$date_format}</td>
                                         </tr>                                        
                                         <tr>
                                             <td><b>{t}Expires{/t}</b></td>
-                                            <td>{$giftcert_details.date_expires|date_format:$date_format}</td>
+                                            <td>{$giftcert_details.expiry_date|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Redeemed on{/t}</b></td>
-                                            <td>{$giftcert_details.date_redeemed|date_format:$date_format}</td>
+                                            <td>{$giftcert_details.redeem_date|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Status{/t}</b></td>

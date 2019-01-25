@@ -15,8 +15,10 @@
         <td class="olohead">{t}Payment ID{/t}</td>
         <td class="olohead">{t}Code{/t}</td>
         <td class="olohead">{t}Client{/t}</td>
+        <td class="olohead">{t}Opened{/t}</td>
         <td class="olohead">{t}Expires{/t}</td>
-        <td class="olohead">{t}Date Redeemed{/t}</td>        
+        <td class="olohead">{t}Date Redeemed{/t}</td> 
+        <td class="olohead">{t}Closed{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Blocked{/t}</td>                
         <td class="olohead">{t}Amount{/t}</td>        
@@ -34,12 +36,10 @@
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_giftcerts[g].payment_id}">{$display_giftcerts[g].payment_id}</a></td>            
             <td class="olotd4">{$display_giftcerts[g].giftcert_code}</td>
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_giftcerts[g].client_id}">{$display_giftcerts[g].client_display_name}</a></td>
-            <td class="olotd4">{$display_giftcerts[g].date_expires|date_format:$date_format}</td>
-            <td class="olotd4">
-                {if $display_giftcerts[g].date_redeemed}
-                    {$display_giftcerts[g].date_redeemed|date_format:$date_format}
-                {/if}
-            </td>
+            <td class="olotd4">{$display_giftcerts[g].open_date|date_format:$date_format}</td>
+            <td class="olotd4">{$display_giftcerts[g].expiry_date|date_format:$date_format}</td>
+            <td class="olotd4">{$display_giftcerts[g].redeem_date|date_format:$date_format}</td>
+            <td class="olotd4">{$display_giftcerts[g].close_date|date_format:$date_format}</td>
             <td class="olotd4" nowrap>
                 {section name=s loop=$giftcert_statuses}    
                     {if $display_giftcerts[g].status == $giftcert_statuses[s].status_key}{t}{$giftcert_statuses[s].display_name}{/t}{/if}        
