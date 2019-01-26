@@ -12,15 +12,15 @@ require(INCLUDES_DIR.'report.php');
 
 // Global Workorder Stats
 $smarty->assign('global_workorder_stats', get_workorders_stats('current'));
-$smarty->assign('global_workorder_overall_stats', get_workorders_stats('overall'));
+$smarty->assign('global_workorder_overall_stats', get_workorders_stats('historic'));
 
 // Employee Workorder Stats
 $smarty->assign('employee_workorder_stats', get_workorders_stats('current', null, null, $user->login_user_id));
-$smarty->assign('employee_workorder_overall_stats', get_workorders_stats('overall', null, null, $user->login_user_id));
+$smarty->assign('employee_workorder_overall_stats', get_workorders_stats('hostoric', null, null, $user->login_user_id));
 
 // Global Invoice Stats
 $smarty->assign('global_invoice_stats', get_invoices_stats('current'));
-$smarty->assign('global_invoice_overall_stats', get_invoices_stats('overall'));
+$smarty->assign('global_invoice_overall_stats', get_invoices_stats('historic'));
 
 // Global Client Stats
 $smarty->assign('global_client_overall_stats', get_client_overall_stats());

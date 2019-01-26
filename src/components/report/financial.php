@@ -22,10 +22,10 @@ if(isset($VAR['submit'])) {
     $smarty->assign('new_clients', count_clients($start_date, $end_date) );      
     
     // Workorders
-    $smarty->assign('workorder_stats', get_workorders_stats('overall', $start_date, $end_date) );
+    $smarty->assign('workorder_stats', get_workorders_stats('historic', $start_date, $end_date) );
              
     // Invoices
-    $invoice_stats = get_invoices_stats('all', $start_date, $end_date);
+    $invoice_stats = get_invoices_stats('historic', $start_date, $end_date);
     $smarty->assign('invoice_stats', $invoice_stats );       
        
     // Labour
@@ -34,29 +34,33 @@ if(isset($VAR['submit'])) {
     // Parts
     $smarty->assign('parts_stats', get_parts_stats($start_date, $end_date));
     
+    // Giftcerts
+    $smarty->assign('giftcert_stats', get_giftcerts_stats($start_date, $end_date));
+        
     // Expense    
-    $expense_totals = get_expenses_totals($start_date, $end_date);    
-    $smarty->assign('expense_totals', $expense_totals);    
+    $expense_stats = get_expenses_stats($start_date, $end_date);    
+    $smarty->assign('expense_stats', $expense_stats);    
 
     // Refunds
-    $refund_totals = get_refunds_totals($start_date, $end_date);    
-    $smarty->assign('refund_totals', $refund_totals);    
+    $refund_stats = get_refunds_stats($start_date, $end_date);    
+    $smarty->assign('refund_stats', $refund_stats);    
     
     // Otherincomes
-    $otherincome_totals = get_otherincomes_totals($start_date, $end_date);    
-    $smarty->assign('otherincome_totals',   $otherincome_totals);
+    $otherincome_stats = get_otherincomes_stats($start_date, $end_date);    
+    //$smarty->assign('otherincome_stats',   $otherincome_stats);
+    $smarty->assign('otherincome_stats',   null);
     
     /* Revenue Calculations */   
 
     // VAT    
-    $vat_total_in = $invoice_stats['sum_vat_tax_amount']  + $otherincome_totals['sum_vat_amount'];
-    $vat_total_out = $expense_totals['sum_vat_amount'] + $refund_totals['sum_vat_amount'];
-    $vat_balance = ($invoice_stats['sum_vat_tax_amount']  + $otherincome_totals['sum_vat_amount']) - ($expense_totals['sum_vat_amount'] + $refund_totals['sum_vat_amount']);    
+    $vat_total_in = $invoice_stats['sum_vat_tax_amount']  + $otherincome_stats['sum_vat_amount'];
+    $vat_total_out = $expense_stats['sum_vat_amount'] + $refund_stats['sum_vat_amount'];
+    $vat_balance = ($invoice_stats['sum_vat_tax_amount']  + $otherincome_stats['sum_vat_amount']) - ($expense_stats['sum_vat_amount'] + $refund_stats['sum_vat_amount']);    
     $vat_totals = array(
             "invoice"       =>  $invoice_stats['sum_vat_tax_amount'],   
-            "otherincome"   =>  $otherincome_totals['sum_vat_amount'],   
-            "expense"       =>  $expense_totals['sum_vat_amount'],   
-            "refund"        =>  $refund_totals['sum_vat_amount'],   
+            "otherincome"   =>  $otherincome_stats['sum_vat_amount'],   
+            "expense"       =>  $expense_stats['sum_vat_amount'],   
+            "refund"        =>  $refund_stats['sum_vat_amount'],   
             "total_in"      =>  $vat_total_in,   
             "total_out"     =>  $vat_total_out,   
             "balance"       =>  $vat_balance            
@@ -64,13 +68,13 @@ if(isset($VAR['submit'])) {
     $smarty->assign('vat_totals', $vat_totals );       
     
     // Profit
-    $profit_no_tax_ = ($invoice_stats['sum_gross_amount'] + $otherincome_totals['sum_gross_amount']) - ($expense_totals['sum_gross_amount'] + $refund_totals['sum_gross_amount']);
-    $profit_sales_tax = ($invoice_stats['sum_net_amount']   + $otherincome_totals['sum_gross_amount']) - ($expense_totals['sum_gross_amount'] + $refund_totals['sum_gross_amount']);
-    $profit_vat_tax = ($invoice_stats['sum_net_amount']   + $otherincome_totals['sum_net_amount'])   - ($expense_totals['sum_net_amount']   + $refund_totals['sum_net_amount']);
+    $profit_no_tax_ = ($invoice_stats['sum_gross_amount'] + $otherincome_stats['sum_gross_amount']) - ($expense_stats['sum_gross_amount'] + $refund_stats['sum_gross_amount']);
+    $profit_sales_tax = ($invoice_stats['sum_net_amount']   + $otherincome_stats['sum_gross_amount']) - ($expense_stats['sum_gross_amount'] + $refund_stats['sum_gross_amount']);
+    $profit_vat_tax = ($invoice_stats['sum_net_amount']   + $otherincome_stats['sum_net_amount'])   - ($expense_stats['sum_net_amount']   + $refund_stats['sum_net_amount']);
     $profit_totals = array(
             "no_tax"      =>  $invoice_stats['sum_vat_tax_amount'],   
-            "sales_tax"   =>  $otherincome_totals['sum_vat_amount'],   
-            "vat_tax"     =>  $expense_totals['sum_vat_amount']         
+            "sales_tax"   =>  $otherincome_stats['sum_vat_amount'],   
+            "vat_tax"     =>  $expense_stats['sum_vat_amount']         
         );
     $smarty->assign('profit_totals', $profit_totals);    
     

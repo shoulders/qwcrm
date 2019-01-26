@@ -473,7 +473,10 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id, $payment_id) {
     
     $db = QFactory::getDbo();
     
-    $giftcert_details = get_invoice_details($invoice_id);    
+    $giftcert_details = get_invoice_details($invoice_id);
+    
+    // Make sure redeem_date and close_date are the same
+    $datetime = mysql_datetime();
     
     // some information has already been applied (as below) using update_giftcert_status() earlier in the process
     $sql = "UPDATE ".PRFX."giftcert_records SET
@@ -481,8 +484,8 @@ function update_giftcert_as_redeemed($giftcert_id, $invoice_id, $payment_id) {
             payment_id          =". $db->qstr( $payment_id                              ).",
             redeemed_client_id  =". $db->qstr( $giftcert_details['client_id']           ).",   
             redeemed_invoice_id =". $db->qstr( $invoice_id                              ).",
-            redeem_date         =". $db->qstr( mysql_datetime()                         ).", 
-            close_date          =". $db->qstr( mysql_datetime()                         ).",
+            redeem_date         =". $db->qstr( $datetime                                ).", 
+            close_date          =". $db->qstr( $datetime                                ).",
             status              =". $db->qstr( 'redeemed'                               ).",                        
             blocked             =". $db->qstr( 1                                        )."
             WHERE giftcert_id   =". $db->qstr( $giftcert_id                             );

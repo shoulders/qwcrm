@@ -51,16 +51,7 @@ $smarty->assign('payment_statuses',         get_payment_statuses()              
 $smarty->assign('payments_received',        display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'received', null, null, null, $VAR['client_id'])        );
 $smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'transmitted', null, null, null, $VAR['client_id'])        );
 
-/* upgrade get_invoices_stats() to filter by client_id and use instead of this lot - easy to add
- * #Also add the extra info like discount, cancelled invoice, filter by client_id
- * i will need to upgrad the scount function to count invoices with discount or outstanding balance
- * add in net figures and tax amounts
- * include all of the invoice stats like reunded, partially refunded, open, closed - basically it should show everything
- *  */
-
-$smarty->assign('workorder_stats',         get_workorders_stats('overall', null, null, null, $VAR['client_id'])  );
-$smarty->assign('invoice_stats',           get_invoices_stats('all', null, null, null, null, $VAR['client_id'])  );
-
-/* */
-
+$smarty->assign('workorder_stats',          get_workorders_stats('all', null, null, null, $VAR['client_id'])  );
+$smarty->assign('invoice_stats',            get_invoices_stats('all', null, null, null, $VAR['client_id'])  );
+$smarty->assign('giftcert_stats',           get_giftcerts_stats('all', null, null, null, $VAR['client_id'])  );
 $BuildPage .= $smarty->fetch('client/details.tpl');
