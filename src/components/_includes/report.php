@@ -335,8 +335,6 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         
         $revenue_stats = array(                       
             
-            // I should use payments for revenue calculation ??? This currently uses the invoice date and not payments    
-            
             "sum_sub_total"             =>  sum_invoices_items('sub_total', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
             "sum_discount_amount"       =>  sum_invoices_items('discount_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
             "sum_net_amount"            =>  sum_invoices_items('net_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
@@ -1241,8 +1239,6 @@ function sum_giftcerts_items($value_name, $status = null, $start_date = null, $e
     }   
     
 }
-
-////////////////////////////////////////////////////////////
 
 /** Payments **/
 
