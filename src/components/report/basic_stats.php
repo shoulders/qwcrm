@@ -23,7 +23,7 @@ $smarty->assign('global_invoice_stats', get_invoices_stats('current'));
 $smarty->assign('global_invoice_overall_stats', get_invoices_stats('historic'));
 
 // Global Client Stats
-$smarty->assign('global_client_overall_stats', get_client_overall_stats());
+$smarty->assign('global_client_overall_stats', get_client_stats('historic'));
 
 // Build the page
 $BuildPage .= $smarty->fetch('report/basic_stats.tpl');

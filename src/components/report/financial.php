@@ -19,7 +19,7 @@ if(isset($VAR['submit'])) {
     $end_date   = date_to_mysql_date($VAR['end_date']);    
     
     // Clients
-    $smarty->assign('new_clients', count_clients($start_date, $end_date) );      
+    $smarty->assign('clients_stats', get_clients_stats('basic', $start_date, $end_date)  );      
     
     // Workorders
     $smarty->assign('workorder_stats', get_workorders_stats('historic', $start_date, $end_date) );

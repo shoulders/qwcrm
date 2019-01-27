@@ -108,7 +108,7 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}New{/t}:</b></td>
-                                                                        <td><font color="red"><b> {$new_clients}</b></font></td>
+                                                                        <td><font color="red"><b> {$client_stats.count_new}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>

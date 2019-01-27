@@ -15,8 +15,8 @@
         <td class="row2"><b>{t}Total{/t}</b></td>
     </tr>
     <tr class="olotd4">
-        <td>{$client_overall_stats.month_count}</td>
-        <td>{$client_overall_stats.year_count}</td>
-        <td>{$client_overall_stats.total_count}</td>
+        <td>{$client_stats.count_month}</td>
+        <td>{$client_stats.count_year}</td>
+        <td>{$client_stats.count_total}</td>
     </tr>
 </table>

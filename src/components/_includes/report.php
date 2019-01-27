@@ -42,31 +42,53 @@ defined('_QWEXEC') or die;
 /** Clients **/
 
 #####################################
-#    Get Client Overall Stats       #
+#    Get Client Stats               #
 #####################################
 
-function get_client_overall_stats() {
+function get_clients_stats($record_set, $start_date = null, $end_date = null) {
     
-    /** Dates **/
+    $stats = array();
     
-    $dateObject = new DateTime();    
+    // Historic
+    if($record_set == 'basic' || $record_set == 'all') {   
+        
+        $basic_stats = array(                       
+                        
+            "count_new"   =>  count_clients(count_clients($start_date, $end_date))
+            
+        );
+        
+        $stats = array_merge($stats, $basic_stats);
+    
+    }
+    
+    // Historic
+    if($record_set == 'historic' || $record_set == 'all') {   
+        
+        $dateObject = new DateTime();    
 
-    $dateObject->modify('first day of this month');
-    $date_month_start = $dateObject->format('Y-m-d');
+        $dateObject->modify('first day of this month');
+        $date_month_start = $dateObject->format('Y-m-d');
 
-    $dateObject->modify('last day of this month');
-    $date_month_end = $dateObject->format('Y-m-d');
+        $dateObject->modify('last day of this month');
+        $date_month_end = $dateObject->format('Y-m-d');
 
-    $date_year_start    = get_company_details('year_start');
-    $date_year_end      = get_company_details('year_end');
+        $date_year_start    = get_company_details('year_start');
+        $date_year_end      = get_company_details('year_end');
+        
+        $historic_stats = array(                       
+            
+            "count_month"   =>  count_clients($date_month_start, $date_month_end),
+            "count_year"    =>  count_clients($date_year_start, $date_year_end),
+            "count_total"   =>  count_clients()
+            
+        );
+        
+        $stats = array_merge($stats, $historic_stats);
     
-    /* Build and return array */
-    
-    return array(
-        "month_count"   =>  count_clients($date_month_start, $date_month_end),
-        "year_count"    =>  count_clients($date_year_start, $date_year_end),
-        "total_count"   =>  count_clients()
-    );
+    }  
+        
+    return $stats;
     
 }
 
