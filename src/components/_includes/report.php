@@ -249,7 +249,7 @@ function count_workorders($status = null, $start_date = null, $end_date = null, 
 /** Schedules **/
 
 ############################################
-#    Count Schedule items                  #  // Currently only used in schedule delete check
+#    Count Schedule items                  #
 ############################################
 
 function count_schedules($workorder_id = null) {
@@ -1358,7 +1358,7 @@ function payment_build_filter_by_date($start_date = null, $end_date = null) {
 #     Count Payments                               #
 ####################################################
 
-function count_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {   
+function count_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null, $invoice_id = null) {   
     
     $db = QFactory::getDbo();
     
@@ -1382,6 +1382,11 @@ function count_payments($status = null, $type = null, $start_date = null, $end_d
     // Filter by Client
     if($client_id) {
         $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Filter by Invoice
+    if($invoice_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);
     }
     
     // Execute the SQL
