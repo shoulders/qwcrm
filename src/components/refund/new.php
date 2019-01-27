@@ -29,16 +29,6 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('refund', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
-/* Check if we have an invoice_id or giftcert_id but not both (not when submitting from refund:new)
-if(    
-    (!isset($VAR['invoice_id']) || !$VAR['invoice_id']) && (!isset($VAR['giftcert_id']) || !$VAR['giftcert_id'] && !isset($VAR['submit'])) ||
-    (isset($VAR['invoice_id']) && isset($VAR['giftcert_id']) && !isset($VAR['submit']))        
-) {
-    force_page('refund', 'search', 'warning_msg='._gettext("Not a valid refund operation."));
-}*/
-
-/* Invoice Refund */
-
 if (isset($VAR['invoice_id'])) {
     
     // Load refund page with the invoice refund details
@@ -84,56 +74,6 @@ if (isset($VAR['invoice_id'])) {
     }    
     
 }
-
-/* Gift Certificate Refund - keep for now
-
-if (isset($VAR['giftcert_id'])) {
-    
-    // Load refund page with the giftcert refund details
-    if (!isset($VAR['submit'])) {
-
-        // Make sure the giftcert is allowed to be refunded
-        if(!check_giftcert_status_allows_refunding($VAR['giftcert_id'])) {
-            force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'], 'information_msg='._gettext("Gift Certificate").': '.$VAR['giftcert_id'].' '._gettext("cannot be refunded."));
-        }
-        
-        $giftcert_details = get_giftcert_details($VAR['giftcert_id']);
-        
-        // Build array
-        $refund_details['date'] = date('Y-m-d');
-        $refund_details['client_id'] = $giftcert_details['client_id'];
-        $refund_details['invoice_id'] = null;
-        $refund_details['giftcert_id'] = $giftcert_details['giftcert_id'];
-        $refund_details['type'] = 'giftcert';
-        $refund_details['payment_method'] = null;
-        $refund_details['net_amount'] = $giftcert_details['amount'];
-        $refund_details['vat_rate'] = null;
-        $refund_details['vat_amount'] = null;
-        $refund_details['gross_amount'] = $giftcert_details['amount'];        
-        $refund_details['note'] = _gettext("This is a refund for a Gift Certificate.");
-        
-        // Get Client display_name
-        $client_display_name = get_client_details($giftcert_details['client_id'], 'display_name'); 
-        
-    // Process the submitted refund 
-    } else {        
-        
-        if(!refund_giftcert($VAR['giftcert_id'])) {    
-
-            // Load the giftcert details page with error
-            force_page('giftcert', 'details&giftcert_id='.$VAR['giftcert_id'].'&information_msg='._gettext("The gift certificate failed to be refunded."));
-
-        } else {   
-
-            // load the giftcert search page with success message
-            force_page('giftcert', 'search', 'information_msg='._gettext("The gift certificate has been refunded successfully."));
-
-        }
-        
-    }
-    
-}
-*/
 
 // Predict the next refund_id
 $new_record_id = last_refund_id_lookup() +1;

@@ -776,7 +776,7 @@ function check_giftcert_can_be_redeemed($giftcert_id, $redeem_invoice_id) {
 }
 
 ###############################################################
-#   Check to see if the giftcert can be deleted               #  // not currently used
+#   Check to see if the giftcert can be refunded               #
 ###############################################################
 
 function check_giftcert_can_be_refunded($giftcert_id) {

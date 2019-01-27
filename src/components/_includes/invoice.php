@@ -1457,8 +1457,8 @@ function check_invoice_can_be_refunded($invoice_id) {
     // Get the invoice details
     $invoice_details = get_invoice_details($invoice_id);
     
-    // Has payments
-    if(count_payments(null, null, null, null, null, null, $invoice_id)) {
+    // Has no payments
+    if(!count_payments(null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }
