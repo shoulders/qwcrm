@@ -746,7 +746,7 @@ function get_expenses_stats($start_date = null, $end_date = null, $employee_id =
 
 
 #########################################
-#     Count Expenses                    #  // Currently only used in invoice delete check
+#     Count Expenses                    #
 #########################################
 
 function count_expenses($start_date = null, $end_date = null, $invoice_id = null) {

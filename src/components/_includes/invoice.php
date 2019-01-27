@@ -1513,6 +1513,12 @@ function check_invoice_can_be_cancelled($invoice_id) {
     // Get the invoice details
     $invoice_details = get_invoice_details($invoice_id);
     
+    // Does not have a blance
+    if($invoice_details['balance'] == 0) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice does not have a balance."));
+        return false;
+    }
+    
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice is partially paid."));
