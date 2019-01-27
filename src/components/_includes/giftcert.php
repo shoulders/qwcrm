@@ -1068,7 +1068,9 @@ function giftcerts_sub_total($invoice_id) {
 
 function check_invoice_giftcerts_allow_refunding($invoice_id) {
     
-    $db = QFactory::getDbo();    
+    $db = QFactory::getDbo();
+
+    $giftcerts_allow_refunding = true;    
         
     $sql = "SELECT *
             FROM ".PRFX."giftcert_records
