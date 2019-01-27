@@ -330,6 +330,34 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     
     }  
     
+    // Labour
+    if($record_set == 'labour' || $record_set == 'all') {       
+        
+        $labour_stats = array(   
+            
+            "labour_count_items"    =>  count_labour_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
+            "labour_sum_items"      =>  sum_labour_items('qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
+            "labour_sum_sub_total"  =>  sum_labour_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
+            
+        );
+        
+        $stats = array_merge($stats, $labour_stats);
+    
+    }
+    
+    // Parts
+    if($record_set == 'parts' || $record_set == 'all') {       
+        
+        $parts_stats = array(                       
+            "parts_count_items"    =>  count_parts_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
+            "parts_sum_items"      =>  sum_parts_items('qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
+            "parts_sum_sub_total"  =>  sum_parts_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
+        );
+        
+        $stats = array_merge($stats, $parts_stats);
+    
+    }        
+    
     // Revenue  - sort this
     if($record_set == 'revenue' || $record_set == 'all') {       
         
@@ -516,22 +544,6 @@ function sum_invoices_items($value_name, $status = null, $start_date = null, $en
 
 /** Labour **/
 
-#####################################
-#   Get All invoices labour stats   #
-#####################################
-
-function get_labour_stats($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
-    
-    $stats = array(
-        "count_items"    =>  count_labour_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
-        "sum_items"      =>  sum_labour_items('qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
-        "sum_sub_total"  =>  sum_labour_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
-    );
-
-    return $stats;
-    
-}
-
 #########################
 #  Count labour items   #
 #########################
@@ -621,22 +633,6 @@ function sum_labour_items($value_name, $status = null, $start_date = null, $end_
 
 /** Parts **/
 
-#####################################
-#   Get All invoices parts stats    #
-#####################################
-
-function get_parts_stats($start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
-    
-    $stats = array(
-        "count_items"    =>  count_parts_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
-        "sum_items"      =>  sum_parts_items('qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
-        "sum_sub_total"  =>  sum_parts_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
-    );
-
-    return $stats;
-    
-}
-        
 ########################
 #  Count parts items   #
 ########################

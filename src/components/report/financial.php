@@ -19,23 +19,17 @@ if(isset($VAR['submit'])) {
     $end_date   = date_to_mysql_date($VAR['end_date']);    
     
     // Clients
-    $smarty->assign('clients_stats', get_clients_stats('basic', $start_date, $end_date)  );      
+    $smarty->assign('client_stats', get_clients_stats('basic', $start_date, $end_date)  );      
     
     // Workorders
     $smarty->assign('workorder_stats', get_workorders_stats('historic', $start_date, $end_date) );
              
     // Invoices
-    $invoice_stats = get_invoices_stats('historic', $start_date, $end_date);
+    $invoice_stats = get_invoices_stats('all', $start_date, $end_date);
     $smarty->assign('invoice_stats', $invoice_stats );       
-       
-    // Labour
-    $smarty->assign('labour_stats', get_labour_stats($start_date, $end_date));   
-   
-    // Parts
-    $smarty->assign('parts_stats', get_parts_stats($start_date, $end_date));
-    
+        
     // Giftcerts
-    $smarty->assign('giftcert_stats', get_giftcerts_stats($start_date, $end_date));
+    $smarty->assign('giftcert_stats', get_giftcerts_stats('all', $start_date, $end_date));
         
     // Expense    
     $expense_stats = get_expenses_stats($start_date, $end_date);    

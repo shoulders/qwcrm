@@ -193,15 +193,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Items{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$labour_stats.count_items}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.labour_count_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Qty{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$labour_stats.sum_items}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.labour_sum_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Sub{/t} {t}[N]{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$labour_stats.sum_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -211,15 +211,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Items{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$labour_stats.count_items}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.parts_count_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Qty{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$labour_stats.sum_items}</b></font></td>
+                                                                        <td><font color="red"><b>{$invoice_stats.parts_sum_items}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Sub{/t} {t}[N]{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$labour_stats.sum_sub_total|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>    
@@ -232,6 +232,13 @@
                                                                         <td><font color="red"><b>{$giftcert_stats.count_opened}</b></font></td>
                                                                     </tr>
                                                                     <tr>
+                                                                        <td><b>{t}Closed{/t}: </b></td>
+                                                                        <td><font color="red"><b>{$giftcert_stats.count_closed}</b></font></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">&nbsp;</td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <td><b>{t}Expired{/t}:</b></td>
                                                                         <td><font color="red"><b>{$giftcert_stats.count_expired}</b></font></td>
                                                                     </tr>
@@ -240,12 +247,11 @@
                                                                         <td><font color="red"><b>{$giftcert_stats.count_redeemed}</b></font></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Closed{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$giftcert_stats.count_closed}</b></font></td>
+                                                                        <td colspan="2">&nbsp;</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><b>{t}Invoiced{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$giftcert_stats.count_invoiced}</b></font></td>
+                                                                        <td><b>{t}Claimed{/t}: </b></td>
+                                                                        <td><font color="red"><b>{$giftcert_stats.count_claimed}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>                                                          
