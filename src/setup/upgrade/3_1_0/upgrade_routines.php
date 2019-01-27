@@ -48,6 +48,9 @@ class Upgrade3_1_0 extends QSetup {
         insert_qwcrm_config_setting('error_handler_whoops', '0');
         update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
         
+        // Tag all previous payments as type 'invoice'
+        $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
+        
         // Change record types
         $this->update_column_values(PRFX.'expense_records', 'type', 'broadband', 'telco');
         $this->update_column_values(PRFX.'expense_records', 'type', 'landline', 'telco');
@@ -66,7 +69,7 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_card', 'card');
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'voucher', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_note', 'other');
-        
+                       
         // Reverse blocked account values because of the rename active --> blocked
         $this->update_column_values(PRFX.'giftcert_records', 'blocked', '0', '9');
         $this->update_column_values(PRFX.'giftcert_records', 'blocked', '1', '0');

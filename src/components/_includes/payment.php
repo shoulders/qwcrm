@@ -28,8 +28,6 @@ defined('_QWEXEC') or die;
 #  Display all payments the given status            #
 #####################################################
 
-//function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null) {
-
 function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();

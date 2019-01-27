@@ -67,7 +67,7 @@
                                             <div id="tab_5_contents" class="tab_contents">
                                                 {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_purchased block_title=_gettext("Purchased")}
                                                 <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_redeemed block_title=_gettext("Redeemed")}                                                
+                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_claimed block_title=_gettext("Claimed")}                                                
                                             </div>
                                             
                                             <!-- Tab 6 Contents (Payments) -->

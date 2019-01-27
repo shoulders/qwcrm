@@ -43,15 +43,17 @@ $smarty->assign('invoices_closed',          display_invoices('invoice_id', 'DESC
 
 $smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                                                        );
 $smarty->assign('giftcerts_purchased',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, $VAR['client_id'])              );
-$smarty->assign('giftcerts_redeemed',       display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, null, null, null, $VAR['client_id'])        );
+$smarty->assign('giftcerts_claimed',        display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, null, null, null, $VAR['client_id'])        );
 
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );
 $smarty->assign('payment_methods',          get_payment_methods()                                                                               );
 $smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
 $smarty->assign('payments_received',        display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'received', null, null, null, $VAR['client_id'])        );
 $smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'transmitted', null, null, null, $VAR['client_id'])        );
-
+                                            
 $smarty->assign('workorder_stats',          get_workorders_stats('all', null, null, null, $VAR['client_id'])  );
 $smarty->assign('invoice_stats',            get_invoices_stats('all', null, null, null, $VAR['client_id'])  );
 $smarty->assign('giftcert_stats',           get_giftcerts_stats('all', null, null, null, $VAR['client_id'])  );
+$smarty->assign('payment_stats',            get_payments_stats('all', null, null, null, $VAR['client_id'])   );
+
 $BuildPage .= $smarty->fetch('client/details.tpl');

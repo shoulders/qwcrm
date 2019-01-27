@@ -326,6 +326,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
             "sum_sales_tax_amount"      =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'sales', $employee_id, $client_id),
             "sum_vat_tax_amount"        =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'vat', $employee_id, $client_id),
             
+            "sum_refunded_net"         =>  sum_invoices_items('net_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_refunded_gross"       =>  sum_invoices_items('gross_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
+            
             "sum_cancelled_net"         =>  sum_invoices_items('net_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id),
             "sum_cancelled_gross"       =>  sum_invoices_items('gross_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)            
             
@@ -1002,15 +1005,15 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
     
         $current_stats = array(
                         
-            "count_open"        =>  count_giftcerts('open', $start_date, $end_date, 'date', $employee_id, $client_id),
+            "count_open"        =>  count_giftcerts('open', $start_date, $end_date, null, $employee_id, $client_id),
             
-            "count_unused"      =>  count_giftcerts('unused', $start_date, $end_date, 'date', $employee_id, $client_id),
-            "count_redeemed"    =>  count_giftcerts('redeemed', $start_date, $end_date, 'date',  $employee_id, $client_id),
-            "count_suspended"   =>  count_giftcerts('suspended', $start_date, $end_date, 'date', $employee_id, $client_id),            
-            "count_expired"     =>  count_giftcerts('expired', $start_date, $end_date, 'date', $employee_id, $client_id),
-            "count_refunded"    =>  count_giftcerts('refunded', $start_date, $end_date, 'date', $employee_id, $client_id),
-            "count_cancelled"   =>  count_giftcerts('refunded', $start_date, $end_date, 'date', $employee_id, $client_id),
-            "count_deleted"     =>  count_giftcerts('deleted', $start_date, $end_date, 'date', $employee_id, $client_id), // not always available                
+            "count_unused"      =>  count_giftcerts('unused', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_redeemed"    =>  count_giftcerts('redeemed', $start_date, $end_date, null,  $employee_id, $client_id),
+            "count_suspended"   =>  count_giftcerts('suspended', $start_date, $end_date, null, $employee_id, $client_id),            
+            "count_expired"     =>  count_giftcerts('expired', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_refunded"    =>  count_giftcerts('refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_cancelled"   =>  count_giftcerts('refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_deleted"     =>  count_giftcerts('deleted', $start_date, $end_date, null, $employee_id, $client_id), // not always available                
              
         );
 
@@ -1023,7 +1026,10 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
         
         $historic_stats = array(                       
             "count_opened"      =>  count_giftcerts('opened', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_closed"      =>  count_giftcerts('closed', $start_date, $end_date, null, $employee_id, $client_id),            
+            "count_closed"      =>  count_giftcerts('closed', $start_date, $end_date, null, $employee_id, $client_id),
+
+            // This is where the client has used a giftcert from someone else      
+            "count_claimed"     =>  count_giftcerts('claimed', $start_date, $end_date, null, $employee_id, $client_id),
             
         );
         
@@ -1036,16 +1042,18 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
         
         $revenue_stats = array(                       
             
-            // sum_giftcerts_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null)
-            "sum_opened"        =>  count_giftcerts('amount', 'opened', $start_date, $end_date, 'opened', $employee_id, $client_id),
-            "sum_closed"        =>  count_giftcerts('amount', 'closed', $start_date, $end_date, 'closed', $employee_id, $client_id),
+            "sum_opened"        =>  sum_giftcerts_items('amount', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_closed"        =>  sum_giftcerts_items('amount', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
             
-            "sum_redeemed"      =>  count_giftcerts('amount', 'redeemed', $start_date, $end_date, 'redeemed', $employee_id, $client_id),
-            "sum_expired"       =>  count_giftcerts('amount', 'expired', $start_date, $end_date, 'expired', $employee_id, $client_id),
-            "sum_cancelled"     =>  count_giftcerts('amount', 'cancelled', $start_date, $end_date, 'closed', $employee_id, $client_id),
+            "sum_unused"        =>  sum_giftcerts_items('amount', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_redeemed"      =>  sum_giftcerts_items('amount', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_suspended"     =>  sum_giftcerts_items('amount', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
+            "sum_expired"       =>  sum_giftcerts_items('amount', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_refunded"      =>  sum_giftcerts_items('amount', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_cancelled"     =>  sum_giftcerts_items('amount', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
             
-            "sum_amount"        =>  sum_giftcerts_items('amount', null, $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_invoiced"      =>  count_giftcerts('amount', null, $start_date, $end_date, 'date', $employee_id, $client_id)             
+            // This is where the client has used a giftcert from someone else
+            "sum_claimed"       =>  sum_giftcerts_items('amount', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
             
         );
         
@@ -1061,7 +1069,7 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
 #  Build giftcert Status filter SQL  #
 #####################################
 
-function giftcert_build_filter_by_status($status = null) {
+function giftcert_build_filter_by_status($status = null, $client_id = null) {
     
     $db = QFactory::getDbo();
      
@@ -1078,7 +1086,10 @@ function giftcert_build_filter_by_status($status = null) {
         } elseif($status == 'redeemed') {
             $whereTheseRecords .= " AND ".PRFX."giftcert_records.redeem_date != '0000-00-00 00:00:00'";   
         } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.close_date != '0000-00-00 00:00:00'";          
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.close_date != '0000-00-00 00:00:00'";
+        } elseif($status == 'claimed' && $client_id) {
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.status = 'redeemed'";
+            $whereTheseRecords .= " AND ".PRFX."giftcert_records.redeemed_client_id = ".$db->qstr($client_id);
         } else {
             $whereTheseRecords .= " AND ".PRFX."giftcert_records.status = ".$db->qstr($status);                       
         }
@@ -1135,7 +1146,7 @@ function count_giftcerts($status = null, $start_date = null, $end_date = null, $
     $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";  
     
     // Restrict by Status
-    $whereTheseRecords .= giftcert_build_filter_by_status($status);
+    $whereTheseRecords .= giftcert_build_filter_by_status($status, $client_id);
             
     // Filter by Date
     $whereTheseRecords .= giftcert_build_filter_by_date($start_date, $end_date, $date_type);
@@ -1146,7 +1157,7 @@ function count_giftcerts($status = null, $start_date = null, $end_date = null, $
     }
     
     // Filter by Client
-    if($client_id) {
+    if($client_id && $status != 'claimed') {
         $whereTheseRecords .= " AND ".PRFX."giftcert_records.client_id=".$db->qstr($client_id);
     }
     
@@ -1179,7 +1190,7 @@ function sum_giftcerts_items($value_name, $status = null, $start_date = null, $e
     $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";  
         
     // Restrict by Status
-    $whereTheseRecords .= giftcert_build_filter_by_status($status);
+    $whereTheseRecords .= giftcert_build_filter_by_status($status, $client_id);
             
     // Filter by Date
     $whereTheseRecords .= giftcert_build_filter_by_date($start_date, $end_date, $date_type);
@@ -1190,7 +1201,7 @@ function sum_giftcerts_items($value_name, $status = null, $start_date = null, $e
     }
     
     // Filter by Client
-    if($client_id) {
+    if($client_id && $status != 'claimed') {
         $whereTheseRecords .= " AND ".PRFX."giftcert_records.client_id=".$db->qstr($client_id);
     }
     
@@ -1206,5 +1217,211 @@ function sum_giftcerts_items($value_name, $status = null, $start_date = null, $e
         return $rs->fields['sum'];
         
     }   
+    
+}
+
+////////////////////////////////////////////////////////////
+
+/** Payments **/
+
+#####################################
+#   Get All payments stats          #
+#####################################
+
+function get_payments_stats($record_set, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $stats = array();
+    
+    // Current
+    if($record_set == 'current' || $record_set == 'all') {
+    
+        $current_stats = array(
+            "count_valid"               =>  count_payments('valid', null, $start_date, $end_date, $employee_id, $client_id),
+            "count_deleted"             =>  count_payments('deleted', null, $start_date, $end_date, $employee_id, $client_id)         // Not currently used                 
+             
+        );
+
+        $stats = array_merge($stats, $current_stats);
+    
+    }
+    
+    // Historic
+    if($record_set == 'historic' || $record_set == 'all') {       
+        
+        $historic_stats = array(                       
+            
+            "count_received"            =>  count_payments(null, 'received', $start_date, $end_date, $employee_id, $client_id),
+            "count_transmitted"         =>  count_payments(null, 'transmitted', $start_date, $end_date, $employee_id, $client_id),
+        );
+        
+        $stats = array_merge($stats, $historic_stats);
+    
+    }  
+    
+    // Revenue
+    if($record_set == 'revenue' || $record_set == 'all') {       
+        
+        $revenue_stats = array(                       
+            
+            "sum_received"               =>  sum_payments_items(null, 'received', $start_date, $end_date, $employee_id, $client_id),
+            "sum_transmitted"            =>  sum_payments_items(null, 'transmitted', $start_date, $end_date, $employee_id, $client_id) 
+            
+        );
+        
+        $stats = array_merge($stats, $revenue_stats);
+    
+    } 
+    
+    return $stats;
+    
+}
+
+#####################################
+#  Build payment Status filter SQL  #
+#####################################
+
+function payment_build_filter_by_status($status = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($status) {   
+        $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$db->qstr($status);  
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+#####################################
+#  Build payment Status filter SQL  #
+#####################################
+
+function payment_build_filter_by_type($type = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($type) {   
+        if($type == 'received') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice')";
+        } elseif($type == 'transmitted') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('refund')";               
+        } else {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr($type);            
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+#####################################
+#   Build payment Date filter SQL   #
+#####################################
+
+function payment_build_filter_by_date($start_date = null, $end_date = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$db->qstr($end_date);
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+####################################################
+#     Count Payments                               #
+####################################################
+
+function count_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {   
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";  
+    
+    // Restrict by Status
+    $whereTheseRecords .= payment_build_filter_by_status($status);
+    
+    // Restrict by Type
+    $whereTheseRecords .= payment_build_filter_by_type($type); 
+            
+    // Filter by Date
+    $whereTheseRecords .= payment_build_filter_by_date($status, $start_date, $end_date);
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."payment_records
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
+    } else {
+        
+       return $rs->fields['count']; 
+       
+    }
+    
+}
+
+#########################################
+#  Sum selected value of payments       #
+#########################################
+
+function sum_payments_items($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
+    
+    // Restrict by Status
+    $whereTheseRecords .= payment_build_filter_by_status($status);
+      
+    // Restrict by Type
+    $whereTheseRecords .= payment_build_filter_by_type($type);    
+          
+    // Filter by Date
+    $whereTheseRecords .= payment_build_filter_by_date($start_date, $end_date);
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT SUM(".PRFX."payment_records.amount) AS sum
+            FROM ".PRFX."payment_records
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
+    } else {
+        
+       return $rs->fields['sum']; 
+       
+    }    
     
 }
