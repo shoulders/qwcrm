@@ -51,14 +51,21 @@ class Upgrade3_1_0 extends QSetup {
         // Tag all previous payments as type 'invoice'
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
-        // Change record types
+        // Change expense record types
         $this->update_column_values(PRFX.'expense_records', 'type', 'broadband', 'telco');
         $this->update_column_values(PRFX.'expense_records', 'type', 'landline', 'telco');
         $this->update_column_values(PRFX.'expense_records', 'type', 'mobile_phone', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'advertising', 'marketing');        
+        $this->update_column_values(PRFX.'expense_records', 'type', 'advertising', 'marketing');
+        $this->update_column_values(PRFX.'expense_records', 'type', 'customer_refund', 'other');
+        $this->update_column_values(PRFX.'expense_records', 'type', 'tax', 'other');
+        $this->update_column_values(PRFX.'expense_records', 'type', 'gift_certificate', 'voucher');
+
+        // Change otherincome record types
         //$this->update_column_values(PRFX.'otherincome_records', 'type', 'credit_note', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'type', 'proxy_invoice', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'type', 'returned_services', 'cancelled_services');        
+        $this->update_column_values(PRFX.'otherincome_records', 'type', 'returned_services', 'cancelled_services');
+        
+        // Change supplier record types
         $this->update_column_values(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
         $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
         
