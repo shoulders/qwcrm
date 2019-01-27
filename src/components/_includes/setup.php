@@ -1035,19 +1035,24 @@ class QSetup {
         //$directories = str_replace('_', '.', $directories);
 
         // Cycle through the directories discovered
-        foreach ($directories as $directory) {        
-
+        foreach ($directories as $directory) {
+            
             // Remove path from directory and just leave the directory name
-            $directory = basename($directory);
+            $directoryNoPath = basename($directory);
             
             // Remove uneeded upgrade steps) - Is the version number less than or equal to the Current DB Version
-            if(version_compare($directory, $current_db_version, '>')) {
+            if(version_compare($directoryNoPath, $current_db_version, '>')) {
                 
                 // Add to the new array
                 $upgrade_steps[] = $directory;
                 
-            }            
-           
+            }           
+            
+           // If break.txt exists stop adding further stages (to prevent timeouts on large upgrades)
+           if(file_exists($directory.'/break.txt')) {
+               break;
+           }
+            
         }
         
         // Sort version numbers in to ascending order
