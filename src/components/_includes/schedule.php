@@ -750,10 +750,8 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
             
         FROM ".PRFX."schedule_records
             
-        INNER JOIN ".PRFX."workorder_records
-        ON ".PRFX."schedule_records.workorder_id = ".PRFX."workorder_records.workorder_id
-        INNER JOIN ".PRFX."client_records
-        ON ".PRFX."workorder_records.client_id = ".PRFX."client_records.client_id
+        LEFT JOIN ".PRFX."workorder_records ON ".PRFX."schedule_records.workorder_id = ".PRFX."workorder_records.workorder_id
+        LEFT JOIN ".PRFX."client_records ON ".PRFX."schedule_records.client_id = ".PRFX."client_records.client_id
             
         WHERE ".PRFX."schedule_records.start_time >= ".$db->qstr($company_day_start)."
         AND ".PRFX."schedule_records.start_time <= ".$db->qstr($company_day_end)."
