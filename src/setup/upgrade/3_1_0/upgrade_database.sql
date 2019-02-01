@@ -154,7 +154,7 @@ INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'valid', 'Valid'),
 (2, 'deleted', 'Deleted');
 
-ALTER TABLE `qw_payment_statuses` ADD PRIMARY KEY (`id`);
+ALTER TABLE `#__payment_statuses` ADD PRIMARY KEY (`id`);
 
 --
 -- Create Table `#__payment_types`
@@ -445,7 +445,7 @@ ALTER TABLE `#__workorder_records` CHANGE `comments` `comment` TEXT CHARACTER SE
 -- Move Columns
 --
 
-ALTER TABLE `qw_giftcert_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
+ALTER TABLE `#__giftcert_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
 
 --
 -- Insert Data
@@ -461,6 +461,15 @@ ALTER TABLE `#__invoice_labour` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL DEFAUL
 ALTER TABLE `#__invoice_parts` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL;
 ALTER TABLE `#__giftcert_records` MODIFY COLUMN `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `blocked`;
 ALTER TABLE `#__invoice_parts` MODIFY COLUMN `qty` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `amount`;
+
+--
+-- Update Email signature and email
+--
+
+UPDATE `#__company_record` SET 
+  `email_signature` = '<p>{company_logo}</p> <p><strong>{company_name}</strong></p> <p><strong>Address:</strong> <br />{company_address}</p> <p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>',
+  `email_msg_invoice` = '<p>Hi {client_first_name} {client_last_name}</p> <p>This is an invoice for the recent work at {client_display_name}.</p> <p>Thanks for your custom.</p>';
+
 
 --
 -- Misc Column Changes
