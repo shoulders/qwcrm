@@ -26,7 +26,7 @@
                                         <tr>
                                             <td>
                                                 <a name="workorder_stats"></a>                                                
-                                                {include file='workorder/blocks/display_workorder_stats_block.tpl' workorder_stats=$overview_workorder_stats block_title=_gettext("Work Order Stats")}                                               
+                                                {include file='workorder/blocks/display_workorder_current_stats_block.tpl' workorder_stats=$overview_workorder_stats block_title=_gettext("Work Order Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                              
                                             </td>
                                         </tr>
                                         <tr>

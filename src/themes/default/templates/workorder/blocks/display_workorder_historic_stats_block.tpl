@@ -1,4 +1,4 @@
-<!-- display_client_overall_stats_block.tpl -->
+<!-- display_workorder_historic_stats_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -8,15 +8,12 @@
 <b>{$block_title}</b>
 <br>
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-    
     <tr class="olotd4">
-        <td class="row2"><b>{t}New This Month{/t}</b></td>
-        <td class="row2"><b>{t}New This Year{/t}</b></td>
-        <td class="row2"><b>{t}Total{/t}</b></td>
+        <td class="row2"><b>{t}Opened{/t}</b></td>                                            
+        <td class="row2"><b>{t}Closed{/t}</b></td>       
     </tr>
     <tr class="olotd4">
-        <td>{$client_stats.count_month}</td>
-        <td>{$client_stats.count_year}</td>
-        <td>{$client_stats.count_total}</td>
+        <td>{$workorder_stats.count_opened}</td>
+        <td>{$workorder_stats.count_closed}</td>                                    
     </tr>
 </table>

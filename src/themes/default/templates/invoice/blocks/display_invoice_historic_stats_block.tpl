@@ -1,4 +1,4 @@
-<!-- display_invoice_overall_stats_block.tpl -->
+<!-- display_invoice_historic_stats_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -16,10 +16,10 @@
         <td class="row2"><b>{t}Outstanding Balance{/t}</b></td>
     </tr>
     <tr class="olotd4">
-        <td>{$invoice_overall_stats.count_opened}</td>
-        <td>{$invoice_overall_stats.count_closed}</td>
-        <td><font color="green">{$currency_sym}{$invoice_overall_stats.sum_gross_amount|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="green">{$currency_sym}{$invoice_overall_stats.sum_paid_amount|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="cc0000">{$currency_sym}{$invoice_overall_stats.sum_balance|string_format:"%.2f"}</font> [G]</td>
+        <td>{$invoice_stats.count_opened}</td>
+        <td>{$invoice_stats.count_closed}</td>
+        <td><font color="green">{$currency_sym}{$invoice_stats.invoiced_total|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="green">{$currency_sym}{$invoice_stats.received_monies|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="cc0000">{$currency_sym}{$invoice_stats.outstanding_balance|string_format:"%.2f"}</font> [G]</td>
     </tr>
 </table>

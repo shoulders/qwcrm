@@ -26,7 +26,7 @@
                                         <tr>
                                             <td>
                                                 <a name="invoice_stats"></a>                                                
-                                                {include file='invoice/blocks/display_invoice_stats_block.tpl' invoice_stats=$overview_invoice_stats block_title=_gettext("Invoice Stats")}                                               
+                                                {include file='invoice/blocks/display_invoice_current_stats_block.tpl' invoice_stats=$overview_invoice_stats block_title=_gettext("Invoice Current Stats")|cat:" ("|cat:_gettext("Global")|cat:")"}                                           
                                             </td>
                                         </tr>
                                         <tr>

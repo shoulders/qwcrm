@@ -49,7 +49,7 @@ function get_clients_stats($record_set, $start_date = null, $end_date = null) {
     
     $stats = array();
     
-    // Historic
+    // Basic
     if($record_set == 'basic' || $record_set == 'all') {   
         
         $basic_stats = array(                       
@@ -305,8 +305,7 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
             "count_overdue"         =>  count_invoices('overdue', $start_date, $end_date, null, null, $employee_id, $client_id),   
             "count_collections"     =>  count_invoices('collections', $start_date, $end_date, null, null, $employee_id, $client_id),   
             "count_refunded"        =>  count_invoices('refunded', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_cancelled"       =>  count_invoices('cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)            
-             
+            "count_cancelled"       =>  count_invoices('cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)                    
         );
 
         $stats = array_merge($stats, $current_stats);
@@ -323,22 +322,51 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
             "count_closed_discounted"   =>  count_invoices('discounted', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
             "count_closed_paid"         =>  count_invoices('paid', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
             "count_closed_refunded"     =>  count_invoices('refunded', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
-            "count_closed_cancelled"    =>  count_invoices('cancelled', $start_date, $end_date, 'closed', null, $employee_id, $client_id)
+            "count_closed_cancelled"    =>  count_invoices('cancelled', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
+            
+            // Only used for Basic Stats (when redevelop page, tidy this, these are not historic)
+            "invoiced_total"            =>  sum_invoices_items('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "received_monies"           =>  sum_invoices_items('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "outstanding_balance"       =>  sum_invoices_items('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id)
         );
         
         $stats = array_merge($stats, $historic_stats);
     
-    }  
+    }       
+    
+    // Revenue  (not currently used separately)
+    if($record_set == 'revenue' || $record_set == 'all') {       
+        
+        $revenue_stats = array(                                   
+            "sum_sub_total"             =>  sum_invoices_items('sub_total', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_discount_amount"       =>  sum_invoices_items('discount_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
+            "sum_net_amount"            =>  sum_invoices_items('net_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_tax_amount"            =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
+            "sum_gross_amount"          =>  sum_invoices_items('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
+            "sum_paid_amount"           =>  sum_invoices_items('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),         
+            "sum_balance"               =>  sum_invoices_items('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
+            
+            "sum_sales_tax_amount"      =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'sales', $employee_id, $client_id),
+            "sum_vat_tax_amount"        =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'vat', $employee_id, $client_id),
+            
+            "sum_refunded_net"          =>  sum_invoices_items('net_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_refunded_gross"        =>  sum_invoices_items('gross_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
+            
+            "sum_cancelled_net"         =>  sum_invoices_items('net_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_cancelled_gross"       =>  sum_invoices_items('gross_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)                    
+        );
+        
+        $stats = array_merge($stats, $revenue_stats);
+    
+    } 
     
     // Labour
     if($record_set == 'labour' || $record_set == 'all') {       
         
-        $labour_stats = array(   
-            
+        $labour_stats = array(                 
             "labour_count_items"    =>  count_labour_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
             "labour_sum_items"      =>  sum_labour_items('qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
-            "labour_sum_sub_total"  =>  sum_labour_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
-            
+            "labour_sum_sub_total"  =>  sum_labour_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour               
         );
         
         $stats = array_merge($stats, $labour_stats);
@@ -356,35 +384,7 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         
         $stats = array_merge($stats, $parts_stats);
     
-    }        
-    
-    // Revenue  - sort this
-    if($record_set == 'revenue' || $record_set == 'all') {       
-        
-        $revenue_stats = array(                       
-            
-            "sum_sub_total"             =>  sum_invoices_items('sub_total', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_discount_amount"       =>  sum_invoices_items('discount_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
-            "sum_net_amount"            =>  sum_invoices_items('net_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_tax_amount"            =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
-            "sum_gross_amount"          =>  sum_invoices_items('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
-            "sum_paid_amount"           =>  sum_invoices_items('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),         
-            "sum_balance"               =>  sum_invoices_items('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
-            
-            "sum_sales_tax_amount"      =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'sales', $employee_id, $client_id),
-            "sum_vat_tax_amount"        =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'vat', $employee_id, $client_id),
-            
-            "sum_refunded_net"         =>  sum_invoices_items('net_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_refunded_gross"       =>  sum_invoices_items('gross_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
-            
-            "sum_cancelled_net"         =>  sum_invoices_items('net_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_cancelled_gross"       =>  sum_invoices_items('gross_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)            
-            
-        );
-        
-        $stats = array_merge($stats, $revenue_stats);
-    
-    } 
+    }   
     
     return $stats;
     
