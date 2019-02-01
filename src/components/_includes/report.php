@@ -1309,7 +1309,7 @@ function payment_build_filter_by_status($status = null) {
 }
 
 #####################################
-#  Build payment Status filter SQL  #
+#  Build payment type filter SQL    #
 #####################################
 
 function payment_build_filter_by_type($type = null) {
@@ -1318,14 +1318,22 @@ function payment_build_filter_by_type($type = null) {
      
     $whereTheseRecords = '';
     
+    // Restrict by Type
     if($type) {   
+        
+        // All received monies
         if($type == 'received') {            
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice')";
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome')";
+            
+        // All transmitted monies
         } elseif($type == 'transmitted') {            
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('refund')";               
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund')";        
+            
+        // Return records for the given type
         } else {            
             $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr($type);            
         }
+        
     }
         
     return $whereTheseRecords;

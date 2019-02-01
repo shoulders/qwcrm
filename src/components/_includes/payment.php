@@ -56,24 +56,19 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     /* Filter the Records */
     
     // Restrict by Type
-    if($type) {
+    if($type) {   
         
         // All received monies
-        if($type == 'received') {
+        if($type == 'received') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome')";
             
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr('invoice');
-        
         // All transmitted monies
-        } elseif($type == 'transmitted') {
+        } elseif($type == 'transmitted') {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund')";        
             
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr('expense')."
-                                    OR ".PRFX."payment_records.type= ".$db->qstr('refund');
-        
         // Return records for the given type
-        } else {
-            
-            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr($type);
-            
+        } else {            
+            $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr($type);            
         }
         
     }
