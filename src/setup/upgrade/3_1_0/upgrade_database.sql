@@ -360,6 +360,11 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('giftcert:status', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('invoice:cancel', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('invoice:overview', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
+('otherincome:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('otherincome:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('otherincome:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('otherincome:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('otherincome:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:delete', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:details', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:edit', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
@@ -375,7 +380,15 @@ UPDATE `#__user_acl_page` SET `page` = 'client:note_edit' WHERE `#__user_acl_pag
 UPDATE `#__user_acl_page` SET `page` = 'client:note_new' WHERE `#__user_acl_page`.`page` = 'customer:note_new';
 UPDATE `#__user_acl_page` SET `page` = 'client:search' WHERE `#__user_acl_page`.`page` = 'customer:search';
 UPDATE `#__user_acl_page` SET `page` = 'company:edit' WHERE `#__user_acl_page`.`page` = 'company:settings';
+
 UPDATE `#__user_acl_page` SET `Clerical` = '0' WHERE `#__user_acl_page`.`page` = 'payment:options';
+
+UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:delete';
+UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:details';
+UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:edit';
+UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:new';
+UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:search';
+
 UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:choice';
 UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:install';
 UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:migrate';
