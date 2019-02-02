@@ -419,12 +419,6 @@ ALTER TABLE `#__user_usergroups` CHANGE `usergroup_display_name` `display_name` 
 ALTER TABLE `#__giftcert_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
 
 --
--- Insert Data
---
-
-INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES ('10', 'deleted', 'Deleted');
-
---
 -- Convert from integer to currency
 --
 
@@ -497,9 +491,48 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:open
 --
 
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
+ALTER TABLE `#__giftcert_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
+
+--
+-- Correct #__user_reset index column
+--
+
+ALTER TABLE `#__user_reset` DROP `user_id`;
+ALTER TABLE `#__user_reset` ADD `user_id` INT(10) NOT NULL FIRST;
+ALTER TABLE `#__user_reset` ADD PRIMARY KEY(`user_id`);
+
+--
+-- Correct Collation issues (should all be utf8_unicode_ci)
+--
+
 ALTER TABLE `#__user_records` COLLATE = utf8_unicode_ci;
 ALTER TABLE `#__user_reset` COLLATE = utf8_unicode_ci;
-ALTER TABLE `#__giftcert_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
+
+ALTER TABLE `#__user_records` CHANGE `client_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `username` `username` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `password` `password` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `email` `email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `usergroup` `usergroup` VARCHAR(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `first_name` `first_name` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `last_name` `last_name` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `work_primary_phone` `work_primary_phone` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `work_mobile_phone` `work_mobile_phone` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `work_fax` `work_fax` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_primary_phone` `home_primary_phone` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_mobile_phone` `home_mobile_phone` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_email` `home_email` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_address` `home_address` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_city` `home_city` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_state` `home_state` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_zip` `home_zip` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `home_country` `home_country` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_records` CHANGE `note` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+
+ALTER TABLE `#__user_reset` CHANGE `expiry_time` `expiry_time` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_reset` CHANGE `token` `token` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_reset` CHANGE `reset_code` `reset_code` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_reset` CHANGE `reset_code_expiry_time` `reset_code_expiry_time` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 
 --
 -- Change from int(10) to int(11)

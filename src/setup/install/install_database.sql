@@ -874,11 +874,11 @@ INSERT INTO `#__user_locations` (`id`, `location_key`, `display_name`) VALUES
 
 CREATE TABLE `#__user_records` (
   `user_id` int(10) NOT NULL,
-  `client_id` varchar(10) NOT NULL,
-  `username` varchar(20) NOT NULL,
-  `password` varchar(64) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `usergroup` varchar(2) NOT NULL,
+  `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `username` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `usergroup` varchar(2) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0',
   `last_active` datetime NOT NULL,
   `register_date` datetime NOT NULL,
@@ -886,22 +886,22 @@ CREATE TABLE `#__user_records` (
   `last_reset_time` datetime NOT NULL COMMENT 'Date of last password reset',
   `reset_count` int(10) NOT NULL DEFAULT '0' COMMENT 'Count of password resets since last_reset_time',
   `is_employee` int(1) NOT NULL DEFAULT '0',
-  `first_name` varchar(20) NOT NULL,
-  `last_name` varchar(20) NOT NULL,
-  `work_primary_phone` varchar(20) NOT NULL,
-  `work_mobile_phone` varchar(20) NOT NULL,
-  `work_fax` varchar(20) NOT NULL,
-  `home_primary_phone` varchar(20) NOT NULL,
-  `home_mobile_phone` varchar(20) NOT NULL,
-  `home_email` varchar(50) NOT NULL,
-  `home_address` varchar(100) NOT NULL,
-  `home_city` varchar(20) NOT NULL,
-  `home_state` varchar(20) NOT NULL,
-  `home_zip` varchar(20) NOT NULL,
-  `home_country` varchar(50) NOT NULL,
-  `based` varchar(30) NOT NULL,
-  `note` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `work_primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `work_mobile_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `work_fax` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `home_primary_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `home_mobile_phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `home_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `home_address` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `home_city` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `home_state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `home_zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `home_country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `based` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `note` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -910,12 +910,12 @@ CREATE TABLE `#__user_records` (
 --
 
 CREATE TABLE `#__user_reset` (
-  `user_id` varchar(2) NOT NULL,
-  `expiry_time` varchar(20) NOT NULL,
-  `token` varchar(64) NOT NULL,
-  `reset_code` varchar(64) NOT NULL,
-  `reset_code_expiry_time` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `user_id` int(10) NOT NULL,
+  `expiry_time` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `reset_code` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `reset_code_expiry_time` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
