@@ -57,7 +57,7 @@ $smarty->assign('display_giftcerts',                display_giftcerts('giftcert_
 // Invoice Totals
 $smarty->assign('labour_sub_total',                 labour_sub_total($VAR['invoice_id'])                       );
 $smarty->assign('parts_sub_total',                  parts_sub_total($VAR['invoice_id'])                        );
-$smarty->assign('giftcerts_sub_total',              giftcerts_sub_total($VAR['invoice_id'])                           );
+$smarty->assign('giftcerts_sub_total',              giftcerts_sub_total($VAR['invoice_id'])                    );
 
 // Payment Details
 $smarty->assign('payment_options',                  get_payment_options()                                      );

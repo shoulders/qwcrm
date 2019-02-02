@@ -193,7 +193,7 @@
                                                             </tr>
                                                         {/section}
                                                         <tr>
-                                                            <td colspan="5" style="text-align:right;"><b>{t}Labour Total{/t}</b></td>
+                                                            <td colspan="5" style="text-align:right;"><b>{t}Labour{/t} ({t}Sub Total{/t})</b></td>
                                                             <td style="text-align:left;">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
                                                         </tr>
                                                     </table>
@@ -235,7 +235,7 @@
                                                             </tr>
                                                          {/section}
                                                         <tr>
-                                                            <td colspan="5" style="text-align:right;"><b>{t}Parts Total{/t}</b></td>
+                                                            <td colspan="5" style="text-align:right;"><b>{t}Parts{/t} ({t}Sub Total{/t})</b></td>
                                                             <td style="text-align:left;">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
                                                         </tr>
                                                     </table>
@@ -253,7 +253,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="5" style="text-align:right;"><b>{t}Gift Certificates Sub Total{/t}</b> {$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>                                    
+                                <td colspan="5" style="text-align:right;"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b> {$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>                                    
                             </tr>
 
                             <!-- Totals Section -->
