@@ -272,7 +272,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
-                                                        <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
+                                                        <td class="olotd4" width="20%" align="right">-{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
                                                     </tr>
                                                     {if $invoice_details.tax_type != 'none'}
                                                         <tr>
@@ -282,7 +282,7 @@
                                                         <tr>                                                            
                                                             <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} (@ {$invoice_details.tax_rate}%)</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
-                                                        </tr
+                                                        </tr>
                                                     {/if}
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b></td>

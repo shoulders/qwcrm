@@ -23,7 +23,7 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
 
 $invoice_details = get_invoice_details($VAR['invoice_id']);
 
-// Prefill Items
+// Details
 $smarty->assign('company_details',          get_company_details()                                                                    );
 $smarty->assign('client_details',           get_client_details($invoice_details['client_id'])             );
 $smarty->assign('workorder_details',        get_workorder_details($invoice_details['workorder_id'])           );

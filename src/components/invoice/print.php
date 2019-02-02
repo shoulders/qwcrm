@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
@@ -42,20 +43,30 @@ foreach ($payment_methods as $key => $value) {
     }
 }
 
-/// Assign Variables
+// Details
 $smarty->assign('company_details',                  get_company_details()                                      );
-$smarty->assign('employee_details',                 get_user_details($invoice_details['employee_id'])          );
 $smarty->assign('client_details',                   $client_details                                            );
-$smarty->assign('invoice_details',                  $invoice_details                                           );
 $smarty->assign('workorder_details',                get_workorder_details($invoice_details['workorder_id'])    );
-$smarty->assign('payment_options',                  get_payment_options()                                      );
-$smarty->assign('payment_methods',                  $payment_methods                                           );
-$smarty->assign('display_payment_instructions',     $display_payment_instructions                              );
-$smarty->assign('invoice_statuses',                 get_invoice_statuses()                                     );
+$smarty->assign('invoice_details',                  $invoice_details                                           );
+
+// Invoice Items
 $smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );
+$smarty->assign('display_giftcerts',                display_giftcerts('giftcert_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
+
+// Invoice Totals
 $smarty->assign('labour_sub_total',                 labour_sub_total($VAR['invoice_id'])                       );
 $smarty->assign('parts_sub_total',                  parts_sub_total($VAR['invoice_id'])                        );
+$smarty->assign('giftcerts_sub_total',              giftcerts_sub_total($VAR['invoice_id'])                           );
+
+// Payment Details
+$smarty->assign('payment_options',                  get_payment_options()                                      );
+$smarty->assign('payment_methods',                  $payment_methods                                           );
+
+// Misc
+$smarty->assign('display_payment_instructions',     $display_payment_instructions                              );
+$smarty->assign('employee_display_name',            get_user_details($invoice_details['employee_id'], 'display_name')  );
+$smarty->assign('invoice_statuses',                 get_invoice_statuses()                                     );
 
 // Invoice Print Routine
 if($VAR['print_content'] == 'invoice') {
