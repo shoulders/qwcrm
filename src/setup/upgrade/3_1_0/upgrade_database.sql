@@ -278,23 +278,23 @@ INSERT INTO `#__payment_card_types` (`id`, `card_key`, `display_name`, `active`)
 ALTER TABLE `#__payment_card_types` ADD PRIMARY KEY (`id`);
 
 --
--- Create Table `#__date_formats`
+-- Create Table `#__company_date_formats`
 --
 
-CREATE TABLE `#__date_formats` (
+CREATE TABLE `#__company_date_formats` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `date_format_key` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__date_formats` (`id`, `date_format_key`, `display_name`) VALUES
+INSERT INTO `#__company_date_formats` (`id`, `date_format_key`, `display_name`) VALUES
 (1, '%d/%m/%Y', 'dd/mm/yyyy'),
 (2, '%m/%d/%Y', 'mm/dd/yyyy'),
 (3, '%d/%m/%y', 'dd/mm/yy'),
 (4, '%m/%d/%y', 'mm/dd/yy'),
 (5, '%Y-%m-%d', 'yyyy-mm-dd');
 
-ALTER TABLE `#__date_formats` ADD PRIMARY KEY (`id`);
+ALTER TABLE `#__company_date_formats` ADD PRIMARY KEY (`id`);
 
 --
 -- Create Table `#__giftcert_statuses`

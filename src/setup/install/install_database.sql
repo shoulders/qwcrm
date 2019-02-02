@@ -90,6 +90,29 @@ INSERT INTO `#__client_types` (`id`, `client_type_id`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__company_date_formats`
+--
+
+CREATE TABLE `#__company_date_formats` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `date_format_key` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__company_date_formats`
+--
+
+INSERT INTO `#__company_date_formats` (`id`, `date_format_key`, `display_name`) VALUES
+(1, '%d/%m/%Y', 'dd/mm/yyyy'),
+(2, '%m/%d/%Y', 'mm/dd/yyyy'),
+(3, '%d/%m/%y', 'dd/mm/yy'),
+(4, '%m/%d/%y', 'mm/dd/yy'),
+(5, '%Y-%m-%d', 'yyyy-mm-dd');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__company_record`
 --
 
@@ -132,29 +155,6 @@ CREATE TABLE `#__company_record` (
 
 INSERT INTO `#__company_record` (`company_name`, `logo`, `address`, `city`, `state`, `zip`, `country`, `primary_phone`, `mobile_phone`, `fax`, `email`, `website`, `company_number`, `tax_type`, `tax_rate`, `vat_number`, `year_start`, `year_end`, `welcome_msg`, `currency_symbol`, `currency_code`, `date_format`, `opening_hour`, `opening_minute`, `closing_hour`, `closing_minute`, `email_signature`, `email_signature_active`, `email_msg_invoice`, `email_msg_workorder`) VALUES
 ('', 'logo.png', '', '', '', '', '', '', '', '', '', '', '', 'none', '0.00', '', '0000-00-00', '0000-00-00', '<p>Welcome to QWcrm - The Best Open Source Repairs Business CRM program available!</p>\r\n<p>CRM, Customer Relations Management, Work Orders, Invoicing, Billing, Payment Processing, Simple to use.</p>\r\n<p>This message is shown to everyone when they log in and can be changed in the company settings.</p>', '&pound;', 'GBP', '%Y-%m-%d', 10, 0, 17, 0, '<p>{company_logo}</p> <p><strong>{company_name}</strong></p> <p><strong>Address:</strong> <br />{company_address}</p> <p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>', 1, '<p>Hi {client_first_name} {client_last_name}</p> <p>This is an invoice for the recent work at {client_display_name}.</p> <p>Thanks for your custom.</p>', '<p>There is currently no message here.</p>');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__date_formats`
---
-
-CREATE TABLE `#__date_formats` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `date_format_key` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(10) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__date_formats`
---
-
-INSERT INTO `#__date_formats` (`id`, `date_format_key`, `display_name`) VALUES
-(1, '%d/%m/%Y', 'dd/mm/yyyy'),
-(2, '%m/%d/%Y', 'mm/dd/yyyy'),
-(3, '%d/%m/%y', 'dd/mm/yy'),
-(4, '%m/%d/%y', 'mm/dd/yy'),
-(5, '%Y-%m-%d', 'yyyy-mm-dd');
 
 -- --------------------------------------------------------
 
@@ -1063,16 +1063,16 @@ ALTER TABLE `#__client_types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `#__company_date_formats`
+--
+ALTER TABLE `#__date_formats`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `#__company_record`
 --
 ALTER TABLE `#__company_record`
   ADD PRIMARY KEY (`company_name`);
-
---
--- Indexes for table `#__date_formats`
---
-ALTER TABLE `#__date_formats`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__expense_records`
