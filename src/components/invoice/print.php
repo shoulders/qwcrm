@@ -29,6 +29,19 @@ if(!isset($VAR['print_content'], $VAR['print_type']) || !$VAR['print_content'] |
 $invoice_details = get_invoice_details($VAR['invoice_id']);
 $client_details = get_client_details($invoice_details['client_id']);
 
+// Only show payment instruction if bank_transfer|cheque|PayPal is enabled, these are the only valid instructions you can put on an invoice
+$payment_methods = get_payment_methods('receive', 'enabled');
+$display_payment_instructions = false;
+foreach ($payment_methods as $key => $value) {
+    if(
+        ($value['method_key'] == 'bank_transfer' && $value['enabled']) ||
+        ($value['method_key'] == 'cheque' && $value['enabled']) ||
+        ($value['method_key'] == 'paypal' && $value['enabled'])
+    ) {
+        $display_payment_instructions = true;
+    }
+}
+
 /// Assign Variables
 $smarty->assign('company_details',                  get_company_details()                                      );
 $smarty->assign('employee_details',                 get_user_details($invoice_details['employee_id'])          );
@@ -36,7 +49,8 @@ $smarty->assign('client_details',                   $client_details             
 $smarty->assign('invoice_details',                  $invoice_details                                           );
 $smarty->assign('workorder_details',                get_workorder_details($invoice_details['workorder_id'])    );
 $smarty->assign('payment_options',                  get_payment_options()                                      );
-$smarty->assign('payment_methods',                  get_payment_methods('recieve')                     );
+$smarty->assign('payment_methods',                  $payment_methods                                           );
+$smarty->assign('display_payment_instructions',     $display_payment_instructions                              );
 $smarty->assign('invoice_statuses',                 get_invoice_statuses()                                     );
 $smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );

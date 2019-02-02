@@ -190,54 +190,58 @@
                 <table width="530" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                     
                     <!-- Only show payments section if there are valid ones enabled -->
-                    {if $payment_methods_statuses.cheque || $payment_methods_statuses.direct_deposit || $payment_methods_statuses.paypal}
+                    {if $display_payment_instructions}
                         <tr>
                             <td align="left" ><font size="-1"><b>{t}Payment Instructions{/t}</b></font></td>
                         </tr>
 
-                        <!-- Bank Transfer -->
-                        {if $payment_methods_statuses.bank_transfer}
-                            <tr>
-                                <td>
-                                    <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Bank Transfer{/t}</b><br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>                                
-                                    {t}Bank Account Name{/t}: {$payment_options.bank_account_name}<br>
-                                    {t}Bank Name{/t}: {$payment_options.bank_name}<br>
-                                    {t}Account Number{/t}: {$payment_options.bank_account_number}<br>
-                                    {t}Sort Code{/t}: {$payment_options.bank_sort_code}<br>
-                                    {if $payment_options.bank_iban}{t}IBAN{/t}: {$payment_options.bank_iban}{/if}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    {$payment_options.invoice_bank_transfer_msg}
-                                </td>
-                            </tr>
-                        {/if}
-                        
-                        <!-- Cheque -->                        
-                        {if $payment_methods_statuses.cheque}
-                            <tr>
-                                <td>                                    
-                                    <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
-                                </td>                                
-                            </tr>
-                            <tr>
-                                <td>{$payment_options.invoice_cheque_msg}</td>
-                            </tr>
-                        {/if}                        
+                        {section name=s loop=$payment_methods}
+                            
+                            <!-- Bank Transfer -->
+                            {if $payment_methods[s].method_key == 'bank_transfer' && $payment_methods[s].enabled}
+                                <tr>
+                                    <td>
+                                        <img src="{$theme_images_dir}icons/deposit.jpeg" alt="" height="20"> <b>{t}Bank Transfer{/t}</b><br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>                                
+                                        {t}Bank Account Name{/t}: {$payment_options.bank_account_name}<br>
+                                        {t}Bank Name{/t}: {$payment_options.bank_name}<br>
+                                        {t}Account Number{/t}: {$payment_options.bank_account_number}<br>
+                                        {t}Sort Code{/t}: {$payment_options.bank_sort_code}<br>
+                                        {if $payment_options.bank_iban}{t}IBAN{/t}: {$payment_options.bank_iban}{/if}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {$payment_options.invoice_bank_transfer_msg}
+                                    </td>
+                                </tr>
+                            {/if}
 
-                        <!-- PayPal -->
-                        {if $payment_methods_statuses.paypal}
-                        <tr>
-                            <td>
-                                <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
-                            </td>
-                        </tr>
-                    {/if}
+                            <!-- Cheque -->                        
+                            {if $payment_methods[s].method_key == 'cheque' && $payment_methods[s].enabled}
+                                <tr>
+                                    <td>                                    
+                                        <img src="{$theme_images_dir}icons/cheque.jpeg" alt="" height="20"> <b>{t}Cheques{/t}</b><br>                                
+                                    </td>                                
+                                </tr>
+                                <tr>
+                                    <td>{$payment_options.invoice_cheque_msg}</td>
+                                </tr>
+                            {/if}                        
+
+                            <!-- PayPal -->
+                            {if $payment_methods[s].method_key == 'paypal' && $payment_methods[s].enabled}
+                                <tr>
+                                    <td>
+                                        <img src="{$theme_images_dir}paypal/pay_now.gif" height="20" alt="PayPal - The safer, easier way to pay online"> <b>{t}PayPal{/t}</b><br>
+                                    </td>
+                                </tr>
+                            {/if}
+                        
+                        {/section}
 
                     <!-- If none of the above payment methods are enabled then display this message -->                        
                     {else}
@@ -247,7 +251,8 @@
                     {/if}
 
                 </table>
-            </td>                  
+            </td>
+           
             
            <!-- Totals Box -->
             <td colspan="2" valign="TOP">

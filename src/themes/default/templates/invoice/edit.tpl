@@ -675,7 +675,7 @@
                                                 <td class="menutd2">
                                                     <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                                                         <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{t}Sub Total{/t}</b></td>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Labour{/t}/{t}Parts{/t} ({t}Sub Total{/t})</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.sub_total|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
@@ -692,6 +692,10 @@
                                                                 <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                                                             </tr
                                                         {/if}                                                        
+                                                        <tr>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b></td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>
+                                                        </tr>
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t} ({t}Total{/t})</b></td>
                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>

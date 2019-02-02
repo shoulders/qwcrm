@@ -1213,12 +1213,12 @@ function recalculate_invoice($invoice_id) {
     
     $invoice_details        = get_invoice_details($invoice_id);
     
-    $items_sub_total        = labour_sub_total($invoice_id) + parts_sub_total($invoice_id) + giftcerts_sub_total($invoice_id);
+    $items_sub_total        = labour_sub_total($invoice_id) + parts_sub_total($invoice_id);
     $payments_sub_total     = payments_sub_total($invoice_id);
     $discount_amount        = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
     $net_amount             = $items_sub_total - $discount_amount;
     $tax_amount             = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
-    $gross_amount           = $net_amount + $tax_amount;
+    $gross_amount           = $net_amount + $tax_amount + giftcerts_sub_total($invoice_id);
     
     $balance = $gross_amount - $payments_sub_total;
 

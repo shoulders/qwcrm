@@ -516,43 +516,35 @@ class QFactory {
     {        
         
         $conf = self::getConfig();
-        $smarty = self::getSmarty();        
+        $smarty = self::getSmarty();
+        
+        $db = ADONewConnection('mysqli');
         
         /* ADODB Options */
 
         // ADODB_ASSOC_CASE - You can control the associative fetch case for certain drivers which behave differently. - native is default since v2.90
-        //define('ADODB_ASSOC_CASE', 1);  // set what case to use for recordsets where the field name (not table names): 0 = lowercase, 1 = uppercase, 2 = native case
-
-        // $ADODB_FETCH_MODE - This is a global variable that determines how arrays are retrieved by recordsets. 
-        //$ADODB_FETCH_MODE = ADODB_FETCH_NUM; 
+        // set what case to use for recordsets where the field name (not table names): 0 = lowercase, 1 = uppercase, 2 = native case
+        //define('ADODB_ASSOC_CASE', 1); 
         
+        //$ADODB_FETCH_MODE = ADODB_FETCH_NUM | ADODB_FETCH_ASSOC; // $ADODB_FETCH_MODE - This is a global variable that determines how arrays are retrieved by recordsets. 
+        $db->setFetchMode(ADODB_FETCH_ASSOC); // Set fetch mode to only return associative arrays (i.e. no indexeing added in by ADOdb - // also see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:setfetchmode
+                
         // Also see http://adodb.org/dokuwiki/doku.php?id=v5:reference:connection:adonewconnection
         // http://adodb.org/dokuwiki/doku.php?id=v5:reference:reference_index - full list of command
-        // Basic instructions in vendor/adodb-php/README.md
-
-        /* -- */
-
-        /*
-        // Set Path for ADODB in the php include path (Not needed because it is loaded by Composer)
-        set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/');
-
-        // Load Dependency Manually (Not needed because it is loaded by composer)
-        require('adodb.inc.php');
-
-        // Enable error trapping - this extends the system class Exception - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling
-        // I think this tries to convert standard PHP errors to Exceptions - needed for get_qwcrm_database_version_number()
-        require('adodb-exceptions.inc.php');
-        require(VENDOR_DIR.'adodb/adodb-php/adodb-exceptions.inc.php');
-        */
+        // Basic instructions in vendor/adodb-php/README.md        
         
-        $db = ADONewConnection('mysqli');
+        //set_include_path(get_include_path() . PATH_SEPARATOR . LIBRARIES_DIR.'adodb/'); // Set Path for ADODB in the php include path (Not needed because it is loaded by Composer)
+        //require('adodb.inc.php'); // Load Dependency Manually (Not needed because it is loaded by composer)
+
+        // Enable Error Trapping
+        // This extends the system class Exception - http://adodb.org/dokuwiki/doku.php?id=v5:userguide:error_handling
+        // I think this tries to convert standard PHP errors to Exceptions
+        //require('adodb-exceptions.inc.php');
+        //require(VENDOR_DIR.'adodb/adodb-php/adodb-exceptions.inc.php');        
+                
         //$db->debug = true;  // This delvers a lot of information to the screen about failed SQL queries
-
-        // Get current PHP error reporting level (not needed with this version of ADOdb)
-        //$reporting_level = error_reporting();
-
-        // Disable PHP error reporting (works globally) (not needed with this version of ADOdb)
-        //error_reporting(0);
+        //$reporting_level = error_reporting(); // Get current PHP error reporting level (not needed with this version of ADOdb)
+        //error_reporting(0); // Disable PHP error reporting (works globally) (not needed with this version of ADOdb)
 
         // ADOdb will show as connected if null values are sent to $db->connect  ?? - This is needed to allow install/migration
         if ($conf->get('db_host') && $conf->get('db_user') && $conf->get('db_name')) {
