@@ -296,14 +296,16 @@
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                         </tr>
                     {/if}
-                    <tr>
-                        <td class="olotd4" width="80%" align="right"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b></td>
-                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>
-                    </tr>
+                    {if $display_giftcerts}
+                        <tr>
+                            <td class="olotd4" width="80%" align="right"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b></td>
+                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>
+                        </tr>
+                    {/if}
                     <tr>
                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t} ({t}Total{/t})</b></td>
                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
-                    </tr>                  
+                    </tr>             
                 </table>
             </td>
         </tr>
