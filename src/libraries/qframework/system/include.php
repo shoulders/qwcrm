@@ -1032,7 +1032,7 @@ function get_date_formats() {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."date_formats";
+    $sql = "SELECT * FROM ".PRFX."company_date_formats";
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
