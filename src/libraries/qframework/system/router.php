@@ -407,7 +407,7 @@ function check_page_acl($component, $page_tpl, $user = null) {
     
     /* Check Page to see if we have access */
     
-    $sql = "SELECT ".$display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
+    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
