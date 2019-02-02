@@ -34,6 +34,26 @@ defined('_QWEXEC') or die;
 
 // This is in the main include.php file
 
+#####################################
+#    Get company tax types          #
+#####################################
+
+function get_tax_types() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."company_tax_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
 ##########################################
 #      Get Company Opening Hours         # // smarty/datetime/timestamp
 ##########################################
@@ -317,3 +337,4 @@ function upload_logo() {
     }
     
 }
+

@@ -143,15 +143,15 @@
                                                                                     <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                                 </tr>                                                                                
                                                                                 <tr>
-                                                                                    <td align="right"><b>{t}Tax Type{/t}:</b> <span style="color: #ff0000">*</span></td>
+                                                                                    <td align="right"><b>{t}Tax Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                                     <td>
-                                                                                        <select class="olotd5" id="tax_type" name="tax_type">                                                       
-                                                                                            <option value="none"{if $company_details.tax_type == 'none'} selected{/if}>{t}None{/t}</option>
-                                                                                            <option value="sales"{if $company_details.tax_type == 'sales'} selected{/if}>{t}Sales{/t}</option>
-                                                                                            <option value="vat"{if $company_details.tax_type == 'vat'} selected{/if}>{t}VAT{/t}</option>
-                                                                                        </select>                                                    
-                                                                                    </td> 
-                                                                                </tr>                                            
+                                                                                        <select class="olotd5" id="tax_type" name="tax_type">               
+                                                                                            {section name=s loop=$tax_types}
+                                                                                                <option value="{$tax_types[s].type_key}"{if $company_details.tax_type == $tax_types[s].type_key} selected{/if}>{t}{$tax_types[s].display_name}{/t}</option>
+                                                                                            {/section}
+                                                                                        </select>
+                                                                                    </td>
+                                                                                </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Tax Rate{/t}:</b></td>
                                                                                     <td><input id="tax_rate" name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>

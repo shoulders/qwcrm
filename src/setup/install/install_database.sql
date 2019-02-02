@@ -159,6 +159,27 @@ INSERT INTO `#__company_record` (`company_name`, `logo`, `address`, `city`, `sta
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__company_tax_types`
+--
+
+CREATE TABLE `#__company_tax_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__company_tax_types`
+--
+
+INSERT INTO `#__company_tax_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'none', 'None'),
+(2, 'sales', 'Sales'),
+(3, 'vat', 'VAT');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__expense_records`
 --
 
@@ -1073,6 +1094,12 @@ ALTER TABLE `#__company_date_formats`
 --
 ALTER TABLE `#__company_record`
   ADD PRIMARY KEY (`company_name`);
+
+--
+-- Indexes for table `#__company_tax_types`
+--
+ALTER TABLE `#__company_tax_types`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__expense_records`

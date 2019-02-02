@@ -57,6 +57,18 @@ INSERT INTO `#__client_types` (`id`, `type_key`, `display_name`) VALUES
 ALTER TABLE `#__client_types` ADD PRIMARY KEY (`id`);
 
 --
+-- Create Table `#__client_types`
+--
+
+CREATE TABLE `#__company_tax_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `#__company_tax_types` ADD PRIMARY KEY (`id`);
+
+--
 -- Create Table `#__expense_types`
 --
 
