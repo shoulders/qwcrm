@@ -65,7 +65,7 @@
                                                         <td>
                                                             <select id="type" name="type" class="olotd5">
                                                                 {section name=s loop=$expense_types}    
-                                                                    <option value="{$expense_types[s].expense_type_id}"{if $expense_details.type == $expense_types[s].expense_type_id} selected{/if}>{t}{$expense_types[s].display_name}{/t}</option>
+                                                                    <option value="{$expense_types[s].type_key}"{if $expense_details.type == $expense_types[s].type_key} selected{/if}>{t}{$expense_types[s].display_name}{/t}</option>
                                                                 {/section} 
                                                             </select>
                                                         </td>                                                            
@@ -75,7 +75,7 @@
                                                         <td>
                                                             <select id="payment_method" name="payment_method" class="olotd5">
                                                                 {section name=s loop=$payment_methods}    
-                                                                    <option value="{$payment_methods[s].payment_method_id}"{if $expense_details.payment_method == $payment_methods[s].payment_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                    <option value="{$payment_methods[s].method_key}"{if $expense_details.payment_method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
                                                                 {/section} 
                                                             </select>
                                                         </td>

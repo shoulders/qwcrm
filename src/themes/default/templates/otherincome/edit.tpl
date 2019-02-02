@@ -63,7 +63,7 @@
                                                             <td>
                                                                 <select id="type" name="type" class="olotd5"> 
                                                                     {section name=s loop=$otherincome_types}    
-                                                                        <option value="{$otherincome_types[s].otherincome_type_id}"{if $otherincome_details.type == $otherincome_types[s].otherincome_type_id} selected{/if}>{t}{$otherincome_types[s].display_name}{/t}</option>
+                                                                        <option value="{$otherincome_types[s].type_key}"{if $otherincome_details.type == $otherincome_types[s].type_key} selected{/if}>{t}{$otherincome_types[s].display_name}{/t}</option>
                                                                     {/section}    
                                                                 </select>
                                                             </td>
@@ -73,7 +73,7 @@
                                                             <td>
                                                             <select id="payment_method" name="payment_method" class="olotd5">
                                                                 {section name=s loop=$payment_methods}    
-                                                                    <option value="{$payment_methods[s].payment_method_id}"{if $otherincome_details.payment_method == $payment_methods[s].payment_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                    <option value="{$payment_methods[s].method_key}"{if $otherincome_details.payment_method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
                                                                 {/section} 
                                                             </select>
                                                         </td>

@@ -66,7 +66,7 @@
                                                                         <option value=""{if $filter_usergroup == ''} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
                                                                         {section name=g loop=$usergroups}   
-                                                                            <option value="{$usergroups[g].usergroup_id}"{if $filter_usergroup == $usergroups[g].usergroup_id} selected{/if}>{t}{$usergroups[g].usergroup_display_name}{/t}</option>        
+                                                                            <option value="{$usergroups[g].usergroup_id}"{if $filter_usergroup == $usergroups[g].usergroup_id} selected{/if}>{t}{$usergroups[g].display_name}{/t}</option>        
                                                                         {/section}
                                                                     </select>
                                                                 </td>                                                        

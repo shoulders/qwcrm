@@ -49,7 +49,7 @@
                                             <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">              
                                                 {section name=s loop=$refund_types}
-                                                    {if $refund_details.type == $refund_types[s].refund_type_id}{t}{$refund_types[s].display_name}{/t}{/if}        
+                                                    {if $refund_details.type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
@@ -59,7 +59,7 @@
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$payment_methods}    
-                                                    {if $refund_details.payment_method == $payment_methods[s].payment_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}   
+                                                    {if $refund_details.payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>

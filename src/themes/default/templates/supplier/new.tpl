@@ -69,7 +69,7 @@
                                                                             <td>
                                                                                 <select id="type" name="type" class="olotd5">               
                                                                                     {section name=s loop=$supplier_types}
-                                                                                        <option value="{$supplier_types[s].supplier_type_id}">{t}{$supplier_types[s].display_name}{/t}</option>
+                                                                                        <option value="{$supplier_types[s].type_key}">{t}{$supplier_types[s].display_name}{/t}</option>
                                                                                     {/section}
                                                                                 </select>
                                                                             </td>

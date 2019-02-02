@@ -41,22 +41,22 @@
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}{$payment_methods[q].display_name}{/t}</b>
-                                                                    <input type="hidden" name="payment_methods[{$payment_methods[q].payment_method_id}][payment_method_id]" value="{$payment_methods[q].payment_method_id}">
+                                                                    <input type="hidden" name="payment_methods[{$payment_methods[q].method_key}][method_key]" value="{$payment_methods[q].method_key}">
                                                                 </td>
                                                                 <td>
-                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].payment_method_id}][send]" value="1" class="olotd5" {if $payment_methods[q].send} checked{/if}{if $payment_methods[q].send_protected} disabled{/if}>
+                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].method_key}][send]" value="1" class="olotd5" {if $payment_methods[q].send} checked{/if}{if $payment_methods[q].send_protected} disabled{/if}>
                                                                     {if $payment_methods[q].send_protected}
-                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].payment_method_id}][send]" value="{$payment_methods[q].send}">
+                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].method_key}][send]" value="{$payment_methods[q].send}">
                                                                     {/if}
                                                                 </td>
                                                                 <td>
-                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].payment_method_id}][receive]" value="1" class="olotd5" {if $payment_methods[q].receive} checked{/if}{if $payment_methods[q].receive_protected} disabled{/if}>
+                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].method_key}][receive]" value="1" class="olotd5" {if $payment_methods[q].receive} checked{/if}{if $payment_methods[q].receive_protected} disabled{/if}>
                                                                     {if $payment_methods[q].receive_protected}
-                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].payment_method_id}][receive]" value="{$payment_methods[q].receive}">
+                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].method_key}][receive]" value="{$payment_methods[q].receive}">
                                                                     {/if}
                                                                 </td>
                                                                 <td>
-                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].payment_method_id}][enabled]" value="1" class="olotd5" {if $payment_methods[q].enabled} checked{/if}>                                                                    
+                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].method_key}][enabled]" value="1" class="olotd5" {if $payment_methods[q].enabled} checked{/if}>                                                                    
                                                                 </td>
                                                             </tr>
                                                         {/section}

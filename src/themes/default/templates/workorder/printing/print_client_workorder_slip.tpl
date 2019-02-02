@@ -71,7 +71,7 @@
                             <p>
                                 <b>{t}Type{/t}: </b> 
                                 {section name=s loop=$client_types}    
-                                    {if $client_details.type == $client_types[s].client_type_id}{t}{$client_types[s].display_name}{/t}{/if}        
+                                    {if $client_details.type == $client_types[s].type_key}{t}{$client_types[s].display_name}{/t}{/if}        
                                 {/section}                             
                             </p>
                         </td>

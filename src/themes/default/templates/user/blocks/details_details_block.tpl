@@ -47,7 +47,7 @@
         <td class="menutd"><b>{t}Based{/t}</b></td>
         <td class="menutd">            
             {section name=l loop=$user_locations}    
-                {if $user_details.based == $user_locations[l].user_location_id}{t}{$user_locations[l].display_name}{/t}{/if}
+                {if $user_details.based == $user_locations[l].location_key}{t}{$user_locations[l].display_name}{/t}{/if}
             {/section}
         </td>    
     </tr>
@@ -70,7 +70,7 @@
         <td class="menutd"><b>{t}Usergroup{/t}</b></td>
         <td class="menutd">      
             {section name=b loop=$usergroups}
-                {if $user_details.usergroup == $usergroups[b].usergroup_id}{$usergroups[b].usergroup_display_name}{/if}
+                {if $user_details.usergroup == $usergroups[b].usergroup_id}{$usergroups[b].display_name}{/if}
             {/section}        
         </td>         
         <td class="menutd"><b>{t}Status{/t}</b></td>

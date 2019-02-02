@@ -72,7 +72,7 @@
                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>                                                                 
                                                                 {section name=s loop=$refund_types}    
-                                                                    {if $refund_details.type == $refund_types[s].refund_type_id}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                
+                                                                    {if $refund_details.type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                
                                                                 {/section}    
                                                                 <input id="type" name="type" class="olotd5" size="5" value="{$refund_details.type}" type="hidden">
                                                             </td>
@@ -82,7 +82,7 @@
                                                             <td>
                                                             <select id="payment_method" name="payment_method" class="olotd5">
                                                                 {section name=s loop=$payment_methods}    
-                                                                    <option value="{$payment_methods[s].payment_method_id}"{if $refund_details.payment_method == $payment_methods[s].payment_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                    <option value="{$payment_methods[s].method_key}"{if $refund_details.payment_method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
                                                                 {/section} 
                                                             </select>
                                                         </td>

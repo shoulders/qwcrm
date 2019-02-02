@@ -74,7 +74,7 @@
                                             <select id="method" name="qpayment[method]" class="olotd4" onChange="selectPaymentMethod();" required>                                            
                                                 <option selected hidden disabled></option>
                                                 {section name=s loop=$payment_methods}
-                                                    <option value="{$payment_methods[s].payment_method_id}"{if $payment_methods[s].payment_method_id === $payment_method} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                    <option value="{$payment_methods[s].method_key}"{if $payment_methods[s].method_key === $payment_method} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
                                                 {/section} 
                                             </select>
                                         </td> 
@@ -243,7 +243,7 @@
                                                                     <select name="qpayment[card_type]" class="paymentInput olotd4" required disabled>
                                                                         <option selected hidden disabled></option>
                                                                         {section name=c loop=$payment_active_card_types}
-                                                                            <option value="{$payment_active_card_types[c].card_key}">{$payment_active_card_types[c].display_name}</option>
+                                                                            <option value="{$payment_active_card_types[c].type_key}">{$payment_active_card_types[c].display_name}</option>
                                                                         {/section}
                                                                     </select>
                                                                 </td>                        

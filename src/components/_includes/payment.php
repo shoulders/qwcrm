@@ -370,7 +370,7 @@ function get_payment_active_card_types() {
     $db = QFactory::getDbo();
 
     $sql = "SELECT
-            card_key,
+            type_key,
             display_name
             FROM ".PRFX."payment_card_types
             WHERE active='1'";
@@ -399,11 +399,11 @@ function get_payment_active_card_types() {
 #  Get Card name from type          #
 #####################################
 
-function get_card_display_name_from_key($card_key) {
+function get_card_display_name_from_key($type_key) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE card_key=".$db->qstr($card_key);
+    $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$db->qstr($type_key);
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
@@ -516,7 +516,7 @@ function update_payment_methods_statuses($payment_methods) {
                 send                    = ". $db->qstr($payment_method['send']).",
                 receive                 = ". $db->qstr($payment_method['receive']).",
                 enabled                 = ". $db->qstr($payment_method['enabled'])."   
-                WHERE payment_method_id = ". $db->qstr($payment_method['payment_method_id']); 
+                WHERE method_key = ". $db->qstr($payment_method['method_key']); 
         
         if(!$rs = $db->execute($sql)) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
@@ -616,7 +616,7 @@ function check_payment_method_is_active($method, $direction = null) {
     
     $sql = "SELECT *
             FROM ".PRFX."payment_methods
-            WHERE payment_method_id=".$db->qstr($method);
+            WHERE method_key=".$db->qstr($method);
         
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    

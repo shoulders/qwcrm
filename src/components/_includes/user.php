@@ -85,7 +85,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
             ".PRFX."user_records.*,
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS display_name,
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS full_name,
-            ".PRFX."user_usergroups.usergroup_display_name
+            ".PRFX."user_usergroups.display_name
                 
             FROM ".PRFX."user_records
             LEFT JOIN ".PRFX."user_usergroups ON (".PRFX."user_records.usergroup = ".PRFX."user_usergroups.usergroup_id)

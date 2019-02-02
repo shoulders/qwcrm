@@ -76,7 +76,7 @@
                                                                             <td>
                                                                                 <select id="type" name="type" class="olotd5"> 
                                                                                     {section name=s loop=$client_types}    
-                                                                                        <option value="{$client_types[s].client_type_id}">{t}{$client_types[s].display_name}{/t}</option>
+                                                                                        <option value="{$client_types[s].type_key}">{t}{$client_types[s].display_name}{/t}</option>
                                                                                     {/section}    
                                                                                 </select>                                                                                   
                                                                             </td>

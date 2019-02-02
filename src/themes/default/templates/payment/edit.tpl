@@ -95,7 +95,7 @@
                                                         <td>
                                                             <select id="method" name="method" class="olotd5">
                                                                 {section name=s loop=$payment_methods}    
-                                                                    <option value="{$payment_methods[s].payment_method_id}"{if $payment_details.method == $payment_methods[s].payment_method_id} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                    <option value="{$payment_methods[s].method_key}"{if $payment_details.method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
                                                                 {/section}
                                                                 <input name="method" value="{$payment_details.method}" type="hidden"> 
                                                             </select>

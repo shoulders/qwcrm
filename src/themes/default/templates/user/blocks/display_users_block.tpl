@@ -30,7 +30,7 @@
             <td class="olotd4">{$display_users[u].username}</td>            
             <td class="olotd4">
                 {section name=g loop=$usergroups}
-                    {if $display_users[u].usergroup == $usergroups[g].usergroup_id}{$usergroups[g].usergroup_display_name}{/if}
+                    {if $display_users[u].usergroup == $usergroups[g].usergroup_id}{$usergroups[g].display_name}{/if}
                 {/section}   
             </td>
             <td class="olotd4">
@@ -39,7 +39,7 @@
             </td>
             <td class="olotd4">           
                 {section name=l loop=$user_locations}    
-                    {if $display_users[u].based == $user_locations[l].user_location_id}{t}{$user_locations[l].display_name}{/t}{/if}
+                    {if $display_users[u].based == $user_locations[l].location_key}{t}{$user_locations[l].display_name}{/t}{/if}
                 {/section}
             </td> 
             <td class="olotd4"><a href="mailto: {$display_users[u].email}"><font class="blueLink">{$display_users[u].email}</font></a></td>

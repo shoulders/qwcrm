@@ -62,7 +62,7 @@
                                                                                         <td>
                                                                                             <select name="based" class="olotd5">
                                                                                                 {section name=l loop=$user_locations}    
-                                                                                                    <option value="{$user_locations[l].user_location_id}"{if $user_details.based == $user_locations[l].user_location_id} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
+                                                                                                    <option value="{$user_locations[l].location_key}"{if $user_details.based == $user_locations[l].location_key} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
                                                                                                 {/section} 
                                                                                             </select>
                                                                                             <input type="hidden" name="client_id" value="">
@@ -106,7 +106,7 @@
                                                                                         <td>                                                                                                
                                                                                             {*<select name="usergroup" class="olotd5">
                                                                                                 {section name=b loop=$usergroups}
-                                                                                                    <option value="{$usergroups[b].usergroup_id}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].usergroup_display_name}</option>
+                                                                                                    <option value="{$usergroups[b].usergroup_id}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].display_name}</option>
                                                                                                 {/section}
                                                                                             </select>*}
                                                                                             <input type="hidden" name="usergroup" value="1">

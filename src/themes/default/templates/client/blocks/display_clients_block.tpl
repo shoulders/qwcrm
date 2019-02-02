@@ -23,7 +23,7 @@
             <td class="olotd4" nowrap><a href="index.php?component=client&page_tpl=details&client_id={$display_clients[c].client_id}">{$display_clients[c].display_name}</a></td>
             <td class="olotd4" nowrap>
                 {section name=s loop=$client_types}    
-                    {if $display_clients[c].type == $client_types[s].client_type_id}{t}{$client_types[s].display_name}{/t}{/if}        
+                    {if $display_clients[c].type == $client_types[s].type_key}{t}{$client_types[s].display_name}{/t}{/if}        
                 {/section}
             </td>
             <td class="olotd4" nowrap><img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<b>{t}Mobile{/t}: </b>{$display_clients[c].mobile_phone}<br><b>{t}Fax{/t}:</b>{$display_clients[c].fax}');" onMouseOut="hideddrivetip();">{$display_clients[c].primary_phone}</td>            

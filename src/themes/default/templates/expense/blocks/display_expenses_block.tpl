@@ -31,12 +31,12 @@
              <td class="olotd4" nowrap>{$display_expenses[e].date|date_format:$date_format}</td>                                                            
              <td class="olotd4" nowrap>
                  {section name=s loop=$expense_types}    
-                     {if $display_expenses[e].type == $expense_types[s].expense_type_id}{t}{$expense_types[s].display_name}{/t}{/if}        
+                     {if $display_expenses[e].type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
                  {/section} 
              </td>
              <td class="olotd4" nowrap>
                  {section name=s loop=$payment_methods}    
-                     {if $display_expenses[e].payment_method == $payment_methods[s].payment_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}        
+                     {if $display_expenses[e].payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}        
                  {/section} 
              </td>
              <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].net_amount}</td>

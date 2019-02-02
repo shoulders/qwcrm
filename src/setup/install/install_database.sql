@@ -72,15 +72,15 @@ CREATE TABLE `#__client_records` (
 
 CREATE TABLE `#__client_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `client_type_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `#__client_types`
 --
 
-INSERT INTO `#__client_types` (`id`, `client_type_id`, `display_name`) VALUES
+INSERT INTO `#__client_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'residential', 'Residential'),
 (2, 'commercial', 'Commercial'),
 (3, 'charity', 'Charity'),
@@ -185,7 +185,7 @@ CREATE TABLE `#__expense_records` (
 
 CREATE TABLE `#__expense_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `expense_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -193,7 +193,7 @@ CREATE TABLE `#__expense_types` (
 -- Dumping data for table `#__expense_types`
 --
 
-INSERT INTO `#__expense_types` (`id`, `expense_type_id`, `display_name`) VALUES
+INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'bank_charges', 'Bank Charges'),
 (2, 'credit', 'Credit'),
 (3, 'client_refund', 'Client Refund'),
@@ -233,7 +233,7 @@ CREATE TABLE `#__giftcert_records` (
   `redeemed_invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `open_date` datetime NOT NULL,
   `expiry_date` date NOT NULL,
-  `redeem_date` date NOT NULL,
+  `redeem_date` datetime NOT NULL,
   `close_date` datetime NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
   `blocked` int(1) NOT NULL DEFAULT '0',
@@ -413,7 +413,7 @@ CREATE TABLE `#__otherincome_records` (
 
 CREATE TABLE `#__otherincome_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `otherincome_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -421,7 +421,7 @@ CREATE TABLE `#__otherincome_types` (
 -- Dumping data for table `#__otherincome_types`
 --
 
-INSERT INTO `#__otherincome_types` (`id`, `otherincome_type_id`, `display_name`) VALUES
+INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'cancelled_services', 'Cancelled Services'),
 (2, 'commission', 'Commission'),
 (3, 'credit_note', 'Credit Note'),
@@ -437,8 +437,8 @@ INSERT INTO `#__otherincome_types` (`id`, `otherincome_type_id`, `display_name`)
 
 CREATE TABLE `#__payment_card_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `card_key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -446,7 +446,7 @@ CREATE TABLE `#__payment_card_types` (
 -- Dumping data for table `#__payment_card_types`
 --
 
-INSERT INTO `#__payment_card_types` (`id`, `card_key`, `display_name`, `active`) VALUES
+INSERT INTO `#__payment_card_types` (`id`, `type_key`, `display_name`, `active`) VALUES
 (1, 'visa', 'Visa', 1),
 (2, 'mastercard', 'MasterCard', 1),
 (3, 'american_express', 'American Express', 1),
@@ -461,8 +461,8 @@ INSERT INTO `#__payment_card_types` (`id`, `card_key`, `display_name`, `active`)
 
 CREATE TABLE `#__payment_methods` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `payment_method_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `method_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `send` int(1) NOT NULL DEFAULT '0',
   `receive` int(1) NOT NULL DEFAULT '0',
   `send_protected` int(1) NOT NULL DEFAULT '1' COMMENT 'send cannot be changed',
@@ -474,7 +474,7 @@ CREATE TABLE `#__payment_methods` (
 -- Dumping data for table `#__payment_methods`
 --
 
-INSERT INTO `#__payment_methods` (`id`, `payment_method_id`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
+INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
 (1, 'bank_transfer', 'Bank Transfer', 1, 1, 0, 0, 0),
 (2, 'card', 'Card', 1, 1, 0, 0, 0),
 (3, 'cash', 'Cash', 1, 1, 0, 0, 1),
@@ -557,7 +557,7 @@ INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
 
 CREATE TABLE `#__payment_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `payment_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -565,7 +565,7 @@ CREATE TABLE `#__payment_types` (
 -- Dumping data for table `#__payment_types`
 --
 
-INSERT INTO `#__payment_types` (`id`, `payment_type_id`, `display_name`) VALUES
+INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'invoice', 'Invoice'),
 (2, 'refund', 'Refund');
 
@@ -597,7 +597,7 @@ CREATE TABLE `#__refund_records` (
 
 CREATE TABLE `#__refund_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `refund_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -605,7 +605,7 @@ CREATE TABLE `#__refund_types` (
 -- Dumping data for table `#__refund_types`
 --
 
-INSERT INTO `#__refund_types` (`id`, `refund_type_id`, `display_name`) VALUES
+INSERT INTO `#__refund_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'invoice', 'Invoice');
 
 -- --------------------------------------------------------
@@ -674,7 +674,7 @@ CREATE TABLE `#__supplier_records` (
 
 CREATE TABLE `#__supplier_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `supplier_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -682,7 +682,7 @@ CREATE TABLE `#__supplier_types` (
 -- Dumping data for table `#__supplier_types`
 --
 
-INSERT INTO `#__supplier_types` (`id`, `supplier_type_id`, `display_name`) VALUES
+INSERT INTO `#__supplier_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'courier', 'Courier'),
 (2, 'drop_shipping', 'Drop Shipping'),
 (3, 'equipment', 'Equipment'),
@@ -853,7 +853,7 @@ CREATE TABLE `#__user_keys` (
 
 CREATE TABLE `#__user_locations` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `user_location_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `location_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -861,7 +861,7 @@ CREATE TABLE `#__user_locations` (
 -- Dumping data for table `#__user_locations`
 --
 
-INSERT INTO `#__user_locations` (`id`, `user_location_id`, `display_name`) VALUES
+INSERT INTO `#__user_locations` (`id`, `location_key`, `display_name`) VALUES
 (1, 'home', 'Home'),
 (2, 'office', 'Office'),
 (3, 'onsite', 'OnSite');
@@ -925,7 +925,7 @@ CREATE TABLE `#__user_reset` (
 
 CREATE TABLE `#__user_usergroups` (
   `usergroup_id` int(4) NOT NULL,
-  `usergroup_display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `user_type` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -933,7 +933,7 @@ CREATE TABLE `#__user_usergroups` (
 -- Dumping data for table `#__user_usergroups`
 --
 
-INSERT INTO `#__user_usergroups` (`usergroup_id`, `usergroup_display_name`, `user_type`) VALUES
+INSERT INTO `#__user_usergroups` (`usergroup_id`, `display_name`, `user_type`) VALUES
 (1, 'Administrator', 1),
 (2, 'Manager', 1),
 (3, 'Supervisor', 1),
@@ -1065,7 +1065,7 @@ ALTER TABLE `#__client_types`
 --
 -- Indexes for table `#__company_date_formats`
 --
-ALTER TABLE `#__date_formats`
+ALTER TABLE `#__company_date_formats`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1138,7 +1138,7 @@ ALTER TABLE `#__otherincome_records`
 -- Indexes for table `#__otherincome_types`
 --
 ALTER TABLE `#__otherincome_types`
-  ADD PRIMARY KEY (`otherincome_type_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__payment_card_types`
@@ -1174,7 +1174,7 @@ ALTER TABLE `#__payment_statuses`
 -- Indexes for table `#__payment_types`
 --
 ALTER TABLE `#__payment_types`
-  ADD PRIMARY KEY (`payment_type_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__refund_records`
@@ -1186,7 +1186,7 @@ ALTER TABLE `#__refund_records`
 -- Indexes for table `#__refund_types`
 --
 ALTER TABLE `#__refund_types`
-  ADD PRIMARY KEY (`refund_type_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__schedule_records`
@@ -1328,6 +1328,11 @@ ALTER TABLE `#__invoice_prefill_items`
 --
 ALTER TABLE `#__invoice_records`
   MODIFY `invoice_id` int(10) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `#__otherincome_records`
+--
+ALTER TABLE `#__otherincome_records`
+  MODIFY `otherincome_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__payment_records`
 --

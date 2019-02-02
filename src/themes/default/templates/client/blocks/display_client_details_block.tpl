@@ -80,7 +80,7 @@
                                             <td class="menutd"><b>{t}Client Type{/t}</b></td>
                                             <td class="menutd">              
                                                 {section name=s loop=$client_types}    
-                                                    {if $client_details.type == $client_types[s].client_type_id}{t}{$client_types[s].display_name}{/t}{/if}        
+                                                    {if $client_details.type == $client_types[s].type_key}{t}{$client_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}Active{/t}</b></td>

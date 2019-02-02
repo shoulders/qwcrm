@@ -49,7 +49,7 @@
                                             <td class="menutd"><b>{t}Type{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$supplier_types}    
-                                                    {if $supplier_details.type == $supplier_types[s].supplier_type_id}{t}{$supplier_types[s].display_name}{/t}{/if}        
+                                                    {if $supplier_details.type == $supplier_types[s].type_key}{t}{$supplier_types[s].display_name}{/t}{/if}        
                                                 {/section}    
                                             </td>
                                             <td class="menutd" ><b>{t}Fax{/t}</b></td>

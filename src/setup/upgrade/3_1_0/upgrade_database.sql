@@ -43,11 +43,11 @@ RENAME TABLE `#__user_acl` TO `#__user_acl_page`;
 
 CREATE TABLE `#__client_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `client_type_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__client_types` (`id`, `client_type_id`, `display_name`) VALUES
+INSERT INTO `#__client_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'residential', 'Residential'),
 (2, 'commercial', 'Commercial'),
 (3, 'charity', 'Charity'),
@@ -62,11 +62,11 @@ ALTER TABLE `#__client_types` ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `#__expense_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `expense_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__expense_types` (`id`, `expense_type_id`, `display_name`) VALUES
+INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'bank_charges', 'Bank Charges'),
 (2, 'credit', 'Credit'),
 (3, 'consumables', 'Consumables'),
@@ -119,7 +119,7 @@ ALTER TABLE `#__invoice_statuses` ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `#__payment_methods` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `payment_method_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `method_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `send` int(1) NOT NULL DEFAULT '0',
   `receive` int(1) NOT NULL DEFAULT '0',
@@ -128,7 +128,7 @@ CREATE TABLE `#__payment_methods` (
   `enabled` int(1) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__payment_methods` (`id`, `payment_method_id`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
+INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `receive`, `send_protected`, `receive_protected`, `enabled`) VALUES
 (1, 'bank_transfer', 'Bank Transfer', 1, 1, 0, 0, 0),
 (2, 'card', 'Card', 1, 1, 0, 0, 0),
 (3, 'cash', 'Cash', 1, 1, 0, 0, 1),
@@ -162,15 +162,15 @@ ALTER TABLE `#__payment_statuses` ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `#__payment_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `payment_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__payment_types` (`id`, `payment_type_id`, `display_name`) VALUES
+INSERT INTO `#__payment_types` (`id`, `type_ket`, `display_name`) VALUES
 (1, 'invoice', 'Invoice'),
 (2, 'refund', 'Refund');
 
-ALTER TABLE `#__payment_types` ADD PRIMARY KEY (`payment_type_id`);
+ALTER TABLE `#__payment_types` ADD PRIMARY KEY (`id`);
 
 --
 -- Create Table `#__refund_records`
@@ -198,14 +198,14 @@ ALTER TABLE `#__refund_records` ADD PRIMARY KEY (`refund_id`);
 
 CREATE TABLE `#__refund_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `refund_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__refund_types` (`id`, `refund_type_id`, `display_name`) VALUES
+INSERT INTO `#__refund_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'invoice', 'Invoice');
 
-ALTER TABLE `#__refund_types` ADD PRIMARY KEY (`refund_type_id`);
+ALTER TABLE `#__refund_types` ADD PRIMARY KEY (`id`);
 
 --
 -- Create Table `#__supplier_types`
@@ -213,11 +213,11 @@ ALTER TABLE `#__refund_types` ADD PRIMARY KEY (`refund_type_id`);
 
 CREATE TABLE `#__supplier_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `supplier_type_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__supplier_types` (`id`, `supplier_type_id`, `display_name`) VALUES
+INSERT INTO `#__supplier_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'courier', 'Courier'),
 (2, 'drop_shipping', 'Drop Shipping'),
 (3, 'equipment', 'Equipment'),
@@ -246,11 +246,11 @@ ALTER TABLE `#__supplier_types` ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `#__user_locations` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `user_location_id` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `location_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__user_locations` (`id`, `user_location_id`, `display_name`) VALUES
+INSERT INTO `#__user_locations` (`id`, `location_key`, `display_name`) VALUES
 (1, 'office', 'Office'),
 (2, 'onsite', 'OnSite'),
 (3, 'home', 'Home');
@@ -263,12 +263,12 @@ ALTER TABLE `#__user_locations` ADD PRIMARY KEY (`id`);
 
 CREATE TABLE `#__payment_card_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
-  `card_key` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `active` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__payment_card_types` (`id`, `card_key`, `display_name`, `active`) VALUES
+INSERT INTO `#__payment_card_types` (`id`, `type_key`, `display_name`, `active`) VALUES
 (1, 'visa', 'Visa', 1),
 (2, 'mastercard', 'MasterCard', 1),
 (3, 'american_express', 'American Express', 1),
@@ -317,6 +317,27 @@ INSERT INTO `#__giftcert_statuses` (`id`, `status_key`, `display_name`) VALUES
 
 ALTER TABLE `#__giftcert_statuses` ADD PRIMARY KEY (`id`);
 
+
+--
+-- Create Table `#__otherincome_types`
+--
+
+CREATE TABLE `#__otherincome_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'cancelled_services', 'Cancelled Services'),
+(2, 'commission', 'Commission'),
+(3, 'credit_note', 'Credit Note'),
+(4, 'interest', 'Interest'),
+(5, 'other', 'Other'),
+(6, 'returned_goods', 'Returned Goods');
+
+ALTER TABLE `#__otherincome_types` ADD PRIMARY KEY (`id`);
+
 --
 -- Rename 'notes' to 'note'
 --
@@ -350,6 +371,75 @@ ALTER TABLE `#__payment_records` CHANGE `customer_id` `client_id` VARCHAR(10) CH
 ALTER TABLE `#__schedule_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__user_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__workorder_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+
+--
+-- Drop Columns
+--
+
+ALTER TABLE `#__invoice_records` DROP `paid_date`;
+ALTER TABLE `#__user_records` DROP `display_name`;
+ALTER TABLE `#__otherincome_records` DROP `invoice_id`;
+ALTER TABLE `#__giftcert_records` DROP `is_redeemed`;
+
+--
+-- Add Columns
+--
+
+ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
+ALTER TABLE `#__giftcert_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
+ALTER TABLE `#__giftcert_records` ADD `close_date` DATETIME NOT NULL AFTER `date_redeemed`;
+ALTER TABLE `#__giftcert_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `close_date`;
+ALTER TABLE `#__giftcert_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
+ALTER TABLE `#__giftcert_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
+ALTER TABLE `#__giftcert_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_client_id`;
+ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
+ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `method`;
+
+--
+-- Rename Columns
+--
+
+ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__giftcert_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
+ALTER TABLE `#__giftcert_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
+ALTER TABLE `#__giftcert_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;
+ALTER TABLE `#__giftcert_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `#__otherincome_records` CHANGE `refund_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__payment_options` CHANGE `bank_transaction_msg` `invoice_bank_transfer_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__payment_options` CHANGE `cheque_payable_to_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__payment_records` CHANGE `transaction_id` `payment_id` INT(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__user_acl_page` CHANGE `Customer` `Client` INT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `#__workorder_records` CHANGE `comments` `comment` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__user_usergroups` CHANGE `usergroup_display_name` `display_name` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '';
+
+--
+-- Move Columns
+--
+
+ALTER TABLE `#__giftcert_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
+
+--
+-- Insert Data
+--
+
+INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES ('10', 'deleted', 'Deleted');
+
+--
+-- Convert from integer to currency
+--
+
+ALTER TABLE `#__invoice_labour` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_parts` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL;
+ALTER TABLE `#__giftcert_records` MODIFY COLUMN `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `blocked`;
+ALTER TABLE `#__invoice_parts` MODIFY COLUMN `qty` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `amount`;
+
+--
+-- Update Email signature and email
+--
+
+UPDATE `#__company_record` SET 
+  `email_signature` = '<p>{company_logo}</p> <p><strong>{company_name}</strong></p> <p><strong>Address:</strong> <br />{company_address}</p> <p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>',
+  `email_msg_invoice` = '<p>Hi {client_first_name} {client_last_name}</p> <p>This is an invoice for the recent work at {client_display_name}.</p> <p>Thanks for your custom.</p>';
 
 --
 -- ACL changes
@@ -394,82 +484,13 @@ UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Superviso
 UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:migrate';
 UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:upgrade';
 
-UPDATE `#__user_usergroups` SET `usergroup_display_name` = 'Client' WHERE `#__user_usergroups`.`usergroup_id` = 7;
+UPDATE `#__user_usergroups` SET `display_name` = 'Client' WHERE `#__user_usergroups`.`usergroup_id` = 7;
 
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:closed';
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'invoice:open';
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:closed';
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:details_edit_comments';
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:open';
-
---
--- Drop Columns
---
-
-ALTER TABLE `#__invoice_records` DROP `paid_date`;
-ALTER TABLE `#__user_records` DROP `display_name`;
-ALTER TABLE `#__otherincome_records` DROP `invoice_id`;
-ALTER TABLE `#__giftcert_records` DROP `is_redeemed`;
-
---
--- Add Columns
---
-
-ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
-ALTER TABLE `#__giftcert_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
-ALTER TABLE `#__giftcert_records` ADD `close_date` DATETIME NOT NULL AFTER `date_redeemed`;
-ALTER TABLE `#__giftcert_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `close_date`;
-ALTER TABLE `#__giftcert_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
-ALTER TABLE `#__giftcert_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
-ALTER TABLE `#__giftcert_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_client_id`;
-ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
-ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `method`;
-
---
--- Rename Columns
---
-
-ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__giftcert_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0';
-ALTER TABLE `#__otherincome_records` CHANGE `refund_type_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__payment_options` CHANGE `bank_transaction_msg` `invoice_bank_transfer_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__payment_options` CHANGE `cheque_payable_to_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__payment_records` CHANGE `transaction_id` `payment_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__user_acl_page` CHANGE `Customer` `Client` INT(1) NOT NULL DEFAULT '0';
-ALTER TABLE `#__workorder_records` CHANGE `comments` `comment` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-
---
--- Move Columns
---
-
-ALTER TABLE `#__giftcert_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
-
---
--- Insert Data
---
-
-INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES ('10', 'deleted', 'Deleted');
-
---
--- Convert from integer to currency
---
-
-ALTER TABLE `#__invoice_labour` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__invoice_parts` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL;
-ALTER TABLE `#__giftcert_records` MODIFY COLUMN `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `blocked`;
-ALTER TABLE `#__invoice_parts` MODIFY COLUMN `qty` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `amount`;
-
---
--- Update Email signature and email
---
-
-UPDATE `#__company_record` SET 
-  `email_signature` = '<p>{company_logo}</p> <p><strong>{company_name}</strong></p> <p><strong>Address:</strong> <br />{company_address}</p> <p><strong>Tel:</strong> {company_telephone} <br /><strong>Website:</strong> {company_website}</p>',
-  `email_msg_invoice` = '<p>Hi {client_first_name} {client_last_name}</p> <p>This is an invoice for the recent work at {client_display_name}.</p> <p>Thanks for your custom.</p>';
-
 
 --
 -- Misc Column Changes

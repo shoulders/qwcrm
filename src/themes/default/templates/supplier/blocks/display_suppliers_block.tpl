@@ -23,7 +23,7 @@
             <td class="olotd4" nowrap><a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}">{$display_suppliers[s].display_name}</a></td>
             <td class="olotd4" nowrap>
                 {section name=t loop=$supplier_types}    
-                    {if $display_suppliers[s].type == $supplier_types[t].supplier_type_id}{t}{$supplier_types[t].display_name}{/t}{/if}        
+                    {if $display_suppliers[s].type == $supplier_types[t].type_key}{t}{$supplier_types[t].display_name}{/t}{/if}        
                 {/section}    
             </td>
             <td class="olotd4" nowrap>{$display_suppliers[s].zip}</td>                                                                        

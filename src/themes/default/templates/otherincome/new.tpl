@@ -97,7 +97,7 @@
                                                                             <td>
                                                                                 <select id="type" name="type" class="olotd5"> 
                                                                                     {section name=s loop=$otherincome_types}    
-                                                                                        <option value="{$otherincome_types[s].otherincome_type_id}">{t}{$otherincome_types[s].display_name}{/t}</option>
+                                                                                        <option value="{$otherincome_types[s].type_key}">{t}{$otherincome_types[s].display_name}{/t}</option>
                                                                                     {/section}    
                                                                                 </select>
                                                                             </td>
@@ -107,7 +107,7 @@
                                                                             <td>
                                                                                 <select id="payment_method" name="payment_method" class="olotd5">
                                                                                     {section name=s loop=$payment_methods}    
-                                                                                        <option value="{$payment_methods[s].payment_method_id}">{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                                        <option value="{$payment_methods[s].method_key}">{t}{$payment_methods[s].display_name}{/t}</option>
                                                                                     {/section} 
                                                                                 </select>                                                                            
                                                                             </td>

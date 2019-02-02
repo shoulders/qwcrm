@@ -65,7 +65,7 @@
                                                                         <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
                                                                         {section name=t loop=$refund_types}    
-                                                                            <option value="{$refund_types[t].refund_type_id}"{if $filter_type == $refund_types[t].refund_type_id} selected{/if}>{t}{$refund_types[t].display_name}{/t}</option>        
+                                                                            <option value="{$refund_types[t].type_key}"{if $filter_type == $refund_types[t].type_key} selected{/if}>{t}{$refund_types[t].display_name}{/t}</option>        
                                                                         {/section}
                                                                     </select>
                                                                 </td>
@@ -77,7 +77,7 @@
                                                                         <option value=""{if $filter_payment_method == ''} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>                                                                        
                                                                         {section name=t loop=$payment_methods_search}    
-                                                                            <option value="{$payment_methods_search[t].payment_method_id}"{if $filter_payment_method == $payment_methods_search[t].payment_method_id} selected{/if}>{t}{$payment_methods_search[t].display_name}{/t}</option>        
+                                                                            <option value="{$payment_methods_search[t].method_key}"{if $filter_payment_method == $payment_methods_search[t].method_key} selected{/if}>{t}{$payment_methods_search[t].display_name}{/t}</option>        
                                                                         {/section}
                                                                     </select>
                                                                 </td>

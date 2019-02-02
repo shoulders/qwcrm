@@ -60,7 +60,7 @@
                                                                     <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
                                                                     <option disabled>----------</option>                                                                        
                                                                     {section name=t loop=$supplier_types}    
-                                                                        <option value="{$supplier_types[t].supplier_type_id}"{if $filter_type == $supplier_types[t].supplier_type_id} selected{/if}>{t}{$supplier_types[t].display_name}{/t}</option>        
+                                                                        <option value="{$supplier_types[t].type_key}"{if $filter_type == $supplier_types[t].type_key} selected{/if}>{t}{$supplier_types[t].display_name}{/t}</option>        
                                                                     {/section}
                                                                 /select>
                                                             </td>

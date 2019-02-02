@@ -392,14 +392,14 @@ function check_page_acl($component, $page_tpl, $user = null) {
     }
 
     // Get user's Group Name by login_usergroup_id
-    $sql = "SELECT ".PRFX."user_usergroups.usergroup_display_name
+    $sql = "SELECT ".PRFX."user_usergroups.display_name
             FROM ".PRFX."user_usergroups
             WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
     
     if(!$rs = $db->execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
     } else {
-        $usergroup_display_name = $rs->fields['usergroup_display_name'];
+        $usergroup_display_name = $rs->fields['display_name'];
     } 
     
     // Build the page name for the ACL lookup
@@ -407,7 +407,7 @@ function check_page_acl($component, $page_tpl, $user = null) {
     
     /* Check Page to see if we have access */
     
-    $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
+    $sql = "SELECT ".$display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
 
     if(!$rs = $db->execute($sql)) {        
         force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));

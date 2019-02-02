@@ -32,12 +32,12 @@
             <td class="olotd4" nowrap>{$display_refunds[r].date|date_format:$date_format}</td>                                                                
             <td class="olotd4" nowrap>
                 {section name=s loop=$refund_types}    
-                    {if $display_refunds[r].type == $refund_types[s].refund_type_id}{t}{$refund_types[s].display_name}{/t}{/if}        
+                    {if $display_refunds[r].type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
             <td class="olotd4" nowrap>
                 {section name=s loop=$payment_methods}    
-                    {if $display_refunds[r].payment_method == $payment_methods[s].payment_method_id}{t}{$payment_methods[s].display_name}{/t}{/if}        
+                    {if $display_refunds[r].payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}        
                 {/section} 
             </td>                                                               
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].net_amount}</td>                                                               
