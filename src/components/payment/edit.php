@@ -20,11 +20,6 @@ if(!isset($VAR['payment_id']) || !$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }
 
-// Check if payment can be edited
-if(!check_payment_can_be_edited($VAR['payment_id'])) {
-    force_page('payment', 'details&payment_id='.$VAR['payment_id'], 'warning_msg='._gettext("You cannot edit this payment because its status does not allow it."));
-}
-
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
@@ -33,13 +28,18 @@ if(isset($VAR['submit'])) {
 
 } else {
     
+    // Check if payment can be edited
+    if(!check_payment_can_be_edited($VAR['payment_id'])) {
+        force_page('payment', 'details&payment_id='.$VAR['payment_id'], 'warning_msg='._gettext("You cannot edit this payment because its status does not allow it."));
+    }
+    
     $payment_details = get_payment_details($VAR['payment_id']);
     
     // Build the page
     $smarty->assign('client_display_name',      get_client_details($payment_details['client_id'], 'display_name'));
     $smarty->assign('employee_display_name',    get_user_details($payment_details['employee_id'], 'display_name'));
     $smarty->assign('payment_types',            get_payment_types()    );
-    $smarty->assign('payment_methods',          get_payment_methods('receive'));
+    $smarty->assign('payment_methods',          get_payment_methods('receive', 'enabled'));
     $smarty->assign('payment_statuses',         get_payment_statuses() );
     $smarty->assign('payment_details', $payment_details);
     $BuildPage .= $smarty->fetch('payment/edit.tpl');

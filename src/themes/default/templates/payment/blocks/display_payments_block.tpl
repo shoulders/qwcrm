@@ -49,7 +49,7 @@
             <!-- Type -->
             <td class="olotd4" align="center">
                 {section name=t loop=$payment_types}    
-                    {if $display_payments[p].type == $payment_types[t].payment_type_id}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                    {if $display_payments[p].type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}                    
                 {/section}
             </td> 
             

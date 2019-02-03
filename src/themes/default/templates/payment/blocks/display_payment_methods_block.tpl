@@ -61,7 +61,7 @@
                                     <td>
                                         {t}Payment Type{/t}:&nbsp;
                                         {section name=t loop=$payment_types}    
-                                            {if $payment_type == $payment_types[t].payment_type_id}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                                            {if $payment_type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}                    
                                         {/section}
                                     </td>
                                 </tr>

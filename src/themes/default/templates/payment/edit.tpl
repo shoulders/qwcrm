@@ -85,7 +85,7 @@
                                                         <td align="right"><b>{t}Type{/t}</b></td>
                                                         <td colspan="3">
                                                             {section name=t loop=$payment_types}    
-                                                                {if $payment_details.type == $payment_types[t].payment_type_id}{t}{$payment_types[t].display_name}{/t}{/if}                    
+                                                                {if $payment_details.type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}                    
                                                             {/section}
                                                             <input name="type" value="{$payment_details.type}" type="hidden"> 
                                                         </td>
@@ -96,8 +96,7 @@
                                                             <select id="method" name="method" class="olotd5">
                                                                 {section name=s loop=$payment_methods}    
                                                                     <option value="{$payment_methods[s].method_key}"{if $payment_details.method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
-                                                                {/section}
-                                                                <input name="method" value="{$payment_details.method}" type="hidden"> 
+                                                                {/section}                                                                
                                                             </select>
                                                         </td>
                                                     </tr>                                                    

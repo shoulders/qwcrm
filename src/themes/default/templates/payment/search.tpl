@@ -63,7 +63,7 @@
                                                                         <option value="transmitted"{if $filter_type == 'transmitted'} selected{/if}>{t}Transmitted{/t}</option>
                                                                         <option disabled>----------</option>
                                                                         {section name=m loop=$payment_types}    
-                                                                            <option value="{$payment_types[m].payment_type_id}"{if $filter_method == $payment_types[m].payment_type_id} selected{/if}>{t}{$payment_types[m].display_name}{/t}</option>        
+                                                                            <option value="{$payment_types[m].type_key}"{if $filter_method == $payment_types[m].type_key} selected{/if}>{t}{$payment_types[m].display_name}{/t}</option>        
                                                                         {/section}
                                                                     </select>
                                                                 </td>

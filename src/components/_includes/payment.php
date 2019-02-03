@@ -593,7 +593,13 @@ function delete_payment($payment_id) {
  function check_payment_can_be_edited($payment_id) {
      
     // Get the payment details
-    $payment_details = get_payment_details($payment_id);    
+    $payment_details = get_payment_details($payment_id);
+    
+    // Is the current payment method active, if not you cannot edit
+    if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
+        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it's current payment method is not available."));
+        return false;        
+    }
            
     // Is Deleted
     if($payment_details['status'] == 'deleted') {
