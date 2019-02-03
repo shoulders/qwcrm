@@ -1806,17 +1806,17 @@ class QSetup {
     }
      
     #######################################################################
-    #  Parse Giftcert records and populate with appropriate workorder_id  #
+    #  Parse Voucher records and populate with appropriate workorder_id  #
     #######################################################################
 
-    function giftcert_correct_workorder_id() {
+    function voucher_correct_workorder_id() {
         
         $db = QFactory::getDbo();        
         
         $local_error_flag = null;                     
         
-        // Loop through all of the giftcert records
-        $sql = "SELECT * FROM ".PRFX."giftcert_records";
+        // Loop through all of the Voucher records
+        $sql = "SELECT * FROM ".PRFX."voucher_records";
         if(!$rs = $db->Execute($sql)) {
             
             // Set the setup global error flag
@@ -1826,7 +1826,7 @@ class QSetup {
             $local_error_flag = true;
             
             // Log Message
-            $record = _gettext("Failed to select all the records from the table").' `giftcert_records`.';
+            $record = _gettext("Failed to select all the records from the table").' `voucher_records`.';
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -1839,7 +1839,7 @@ class QSetup {
             
         } else {
 
-            // Loop through all records, decide and set each giftert's status
+            // Loop through all records, decide and set each Voucher's status
             while(!$rs->EOF) { 
                 
                 // Get the workorder_id from the relevant invoice record
@@ -1855,7 +1855,7 @@ class QSetup {
                     $local_error_flag = true;
                     
                     // Log Message                    
-                    $record = _gettext("Failed to update the `workorder_id` for the gift certificate record").' '.$rs->fields['giftcert_id'];
+                    $record = _gettext("Failed to update the `workorder_id` for the Voucher record").' '.$rs->fields['voucher_id'];
                     
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -1869,7 +1869,7 @@ class QSetup {
                 } else {
                     
                     // Update gifcert record with the new workorder_id
-                    $this->update_record_value(PRFX.'giftcert_records', 'workorder_id', $temp_rs->fields['workorder_id'], 'giftcert_id', $rs->fields['giftcert_id']);
+                    $this->update_record_value(PRFX.'voucher_records', 'workorder_id', $temp_rs->fields['workorder_id'], 'voucher_id', $rs->fields['voucher_id']);
                     
                 }
                                 
@@ -1886,7 +1886,7 @@ class QSetup {
         if($local_error_flag) {            
             
             // Log Message
-            $record = _gettext("Failed to complete assigning `workorder_id` to all gift certificate records.");            
+            $record = _gettext("Failed to complete assigning `workorder_id` to all Voucher records.");            
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -1900,7 +1900,7 @@ class QSetup {
         } else {
             
             // Log Message
-            $record = _gettext("Successfully completed assigning `workorder_id` to all gift certificate records.");
+            $record = _gettext("Successfully completed assigning `workorder_id` to all Voucher records.");
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -1917,17 +1917,17 @@ class QSetup {
 
     
     #################################
-    #  Giftcert correct expiry date #
+    #  Voucher correct expiry date  #
     #################################
 
-    function giftcert_correct_expiry_date() {
+    function voucher_correct_expiry_date() {
         
         $db = QFactory::getDbo();        
         
         $local_error_flag = null;
 
-        // Loop through all of the giftcert records
-        $sql = "SELECT * FROM ".PRFX."giftcert_records";
+        // Loop through all of the Voucher records
+        $sql = "SELECT * FROM ".PRFX."voucher_records";
         if(!$rs = $db->Execute($sql)) {
             
             // Set the setup global error flag
@@ -1937,7 +1937,7 @@ class QSetup {
             $local_error_flag = true;
             
             // Log Message
-            $record = _gettext("Failed to select all the records from the table").' `giftcert_records`.';
+            $record = _gettext("Failed to select all the records from the table").' `voucher_records`.';
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -1950,14 +1950,14 @@ class QSetup {
             
         } else {
 
-            // Loop through all records, decide and set each giftert's status
+            // Loop through all records, decide and set each Voucher's status
             while(!$rs->EOF) { 
                                 
-                // Correct the giftcert expiry date - 00:00:00 to 23:59:59
+                // Correct the Voucher expiry date - 00:00:00 to 23:59:59
                 $correct_expiry_date = preg_replace("00:00:00", "23:59:59", $rs->fields['workorder_id']);
                                  
                 // Update gifcert with the new expiry date
-                $this->update_record_value(PRFX.'giftcert_records', 'expiry_date', $correct_expiry_date , 'giftcert_id', $rs->fields['giftcert_id']);
+                $this->update_record_value(PRFX.'voucher_records', 'expiry_date', $correct_expiry_date , 'voucher_id', $rs->fields['voucher_id']);
                     
             }
                                 
@@ -2002,17 +2002,17 @@ class QSetup {
     }  
     
     #################################################################
-    #  Parse Giftcert records and populate with appropriate status  #  // This is after conversion to mysql DATE
+    #  Parse Voucher records and populate with appropriate status   #  // This is after conversion to mysql DATE
     #################################################################
 
-    function giftcert_correct_status() {
+    function voucher_correct_status() {
         
         $db = QFactory::getDbo();        
         
         $local_error_flag = null;                     
         
-        // Loop through all of the giftcert records
-        $sql = "SELECT * FROM ".PRFX."giftcert_records";
+        // Loop through all of the Voucher records
+        $sql = "SELECT * FROM ".PRFX."voucher_records";
         if(!$rs = $db->Execute($sql)) {
             
             // Set the setup global error flag
@@ -2022,7 +2022,7 @@ class QSetup {
             $local_error_flag = true;
             
             // Log Message
-            $record = _gettext("Failed to select all the records from the table").' `giftcert_records`.';
+            $record = _gettext("Failed to select all the records from the table").' `voucher_records`.';
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -2035,17 +2035,17 @@ class QSetup {
             
         } else {
 
-            // Loop through all records, decide and set each giftert's status
+            // Loop through all records, decide and set each Voucher's status
             while(!$rs->EOF) { 
 
-                // Set qualifying giftcerts to redeemed status
+                // Set qualifying Vouchers to redeemed status
                 if($rs->fields['redeem_date'] != '0000-00-00 00:00:00') {
                     
                     $close_date = $rs->fields['redeem_date'];
                     $status = 'redeemed';                    
                     $blocked = 1;
                 
-                // Set qualifying giftcerts to expired status
+                // Set qualifying Vouchers to expired status
                 } elseif (mysql_datetime() > $rs->fields['expiry_date']) {
                     
                     $close_date = $rs->fields['expiry_date'];
@@ -2061,11 +2061,11 @@ class QSetup {
                     
                 }
                 
-                $sql = "UPDATE `".PRFX."giftcert_records` SET
+                $sql = "UPDATE `".PRFX."voucher_records` SET
                         `close_date` = ".$status.",
                         `status` = ".$status.",                        
                         `blocked` = ".$blocked."
-                        WHERE `gifcert_id` = ".$rs->fields['giftcert_id'];
+                        WHERE `gifcert_id` = ".$rs->fields['voucher_id'];
                 
                 
                 // Run the SQL
@@ -2078,7 +2078,7 @@ class QSetup {
                     $local_error_flag = true;
                     
                     // Log Message                    
-                    $record = _gettext("Failed to update the `status` for the gift certificate record").' '.$rs->fields['giftcert_id'];
+                    $record = _gettext("Failed to update the `status` for the Voucher record").' '.$rs->fields['voucher_id'];
                     
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -2104,7 +2104,7 @@ class QSetup {
         if($local_error_flag) {            
             
             // Log Message
-            $record = _gettext("Failed to complete assigning `status` to all gift certificate records.");            
+            $record = _gettext("Failed to complete assigning `status` to all Voucher records.");            
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -2118,7 +2118,7 @@ class QSetup {
         } else {
             
             // Log Message
-            $record = _gettext("Successfully completed assigning `status` to all gift certificate records.");
+            $record = _gettext("Successfully completed assigning `status` to all Voucher records.");
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';

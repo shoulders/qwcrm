@@ -27,7 +27,7 @@
                                             <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/workorders.gif" alt="" border="0" height="14" width="14" />&nbsp;{t}Works Orders{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab">{t}Schedules{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Gift Certificates{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Vouchers{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Payments{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Account{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_8_contents" class="tab">{t}Notes{/t}</a></li>                    
@@ -63,11 +63,11 @@
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$invoices_closed block_title=_gettext("Closed")}
                                             </div>
 
-                                            <!-- Tab 5 Contents (Gift Certificates) -->
+                                            <!-- Tab 5 Contents (Vouchers) -->
                                             <div id="tab_5_contents" class="tab_contents">
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_purchased block_title=_gettext("Purchased")}
+                                                {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$vouchers_purchased block_title=_gettext("Purchased")}
                                                 <br>
-                                                {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$giftcerts_claimed block_title=_gettext("Claimed")}                                                
+                                                {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$vouchers_claimed block_title=_gettext("Claimed")}                                                
                                             </div>
                                             
                                             <!-- Tab 6 Contents (Payments) -->

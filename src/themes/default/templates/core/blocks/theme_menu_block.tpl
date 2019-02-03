@@ -83,14 +83,14 @@
                 
                 </div>
                 
-                <!-- Gift Certificates -->
+                <!-- Vouchers -->
                 <div class="menugroup">
-                    <span>{t}Gift Certificates{/t}</span>
-                    <a href="index.php?component=giftcert&page_tpl=search"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
-                    {if $giftcert_id}
-                        <a href="index.php?component=giftcert&page_tpl=edit&giftcert_id={$giftcert_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
-                        <a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$giftcert_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
-                        <a href="index.php?component=giftcert&page_tpl=status&giftcert_id={$giftcert_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    <span>{t}Vouchers{/t}</span>
+                    <a href="index.php?component=voucher&page_tpl=search"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Search{/t}</a>
+                    {if $voucher_id}
+                        <a href="index.php?component=voucher&page_tpl=edit&voucher_id={$voucher_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
+                        <a href="index.php?component=voucher&page_tpl=details&voucher_id={$voucher_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
+                        <a href="index.php?component=voucher&page_tpl=status&voucher_id={$voucher_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
                     {/if}
                 </div>                   
                 

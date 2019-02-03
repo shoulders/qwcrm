@@ -28,8 +28,8 @@ if(isset($VAR['submit'])) {
     $invoice_stats = get_invoices_stats('all', $start_date, $end_date);
     $smarty->assign('invoice_stats', $invoice_stats );       
         
-    // Giftcerts
-    $smarty->assign('giftcert_stats', get_giftcerts_stats('all', $start_date, $end_date));
+    // Vouchers
+    $smarty->assign('voucher_stats', get_vouchers_stats('all', $start_date, $end_date));
         
     // Expense    
     $expense_stats = get_expenses_stats($start_date, $end_date);    

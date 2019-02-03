@@ -9,9 +9,9 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 ######### referrer based ####################
@@ -104,8 +104,8 @@ if(isset($VAR['submit'])) {
         require(COMPONENTS_DIR.'payment/methods/method_direct_debit.php');
         break;        
 
-        case 'gift_certificate':
-        require(COMPONENTS_DIR.'payment/methods/method_gift_certificate.php');
+        case 'voucher':
+        require(COMPONENTS_DIR.'payment/methods/method_voucher.php');
         break;
     
         case 'other':

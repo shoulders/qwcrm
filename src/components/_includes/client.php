@@ -480,13 +480,13 @@ function delete_client($client_id) {
         return false;
     }    
     
-    // Check if client has any gift certificates
-    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert_records WHERE client_id=".$db->qstr($client_id);
+    // Check if client has any Vouchers
+    $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE client_id=".$db->qstr($client_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Gift Certificates in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Vouchers in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a client who has gift certificates.');
+        postEmulationWrite('warning_msg', 'You can not delete a client who has Vouchers.');
         return false;
     }
     

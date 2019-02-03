@@ -217,24 +217,23 @@ CREATE TABLE `#__expense_types` (
 INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'bank_charges', 'Bank Charges'),
 (2, 'credit', 'Credit'),
-(3, 'client_refund', 'Client Refund'),
+(3, 'consumables', 'Consumables'),
 (4, 'equipment', 'Equipment'),
 (5, 'fuel', 'Fuel'),
-(6, 'gift_certificate', 'Gift Certificate'),
-(7, 'marketing', 'Marketing'),
-(8, 'office_supplies', 'Office Supplies'),
-(9, 'online', 'Online'),
-(10, 'other', 'Other'),
-(11, 'parts', 'Parts'),
-(12, 'postage', 'Postage'),
-(13, 'rent', 'Rent'),
-(14, 'services', 'Services'),
-(15, 'software', 'Software'),
-(16, 'telco', 'TelCo'),
-(17, 'transport', 'Transport'),
-(18, 'utilities', 'Utilities'),
-(19, 'voucher', 'Voucher'),
-(20, 'wages', 'Wages');
+(6, 'marketing', 'Marketing'),
+(7, 'office_supplies', 'Office Supplies'),
+(8, 'online', 'Online'),
+(9, 'other', 'Other'),
+(10, 'parts', 'Parts'),
+(11, 'postage', 'Postage'),
+(12, 'rent', 'Rent'),
+(13, 'services', 'Services'),
+(14, 'software', 'Software'),
+(15, 'telco', 'TelCo'),
+(16, 'transport', 'Transport'),
+(17, 'utilities', 'Utilities'),
+(18, 'voucher', 'Voucher'),
+(19, 'wages', 'Wages');
 
 -- --------------------------------------------------------
 
@@ -450,9 +449,9 @@ INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `r
 (3, 'cash', 'Cash', 1, 1, 0, 0, 1),
 (4, 'cheque', 'Cheque', 1, 1, 0, 0, 0),
 (5, 'direct_debit', 'Direct Debit', 1, 1, 0, 0, 0),
-(6, 'gift_certificate', 'Gift Certificate', 0, 1, 1, 1, 0),
-(7, 'other', 'Other', 0, 1, 1, 0, 0),
-(8, 'paypal', 'PayPal', 1, 1, 0, 0, 0);
+(6, 'other', 'Other', 0, 1, 1, 0, 0),
+(7, 'paypal', 'PayPal', 1, 1, 0, 0, 0),
+(8, 'voucher', 'Voucher', 0, 1, 1, 1, 0);
 
 -- --------------------------------------------------------
 

@@ -1,4 +1,4 @@
-<!-- print_gift_certificate.tpl -->
+<!-- print_voucher.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -11,13 +11,13 @@
     <meta charset="utf-8">
     
     <!-- PDF Title -->
-    <title>{t}GIFTCERT_PRINT_GIFT_CERTIFICATE_PAGE_TITLE{/t}</title>   
+    <title>{t}VOUCHER_PRINT_VOUCHER_PAGE_TITLE{/t}</title>   
         
     <!-- PDF Subject -->
-    <meta name="description" content="{t}GIFTCERT_PRINT_GIFT_CERTIFICATE_META_DESCRIPTION{/t}">
+    <meta name="description" content="{t}VOUCHER_PRINT_VOUCHER_META_DESCRIPTION{/t}">
     
     <!-- PDF Keywords -->
-    <meta name="keywords" content="{t}GIFTCERT_PRINT_GIFT_CERTIFICATE_META_KEYWORDS{/t}">
+    <meta name="keywords" content="{t}VOUCHER_PRINT_VOUCHER_META_KEYWORDS{/t}">
     
     <!-- PDF Author -->
     <meta name="author" content="QWcrm - QuantumWarp.com">       
@@ -43,7 +43,7 @@
             <td>&nbsp;</td>
         </tr>
 
-        <!-- Gift Certificate Details -->
+        <!-- Voucher Details -->
         <tr>                        
             <td style="text-align:center">
                 {t}Purchased by{/t}<br>
@@ -54,7 +54,7 @@
         </tr>
         <tr>
             <td style="text-align:center">
-                {$currency_sym}{$giftcert_details.amount}
+                {$currency_sym}{$voucher_details.amount}
             </td>
         </tr>
         
@@ -66,8 +66,8 @@
         <tr>
             <td style="text-align:center">
                 {$barcode}
-                {$giftcert_details.giftcert_code}<br>
-                <strong>{t}Valid Until{/t} {$giftcert_details.expiry_date|date_format:$date_format}</strong>
+                {$voucher_details.voucher_code}<br>
+                <strong>{t}Valid Until{/t} {$voucher_details.expiry_date|date_format:$date_format}</strong>
             </td>
         </tr>
     </table>

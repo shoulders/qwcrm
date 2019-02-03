@@ -11,7 +11,6 @@
  * This file is mandatory and allows values stored in the database to be translated by PoEdit
  */
 
-
 /* Client Types */
 _gettext("Residential");
 _gettext("Commercial");
@@ -25,7 +24,6 @@ _gettext("Credit");
 _gettext("Client Refund");
 _gettext("Equipment");
 _gettext("Fuel");
-_gettext("Gift Certificate");
 _gettext("Marketing");
 _gettext("Office Supplies");
 _gettext("Online");
@@ -40,15 +38,6 @@ _gettext("Transport");
 _gettext("Utilities");
 _gettext("Voucher");
 _gettext("Wages");
-
-/* Giftcert Statuses */
-_gettext("Unused");
-_gettext("Redeemed");
-_gettext("Suspended");
-_gettext("Expired");
-_gettext("Refunded");
-_gettext("Cancelled");
-_gettext("Deleted");
 
 /* Invoice Statuses */
 _gettext("Pending");
@@ -83,9 +72,9 @@ _gettext("Card");
 _gettext("Cash");
 _gettext("Cheque");
 _gettext("Direct Debit");
-_gettext("Gift Certificate");
 _gettext("Other");
 _gettext("PayPal");
+_gettext("Voucher");
 
 /* Payment Types */
 _gettext("Invoice");
@@ -125,6 +114,15 @@ _gettext("Counter");
 _gettext("Client");
 _gettext("Guest");
 _gettext("Public");
+
+/* Voucher Statuses */
+_gettext("Unused");
+_gettext("Redeemed");
+_gettext("Suspended");
+_gettext("Expired");
+_gettext("Refunded");
+_gettext("Cancelled");
+_gettext("Deleted");
 
 /* Workorder Statuses */
 _gettext("Unassigned");

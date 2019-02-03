@@ -141,7 +141,7 @@
                                         <!-- Records Table -->
                                         <tr>                                            
                                             <td valign="top" colspan="2">                                                
-                                                {include file='expense/blocks/display_expenses_block.tpl' display_giftcerts=$display_expenses block_title=''}
+                                                {include file='expense/blocks/display_expenses_block.tpl' display_vouchers=$display_expenses block_title=''}
                                             </td>
                                         </tr>
                                         

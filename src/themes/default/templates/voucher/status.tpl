@@ -10,10 +10,10 @@
         <td>
             <table width="700" cellpadding="5" cellspacing="0" border="0" >
                 <tr>
-                    <td class="menuhead2" width="80%">{t}Status{/t} {t}for{/t} <a href="index.php?component=giftcert&page_tpl=details&giftcert_id={$giftcert_id}">{t}Gift Certificate{/t} {$giftcert_id}</a></td>
+                    <td class="menuhead2" width="80%">{t}Status{/t} {t}for{/t} <a href="index.php?component=voucher&page_tpl=details&voucher_id={$voucher_id}">{t}Voucher{/t} {$voucher_id}</a></td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <a>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}GIFTCERT_STATUS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}GIFTCERT_STATUS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}VOUCHER_STATUS_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}VOUCHER_STATUS_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                         </a>
                     </td>
                 </tr>  
@@ -31,11 +31,11 @@
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>                                    
-                                        <form action="index.php?component=giftcert&page_tpl=status&giftcert_id={$giftcert_id}" method="post">
+                                        <form action="index.php?component=voucher&page_tpl=status&voucher_id={$voucher_id}" method="post">
                                             <b>{t}New Status{/t}: </b>
                                             <select class="olotd4" name="assign_status">
-                                                {section name=s loop=$giftcert_edited_statuses}    
-                                                    <option value="{$giftcert_edited_statuses[s].status_key}"{if $giftcert_status == $giftcert_edited_statuses[s].status_key} selected{/if}>{t}{$giftcert_edited_statuses[s].display_name}{/t}</option>
+                                                {section name=s loop=$voucher_edited_statuses}    
+                                                    <option value="{$voucher_edited_statuses[s].status_key}"{if $voucher_status == $voucher_edited_statuses[s].status_key} selected{/if}>{t}{$voucher_edited_statuses[s].display_name}{/t}</option>
                                                 {/section}                                            
                                             </select>                                    
                                             <p>&nbsp;</p>                                        
@@ -44,13 +44,13 @@
                                     {else}
                                         <br />
                                         <b>{t}Current Status{/t} =
-                                        {section name=s loop=$giftcert_statuses}    
-                                            {if $giftcert_status == $giftcert_statuses[s].status_key}{$giftcert_statuses[s].display_name}{/if}
+                                        {section name=s loop=$voucher_statuses}    
+                                            {if $voucher_status == $voucher_statuses[s].status_key}{$voucher_statuses[s].display_name}{/if}
                                         {/section}
                                         </b>
                                         <br />
                                         <br />
-                                        {t}This gift certificate cannot have it's status changed because it's current state does not allow it.{/t}
+                                        {t}This Voucher cannot have it's status changed because it's current state does not allow it.{/t}
                                         <br />
                                         <br />
                                     {/if}
@@ -61,14 +61,14 @@
                                     <p>&nbsp;</p> 
                                 </td>
 
-                                <!-- Delete Gift Certificate -->                        
+                                <!-- Delete Voucher -->                        
                                 <td class="olotd4" align="center" width="33%">                                                                       
                                     {if $allowed_to_delete}
-                                        <form method="post" action="index.php?component=giftcert&page_tpl=delete&giftcert_id={$giftcert_id}">
-                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this gift certificate?{/t}');">                                            
+                                        <form method="post" action="index.php?component=voucher&page_tpl=delete&voucher_id={$voucher_id}">
+                                            <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this Voucher?{/t}');">                                            
                                         </form>                                            
                                     {else}
-                                        {t}This gift certificate cannot be deleted because it's status, or the attached invoice's status does not allow it.{/t}
+                                        {t}This Voucher cannot be deleted because it's status, or the attached invoice's status does not allow it.{/t}
                                     {/if}                                        
                                 </td>                                
                                 

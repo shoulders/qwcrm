@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'giftcert.php');
+require(INCLUDES_DIR.'voucher.php');
 
 // Prevent undefined variable errors
 $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
@@ -21,12 +21,12 @@ $VAR['filter_redeemed'] = isset($VAR['filter_redeemed']) ? $VAR['filter_redeemed
 if(isset($VAR['submit'])) {
     
     // Log activity
-    $record = _gettext("A search of gift certificates has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
+    $record = _gettext("A search of Vouchers has been performed with the search term").' `'.$VAR['search_term'].'` '.'in the category'.' `'.$VAR['search_category'].'`.';
     write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset($VAR['submit']);
-    force_page('giftcert', 'search', $VAR, 'get');
+    force_page('voucher', 'search', $VAR, 'get');
     
 }
 
@@ -35,6 +35,6 @@ $smarty->assign('search_category',      $VAR['search_category']                 
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                                                     );
 $smarty->assign('filter_status',        $VAR['filter_status']                                                                                                                                          );
 $smarty->assign('filter_redeemed',      $VAR['filter_redeemed']                                                                                                                                     );
-$smarty->assign('giftcert_statuses',    get_giftcert_statuses()                                                                                                                                  );
-$smarty->assign('display_giftcerts',    display_giftcerts('giftcert_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status']));
-$BuildPage .= $smarty->fetch('giftcert/search.tpl');
+$smarty->assign('voucher_statuses',    get_voucher_statuses()                                                                                                                                  );
+$smarty->assign('display_vouchers',    display_vouchers('voucher_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status']));
+$BuildPage .= $smarty->fetch('voucher/search.tpl');

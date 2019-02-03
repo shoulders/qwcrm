@@ -10,8 +10,8 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
@@ -28,9 +28,9 @@ if(!isset($VAR['payment_id']) || !$VAR['payment_id']) {
 // Get payment details
 $payment_details = get_payment_details($VAR['payment_id']);
 
-// Cannot delete giftcerts
-if($payment_details['method'] == 'gift_certificate') {    
-    force_page('payment', 'search', 'warning_msg='._gettext("You cannot delete a Gift Certificate."));
+// Cannot delete Vouchers
+if($payment_details['method'] == 'voucher') {    
+    force_page('payment', 'search', 'warning_msg='._gettext("You cannot delete a Voucher."));
 }
 
 // Delete the payment

@@ -537,13 +537,13 @@ function delete_user($user_id) {
         return false;
     }    
     
-    // Check if user is assigned to any gift certificates
-    $sql = "SELECT count(*) as count FROM ".PRFX."giftcert_records WHERE employee_id=".$db->qstr($user_id);
+    // Check if user is assigned to any Vouchers
+    $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$db->qstr($user_id);
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Gift Certificates in the database."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has gift certificates."));
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has Vouchers."));
         return false;
     }
     

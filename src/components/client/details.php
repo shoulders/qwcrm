@@ -10,11 +10,11 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
@@ -41,9 +41,9 @@ $smarty->assign('display_schedules',        display_schedules('schedule_id', 'DE
 $smarty->assign('invoices_open',            display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', null, $VAR['client_id'])           );
 $smarty->assign('invoices_closed',          display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'closed', null, $VAR['client_id'])            );
 
-$smarty->assign('giftcert_statuses',        get_giftcert_statuses()                                                                                                        );
-$smarty->assign('giftcerts_purchased',      display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, $VAR['client_id'])              );
-$smarty->assign('giftcerts_claimed',        display_giftcerts('giftcert_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, null, null, null, $VAR['client_id'])        );
+$smarty->assign('voucher_statuses',        get_voucher_statuses()                                                                                                        );
+$smarty->assign('vouchers_purchased',      display_vouchers('voucher_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, $VAR['client_id'])              );
+$smarty->assign('vouchers_claimed',        display_vouchers('voucher_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'redeemed', null, null, null, null, $VAR['client_id'])        );
 
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );
 $smarty->assign('payment_methods',          get_payment_methods()                                                                               );
@@ -53,7 +53,7 @@ $smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC
                                             
 $smarty->assign('workorder_stats',          get_workorders_stats('all', null, null, null, $VAR['client_id'])  );
 $smarty->assign('invoice_stats',            get_invoices_stats('all', null, null, null, $VAR['client_id'])  );
-$smarty->assign('giftcert_stats',           get_giftcerts_stats('all', null, null, null, $VAR['client_id'])  );
+$smarty->assign('voucher_stats',           get_vouchers_stats('all', null, null, null, $VAR['client_id'])  );
 $smarty->assign('payment_stats',            get_payments_stats('all', null, null, null, $VAR['client_id'])   );
 
 $BuildPage .= $smarty->fetch('client/details.tpl');

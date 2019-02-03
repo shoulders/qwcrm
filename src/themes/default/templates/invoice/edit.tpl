@@ -494,9 +494,9 @@
                                                         <br>
                                                     {/if}
 
-                                                    <!-- Add Gift Certificate Button -->
+                                                    <!-- Add Voucher Button -->
                                                     {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}  
-                                                        <button type="button" onclick="location.href='index.php?component=giftcert&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Gift Certificate{/t}</button>
+                                                        <button type="button" onclick="location.href='index.php?component=voucher&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Add Voucher{/t}</button>
                                                     {/if}
 
                                                     <!-- Receive Payment Button -->
@@ -654,14 +654,14 @@
                                     </td>
                                 </tr>
                                 
-                                <!-- Gift Certificates -->                                
+                                <!-- Vouchers -->                                
                                 <tr>
                                     <td>                                                
-                                        {include file='giftcert/blocks/display_giftcerts_block.tpl' display_giftcerts=$display_giftcerts block_title=_gettext("Gift Certificates")}
+                                        {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$display_vouchers block_title=_gettext("Vouchers")}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5" style="text-align:right;"><b>{t}Gift Certificates Sub Total{/t}</b> {$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>                                    
+                                    <td colspan="5" style="text-align:right;"><b>{t}Vouchers Sub Total{/t}</b> {$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>                                    
                                 </tr>
 
                                 <!-- Totals Section -->
@@ -693,8 +693,8 @@
                                                             </tr
                                                         {/if}                                                        
                                                         <tr>
-                                                            <td class="olotd4" width="80%" align="right"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b></td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t} ({t}Total{/t})</b></td>

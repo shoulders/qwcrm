@@ -1006,13 +1006,13 @@ function count_suppliers() {
     
 }
 
-/** Gift Certificates **/
+/** Vouchers **/
 
 #####################################
-#   Get giftcerts stats             #
+#   Get vouchers stats              #
 #####################################
 
-function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
     
     $stats = array();
     
@@ -1021,15 +1021,15 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
     
         $current_stats = array(
                         
-            "count_open"        =>  count_giftcerts('open', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_open"        =>  count_vouchers('open', $start_date, $end_date, null, $employee_id, $client_id),
             
-            "count_unused"      =>  count_giftcerts('unused', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_redeemed"    =>  count_giftcerts('redeemed', $start_date, $end_date, null,  $employee_id, $client_id),
-            "count_suspended"   =>  count_giftcerts('suspended', $start_date, $end_date, null, $employee_id, $client_id),            
-            "count_expired"     =>  count_giftcerts('expired', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_refunded"    =>  count_giftcerts('refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_cancelled"   =>  count_giftcerts('refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_deleted"     =>  count_giftcerts('deleted', $start_date, $end_date, null, $employee_id, $client_id), // not always available                
+            "count_unused"      =>  count_vouchers('unused', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_redeemed"    =>  count_vouchers('redeemed', $start_date, $end_date, null,  $employee_id, $client_id),
+            "count_suspended"   =>  count_vouchers('suspended', $start_date, $end_date, null, $employee_id, $client_id),            
+            "count_expired"     =>  count_vouchers('expired', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_refunded"    =>  count_vouchers('refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_cancelled"   =>  count_vouchers('refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_deleted"     =>  count_vouchers('deleted', $start_date, $end_date, null, $employee_id, $client_id), // not always available                
              
         );
 
@@ -1041,11 +1041,11 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
     if($record_set == 'historic' || $record_set == 'all') {       
         
         $historic_stats = array(                       
-            "count_opened"      =>  count_giftcerts('opened', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_closed"      =>  count_giftcerts('closed', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_opened"      =>  count_vouchers('opened', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_closed"      =>  count_vouchers('closed', $start_date, $end_date, null, $employee_id, $client_id),
 
-            // This is where the client has used a giftcert from someone else      
-            "count_claimed"     =>  count_giftcerts('claimed', $start_date, $end_date, null, $employee_id, $client_id),
+            // This is where the client has used a Voucher from someone else      
+            "count_claimed"     =>  count_vouchers('claimed', $start_date, $end_date, null, $employee_id, $client_id),
             
         );
         
@@ -1058,18 +1058,18 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
         
         $revenue_stats = array(                       
             
-            "sum_opened"        =>  sum_giftcerts_items('amount', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_closed"        =>  sum_giftcerts_items('amount', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_opened"        =>  sum_vouchers_items('amount', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_closed"        =>  sum_vouchers_items('amount', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
             
-            "sum_unused"        =>  sum_giftcerts_items('amount', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_redeemed"      =>  sum_giftcerts_items('amount', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_suspended"     =>  sum_giftcerts_items('amount', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
-            "sum_expired"       =>  sum_giftcerts_items('amount', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_refunded"      =>  sum_giftcerts_items('amount', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_cancelled"     =>  sum_giftcerts_items('amount', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_unused"        =>  sum_vouchers_items('amount', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_redeemed"      =>  sum_vouchers_items('amount', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_suspended"     =>  sum_vouchers_items('amount', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
+            "sum_expired"       =>  sum_vouchers_items('amount', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_refunded"      =>  sum_vouchers_items('amount', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_cancelled"     =>  sum_vouchers_items('amount', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
             
-            // This is where the client has used a giftcert from someone else
-            "sum_claimed"       =>  sum_giftcerts_items('amount', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
+            // This is where the client has used a Voucher from someone else
+            "sum_claimed"       =>  sum_vouchers_items('amount', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
             
         );
         
@@ -1082,10 +1082,10 @@ function get_giftcerts_stats($record_set, $start_date = null, $end_date = null, 
 }
 
 #####################################
-#  Build giftcert Status filter SQL  #
+#  Build Voucher Status filter SQL  #
 #####################################
 
-function giftcert_build_filter_by_status($status = null, $client_id = null) {
+function voucher_build_filter_by_status($status = null, $client_id = null) {
     
     $db = QFactory::getDbo();
      
@@ -1094,20 +1094,20 @@ function giftcert_build_filter_by_status($status = null, $client_id = null) {
     if($status) {
                 
         if($status == 'open') {            
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.close_date = '0000-00-00 00:00:00'";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date = '0000-00-00 00:00:00'";
         } elseif($status == 'opened') {
             // Do nothing
         } elseif($status == 'expired') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.expiry_date != '0000-00-00 00:00:00'";   
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date != '0000-00-00 00:00:00'";   
         } elseif($status == 'redeemed') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.redeem_date != '0000-00-00 00:00:00'";   
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeem_date != '0000-00-00 00:00:00'";   
         } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.close_date != '0000-00-00 00:00:00'";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date != '0000-00-00 00:00:00'";
         } elseif($status == 'claimed' && $client_id) {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.status = 'redeemed'";
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.redeemed_client_id = ".$db->qstr($client_id);
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$db->qstr($client_id);
         } else {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.status = ".$db->qstr($status);                       
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.status = ".$db->qstr($status);                       
         }
         
     }
@@ -1117,10 +1117,10 @@ function giftcert_build_filter_by_status($status = null, $client_id = null) {
 }
 
 #####################################
-#   Build giftcert Date filter SQL   #
+#   Build Voucher Date filter SQL   #
 #####################################
 
-function giftcert_build_filter_by_date($start_date = null,  $end_date = null, $date_type = null) {
+function voucher_build_filter_by_date($start_date = null,  $end_date = null, $date_type = null) {
     
     $db = QFactory::getDbo();
      
@@ -1129,13 +1129,13 @@ function giftcert_build_filter_by_date($start_date = null,  $end_date = null, $d
     if($start_date && $end_date) {
         
         if($date_type == 'opened') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."giftcert_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type== 'expired') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.expiry_date >= ".$db->qstr($start_date)." AND ".PRFX."giftcert_records.expiry_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'redeemed') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.redeem_date >= ".$db->qstr($start_date)." AND ".PRFX."giftcert_records.redeem_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeem_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.redeem_date <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."giftcert_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."giftcert_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
         } elseif($date_type == 'due_date') {       
@@ -1151,40 +1151,40 @@ function giftcert_build_filter_by_date($start_date = null,  $end_date = null, $d
 }
 
 #########################################
-#     Count giftcerts                   #
+#     Count Vouchers                    #
 #########################################
 
-function count_giftcerts($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function count_vouchers($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";  
+    $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
     
     // Restrict by Status
-    $whereTheseRecords .= giftcert_build_filter_by_status($status, $client_id);
+    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
             
     // Filter by Date
-    $whereTheseRecords .= giftcert_build_filter_by_date($start_date, $end_date, $date_type);
+    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
 
     // Filter by Employee
     if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."giftcert_records.employee_id=".$db->qstr($employee_id);
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$db->qstr($employee_id);
     }
     
     // Filter by Client
     if($client_id && $status != 'claimed') {
-        $whereTheseRecords .= " AND ".PRFX."giftcert_records.client_id=".$db->qstr($client_id);
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
     }
     
     // Execute the SQL
     $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."giftcert_records
-            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."giftcert_records.invoice_id = ".PRFX."invoice_records.invoice_id
+            FROM ".PRFX."voucher_records
+            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
             ".$whereTheseRecords;    
             
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count gift certificates."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
         
     } else {      
         
@@ -1195,39 +1195,39 @@ function count_giftcerts($status = null, $start_date = null, $end_date = null, $
 }
 
 ###########################################
-#  Sum selected value of gift certificate #
+#  Sum selected value of Vouchers         #
 ###########################################
 
-function sum_giftcerts_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function sum_vouchers_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."giftcert_records.giftcert_id\n";  
+    $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
         
     // Restrict by Status
-    $whereTheseRecords .= giftcert_build_filter_by_status($status, $client_id);
+    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
             
     // Filter by Date
-    $whereTheseRecords .= giftcert_build_filter_by_date($start_date, $end_date, $date_type);
+    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Employee
     if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."giftcert_records.giftcert_records.employee_id=".$db->qstr($employee_id);
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.voucher_records.employee_id=".$db->qstr($employee_id);
     }
     
     // Filter by Client
     if($client_id && $status != 'claimed') {
-        $whereTheseRecords .= " AND ".PRFX."giftcert_records.client_id=".$db->qstr($client_id);
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
     }
     
-    $sql = "SELECT SUM(".PRFX."giftcert_records.$value_name) AS sum
-            FROM ".PRFX."giftcert_records
-            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."giftcert_records.invoice_id = ".PRFX."invoice_records.invoice_id
+    $sql = "SELECT SUM(".PRFX."voucher_records.$value_name) AS sum
+            FROM ".PRFX."voucher_records
+            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
             ".$whereTheseRecords;
     
     if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected gift certificates."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
     } else {
         
         return $rs->fields['sum'];

@@ -41,7 +41,7 @@ QWcrm has many features, not all can be listed here:
 * Assign payments to invoices
 * Templatable
 * Migrate data from MyITCRM
-* Gift Certificates
+* Vouchers
 * Expenses and Refunds
 * Suppliers Database
 * Financial Report

@@ -38,7 +38,7 @@
                                                                         <option value="client_id"{if $search_category == 'client_id'} selected{/if}>{t}Client ID{/t}</option>
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Name{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
-                                                                        <option value="giftcert_id"{if $search_category == 'giftcert_id'} selected{/if}>{t}Giftcert ID{/t}</option>                                                                                                                                              
+                                                                        <option value="voucher_id"{if $search_category == 'voucher_id'} selected{/if}>{t}Voucher ID{/t}</option>                                                                                                                                              
                                                                         <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
@@ -142,7 +142,7 @@
                                         <!-- Records Table -->
                                         <tr>                                            
                                             <td valign="top" colspan="2">                                                
-                                                {include file='refund/blocks/display_refunds_block.tpl' display_giftcerts=$display_refunds block_title=''}
+                                                {include file='refund/blocks/display_refunds_block.tpl' display_vouchers=$display_refunds block_title=''}
                                             </td>
                                         </tr>
                                         

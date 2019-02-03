@@ -27,9 +27,9 @@ $VAR['cheque']['active'] = isset($VAR['cheque']['active']) ? $VAR['cheque']['act
 $VAR['direct_debit']['send'] = isset($VAR['direct_debit']['send']) ? $VAR['direct_debit']['send'] : null;
 $VAR['direct_debit']['receive'] = isset($VAR['direct_debit']['receive']) ? $VAR['direct_debit']['receive'] : null;
 $VAR['direct_debit']['active'] = isset($VAR['direct_debit']['active']) ? $VAR['direct_debit']['active'] : null;
-$VAR['gift_certificate']['send'] = isset($VAR['gift_certificate']['send']) ? $VAR['gift_certificate']['send'] : null;
-$VAR['gift_certificate']['receive'] = isset($VAR['gift_certificate']['receive']) ? $VAR['gift_certificate']['receive'] : null;
-$VAR['gift_certificate']['active'] = isset($VAR['gift_certificate']['active']) ? $VAR['gift_certificate']['active'] : null;
+$VAR['voucher']['send'] = isset($VAR['voucher']['send']) ? $VAR['voucher']['send'] : null;
+$VAR['voucher']['receive'] = isset($VAR['voucher']['receive']) ? $VAR['voucher']['receive'] : null;
+$VAR['voucher']['active'] = isset($VAR['voucher']['active']) ? $VAR['voucher']['active'] : null;
 $VAR['other']['send'] = isset($VAR['other']['send']) ? $VAR['other']['send'] : null;
 $VAR['other']['receive'] = isset($VAR['other']['receive']) ? $VAR['other']['receive'] : null;
 $VAR['other']['active'] = isset($VAR['other']['active']) ? $VAR['other']['active'] : null;
@@ -39,7 +39,7 @@ $VAR['paypal']['active'] = isset($VAR['paypal']['active']) ? $VAR['paypal']['act
 */
 
 // Prevent undefined variable errors (from checkboxes)
-$checkboxes = array('bank_transfer', 'card', 'cash', 'cheque', 'direct_debit', 'gift_certificate', 'other', 'paypal');
+$checkboxes = array('bank_transfer', 'card', 'cash', 'cheque', 'direct_debit', 'voucher', 'other', 'paypal');
 foreach($checkboxes as $checkbox) {     
     $VAR[$checkbox]['send']     = isset($VAR[$checkbox]['send'])    ? $VAR[$checkbox]['send']    : '0';
     $VAR[$checkbox]['receive']  = isset($VAR[$checkbox]['receive']) ? $VAR[$checkbox]['receive'] : '0';

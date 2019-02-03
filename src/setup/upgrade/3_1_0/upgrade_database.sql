@@ -146,9 +146,9 @@ INSERT INTO `#__payment_methods` (`id`, `method_key`, `display_name`, `send`, `r
 (3, 'cash', 'Cash', 1, 1, 0, 0, 1),
 (4, 'cheque', 'Cheque', 1, 1, 0, 0, 0),
 (5, 'direct_debit', 'Direct Debit', 1, 1, 0, 0, 0),
-(6, 'gift_certificate', 'Gift Certificate', 0, 1, 1, 1, 0),
-(7, 'other', 'Other', 0, 1, 1, 0, 0),
-(8, 'paypal', 'PayPal', 1, 1, 0, 0, 0);
+(6, 'other', 'Other', 0, 1, 1, 0, 0),
+(7, 'paypal', 'PayPal', 1, 1, 0, 0, 0),
+(8, 'voucher', 'Voucher', 0, 1, 1, 1, 0);
 
 ALTER TABLE `#__payment_methods` ADD PRIMARY KEY (`id`);
 
@@ -412,8 +412,8 @@ ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COL
 --
 
 ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__giftcert_records` CHANGE `giftcert_id` `voucher_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__giftcert_records` CHANGE `giftcert_code` `voucher_code` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `giftcert_id` `voucher_id` INT(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__voucher_records` CHANGE `giftcert_code` `voucher_code` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;

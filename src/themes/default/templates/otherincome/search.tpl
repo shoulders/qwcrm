@@ -140,7 +140,7 @@
                                         <!-- Records Table -->
                                         <tr>                                            
                                             <td valign="top" colspan="2">                                                
-                                                {include file='otherincome/blocks/display_otherincomes_block.tpl' display_giftcerts=$display_otherincomes block_title=''}
+                                                {include file='otherincome/blocks/display_otherincomes_block.tpl' display_vouchers=$display_otherincomes block_title=''}
                                             </td>
                                         </tr>
                                         

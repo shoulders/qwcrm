@@ -10,10 +10,10 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'report.php');
+require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a invoice_id

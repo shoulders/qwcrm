@@ -179,23 +179,23 @@
         <br>
     {/if}
     
-    <!-- Giftcerts Table -->
-    {if $display_giftcerts}
+    <!-- Vouchers Table -->
+    {if $display_vouchers}
         <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
-                <td class="olohead"><b>{t}Gift Certificate{/t} {t}Code{/t}</b></td>                
+                <td class="olohead"><b>{t}Voucher{/t} {t}Code{/t}</b></td>                
                 <td class="olohead" width="60" align="right"><b>{t}Expiry Date{/t}</b></td>
                 <td class="olohead" width="80" align="right"><b>{t}Price{/t}</b></td>
             </tr>
-            {section name=p loop=$display_giftcerts}        
+            {section name=p loop=$display_vouchers}        
                 <tr class="olotd4">
-                    <td class="olotd4">{$display_giftcerts[p].giftcert_code}</td>                    
-                    <td class="olotd4" width="60" align="right">{$display_giftcerts[p].expiry_date|date_format:$date_format}</td>
-                    <td class="olotd4" width="80" align="right">{$currency_sym} {$display_giftcerts[p].amount}</td>
+                    <td class="olotd4">{$display_vouchers[p].voucher_code}</td>                    
+                    <td class="olotd4" width="60" align="right">{$display_vouchers[p].expiry_date|date_format:$date_format}</td>
+                    <td class="olotd4" width="80" align="right">{$currency_sym} {$display_vouchers[p].amount}</td>
                 </tr>
             {/section}
             <tr>           
-                <td colspan="2" style="text-align:right;"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b> {$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>
+                <td colspan="2" style="text-align:right;"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b> {$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>
                 <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
             </tr>
         </table>
@@ -296,10 +296,10 @@
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                         </tr>
                     {/if}
-                    {if $display_giftcerts}
+                    {if $display_vouchers}
                         <tr>
-                            <td class="olotd4" width="80%" align="right"><b>{t}Gift Certificates{/t} ({t}Sub Total{/t})</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$giftcerts_sub_total|string_format:"%.2f"}</td>
+                            <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b></td>
+                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>
                         </tr>
                     {/if}
                     <tr>

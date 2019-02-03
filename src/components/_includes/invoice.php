@@ -882,8 +882,8 @@ function refund_invoice($refund_details) {
     // Update invoice record with refund_id
     update_invoice_refund_id($refund_details['invoice_id'], $refund_id); 
         
-    // Refund any Gift Certificates
-    refund_invoice_giftcerts($refund_details['invoice_id']);    
+    // Refund any Vouchers
+    refund_invoice_vouchers($refund_details['invoice_id']);    
     
     // Change the invoice status to refunded (I do this here to maintain consistency)
     update_invoice_status($refund_details['invoice_id'], 'refunded');
@@ -918,8 +918,8 @@ function cancel_invoice($invoice_id) {
     // Get invoice details
     $invoice_details = get_invoice_details($invoice_id);  
     
-    // Cancel any Gift Certificates
-    cancel_invoice_giftcerts($invoice_id);
+    // Cancel any Vouchers
+    cancel_invoice_vouchers($invoice_id);
     
     // Change the invoice status to cancelled (I do this here to maintain consistency)
     update_invoice_status($invoice_id, 'cancelled');      
@@ -958,8 +958,8 @@ function delete_invoice($invoice_id) {
     // Get invoice details
     $invoice_details = get_invoice_details($invoice_id);
     
-    // Delete any Gift Certificates
-    delete_invoice_giftcerts($invoice_id);  
+    // Delete any Vouchers
+    delete_invoice_vouchers($invoice_id);  
     
     // Delete parts and labour
     delete_invoice_labour_items($invoice_id);
@@ -1218,7 +1218,7 @@ function recalculate_invoice($invoice_id) {
     $discount_amount        = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
     $net_amount             = $items_sub_total - $discount_amount;
     $tax_amount             = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
-    $gross_amount           = $net_amount + $tax_amount + giftcerts_sub_total($invoice_id);
+    $gross_amount           = $net_amount + $tax_amount + vouchers_sub_total($invoice_id);
     
     $balance = $gross_amount - $payments_sub_total;
 
@@ -1493,9 +1493,9 @@ function check_invoice_can_be_refunded($invoice_id) {
         return false;
     }
     
-    // Does the invoice have any Gift Certificates preventing refunding the invoice (i.e. any that have been used)
-    if(!check_invoice_giftcerts_allow_refunding($invoice_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Gift Certificates on it prevent this."));
+    // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+    if(!check_invoice_vouchers_allow_refunding($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
         return false;
     }    
      
@@ -1555,9 +1555,9 @@ function check_invoice_can_be_cancelled($invoice_id) {
         return false;
     }
     
-    // Does the invoice have any Gift Certificates preventing cancelling the invoice (i.e. any that have been used)
-    if(!check_invoice_giftcerts_allow_cancellation($invoice_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Gift Certificates on it prevent this."));
+    // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
+    if(!check_invoice_vouchers_allow_cancellation($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
         return false;
     } 
     
@@ -1643,9 +1643,9 @@ function check_invoice_can_be_deleted($invoice_id) {
         return false;
     }
     
-    // Does the invoice have any Gift Certificates preventing refunding the invoice (i.e. any that have been used)
-    if(!check_invoice_giftcerts_allow_deletion($invoice_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Gift Certificates on it prevent this."));
+    // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+    if(!check_invoice_vouchers_allow_deletion($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
         return false;
     } 
      

@@ -64,7 +64,7 @@ function load_system_variables(&$VAR) {
     isset($VAR['invoice_id'])       ? $smarty->assign('invoice_id', $VAR['invoice_id'])         : $smarty->assign('invoice_id', null);
     isset($VAR['otherincome_id'])   ? $smarty->assign('otherincome_id', $VAR['otherincome_id']) : $smarty->assign('otherincome_id', null);
     isset($VAR['payment_id'])       ? $smarty->assign('payment_id', $VAR['payment_id'])         : $smarty->assign('payment_id', null);
-    isset($VAR['giftcert_id'])      ? $smarty->assign('giftcert_id', $VAR['giftcert_id'])       : $smarty->assign('giftcert_id', null);
+    isset($VAR['voucher_id'])      ? $smarty->assign('voucher_id', $VAR['voucher_id'])       : $smarty->assign('voucher_id', null);
     isset($VAR['expense_id'])       ? $smarty->assign('expense_id', $VAR['expense_id'])         : $smarty->assign('expense_id', null);
     isset($VAR['refund_id'])        ? $smarty->assign('refund_id', $VAR['refund_id'])           : $smarty->assign('refund_id', null);
     isset($VAR['supplier_id'])      ? $smarty->assign('supplier_id', $VAR['supplier_id'])       : $smarty->assign('supplier_id', null);

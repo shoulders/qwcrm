@@ -1,4 +1,4 @@
-<!-- new_gift.tpl -->
+<!-- new_voucher.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
@@ -18,9 +18,9 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}New Gift Certificate for{/t} {t}Client{/t} {$client_id}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}New Voucher for{/t} {t}Client{/t} {$client_id}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
-                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}GIFTCERT_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}GIFTCERT_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
+                        <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}VOUCHER_SEARCH_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}VOUCHER_SEARCH_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
                 </tr>
                 <tr>
@@ -28,7 +28,7 @@
                         <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                             <tr>
                                 <td class="olotd4">                                    
-                                    <form method="post" action="index.php?component=giftcert&page_tpl=new" name="giftcert_new" id="giftcert_new">
+                                    <form method="post" action="index.php?component=voucher&page_tpl=new" name="voucher_new" id="voucher_new">
                                         <table>
                                             <tr>
                                                 <td><b>{t}Client{/t}</b></td>

@@ -11,9 +11,9 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
+require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an invoice_id
@@ -52,12 +52,12 @@ $smarty->assign('invoice_details',                  $invoice_details            
 // Invoice Items
 $smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );
-$smarty->assign('display_giftcerts',                display_giftcerts('giftcert_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
+$smarty->assign('display_vouchers',                display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
 
 // Invoice Totals
 $smarty->assign('labour_sub_total',                 labour_sub_total($VAR['invoice_id'])                       );
 $smarty->assign('parts_sub_total',                  parts_sub_total($VAR['invoice_id'])                        );
-$smarty->assign('giftcerts_sub_total',              giftcerts_sub_total($VAR['invoice_id'])                    );
+$smarty->assign('vouchers_sub_total',              vouchers_sub_total($VAR['invoice_id'])                    );
 
 // Payment Details
 $smarty->assign('payment_options',                  get_payment_options()                                      );

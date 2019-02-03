@@ -184,7 +184,7 @@
                                                         <tr>
                                                             <td class="olohead">{t}Labour{/t}</td>
                                                             <td class="olohead">{t}Parts{/t}</td>
-                                                            <td class="olohead">{t}Gift Certificates{/t}</td>
+                                                            <td class="olohead">{t}Vouchers{/t}</td>
                                                         </tr>
                                                         <tr>
 
@@ -224,34 +224,34 @@
                                                                 </table>
                                                             </td>    
                                                             
-                                                            <!-- Gift Certificates -->
+                                                            <!-- Vouchers -->
                                                             <td class="olotd4" valign="top">
                                                                 <table>
                                                                     <tr>
                                                                         <td><b>{t}Opened{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$giftcert_stats.count_opened}</b></font></td>
+                                                                        <td><font color="red"><b>{$voucher_stats.count_opened}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Closed{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$giftcert_stats.count_closed}</b></font></td>
+                                                                        <td><font color="red"><b>{$voucher_stats.count_closed}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">&nbsp;</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Expired{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$giftcert_stats.count_expired}</b></font></td>
+                                                                        <td><font color="red"><b>{$voucher_stats.count_expired}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Redeemed{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$giftcert_stats.count_redeemed}</b></font></td>
+                                                                        <td><font color="red"><b>{$voucher_stats.count_redeemed}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">&nbsp;</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Claimed{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$giftcert_stats.count_claimed}</b></font></td>
+                                                                        <td><font color="red"><b>{$voucher_stats.count_claimed}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>                                                          

@@ -114,8 +114,8 @@ function onlyAddress(e) {
     return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,/-'", true);
 }
 
-// Gift Certificate Code
-function onlyGiftCertCode(e) {
+// Voucher Code
+function onlyVoucherCode(e) {
     return keyRestriction(e, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", false);
 }
 

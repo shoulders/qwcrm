@@ -9,7 +9,7 @@
     <tr>         
         <td class="olohead">{t}Work Orders{/t}</td> 
         <td class="olohead">{t}Invoice Stats{/t}</td>
-        <td class="olohead">{t}Gift Certificate Stats{/t}</td>
+        <td class="olohead">{t}Voucher Stats{/t}</td>
         <td class="olohead">{t}Monies{/t}</td>                                                               
     </tr>                                                    
 
@@ -148,7 +148,7 @@
             </table>
         </td>   
         
-        <!-- Gift Certificates -->
+        <!-- Vouchers -->
         <td class="olotd4" valign="top">
             <table>                
                 <tr>
@@ -156,63 +156,63 @@
                 </tr>
                 <tr>
                     <td><b>{t}Open{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_open}</b></td>
+                    <td><b>{$voucher_stats.count_open}</b></td>
                 </tr>                
                 <tr>
                     <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
                     <td><b>{t}Unused{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_unused}</b></td>
-                    <td><b>({$currency_sym}{$giftcert_stats.sum_unused|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_unused}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_unused|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Redeemed{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_redeemed}</b></td>
-                    <td><b>({$currency_sym}{$giftcert_stats.sum_redeemed|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_redeemed}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_redeemed|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Suspended{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_suspended}</b></td>
-                    <td><b>({$currency_sym}{$giftcert_stats.sum_suspended|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_suspended}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_suspended|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Expired{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_expired}</b></td>
-                    <td><b>({$currency_sym}{$giftcert_stats.sum_expired|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_expired}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_expired|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Refunded{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_refunded}</b></td>
-                    <td><b>({$currency_sym}{$giftcert_stats.sum_refunded|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_refunded}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_refunded|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Cancelled{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_cancelled}</b></td>
-                    <td><b>({$currency_sym}{$giftcert_stats.sum_cancelled|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_cancelled}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_cancelled|string_format:"%.2f"})</b></td>
                 </tr>                
                 <tr>
                     <td colspan="3"><h2>{t}Historic{/t}</h2></td>
                 </tr>
                 <tr>
                     <td><b>{t}Opened{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_opened}</b></td>
+                    <td><b>{$voucher_stats.count_opened}</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Closed{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_closed}</b></td>
+                    <td><b>{$voucher_stats.count_closed}</b></td>
                 </tr>
                 <tr>
                     <td colspan="3"><h2>{t}Claimed{/t}</h2></td>
                 </tr>
                 <tr>
-                    <td colspan="2">{t}The client has used these Gift Certificates against their own invoices. They have not bought them.{/t}</td>
+                    <td colspan="2">{t}The client has used these Vouchers against their own invoices. They have not bought them.{/t}</td>
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
                     <td><b>{t}Claimed{/t}:</b></td>
-                    <td><b>{$giftcert_stats.count_claimed}</b></td>
-                    <td><b>({$currency_sym}{$giftcert_stats.sum_claimed|string_format:"%.2f"})</b></td>
+                    <td><b>{$voucher_stats.count_claimed}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_claimed|string_format:"%.2f"})</b></td>
                 </tr>
             </table>
         </td>

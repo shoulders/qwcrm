@@ -301,11 +301,11 @@
                                             </table>
                                         </div>                                    
 
-                                        <!-- Gift Certificate -->
-                                        <div id="gift_certificate" class="paymentMethod"{if $payment_method !== 'gift_certificate'} hidden{/if}>
+                                        <!-- Voucher -->
+                                        <div id="voucher" class="paymentMethod"{if $payment_method !== 'voucher'} hidden{/if}>
                                             <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                                 <tr>
-                                                    <td class="menuhead2">&nbsp;{t}Gift Certificate{/t}</td>
+                                                    <td class="menuhead2">&nbsp;{t}Voucher{/t}</td>
                                                 </tr>
                                                 <tr>
                                                     <td class="menutd2">
@@ -313,22 +313,22 @@
                                                             <tr class="olotd4">
                                                                 <td class="row2"></td>
                                                                 <td class="row2"><b>{t}Date{/t}</b></td>
-                                                                <td class="row2"><b>{t}Gift Code{/t}</b></td>
+                                                                <td class="row2"><b>{t}Voucher Code{/t}</b></td>
                                                             </tr>
                                                             <tr class="olotd4">
                                                                 <td></td>
                                                                 <td>
-                                                                    <input id="giftcert_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
-                                                                    <button type="button" id="giftcert_date_button">+</button>
+                                                                    <input id="voucher_date" name="qpayment[date]" class="paymentInput olotd4" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);" disabled>
+                                                                    <button type="button" id="voucher_date_button">+</button>
                                                                     <script>                                                        
                                                                         Calendar.setup( {
-                                                                            trigger     : "giftcert_date_button",
-                                                                            inputField  : "giftcert_date",
+                                                                            trigger     : "voucher_date_button",
+                                                                            inputField  : "voucher_date",
                                                                             dateFormat  : "{$date_format}"                                                                                            
                                                                         } );                                                        
                                                                     </script>                                                    
                                                                 </td>
-                                                                <td><input name="qpayment[giftcert_code]" class="paymentInput olotd5" type="text" maxlength="16" required onkeydown="return onlyGiftCertCode(event);" disabled></td> 
+                                                                <td><input name="qpayment[voucher_code]" class="paymentInput olotd5" type="text" maxlength="16" required onkeydown="return onlyVoucherCode(event);" disabled></td> 
                                                             </tr>
                                                             <tr>
                                                                 <td valign="top"><b>{t}Note{/t}</b></td>

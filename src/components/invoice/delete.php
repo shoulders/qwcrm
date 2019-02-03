@@ -9,12 +9,13 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'giftcert.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'workorder.php');
 require(INCLUDES_DIR.'user.php'); // need when changing WO from 'closed_with_invoice' to 'closed_without_invoice'
+require(INCLUDES_DIR.'voucher.php');
+require(INCLUDES_DIR.'workorder.php');
+
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
