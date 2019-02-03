@@ -290,10 +290,8 @@ function insert_workorder($client_id, $scope, $description, $comment) {
 }
 
 ######################################
-# Insert New Work Order History Note #
+# Insert New Work Order History Note #  // this might be go in the main include as different modules add work order history notes
 ######################################
-
-// this might be go in the main include as different modules add work order history notes
 
 function insert_workorder_history_note($workorder_id = null, $note = '') {
     

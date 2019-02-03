@@ -239,7 +239,7 @@ function insert_voucher($invoice_id, $expiry_date, $amount, $note) {
 /** Get Functions **/
 
 ##########################
-#  Get voucher details  #
+#  Get voucher details   #
 ##########################
 
 function get_voucher_details($voucher_id, $item = null) {
@@ -267,10 +267,10 @@ function get_voucher_details($voucher_id, $item = null) {
 }
 
 #########################################
-#   Get voucher_id by voucher_code    #
+#   Get voucher_id by voucher_code      #
 #########################################
 
-function get_voucher_id_by_gifcert_code($voucher_code) {
+function get_voucher_id_by_voucher_code($voucher_code) {
     
     $db = QFactory::getDbo();
     
@@ -314,7 +314,7 @@ function get_voucher_statuses($restricted_statuses = false) {
 }
 
 ######################################
-#  Get Voucher status display name  #
+#  Get Voucher status display name   #
 ######################################
 
 function get_voucher_status_display_name($status_key) {
@@ -379,7 +379,7 @@ function update_voucher($voucher_id, $expiry_date, $amount, $note) {
 }
 
 ############################
-# Update Voucher Status   #
+# Update Voucher Status    #
 ############################
 
 function update_voucher_status($voucher_id, $new_status, $silent = false) {
@@ -436,7 +436,7 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
 }
 
 ####################################
-#  Update Voucher blocked Status  #
+#  Update Voucher blocked Status   #
 ####################################
 
 function update_voucher_blocked_status($voucher_id, $new_blocked_status) {
@@ -446,7 +446,7 @@ function update_voucher_blocked_status($voucher_id, $new_blocked_status) {
     if($new_blocked_status == 'active') {
         
         $sql = "UPDATE ".PRFX."voucher_records SET
-                blocked           =". $db->qstr( 0                )."
+                blocked           =". $db->qstr( 0              )."
                 WHERE voucher_id =". $db->qstr( $voucher_id     );     
         
     }
@@ -454,7 +454,7 @@ function update_voucher_blocked_status($voucher_id, $new_blocked_status) {
     if($new_blocked_status == 'blocked') {        
         
         $sql = "UPDATE ".PRFX."voucher_records SET
-                blocked           =". $db->qstr( 1                )."
+                blocked           =". $db->qstr( 1              )."
                 WHERE voucher_id =". $db->qstr( $voucher_id     );
         
     }    
@@ -482,13 +482,13 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
     $sql = "UPDATE ".PRFX."voucher_records SET
             employee_id         =". $db->qstr( QFactory::getUser()->login_user_id       ).",
             payment_id          =". $db->qstr( $payment_id                              ).",
-            redeemed_client_id  =". $db->qstr( $voucher_details['client_id']           ).",   
+            redeemed_client_id  =". $db->qstr( $voucher_details['client_id']            ).",   
             redeemed_invoice_id =". $db->qstr( $invoice_id                              ).",
             redeem_date         =". $db->qstr( $datetime                                ).", 
             close_date          =". $db->qstr( $datetime                                ).",
             status              =". $db->qstr( 'redeemed'                               ).",                        
             blocked             =". $db->qstr( 1                                        )."
-            WHERE voucher_id   =". $db->qstr( $voucher_id                             );
+            WHERE voucher_id   =". $db->qstr( $voucher_id                               );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher as redeemed."));
@@ -510,7 +510,7 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
 /** Close Functions **/
 
 #####################################
-#   Refund Voucher                 #
+#   Refund Voucher                  #
 #####################################
 
 function refund_voucher($voucher_id) {
@@ -581,7 +581,7 @@ function cancel_voucher($voucher_id) {
 /** Delete Functions **/
 
 ##############################
-#  Delete Voucher   #  // remove some information and set blocked as you cannot really delete an issued Voucher  
+#  Delete Voucher            #  // remove some information and set blocked as you cannot really delete an issued Voucher  
 ##############################
 
 function delete_voucher($voucher_id) {     
@@ -696,7 +696,7 @@ function delete_voucher($voucher_id) {
 }
 
 ##############################################################
-#  Check if the Voucher can be used for a payment   #
+#  Check if the Voucher can be used for a payment            #
 ##############################################################
 
 function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
@@ -738,7 +738,7 @@ function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
 }
 
 ##########################################################
-#  Check if the voucher status allows editing           #
+#  Check if the voucher status allows editing            #
 ##########################################################
 
  function check_voucher_status_allows_editing($voucher_id) {
@@ -792,7 +792,7 @@ function check_voucher_can_be_refunded($voucher_id) {
 }
 
 ###############################################################
-#   Check to see if the voucher status allows refunding      #
+#   Check to see if the voucher status allows refunding       #
 ###############################################################
 
 function check_voucher_status_allows_refunding($voucher_id) {
@@ -848,7 +848,7 @@ function check_voucher_status_allows_refunding($voucher_id) {
 } 
 
 ###############################################################
-#   Check to see if the voucher can be cancelled             #  // not currently used
+#   Check to see if the voucher can be cancelled              #  // not currently used
 ###############################################################
 
 function check_voucher_can_be_cancelled($voucher_id) {
@@ -864,7 +864,7 @@ function check_voucher_can_be_cancelled($voucher_id) {
 }
 
 ###############################################################
-#   Check to see if the voucher status allows cancellation   #
+#   Check to see if the voucher status allows cancellation    #
 ###############################################################
 
 function check_voucher_status_allows_cancellation($voucher_id) {
@@ -909,7 +909,7 @@ function check_voucher_status_allows_cancellation($voucher_id) {
 }
 
 ###############################################################
-#   Check to see if the voucher can be deleted               #
+#   Check to see if the voucher can be deleted                #
 ###############################################################
 
 function check_voucher_can_be_deleted($voucher_id) {
@@ -925,7 +925,7 @@ function check_voucher_can_be_deleted($voucher_id) {
 }
 
 ###############################################################
-#   Check to see if the voucher status allows deletion       #
+#   Check to see if the voucher status allows deletion        #
 ###############################################################
 
 function check_voucher_status_allows_deletion($voucher_id) {
@@ -975,7 +975,7 @@ function check_voucher_status_allows_deletion($voucher_id) {
 }
 
 ############################################
-#  Generate Random Voucher code   #
+#  Generate Random Voucher code            #
 ############################################
 
 function generate_voucher_code() {
@@ -993,7 +993,7 @@ function generate_voucher_code() {
 }
 
 #################################################
-#   Check to see if the voucher is expired     #  // This does a live check to see if the voucher is expired and tagged as such
+#   Check to see if the voucher is expired      #  // This does a live check to see if the voucher is expired and tagged as such
 #################################################
 
 function check_voucher_is_expired($voucher_id) {
@@ -1042,7 +1042,7 @@ function check_voucher_is_expired($voucher_id) {
 }
 
 #####################################
-#   Sum Voucher Invoice Sub Total  #  // All statuses should be summed up, deleted vouchers do not have an invoice_id anyway so are ignored
+#   Sum Voucher Invoice Sub Total   #  // All statuses should be summed up, deleted vouchers do not have an invoice_id anyway so are ignored
 #####################################
 
 function vouchers_sub_total($invoice_id) {
@@ -1061,9 +1061,8 @@ function vouchers_sub_total($invoice_id) {
   
 }
 
-
 ############################################################################
-# Check an invoices vouchers do not prevent the invoice getting refunded  #
+# Check an invoices vouchers do not prevent the invoice getting refunded   #
 ############################################################################
 
 function check_invoice_vouchers_allow_refunding($invoice_id) {
@@ -1116,7 +1115,7 @@ function check_invoice_vouchers_allow_refunding($invoice_id) {
 }
 
 ############################################################################
-# Check an invoices vouchers do not prevent the invoice getting cancelled #
+# Check an invoices vouchers do not prevent the invoice getting cancelled  #
 ############################################################################
 
 function check_invoice_vouchers_allow_cancellation($invoice_id) {
@@ -1167,7 +1166,7 @@ function check_invoice_vouchers_allow_cancellation($invoice_id) {
 }
 
 ###########################################################################
-# Check an invoices vouchers do not prevent the invoice getting deleted  #
+# Check an invoices vouchers do not prevent the invoice getting deleted   #
 ###########################################################################
          
 function check_invoice_vouchers_allow_deletion($invoice_id) {
@@ -1218,7 +1217,7 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
 }
 
 ##########################################
-#  Refund all of an Invoice's Vouchers  #
+#  Refund all of an Invoice's Vouchers   #
 ##########################################
 
 function refund_invoice_vouchers($invoice_id) {
@@ -1252,7 +1251,7 @@ function refund_invoice_vouchers($invoice_id) {
 }
 
 ##########################################
-#  Cancel all of an Invoice's Vouchers  #
+#  Cancel all of an Invoice's Vouchers   #
 ##########################################
 
 function cancel_invoice_vouchers($invoice_id) {
@@ -1286,7 +1285,7 @@ function cancel_invoice_vouchers($invoice_id) {
 }
 
 ##########################################
-#  Delete all of an Invoice's Vouchers  #
+#  Delete all of an Invoice's Vouchers   #
 ##########################################
 
 function delete_invoice_vouchers($invoice_id) {
