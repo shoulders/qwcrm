@@ -84,8 +84,10 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
         echo _gettext("Backtrack limit was exhausted!");
     }
 
-    // Convert to SEF
-    if ($config->get('sef')) { page_links_to_sef($BuildPage); }    
+    // Convert to SEF (if enabled and NOT running setup)
+    if (!defined('QWCRM_SETUP') && $config->get('sef')) { 
+        page_links_to_sef($BuildPage);        
+    }    
         
     return $BuildPage;
     
