@@ -239,57 +239,6 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__giftcert_records`
---
-
-CREATE TABLE `#__giftcert_records` (
-  `giftcert_id` int(10) NOT NULL,
-  `giftcert_code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `workorder_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `payment_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `redeemed_client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `redeemed_invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `open_date` datetime NOT NULL,
-  `expiry_date` date NOT NULL,
-  `redeem_date` datetime NOT NULL,
-  `close_date` datetime NOT NULL,
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
-  `blocked` int(1) NOT NULL DEFAULT '0',
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `note` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__giftcert_statuses`
---
-
-CREATE TABLE `#__giftcert_statuses` (
-  `id` int(10) NOT NULL COMMENT 'only for display order',
-  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `#__giftcert_statuses`
---
-
-INSERT INTO `#__giftcert_statuses` (`id`, `status_key`, `display_name`) VALUES
-(1, 'unused', 'Unused'),
-(2, 'redeemed', 'Redeemed'),
-(3, 'suspended', 'Suspended'),
-(4, 'expired', 'Expired'),
-(5, 'refunded', 'Refunded'),
-(6, 'cancelled', 'Cancelled'),
-('7', 'deleted', 'Deleted');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `#__invoice_labour`
 --
 
@@ -773,13 +722,6 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('expense:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('giftcert:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('giftcert:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-('giftcert:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('giftcert:new', 1, 1, 0, 0, 1, 1, 0, 0, 0),
-('giftcert:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
-('giftcert:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
-('giftcert:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
@@ -836,6 +778,13 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('user:new', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('user:reset', 0, 0, 0, 0, 0, 0, 0, 0, 1),
 ('user:search', 1, 1, 1, 0, 1, 0, 0, 0, 0),
+('voucher:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('voucher:details', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('voucher:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('voucher:new', 1, 1, 0, 0, 1, 1, 0, 0, 0),
+('voucher:print', 1, 1, 0, 0, 1, 1, 0, 0, 0),
+('voucher:search', 1, 1, 1, 1, 1, 1, 0, 0, 0),
+('voucher:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('workorder:autosuggest_scope', 1, 1, 1, 1, 0, 1, 0, 0, 0),
 ('workorder:delete', 1, 1, 1, 0, 0, 0, 0, 0, 0),
 ('workorder:details', 1, 1, 1, 1, 0, 1, 0, 0, 0),
@@ -985,6 +934,57 @@ INSERT INTO `#__version` (`database_version`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__voucher_records`
+--
+
+CREATE TABLE `#__voucher_records` (
+  `voucher_id` int(10) NOT NULL,
+  `voucher_code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `employee_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `workorder_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `payment_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `redeemed_client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `redeemed_invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `open_date` datetime NOT NULL,
+  `expiry_date` date NOT NULL,
+  `redeem_date` datetime NOT NULL,
+  `close_date` datetime NOT NULL,
+  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
+  `blocked` int(1) NOT NULL DEFAULT '0',
+  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `note` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__voucher_statuses`
+--
+
+CREATE TABLE `#__voucher_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__voucher_statuses`
+--
+
+INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unused', 'Unused'),
+(2, 'redeemed', 'Redeemed'),
+(3, 'suspended', 'Suspended'),
+(4, 'expired', 'Expired'),
+(5, 'refunded', 'Refunded'),
+(6, 'cancelled', 'Cancelled'),
+('7', 'deleted', 'Deleted');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__workorder_history`
 --
 
@@ -1111,18 +1111,6 @@ ALTER TABLE `#__expense_records`
 -- Indexes for table `#__expense_types`
 --
 ALTER TABLE `#__expense_types`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `#__giftcert_records`
---
-ALTER TABLE `#__giftcert_records`
-  ADD PRIMARY KEY (`giftcert_id`);
-
---
--- Indexes for table `#__giftcert_statuses`
---
-ALTER TABLE `#__giftcert_statuses`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1288,6 +1276,18 @@ ALTER TABLE `#__version`
   ADD PRIMARY KEY (`database_version`);
 
 --
+-- Indexes for table `#__voucher_records`
+--
+ALTER TABLE `#__voucher_records`
+  ADD PRIMARY KEY (`voucher_id`);
+
+--
+-- Indexes for table `#__voucher_statuses`
+--
+ALTER TABLE `#__voucher_statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `#__workorder_history`
 --
 ALTER TABLE `#__workorder_history`
@@ -1330,11 +1330,6 @@ ALTER TABLE `#__client_records`
 --
 ALTER TABLE `#__expense_records`
   MODIFY `expense_id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `#__giftcert_records`
---
-ALTER TABLE `#__giftcert_records`
-  MODIFY `giftcert_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__invoice_labour`
 --
@@ -1395,6 +1390,11 @@ ALTER TABLE `#__user_records`
 --
 ALTER TABLE `#__user_usergroups`
   MODIFY `usergroup_id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT for table `#__voucher_records`
+--
+ALTER TABLE `#__voucher_records`
+  MODIFY `voucher_id` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `#__workorder_history`
 --

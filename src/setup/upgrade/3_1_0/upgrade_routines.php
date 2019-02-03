@@ -78,15 +78,15 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_note', 'other');
                        
         // Reverse blocked account values because of the rename active --> blocked
-        $this->update_column_values(PRFX.'giftcert_records', 'blocked', '0', '9');
-        $this->update_column_values(PRFX.'giftcert_records', 'blocked', '1', '0');
-        $this->update_column_values(PRFX.'giftcert_records', 'blocked', '9', '0');        
+        $this->update_column_values(PRFX.'voucher_records', 'blocked', '0', '9');
+        $this->update_column_values(PRFX.'voucher_records', 'blocked', '1', '0');
+        $this->update_column_values(PRFX.'voucher_records', 'blocked', '9', '0');        
         
         // Convert timestamps to MySQL DATE
         $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_start', 'company_name');
         $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_end', 'company_name');
         $this->column_timestamp_to_mysql_date(PRFX.'expense_records', 'date', 'expense_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'giftcert_records', 'date_expires', 'giftcert_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'voucher_records', 'date_expires', 'voucher_id');
         $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'date', 'invoice_id');
         $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'due_date', 'invoice_id');
         $this->column_timestamp_to_mysql_date(PRFX.'payment_records', 'date', 'payment_id');
@@ -96,8 +96,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'date', 'client_note_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'create_date', 'client_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'last_active', 'client_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'giftcert_records', 'date_created', 'giftcert_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'giftcert_records', 'date_redeemed', 'giftcert_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'date_created', 'voucher_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'date_redeemed', 'voucher_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'open_date', 'invoice_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'close_date', 'invoice_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
@@ -112,10 +112,10 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'close_date', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
         
-        // Parse Giftcert records and correct records        
-        $this->giftcert_correct_workorder_id();
-        $this->giftcert_correct_expiry_date();
-        $this->giftcert_correct_status();
+        // Parse Voucher records and correct records        
+        $this->voucher_correct_workorder_id();
+        $this->voucher_correct_expiry_date();
+        $this->voucher_correct_status();
         
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');

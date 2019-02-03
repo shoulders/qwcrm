@@ -26,7 +26,7 @@ RENAME TABLE `#__company` TO `#__company_record`;
 RENAME TABLE `#__customer` TO `#__client_records`;
 RENAME TABLE `#__customer_notes` TO `#__client_notes`;
 RENAME TABLE `#__expense` TO `#__expense_records`;
-RENAME TABLE `#__giftcert` TO `#__giftcert_records`;
+RENAME TABLE `#__giftcert` TO `#__voucher_records`;
 RENAME TABLE `#__invoice` TO `#__invoice_records`;
 RENAME TABLE `#__payment` TO `#__payment_options`;
 RENAME TABLE `#__payment_transactions` TO `#__payment_records`;
@@ -309,16 +309,16 @@ INSERT INTO `#__company_date_formats` (`id`, `date_format_key`, `display_name`) 
 ALTER TABLE `#__company_date_formats` ADD PRIMARY KEY (`id`);
 
 --
--- Create Table `#__giftcert_statuses`
+-- Create Table `#__voucher_statuses`
 --
 
-CREATE TABLE `#__giftcert_statuses` (
+CREATE TABLE `#__voucher_statuses` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__giftcert_statuses` (`id`, `status_key`, `display_name`) VALUES
+INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'unused', 'Unused'),
 (2, 'redeemed', 'Redeemed'),
 (3, 'suspended', 'Suspended'),
@@ -327,7 +327,7 @@ INSERT INTO `#__giftcert_statuses` (`id`, `status_key`, `display_name`) VALUES
 (6, 'cancelled', 'Cancelled'),
 (7, 'deleted', 'Deleted');
 
-ALTER TABLE `#__giftcert_statuses` ADD PRIMARY KEY (`id`);
+ALTER TABLE `#__voucher_statuses` ADD PRIMARY KEY (`id`);
 
 
 --
@@ -356,7 +356,7 @@ ALTER TABLE `#__otherincome_types` ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `#__client_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__expense_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__otherincome_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__schedule_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__supplier_records` CHANGE `notes` `note` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
@@ -377,7 +377,7 @@ ALTER TABLE `#__supplier_records` CHANGE `display_name` `company_name` VARCHAR(5
 ALTER TABLE `#__session` CHANGE `client_id` `clientid` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0';
 ALTER TABLE `#__client_records` CHANGE `customer_id` `client_id` INT(10) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__client_notes` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `customer_id` `client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `customer_id` `client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__invoice_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__schedule_records` CHANGE `customer_id` `client_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
@@ -391,19 +391,19 @@ ALTER TABLE `#__workorder_records` CHANGE `customer_id` `client_id` VARCHAR(10) 
 ALTER TABLE `#__invoice_records` DROP `paid_date`;
 ALTER TABLE `#__user_records` DROP `display_name`;
 ALTER TABLE `#__otherincome_records` DROP `invoice_id`;
-ALTER TABLE `#__giftcert_records` DROP `is_redeemed`;
+ALTER TABLE `#__voucher_records` DROP `is_redeemed`;
 
 --
 -- Add Columns
 --
 
 ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
-ALTER TABLE `#__giftcert_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
-ALTER TABLE `#__giftcert_records` ADD `close_date` DATETIME NOT NULL AFTER `date_redeemed`;
-ALTER TABLE `#__giftcert_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `close_date`;
-ALTER TABLE `#__giftcert_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
-ALTER TABLE `#__giftcert_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
-ALTER TABLE `#__giftcert_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_client_id`;
+ALTER TABLE `#__voucher_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
+ALTER TABLE `#__voucher_records` ADD `close_date` DATETIME NOT NULL AFTER `date_redeemed`;
+ALTER TABLE `#__voucher_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `close_date`;
+ALTER TABLE `#__voucher_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
+ALTER TABLE `#__voucher_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
+ALTER TABLE `#__voucher_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_client_id`;
 ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `method`;
 
@@ -412,10 +412,12 @@ ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COL
 --
 
 ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `#__giftcert_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `#__giftcert_records` CHANGE `giftcert_id` `voucher_id` INT(10) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `#__giftcert_records` CHANGE `giftcert_code` `voucher_code` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0';
 ALTER TABLE `#__otherincome_records` CHANGE `refund_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__payment_options` CHANGE `bank_transaction_msg` `invoice_bank_transfer_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_options` CHANGE `cheque_payable_to_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
@@ -428,7 +430,7 @@ ALTER TABLE `#__user_usergroups` CHANGE `usergroup_display_name` `display_name` 
 -- Move Columns
 --
 
-ALTER TABLE `#__giftcert_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
+ALTER TABLE `#__voucher_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
 
 --
 -- Convert from integer to currency
@@ -436,7 +438,7 @@ ALTER TABLE `#__giftcert_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEF
 
 ALTER TABLE `#__invoice_labour` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_parts` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL;
-ALTER TABLE `#__giftcert_records` MODIFY COLUMN `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `blocked`;
+ALTER TABLE `#__voucher_records` MODIFY COLUMN `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `blocked`;
 ALTER TABLE `#__invoice_parts` MODIFY COLUMN `qty` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `amount`;
 
 --
@@ -453,7 +455,6 @@ UPDATE `#__company_record` SET
 
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
 ('core:403', '1', '1', '1', '1', '1', '1', '1', '1', '1'),
-('giftcert:status', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('invoice:cancel', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('invoice:overview', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('otherincome:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -465,6 +466,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('payment:details', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:edit', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('payment:search', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
+('voucher:status', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
 ('workorder:details_edit_comment', '1', '1', '1', '1', '0', '1', '0', '0', '0');
 
 UPDATE `#__user_acl_page` SET `page` = 'client:delete' WHERE `#__user_acl_page`.`page` = 'customer:delete';
@@ -476,6 +478,13 @@ UPDATE `#__user_acl_page` SET `page` = 'client:note_edit' WHERE `#__user_acl_pag
 UPDATE `#__user_acl_page` SET `page` = 'client:note_new' WHERE `#__user_acl_page`.`page` = 'customer:note_new';
 UPDATE `#__user_acl_page` SET `page` = 'client:search' WHERE `#__user_acl_page`.`page` = 'customer:search';
 UPDATE `#__user_acl_page` SET `page` = 'company:edit' WHERE `#__user_acl_page`.`page` = 'company:settings';
+
+UPDATE `#__user_acl_page` SET `page` = 'voucher:delete' WHERE `#__user_acl_page`.`page` = 'giftcert:delete';
+UPDATE `#__user_acl_page` SET `page` = 'voucher:details' WHERE `#__user_acl_page`.`page` = 'giftcert:details';
+UPDATE `#__user_acl_page` SET `page` = 'voucher:edit' WHERE `#__user_acl_page`.`page` = 'giftcert:edit';
+UPDATE `#__user_acl_page` SET `page` = 'voucher:new' WHERE `#__user_acl_page`.`page` = 'giftcert:new';
+UPDATE `#__user_acl_page` SET `page` = 'voucher:print' WHERE `#__user_acl_page`.`page` = 'giftcert:print';
+UPDATE `#__user_acl_page` SET `page` = 'voucher:search' WHERE `#__user_acl_page`.`page` = 'giftcert:search';
 
 UPDATE `#__user_acl_page` SET `Clerical` = '0' WHERE `#__user_acl_page`.`page` = 'payment:options';
 
@@ -503,7 +512,7 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:open
 --
 
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
-ALTER TABLE `#__giftcert_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
 
 --
 -- Correct #__user_reset index column
