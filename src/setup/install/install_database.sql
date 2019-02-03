@@ -575,7 +575,8 @@ CREATE TABLE `#__refund_types` (
 --
 
 INSERT INTO `#__refund_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'invoice', 'Invoice');
+(1, 'invoice', 'Invoice'),
+(2, 'cash_purchase', 'Cash Purchase');
 
 -- --------------------------------------------------------
 
