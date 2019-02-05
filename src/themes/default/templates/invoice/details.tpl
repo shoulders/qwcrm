@@ -192,7 +192,7 @@
                                                                 <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                 <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                                                                
-                                                                <td>{$labour_items[l].sub_total_net|string_format:"%.2f"}%</td>
+                                                                <td>{$labour_items[l].vat_rate|string_format:"%.2f"}%</td>
                                                                 <td>{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
                                                                 <td>-</td>
@@ -248,7 +248,7 @@
                                                                 <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                 <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                                                                
-                                                                <td>{$parts_items[p].sub_total_net|string_format:"%.2f"}%</td>
+                                                                <td>{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>
                                                                 <td>{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
                                                                 <td>-</td>

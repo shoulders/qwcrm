@@ -17,12 +17,8 @@ require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
-$VAR['labour_description'] = isset($VAR['labour_description']) ? $VAR['labour_description'] : null;
-$VAR['labour_amount'] = isset($VAR['labour_amount']) ? $VAR['labour_amount'] : null;
-$VAR['labour_qty'] = isset($VAR['labour_qty']) ? $VAR['labour_qty'] : null;
-$VAR['parts_description'] = isset($VAR['parts_description']) ? $VAR['parts_description'] : null;
-$VAR['parts_amount'] = isset($VAR['parts_amount']) ? $VAR['parts_amount'] : null;
-$VAR['parts_qty'] = isset($VAR['parts_qty']) ? $VAR['parts_qty'] : null;
+$VAR['labour_items'] = isset($VAR['labour_items']) ? $VAR['labour_items'] : null;
+$VAR['parts_items'] = isset($VAR['parts_items']) ? $VAR['parts_items'] : null;
 
 // Check if we have an invoice_id
 if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
@@ -40,9 +36,12 @@ if(get_invoice_details($VAR['invoice_id'], 'is_closed')) {
 
 if(isset($VAR['submit'])) {
     
+    // get invoice tax type
+    $tax_type = get_invoice_details($VAR['invoice_id'], 'tax_type');
+    
     // insert the parts and labour item arrays
-    insert_labour_items($VAR['invoice_id'], $VAR['labour_description'], $VAR['labour_amount'], $VAR['labour_qty']);
-    insert_parts_items($VAR['invoice_id'], $VAR['parts_description'], $VAR['parts_amount'], $VAR['parts_qty']);
+    insert_labour_items($VAR['invoice_id'], $tax_type, $VAR['labour_items']);
+    insert_parts_items($VAR['invoice_id'], $tax_type, $VAR['parts_items']);
     
     // update and recalculate the invoice
     update_invoice_static_values($VAR['invoice_id'], $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    

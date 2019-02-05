@@ -106,7 +106,7 @@
         el.setAttribute('name', 'labour_items['+iteration+'][unit_qty]');
         //el.setAttribute('class', 'olotd4');
         el.setAttribute('size', '6');        
-        el.setAttribute('value', '1');
+        el.setAttribute('value', '1.00');
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
@@ -115,12 +115,12 @@
 
 
 
-        // Unit NET Cell - Create Cell
+        // Unit Net Cell - Create Cell
         var buildRow = row.insertCell(3);        
         //buildRow.setAttribute('width', '40px');
         //buildRow.setAttribute('class', 'olotd4');
 
-        // Unit NET Cell - Create Select Input
+        // Unit Net Cell - Create Select Input
         var el = document.createElement('select');
         el.setAttribute('id', 'labour_items['+iteration+'][unit_net]');
         el.setAttribute('name', 'labour_items['+iteration+'][unit_net]');
@@ -611,12 +611,20 @@
                                                                     <td>{$smarty.section.q.index+1}</td>
                                                                     <td>{$labour_items[l].description}</td>
                                                                     <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
-                                                                    <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                                                                
-                                                                    <td>{$labour_items[l].sub_total_net|string_format:"%.2f"}%</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                                                                                                                  
+                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>
+                                                                    <td>{$labour_items[l].vat_rate|string_format:"%.2f"}%</td>  
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
-                                                                    <td>-</td>
+                                                                    <td>
+                                                                        {if !$display_payments}
+                                                                            <a href="index.php?component=invoice&page_tpl=delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
+                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
+                                                                            </a>
+                                                                        {else}
+                                                                            -
+                                                                        {/if}
+                                                                    </td>
                                                                 </tr>
                                                             {/section}
                                                             <tr>
@@ -686,12 +694,20 @@
                                                                         <td>{$smarty.section.w.index+1}</td>
                                                                         <td>{$parts_items[p].description}</td>
                                                                         <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
-                                                                        <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
+                                                                        <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>                                                                        
                                                                         <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                                                                
-                                                                        <td>{$parts_items[p].sub_total_net|string_format:"%.2f"}%</td>
+                                                                        <td>{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>
                                                                         <td>{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>
                                                                         <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
-                                                                        <td>-</td>
+                                                                        <td>
+                                                                            {if !$display_payments}
+                                                                            <a href="index.php?component=invoice&page_tpl=delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
+                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
+                                                                            </a>
+                                                                        {else}
+                                                                            -
+                                                                        {/if}
+                                                                        </td>
                                                                     </tr>
                                                                  {/section}
                                                                 <tr>

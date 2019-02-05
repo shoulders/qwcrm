@@ -55,6 +55,27 @@ function get_tax_types() {
 }
 
 #####################################
+#    Get VAT rate                   #
+#####################################
+
+function get_vat_rate($vat_type) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT rate FROM ".PRFX."company_vat_rates
+            WHERE rate_key = ".$db->qstr($vat_type);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
+    } else {
+        
+        return $rs->fields['rate'];
+        
+    }    
+    
+}
+
+#####################################
 #    Get VAT rates                  # use true/false
 #####################################
 

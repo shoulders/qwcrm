@@ -280,6 +280,102 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
 }
 
 #####################################
+#     Insert Labour Items           #
+#####################################
+
+function insert_labour_items($invoice_id, $tax_type, $labour_items = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Insert Labour Items into database (if any)
+    if($labour_items) {
+        
+        $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, tax_type, vat_type, vat_rate, description, unit_qty, unit_net, unit_vat, unit_gross, sub_total_net, sub_total_vat, sub_total_gross) VALUES ";
+           
+        foreach($labour_items as $labour_item) {
+            
+            $vat_rate = isset($labour_item['vat_type']) ? get_vat_rate($labour_item['vat_type']) : 0.00;
+            $labour_totals = calculate_invoice_item_sub_totals($tax_type, $vat_rate, $labour_item['unit_qty'], $labour_item['unit_net']);
+            
+            $sql .="(".
+                    
+                    $db->qstr( $invoice_id                         ).",".                    
+                    $db->qstr( $tax_type                           ).",".
+                    $db->qstr( $labour_item['vat_type']            ).",".
+                    $db->qstr( $vat_rate                           ).",".
+                    $db->qstr( $labour_item['description']         ).",".                    
+                    $db->qstr( $labour_item['unit_qty']            ).",".
+                    $db->qstr( $labour_item['unit_net']            ).",".
+                    $db->qstr( $labour_totals['unit_vat']          ).",".
+                    $db->qstr( $labour_totals['unit_gross']         ).",".                    
+                    $db->qstr( $labour_totals['sub_total_net']     ).",".
+                    $db->qstr( $labour_totals['sub_total_vat']     ).",".
+                    $db->qstr( $labour_totals['sub_total_gross']   )."),";
+            
+        }
+        
+        // Strips off last comma as this is a joined SQL statement
+        $sql = substr($sql , 0, -1);
+        
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Labour item into the database."));
+        }
+        
+        return;
+        
+    }
+        
+}
+
+#####################################
+#     Insert Parts Items           #
+#####################################
+
+function insert_parts_items($invoice_id, $tax_type, $parts_items = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Insert Labour Items into database (if any)
+    if($parts_items) {
+        
+        $sql = "INSERT INTO ".PRFX."invoice_parts (invoice_id, tax_type, vat_type, vat_rate, description, unit_qty, unit_net, unit_vat, unit_gross, sub_total_net, sub_total_vat, sub_total_gross) VALUES ";
+           
+        foreach($parts_items as $parts_item) {
+            
+            $vat_rate = isset($parts_item['vat_type']) ? get_vat_rate($parts_item['vat_type']) : 0.00;
+            $parts_totals = calculate_invoice_item_sub_totals($tax_type, $vat_rate, $parts_item['unit_qty'], $parts_item['unit_net']);
+            
+            $sql .="(".
+                    
+                    $db->qstr( $invoice_id                         ).",".                    
+                    $db->qstr( $tax_type                           ).",".
+                    $db->qstr( $parts_item['vat_type']            ).",".
+                    $db->qstr( $vat_rate                           ).",".
+                    $db->qstr( $parts_item['description']         ).",".                    
+                    $db->qstr( $parts_item['unit_qty']            ).",".
+                    $db->qstr( $parts_item['unit_net']            ).",".
+                    $db->qstr( $parts_totals['unit_vat']          ).",".
+                    $db->qstr( $parts_totals['unit_gross']         ).",".                    
+                    $db->qstr( $parts_totals['sub_total_net']     ).",".
+                    $db->qstr( $parts_totals['sub_total_vat']     ).",".
+                    $db->qstr( $parts_totals['sub_total_gross']   )."),";
+            
+        }
+        
+        // Strips off last comma as this is a joined SQL statement
+        $sql = substr($sql , 0, -1);
+        
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert parts item into the database."));
+        }
+        
+        return;
+        
+    }
+        
+}
+
+/*#####################################
 #     Insert Labour Items           # // KEEP this old version for the code as a reference
 ##################################### // This function combines multiple arrays created by the invoice:edit page.
 
@@ -363,7 +459,7 @@ function insert_parts_items($invoice_id, $descriptions, $amounts, $qtys) {
         
     }
 
-}
+}*/
 
 #####################################
 #   insert invoice prefill item     #
@@ -1227,10 +1323,33 @@ function delete_invoice_prefill_item($invoice_prefill_id) {
 /** Other Functions **/
 
 ################################################
-#   recalculate an Invoice Item Sub Totals     #
+#   calculate an Invoice Item Sub Totals       #
 ################################################
 
-function recalculate_invoice_item_sub_totals($item_values) {
+function calculate_invoice_item_sub_totals($tax_type, $vat_rate, $unit_qty, $unit_net) {
+    
+    $item_totals = array();
+    
+    // No Tax
+    if($tax_type == 'none') {
+        
+        $item_totals['unit_vat'] = 0.00;
+        $item_totals['unit_gross'] = $unit_net;
+        $item_totals['sub_total_net'] = $unit_net * $unit_qty;
+        $item_totals['sub_total_vat'] = 0.00;
+        $item_totals['sub_total_gross'] = $item_totals['sub_total_net'];
+    }
+    
+    // VAT Calculations
+    if($tax_type == 'vat') {        
+        $item_totals['unit_vat'] = $unit_net * ($vat_rate / 100);
+        $item_totals['unit_gross'] = $unit_net + $item_totals['unit_vat'];
+        $item_totals['sub_total_net'] = $unit_net * $unit_qty;
+        $item_totals['sub_total_vat'] = $item_totals['sub_total_net'] * ($vat_rate / 100);
+        $item_totals['sub_total_gross'] = $item_totals['sub_total_net'] + $item_totals['sub_total_vat'];
+    }
+    
+    return $item_totals;
     
 }
 
@@ -1303,15 +1422,25 @@ function recalculate_invoice($invoice_id) {
     
     $db = QFactory::getDbo();
     
-    $invoice_details        = get_invoice_details($invoice_id);
+    $invoice_details         = get_invoice_details($invoice_id);    
+    $labour_items_sub_totals = get_labour_items_sub_totals($invoice_id); 
+    $parts_items_sub_totals  = get_parts_items_sub_totals($invoice_id);
     
-    $items_sub_total        = labour_sub_total($invoice_id) + parts_sub_total($invoice_id);
-    $payments_sub_total     = payments_sub_total($invoice_id);
+    $items_sub_total        = $labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'];
     $discount_amount        = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
     $net_amount             = $items_sub_total - $discount_amount;
-    $tax_amount             = $net_amount * ($invoice_details['tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
-    $gross_amount           = $net_amount + $tax_amount + vouchers_sub_total($invoice_id);
+
+    // Work out the correct ax based on the type of invoice/tax_type
+    if($invoice_details['tax_type'] == 'vat') {
+        $tax_amount = $labour_items_sub_totals['sub_total_vat'] + $parts_items_sub_totals['sub_total_vat'];        
+    } elseif($invoice_details['tax_type'] == 'sales') {
+        $tax_amount     = $net_amount * ($invoice_details['sales_tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
+    } else {
+        $tax_amount = 0.00;
+    }
     
+    $gross_amount           = $net_amount + $tax_amount + get_vouchers_items_sub_total($invoice_id);    
+    $payments_sub_total     = payments_sub_total($invoice_id);
     $balance = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice_records SET
