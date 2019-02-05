@@ -57,7 +57,7 @@ INSERT INTO `#__client_types` (`id`, `type_key`, `display_name`) VALUES
 ALTER TABLE `#__client_types` ADD PRIMARY KEY (`id`);
 
 --
--- Create Table `#__client_types`
+-- Create Table `#__company_tax_types`
 --
 
 CREATE TABLE `#__company_tax_types` (
@@ -67,6 +67,28 @@ CREATE TABLE `#__company_tax_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `#__company_tax_types` ADD PRIMARY KEY (`id`);
+
+--
+-- Create Table `#__company_vat_rates`
+--
+
+CREATE TABLE `#__company_vat_rates` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `rate_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `rate` decimal(4,2) NOT NULL,
+  `editable` int(11) NOT NULL DEFAULT '0',
+  `hidden` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__company_vat_rates` (`id`, `rate_key`, `display_name`, `rate`, `editable`, `hidden`) VALUES
+(1, 'none', 'None', '0.00', 0, 1),
+(2, 'standard', 'Standard Rate', '20.00', 1, 0),
+(3, 'reduced', 'Reduced Rate', '5.00', 1, 0),
+(4, 'zero', 'Zero Rated', '0.00', 0, 0),
+(5, 'exempt', 'Exempt', '0.00', 0, 0);
+
+ALTER TABLE `#__company_vat_rates` ADD PRIMARY KEY (`id`);
 
 --
 -- Create Table `#__expense_types`
@@ -434,6 +456,36 @@ ALTER TABLE `#__user_usergroups` CHANGE `usergroup_display_name` `display_name` 
 ALTER TABLE `#__voucher_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFAULT '0' AFTER `status`;
 
 --
+-- Upgrade Labour and parts tables for new VAT and Tax system
+--
+
+ALTER TABLE `#__invoice_labour` ADD `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `description`;
+ALTER TABLE `#__invoice_labour` ADD `vat_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_type`;
+ALTER TABLE `#__invoice_labour` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_type`;
+ALTER TABLE `#__invoice_labour` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_labour` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+ALTER TABLE `#__invoice_labour` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
+ALTER TABLE `#__invoice_labour` CHANGE `qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_labour` CHANGE `sub_total` `sub_total_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_labour` ADD `sub_total_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
+ALTER TABLE `#__invoice_labour` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_vat`;
+ALTER TABLE `#__invoice_labour` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `vat_rate`;
+ALTER TABLE `#__invoice_labour` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
+
+ALTER TABLE `#__invoice_parts` ADD `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `description`;
+ALTER TABLE `#__invoice_parts` ADD `vat_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_type`;
+ALTER TABLE `#__invoice_parts` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_type`;
+ALTER TABLE `#__invoice_parts` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_parts` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+ALTER TABLE `#__invoice_parts` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
+ALTER TABLE `#__invoice_parts` CHANGE `qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_parts` CHANGE `sub_total` `sub_total_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_parts` ADD `sub_total_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
+ALTER TABLE `#__invoice_parts` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_vat`;
+ALTER TABLE `#__invoice_parts` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `vat_rate`;
+ALTER TABLE `#__invoice_parts` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
+
+--
 -- Convert from integer to currency
 --
 
@@ -514,6 +566,10 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:open
 
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `tax_type` `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__company_record` CHANGE `tax_type` `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+
 
 --
 -- Correct #__user_reset index column

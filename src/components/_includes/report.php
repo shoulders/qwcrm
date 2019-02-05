@@ -365,8 +365,8 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         
         $labour_stats = array(                 
             "labour_count_items"    =>  count_labour_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
-            "labour_sum_items"      =>  sum_labour_items('qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
-            "labour_sum_sub_total"  =>  sum_labour_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour               
+            "labour_sum_items"      =>  sum_labour_items('unit_qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
+            "labour_sum_sub_total"  =>  sum_labour_items('sub_total_net', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour               
         );
         
         $stats = array_merge($stats, $labour_stats);
@@ -378,8 +378,8 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         
         $parts_stats = array(                       
             "parts_count_items"    =>  count_parts_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
-            "parts_sum_items"      =>  sum_parts_items('qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
-            "parts_sum_sub_total"  =>  sum_parts_items('sub_total', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
+            "parts_sum_items"      =>  sum_parts_items('unit_qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
+            "parts_sum_sub_total"  =>  sum_parts_items('sub_total_net', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
         );
         
         $stats = array_merge($stats, $parts_stats);
@@ -590,7 +590,7 @@ function count_labour_items($status, $start_date = null, $end_date = null, $date
 #  Sum selected value of labour items   #
 #########################################
 
-function sum_labour_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function sum_labour_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();   
     
@@ -616,6 +616,11 @@ function sum_labour_items($value_name, $status = null, $start_date = null, $end_
         $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$db->qstr($client_id);
     }
     
+    // Filter by Invoice
+    if($invoice_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_labour.invoice_id=".$db->qstr($invoice_id);
+    }
+    
     $sql = "SELECT SUM($value_name) AS sum
             FROM ".PRFX."invoice_labour
             LEFT JOIN ".PRFX."invoice_records ON ".PRFX."invoice_labour.invoice_id = ".PRFX."invoice_records.invoice_id
@@ -637,7 +642,7 @@ function sum_labour_items($value_name, $status = null, $start_date = null, $end_
 #  Count parts items   #
 ########################
 
-function count_parts_items($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function count_parts_items($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();    
     
@@ -658,6 +663,11 @@ function count_parts_items($status = null, $start_date = null, $end_date = null,
     // Filter by Client
     if($client_id) {
         $whereTheseRecords .= " AND ".PRFX."invoice_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Filter by Invoice
+    if($invoice_id) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_parts.invoice_id=".$db->qstr($invoice_id);
     }
         
     $sql = "SELECT COUNT(*) AS count

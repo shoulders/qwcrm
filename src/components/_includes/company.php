@@ -54,6 +54,36 @@ function get_tax_types() {
     
 }
 
+#####################################
+#    Get VAT rates                  # use true/false
+#####################################
+
+function get_vat_rates($editable_status = null, $hidden_status = null) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."company_vat_rates";
+    
+    // Restrict by editable status
+    if(!is_null($editable_status)) {
+        $sql .= "\nWHERE editable = ".$db->qstr($editable_status);
+    }
+    
+    // restrict by hidden status
+    if(!is_null($hidden_status)) {
+        $sql .= "\nWHERE hidden = ".$db->qstr($hidden_status);
+    }
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rates."));
+    } else {
+        
+        return $rs->GetArray();
+        
+    }    
+    
+}
+
 ##########################################
 #      Get Company Opening Hours         # // smarty/datetime/timestamp
 ##########################################
@@ -126,6 +156,9 @@ function update_company_details($VAR) {
     $smarty = QFactory::getSmarty();    
     $sql = null;
     
+    // Update VAT rates
+    update_vat_rates($VAR['vat_rates']);
+    
     // Prevent undefined variable errors
     $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;    
            
@@ -163,7 +196,7 @@ function update_company_details($VAR) {
             website                 =". $db->qstr( $VAR['website']                          ).",
             company_number          =". $db->qstr( $VAR['company_number']                   ).",                                        
             tax_type                =". $db->qstr( $VAR['tax_type']                         ).",
-            tax_rate                =". $db->qstr( $VAR['tax_rate']                         ).",
+            sales_tax_rate          =". $db->qstr( $VAR['sales_tax_rate']                   ).",
             vat_number              =". $db->qstr( $VAR['vat_number']                       ).",
             year_start              =". $db->qstr( date_to_mysql_date($VAR['year_start'])   ).",
             year_end                =". $db->qstr( date_to_mysql_date($VAR['year_end'])     ).",
@@ -220,6 +253,45 @@ function update_company_hours($openingTime, $closingTime) {
         
         // Log activity        
         write_record_to_activity_log(_gettext("Business hours have been updated."));        
+        
+        return true;
+        
+    }
+    
+}
+
+##########################################
+#        Update VAT Rates                #
+##########################################
+
+function update_vat_rates($vat_rates) {
+    
+    $db = QFactory::getDbo();
+    //$smarty = QFactory::getSmarty();
+    $error_flag = false;
+    
+    // Cycle through the submitted VAT rates and update the database
+    foreach ($vat_rates as $rate_key => $rate) {
+        $sql =  "UPDATE ".PRFX."company_vat_rates SET
+                rate = ".$db->qstr($rate)."
+                WHERE rate_key = ".$db->qstr($rate_key);
+        
+        if(!$rs = $db->Execute($sql)) {
+            $error_flag = true;            
+        }        
+    }
+    
+    if($error_flag) {
+        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
+        //return false;      
+        
+    } else {
+        // Assign success message
+        //$smarty->assign('information_msg', _gettext("VAT rates have been updated."));
+        
+        // Log activity        
+        //write_record_to_activity_log(_gettext("VAT rates have been updated."));        
         
         return true;
         

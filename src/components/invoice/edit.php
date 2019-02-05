@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
@@ -61,17 +62,18 @@ $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id
 
 // Prefill Items
 $smarty->assign('labour_prefill_items',     get_invoice_prefill_items('Labour', '1')                                               ); 
-$smarty->assign('parts_prefill_items',      get_invoice_prefill_items('Parts', '1')                                                ); 
+$smarty->assign('parts_prefill_items',      get_invoice_prefill_items('Parts', '1')                                                );
+$smarty->assign('vat_rates',                get_vat_rates(null, false)                                                             );
 
 // Invoice Items
 $smarty->assign('labour_items',             get_invoice_labour_items($VAR['invoice_id'])                                                  );
 $smarty->assign('parts_items',              get_invoice_parts_items($VAR['invoice_id'])                                                   );
 $smarty->assign('display_vouchers',        display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
 
-// Invoice Totals
-$smarty->assign('labour_sub_total',         labour_sub_total($VAR['invoice_id'])                                                          );
-$smarty->assign('parts_sub_total',          parts_sub_total($VAR['invoice_id'])                                                           );
-$smarty->assign('vouchers_sub_total',      vouchers_sub_total($VAR['invoice_id'])                                                       );
+// Sub Totals
+$smarty->assign('labour_items_sub_totals',     get_labour_items_sub_totals($VAR['invoice_id'])                                                          );
+$smarty->assign('parts_items_sub_totals',      get_parts_items_sub_totals($VAR['invoice_id'])                                                           );
+$smarty->assign('vouchers_items_sub_total',    get_vouchers_items_sub_total($VAR['invoice_id'])                                                       );
 
 // Payment Details
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );

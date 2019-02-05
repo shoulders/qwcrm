@@ -14,12 +14,16 @@
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/fonts/font_roboto/roboto.css"/>
 <link rel="stylesheet" href="{$theme_js_dir}dhtmlxcombo/dhtmlxcombo.css">
 <script>
+    
+    
  
-/**--  LABOUR  --**/
+    /**--  LABOUR  --**/
+
 
 
     //// Add Row to Labour Table    
     function addRowToTableLabour() {
+        
         var tbl = document.getElementById('labour_items');
         var lastRow = tbl.rows.length;
 
@@ -39,35 +43,15 @@
 
 
 
-        // qty Cell - Create Cell
-        var buildRow = row.insertCell(1);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4'); 
-
-        // qty Cell - Create Input Box
-        var el = document.createElement('input');
-        el.setAttribute('id', 'labour_qty['+iteration+']');
-        el.setAttribute('name', 'labour_qty['+iteration+']');
-        //el.setAttribute('class', 'olotd4');
-        el.setAttribute('size', '6');        
-        el.setAttribute('value', '1');
-        el.setAttribute('type', 'text');
-        el.setAttribute('maxlength', '6');
-        el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
-        buildRow.appendChild(el);
-
-
-
         // Description Cell - Create Cell
-        var buildRow = row.insertCell(2);        
+        var buildRow = row.insertCell(1);        
         //buildRow.setAttribute('width', '100px');
         //buildRow.setAttribute('class', 'olotd4');
 
         // Description Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'labour_description['+iteration+']');
-        el.setAttribute('name', 'labour_description['+iteration+']');
+        el.setAttribute('id', 'labour_items['+iteration+'][description]');
+        el.setAttribute('name', 'labour_items['+iteration+'][description]');
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
@@ -77,11 +61,11 @@
         //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
         buildRow.appendChild(el);
         
-            // Other key press examples - utested, unused
-            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
-            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
-            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
-            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+        // Other key press examples - utested, unused
+        //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
+        //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
+        //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
+        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
 
 
         // Description Cell - Populate the Select Options
@@ -91,7 +75,7 @@
 
 
         // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-        var combo = dhtmlXComboFromSelect('labour_description['+iteration+']');
+        var combo = dhtmlXComboFromSelect('labour_items['+iteration+'][description]');
 
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
@@ -108,18 +92,38 @@
             if (e.preventDefault) e.preventDefault();
                 return false;
         } );
+        
+        
+        
+        // Unit QTY Cell - Create Cell
+        var buildRow = row.insertCell(2);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4'); 
+
+        // Unit QTY Cell - Create Input Box
+        var el = document.createElement('input');
+        el.setAttribute('id', 'labour_items['+iteration+'][unit_qty]');
+        el.setAttribute('name', 'labour_items['+iteration+'][unit_qty]');
+        //el.setAttribute('class', 'olotd4');
+        el.setAttribute('size', '6');        
+        el.setAttribute('value', '1');
+        el.setAttribute('type', 'text');
+        el.setAttribute('maxlength', '6');
+        el.required = true;
+        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
+        buildRow.appendChild(el);
 
 
 
-        // Amount Cell - Create Cell
+        // Unit NET Cell - Create Cell
         var buildRow = row.insertCell(3);        
         //buildRow.setAttribute('width', '40px');
         //buildRow.setAttribute('class', 'olotd4');
 
-        // Amount Cell - Create Select Input
+        // Unit NET Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'labour_amount['+iteration+']');
-        el.setAttribute('name', 'labour_amount['+iteration+']');
+        el.setAttribute('id', 'labour_items['+iteration+'][unit_net]');
+        el.setAttribute('name', 'labour_items['+iteration+'][unit_net]');
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '6');
         //el.setAttribute('value', '1');
@@ -140,7 +144,7 @@
 
 
         // Amount Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('labour_amount['+iteration+']');         
+        var combo = dhtmlXComboFromSelect('labour_items['+iteration+'][unit_net]');         
 
         // Amount Cell - Set Combobox settings
         combo.setSize(90);  // This sets the width of the combo box and drop down options width  
@@ -158,7 +162,39 @@
             if (e.preventDefault) e.preventDefault();
                 return false;
         } );
+        
+    
+    
+        // VAT Rate Cell - Create Cell
+        var buildRow = row.insertCell(4);        
+        //buildRow.setAttribute('width', '100px');
+        //buildRow.setAttribute('class', 'olotd4');
 
+        // VAT Rate Cell - Create Select Input
+        var el = document.createElement('select');
+        el.setAttribute('id', 'labour_items['+iteration+'][vat_type]');
+        el.setAttribute('name', 'labour_items['+iteration+'][vat_type]');
+        //el.setAttribute('class', 'olotd4');
+        //el.setAttribute('size', '62');
+        //el.setAttribute('value', '1');
+        //el.setAttribute('type', 'text');  // only required of 'input'
+        //el.setAttribute('maxlength', '100');
+        el.required = true;
+        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+        buildRow.appendChild(el);
+
+        // Other key press examples - utested, unused
+        //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
+        //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
+        //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
+        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+
+
+        // VAT Rate Cell  - Populate the Select Options
+        {section loop=$vat_rates name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].rate_key}');
+        {/section}
+        
     }
 
     //// Remove row from Labour table
@@ -166,14 +202,17 @@
         var tbl = document.getElementById('labour_items');
         var lastRow = tbl.rows.length;
         if (lastRow > 1) tbl.deleteRow(lastRow - 1);
-    }
+    }        
+
 
 
     /**--  PARTS  --**/
 
 
+
     //// Add Row to Parts Table
     function addRowToTableParts() {
+        
         var tbl = document.getElementById('parts_items');
         var lastRow = tbl.rows.length;
 
@@ -193,35 +232,15 @@
 
 
 
-        // qty Cell - Create Cell
-        var buildRow = row.insertCell(1);        
-        //buildRow.setAttribute('width', '40px');
-        //buildRow.setAttribute('class', 'olotd4'); 
-
-        // qty Cell - Create Input Box
-        var el = document.createElement('input');
-        el.setAttribute('id', 'parts_qty['+iteration+']');
-        el.setAttribute('name', 'parts_qty['+iteration+']');
-        //el.setAttribute('class', 'olotd4');
-        el.setAttribute('size', '6');        
-        el.setAttribute('value', '1');
-        el.setAttribute('type', 'text');
-        el.setAttribute('maxlength', '6');
-        el.required = true;
-        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
-        buildRow.appendChild(el);
-
-
-
         // Description Cell - Create Cell
-        var buildRow = row.insertCell(2);        
+        var buildRow = row.insertCell(1);        
         //buildRow.setAttribute('width', '100px');
         //buildRow.setAttribute('class', 'olotd4');
 
         // Description Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'parts_description['+iteration+']');
-        el.setAttribute('name', 'parts_description['+iteration+']');    
+        el.setAttribute('id', 'parts_items['+iteration+'][description]');
+        el.setAttribute('name', 'parts_items['+iteration+'][description]');    
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
@@ -239,7 +258,7 @@
 
 
         // Description Cell - Convert Select Input to a real Combo Box using dhtmlxcombo
-        var combo = dhtmlXComboFromSelect('parts_description['+iteration+']');
+        var combo = dhtmlXComboFromSelect('parts_items['+iteration+'][description]');
 
         // Description Cell - Set Combobox settings
         combo.setSize(400);    
@@ -259,15 +278,35 @@
 
 
 
-        // Amount Cell - Create Cell
+        // Unit QTY Cell - Create Cell
+        var buildRow = row.insertCell(2);        
+        //buildRow.setAttribute('width', '40px');
+        //buildRow.setAttribute('class', 'olotd4'); 
+
+        // Unit QTY Cell - Create Input Box
+        var el = document.createElement('input');
+        el.setAttribute('id', 'parts_items['+iteration+'][unit_qty]');
+        el.setAttribute('name', 'parts_items['+iteration+'][unit_qty]');
+        //el.setAttribute('class', 'olotd4');
+        el.setAttribute('size', '6');        
+        el.setAttribute('value', '1');
+        el.setAttribute('type', 'text');
+        el.setAttribute('maxlength', '6');
+        el.required = true;
+        el.setAttribute('onkeydown', 'return onlyNumberPeriod(event)');
+        buildRow.appendChild(el);
+        
+
+
+        // Unit Net Cell - Create Cell
         var buildRow = row.insertCell(3);        
         //buildRow.setAttribute('width', '40px');
         //buildRow.setAttribute('class', 'olotd4');
 
-        // Amount Cell - Create Select Input
+        // Unit Net Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'parts_amount['+iteration+']');
-        el.setAttribute('name', 'parts_amount['+iteration+']');
+        el.setAttribute('id', 'parts_items['+iteration+'][unit_net]');
+        el.setAttribute('name', 'parts_items['+iteration+'][unit_net]');
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '10');
         //el.setAttribute('value', '1');
@@ -278,18 +317,18 @@
         buildRow.appendChild(el);
         
         
-        // Amount Cell - Populate the Select Options
+        // Unit Net Cell - Populate the Select Options
         {section loop=$parts_prefill_items name=i}
             el.options[{$smarty.section.i.index}] = new Option('{$parts_prefill_items[i].amount}', '{$parts_prefill_items[i].amount}');
         {/section}
 
-        // Amount Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
+        // Unit Net Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
         buildRow.innerHTML = '<div style="float:left;"><b>{$currency_sym}&nbsp;</b></div><div>' + buildRow.innerHTML + '</div>';
         
-        // Amount Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
-        var combo = dhtmlXComboFromSelect('parts_amount['+iteration+']');         
+        // Unit Net Cell - Convert Select Input to a real Combo Box using dhtmlxcombo - Run after adding currency symbol to the cell otherwise it does not work
+        var combo = dhtmlXComboFromSelect('parts_items['+iteration+'][unit_net]');         
 
-        // Amount Cell - Set Combobox settings
+        // Unit Net Cell - Set Combobox settings
         combo.setSize(90);  // This sets the width of the combo box and drop down options width  
         combo.DOMelem_input.maxLength = 10;
         combo.DOMelem_input.setAttribute('pattern', '{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}');
@@ -305,6 +344,33 @@
             if (e.preventDefault) e.preventDefault();
                 return false;
         } );
+        
+        
+        
+        // VAT Rate Cell - Create Cell
+        var buildRow = row.insertCell(4);        
+        //buildRow.setAttribute('width', '100px');
+        //buildRow.setAttribute('class', 'olotd4');
+
+        // VAT Rate Cell - Create Select Input
+        var el = document.createElement('select');
+        el.setAttribute('id', 'parts_items['+iteration+'][vat_type]');
+        el.setAttribute('name', 'parts_items['+iteration+'][vat_type]');    
+        //el.setAttribute('class', 'olotd4');
+        //el.setAttribute('size', '62');
+        //el.setAttribute('value', '1');
+        //el.setAttribute('type', 'text');
+        //el.setAttribute('maxlength', '100');
+        el.required = true;       
+        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+        buildRow.appendChild(el);
+        
+        
+        // VAT Rate Cell - Populate the Select Options
+        {section loop=$vat_rates name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].rate_key}');
+        {/section}
+        
 
     }
 
@@ -527,149 +593,163 @@
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
-                                                    {if $labour_items != '0'}
+                                                    {if $labour_items}
                                                         <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                             <tr  class="olotd4">
                                                                 <td class="row2"><b>{t}No{/t}</b></td>
-                                                                <td class="row2"><b>{t}Qty{/t}</b></td>
                                                                 <td class="row2"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Price{/t}</b></td>
-                                                                <td class="row2"><b>{t}Total{/t}</b></td>
+                                                                <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                                <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                                <td class="row2"><b>{t}Net{/t}</b></td>
+                                                                <td class="row2"><b>{t}VAT Rate{/t}</b></td>
+                                                                <td class="row2"><b>{t}VAT Applied{/t}</b></td>
+                                                                <td class="row2"><b>{t}Gross{/t}</b></td>
                                                                 <td class="row2"><b>{t}Actions{/t}</b></td>
                                                             </tr>
                                                             {section name=l loop=$labour_items}
                                                                 <tr class="olotd4">
-                                                                    <td>{$smarty.section.l.index+1}</td>
-                                                                    <td>{$labour_items[l].qty}</td>
+                                                                    <td>{$smarty.section.q.index+1}</td>
                                                                     <td>{$labour_items[l].description}</td>
-                                                                    <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
-                                                                    <td>
-                                                                        {if !$display_payments}
-                                                                            <a href="index.php?component=invoice&page_tpl=delete_labour&labour_id={$labour_items[l].invoice_labour_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Labour Record? This will permanently remove the record from the database.{/t}');">
-                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Labour Record{/t}</b>');" onMouseOut="hideddrivetip();">
-                                                                            </a>
-                                                                        {else}
-                                                                            -
-                                                                        {/if}
-                                                                    </td>
+                                                                    <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
+                                                                    <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                                                                
+                                                                    <td>{$labour_items[l].sub_total_net|string_format:"%.2f"}%</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
+                                                                    <td>-</td>
                                                                 </tr>
                                                             {/section}
                                                             <tr>
-                                                                <td colspan="5" style="text-align:right;"><b>{t}Labour Total{/t}</b></td>
-                                                                <td style="text-align:left;">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
+                                                                <td colspan="9" style="text-align:right;">
+                                                                    <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
+                                                                        <tr>
+                                                                            <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
+                                                                            <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                                                                            <td width="80" align="right">{t}VAT{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                                                                            <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+                                                                        </tr>
+                                                                    </table>  
+                                                                </td>
                                                             </tr>
                                                         </table>
-                                                    {/if}
-                                                    <br>
+                                                        {/if}
+                                                        <br>
 
-                                                    <!-- Additional Javascript Labour Table -->
-                                                    {if !$display_payments}                                                        
-                                                        <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
-                                                            <tr class="olotd4">
-                                                                <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
-                                                                <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
-                                                                <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td> 
-                                                            </tr>
-                                                            <!-- Additional Rows are added here -->
-                                                        </table>
-                                                        <p>
-                                                            <button type="button" onclick="addRowToTableLabour();">{t}Add{/t}</button>
-                                                            <button type="button" onclick="removeRowFromTableLabour();">{t}Remove{/t}</button>
-                                                        </p>
-                                                    {/if}
-
-                                                </td>
-                                            </tr>                                        
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <!-- Parts Items -->
-                                <tr>
-                                    <td>                                    
-                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" >
-                                            <tr>
-                                                <td class="menuhead2">&nbsp;{t}Parts{/t}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menutd2">
-                                                    {if $parts_items != '0'}
-                                                        <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                            <tr class="olotd4">
-                                                                <td class="row2"><b>{t}No{/t}</b></td>
-                                                                <td class="row2"><b>{t}Qty{/t}</b></td>
-                                                                <td class="row2"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2"><b>{t}Price{/t}</b></td>
-                                                                <td class="row2"><b>{t}Total{/t}</b></td>
-                                                                <td class="row2"><b>{t}Actions{/t}</b></td>
-                                                            </tr>
-                                                            {section name=p loop=$parts_items}
+                                                        <!-- Additional Javascript Labour Table -->
+                                                        {if !$display_payments}                                                        
+                                                            <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable" id="labour_items">
                                                                 <tr class="olotd4">
-                                                                    <td>{$smarty.section.p.index+1}</td>
-                                                                    <td>{$parts_items[p].qty}</td>
-                                                                    <td>{$parts_items[p].description}</td>
-                                                                    <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
-                                                                    <td>{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
-                                                                    <td>
-                                                                        {if !$display_payments}
-                                                                            <a href="index.php?component=invoice&page_tpl=delete_parts&parts_id={$parts_items[p].invoice_parts_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Parts Record? This will permanently remove the record from the database.{/t}');">
-                                                                                <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Parts Record{/t}</b>');" onMouseOut="hideddrivetip();">
-                                                                            </a>
-                                                                        {else}
-                                                                            -
-                                                                        {/if}
+                                                                    <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>                                                                    
+                                                                    <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>                                                                    
+                                                                    <td class="row2" style="width: 66px;"><b>{t}Unit Qty{/t}</b></td>
+                                                                    <td class="row2" style="width: 110px;"><b>{t}Unit Net{/t}</b></td>
+                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Rate{/t}</b></td>
+                                                                </tr>
+                                                                <!-- Additional Rows are added here -->
+                                                            </table>
+                                                            <p>
+                                                                <button type="button" onclick="addRowToTableLabour();">{t}Add{/t}</button>
+                                                                <button type="button" onclick="removeRowFromTableLabour();">{t}Remove{/t}</button>
+                                                            </p>
+                                                        {/if}
+
+                                                    </td>
+                                                </tr>                                        
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Parts Items -->
+                                    <tr>
+                                        <td>
+                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" >
+                                                <tr>
+                                                    <td class="menuhead2">&nbsp;{t}Parts{/t}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="menutd2">
+                                                        {if $parts_items}
+                                                            <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                                <tr class="olotd4">
+                                                                    <td class="row2"><b>{t}No{/t}</b></td>
+                                                                    <td class="row2"><b>{t}Description{/t}</b></td>
+                                                                    <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                                    <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                                    <td class="row2"><b>{t}Net{/t}</b></td>
+                                                                    <td class="row2"><b>{t}VAT Rate{/t}</b></td>
+                                                                    <td class="row2"><b>{t}VAT Applied{/t}</b></td>
+                                                                    <td class="row2"><b>{t}Gross{/t}</b></td>
+                                                                    <td class="row2"><b>{t}Actions{/t}</b></td>
+                                                                </tr>
+                                                                {section name=p loop=$parts_items}
+                                                                    <tr class="olotd4">
+                                                                        <td>{$smarty.section.w.index+1}</td>
+                                                                        <td>{$parts_items[p].description}</td>
+                                                                        <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
+                                                                        <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
+                                                                        <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                                                                
+                                                                        <td>{$parts_items[p].sub_total_net|string_format:"%.2f"}%</td>
+                                                                        <td>{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>
+                                                                        <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
+                                                                        <td>-</td>
+                                                                    </tr>
+                                                                 {/section}
+                                                                <tr>
+                                                                    <td colspan="9" style="text-align:right;">
+                                                                        <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
+                                                                            <tr>
+                                                                                <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
+                                                                                <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                                                                                <td width="80" align="right">{t}VAT{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                                                                                <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+                                                                            </tr>
+                                                                        </table>  
                                                                     </td>
                                                                 </tr>
-                                                             {/section}
-                                                            <tr>
-                                                                <td colspan="5" style="text-align:right;"><b>{t}Parts Total{/t}</b></td>
-                                                                <td style="text-align:left;">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
-                                                            </tr>
-                                                        </table>
-                                                    {/if}
-                                                    <br>
+                                                            </table>
+                                                        {/if}                              
+                                                        <br>
 
-                                                    <!-- Additional Javascript Parts Table -->
-                                                    {if !$display_payments}                                                    
-                                                        <table id="parts_items" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                            <tr class="olotd4">
-                                                                <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>
-                                                                <td class="row2" style="width: 66px;"><b>{t}Qty{/t}</b></td>
-                                                                <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>
-                                                                <td class="row2" style="width: 110px;"><b>{t}Price{/t}</b></td>                                                            
-                                                            </tr>
-                                                            <!-- Additional Rows are added here -->
-                                                        </table>
-                                                        <p>
-                                                            <button type="button" onclick="addRowToTableParts();">{t}Add{/t}</button>
-                                                            <button type="button" onclick="removeRowFromTableParts();">{t}Remove{/t}</button>
-                                                        </p>
-                                                    {/if}
+                                                        <!-- Additional Javascript Parts Table -->
+                                                        {if !$display_payments}                                                    
+                                                            <table id="parts_items" width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                                <tr class="olotd4">
+                                                                    <td class="row2" style="width: 50px;"><b>{t}No{/t}</b></td>                                                                   
+                                                                    <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>                                                                    
+                                                                    <td class="row2" style="width: 66px;"><b>{t}Unit Qty{/t}</b></td>
+                                                                    <td class="row2" style="width: 110px;"><b>{t}Unit Net{/t}</b></td>
+                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Rate{/t}</b></td>
+                                                                </tr>
+                                                                <!-- Additional Rows are added here -->
+                                                            </table>
+                                                            <p>
+                                                                <button type="button" onclick="addRowToTableParts();">{t}Add{/t}</button>
+                                                                <button type="button" onclick="removeRowFromTableParts();">{t}Remove{/t}</button>
+                                                            </p>
+                                                        {/if}
 
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
                                 
-                                <!-- Vouchers -->                                
-                                <tr>
-                                    <td>                                                
-                                        {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$display_vouchers block_title=_gettext("Vouchers")}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" style="text-align:right;"><b>{t}Vouchers Sub Total{/t}</b> {$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>                                    
-                                </tr>
+                                    <!-- Vouchers -->                                
+                                    <tr>
+                                        <td>                                                
+                                            {include file='voucher/blocks/display_vouchers_block.tpl' display_vouchers=$display_vouchers block_title=_gettext("Vouchers")}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" style="text-align:right;"><b>{t}Vouchers{/t} {t}Total{/t}</b> {$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>                                    
+                                    </tr>
 
                                 <!-- Totals Section -->
                                 <tr>
                                     <td>
                                         <table width="100%" cellpadding="4" cellspacing="0" border="0" >
                                             <tr>
-                                                <td class="menuhead2">&nbsp;{t}Total{/t}</td>
+                                                <td class="menuhead2">&nbsp;{t}Invoice Total{/t}</td>
                                             </tr>
                                             <tr>
                                                 <td class="menutd2">
@@ -680,7 +760,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
-                                                            <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">-{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
                                                         </tr>
                                                         {if $invoice_details.tax_type != 'none'}
                                                             <tr>
@@ -690,11 +770,11 @@
                                                             <tr>                                                            
                                                                 <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} (@ {$invoice_details.tax_rate}%)</b></td>
                                                                 <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
-                                                            </tr
-                                                        {/if}                                                        
+                                                            </tr>
+                                                        {/if}
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t} ({t}Total{/t})</b></td>

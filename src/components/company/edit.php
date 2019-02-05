@@ -17,7 +17,7 @@ $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;
 if(isset($VAR['submit'])) {
 
     // Submit data to the database
-    update_company_details($VAR);
+    update_company_details($VAR);    
     
     // Reload Company options and display a success message
     force_page('company', 'edit', 'information_msg='._gettext("Company details updated."));
@@ -27,5 +27,6 @@ if(isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('date_formats', get_date_formats());
 $smarty->assign('tax_types', get_tax_types() );
+$smarty->assign('vat_rates', get_vat_rates(true) );
 $smarty->assign('company_details', get_company_details() );
 $BuildPage .= $smarty->fetch('company/edit.tpl');

@@ -131,51 +131,83 @@
 
     <!-- Labour Table -->
     {if $labour_items}
-        <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+        <table width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
-                <td class="olohead" width="40"><b>{t}Qty{/t}</b></td>
-                <td class="olohead"><b>{t}Labour Items{/t}</b></td>
-                <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
-                <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
-            </tr>
-            {section name=l loop=$labour_items}
-                <tr class="olotd4">
-                    <td class="olotd4" width="40">{$labour_items[l].qty}</td>
-                    <td class="olotd4">{$labour_items[l].description}</td>
-                    <td class="olotd4" width="60" align="right">{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
-                    <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
-                </tr>
-            {/section}
-            <tr>
-                <td colspan="3" style="text-align:right;"><b>{t}Labour{/t} ({t}Sub Total{/t})</b></td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
+                <td><b>{t}Labour Items{/t}</b></td>
             </tr>
         </table>
+        <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <tr>                
+                <td class="olohead"><b>{t}Description{/t}</b></td>
+                <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>
+                <td class="olohead" width="50" align="right"><b>{t}Unit Net{/t}</b></td>                
+                <td class="olohead" width="50" align="right"><b>{t}Net{/t}</b></td>                
+                <td class="olohead" width="50" align="right"><b>{t}VAT Rate{/t}</b></td>
+                <td class="olohead" width="50" align="right"><b>{t}VAT Applied{/t}</b></td>
+                <td class="olohead" width="50" align="right"><b>{t}Gross{/t}</b></td>
+            </tr>
+            {section name=l loop=$labour_items}
+                <tr class="olotd4">                    
+                    <td class="olotd4">{$labour_items[l].description}</td>
+                    <td class="olotd4">{$labour_items[l].unit_qty}</td>
+                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                       
+                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>
+                    <td class="olotd4" align="right">{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
+                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td> 
+                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
+                </tr>
+            {/section}
+        </table>
+        <br>
+        <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
+                <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{t}VAT{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{t}Gross{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+            </tr>
+        </table>        
         <br>
     {/if}
 
     <!-- Parts Table -->
     {if $parts_items}
-        <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+        <table width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
-                <td width="40" class="olohead"><b>{t}Qty{/t}</b></td>
-                <td class="olohead"><b>{t}Parts Items{/t}</b></td>
-                <td class="olohead" width="60" align="right"><b>{t}Unit Price{/t}</b></td>
-                <td class="olohead" width="80" align="right"><b>{t}Sub Total{/t}</b></td>
-            </tr>
-            {section name=p loop=$parts_items}        
-                <tr class="olotd4">
-                    <td class="olotd4" width="40">{$parts_items[p].qty}</td>
-                    <td class="olotd4">{$parts_items[p].description}</td>
-                    <td class="olotd4" width="60" align="right">{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
-                    <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
-                </tr>
-            {/section}
-            <tr>           
-                <td colspan="3" style="text-align:right;"><b>{t}Parts{/t} ({t}Sub Total{/t})</b></td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
+                <td><b>{t}Parts Items{/t}</b></td>
             </tr>
         </table>
+        <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <tr>                
+                <td class="olohead"><b>{t}Description{/t}</b></td>
+                <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>
+                <td class="olohead" width="50" align="right"><b>{t}Unit Net{/t}</b></td>                
+                <td class="olohead" width="50" align="right"><b>{t}Net{/t}</b></td>                
+                <td class="olohead" width="50" align="right"><b>{t}VAT Rate{/t}</b></td>
+                <td class="olohead" width="50" align="right"><b>{t}VAT Applied{/t}</b></td>
+                <td class="olohead" width="50" align="right"><b>{t}Gross{/t}</b></td>
+            </tr>
+            {section name=p loop=$parts_items}        
+                <tr class="olotd4">                    
+                    <td class="olotd4" >{$parts_items[p].description}</td>
+                    <td class="olotd4" align="right">{$parts_items[p].unit_qty}</td>
+                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
+                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>
+                    <td class="olotd4" align="right">{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>                    
+                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>                    
+                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
+                </tr>
+            {/section}
+        </table>
+        <br>
+        <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+            <tr>
+                <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
+                <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{t}VAT{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                <td class="olotd4" width="80" align="right">{t}Gross{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+            </tr>
+        </table>        
         <br>
     {/if}
     
@@ -184,19 +216,22 @@
         <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
                 <td class="olohead"><b>{t}Voucher{/t} {t}Code{/t}</b></td>                
-                <td class="olohead" width="60" align="right"><b>{t}Expiry Date{/t}</b></td>
+                <td class="olohead" width="80" align="right"><b>{t}Expiry Date{/t}</b></td>                
                 <td class="olohead" width="80" align="right"><b>{t}Price{/t}</b></td>
             </tr>
             {section name=p loop=$display_vouchers}        
                 <tr class="olotd4">
                     <td class="olotd4">{$display_vouchers[p].voucher_code}</td>                    
-                    <td class="olotd4" width="60" align="right">{$display_vouchers[p].expiry_date|date_format:$date_format}</td>
-                    <td class="olotd4" width="80" align="right">{$currency_sym} {$display_vouchers[p].amount}</td>
+                    <td class="olotd4" align="right">{$display_vouchers[p].expiry_date|date_format:$date_format}</td>                    
+                    <td class="olotd4" align="right">{$currency_sym} {$display_vouchers[p].amount}</td>
                 </tr>
-            {/section}
+            {/section}            
+        </table>
+        <br>
+        <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>           
-                <td colspan="2" style="text-align:right;"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b> {$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
+                <td style="text-align:right;"><b>{t}Vouchers{/t} {t}Total{/t}</b></td>
+                <td class="olotd4" width="80" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
             </tr>
         </table>
         <br>
@@ -292,14 +327,14 @@
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                         </tr>
                         <tr>                                                            
-                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} (@ {$invoice_details.tax_rate}%)</b></td>
+                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                         </tr>
                     {/if}
                     {if $display_vouchers}
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>
+                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
                         </tr>
                     {/if}
                     <tr>

@@ -115,7 +115,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
         LEFT JOIN (
             SELECT ".PRFX."invoice_labour.invoice_id,            
             GROUP_CONCAT(
-                CONCAT(".PRFX."invoice_labour.qty, ' x ', ".PRFX."invoice_labour.description)                
+                CONCAT(".PRFX."invoice_labour.unit_qty, ' x ', ".PRFX."invoice_labour.description)                
                 ORDER BY ".PRFX."invoice_labour.invoice_labour_id
                 ASC
                 SEPARATOR '|||'                
@@ -130,7 +130,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
         LEFT JOIN (
             SELECT ".PRFX."invoice_parts.invoice_id,            
             GROUP_CONCAT(
-                CONCAT(".PRFX."invoice_parts.qty, ' x ', ".PRFX."invoice_parts.description)                
+                CONCAT(".PRFX."invoice_parts.unit_qty, ' x ', ".PRFX."invoice_parts.description)                
                 ORDER BY ".PRFX."invoice_parts.invoice_parts_id
                 ASC
                 SEPARATOR '|||'                
@@ -235,7 +235,7 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
     if($tax_type == 'none') {
         $tax_rate = '0.00';
     } else {        
-        $tax_rate = get_company_details('tax_rate');
+        $tax_rate = get_company_details('sales_tax_rate');
     }    
     
     $sql = "INSERT INTO ".PRFX."invoice_records SET     
@@ -280,8 +280,8 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
 }
 
 #####################################
-#     Insert Labour Items           #
-#####################################
+#     Insert Labour Items           # // KEEP this old version for the code as a reference
+##################################### // This function combines multiple arrays created by the invoice:edit page.
 
 function insert_labour_items($invoice_id, $descriptions, $amounts, $qtys) {
     
@@ -295,6 +295,8 @@ function insert_labour_items($invoice_id, $descriptions, $amounts, $qtys) {
         $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, description, amount, qty, sub_total) VALUES ";
         
         foreach($qtys as $key) {
+            
+            // Rrename $key to $qty, and then below swap $qty[$i] --> $qty - removes the error, both work
             
             $sql .="(".
                     
@@ -599,6 +601,67 @@ function get_invoice_status_display_name($status_key) {
         
     }    
     
+}
+
+############################################
+#   Get Labour Invoice Sub Totals          #
+############################################
+
+function get_labour_items_sub_totals($invoice_id) {
+    
+    $db = QFactory::getDbo();
+    
+    // I could use sum_labour_items() 
+    // NB: i dont think i need the aliases
+    
+    $sql = "SELECT
+            SUM(unit_net) AS unit_net,
+            SUM(unit_vat) AS unit_vat,
+            SUM(unit_gross) AS unit_gross,
+            SUM(sub_total_net) AS sub_total_net,
+            SUM(sub_total_vat) AS sub_total_vat,
+            SUM(sub_total_gross) AS sub_total_gross
+            FROM ".PRFX."invoice_labour
+            WHERE invoice_id=". $db->qstr($invoice_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice labour sub total."));
+    } else {
+        
+        return $rs->GetRowAssoc(); 
+        
+    }    
+    
+}
+
+###########################################
+#   Get Parts Invoice Sub Total           #
+###########################################
+
+function get_parts_items_sub_totals($invoice_id) {
+    
+    $db = QFactory::getDbo();
+    
+    // I could use sum_parts_items()
+    // NB: i dont think i need the aliases
+    
+    $sql = "SELECT
+            SUM(unit_net) AS unit_net,
+            SUM(unit_vat) AS unit_vat,
+            SUM(unit_gross) AS unit_gross,
+            SUM(sub_total_net) AS sub_total_net,
+            SUM(sub_total_vat) AS sub_total_vat,
+            SUM(sub_total_gross) AS sub_total_gross
+            FROM ".PRFX."invoice_parts
+            WHERE invoice_id=". $db->qstr($invoice_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the invoice parts sub total."));
+    } else {
+        
+        return $rs->GetRowAssoc(); 
+        
+    }  
 }
 
 /** Update Functions **/
@@ -1163,45 +1226,74 @@ function delete_invoice_prefill_item($invoice_prefill_id) {
 
 /** Other Functions **/
 
-#####################################
-#   Sum Labour Invoice Sub Total    #
-#####################################
+################################################
+#   recalculate an Invoice Item Sub Totals     #
+################################################
 
-function labour_sub_total($invoice_id) {
+function recalculate_invoice_item_sub_totals($item_values) {
+    
+}
+
+/*
+############################################
+#   recalculate Labour Item Sub Totals     #
+############################################
+
+function recalculate_labour_item_sub_totals($invoice_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_labour WHERE invoice_id=". $db->qstr($invoice_id);
+    // I could use sum_labour_items() 
+    
+    $sql = "SELECT
+            SUM(unit_net) AS unit_net,
+            SUM(unit_vat) AS unit_vat,
+            SUM(unit_gross) AS unit_gross,
+            SUM(sub_total_net) AS sub_total_net,
+            SUM(sub_total_vat) AS sub_total_vat,
+            SUM(sub_total_gross) AS sub_total_gross
+            FROM ".PRFX."invoice_labour
+            WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice labour sub total."));
     } else {
         
-        return $rs->fields['sub_total_sum'];
+        return $rs->GetRowAssoc(); 
         
     }    
     
 }
 
-#####################################
-#   Sum Parts Invoice Sub Total     #
-#####################################
+###########################################
+#   recalculate Parts Item Sub Total      #
+###########################################
 
-function parts_sub_total($invoice_id) {
+function recalculate_parts_item_sub_totals($invoice_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT SUM(sub_total) AS sub_total_sum FROM ".PRFX."invoice_parts WHERE invoice_id=" . $db->qstr($invoice_id);
+    // I could use sum_parts_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null)
+    
+    $sql = "SELECT
+            SUM(unit_net) AS unit_net,
+            SUM(unit_vat) AS unit_vat,
+            SUM(unit_gross) AS unit_gross,
+            SUM(sub_total_net) AS sub_total_net,
+            SUM(sub_total_vat) AS sub_total_vat,
+            SUM(sub_total_gross) AS sub_total_gross
+            FROM ".PRFX."parts_labour
+            WHERE invoice_id=". $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice parts sub total."));
     } else {
         
-        return  $rs->fields['sub_total_sum'];
+        return $rs->GetRowAssoc(); 
         
     }
   
-}
+}*/
 
 #####################################
 #   Recalculate Invoice Totals      #

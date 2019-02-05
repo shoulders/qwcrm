@@ -17,12 +17,12 @@
     // If there is a Tax Type selected then verify there is a Tax Rate set (run on form submission)
     function validateTaxRate(msg) {
         
-        // Store the tax_type and tax_rate into variables ...
+        // Store the tax_type and sales_tax_rate into variables ...
         var tax_type = document.getElementById('tax_type');
-        var tax_rate = document.getElementById('tax_rate');
+        var tax_rate = document.getEtax_ratelementById('sales_tax_rate');
         
         // If there is a Tax Type set then validate a rate is set
-        if (tax_type.value !== 'none' && tax_rate.value == 0) {             
+        if (tax_type.value !== 'none' && sales_tax_rate.value == 0) {             
             alert(msg);
             return false;
             
@@ -54,8 +54,9 @@
                                         <div id="tabs_container">
                                             <ul class="tabs">
                                                 <li class="active"><a href="javascript:void(0)" rel="#tab_1_contents" class="tab"><img src="{$theme_images_dir}icons/key.png" alt="" border="0" height="14" width="14"/>&nbsp;{t}Company Details{/t}</a></li>
-                                                <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14"/>&nbsp;{t}Localisation Setup{/t}</a></li>                        
-                                                <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;{t}Email Messages{/t}</a></li>
+                                                <li><a href="javascript:void(0)" rel="#tab_2_contents" class="tab"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14"/>&nbsp;{t}Financial Settings{/t}</a></li>                        
+                                                <li><a href="javascript:void(0)" rel="#tab_3_contents" class="tab"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14"/>&nbsp;{t}Localisation Setup{/t}</a></li>                        
+                                                <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/16x16/email.jpg" alt="" border="0" height="14" width="14" />&nbsp;{t}Email Messages{/t}</a></li>
                                             </ul>
 
                                             <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -143,52 +144,6 @@
                                                                                     <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                                 </tr>                                                                                
                                                                                 <tr>
-                                                                                    <td align="right"><b>{t}Tax Type{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                                    <td>
-                                                                                        <select class="olotd5" id="tax_type" name="tax_type">               
-                                                                                            {section name=s loop=$tax_types}
-                                                                                                <option value="{$tax_types[s].type_key}"{if $company_details.tax_type == $tax_types[s].type_key} selected{/if}>{t}{$tax_types[s].display_name}{/t}</option>
-                                                                                            {/section}
-                                                                                        </select>
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td align="right"><b>{t}Tax Rate{/t}:</b></td>
-                                                                                    <td><input id="tax_rate" name="tax_rate" class="olotd5" size="6" value="{$company_details.tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td align="right"><b>{t}VAT Number{/t}:</b></td>
-                                                                                    <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
-                                                                                </tr> 
-                                                                                <tr>
-                                                                                    <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td>
-                                                                                        <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
-                                                                                        <button type="button" id="year_start_button">+</button>
-                                                                                        <script>                                                        
-                                                                                            Calendar.setup( {
-                                                                                                trigger     : "year_start_button",
-                                                                                                inputField  : "year_start",
-                                                                                                dateFormat  : "{$date_format}"                                                                                            
-                                                                                            } );                                                        
-                                                                                        </script>                                                    
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
-                                                                                    <td align="right"><b>{t}Financial Year End{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td>
-                                                                                        <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
-                                                                                        <button type="button" id="year_end_button">+</button>
-                                                                                        <script>                                                        
-                                                                                            Calendar.setup( {
-                                                                                                trigger     : "year_end_button",
-                                                                                                inputField  : "year_end",
-                                                                                                dateFormat  : "{$date_format}"                                                                                            
-                                                                                            } );                                                        
-                                                                                        </script>                                                    
-                                                                                    </td>
-                                                                                </tr>
-                                                                                <tr>
                                                                                     <td><b>{t}Welcome Message{/t}:</b> {t}(Dashboard){/t}</td>
                                                                                 </tr>
                                                                                 <tr>
@@ -202,9 +157,85 @@
                                                         </tr>
                                                     </table>
                                                 </div>
-
+                                                                                
                                                 <!-- Tab 2 Contents -->
                                                 <div id="tab_2_contents" class="tab_contents">
+                                                    <table width="100%" cellpadding="5" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td class="menuhead2" width="80%">&nbsp;{t}Edit your Companies Finance Settings{/t}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="menutd2">
+                                                                <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">                                                                    
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>
+                                                                        <td>
+                                                                            <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                            <button type="button" id="year_start_button">+</button>
+                                                                            <script>                                                        
+                                                                                Calendar.setup( {
+                                                                                    trigger     : "year_start_button",
+                                                                                    inputField  : "year_start",
+                                                                                    dateFormat  : "{$date_format}"                                                                                            
+                                                                                } );                                                        
+                                                                            </script>                                                    
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Financial Year End{/t}:</b> <span style="color: #ff0000">*</span></td>
+                                                                        <td>
+                                                                            <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                            <button type="button" id="year_end_button">+</button>
+                                                                            <script>                                                        
+                                                                                Calendar.setup( {
+                                                                                    trigger     : "year_end_button",
+                                                                                    inputField  : "year_end",
+                                                                                    dateFormat  : "{$date_format}"                                                                                            
+                                                                                } );                                                        
+                                                                            </script>                                                    
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Tax Type{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                        <td>
+                                                                            <select class="olotd5" id="tax_type" name="tax_type">               
+                                                                                {section name=s loop=$tax_types}
+                                                                                    <option value="{$tax_types[s].type_key}"{if $company_details.tax_type == $tax_types[s].type_key} selected{/if}>{t}{$tax_types[s].display_name}{/t}</option>
+                                                                                {/section}
+                                                                            </select>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}Sales Tax Rate{/t}:</b></td>
+                                                                        <td><input id="sales_tax_rate" name="sales_tax_rate" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>% ({t}If Applicable{/t})</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}VAT Number{/t}:</b></td>
+                                                                        <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td align="right"><b>{t}VAT Rates{/t}</b></td>
+                                                                        <td>&nbsp;</td>
+                                                                    </tr>
+                                                                    {section name=r loop=$vat_rates}
+                                                                        <tr>
+                                                                            <td align="right"><b>{t}{$vat_rates[r].display_name}{/t}:</b></td>
+                                                                            <td>
+                                                                                <input name="vat_rates[{$vat_rates[r].rate_key}]" class="olotd5" size="6" value="{$vat_rates[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_rates[r].editable} disabled{/if}/>%
+                                                                                {if $vat_rates[r].rate_key}
+                                                                                    <input type="hidden" name="vat_rates[{$vat_rates[r].rate_key}]" value="{$vat_rates[r].rate}">
+                                                                                {/if}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/section}
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+
+                                                <!-- Tab 3 Contents -->
+                                                <div id="tab_3_contents" class="tab_contents">
                                                     <table width="100%" cellpadding="5" cellspacing="0" border="0">
                                                         <tr>
                                                             <td class="menuhead2" width="80%">&nbsp;{t}Edit your Companies Currency Settings{/t}</td>
@@ -242,8 +273,8 @@
                                                     </table>
                                                 </div>
 
-                                                <!-- Tab 3 Contents -->                        
-                                                <div id="tab_3_contents" class="tab_contents">
+                                                <!-- Tab 4 Contents -->                        
+                                                <div id="tab_4_contents" class="tab_contents">
                                                     <table width="100%" cellpadding="5" cellspacing="0" border="0">                                
                                                         <tr>
                                                             <td class="menutd2">                                        

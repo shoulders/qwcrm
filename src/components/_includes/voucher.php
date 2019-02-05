@@ -333,6 +333,26 @@ function get_voucher_status_display_name($status_key) {
     
 }
 
+###########################################
+#   Calculate Voucher Invoice Sub Total   #  // All statuses should be summed up, deleted vouchers do not have an invoice_id anyway so are ignored
+###########################################
+
+function get_vouchers_items_sub_total($invoice_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."voucher_records WHERE invoice_id=" . $db->qstr($invoice_id);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice voucher sub total."));
+    } else {
+        
+        return  $rs->fields['sub_total_sum'];
+        
+    }
+  
+}
+
 /** Update Functions **/
 
 #################################
@@ -1041,25 +1061,6 @@ function check_voucher_is_expired($voucher_id) {
     
 }
 
-#####################################
-#   Sum Voucher Invoice Sub Total   #  // All statuses should be summed up, deleted vouchers do not have an invoice_id anyway so are ignored
-#####################################
-
-function vouchers_sub_total($invoice_id) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."voucher_records WHERE invoice_id=" . $db->qstr($invoice_id);
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice voucher sub total."));
-    } else {
-        
-        return  $rs->fields['sub_total_sum'];
-        
-    }
-  
-}
 
 ############################################################################
 # Check an invoices vouchers do not prevent the invoice getting refunded   #

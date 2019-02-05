@@ -130,8 +130,8 @@ CREATE TABLE `#__company_record` (
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `website` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `company_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `tax_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `tax_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `sales_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `vat_number` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `year_start` date NOT NULL,
   `year_end` date NOT NULL,
@@ -176,6 +176,32 @@ INSERT INTO `#__company_tax_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'none', 'None'),
 (2, 'sales', 'Sales'),
 (3, 'vat', 'VAT');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__company_vat_rates`
+--
+
+CREATE TABLE `#__company_vat_rates` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `rate_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `rate` decimal(4,2) NOT NULL,
+  `editable` int(11) NOT NULL DEFAULT '0',
+  `hidden` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__company_vat_rates`
+--
+
+INSERT INTO `#__company_vat_rates` (`id`, `rate_key`, `display_name`, `rate`, `editable`, `hidden`) VALUES
+(1, 'none', 'None', '0.00', 0, 1),
+(2, 'standard', 'Standard Rate', '20.00', 1, 0),
+(3, 'reduced', 'Reduced Rate', '5.00', 1, 0),
+(4, 'zero', 'Zero Rated', '0.00', 0, 0),
+(5, 'exempt', 'Exempt', '0.00', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -244,10 +270,17 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 CREATE TABLE `#__invoice_labour` (
   `invoice_labour_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `qty` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00'
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -259,10 +292,17 @@ CREATE TABLE `#__invoice_labour` (
 CREATE TABLE `#__invoice_parts` (
   `invoice_parts_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `qty` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00'
+  `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -310,7 +350,7 @@ CREATE TABLE `#__invoice_records` (
   `date` date NOT NULL,
   `due_date` date NOT NULL,
   `discount_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `tax_type` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `sub_total` decimal(10,2) NOT NULL DEFAULT '0.00',
   `discount_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -1099,6 +1139,12 @@ ALTER TABLE `#__company_record`
 -- Indexes for table `#__company_tax_types`
 --
 ALTER TABLE `#__company_tax_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__company_vat_rates`
+--
+ALTER TABLE `#__company_vat_rates`
   ADD PRIMARY KEY (`id`);
 
 --

@@ -34,10 +34,10 @@ $smarty->assign('labour_items',             get_invoice_labour_items($VAR['invoi
 $smarty->assign('parts_items',              get_invoice_parts_items($VAR['invoice_id'])                                                   );
 $smarty->assign('display_vouchers',        display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
 
-// Invoice Totals
-$smarty->assign('labour_sub_total',         labour_sub_total($VAR['invoice_id'])                                                          );
-$smarty->assign('parts_sub_total',          parts_sub_total($VAR['invoice_id'])                                                           );
-$smarty->assign('vouchers_sub_total',      vouchers_sub_total($VAR['invoice_id'])                                                       );
+// Sub Totals
+$smarty->assign('labour_items_sub_totals',         get_labour_items_sub_totals($VAR['invoice_id'])                                                          );
+$smarty->assign('parts_items_sub_totals',          get_parts_items_sub_totals($VAR['invoice_id'])                                                           );
+$smarty->assign('vouchers_items_sub_total',       get_vouchers_items_sub_total($VAR['invoice_id'])                                                       );
 
 // Refund Details
 if(get_invoice_details($VAR['invoice_id'], 'status') == 'refunded') {

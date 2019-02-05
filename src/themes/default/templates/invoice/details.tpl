@@ -172,29 +172,43 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd2">
-                                                {if $labour_items != '0'}
+                                                {if $labour_items}
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0" class="olotable">
                                                         <tr  class="olotd4">
                                                             <td class="row2"><b>{t}No{/t}</b></td>
-                                                            <td class="row2" width="12"><b>{t}Qty{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>{t}Price{/t}</b></td>
-                                                            <td class="row2"><b>{t}Total{/t}</b></td>
+                                                            <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                            <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                            <td class="row2"><b>{t}Net{/t}</b></td>
+                                                            <td class="row2"><b>{t}VAT Rate{/t}</b></td>
+                                                            <td class="row2"><b>{t}VAT Applied{/t}</b></td>
+                                                            <td class="row2"><b>{t}Gross{/t}</b></td>
                                                             <td class="row2"><b>{t}Actions{/t}</b></td>
                                                         </tr>
                                                         {section name=l loop=$labour_items}
                                                             <tr class="olotd4">
                                                                 <td>{$smarty.section.q.index+1}</td>
-                                                                <td>{$labour_items[l].qty}</td>
                                                                 <td>{$labour_items[l].description}</td>
-                                                                <td>{$currency_sym}{$labour_items[l].amount|string_format:"%.2f"}</td>
-                                                                <td>{$currency_sym}{$labour_items[l].sub_total|string_format:"%.2f"}</td>
+                                                                <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
+                                                                <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>
+                                                                <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                                                                
+                                                                <td>{$labour_items[l].sub_total_net|string_format:"%.2f"}%</td>
+                                                                <td>{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
+                                                                <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
                                                                 <td>-</td>
                                                             </tr>
                                                         {/section}
                                                         <tr>
-                                                            <td colspan="5" style="text-align:right;"><b>{t}Labour{/t} ({t}Sub Total{/t})</b></td>
-                                                            <td style="text-align:left;">{$currency_sym}{$labour_sub_total|string_format:"%.2f"}</td>
+                                                            <td colspan="9" style="text-align:right;">
+                                                                <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
+                                                                    <tr>
+                                                                        <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
+                                                                        <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                                                                        <td width="80" align="right">{t}VAT{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                                                                        <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+                                                                    </tr>
+                                                                </table>  
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                 {/if}
@@ -214,29 +228,43 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd2">
-                                                {if $parts_items != '0'}
+                                                {if $parts_items}
                                                     <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
                                                         <tr class="olotd4">
                                                             <td class="row2"><b>{t}No{/t}</b></td>
-                                                            <td class="row2"><b>{t}Count{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2"><b>{t}Price{/t}</b></td>
-                                                            <td class="row2"><b>{t}Total{/t}</b></td>
+                                                            <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
+                                                            <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                            <td class="row2"><b>{t}Net{/t}</b></td>
+                                                            <td class="row2"><b>{t}VAT Rate{/t}</b></td>
+                                                            <td class="row2"><b>{t}VAT Applied{/t}</b></td>
+                                                            <td class="row2"><b>{t}Gross{/t}</b></td>
                                                             <td class="row2"><b>{t}Actions{/t}</b></td>
                                                         </tr>
                                                         {section name=p loop=$parts_items}
                                                             <tr class="olotd4">
                                                                 <td>{$smarty.section.w.index+1}</td>
-                                                                <td>{$parts_items[p].qty}</td>
                                                                 <td>{$parts_items[p].description}</td>
-                                                                <td>{$currency_sym}{$parts_items[p].amount|string_format:"%.2f"}</td>
-                                                                <td>{$currency_sym}{$parts_items[p].sub_total|string_format:"%.2f"}</td>
+                                                                <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
+                                                                <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
+                                                                <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                                                                
+                                                                <td>{$parts_items[p].sub_total_net|string_format:"%.2f"}%</td>
+                                                                <td>{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>
+                                                                <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
                                                                 <td>-</td>
                                                             </tr>
                                                          {/section}
                                                         <tr>
-                                                            <td colspan="5" style="text-align:right;"><b>{t}Parts{/t} ({t}Sub Total{/t})</b></td>
-                                                            <td style="text-align:left;">{$currency_sym}{$parts_sub_total|string_format:"%.2f"}</td>
+                                                            <td colspan="9" style="text-align:right;">
+                                                                <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
+                                                                    <tr>
+                                                                        <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
+                                                                        <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                                                                        <td width="80" align="right">{t}VAT{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                                                                        <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+                                                                    </tr>
+                                                                </table>  
+                                                            </td>
                                                         </tr>
                                                     </table>
                                                 {/if}                                                
@@ -253,7 +281,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="5" style="text-align:right;"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b> {$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>                                    
+                                <td colspan="5" style="text-align:right;"><b>{t}Vouchers{/t} {t}Total{/t}</b> {$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>                                    
                             </tr>
 
                             <!-- Totals Section -->
@@ -286,7 +314,7 @@
                                                     {/if}
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b></td>
-                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_sub_total|string_format:"%.2f"}</td>
+                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t} ({t}Total{/t})</b></td>
