@@ -468,7 +468,7 @@ function insert_invoice_prefill_item($VAR) {
     $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
             description =". $db->qstr( $VAR['description']  ).",
             type        =". $db->qstr( $VAR['type']         ).",
-            amount      =". $db->qstr( $VAR['amount']       ).",
+            net_amount  =". $db->qstr( $VAR['amount']       ).",
             active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
@@ -867,7 +867,7 @@ function update_invoice_prefill_item($VAR) {
     $sql = "UPDATE ".PRFX."invoice_prefill_items SET
             description                 =". $db->qstr( $VAR['description']          ).",
             type                        =". $db->qstr( $VAR['type']                 ).",
-            amount                      =". $db->qstr( $VAR['amount']               ).",
+            net_amount                  =". $db->qstr( $VAR['net_amount']               ).",
             active                      =". $db->qstr( $VAR['active']               )."            
             WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
 
@@ -1544,7 +1544,7 @@ function upload_invoice_prefill_items_csv($VAR) {
                     continue;               
                 }
 
-                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, amount, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
+                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, net_amount, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 
                 if(!$rs = $db->execute($sql)) {
                     force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the new prefill items into the database."));
@@ -1589,7 +1589,7 @@ function export_invoice_prefill_items_csv() {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT description, type, amount, active FROM ".PRFX."invoice_prefill_items";
+    $sql = "SELECT description, type, net_amount, active FROM ".PRFX."invoice_prefill_items";
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice prefill items from the database."));
@@ -1609,7 +1609,7 @@ function export_invoice_prefill_items_csv() {
 
         // loop over the rows, outputting them
         foreach($prefill_items as $key => $value) {
-            $row = array($value['description'], $value['type'], $value['amount'], $value['active']);
+            $row = array($value['description'], $value['type'], $value['net_amount'], $value['active']);
             fputcsv($output_stream, $row);            
         }       
         

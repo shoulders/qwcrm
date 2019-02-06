@@ -240,7 +240,7 @@ class QSetup {
     #       Update a value in a specified record            #  // with and without 'WHERE' clause
     #########################################################
 
-    public function update_record_value($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null) {
+    public function update_record_value($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null, $where_record_not_flag = null) {
 
         $db = QFactory::getDbo();    
         
@@ -248,7 +248,7 @@ class QSetup {
                 $select_column =". $db->qstr($record_new_value);
 
         if($where_column) {    
-            $sql .=  "\nWHERE $where_column =". $db->qstr($where_record);
+            $sql .=  "\nWHERE $where_column ".$where_record_not_flag."=".$db->qstr($where_record);
         }
 
         if(!$rs = $db->execute($sql)) { 
@@ -2133,5 +2133,248 @@ class QSetup {
     
     } 
     
+    #################################################################
+    #  Recalculate Labour totals because of the new VAT system      #
+    #################################################################
+
+    function invoice_labour_correct_totals() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the labour records
+        $sql = "SELECT *
+                FROM ".PRFX."invoice_labour";                
+
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `invoice_labour`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records, decide and set each labour items's status
+            while(!$rs->EOF) { 
+                
+                $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
+                
+                $vat_type = $invoice_details['tax_type'] == 'vat_standard' ? 'standard' : 'none';
+                $vat_rate = $invoice_details['tax_type'] == 'vat_standard' ? $rs->fields['sales_tax_rate'] : 0.00;
+                
+                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_type'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $rs->fields['sales_tax_rate'], $vat_rate);
+                
+                $sql = "UPDATE `".PRFX."invoice_labour` SET
+                        `tax_type`          = ".$db->qstr($invoice_details['tax_type']).",
+                        `vat_type`          = ".$db->qstr($vat_type)."                       
+                        `vat_rate`          = ".$vat_rate."                           
+                        `unit_vat`          = ".$item_totals['unit_vat'].",
+                        `unit_gross`        = ".$item_totals['unit_gross'].",                        
+                        `sub_total_net`     = ".$item_totals['sub_total_net'].",
+                        `sub_total_vat`     = ".$item_totals['sub_total_vat'].",
+                        `sub_total_gross`   = ".$item_totals['sub_total_gross']."
+                        WHERE `gifcert_id`  = ".$rs->fields['invoice_labour_id'];                
+                
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to update the `totals` for the labour record").' '.$rs->fields['invoice_labour_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to complete updating `totals` for all labour records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed updating `totals` for all labour records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    } 
+    
+    #################################################################
+    #  Recalculate Parts totals because of the new VAT system       #
+    #################################################################
+
+    function invoice_parts_correct_totals() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the labour records
+        $sql = "SELECT *
+                FROM ".PRFX."invoice_parts";                
+
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `invoice_parts`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records, decide and set each parts items's status
+            while(!$rs->EOF) { 
+                
+                $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
+                
+                $vat_type = $invoice_details['tax_type'] == 'vat_standard' ? 'standard' : 'none';
+                $vat_rate = $invoice_details['tax_type'] == 'vat_standard' ? $rs->fields['sales_tax_rate'] : 0.00;
+                
+                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_type'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $rs->fields['sales_tax_rate'], $vat_rate);
+                
+                $sql = "UPDATE `".PRFX."invoice_parts` SET
+                        `tax_type`          = ".$db->qstr($invoice_details['tax_type']).",
+                        `vat_type`          = ".$db->qstr($vat_type)."                       
+                        `vat_rate`          = ".$vat_rate."                           
+                        `unit_vat`          = ".$item_totals['unit_vat'].",
+                        `unit_gross`        = ".$item_totals['unit_gross'].",                        
+                        `sub_total_net`     = ".$item_totals['sub_total_net'].",
+                        `sub_total_vat`     = ".$item_totals['sub_total_vat'].",
+                        `sub_total_gross`   = ".$item_totals['sub_total_gross']."
+                        WHERE `gifcert_id`  = ".$rs->fields['invoice_labour_id'];                
+                
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to update the `totals` for the parts record").' '.$rs->fields['invoice_labour_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to complete updating `totals` for all parts records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed updating `totals` for all parts records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    }     
     
 }

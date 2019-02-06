@@ -575,6 +575,7 @@ ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) 
 
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
+ALTER TABLE `#__invoice_prefill_items` CHANGE `amount` `net_amount` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 
 
 --

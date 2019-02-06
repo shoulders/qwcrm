@@ -117,14 +117,17 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'invoice_records', 'tax_type', 'sales', 'sales_tax');
         
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
-        $this->voucher_correct_labour_totals();
-        $this->voucher_correct_parts_totals();  // might be able to combine these functions voucher_correct_invoice_items_totals('parts')
+        $this->invoice_correct_labour_totals();
+        $this->invoice_correct_parts_totals();        
+        $this->invoice_correct_sales_tax_rate();
         
         // Parse Voucher records and correct records        
         $this->voucher_correct_workorder_id();
         $this->voucher_correct_expiry_date();
-        $this->voucher_correct_status();
         
+        // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
+        $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_type', 'sales_tax', '!');
+                
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
         

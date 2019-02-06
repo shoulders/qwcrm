@@ -315,7 +315,7 @@ CREATE TABLE `#__invoice_prefill_items` (
   `invoice_prefill_id` int(10) NOT NULL,
   `description` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `active` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -323,7 +323,7 @@ CREATE TABLE `#__invoice_prefill_items` (
 -- Dumping data for table `#__invoice_prefill_items`
 --
 
-INSERT INTO `#__invoice_prefill_items` (`invoice_prefill_id`, `description`, `type`, `amount`, `active`) VALUES
+INSERT INTO `#__invoice_prefill_items` (`invoice_prefill_id`, `description`, `type`, `net_amount`, `active`) VALUES
 (1, 'Callout', 'Labour', '35.00', 1),
 (2, 'Basic Labour', 'Labour', '20.00', 1),
 (3, 'Virus Removal', 'Labour', '65.00', 1),
