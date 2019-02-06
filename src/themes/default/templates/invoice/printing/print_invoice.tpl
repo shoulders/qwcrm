@@ -327,7 +327,7 @@
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                         </tr>
                         <tr>                                                            
-                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat_standard'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                         </tr>
                     {/if}
@@ -357,7 +357,7 @@
                 </td>
             </tr>
         {/if}
-        {if $invoice_details.tax_type == 'vat'}
+        {if $invoice_details.tax_type == 'vat_standard'}
             <tr>
                 <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
             </tr>

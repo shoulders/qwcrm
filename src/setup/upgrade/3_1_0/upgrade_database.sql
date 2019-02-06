@@ -561,14 +561,20 @@ DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:deta
 DELETE FROM `#__user_acl_page` WHERE `#__user_acl_page`.`page` = 'workorder:open';
 
 --
+-- Update Tax Type and Tax Rates to allow for the new VAT system
+--
+
+ALTER TABLE `#__invoice_records` CHANGE `tax_type` `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__company_record` CHANGE `tax_type` `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+
+--
 -- Misc Column Changes
 --
 
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
-ALTER TABLE `#__invoice_records` CHANGE `tax_type` `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__company_record` CHANGE `tax_type` `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
 
 
 --

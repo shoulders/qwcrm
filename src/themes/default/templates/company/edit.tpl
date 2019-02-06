@@ -19,7 +19,7 @@
         
         // Store the tax_type and sales_tax_rate into variables ...
         var tax_type = document.getElementById('tax_type');
-        var tax_rate = document.getEtax_ratelementById('sales_tax_rate');
+        var sales_tax_rate = document.getElementById('sales_tax_rate');
         
         // If there is a Tax Type set then validate a rate is set
         if (tax_type.value !== 'none' && sales_tax_rate.value == 0) {             

@@ -112,6 +112,14 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'close_date', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
         
+        // Update Invoice Tax Types
+        $this->update_column_values(PRFX.'invoice_records', 'tax_type', 'vat', 'vat_standard');
+        $this->update_column_values(PRFX.'invoice_records', 'tax_type', 'sales', 'sales_tax');
+        
+        // Parse Labour and Parts records and update their totals to reflect the new VAT system
+        $this->voucher_correct_labour_totals();
+        $this->voucher_correct_parts_totals();  // might be able to combine these functions voucher_correct_invoice_items_totals('parts')
+        
         // Parse Voucher records and correct records        
         $this->voucher_correct_workorder_id();
         $this->voucher_correct_expiry_date();

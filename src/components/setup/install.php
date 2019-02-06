@@ -196,6 +196,7 @@ if($VAR['stage'] == 'company_details') {
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
         $smarty->assign('date_format', get_company_details('date_format'));
         $smarty->assign('date_formats', get_date_formats());
+        $smarty->assign('tax_types', get_tax_types());
         $smarty->assign('stage', 'company_details');
         
     }

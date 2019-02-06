@@ -346,8 +346,8 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
             "sum_paid_amount"           =>  sum_invoices_items('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),         
             "sum_balance"               =>  sum_invoices_items('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
             
-            "sum_sales_tax_amount"      =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'sales', $employee_id, $client_id),
-            "sum_vat_tax_amount"        =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'vat', $employee_id, $client_id),
+            "sum_sales_tax_amount"      =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'sales_tax', $employee_id, $client_id),
+            "sum_vat_tax_amount"        =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'vat_standard', $employee_id, $client_id),
             
             "sum_refunded_net"          =>  sum_invoices_items('net_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
             "sum_refunded_gross"        =>  sum_invoices_items('gross_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
