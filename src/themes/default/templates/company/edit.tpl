@@ -222,9 +222,6 @@
                                                                             <td align="right"><b>{t}{$vat_rates[r].display_name}{/t}:</b></td>
                                                                             <td>
                                                                                 <input name="vat_rates[{$vat_rates[r].rate_key}]" class="olotd5" size="6" value="{$vat_rates[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_rates[r].editable} disabled{/if}/>%
-                                                                                {if $vat_rates[r].rate_key}
-                                                                                    <input type="hidden" name="vat_rates[{$vat_rates[r].rate_key}]" value="{$vat_rates[r].rate}">
-                                                                                {/if}
                                                                             </td>
                                                                         </tr>
                                                                     {/section}

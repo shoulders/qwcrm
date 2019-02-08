@@ -79,22 +79,22 @@ function get_vat_rate($vat_type) {
 #    Get VAT rates                  # use true/false
 #####################################
 
-function get_vat_rates($editable_status = null, $hidden_status = null) {
+function get_vat_rates($hidden_status = null, $editable_status = null) {
     
     $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."company_vat_rates";
     
+    // Restrict by hidden status
+    if(!is_null($hidden_status)) {
+        $sql .= "\nWHERE hidden = ".$db->qstr($hidden_status);
+    }
+    
     // Restrict by editable status
     if(!is_null($editable_status)) {
         $sql .= "\nWHERE editable = ".$db->qstr($editable_status);
     }
-    
-    // restrict by hidden status
-    if(!is_null($hidden_status)) {
-        $sql .= "\nWHERE hidden = ".$db->qstr($hidden_status);
-    }
-
+        
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rates."));
     } else {

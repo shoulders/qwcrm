@@ -174,8 +174,9 @@ CREATE TABLE `#__company_tax_types` (
 
 INSERT INTO `#__company_tax_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'none', 'None'),
-(2, 'sales_tax', 'Sales Tax'),
-(3, 'vat_standard', 'VAT Standard Scheme');
+(2, 'vat_standard', 'VAT Standard'),
+(3, 'vat_flat', 'VAT Flat Rate'),
+(4, 'sales_tax', 'Sales Tax');
 
 -- --------------------------------------------------------
 
@@ -187,21 +188,22 @@ CREATE TABLE `#__company_vat_rates` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `rate_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `rate` decimal(4,2) NOT NULL,
-  `editable` int(11) NOT NULL DEFAULT '0',
-  `hidden` int(11) NOT NULL DEFAULT '0'
+  `rate` decimal(4,2) NOT NULL,  
+  `hidden` int(11) NOT NULL DEFAULT '0',
+  `editable` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `#__company_vat_rates`
 --
 
-INSERT INTO `#__company_vat_rates` (`id`, `rate_key`, `display_name`, `rate`, `editable`, `hidden`) VALUES
-(1, 'none', 'None', '0.00', 0, 1),
-(2, 'standard', 'Standard Rate', '20.00', 1, 0),
-(3, 'reduced', 'Reduced Rate', '5.00', 1, 0),
+INSERT INTO `#__company_vat_rates` (`id`, `rate_key`, `display_name`, `rate`, `hidden`, `editable`) VALUES
+(1, 'none', 'None', '0.00', 1, 0),
+(2, 'standard', 'Standard Rate', '20.00', 0, 1),
+(3, 'reduced', 'Reduced Rate', '5.00', 0, 1),
 (4, 'zero', 'Zero Rated', '0.00', 0, 0),
-(5, 'exempt', 'Exempt', '0.00', 0, 0);
+(5, 'exempt', 'Exempt', '0.00', 0, 0),
+(6, 'flat_rate', 'Flat Rate', '10.50', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -214,10 +216,10 @@ CREATE TABLE `#__expense_records` (
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `item_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `items` text COLLATE utf8_unicode_ci NOT NULL,
@@ -404,10 +406,10 @@ CREATE TABLE `#__otherincome_records` (
   `otherincome_id` int(10) NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `item_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `items` text COLLATE utf8_unicode_ci NOT NULL,
@@ -587,12 +589,12 @@ INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,  
+  `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
-  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `tax_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `item_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL

@@ -151,9 +151,13 @@
                     <td class="olotd4">{$labour_items[l].description}</td>
                     <td class="olotd4">{$labour_items[l].unit_qty}</td>
                     <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                       
-                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>
-                    <td class="olotd4" align="right">{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
-                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td> 
+                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                    
+                    {if $labour_items[l].vat_type == 'exempt'}
+                        <td class="olotd4" colspan="2" align="center">{t}Exempt{/t}</td>
+                    {else}
+                        <td class="olotd4" align="right">{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
+                        <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
+                    {/if}                                       
                     <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
                 </tr>
             {/section}
@@ -192,9 +196,13 @@
                     <td class="olotd4" >{$parts_items[p].description}</td>
                     <td class="olotd4" align="right">{$parts_items[p].unit_qty}</td>
                     <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
-                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>
-                    <td class="olotd4" align="right">{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>                    
-                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>                    
+                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                    
+                    {if $parts_items[p].vat_type == 'exempt'}
+                        <td class="olotd4" colspan="2" align="center">{t}Exempt{/t}</td>
+                    {else}                            
+                        <td class="olotd4" align="right">{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>                    
+                        <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>
+                    {/if}                    
                     <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
                 </tr>
             {/section}
@@ -314,31 +322,37 @@
             <td colspan="2" valign="TOP">
                 <table width="220" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td class="olotd4" width="80%" align="right"><b>{t}Labour{/t}/{t}Parts{/t} ({t}Sub Total{/t})</b></td>
-                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.sub_total|string_format:"%.2f"}</td>
+                        <td class="olotd4" width="80%" align="right"><b>{t}Labour{/t}</b></td>
+                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
                     </tr>
                     <tr>
-                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
-                        <td class="olotd4" width="20%" align="right">- {$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
+                        <td class="olotd4" width="80%" align="right"><b>{t}Parts{/t}</b></td>
+                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
                     </tr>
+                    {if $invoice_details.discount_amount != 0}
+                        <tr>
+                            <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
+                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
+                        </tr>
+                    {/if}
+                    {if $display_vouchers}
+                        <tr>
+                            <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t}</b></td>
+                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
+                        </tr>
+                    {/if}
                     {if $invoice_details.tax_type != 'none'}
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                         </tr>
                         <tr>                                                            
-                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat_standard'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat_standard' || $invoice_details.tax_type == 'vat_flat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                         </tr>
-                    {/if}
-                    {if $display_vouchers}
-                        <tr>
-                            <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t} ({t}Sub Total{/t})</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
-                        </tr>
-                    {/if}
+                    {/if}                    
                     <tr>
-                        <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t} ({t}Total{/t})</b></td>
+                        <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
                     </tr>             
                 </table>

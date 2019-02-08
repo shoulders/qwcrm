@@ -66,6 +66,12 @@ CREATE TABLE `#__company_tax_types` (
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+INSERT INTO `#__company_tax_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'none', 'None'),
+(2, 'vat_standard', 'VAT Standard'),
+(3, 'vat_flat', 'VAT Flat Rate'),
+(4, 'sales_tax', 'Sales Tax');
+
 ALTER TABLE `#__company_tax_types` ADD PRIMARY KEY (`id`);
 
 --
@@ -76,17 +82,18 @@ CREATE TABLE `#__company_vat_rates` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `rate_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `rate` decimal(4,2) NOT NULL,
-  `editable` int(11) NOT NULL DEFAULT '0',
-  `hidden` int(11) NOT NULL DEFAULT '0'
+  `rate` decimal(4,2) NOT NULL,  
+  `hidden` int(11) NOT NULL DEFAULT '0',
+  `editable` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__company_vat_rates` (`id`, `rate_key`, `display_name`, `rate`, `editable`, `hidden`) VALUES
-(1, 'none', 'None', '0.00', 0, 1),
-(2, 'standard', 'Standard Rate', '20.00', 1, 0),
-(3, 'reduced', 'Reduced Rate', '5.00', 1, 0),
+INSERT INTO `#__company_vat_rates` (`id`, `rate_key`, `display_name`, `rate`, `hidden`, `editable`) VALUES
+(1, 'none', 'None', '0.00', 1, 0),
+(2, 'standard', 'Standard Rate', '20.00', 0, 1),
+(3, 'reduced', 'Reduced Rate', '5.00', 0, 1),
 (4, 'zero', 'Zero Rated', '0.00', 0, 0),
-(5, 'exempt', 'Exempt', '0.00', 0, 0);
+(5, 'exempt', 'Exempt', '0.00', 0, 0),
+(6, 'flat_rate', 'Flat Rate', '10.50', 1, 1);
 
 ALTER TABLE `#__company_vat_rates` ADD PRIMARY KEY (`id`);
 
@@ -618,6 +625,23 @@ ALTER TABLE `#__user_reset` CHANGE `expiry_time` `expiry_time` VARCHAR(20) CHARA
 ALTER TABLE `#__user_reset` CHANGE `token` `token` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__user_reset` CHANGE `reset_code` `reset_code` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__user_reset` CHANGE `reset_code_expiry_time` `reset_code_expiry_time` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+
+--
+-- Convert expense, otherincome, refunds to new VAT/TAX system
+--
+
+ALTER TABLE `#__expense_records` DROP `vat_rate`;
+ALTER TABLE `#__expense_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__expense_records` ADD `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
+
+ALTER TABLE `#__otherincome_records` DROP `vat_rate`;
+ALTER TABLE `#__otherincome_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__otherincome_records` ADD `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
+
+ALTER TABLE `#__refund_records` DROP `vat_rate`;
+ALTER TABLE `#__refund_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__refund_records` ADD `tax_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
+
 
 --
 -- Change from int(10) to int(11)

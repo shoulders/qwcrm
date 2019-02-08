@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'expense.php');
 require(INCLUDES_DIR.'payment.php');
 
@@ -24,8 +25,9 @@ if(isset($VAR['submit'])) {
 
 } else {
     
-    // Build the page
+    // Build the page       
     $smarty->assign('expense_types',   get_expense_types());
+    $smarty->assign('tax_types', get_tax_types() );
     $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
     $smarty->assign('expense_details', get_expense_details($VAR['expense_id']));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');

@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
 
@@ -36,6 +37,8 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
 // Build the page
 $smarty->assign('otherincome_types', get_otherincome_types());
+$smarty->assign('company_tax_type',   get_company_details('tax_type'));
+$smarty->assign('tax_types', get_tax_types() );
 $smarty->assign('payment_methods', get_payment_methods('receive', 'enabled'));
 $smarty->assign('new_record_id', $new_record_id);
 $smarty->assign('vat_rate', get_company_details('sales_tax_rate'));

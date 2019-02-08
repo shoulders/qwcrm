@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'payment.php');
 
@@ -18,6 +19,7 @@ if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
 
 // Build the page
 $smarty->assign('refund_types', get_refund_types());
+$smarty->assign('tax_types', get_tax_types() );
 $smarty->assign('payment_methods', get_payment_methods('send'));
 $smarty->assign('refund_details', get_refund_details($VAR['refund_id']));
 $BuildPage .= $smarty->fetch('refund/details.tpl');

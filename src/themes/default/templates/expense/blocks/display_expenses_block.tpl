@@ -12,10 +12,9 @@
          <td class="olohead">{t}INV ID{/t}</td>
          <td class="olohead">{t}Payee{/t}</td>
          <td class="olohead">{t}Date{/t}</td>                                                        
-         <td class="olohead">{t}Type{/t}</td>
+         <td class="olohead">{t}Item Type{/t}</td>
          <td class="olohead">{t}Payment Method{/t}</td>
-         <td class="olohead">{t}Net Amount{/t}</td>
-         <td class="olohead">{t}VAT Rate{/t}</td>
+         <td class="olohead">{t}Net Amount{/t}</td>         
          <td class="olohead">{t}VAT Amount{/t}</td>
          <td class="olohead">{t}Gross Amount{/t}</td>
          <td class="olohead">{t}Note{/t}</td>
@@ -31,7 +30,7 @@
              <td class="olotd4" nowrap>{$display_expenses[e].date|date_format:$date_format}</td>                                                            
              <td class="olotd4" nowrap>
                  {section name=s loop=$expense_types}    
-                     {if $display_expenses[e].type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
+                     {if $display_expenses[e].item_type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
                  {/section} 
              </td>
              <td class="olotd4" nowrap>
@@ -39,8 +38,7 @@
                      {if $display_expenses[e].payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}        
                  {/section} 
              </td>
-             <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].net_amount}</td>
-             <td class="olotd4" nowrap>{$display_expenses[e].vat_rate} %</td>
+             <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].net_amount}</td>             
              <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].vat_amount}</td>
              <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].gross_amount}</td>
              <td class="olotd4" nowrap>

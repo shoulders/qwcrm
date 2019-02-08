@@ -33,21 +33,25 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
-                                            <td class="menutd">{$expense_details.payee}</td>
+                                            <td class="menutd">{$expense_details.payee}</td>                                            
+                                            <td class="menutd"><b>{t}Tax Type{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=s loop=$tax_types}
+                                                    {if $expense_details.tax_type == $tax_types[s].type_key}{t}{$tax_types[s].display_name}{/t}{/if}
+                                                {/section}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Date{/t}</b></td>
+                                            <td class="menutd">{$expense_details.date|date_format:$date_format}</td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$expense_details.net_amount}</td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Date{/t}</b></td>
-                                            <td class="menutd" >{$expense_details.date|date_format:$date_format}</td>
-                                            <td class="menutd" ><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">&nbsp;&nbsp;&nbsp;{$expense_details.vat_rate} %</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Type{/t}</b></td>
+                                            <td class="menutd"><b>{t}Item Type{/t}</b></td>
                                             <td class="menutd">              
                                                 {section name=s loop=$expense_types}    
-                                                    {if $expense_details.type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
+                                                    {if $expense_details.item_type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>

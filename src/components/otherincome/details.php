@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
 
@@ -18,6 +19,7 @@ if(!isset($VAR['otherincome_id']) || !$VAR['otherincome_id']) {
 
 // Build the page
 $smarty->assign('otherincome_types', get_otherincome_types());
+$smarty->assign('tax_types', get_tax_types() );
 $smarty->assign('payment_methods', get_payment_methods('receive'));
 $smarty->assign('otherincome_details', get_otherincome_details($VAR['otherincome_id']));
 $BuildPage .= $smarty->fetch('otherincome/details.tpl');

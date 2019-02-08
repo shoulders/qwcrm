@@ -414,48 +414,7 @@ function insert_labour_items($invoice_id, $descriptions, $amounts, $qtys) {
     }
         
 }
-
-#####################################
-#     Insert Parts Items            #
-#####################################
-
-function insert_parts_items($invoice_id, $descriptions, $amounts, $qtys) {
-    
-    $db = QFactory::getDbo();
-    
-    // Insert Parts Items into database (if any)
-    if($qtys > 0 ) {
-        
-        $i = 1;
-        
-        $sql = "INSERT INTO ".PRFX."invoice_parts (invoice_id, description, amount, qty, sub_total) VALUES ";
-        
-        foreach($qtys as $key) {
-            
-            $sql .="(".
-                    
-                    $db->qstr( $invoice_id               ).",".                    
-                    $db->qstr( $descriptions[$i]         ).",".                  
-                    $db->qstr( $amounts[$i]              ).",".
-                    $db->qstr( $qtys[$i]                 ).",".
-                    $db->qstr( $qtys[$i] * $amounts[$i]  ).
-                    
-                    "),";
-            
-            $i++;
-            
-        }
-        
-        // Strips off last comma as this is a joined SQL statement
-        $sql = substr($sql ,0,-1);
-        
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert Parts item into the database."));
-        }
-        
-    }
-
-}*/
+*/
 
 #####################################
 #   insert invoice prefill item     #

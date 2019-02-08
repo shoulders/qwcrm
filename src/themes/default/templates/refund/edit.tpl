@@ -69,12 +69,21 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td align="right"><b>{t}Tax Type{/t}</b></td>
+                                                            <td>
+                                                                {section name=s loop=$tax_types}
+                                                                    {if $refund_details.tax_type == $tax_types[s].type_key}{t}{$tax_types[s].display_name}{/t}{/if}
+                                                                {/section}
+                                                                <input name="tax_type" type="hidden" value="{$refund_details.tax_type}">
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>                                                                 
                                                                 {section name=s loop=$refund_types}    
-                                                                    {if $refund_details.type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                
+                                                                    {if $refund_details.item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                
                                                                 {/section}    
-                                                                <input id="type" name="type" class="olotd5" size="5" value="{$refund_details.type}" type="hidden">
+                                                                <input id="item_type" name="item_type" class="olotd5" size="5" value="{$refund_details.item_type}" type="hidden">
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -93,14 +102,7 @@
                                                                 {$currency_sym} {$refund_details.net_amount}
                                                                 <input name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$refund_details.net_amount}" type="hidden"/>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                                            <td>
-                                                                {$refund_details.vat_rate} %
-                                                                <input name="vat_rate" class="olotd5" size="5" value="{$refund_details.vat_rate}" type="hidden">
-                                                            </td>
-                                                        </tr>
+                                                        </tr>                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
                                                             <td>

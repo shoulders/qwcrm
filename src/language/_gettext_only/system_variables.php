@@ -21,6 +21,7 @@ _gettext("Goverment");
 /* Company Tax Types */
 _gettext("None");
 _gettext("VAT Standard");
+_gettext("VAT Flat Rate");
 _gettext("Sales Tax");
 
 /* Company VAT Rates */
@@ -29,6 +30,7 @@ _gettext("Standard Rate");
 _gettext("Reduced Rate");
 _gettext("Zero Rated");
 _gettext("Exempt");
+_gettext("Flat Rate");
 
 /* Expense Types */
 _gettext("Bank Charges");

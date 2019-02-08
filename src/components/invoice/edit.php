@@ -62,7 +62,7 @@ $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id
 // Prefill Items
 $smarty->assign('labour_prefill_items',     get_invoice_prefill_items('Labour', '1')                                               ); 
 $smarty->assign('parts_prefill_items',      get_invoice_prefill_items('Parts', '1')                                                );
-$smarty->assign('vat_rates',                get_vat_rates(null, false)                                                             );
+$smarty->assign('vat_rates',                get_vat_rates(false)                                                                   );
 
 // Invoice Items
 $smarty->assign('labour_items',             get_invoice_labour_items($VAR['invoice_id'])                                                  );

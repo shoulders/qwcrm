@@ -39,7 +39,7 @@
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Name{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="voucher_id"{if $search_category == 'voucher_id'} selected{/if}>{t}Voucher ID{/t}</option>                                                                                                                                              
-                                                                        <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
+                                                                        <option value="item_type"{if $search_category == 'item_type'} selected{/if}>{t}Item Type{/t}</option>
                                                                         <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>
                                                                         <option value="vat_rate"{if $search_category == 'vat_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
