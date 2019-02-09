@@ -341,13 +341,13 @@
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
                         </tr>
                     {/if}
-                    {if $invoice_details.tax_type != 'none'}
+                    {if $invoice_details.tax_system != 'none'}
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                         </tr>
                         <tr>                                                            
-                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat_standard' || $invoice_details.tax_type == 'vat_flat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_system == 'vat_standard' || $invoice_details.tax_system == 'vat_flat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                         </tr>
                     {/if}                    
@@ -364,14 +364,14 @@
     
     <!-- Footer Section -->    
     <table width="750" border="0" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-        {if $client_details.credit_terms != ''}
+        {if $client_details.credit_terms}
             <tr>
                 <td align="center">
                     <b>{t}Credit Terms{/t}:</b> {$client_details.credit_terms}
                 </td>
             </tr>
         {/if}
-        {if $invoice_details.tax_type == 'vat_standard'}
+        {if $invoice_details.tax_system == 'vat_standard' || $invoice_details.tax_system == 'vat_flat'}
             <tr>
                 <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
             </tr>

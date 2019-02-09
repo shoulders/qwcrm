@@ -18,8 +18,8 @@ if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {
 }
 
 // Build the page
-$smarty->assign('expense_types',   get_expense_types());
-$smarty->assign('tax_types', get_tax_types() );
+$smarty->assign('expense_types', get_expense_types());
+$smarty->assign('vat_tax_codes', get_vat_tax_codes());
 $smarty->assign('payment_methods', get_payment_methods('send'));
 $smarty->assign('expense_details', get_expense_details($VAR['expense_id']));
 $BuildPage .= $smarty->fetch('expense/details.tpl');

@@ -29,7 +29,7 @@ if(isset($VAR['submit'])) {
 
 // Build the page
 $smarty->assign('otherincome_types', get_otherincome_types());
-$smarty->assign('tax_types', get_tax_types() );
+$smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );
 $smarty->assign('payment_methods', get_payment_methods('receive', 'enabled'));
 $smarty->assign('otherincome_details', get_otherincome_details($VAR['otherincome_id']));
 $BuildPage .= $smarty->fetch('otherincome/edit.tpl');

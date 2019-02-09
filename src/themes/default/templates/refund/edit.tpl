@@ -67,16 +67,7 @@
                                                                 {if $refund_details.invoice_id}<a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a>{else}{t}n/a{/t}{/if}
                                                                 <input id="invoice_id" name="invoice_id" class="olotd5" size="5" value="{$refund_details.invoice_id}" type="hidden">
                                                             </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}Tax Type{/t}</b></td>
-                                                            <td>
-                                                                {section name=s loop=$tax_types}
-                                                                    {if $refund_details.tax_type == $tax_types[s].type_key}{t}{$tax_types[s].display_name}{/t}{/if}
-                                                                {/section}
-                                                                <input name="tax_type" type="hidden" value="{$refund_details.tax_type}">
-                                                            </td>
-                                                        </tr>
+                                                        </tr>                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>                                                                 
@@ -89,11 +80,11 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                            <select id="payment_method" name="payment_method" class="olotd5">
-                                                                {section name=s loop=$payment_methods}    
-                                                                    <option value="{$payment_methods[s].method_key}"{if $refund_details.payment_method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
-                                                                {/section} 
-                                                            </select>
+                                                                <select id="payment_method" name="payment_method" class="olotd5">
+                                                                    {section name=s loop=$payment_methods}    
+                                                                        <option value="{$payment_methods[s].method_key}"{if $refund_details.payment_method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
+                                                                    {/section} 
+                                                                </select>
                                                         </td>
                                                         </tr>
                                                         <tr>
@@ -102,7 +93,24 @@
                                                                 {$currency_sym} {$refund_details.net_amount}
                                                                 <input name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$refund_details.net_amount}" type="hidden"/>
                                                             </td>
-                                                        </tr>                                                        
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
+                                                            <td>
+                                                                <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
+                                                                    {section name=s loop=$vat_tax_codes}    
+                                                                        <option value="{$vat_tax_codes[s].tax_key}"{if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if}>{t}{$vat_tax_codes[s].display_name}{/t}</option>
+                                                                    {/section} 
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
+                                                            <td>
+                                                                {$refund_details.vat_rate} %
+                                                                <input name="vat_rate" class="olotd5" size="5" value="{$refund_details.vat_rate}" type="hidden">
+                                                            </td>
+                                                        </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
                                                             <td>

@@ -113,8 +113,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
         
         // Update Invoice Tax Types
-        $this->update_column_values(PRFX.'invoice_records', 'tax_type', 'vat', 'vat_standard');
-        $this->update_column_values(PRFX.'invoice_records', 'tax_type', 'sales', 'sales_tax');
+        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
+        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax');
         
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
         $this->invoice_correct_labour_totals();
@@ -126,7 +126,7 @@ class Upgrade3_1_0 extends QSetup {
         $this->voucher_correct_expiry_date();
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
-        $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_type', 'sales_tax', '!');
+        $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax', '!');
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');

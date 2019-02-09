@@ -452,7 +452,7 @@ function invoice_build_filter_by_date($start_date = null, $end_date = null, $dat
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($status = null, $start_date = null, $end_date = null,  $date_type = null, $tax_type = null, $employee_id = null, $client_id = null) {   
+function count_invoices($status = null, $start_date = null, $end_date = null,  $date_type = null, $tax_system = null, $employee_id = null, $client_id = null) {   
     
     $db = QFactory::getDbo();
     
@@ -465,9 +465,9 @@ function count_invoices($status = null, $start_date = null, $end_date = null,  $
     // Filter by Date
     $whereTheseRecords .= invoice_build_filter_by_date($status, $start_date, $end_date, $date_type);
     
-    // Filter by Tax Type
-    if($tax_type) {
-        $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_type=".$db->qstr($tax_type);
+    // Filter by Tax System
+    if($tax_system) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_system=".$db->qstr($tax_system);
     }
     
     // Filter by Employee
@@ -499,7 +499,7 @@ function count_invoices($status = null, $start_date = null, $end_date = null,  $
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $tax_type = null, $employee_id = null, $client_id = null) {
+function sum_invoices_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -512,9 +512,9 @@ function sum_invoices_items($value_name, $status = null, $start_date = null, $en
     // Filter by Date
     $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
     
-    // Filter by Tax Type
-    if($tax_type) {
-        $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_type=".$db->qstr($tax_type);
+    // Filter by Tax System
+    if($tax_system) {
+        $whereTheseRecords .= " AND ".PRFX."invoice_records.tax_system=".$db->qstr($tax_system);
     }
     
     // Filter by Employee

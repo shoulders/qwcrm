@@ -17,12 +17,12 @@
     // If there is a Tax Type selected then verify there is a Tax Rate set (run on form submission)
     function validateTaxRate(msg) {
         
-        // Store the tax_type and tax_rate into variables ...
-        var tax_type = document.getElementById('tax_type');
+        // Store the tax_system and tax_rate into variables ...
+        var tax_system = document.getElementById('tax_system');
         var sales_tax_rate = document.getElementById('sales_tax_rate');
         
         // If there is a Tax Type set then validate a rate is set
-        if (tax_type.value !== 'none' && sales_tax_rate.value == 0) {             
+        if (tax_system.value !== 'none' && sales_tax_rate.value == 0) {             
             alert(msg);
             return false;
             
@@ -143,9 +143,9 @@
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Tax Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                                         <td>
-                                                                                            <select class="olotd5" id="tax_type" name="tax_type">               
-                                                                                                {section name=s loop=$tax_types}
-                                                                                                    <option value="{$tax_types[s].type_key}"{if $company_details.tax_type == $tax_types[s].type_key} selected{/if}>{t}{$tax_types[s].display_name}{/t}</option>
+                                                                                            <select class="olotd5" id="tax_system" name="tax_system">               
+                                                                                                {section name=s loop=$tax_systems}
+                                                                                                    <option value="{$tax_systems[s].type_key}"{if $company_details.tax_system == $tax_systems[s].type_key} selected{/if}>{t}{$tax_systems[s].display_name}{/t}</option>
                                                                                                 {/section}
                                                                                             </select>
                                                                                         </td>

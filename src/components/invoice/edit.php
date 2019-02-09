@@ -37,11 +37,11 @@ if(get_invoice_details($VAR['invoice_id'], 'is_closed')) {
 if(isset($VAR['submit'])) {
     
     // get invoice tax type
-    $tax_type = get_invoice_details($VAR['invoice_id'], 'tax_type');
+    $tax_system = get_invoice_details($VAR['invoice_id'], 'tax_system');
     
     // insert the parts and labour item arrays
-    insert_labour_items($VAR['invoice_id'], $tax_type, $VAR['labour_items']);
-    insert_parts_items($VAR['invoice_id'], $tax_type, $VAR['parts_items']);
+    insert_labour_items($VAR['invoice_id'], $tax_system, $VAR['labour_items']);
+    insert_parts_items($VAR['invoice_id'], $tax_system, $VAR['parts_items']);
     
     // update and recalculate the invoice
     update_invoice_static_values($VAR['invoice_id'], $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
@@ -62,7 +62,7 @@ $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id
 // Prefill Items
 $smarty->assign('labour_prefill_items',     get_invoice_prefill_items('Labour', '1')                                               ); 
 $smarty->assign('parts_prefill_items',      get_invoice_prefill_items('Parts', '1')                                                );
-$smarty->assign('vat_rates',                get_vat_rates(false)                                                                   );
+$smarty->assign('vat_rates',                get_vat_tax_codes(false)                                                                   );
 
 // Invoice Items
 $smarty->assign('labour_items',             get_invoice_labour_items($VAR['invoice_id'])                                                  );

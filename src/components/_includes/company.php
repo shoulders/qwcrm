@@ -35,14 +35,14 @@ defined('_QWEXEC') or die;
 // This is in the main include.php file
 
 #####################################
-#    Get company tax types          #
+#    Get company tax systems        #
 #####################################
 
-function get_tax_types() {
+function get_tax_systems() {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."company_tax_types";
+    $sql = "SELECT * FROM ".PRFX."company_tax_systems";
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
@@ -55,15 +55,15 @@ function get_tax_types() {
 }
 
 #####################################
-#    Get VAT rate                   #
+#   Get VAT rate for given tax_key  #
 #####################################
 
 function get_vat_rate($vat_type) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT rate FROM ".PRFX."company_vat_rates
-            WHERE rate_key = ".$db->qstr($vat_type);
+    $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
+            WHERE tax_key = ".$db->qstr($vat_type);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
@@ -76,14 +76,14 @@ function get_vat_rate($vat_type) {
 }
 
 #####################################
-#    Get VAT rates                  # use true/false
+#    Get VAT Tax Codes              # use true/false : statdard status is whether is is a normal VAT Tax Code, nit currently used
 #####################################
 
-function get_vat_rates($hidden_status = null, $editable_status = null) {
+function get_vat_tax_codes($hidden_status = null, $editable_status = null, $standard_status = null) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT * FROM ".PRFX."company_vat_rates";
+    $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
     
     // Restrict by hidden status
     if(!is_null($hidden_status)) {
@@ -93,6 +93,11 @@ function get_vat_rates($hidden_status = null, $editable_status = null) {
     // Restrict by editable status
     if(!is_null($editable_status)) {
         $sql .= "\nWHERE editable = ".$db->qstr($editable_status);
+    }
+    
+    // Restrict by editable status
+    if(!is_null($standard_status)) {
+        $sql .= "\nWHERE standard = ".$db->qstr($standard_status);
     }
         
     if(!$rs = $db->execute($sql)){        
@@ -216,7 +221,7 @@ function update_company_details($VAR) {
             email                   =". $db->qstr( $VAR['email']                            ).",    
             website                 =". $db->qstr( $VAR['website']                          ).",
             company_number          =". $db->qstr( $VAR['company_number']                   ).",                                        
-            tax_type                =". $db->qstr( $VAR['tax_type']                         ).",
+            tax_system                =". $db->qstr( $VAR['tax_system']                         ).",
             sales_tax_rate          =". $db->qstr( $VAR['sales_tax_rate']                   ).",
             vat_number              =". $db->qstr( $VAR['vat_number']                       ).",
             year_start              =". $db->qstr( date_to_mysql_date($VAR['year_start'])   ).",
@@ -292,10 +297,10 @@ function update_vat_rates($vat_rates) {
     $error_flag = false;
     
     // Cycle through the submitted VAT rates and update the database
-    foreach ($vat_rates as $rate_key => $rate) {
+    foreach ($vat_rates as $tax_key => $rate) {
         $sql =  "UPDATE ".PRFX."company_vat_rates SET
                 rate = ".$db->qstr($rate)."
-                WHERE rate_key = ".$db->qstr($rate_key);
+                WHERE tax_key = ".$db->qstr($tax_key);
         
         if(!$rs = $db->Execute($sql)) {
             $error_flag = true;            

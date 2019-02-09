@@ -75,7 +75,7 @@ if(isset($VAR['submit'])) {
     /* Misc */ 
     
     // Company Tax Type
-    $smarty->assign('tax_type', get_company_details('tax_type'));
+    $smarty->assign('tax_system', get_company_details('tax_system'));
     
     // Enable Report Section
     $smarty->assign('enable_report_section', true);

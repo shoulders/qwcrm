@@ -16,6 +16,7 @@
         <td class="olohead">{t}Item Type{/t}</td>
         <td class="olohead">{t}Payment Method{/t}</td>
         <td class="olohead">{t}Net Amount{/t}</td>        
+        <td class="olohead">{t}VAT Rate{/t}</td>
         <td class="olohead">{t}VAT Amount{/t}</td>
         <td class="olohead">{t}Gross Amount{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
@@ -40,6 +41,7 @@
                 {/section} 
             </td>                                                               
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].net_amount}</td>                                                                           
+            <td class="olotd4" nowrap>{$display_refunds[r].vat_rate} %</td>                                                                
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].vat_amount}</td>                                                            
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].gross_amount}</td>                                                                
             <td class="olotd4" nowrap>{if $display_refunds[r].note != ''}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Note{/t}</strong></div><hr><div>{$display_refunds[r].note|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">{/if}</td>            

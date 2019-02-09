@@ -192,7 +192,7 @@
 
         // VAT Rate Cell  - Populate the Select Options
         {section loop=$vat_rates name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].rate_key}');
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].tax_key}');
         {/section}
         
     }
@@ -368,7 +368,7 @@
         
         // VAT Rate Cell - Populate the Select Options
         {section loop=$vat_rates name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].rate_key}');
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].tax_key}');
         {/section}
         
 
@@ -797,13 +797,13 @@
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t}</b></td>
                                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
                                                                     </tr>                                                                    
-                                                                    {if $invoice_details.tax_type != 'none'}
+                                                                    {if $invoice_details.tax_system != 'none'}
                                                                         <tr>
                                                                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                                                                         </tr>
                                                                         <tr>                                                            
-                                                                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_type == 'vat_standard' || $invoice_details.tax_type == 'vat_flat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_system == 'vat_standard' || $invoice_details.tax_system == 'vat_flat'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                                                                         </tr>
                                                                     {/if}                                                                     

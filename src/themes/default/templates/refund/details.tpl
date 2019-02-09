@@ -36,19 +36,25 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Client ID{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$refund_details.client_id}</a></td>
-                                            <td class="menutd" ><b>{t}Tax Type{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$tax_types}
-                                                    {if $refund_details.tax_type == $tax_types[s].type_key}{t}{$tax_types[s].display_name}{/t}{/if}
-                                                {/section}
-                                            </td>                                       
+                                            <td class="menutd"><b>{t}Net Amount{/t}</b></td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.net_amount}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$refund_details.date|date_format:$date_format}</td>
-                                            <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$refund_details.net_amount}</td>
-                                        </tr>                                        
+                                            <td class="menutd" ><b>{t}VAT Tax Code{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=s loop=$vat_tax_codes}
+                                                    {if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key}{t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                {/section}
+                                            </td> 
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
+                                            <td class="menutd">{$refund_details.vat_rate}%</td>
+                                        </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
                                             <td class="menutd">              
@@ -57,7 +63,7 @@
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$refund_details.vat_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.vat_amount}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>
@@ -67,7 +73,7 @@
                                                 {/section}
                                             </td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym} {$refund_details.gross_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.gross_amount}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Invoice ID{/t}</b></td>

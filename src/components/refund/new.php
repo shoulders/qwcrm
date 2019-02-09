@@ -45,11 +45,11 @@ if (isset($VAR['invoice_id'])) {
         // Build array
         $refund_details['date'] = date('Y-m-d');
         $refund_details['client_id'] = $invoice_details['client_id'];
-        $refund_details['invoice_id'] = $invoice_details['invoice_id'];
-        $refund_details['tax_type'] = get_company_details('tax_type');
+        $refund_details['invoice_id'] = $invoice_details['invoice_id'];        
         $refund_details['item_type'] = 'invoice';
         $refund_details['payment_method'] = null;
-        $refund_details['net_amount'] = $invoice_details['net_amount'];        
+        $refund_details['net_amount'] = $invoice_details['net_amount'];
+        $refund_details['vat_rate'] = get_vat_rate('standard');
         $refund_details['vat_amount'] = $invoice_details['tax_amount'];  // the correct vat needs to be calculated here, there might be no VAT
         $refund_details['gross_amount'] = $invoice_details['gross_amount'];        
         $refund_details['note'] = _gettext("This is a refund for an Invoice.");
@@ -82,7 +82,7 @@ $new_record_id = last_refund_id_lookup() +1;
 // Build the page
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
-$smarty->assign('tax_types', get_tax_types() ); 
+$smarty->assign('vat_tax_codes', get_vat_tax_codes(false)); 
 $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
 $smarty->assign('new_record_id', $new_record_id);
 $smarty->assign('client_display_name', $client_display_name);

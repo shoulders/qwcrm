@@ -17,12 +17,12 @@
     // If there is a Tax Type selected then verify there is a Tax Rate set (run on form submission)
     function validateTaxRate(msg) {
         
-        // Store the tax_type and tax_rate into variables ...
-        var tax_type = document.getElementById('tax_type');
+        // Store the tax_system and tax_rate into variables ...
+        var tax_system = document.getElementById('tax_system');
         var tax_rate = document.getElementById('tax_rate');
         
         // If there is a Tax Type set then validate a rate is set
-        if (tax_type.value !== 'none' && tax_rate.value == 0) {             
+        if (tax_system.value !== 'none' && tax_rate.value == 0) {             
             alert(msg);
             return false;
             
@@ -143,10 +143,10 @@
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Tax Type{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            <select class="olotd5" id="tax_type" name="tax_type">                                                       
-                                                                                                <option value="none"{if $company_details.tax_type == 'none'} selected{/if}>{t}None{/t}</option>
-                                                                                                <option value="sales"{if $company_details.tax_type == 'sales'} selected{/if}>{t}Sales{/t}</option>
-                                                                                                <option value="vat"{if $company_details.tax_type == 'vat'} selected{/if}>{t}VAT{/t}</option>
+                                                                                            <select class="olotd5" id="tax_system" name="tax_system">                                                       
+                                                                                                <option value="none"{if $company_details.tax_system == 'none'} selected{/if}>{t}None{/t}</option>
+                                                                                                <option value="sales"{if $company_details.tax_system == 'sales'} selected{/if}>{t}Sales{/t}</option>
+                                                                                                <option value="vat"{if $company_details.tax_system == 'vat'} selected{/if}>{t}VAT{/t}</option>
                                                                                             </select>                                                    
                                                                                         </td> 
                                                                                     </tr>                                            

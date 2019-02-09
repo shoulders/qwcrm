@@ -143,9 +143,11 @@ function insert_otherincome($VAR) {
     $sql = "INSERT INTO ".PRFX."otherincome_records SET
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
-            type             =". $db->qstr( $VAR['type']                    ).",
+            tax_system       =". $db->qstr(get_company_details('tax_system')).",            
+            item_type        =". $db->qstr( $VAR['item_type']               ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
+            vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
             vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
@@ -228,10 +230,11 @@ function update_otherincome($VAR) {
     
     $sql = "UPDATE ".PRFX."otherincome_records SET
             payee            =". $db->qstr( $VAR['payee']                   ).",
-            date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
-            type             =". $db->qstr( $VAR['type']                    ).",
+            date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",            
+            item_type        =". $db->qstr( $VAR['item_type']               ).",
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
+            vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
             vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            

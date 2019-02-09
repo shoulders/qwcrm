@@ -59,16 +59,7 @@
                                                     <tr>
                                                         <td align="right"><b>{t}Invoice ID{/t}</b></td>
                                                         <td colspan="3"><input id="invoice_id" name="invoice_id" class="olotd5" size="5" value="{$expense_details.invoice_id}" type="text" maxlength="10" onkeydown="return onlyNumber(event);"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right"><b>{t}Tax Type{/t}</b></td>
-                                                        <td>
-                                                            {section name=s loop=$tax_types}
-                                                                {if $expense_details.tax_type == $tax_types[s].type_key}{t}{$tax_types[s].display_name}{/t}{/if}
-                                                            {/section}
-                                                            <input name="tax_type" type="hidden" value="{$expense_details.tax_type}">
-                                                        </td>
-                                                    </tr>
+                                                    </tr>                                                    
                                                     <tr>
                                                         <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td>
@@ -92,7 +83,21 @@
                                                     <tr>
                                                         <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                         <td><input name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$expense_details.net_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
-                                                    </tr>                                                    
+                                                    </tr> 
+                                                    <tr>
+                                                        <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
+                                                        <td>
+                                                            <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
+                                                                {section name=s loop=$vat_tax_codes}    
+                                                                    <option value="{$vat_tax_codes[s].tax_key}"{if $expense_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if}>{t}{$vat_tax_codes[s].display_name}{/t}</option>
+                                                                {/section} 
+                                                            </select>                                                            
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
+                                                        <td><input name="vat_rate" class="olotd5" size="4" value="{$expense_details.vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
+                                                    </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
                                                         <td><input name="vat_amount" class="olotd5" size="10" value="{$expense_details.vat_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>

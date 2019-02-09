@@ -18,19 +18,20 @@ _gettext("Charity");
 _gettext("Educational");
 _gettext("Goverment");
 
-/* Company Tax Types */
+/* Company Tax Systems*/
 _gettext("None");
 _gettext("VAT Standard");
 _gettext("VAT Flat Rate");
 _gettext("Sales Tax");
 
-/* Company VAT Rates */
-_gettext("None");
-_gettext("Standard Rate");
-_gettext("Reduced Rate");
-_gettext("Zero Rated");
-_gettext("Exempt");
+/* Company VAT Tax Codes */
+_gettext("None (T9)");
+_gettext("Standard Rate (T1)");
+_gettext("Reduced Rate (T5)");
+_gettext("Zero Rated (T0)");
+_gettext("Exempt (T2)");
 _gettext("Flat Rate");
+_gettext("Not Applicable");
 
 /* Expense Types */
 _gettext("Bank Charges");
