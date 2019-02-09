@@ -53,7 +53,7 @@
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$refund_details.vat_rate}%</td>
+                                            <td class="menutd">{$refund_details.vat_rate|string_format:"%.2f"}}%</td>
                                         </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>

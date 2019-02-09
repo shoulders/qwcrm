@@ -40,7 +40,7 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );    
     $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
     $smarty->assign('new_record_id', $new_record_id);
-    $smarty->assign('vat_rate', get_company_details('sales_tax_rate'));
+    //$smarty->assign('default_vat_rate', get_vat_rate('standard'));
     $BuildPage .= $smarty->fetch('expense/new.tpl');
 
 }

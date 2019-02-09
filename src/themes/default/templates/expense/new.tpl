@@ -13,13 +13,32 @@
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script>
+    
+    $( document ).ready(function() {
+        
+        // Set the intial VAT rate from the selected VAT Tax Code
+        var selected_vat_tax_code = $('#vat_tax_code').find('option:selected');
+        var tcVatRate = selected_vat_tax_code.data('rate');            
+        $('#vat_rate').val(tcVatRate);
+        calculateTotals('vat_tax_code');        
+        
+        // Bind an action to the VAT Tax Code dropdown to update the totals on change
+        $('#vat_tax_code').change(function() {            
+            var selected = $(this).find('option:selected');
+            var tcVatRate = selected.data('rate');            
+            $('#vat_rate').val(tcVatRate);
+            calculateTotals('vat_tax_code');
+        } );
+            
+    } );
 
+    // automatically calculate totals
     function calculateTotals(fieldName) {
         
-        // Get input values
+        // Get input field values
         var net_amount  = Number(document.getElementById('net_amount').value);
         var vat_rate    = Number(document.getElementById('vat_rate').value);
-        var vat_amount  = Number(document.getElementById('vat_amount').value);        
+        var vat_amount  = Number(document.getElementById('vat_amount').value);
         
         // Calculations        
         var auto_vat_amount = (net_amount * (vat_rate/100));        
@@ -126,14 +145,14 @@
                                                                             <td>
                                                                                 <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
                                                                                     {section name=s loop=$vat_tax_codes}    
-                                                                                        <option value="{$vat_tax_codes[s].tax_key}">{t}{$vat_tax_codes[s].display_name}{/t}</option>
+                                                                                        <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}">{t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
                                                                                     {/section} 
                                                                                 </select>
                                                                             </td>
                                                                         </tr> 
                                                                         <tr>
                                                                             <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</td>
-                                                                            <td><input id="vat_rate" name="vat_rate" class="olotd5" size="5" value="{$vat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('vat_rate');"/><b>%</b></td>
+                                                                            <td><input id="vat_rate" name="vat_rate" class="olotd5" size="5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('vat_rate');" readonly/><b>%</b></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>

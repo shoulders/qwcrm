@@ -12,6 +12,56 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
+<script>
+    
+    $( document ).ready(function() {
+        
+        // No intial recalculation for edit page
+        /* 
+        //Set the intial VAT rate from the selected VAT Tax Code
+        var selected_vat_tax_code = $('#vat_tax_code').find('option:selected');
+        var tcVatRate = selected_vat_tax_code.data('rate');            
+        $('#vat_rate').val(tcVatRate);
+        calculateTotals('vat_tax_code');
+         */        
+        
+        // Bind an action to the VAT Tax Code dropdown to update the totals on change
+        $('#vat_tax_code').change(function() {            
+            var selected = $(this).find('option:selected');
+            var tcVatRate = selected.data('rate');            
+            $('#vat_rate').val(tcVatRate);
+            calculateTotals('vat_tax_code');
+        } );
+            
+    } );
+
+    // automatically calculate totals
+    function calculateTotals(fieldName) {
+        
+        // Get input field values
+        var net_amount  = Number(document.getElementById('net_amount').value);
+        var vat_rate    = Number(document.getElementById('vat_rate').value);
+        var vat_amount  = Number(document.getElementById('vat_amount').value);
+        
+        // Calculations        
+        var auto_vat_amount = (net_amount * (vat_rate/100));        
+        if(fieldName !== 'vat_amount') {
+            var auto_gross_amount = (net_amount + auto_vat_amount);
+        } else {            
+            var auto_gross_amount = (net_amount + vat_amount);
+        }
+        
+        // Set the new vat_amount input value if not editing the vat_amount input field
+        if(fieldName !== 'vat_amount') {
+            document.getElementById('vat_amount').value = auto_vat_amount.toFixed(2);
+        }
+        
+        // Set the new gross_amount input value
+        document.getElementById('gross_amount').value = auto_gross_amount.toFixed(2);        
+    
+    }
+
+</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
@@ -91,7 +141,7 @@
                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
                                                                 {$currency_sym} {$refund_details.net_amount}
-                                                                <input name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$refund_details.net_amount}" type="hidden"/>
+                                                                <input id="net_amount" name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$refund_details.net_amount}" type="hidden" onkeyup="calculateTotals('net_amount');"/>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -99,7 +149,7 @@
                                                             <td>
                                                                 <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
                                                                     {section name=s loop=$vat_tax_codes}    
-                                                                        <option value="{$vat_tax_codes[s].tax_key}"{if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if}>{t}{$vat_tax_codes[s].display_name}{/t}</option>
+                                                                        <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}"{if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if}>{t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
                                                                     {/section} 
                                                                 </select>
                                                             </td>
@@ -108,26 +158,26 @@
                                                             <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
                                                             <td>
                                                                 {$refund_details.vat_rate} %
-                                                                <input name="vat_rate" class="olotd5" size="5" value="{$refund_details.vat_rate}" type="hidden">
+                                                                <input id="vat_rate" name="vat_rate" class="olotd5" size="5" value="{$refund_details.vat_rate}" type="hidden" onkeyup="calculateTotals('vat_rate');" readonly>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
                                                             <td>
                                                                 {$currency_sym} {$refund_details.vat_amount}
-                                                                <input name="vat_amount" class="olotd5" size="10" value="{$refund_details.vat_amount}" type="hidden">
+                                                                <input id="vat_amount" name="vat_amount" class="olotd5" size="10" value="{$refund_details.vat_amount}" type="hidden" onkeyup="calculateTotals('vat_amount');">
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
                                                                 {$currency_sym} {$refund_details.gross_amount}
-                                                                <input name="gross_amount" class="olotd5" size="10" value="{$refund_details.gross_amount}" type="hidden">
+                                                                <input id="gross_amount" name="gross_amount" class="olotd5" size="10" value="{$refund_details.gross_amount}" type="hidden">
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Note{/t}</b></td>
-                                                            <td><textarea class="olotd5" name="note" cols="50" rows="15">{$refund_details.note}</textarea></td>
+                                                            <td><textarea class="olotd5" id="note" name="note" cols="50" rows="15">{$refund_details.note}</textarea></td>
                                                         </tr>                                                        
                                                         <tr>
                                                             <td colspan="2">
