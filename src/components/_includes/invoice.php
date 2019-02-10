@@ -241,7 +241,7 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
             date            =". $db->qstr( mysql_date()                         ).",
             due_date        =". $db->qstr( mysql_date()                         ).",            
             discount_rate   =". $db->qstr( $discount_rate                       ).",
-            tax_system        =". $db->qstr( $tax_system                            ).",
+            tax_system      =". $db->qstr( $tax_system                          ).",
             sales_tax_rate  =". $db->qstr( $sales_tax_rate                      ).",
             open_date       =". $db->qstr( mysql_datetime()                     ).",
             status          =". $db->qstr( 'pending'                            ).",   
@@ -286,24 +286,24 @@ function insert_labour_items($invoice_id, $tax_system, $labour_items = null) {
     // Insert Labour Items into database (if any)
     if($labour_items) {
         
-        $sql = "INSERT INTO ".PRFX."invoice_labour (invoice_id, tax_system, vat_type, vat_rate, description, unit_qty, unit_net, unit_vat, unit_gross, sub_total_net, sub_total_vat, sub_total_gross) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_labour_id`, `invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
            
         foreach($labour_items as $labour_item) {
             
-            $vat_rate = isset($labour_item['vat_type']) ? get_vat_rate($labour_item['vat_type']) : 0.00;
+            $vat_rate = isset($labour_item['vat_tax_code']) ? get_vat_rate($labour_item['vat_tax_code']) : 0.00;
             $labour_totals = calculate_invoice_item_sub_totals($tax_system, $labour_item['unit_qty'], $labour_item['unit_net'], $labour_item['sales_tax_rate'], $vat_rate);
             
             $sql .="(".
                     
                     $db->qstr( $invoice_id                         ).",".                    
-                    $db->qstr( $tax_system                           ).",".
-                    $db->qstr( $labour_item['vat_type']            ).",".
-                    $db->qstr( $vat_rate                           ).",".
+                    $db->qstr( $tax_system                         ).",".                    
                     $db->qstr( $labour_item['description']         ).",".                    
                     $db->qstr( $labour_item['unit_qty']            ).",".
                     $db->qstr( $labour_item['unit_net']            ).",".
+                    $db->qstr( $labour_item['vat_tax_code']        ).",".
+                    $db->qstr( $vat_rate                           ).",".
                     $db->qstr( $labour_totals['unit_vat']          ).",".
-                    $db->qstr( $labour_totals['unit_gross']         ).",".                    
+                    $db->qstr( $labour_totals['unit_gross']        ).",".                    
                     $db->qstr( $labour_totals['sub_total_net']     ).",".
                     $db->qstr( $labour_totals['sub_total_vat']     ).",".
                     $db->qstr( $labour_totals['sub_total_gross']   )."),";
@@ -334,24 +334,24 @@ function insert_parts_items($invoice_id, $tax_system, $parts_items = null) {
     // Insert Labour Items into database (if any)
     if($parts_items) {
         
-        $sql = "INSERT INTO ".PRFX."invoice_parts (invoice_id, tax_system, vat_type, vat_rate, description, unit_qty, unit_net, unit_vat, unit_gross, sub_total_net, sub_total_vat, sub_total_gross) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_parts_id`, `invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
            
         foreach($parts_items as $parts_item) {
             
-            $vat_rate = isset($parts_item['vat_type']) ? get_vat_rate($parts_item['vat_type']) : 0.00;
+            $vat_rate = isset($parts_item['vat_tax_code']) ? get_vat_rate($parts_item['vat_tax_code']) : 0.00;
             $parts_totals = calculate_invoice_item_sub_totals($tax_system, $vat_rate, $parts_item['unit_qty'], $parts_item['unit_net']);
             
             $sql .="(".
                     
-                    $db->qstr( $invoice_id                         ).",".                    
-                    $db->qstr( $tax_system                           ).",".
-                    $db->qstr( $parts_item['vat_type']            ).",".
-                    $db->qstr( $vat_rate                           ).",".
+                    $db->qstr( $invoice_id                        ).",".                    
+                    $db->qstr( $tax_system                        ).",".                    
                     $db->qstr( $parts_item['description']         ).",".                    
                     $db->qstr( $parts_item['unit_qty']            ).",".
                     $db->qstr( $parts_item['unit_net']            ).",".
+                    $db->qstr( $parts_item['vat_tax_code']        ).",".
+                    $db->qstr( $vat_rate                          ).",".
                     $db->qstr( $parts_totals['unit_vat']          ).",".
-                    $db->qstr( $parts_totals['unit_gross']         ).",".                    
+                    $db->qstr( $parts_totals['unit_gross']        ).",".                    
                     $db->qstr( $parts_totals['sub_total_net']     ).",".
                     $db->qstr( $parts_totals['sub_total_vat']     ).",".
                     $db->qstr( $parts_totals['sub_total_gross']   )."),";
@@ -771,7 +771,7 @@ function update_invoice_full($VAR, $doNotLog = false) {
             date                =". $db->qstr( $VAR['date']            ).",
             due_date            =". $db->qstr( $VAR['due_date']        ).", 
             discount_rate       =". $db->qstr( $VAR['discount_rate']   ).",
-            tax_system            =". $db->qstr( $VAR['tax_system']        ).",   
+            tax_system          =". $db->qstr( $VAR['tax_system']      ).",   
             sales_tax_rate      =". $db->qstr( $VAR['sales_tax_rate']  ).",   
             sub_total           =". $db->qstr( $VAR['sub_total']       ).",    
             discount_amount     =". $db->qstr( $VAR['discount_amount'] ).",   
@@ -1092,7 +1092,7 @@ function delete_invoice($invoice_id) {
                                     'date'              =>  '0000-00-00',
                                     'due_date'          =>  '0000-00-00',        
                                     'discount_rate'     =>  '0.00',
-                                    'tax_system'          =>  '',
+                                    'tax_system'        =>  '',
                                     'sales_tax_rate'    =>  '0.00',
                                     'sub_total'         =>  '0.00',
                                     'discount_amount'   =>  '0.00',        
@@ -1315,67 +1315,6 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $s
     return $item_totals;
     
 }
-
-/*
-############################################
-#   recalculate Labour Item Sub Totals     #
-############################################
-
-function recalculate_labour_item_sub_totals($invoice_id) {
-    
-    $db = QFactory::getDbo();
-    
-    // I could use sum_labour_items() 
-    
-    $sql = "SELECT
-            SUM(unit_net) AS unit_net,
-            SUM(unit_vat) AS unit_vat,
-            SUM(unit_gross) AS unit_gross,
-            SUM(sub_total_net) AS sub_total_net,
-            SUM(sub_total_vat) AS sub_total_vat,
-            SUM(sub_total_gross) AS sub_total_gross
-            FROM ".PRFX."invoice_labour
-            WHERE invoice_id=". $db->qstr($invoice_id);
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice labour sub total."));
-    } else {
-        
-        return $rs->GetRowAssoc(); 
-        
-    }    
-    
-}
-
-###########################################
-#   recalculate Parts Item Sub Total      #
-###########################################
-
-function recalculate_parts_item_sub_totals($invoice_id) {
-    
-    $db = QFactory::getDbo();
-    
-    // I could use sum_parts_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null)
-    
-    $sql = "SELECT
-            SUM(unit_net) AS unit_net,
-            SUM(unit_vat) AS unit_vat,
-            SUM(unit_gross) AS unit_gross,
-            SUM(sub_total_net) AS sub_total_net,
-            SUM(sub_total_vat) AS sub_total_vat,
-            SUM(sub_total_gross) AS sub_total_gross
-            FROM ".PRFX."parts_labour
-            WHERE invoice_id=". $db->qstr($invoice_id);
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice parts sub total."));
-    } else {
-        
-        return $rs->GetRowAssoc(); 
-        
-    }
-  
-}*/
 
 #####################################
 #   Recalculate Invoice Totals      #

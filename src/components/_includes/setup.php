@@ -2174,7 +2174,7 @@ class QSetup {
                 
                 $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
                 
-                $vat_type = $invoice_details['tax_system'] == 'vat_standard' ? 'standard' : 'none';
+                $vat_tax_code = $invoice_details['tax_system'] == 'vat_standard' ? 'standard' : 'none'; // change this for default call function
                 $vat_rate = $invoice_details['tax_system'] == 'vat_standard' ? $rs->fields['sales_tax_rate'] : 0.00;
                 
                 $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $rs->fields['sales_tax_rate'], $vat_rate);

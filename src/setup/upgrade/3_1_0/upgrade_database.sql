@@ -89,13 +89,13 @@ CREATE TABLE `#__company_vat_tax_codes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `rate`, `hidden`, `editable`, `standard`) VALUES
-(1, 'none', 'None (T9)', '0.00', 1, 0, 1),
-(2, 'standard', 'Standard Rate (T1)', '20.00', 0, 1, 1),
-(3, 'reduced', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
-(4, 'zero', 'Zero Rated (T0)', '0.00', 0, 0, 1),
-(5, 'exempt', 'Exempt (T2)', '0.00', 0, 0, 1),
-(6, 'flat_rate', 'Flat Rate', '10.50', 1, 1, 0),
-(10, 'not_applicable', 'Not Applicable', '0.00', 1, 0, 0);
+(1, 't0', 'Zero Rated (T0)', '0.00', 0, 0, 1),
+(2, 't1', 'Standard Rate (T1)', '20.00', 0, 1, 1),
+(3, 't2', 'Exempt (T2)', '0.00', 0, 0, 1),
+(4, 't5', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
+(5, 't9', 'None (T9)', '0.00', 1, 0, 1),
+(16, 'flat_rate', 'Flat Rate', '10.50', 1, 1, 0),
+(17, 'not_applicable', 'Not Applicable', '0.00', 1, 0, 0);
 
 ALTER TABLE `#__company_vat_tax_codes` ADD PRIMARY KEY (`id`);
 
@@ -469,8 +469,8 @@ ALTER TABLE `#__voucher_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFA
 --
 
 ALTER TABLE `#__invoice_labour` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `description`;
-ALTER TABLE `#__invoice_labour` ADD `vat_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
-ALTER TABLE `#__invoice_labour` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_type`;
+ALTER TABLE `#__invoice_labour` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
+ALTER TABLE `#__invoice_labour` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 ALTER TABLE `#__invoice_labour` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_labour` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
 ALTER TABLE `#__invoice_labour` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
@@ -482,8 +482,8 @@ ALTER TABLE `#__invoice_labour` CHANGE `description` `description` VARCHAR(100) 
 ALTER TABLE `#__invoice_labour` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
 
 ALTER TABLE `#__invoice_parts` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `description`;
-ALTER TABLE `#__invoice_parts` ADD `vat_type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
-ALTER TABLE `#__invoice_parts` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_type`;
+ALTER TABLE `#__invoice_parts` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
+ALTER TABLE `#__invoice_parts` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 ALTER TABLE `#__invoice_parts` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_parts` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
 ALTER TABLE `#__invoice_parts` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
@@ -493,8 +493,6 @@ ALTER TABLE `#__invoice_parts` ADD `sub_total_vat` DECIMAL(10,2) NOT NULL DEFAUL
 ALTER TABLE `#__invoice_parts` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_vat`;
 ALTER TABLE `#__invoice_parts` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `vat_rate`;
 ALTER TABLE `#__invoice_parts` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
-
-
 
 --
 -- Convert from integer to currency
@@ -579,6 +577,10 @@ ALTER TABLE `#__invoice_records` CHANGE `tax_type` `tax_system` VARCHAR(30) CHAR
 ALTER TABLE `#__invoice_records` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__company_record` CHANGE `tax_type` `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_labour` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
+ALTER TABLE `#__invoice_labour` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
+ALTER TABLE `#__invoice_parts` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
+ALTER TABLE `#__invoice_parts` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 
 --
 -- Misc Column Changes

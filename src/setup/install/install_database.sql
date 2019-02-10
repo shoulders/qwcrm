@@ -199,13 +199,13 @@ CREATE TABLE `#__company_vat_tax_codes` (
 --
 
 INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `rate`, `hidden`, `editable`, `standard`) VALUES
-(1, 'none', 'None (T9)', '0.00', 1, 0, 1),
-(2, 'standard', 'Standard Rate (T1)', '20.00', 0, 1, 1),
-(3, 'reduced', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
-(4, 'zero', 'Zero Rated (T0)', '0.00', 0, 0, 1),
-(5, 'exempt', 'Exempt (T2)', '0.00', 0, 0, 1),
-(6, 'flat_rate', 'Flat Rate', '10.50', 1, 1, 0),
-(10, 'not_applicable', 'Not Applicable', '0.00', 1, 0, 0);
+(1, 't0', 'Zero Rated (T0)', '0.00', 0, 0, 1),
+(2, 't1', 'Standard Rate (T1)', '20.00', 0, 1, 1),
+(3, 't2', 'Exempt (T2)', '0.00', 0, 0, 1),
+(4, 't5', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
+(5, 't9', 'None (T9)', '0.00', 1, 0, 1),
+(16, 'flat_rate', 'Flat Rate', '10.50', 1, 1, 0),
+(17, 'not_applicable', 'Not Applicable', '0.00', 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -277,17 +277,18 @@ CREATE TABLE `#__invoice_labour` (
   `invoice_labour_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 -- --------------------------------------------------------
 
@@ -299,11 +300,11 @@ CREATE TABLE `#__invoice_parts` (
   `invoice_parts_id` int(10) NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',

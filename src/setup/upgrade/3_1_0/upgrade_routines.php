@@ -28,19 +28,19 @@ class Upgrade3_1_0 extends QSetup {
                         
     }    
     
-    public function pre_database() {
-        
-        // scripts executed before SQL script (if required)
+    // scripts executed before SQL script (if required)
+    public function pre_database() {        
         
     }
     
+    // Execute the upgrade SQL script
     public function process_database() {
         
-        // Execute the upgrade SQL script
-        $this->execute_sql_file_lines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');
+        $this->execute_sql_file_lines(SETUP_DIR.'upgrade/'.$this->upgrade_step.'/upgrade_database.sql');      
         
     }
     
+    // Execute post database scipts and tidy up the data
     public function post_database() {
         
         // Config File
@@ -61,7 +61,7 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'expense_records', 'type', 'gift_certificate', 'voucher');
 
         // Change otherincome record types
-        //$this->update_column_values(PRFX.'otherincome_records', 'type', 'credit_note', 'other');
+        $this->update_column_values(PRFX.'otherincome_records', 'type', 'credit_note', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'type', 'proxy_invoice', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'type', 'returned_services', 'cancelled_services');
         
@@ -115,6 +115,14 @@ class Upgrade3_1_0 extends QSetup {
         // Update Invoice Tax Types
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax');
+        
+        // Update Invoice Items
+        $company_tax_system = get_company_details('tax_system');
+        $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $company_tax_system);
+        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $company_tax_system);
+        $default_vat_tax_code = get_default_vat_tax_code(); // This is an educated guess
+        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $default_vat_tax_code);
+        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $default_vat_tax_code);
         
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
         $this->invoice_correct_labour_totals();

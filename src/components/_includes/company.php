@@ -58,12 +58,12 @@ function get_tax_systems() {
 #   Get VAT rate for given tax_key  #
 #####################################
 
-function get_vat_rate($vat_type) {
+function get_vat_rate($vat_tax_code) {
     
     $db = QFactory::getDbo();
     
     $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
-            WHERE tax_key = ".$db->qstr($vat_type);
+            WHERE tax_key = ".$db->qstr($vat_tax_code);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
@@ -107,6 +107,21 @@ function get_vat_tax_codes($hidden_status = null, $editable_status = null, $stan
         return $rs->GetArray();
         
     }    
+    
+}
+
+#####################################
+#    Get VAT Tax Codes              # // this gets the default VAT based on the company tax system
+#####################################
+
+function get_default_vat_tax_code() {
+    
+    $company_tax_system = get_company_details('tax_system');
+    
+    if($company_tax_system == 'none') { return 't9'; }
+    if($company_tax_system == 'vat_standard') { return 't1'; }
+    if($company_tax_system == 'vat_flat') { return 't1'; }
+    if($company_tax_system == 'sales_tax') { return 'not_applicable'; }    
     
 }
 

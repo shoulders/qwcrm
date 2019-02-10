@@ -25,11 +25,11 @@ _gettext("VAT Flat Rate");
 _gettext("Sales Tax");
 
 /* Company VAT Tax Codes */
-_gettext("None (T9)");
-_gettext("Standard Rate (T1)");
-_gettext("Reduced Rate (T5)");
 _gettext("Zero Rated (T0)");
+_gettext("Standard Rate (T1)");
 _gettext("Exempt (T2)");
+_gettext("Reduced Rate (T5)");
+_gettext("None (T9)");
 _gettext("Flat Rate");
 _gettext("Not Applicable");
 

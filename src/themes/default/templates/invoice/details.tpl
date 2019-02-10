@@ -192,7 +192,7 @@
                                                                 <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                 <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                                                                
-                                                                {if $labour_items[l].vat_type == 'exempt'}
+                                                                {if $labour_items[l].vat_tax_code == 't2'}
                                                                     <td colspan="2" align="center">{t}Exempt{/t}</td>
                                                                 {else}
                                                                     <td align="right">{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
@@ -252,7 +252,7 @@
                                                                 <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                 <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
                                                                 <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td> 
-                                                                {if $parts_items[p].vat_type == 'exempt'}
+                                                                {if $parts_items[p].vat_tax_code == 't2'}
                                                                     <td colspan="2" align="center">{t}Exempt{/t}</td>
                                                                 {else}                            
                                                                     <td>{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>                    
