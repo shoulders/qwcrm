@@ -205,7 +205,7 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `rate`,
 (4, 't5', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
 (5, 't9', 'None (T9)', '0.00', 1, 0, 1),
 (16, 'flat_rate', 'Flat Rate', '10.50', 1, 1, 0),
-(17, 'not_applicable', 'Not Applicable', '0.00', 1, 0, 0);
+(17, 'na_sales_tax', 'Not Applicable (Sales Tax)', '0.00', 1, 0, 0);
 
 -- --------------------------------------------------------
 

@@ -114,14 +114,14 @@ function get_vat_tax_codes($hidden_status = null, $editable_status = null, $stan
 #    Get VAT Tax Codes              # // this gets the default VAT based on the company tax system
 #####################################
 
-function get_default_vat_tax_code() {
+function get_default_vat_tax_code($tax_system = null) {
     
-    $company_tax_system = get_company_details('tax_system');
+    if(!$tax_system) {$tax_system = get_company_details('tax_system');}
     
-    if($company_tax_system == 'none') { return 't9'; }
-    if($company_tax_system == 'vat_standard') { return 't1'; }
-    if($company_tax_system == 'vat_flat') { return 't1'; }
-    if($company_tax_system == 'sales_tax') { return 'not_applicable'; }    
+    if($tax_system == 'none') { return 't9'; }
+    if($tax_system == 'vat_standard') { return 't1'; }
+    if($tax_system == 'vat_flat') { return 't1'; }
+    if($tax_system == 'sales_tax') { return 'na_sales_tax'; }    
     
 }
 

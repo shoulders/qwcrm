@@ -2174,14 +2174,14 @@ class QSetup {
                 
                 $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
                 
-                $vat_tax_code = $invoice_details['tax_system'] == 'vat_standard' ? 'standard' : 'none'; // change this for default call function
-                $vat_rate = $invoice_details['tax_system'] == 'vat_standard' ? $rs->fields['sales_tax_rate'] : 0.00;
+                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']);
+                $vat_rate = get_vat_rate($vat_tax_code);
                 
                 $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $rs->fields['sales_tax_rate'], $vat_rate);
                 
                 $sql = "UPDATE `".PRFX."invoice_labour` SET
-                        `tax_system`          = ".$db->qstr($invoice_details['tax_system']).",
-                        `vat_type`          = ".$db->qstr($vat_type)."                       
+                        `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
+                        `vat_tax_code`      = ".$db->qstr($vat_tax_code)."                       
                         `vat_rate`          = ".$vat_rate."                           
                         `unit_vat`          = ".$item_totals['unit_vat'].",
                         `unit_gross`        = ".$item_totals['unit_gross'].",                        
@@ -2296,14 +2296,14 @@ class QSetup {
                 
                 $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
                 
-                $vat_type = $invoice_details['tax_system'] == 'vat_standard' ? 'standard' : 'none';
-                $vat_rate = $invoice_details['tax_system'] == 'vat_standard' ? $rs->fields['sales_tax_rate'] : 0.00;
+                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']);
+                $vat_rate = get_vat_rate($vat_tax_code);
                 
                 $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $rs->fields['sales_tax_rate'], $vat_rate);
                 
                 $sql = "UPDATE `".PRFX."invoice_parts` SET
-                        `tax_system`          = ".$db->qstr($invoice_details['tax_system']).",
-                        `vat_type`          = ".$db->qstr($vat_type)."                       
+                        `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
+                        `vat_tax_code`      = ".$db->qstr($vat_tax_code)."                       
                         `vat_rate`          = ".$vat_rate."                           
                         `unit_vat`          = ".$item_totals['unit_vat'].",
                         `unit_gross`        = ".$item_totals['unit_gross'].",                        

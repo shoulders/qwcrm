@@ -31,7 +31,7 @@ _gettext("Exempt (T2)");
 _gettext("Reduced Rate (T5)");
 _gettext("None (T9)");
 _gettext("Flat Rate");
-_gettext("Not Applicable");
+_gettext("Not Applicable (Sales Tax)");
 
 /* Expense Types */
 _gettext("Bank Charges");
