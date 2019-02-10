@@ -37,7 +37,8 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     
     // Build the page
     $smarty->assign('expense_types', get_expense_types());    
-    $smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );    
+    $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));   
+    $smarty->assign('default_vat_tax_code', get_default_vat_tax_code()); 
     $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
     $smarty->assign('new_record_id', $new_record_id);
     //$smarty->assign('default_vat_rate', get_vat_rate('standard'));

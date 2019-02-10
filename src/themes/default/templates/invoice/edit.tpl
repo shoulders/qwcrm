@@ -136,7 +136,7 @@
 
         // Amount Cell - Populate the Select Options
         {section loop=$labour_prefill_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$labour_prefill_items[i].amount}', '{$labour_prefill_items[i].amount}');
+            el.options[{$smarty.section.i.index}] = new Option('{$labour_prefill_items[i].net_amount}', '{$labour_prefill_items[i].net_amount}');
         {/section}
 
         // Amount Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
@@ -165,12 +165,12 @@
         
     
     
-        // VAT Rate Cell - Create Cell
+        // VAT Tax Code Cell - Create Cell
         var buildRow = row.insertCell(4);        
         //buildRow.setAttribute('width', '100px');
         //buildRow.setAttribute('class', 'olotd4');
 
-        // VAT Rate Cell - Create Select Input
+        // VAT Tax Code Cell - Create Select Input
         var el = document.createElement('select');
         el.setAttribute('id', 'labour_items['+iteration+'][vat_tax_code]');
         el.setAttribute('name', 'labour_items['+iteration+'][vat_tax_code]');
@@ -190,9 +190,12 @@
         //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
 
 
-        // VAT Rate Cell  - Populate the Select Options
-        {section loop=$vat_rates name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].tax_key}');
+        // VAT Tax Code Cell  - Populate the Select Options
+        {section loop=$vat_tax_codes name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].display_name} ({$vat_tax_codes[i].rate|string_format:"%.2f"}%)', '{$vat_tax_codes[i].tax_key}');
+            {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
+                el.options[{$smarty.section.i.index}].setAttribute('selected', true);
+            {/if}
         {/section}
         
     }
@@ -319,7 +322,7 @@
         
         // Unit Net Cell - Populate the Select Options
         {section loop=$parts_prefill_items name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$parts_prefill_items[i].amount}', '{$parts_prefill_items[i].amount}');
+            el.options[{$smarty.section.i.index}] = new Option('{$parts_prefill_items[i].net_amount}', '{$parts_prefill_items[i].net_amount}');
         {/section}
 
         // Unit Net Cell - Add some HTML to add the Currency Symbol to the left of the Rate Box      
@@ -347,12 +350,12 @@
         
         
         
-        // VAT Rate Cell - Create Cell
+        // VAT Tax Code Cell - Create Cell
         var buildRow = row.insertCell(4);        
         //buildRow.setAttribute('width', '100px');
         //buildRow.setAttribute('class', 'olotd4');
 
-        // VAT Rate Cell - Create Select Input
+        // VAT Tax Code Cell - Create Select Input
         var el = document.createElement('select');
         el.setAttribute('id', 'parts_items['+iteration+'][vat_tax_code]');
         el.setAttribute('name', 'parts_items['+iteration+'][vat_tax_code]');    
@@ -366,9 +369,12 @@
         buildRow.appendChild(el);
         
         
-        // VAT Rate Cell - Populate the Select Options
-        {section loop=$vat_rates name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_rates[i].display_name} ({$vat_rates[i].rate|string_format:"%.2f"}%)', '{$vat_rates[i].tax_key}');
+        // VAT Tax Code Cell - Populate the Select Options
+        {section loop=$vat_tax_codes name=i}
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].display_name} ({$vat_tax_codes[i].rate|string_format:"%.2f"}%)', '{$vat_tax_codes[i].tax_key}');
+        {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
+            el.options[{$smarty.section.i.index}].setAttribute('selected', true);
+        {/if}
         {/section}
         
 
@@ -616,8 +622,8 @@
                                                                     {if $labour_items[l].vat_tax_code == 't2'}
                                                                         <td colspan="2" align="center">{t}Exempt{/t}</td>
                                                                     {else}
-                                                                        <td align="right">{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
-                                                                        <td align="right">{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
+                                                                        <td>{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
+                                                                        <td>{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
                                                                     {/if}
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
                                                                     <td>
@@ -655,7 +661,7 @@
                                                                     <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>                                                                    
                                                                     <td class="row2" style="width: 66px;"><b>{t}Unit Qty{/t}</b></td>
                                                                     <td class="row2" style="width: 110px;"><b>{t}Unit Net{/t}</b></td>
-                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Rate{/t}</b></td>
+                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>
                                                                 </tr>
                                                                 <!-- Additional Rows are added here -->
                                                             </table>
@@ -742,7 +748,7 @@
                                                                     <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>                                                                    
                                                                     <td class="row2" style="width: 66px;"><b>{t}Unit Qty{/t}</b></td>
                                                                     <td class="row2" style="width: 110px;"><b>{t}Unit Net{/t}</b></td>
-                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Rate{/t}</b></td>
+                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>
                                                                 </tr>
                                                                 <!-- Additional Rows are added here -->
                                                             </table>

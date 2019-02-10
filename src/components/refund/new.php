@@ -49,6 +49,7 @@ if (isset($VAR['invoice_id'])) {
         $refund_details['item_type'] = 'invoice';
         $refund_details['payment_method'] = null;
         $refund_details['net_amount'] = $invoice_details['net_amount'];
+        $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);
         $refund_details['vat_rate'] = get_vat_rate('standard');
         $refund_details['vat_amount'] = $invoice_details['tax_amount'];  // the correct vat needs to be calculated here, there might be no VAT
         $refund_details['gross_amount'] = $invoice_details['gross_amount'];        

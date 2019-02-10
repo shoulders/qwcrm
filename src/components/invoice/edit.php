@@ -62,7 +62,8 @@ $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id
 // Prefill Items
 $smarty->assign('labour_prefill_items',     get_invoice_prefill_items('Labour', '1')                                               ); 
 $smarty->assign('parts_prefill_items',      get_invoice_prefill_items('Parts', '1')                                                );
-$smarty->assign('vat_rates',                get_vat_tax_codes(false)                                                                   );
+$smarty->assign('vat_tax_codes',            get_vat_tax_codes(false)                                                               );
+$smarty->assign('default_vat_tax_code',    get_default_vat_tax_code(get_invoice_details($VAR['invoice_id'], 'tax_system'))         ); 
 
 // Invoice Items
 $smarty->assign('labour_items',             get_invoice_labour_items($VAR['invoice_id'])                                                  );
@@ -84,6 +85,7 @@ $smarty->assign('display_payments',         display_payments('payment_id', 'DESC
 $smarty->assign('employee_display_name',    get_user_details(get_invoice_details($VAR['invoice_id'], 'employee_id'), 'display_name') );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                   );
 $smarty->assign('voucher_statuses',        get_voucher_statuses()                                                                   );
+
 
 // Build the page
 $BuildPage .= $smarty->fetch('invoice/edit.tpl');

@@ -37,7 +37,8 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
 // Build the page
 $smarty->assign('otherincome_types', get_otherincome_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );
+$smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
+$smarty->assign('default_vat_tax_code', get_default_vat_tax_code()); 
 $smarty->assign('payment_methods', get_payment_methods('receive', 'enabled'));
 $smarty->assign('new_record_id', $new_record_id);
 $BuildPage .= $smarty->fetch('otherincome/new.tpl');

@@ -195,8 +195,8 @@
                                                                 {if $labour_items[l].vat_tax_code == 't2'}
                                                                     <td colspan="2" align="center">{t}Exempt{/t}</td>
                                                                 {else}
-                                                                    <td align="right">{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
-                                                                    <td align="right">{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
+                                                                    <td>{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
+                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
                                                                 {/if} 
                                                                 <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
                                                                 <td>-</td>

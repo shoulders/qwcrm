@@ -313,7 +313,7 @@ function update_vat_rates($vat_rates) {
     
     // Cycle through the submitted VAT rates and update the database
     foreach ($vat_rates as $tax_key => $rate) {
-        $sql =  "UPDATE ".PRFX."company_vat_rates SET
+        $sql =  "UPDATE ".PRFX."company_vat_tax_codes SET
                 rate = ".$db->qstr($rate)."
                 WHERE tax_key = ".$db->qstr($tax_key);
         

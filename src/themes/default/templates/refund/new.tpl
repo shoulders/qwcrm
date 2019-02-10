@@ -152,11 +152,11 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
                                                                             <td>
-                                                                                <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
+                                                                                <select id="vat_tax_code" name="vat_tax_code" class="olotd5">{$refund_details.vat_tax_code|print_r}
                                                                                     {section name=s loop=$vat_tax_codes}    
-                                                                                        <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}">{t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
+                                                                                        <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}"{if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if}>{t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
                                                                                     {/section} 
-                                                                                </select>                                                                                
+                                                                                </select>                                                                               
                                                                             </td>
                                                                         </tr> 
                                                                         <tr>
