@@ -196,7 +196,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td align="right"><b>{t}Tax Type{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                        <td align="right"><b>{t}Tax System{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                         <td>
                                                                             <select class="olotd5" id="tax_system" name="tax_system">               
                                                                                 {section name=s loop=$tax_systems}

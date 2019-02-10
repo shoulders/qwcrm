@@ -199,11 +199,11 @@ CREATE TABLE `#__company_vat_tax_codes` (
 --
 
 INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `rate`, `hidden`, `editable`, `standard`) VALUES
-(1, 't0', 'Zero Rated (T0)', '0.00', 0, 0, 1),
-(2, 't1', 'Standard Rate (T1)', '20.00', 0, 1, 1),
-(3, 't2', 'Exempt (T2)', '0.00', 0, 0, 1),
-(4, 't5', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
-(5, 't9', 'None (T9)', '0.00', 1, 0, 1),
+(1, 'T0', 'Zero Rated (T0)', '0.00', 0, 0, 1),
+(2, 'T1', 'Standard Rate (T1)', '20.00', 0, 1, 1),
+(3, 'T2', 'Exempt (T2)', '0.00', 0, 0, 1),
+(4, 'T5', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
+(5, 'T9', 'None (T9)', '0.00', 1, 0, 1),
 (16, 'flat_rate', 'Flat Rate', '10.50', 1, 1, 0),
 (17, 'na_sales_tax', 'Not Applicable (Sales Tax)', '0.00', 1, 0, 0);
 
