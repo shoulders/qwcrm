@@ -36,5 +36,4 @@ if(isset($VAR['submit']) || isset($VAR['submitandnew'])) {
 // Build the page
 $smarty->assign('supplier_types', get_supplier_types());
 $smarty->assign('new_record_id', $new_record_id);
-$smarty->assign('sales_tax_rate', get_company_details('sales_tax_rate'));
 $BuildPage .= $smarty->fetch('supplier/new.tpl');
