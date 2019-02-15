@@ -12,28 +12,6 @@
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
-<script>
-
-    // If there is a Tax Type selected then verify there is a Tax Rate set (run on form submission)
-    function validateTaxRate(msg) {
-        
-        // Store the tax_system and sales_tax_rate into variables ...
-        var tax_system = document.getElementById('tax_system');
-        var sales_tax_rate = document.getElementById('sales_tax_rate');
-        
-        // If there is a Tax Type set then validate a rate is set
-        if (tax_system.value !== 'none' && sales_tax_rate.value == 0) {             
-            alert(msg);
-            return false;
-            
-        // If no Tax Type set return true
-        } else {
-            return true;
-        }
-        
-    }
-
-</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -47,7 +25,7 @@
                 </tr>
                 <tr>
                     <td class="menutd2" colspan="2">
-                        <form method="post" action="index.php?component=company&page_tpl=edit" enctype="multipart/form-data" onsubmit="return validateTaxRate('{t}You must set a Tax Rate when you have enabled a Tax Type.{/t}');">
+                        <form method="post" action="index.php?component=company&page_tpl=edit" enctype="multipart/form-data">
                             <table width="100%" border="0" cellpadding="20" cellspacing="0">
                                 <tr>
                                     <td>
@@ -205,20 +183,20 @@
                                                                             </select>
                                                                         </td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    <tr{if $company_details.tax_system != 'sales_tax'} style="display: none;"{/if}>
                                                                         <td align="right"><b>{t}Sales Tax Rate{/t}:</b></td>
-                                                                        <td><input id="sales_tax_rate" name="sales_tax_rate" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>% ({t}If Applicable{/t})</td>
+                                                                        <td><input id="sales_tax_rate" name="sales_tax_rate" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat'} style="display: none;"{/if}>
                                                                         <td align="right"><b>{t}VAT Number{/t}:</b></td>
                                                                         <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                     </tr>
-                                                                    <tr>
+                                                                    <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat'} style="display: none;"{/if}>
                                                                         <td align="right"><b>{t}VAT Rates{/t}</b></td>
                                                                         <td>&nbsp;</td>
                                                                     </tr>
                                                                     {section name=r loop=$vat_rates}
-                                                                        <tr>
+                                                                        <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat'} style="display: none;"{/if}>
                                                                             <td align="right"><b>{t}{$vat_rates[r].display_name}{/t}:</b></td>
                                                                             <td>
                                                                                 <input name="vat_rates[{$vat_rates[r].tax_key}]" class="olotd5" size="6" value="{$vat_rates[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_rates[r].editable} disabled{/if}/>%
