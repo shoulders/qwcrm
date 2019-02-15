@@ -79,7 +79,7 @@ if($VAR['print_content'] == 'voucher') {
         $attachment['filetype'] = 'application/pdf';
         
         // Build the message body        
-        $body = get_email_message_body('email_msg_voucher', $client_details);
+        $body = get_email_message_body('email_msg_voucher', $client_details);  // This message does not currently exist
         
         // Log activity
         $record = _gettext("Voucher").' '.$VAR['voucher_id'].' '._gettext("has been emailed as a PDF.");
