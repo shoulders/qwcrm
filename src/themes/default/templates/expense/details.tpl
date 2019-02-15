@@ -43,7 +43,7 @@
                                             <td class="menutd"><b>{t}VAT Tax Code{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$vat_tax_codes}
-                                                    {if $expense_details.vat_tax_code == $vat_tax_codes[s].tax_key}{t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                    {if $expense_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
                                                 {/section}
                                             </td>
                                         </tr>

@@ -283,15 +283,21 @@ function insert_labour_items($invoice_id, $tax_system, $labour_items = null) {
     
     $db = QFactory::getDbo();
     
+    // Get Invoice Sales Tax Rate
+    $sales_tax_rate = get_invoice_details($invoice_id, 'sales_tax_rate');
+    
     // Insert Labour Items into database (if any)
     if($labour_items) {
         
-        $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_labour_id`, `invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
            
         foreach($labour_items as $labour_item) {
             
-            $vat_rate = isset($labour_item['vat_tax_code']) ? get_vat_rate($labour_item['vat_tax_code']) : 0.00;
-            $labour_totals = calculate_invoice_item_sub_totals($tax_system, $labour_item['unit_qty'], $labour_item['unit_net'], $labour_item['sales_tax_rate'], $vat_rate);
+            // Calculate labour item specific VAT rate
+            $vat_rate = isset($labour_item['vat_tax_code']) ? get_vat_rate($labour_item['vat_tax_code']) : 0.00;            
+            
+            // Build labour item totals based on selected TAX system
+            $labour_totals = calculate_invoice_item_sub_totals($tax_system, $labour_item['unit_qty'], $labour_item['unit_net'], $sales_tax_rate, $vat_rate);
             
             $sql .="(".
                     
@@ -329,18 +335,24 @@ function insert_labour_items($invoice_id, $tax_system, $labour_items = null) {
 
 function insert_parts_items($invoice_id, $tax_system, $parts_items = null) {
     
-    $db = QFactory::getDbo();
+    $db = QFactory::getDbo();    
     
-    // Insert Labour Items into database (if any)
+    // Get Invoice Sales Tax Rate
+    $sales_tax_rate = get_invoice_details($invoice_id, 'sales_tax_rate');   
+            
+    // Insert Parts Items into database (if any)
     if($parts_items) {
         
-        $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_parts_id`, `invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
            
         foreach($parts_items as $parts_item) {
             
-            $vat_rate = isset($parts_item['vat_tax_code']) ? get_vat_rate($parts_item['vat_tax_code']) : 0.00;
-            $parts_totals = calculate_invoice_item_sub_totals($tax_system, $vat_rate, $parts_item['unit_qty'], $parts_item['unit_net']);
+            // Calculate parts item specific VAT rate
+            $vat_rate = isset($parts_item['vat_tax_code']) ? get_vat_rate($parts_item['vat_tax_code']) : 0.00;  
             
+            // Build parts item totals based on selected TAX system
+            $parts_totals = calculate_invoice_item_sub_totals($tax_system, $parts_item['unit_qty'], $parts_item['unit_net'], $sales_tax_rate, $vat_rate);
+           
             $sql .="(".
                     
                     $db->qstr( $invoice_id                        ).",".                    
@@ -1281,7 +1293,7 @@ function delete_invoice_prefill_item($invoice_prefill_id) {
 #   calculate an Invoice Item Sub Totals       #  // need tax rate
 ################################################
 
-function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $sales_tax_rate, $vat_rate) {
+function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $sales_tax_rate = null, $vat_rate = null) {
            
     $item_totals = array();
     

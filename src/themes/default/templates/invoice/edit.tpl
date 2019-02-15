@@ -192,7 +192,7 @@
 
         // VAT Tax Code Cell  - Populate the Select Options
         {section loop=$vat_tax_codes name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].display_name} ({$vat_tax_codes[i].rate|string_format:"%.2f"}%)', '{$vat_tax_codes[i].tax_key}');
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
             {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
                 el.options[{$smarty.section.i.index}].setAttribute('selected', true);
             {/if}
@@ -371,7 +371,7 @@
         
         // VAT Tax Code Cell - Populate the Select Options
         {section loop=$vat_tax_codes name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].display_name} ({$vat_tax_codes[i].rate|string_format:"%.2f"}%)', '{$vat_tax_codes[i].tax_key}');
+            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
         {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
             el.options[{$smarty.section.i.index}].setAttribute('selected', true);
         {/if}
@@ -607,8 +607,9 @@
                                                                 <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
                                                                 <td class="row2"><b>{t}Unit Net{/t}</b></td>
                                                                 <td class="row2"><b>{t}Net{/t}</b></td>
+                                                                <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
                                                                 <td class="row2"><b>{t}VAT Rate{/t}</b></td>
-                                                                <td class="row2"><b>{t}VAT Applied{/t}</b></td>
+                                                                <td class="row2"><b>{t}VAT Applied{/t}</b></td>                                                                
                                                                 <td class="row2"><b>{t}Gross{/t}</b></td>
                                                                 <td class="row2"><b>{t}Actions{/t}</b></td>
                                                             </tr>
@@ -619,6 +620,11 @@
                                                                     <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                     <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                                                                                                                  
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>
+                                                                    <td>
+                                                                        {section name=s loop=$vat_tax_codes}
+                                                                            {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                        {/section}
+                                                                    </td>
                                                                     {if $labour_items[l].vat_tax_code == 'T2'}
                                                                         <td colspan="2" align="center">{t}Exempt{/t}</td>
                                                                     {else}
@@ -638,7 +644,7 @@
                                                                 </tr>
                                                             {/section}
                                                             <tr>
-                                                                <td colspan="9" style="text-align:right;">
+                                                                <td colspan="10" style="text-align:right;">
                                                                     <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                                                         <tr>
                                                                             <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
@@ -694,6 +700,7 @@
                                                                     <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
                                                                     <td class="row2"><b>{t}Unit Net{/t}</b></td>
                                                                     <td class="row2"><b>{t}Net{/t}</b></td>
+                                                                    <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
                                                                     <td class="row2"><b>{t}VAT Rate{/t}</b></td>
                                                                     <td class="row2"><b>{t}VAT Applied{/t}</b></td>
                                                                     <td class="row2"><b>{t}Gross{/t}</b></td>
@@ -705,7 +712,12 @@
                                                                         <td>{$parts_items[p].description}</td>
                                                                         <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                         <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>                                                                        
-                                                                        <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                                                                
+                                                                        <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>
+                                                                        <td>
+                                                                            {section name=s loop=$vat_tax_codes}
+                                                                                {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                            {/section}
+                                                                        </td>
                                                                         {if $parts_items[p].vat_tax_code == 'T2'}
                                                                             <td colspan="2" align="center">{t}Exempt{/t}</td>
                                                                         {else}                            
@@ -725,7 +737,7 @@
                                                                     </tr>
                                                                  {/section}
                                                                 <tr>
-                                                                    <td colspan="9" style="text-align:right;">
+                                                                    <td colspan="10" style="text-align:right;">
                                                                         <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
                                                                             <tr>
                                                                                 <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
