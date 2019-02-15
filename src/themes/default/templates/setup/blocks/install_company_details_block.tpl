@@ -14,23 +14,35 @@
 <script>{include file="../`$theme_js_dir_finc`editor-config.js"}</script>
 <script>
 
-    // If there is a Tax Type selected then verify there is a Tax Rate set (run on form submission)
-    function validateTaxRate(msg) {
-        
-        // Store the tax_system and tax_rate into variables ...
-        var tax_system = document.getElementById('tax_system');
-        var sales_tax_rate = document.getElementById('sales_tax_rate');
-        
-        // If there is a Tax Type set then validate a rate is set
-        if (tax_system.value !== 'none' && sales_tax_rate.value == 0) {             
-            alert(msg);
-            return false;
-            
-        // If no Tax Type set return true
-        } else {
-            return true;
+   // When user changes Tax system, alter the options
+    function taxSystemChange() { 
+    
+        var new_tax_system = document.getElementById('tax_system').value;    
+
+        if(new_tax_system === 'none') {        
+            $('.sales_tax_rate').hide();
+            $('.vat_number').hide();
+            $('.vat_flat_rate"').hide();
         }
-        
+
+        if(new_tax_system === 'sales_tax') {
+            $('.sales_tax_rate').show();
+            $('.vat_number').hide();
+            $('.vat_flat_rate').hide();
+        }
+
+        if(new_tax_system === 'vat_flat') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').show();
+        }
+
+        if(new_tax_system === 'vat_standard') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').hide();
+        }
+
     }
 
 </script>
@@ -50,7 +62,7 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                        
-                                    <form method="post" action="index.php?component=setup&page_tpl=install" enctype="multipart/form-data" onsubmit="return validateTaxRate('{t}You must set a Tax Rate when you have enabled a Tax Type.{/t}');">
+                                    <form method="post" action="index.php?component=setup&page_tpl=install" enctype="multipart/form-data">
                                         <table class="menutable" width="100%" border="0" cellpadding="0" cellspacing="0">
                                             <tr>
                                                 <td class="menutd">
@@ -143,20 +155,24 @@
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Tax Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                                         <td>
-                                                                                            <select class="olotd5" id="tax_system" name="tax_system">               
+                                                                                            <select class="olotd5" id="tax_system" name="tax_system" onChange="changePage();">             
                                                                                                 {section name=s loop=$tax_systems}
                                                                                                     <option value="{$tax_systems[s].type_key}"{if $company_details.tax_system == $tax_systems[s].type_key} selected{/if}>{t}{$tax_systems[s].display_name}{/t}</option>
                                                                                                 {/section}
                                                                                             </select>
                                                                                         </td>
                                                                                     </tr>                                            
-                                                                                    <tr>
+                                                                                    <tr class="sales_tax">
                                                                                         <td align="right"><b>{t}Sales Tax Rate{/t}:</b></td>
                                                                                         <td><input id="sales_tax_rate" name="sales_tax_rate" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                                     </tr>
-                                                                                    <tr>
+                                                                                    <tr class="vat_number">
                                                                                         <td align="right"><b>{t}VAT Number{/t}:</b></td>
                                                                                         <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                                    </tr>
+                                                                                    <tr class="vat_flat_rate">
+                                                                                        <td align="right"><b>{t}VAT Flat Rate{/t}:</b></td>
+                                                                                        <td><input name="vat_flat_rate" class="olotd5" value="{$company_details.vat_flat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                                     </tr> 
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>
