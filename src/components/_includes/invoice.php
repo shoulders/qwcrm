@@ -966,7 +966,7 @@ function update_invoice_last_active($invoice_id = null) {
 }
 
 /*#################################
-#    Update invoice refund ID   # // not used
+#    Update invoice refund ID   # // not used anymore
 #################################
 
 function update_invoice_refund_id($invoice_id, $refund_id) {
