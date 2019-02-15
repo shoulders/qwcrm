@@ -778,8 +778,7 @@ function update_invoice_full($VAR, $doNotLog = false) {
     $sql = "UPDATE ".PRFX."invoice_records SET     
             employee_id         =". $db->qstr( $VAR['employee_id']     ).", 
             client_id           =". $db->qstr( $VAR['client_id']       ).",
-            workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",
-            refund_id           =". $db->qstr( $VAR['refund_id']       ).",   
+            workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",               
             date                =". $db->qstr( $VAR['date']            ).",
             due_date            =". $db->qstr( $VAR['due_date']        ).", 
             discount_rate       =". $db->qstr( $VAR['discount_rate']   ).",
@@ -966,8 +965,8 @@ function update_invoice_last_active($invoice_id = null) {
     
 }
 
-#################################
-#    Update invoice refund ID   #
+/*#################################
+#    Update invoice refund ID   # // not used
 #################################
 
 function update_invoice_refund_id($invoice_id, $refund_id) {
@@ -982,7 +981,7 @@ function update_invoice_refund_id($invoice_id, $refund_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add a Refund ID to the invoice."));
     }
     
-}
+}*/
 
 /** Close Functions **/
 
@@ -1003,11 +1002,8 @@ function refund_invoice($refund_details) {
     // Add full payment routine here (currently the payment is assumed to be good, live payments will need more work)
     
     // Insert refund record and return refund_id
-    $refund_id = insert_refund($refund_details);
+    insert_refund($refund_details);
     
-    // Update invoice record with refund_id
-    update_invoice_refund_id($refund_details['invoice_id'], $refund_id); 
-        
     // Refund any Vouchers
     refund_invoice_vouchers($refund_details['invoice_id']);    
     
@@ -1099,8 +1095,7 @@ function delete_invoice($invoice_id) {
                                     'invoice_id'        =>  $invoice_details['invoice_id'],
                                     'employee_id'       =>  '',
                                     'client_id'         =>  '',
-                                    'workorder_id'      =>  '',
-                                    'refund_id'         =>  '',
+                                    'workorder_id'      =>  '',                                    
                                     'date'              =>  '0000-00-00',
                                     'due_date'          =>  '0000-00-00',        
                                     'discount_rate'     =>  '0.00',

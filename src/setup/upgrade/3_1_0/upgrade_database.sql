@@ -429,7 +429,6 @@ ALTER TABLE `#__voucher_records` DROP `is_redeemed`;
 -- Add Columns
 --
 
-ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
 ALTER TABLE `#__voucher_records` ADD `workorder_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `client_id`;
 ALTER TABLE `#__voucher_records` ADD `close_date` DATETIME NOT NULL AFTER `date_redeemed`;
 ALTER TABLE `#__voucher_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `close_date`;
