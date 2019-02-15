@@ -96,49 +96,48 @@
                                                         <strong><span style="color: green;">{t}Export Prefill Items as a CSV file{/t}</span></strong>                                                        
                                                         <button type="submit" name="export_invoice_prefill_items" value="export">{t}Export{/t}</button>
                                                     </form>
+                                                </div>                                                                                     
+                                                <script>                                                    
+                                                    $(function() {
+                                                        $("#newfile").click(function(event) {
+                                                            event.preventDefault();
+                                                            $("#newuserform").slideToggle();
+                                                        } );
+                                                        $("#newuserform a").click(function(event) {
+                                                            event.preventDefault();
+                                                            $("#newuserform").slideUp();
+                                                        } );
+                                                    } );                                                    
+                                                </script>                                                    
+                                                <a href="javascript:void(0)" id="newfile">{t}Upload a Prefill Items CSV file{/t}</a>
+                                                <div id="newuserform">
+                                                    <table width="100%">
+                                                        <tr>
+                                                            <td><a>{t}CSV File example{/t}</a></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><img src="{$theme_images_dir}rate_upload.png" alt="CSV Example screenshot" height="150"/></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <form action="index.php?component=invoice&page_tpl=prefill_items" method="post" enctype="multipart/form-data">
+                                                                    <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
+                                                                        <tr>
+                                                                            <td width="246">                                                                                    
+                                                                                <input name="invoice_prefill_csv" type="file" accept=".csv" required>
+                                                                            </td>
+                                                                            <td width="80"><button id="csv_upload" name="submit" type="submit" class="box" value="csv_upload" onclick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}Upload{/t}</button></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td width="246"><input id="empty_prefill_items_table" name="empty_prefill_items_table" type="checkbox" value="1">{t}Empty Prefill Table{/t}</td>                                                                                
+                                                                        </tr>
+                                                                    </table>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
-                                                {if $login_usergroup_id == 1 || $login_usergroup_id == 2}                                                  
-                                                    <script>                                                    
-                                                        $(function() {
-                                                            $("#newfile").click(function(event) {
-                                                                event.preventDefault();
-                                                                $("#newuserform").slideToggle();
-                                                            } );
-                                                            $("#newuserform a").click(function(event) {
-                                                                event.preventDefault();
-                                                                $("#newuserform").slideUp();
-                                                            } );
-                                                        } );                                                    
-                                                    </script>                                                    
-                                                    <a href="javascript:void(0)" id="newfile">{t}Upload a Prefill Items CSV file{/t}</a>
-                                                    <div id="newuserform">
-                                                        <table width="100%">
-                                                            <tr>
-                                                                <td><a>{t}CSV File example{/t}</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><img src="{$theme_images_dir}rate_upload.png" alt="CSV Example screenshot" height="150"/></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <form action="index.php?component=invoice&page_tpl=prefill_items" method="post" enctype="multipart/form-data">
-                                                                        <table width="350" border="0" cellpadding="1" cellspacing="1" class="box">
-                                                                            <tr>
-                                                                                <td width="246">                                                                                    
-                                                                                    <input name="invoice_prefill_csv" type="file" accept=".csv">
-                                                                                </td>
-                                                                                <td width="80"><button id="csv_upload" name="submit" type="submit" class="box" value="csv_upload" onclick="return confirmChoice('{t}Are You sure you want to upload this CSV file with new prefill items.{/t}');">{t}Upload{/t}</button></td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td width="246"><input id="empty_prefill_items_table" name="empty_prefill_items_table" type="checkbox" value="1">{t}Empty Prefill Table{/t}</td>                                                                                
-                                                                            </tr>
-                                                                        </table>
-                                                                    </form>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
-                                                    </div>
-                                                {/if}
+                                                
                                             </td>
                                         </tr>
                                     </table>
