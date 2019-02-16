@@ -27,6 +27,6 @@ if(isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('date_formats', get_date_formats());
 $smarty->assign('tax_systems', get_tax_systems() );
-$smarty->assign('vat_rates', get_vat_tax_codes(null, true) );
+$smarty->assign('vat_tax_codes', get_vat_tax_codes(null, true) );
 $smarty->assign('company_details', get_company_details() );
 $BuildPage .= $smarty->fetch('company/edit.tpl');

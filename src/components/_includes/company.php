@@ -198,7 +198,7 @@ function update_company_details($VAR) {
     $sql = null;
     
     // Update VAT rates
-    update_vat_rates($VAR['vat_rates']);
+    update_vat_rates($VAR['vat_tax_codes']);
     
     // Prevent undefined variable errors
     $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;    

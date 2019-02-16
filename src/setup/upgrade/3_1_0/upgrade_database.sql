@@ -576,6 +576,7 @@ ALTER TABLE `#__invoice_records` CHANGE `tax_type` `tax_system` VARCHAR(30) CHAR
 ALTER TABLE `#__invoice_records` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__company_record` CHANGE `tax_type` `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__company_record` ADD `vat_flat_rate` DECIMAL(4,2) NOT NULL DEFAULT '10.50' AFTER `vat_number`;
 ALTER TABLE `#__invoice_labour` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
 ALTER TABLE `#__invoice_labour` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 ALTER TABLE `#__invoice_parts` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
@@ -588,7 +589,6 @@ ALTER TABLE `#__invoice_parts` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NUL
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
 ALTER TABLE `#__invoice_prefill_items` CHANGE `amount` `net_amount` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-
 
 --
 -- Correct #__user_reset index column
