@@ -32,7 +32,7 @@
                                             <td class="menutd"><b>{t}Name{/t}</b></td>
                                             <td class="menutd">{$client_details.display_name}</td>
                                             <td class="menutd"><b>{t}Website{/t}</b></td>
-                                            <td class="menutd"><a href="{$client_details.website}"</a>{$client_details.website}</td>
+                                            <td class="menutd"><a href="{$client_details.website}"</a>{$client_details.website|regex_replace:"/^https?:\/\//":""}</td>
                                         </tr>
                                         <tr>
                                             <td></td>

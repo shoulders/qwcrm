@@ -290,7 +290,7 @@ class MigrateMyitcrm extends QSetup {
                 mobile_phone            =". $db->qstr( $VAR['mobile_phone']                     ).",
                 fax                     =". $db->qstr( $VAR['fax']                              ).",
                 email                   =". $db->qstr( $VAR['email']                            ).",    
-                website                 =". $db->qstr( $VAR['website']                          ).",
+                website                 =". $db->qstr( process_inputted_url($VAR['website'])    ).",
                 company_number          =". $db->qstr( $VAR['company_number']                   ).",                                        
                 tax_type                =". $db->qstr( $VAR['tax_type']                         ).",
                 tax_rate                =". $db->qstr( $VAR['tax_rate']                         ).",

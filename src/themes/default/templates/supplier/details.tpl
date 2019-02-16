@@ -57,7 +57,7 @@
                                         </tr>                                    
                                         <tr>
                                             <td class="menutd"><b>{t}Website{/t}</b></td>
-                                            <td class="menutd"><a href="{$supplier_details.website}" target="_blank">{$supplier_details.website}</a></td>
+                                            <td class="menutd"><a href="{$supplier_details.website}" target="_blank">{$supplier_details.website|regex_replace:"/^https?:\/\//":""}</a></td>
                                             <td class="menutd"><b>{t}Email{/t}</b></td>
                                             <td class="menutd"><a href="mailto: {$supplier_details.email}">{$supplier_details.email}</a></td>
                                         </tr>

@@ -452,6 +452,9 @@ function process_config_data($new_config) {
     // Get a fresh copy of the current settings as an array        
     $current_config = get_qwcrm_config_settings();
     
+    // Process Google server URL (makes ure there is a https?://
+    $new_config['google_server'] = process_inputted_url($new_config['google_server']);
+    
     // Purge the database session table if we are changing to the database handler.
     if(!defined('QWCRM_SETUP')) {
         
@@ -489,7 +492,7 @@ function process_config_data($new_config) {
             // Remove the session name value
             unset($new_config['session_name']);
         }
-    } 
+    }     
     
     // Return the processed config   
     return $new_config;

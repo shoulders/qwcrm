@@ -134,7 +134,7 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Website{/t}:</b></td>                                                                
-                                                                                        <td><input name="website" class="olotd5" value="{$company_details.website}" size="50" type="url" maxlength="50" placeholder="https://quantumwarp.com/" pattern="^https?://.+" onkeydown="return onlyURL(event);"/></td>
+                                                                                        <td><input name="website" class="olotd5" value="{$company_details.website}" size="50" type="text" maxlength="50" placeholder="https://quantumwarp.com/" pattern="{literal}^(https?:\/\/)?([a-z0-9]+\.)*([a-z0-9]+\.[a-z]+)(\/[a-zA-Z0-9#]+\/?)*${/literal}" onkeydown="return onlyURL(event);"/></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Company Number{/t}:</b></td>

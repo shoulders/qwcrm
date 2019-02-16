@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                         <td><b>{t}Website{/t} :&nbsp;</b></td>
-                        <td>{$company_details.website}</td>
+                        <td>{$company_details.website|regex_replace:"/^https?:\/\//":""}</td>
                     </tr>
                     <tr>
                         <td><b>{t}Email{/t} :&nbsp;</b></td>

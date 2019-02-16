@@ -1551,3 +1551,37 @@ function load_language() {
     _textdomain($textdomain);
 
 }
+
+################################################
+#   Process and correct user inputted URLs     #  // make sure the url has a https?:// before being added to the database, if not add one
+################################################
+
+function process_inputted_url($url) {
+    
+    // If no URL has been submitted return nothing
+    if($url == '') {
+        return '';
+    }
+    
+    if ($parsed_url = parse_url($url)) {
+
+        // Check if there is a protocol(scheme) set
+        if (!isset($parsed_url['scheme'])) {
+            
+            return 'http://'.$url;
+            
+        } else {
+        
+            return $url;
+
+        }        
+        
+    // If the url is corrupt return nothing    
+    } else {
+        
+        return '';
+    
+        
+    }
+    
+}
