@@ -61,7 +61,7 @@ if (isset($VAR['invoice_id'])) {
     // Process the submitted refund 
     } else {        
         
-        if(!refund_invoice($VAR)) {
+        if(!$VAR['refund_id'] = refund_invoice($VAR)) {
 
             // Load the invoice details page with error
             force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'].'&information_msg='._gettext("The invoice failed to be refunded."));
@@ -69,7 +69,7 @@ if (isset($VAR['invoice_id'])) {
         } else {
 
             // Load the invoice search page with success message
-            force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully."));
+            force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("ID").': '.$VAR['refund_id']);
 
         }       
         
@@ -77,14 +77,10 @@ if (isset($VAR['invoice_id'])) {
     
 }
 
-// Predict the next refund_id
-$new_record_id = last_refund_id_lookup() +1;
-
 // Build the page
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes(false)); 
 $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
-$smarty->assign('new_record_id', $new_record_id);
 $smarty->assign('client_display_name', $client_display_name);
 $BuildPage .= $smarty->fetch('refund/new.tpl');

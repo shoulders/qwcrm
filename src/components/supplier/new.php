@@ -10,9 +10,6 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'supplier.php');
 
-// Predict the next supplier_id
-$new_record_id = last_supplier_id_lookup() + 1;
-
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if(isset($VAR['submit']) || isset($VAR['submitandnew'])) {
         
@@ -22,12 +19,12 @@ if(isset($VAR['submit']) || isset($VAR['submitandnew'])) {
     if (isset($VAR['submitandnew'])) {
 
         // load the new supplier page
-        force_page('supplier', 'new', 'information_msg='._gettext("Supplier added successfully.")); 
+        force_page('supplier', 'new', 'information_msg='._gettext("Supplier added successfully.").' '._gettext("ID").': '.$VAR['supplier_id']); 
 
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier added successfully.")); 
+        force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier added successfully.").' '._gettext("ID").': '.$VAR['supplier_id']); 
 
     }
 
@@ -35,5 +32,4 @@ if(isset($VAR['submit']) || isset($VAR['submitandnew'])) {
 
 // Build the page
 $smarty->assign('supplier_types', get_supplier_types());
-$smarty->assign('new_record_id', $new_record_id);
 $BuildPage .= $smarty->fetch('supplier/new.tpl');

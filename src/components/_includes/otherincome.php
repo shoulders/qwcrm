@@ -287,7 +287,7 @@ function delete_otherincome($otherincome_id) {
 /** Other Functions **/
    
 ##########################################
-#      Last Record Look Up               #  // This migth not be needed
+#      Last Record Look Up               #  // not currently used
 ##########################################
 
 function last_otherincome_id_lookup() {

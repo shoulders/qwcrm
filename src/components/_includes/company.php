@@ -85,23 +85,26 @@ function get_vat_tax_codes($hidden_status = null, $editable_status = null, $stan
     
     $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
     
+    // Restrict by enabled status
+    $sql .= "\nWHERE enabled = 1";
+        
     // Restrict by hidden status
     if(!is_null($hidden_status)) {
-        $sql .= "\nWHERE hidden = ".$db->qstr($hidden_status);
+        $sql .= "\nAND hidden = ".$db->qstr($hidden_status);
     }
     
     // Restrict by editable status
     if(!is_null($editable_status)) {
-        $sql .= "\nWHERE editable = ".$db->qstr($editable_status);
+        $sql .= "\nAND editable = ".$db->qstr($editable_status);
     }
     
     // Restrict by editable status
     if(!is_null($standard_status)) {
-        $sql .= "\nWHERE standard = ".$db->qstr($standard_status);
+        $sql .= "\nAND standard = ".$db->qstr($standard_status);
     }
         
     if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rates."));
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
     } else {
         
         return $rs->GetArray();

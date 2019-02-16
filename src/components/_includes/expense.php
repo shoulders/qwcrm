@@ -148,7 +148,7 @@ function insert_expense($VAR) {
             payee           =". $db->qstr( $VAR['payee']                   ).",
             date            =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             tax_system      =". $db->qstr(get_company_details('tax_system')).",              
-            item_type       =". $db->qstr( $VAR['type']                    ).",
+            item_type       =". $db->qstr( $VAR['item_type']               ).",
             payment_method  =". $db->qstr( $VAR['payment_method']          ).",
             net_amount      =". $db->qstr( $VAR['net_amount']              ).",
             vat_tax_code    =". $db->qstr( $VAR['vat_tax_code']            ).",
@@ -295,7 +295,7 @@ function delete_expense($expense_id) {
 /** Other Functions **/
 
 ##########################################
-#      Last Record Look Up               #
+#      Last Record Look Up               #  // not currently used
 ##########################################
 
 function last_expense_id_lookup() {

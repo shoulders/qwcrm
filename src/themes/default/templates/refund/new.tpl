@@ -90,11 +90,6 @@
                                                                             <td class="menuhead" colspan="3">{t}First Group{/t}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Refund ID{/t}</b></td>
-                                                                            <td>{$new_record_id}</td>
-                                                                            <td colspan="2"></td>
-                                                                        </tr>
-                                                                        <tr>
                                                                             <td align="right"><b>{t}Client{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td colspan="3">                                                                                
                                                                                 <a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a>

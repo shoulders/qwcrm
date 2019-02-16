@@ -322,7 +322,7 @@ function delete_supplier($supplier_id) {
 /** Other Functions **/
 
 ############################################
-#      Last supplier Record ID Look Up     #
+#      Last supplier Record ID Look Up     #  // not cureently used
 ############################################
 
 function last_supplier_id_lookup() {

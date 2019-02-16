@@ -90,11 +90,6 @@
                                                                             <td class="menuhead" colspan="3">{t}First Group{/t}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Expense ID{/t}</b></td>
-                                                                            <td>{$new_record_id}</td>
-                                                                            <td colspan="2"></td>
-                                                                        </tr>
-                                                                        <tr>
                                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td colspan="3"><input id="payee" name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                         </tr>
@@ -119,8 +114,8 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select id="item_type" name="item_type" class="olotd5">
-                                                                                    {section name=s loop=$expense_types}    
+                                                                                <select id="item_type" name="item_type" class="olotd5"> 
+                                                                                   {section name=s loop=$expense_types}    
                                                                                         <option value="{$expense_types[s].type_key}">{t}{$expense_types[s].display_name}{/t}</option>
                                                                                     {/section} 
                                                                                 </select>

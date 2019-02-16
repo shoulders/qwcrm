@@ -41,9 +41,6 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td class="menuhead" colspan="2">{t}Contact{/t}</td>
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Supplier ID{/t}</b></td>
-                                                                            <td>{$new_record_id}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Company Name{/t}</b></td>

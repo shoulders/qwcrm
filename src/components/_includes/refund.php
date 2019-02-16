@@ -302,7 +302,7 @@ function delete_refund($refund_id) {
 /** Other Functions **/
    
 ##########################################
-#      Last Record Look Up               #
+#      Last Record Look Up               #  // not currently used
 ##########################################
 
 function last_refund_id_lookup() {

@@ -12,9 +12,6 @@ require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
 
-// Predict the next otherincome_id
-$new_record_id = last_otherincome_id_lookup() +1;
-
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
 
@@ -24,12 +21,12 @@ if((isset($VAR['submit'])) || (isset($VAR['submitandnew']))) {
     if (isset($VAR['submitandnew'])){
 
         // Load New Refund page
-        force_page('otherincome', 'new', 'information_msg='._gettext("Refund added successfully.")); 
+        force_page('otherincome', 'new', 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$VAR['otherincome_id']); 
 
     } else {
 
         // Load Refund Details page
-        force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'information_msg='._gettext("Refund added successfully."));        
+        force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$VAR['otherincome_id']);      
 
     }
          
@@ -40,5 +37,4 @@ $smarty->assign('otherincome_types', get_otherincome_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
 $smarty->assign('default_vat_tax_code', get_default_vat_tax_code()); 
 $smarty->assign('payment_methods', get_payment_methods('receive', 'enabled'));
-$smarty->assign('new_record_id', $new_record_id);
 $BuildPage .= $smarty->fetch('otherincome/new.tpl');
