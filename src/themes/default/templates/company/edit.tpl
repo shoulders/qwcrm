@@ -187,7 +187,7 @@
                                                                         <td align="right"><b>{t}Sales Tax Rate{/t}:</b></td>
                                                                         <td><input id="sales_tax_rate" name="sales_tax_rate" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                     </tr>
-                                                                    <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat'} style="display: none;"{/if}>
+                                                                    <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat' && $company_details.tax_system != 'vat_cash'} style="display: none;"{/if}>
                                                                         <td align="right"><b>{t}VAT Number{/t}:</b></td>
                                                                         <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                     </tr>
@@ -195,12 +195,12 @@
                                                                         <td align="right"><b>{t}VAT Flat Rate{/t}:</b></td>
                                                                         <td><input name="vat_flat_rate" class="olotd5" value="{$company_details.vat_flat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);">%</td>
                                                                     </tr>
-                                                                    <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat'} style="display: none;"{/if}>
+                                                                    <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat' && $company_details.tax_system != 'vat_cash'} style="display: none;"{/if}>
                                                                         <td align="right"><b>{t}VAT Tax Codes{/t}</b></td>
                                                                         <td>&nbsp;</td>
                                                                     </tr>
                                                                     {section name=r loop=$vat_tax_codes}
-                                                                        <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat'} style="display: none;"{/if}>
+                                                                        <tr{if $company_details.tax_system != 'vat_standard' && $company_details.tax_system != 'vat_flat' && $company_details.tax_system != 'vat_cash'} style="display: none;"{/if}>
                                                                             <td align="right"><b>{t}{$vat_tax_codes[r].display_name}{/t}:</b></td>
                                                                             <td>
                                                                                 <input name="vat_tax_codes[{$vat_tax_codes[r].tax_key}]" class="olotd5" size="6" value="{$vat_tax_codes[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_tax_codes[r].editable} disabled{/if}/>%

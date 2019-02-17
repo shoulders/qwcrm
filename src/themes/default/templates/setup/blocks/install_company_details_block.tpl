@@ -31,17 +31,23 @@
             $('.vat_flat_rate').hide();
         }
 
-        if(new_tax_system === 'vat_flat') {
-            $('.sales_tax_rate').hide();
-            $('.vat_number').show();
-            $('.vat_flat_rate').show();
-        }
-
         if(new_tax_system === 'vat_standard') {
             $('.sales_tax_rate').hide();
             $('.vat_number').show();
             $('.vat_flat_rate').hide();
         }
+        
+        if(new_tax_system === 'vat_flat') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').show();
+        }
+        
+        if(new_tax_system === 'vat_cash') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').hide();
+        }        
 
     }
 

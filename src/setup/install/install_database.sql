@@ -175,9 +175,10 @@ CREATE TABLE `#__company_tax_systems` (
 
 INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
 (1, 'none', 'None'),
-(2, 'vat_standard', 'VAT Standard'),
-(3, 'vat_flat', 'VAT Flat Rate'),
-(4, 'sales_tax', 'Sales Tax');
+(2, 'vat_standard', 'VAT Standard accounting'),
+(3, 'vat_flat', 'VAT Flat rate scheme'),
+(4, 'vat_cash', 'VAT Cash accounting scheme'),
+(5, 'sales_tax', 'Sales Tax');
 
 -- --------------------------------------------------------
 

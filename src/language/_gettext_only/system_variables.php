@@ -20,8 +20,9 @@ _gettext("Goverment");
 
 /* Company Tax Systems*/
 _gettext("None");
-_gettext("VAT Standard");
-_gettext("VAT Flat Rate");
+_gettext("VAT Standard accounting");
+_gettext("VAT Flat rate scheme");
+_gettext("VAT Cash accounting scheme");
 _gettext("Sales Tax");
 
 /* Company VAT Tax Codes */
@@ -30,7 +31,6 @@ _gettext("Standard Rate (T1)");
 _gettext("Exempt (T2)");
 _gettext("Reduced Rate (T5)");
 _gettext("None (T9)");
-_gettext("Flat Rate");
 _gettext("Not Applicable (Sales Tax)");
 
 /* Expense Types */
