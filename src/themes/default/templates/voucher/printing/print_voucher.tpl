@@ -54,7 +54,7 @@
         </tr>
         <tr>
             <td style="text-align:center">
-                {$currency_sym}{$voucher_details.amount}
+                {$currency_sym}{$voucher_details.unit_net}
             </td>
         </tr>
         

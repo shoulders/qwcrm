@@ -25,5 +25,6 @@ $smarty->assign('client_details',               get_client_details($voucher_deta
 $smarty->assign('redeemed_client_display_name', $redeemed_client_display_name                                               );
 $smarty->assign('employee_display_name',        get_user_details($voucher_details['employee_id'], 'display_name')          );
 $smarty->assign('voucher_statuses',            get_voucher_statuses()                                                     );
+$smarty->assign('voucher_types',               get_voucher_types()                                                     );
 $smarty->assign('voucher_details',             $voucher_details                                                           );
 $BuildPage .= $smarty->fetch('voucher/details.tpl');

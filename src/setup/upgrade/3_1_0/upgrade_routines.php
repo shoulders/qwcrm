@@ -132,6 +132,9 @@ class Upgrade3_1_0 extends QSetup {
         // Parse Voucher records and correct records        
         $this->voucher_correct_workorder_id();
         $this->voucher_correct_expiry_date();
+        $this->voucher_correct_status();
+        $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', get_company_details('tax_system'));
+        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code()); 
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax', '!');

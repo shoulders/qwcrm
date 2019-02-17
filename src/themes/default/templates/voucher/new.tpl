@@ -42,6 +42,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td><b>{t}Type{/t}</b></td>                                               
+                                                <td>
+                                                    {section name=s loop=$voucher_types}    
+                                                        {if 'multi_purpose' == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
+                                                    {/section} 
+                                                    <input name="type" value="multi_purpose" type="hidden" />            
+                                                </td>                                               
+                                            </tr>
+                                            <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
                                                     <input id="expiry_date" name="expiry_date" class="olotd4" size="10" value="" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
@@ -56,8 +65,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Amount{/t}</b></td>                                                
-                                                <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                <td><b>{t}Amount{/t} ({t}Net{/t})</b></td>                                                
+                                                <td>{$currency_sym}<input name="unit_net" class="olotd5" size="10" value="" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>

@@ -20,9 +20,9 @@ _gettext("Goverment");
 
 /* Company Tax Systems*/
 _gettext("None");
-_gettext("VAT Standard accounting");
-_gettext("VAT Flat rate scheme");
-_gettext("VAT Cash accounting scheme");
+_gettext("VAT Standard accounting (UK)");
+_gettext("VAT Flat rate (UK)");
+_gettext("VAT Cash accounting (UK)");
 _gettext("Sales Tax");
 
 /* Company VAT Tax Codes */
@@ -31,7 +31,7 @@ _gettext("Standard Rate (T1)");
 _gettext("Exempt (T2)");
 _gettext("Reduced Rate (T5)");
 _gettext("None (T9)");
-_gettext("Not Applicable (Sales Tax)");
+_gettext("Not Applicable");
 
 /* Expense Types */
 _gettext("Bank Charges");
@@ -129,6 +129,10 @@ _gettext("Counter");
 _gettext("Client");
 _gettext("Guest");
 _gettext("Public");
+
+/* Voucher Types */
+_gettext("Multi Purpose (MPV)");
+_gettext("Single Purpose (SPV)");
 
 /* Voucher Statuses */
 _gettext("Unused");

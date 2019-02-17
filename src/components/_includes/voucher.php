@@ -190,16 +190,20 @@ function display_vouchers($order_by, $direction, $use_pages = false, $records_pe
 /** Insert Functions **/
 
 #################################
-#   Insert Voucher     #
+#   Insert Voucher              #
 #################################
 
-function insert_voucher($invoice_id, $expiry_date, $amount, $note) {
+function insert_voucher($invoice_id, $type, $expiry_date, $unit_net, $note) {
     
     $db = QFactory::getDbo();
     $invoice_details = get_invoice_details($invoice_id);
     
+    $vat_tax_code = get_voucher_vat_tax_code();
+    $vat_rate = get_vat_rate($vat_tax_code);    
+    $unit_vat = $unit_net * ($vat_rate/100);    
+    
     $sql = "INSERT INTO ".PRFX."voucher_records SET 
-            voucher_code   =". $db->qstr( generate_voucher_code()                     ).",  
+            voucher_code    =". $db->qstr( generate_voucher_code()                      ).",  
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id           ).",
             client_id       =". $db->qstr( $invoice_details['client_id']                ).",
             workorder_id    =". $db->qstr( $invoice_details['workorder_id']             ).",
@@ -208,7 +212,13 @@ function insert_voucher($invoice_id, $expiry_date, $amount, $note) {
             expiry_date     =". $db->qstr( date_to_mysql_date($expiry_date).' 23:59:59' ).",            
             status          =". $db->qstr( 'unused'                                     ).",  
             blocked         =". $db->qstr( '0'                                          ).",
-            amount          =". $db->qstr( $amount                                      ).",
+            tax_system      =". $db->qstr( get_company_details('tax_system')            ).",    
+            type            =". $db->qstr( $type                                        ).",
+            unit_net        =". $unit_net                                               .",
+            vat_tax_code    =". $db->qstr($vat_tax_code                                 ).",
+            vat_rate        =". $vat_rate                                               .", 
+            unit_vat        =". $unit_vat                                               .",
+            unit_gross      =". ($unit_net + $unit_vat)                                 .",
             note            =". $db->qstr( $note                                        );
 
     if(!$db->execute($sql)) {
@@ -289,7 +299,7 @@ function get_voucher_id_by_voucher_code($voucher_code) {
 }
 
 #####################################
-#    Get Voucher Statuses          #
+#    Get Voucher Statuses           #
 #####################################
 
 function get_voucher_statuses($restricted_statuses = false) {
@@ -333,6 +343,26 @@ function get_voucher_status_display_name($status_key) {
     
 }
 
+#####################################
+#    Get Voucher Types              #
+#####################################
+
+function get_voucher_types() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."voucher_types";
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Voucher types."));
+    } else {
+        
+        return $rs->GetArray();     
+        
+    }    
+    
+}
+
 ###########################################
 #   Calculate Voucher Invoice Sub Total   #  // All statuses should be summed up, deleted vouchers do not have an invoice_id anyway so are ignored
 ###########################################
@@ -341,7 +371,7 @@ function get_vouchers_items_sub_total($invoice_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."voucher_records WHERE invoice_id=" . $db->qstr($invoice_id);
+    $sql = "SELECT SUM(unit_net) AS sub_total_sum FROM ".PRFX."voucher_records WHERE invoice_id=" . $db->qstr($invoice_id);
     
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the invoice voucher sub total."));
@@ -359,14 +389,19 @@ function get_vouchers_items_sub_total($invoice_id) {
 #   Update Voucher              #
 #################################
 
-function update_voucher($voucher_id, $expiry_date, $amount, $note) {
+function update_voucher($voucher_id, $expiry_date, $unit_net, $note) {
     
     $db = QFactory::getDbo();
+    
+    $vat_rate = get_voucher_details($voucher_id, 'vat_rate');
+    $unit_vat = $unit_net * ($vat_rate/100);    
     
     $sql = "UPDATE ".PRFX."voucher_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id           ).",
             expiry_date     =". $db->qstr( date_to_mysql_date($expiry_date).' 23:59:59' ).",            
-            amount          =". $db->qstr( $amount                                      ).",
+            unit_net        =". $unit_net                                                .",
+            unit_vat        =". $unit_vat                                                .",
+            unit_gross      =". ($unit_net + $unit_vat)                                  .",
             note            =". $db->qstr( $note                                        )."
             WHERE voucher_id =". $db->qstr($voucher_id);
 
@@ -625,6 +660,7 @@ function delete_voucher($voucher_id) {
             client_id           =   '',
             workorder_id        =   '',
             invoice_id          =   '',
+            payment_id          =   '',
             redeemed_client_id  =   '',
             redeemed_invoice_id =   '',
             open_date           =   '0000-00-00 00:00:00',
@@ -633,7 +669,13 @@ function delete_voucher($voucher_id) {
             close_date          =   '0000-00-00 00:00:00',
             status              =   'deleted',            
             blocked             =   '1',
-            amount              =   '0.00',
+            tax_system          =   '',
+            type                =   '',
+            unit_net            =   0.00,
+            vat_tax_code        =   '',
+            vat_rate            =   0.00,
+            unit_vat            =   0.00,
+            unit_gross          =   0.00,
             note                =   ''
             WHERE voucher_id =". $db->qstr($voucher_id);        
 

@@ -1002,9 +1002,15 @@ CREATE TABLE `#__voucher_records` (
   `expiry_date` date NOT NULL,
   `redeem_date` datetime NOT NULL,
   `close_date` datetime NOT NULL,
-  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
+  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `blocked` int(1) NOT NULL DEFAULT '0',
-  `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -1032,6 +1038,26 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 (5, 'refunded', 'Refunded'),
 (6, 'cancelled', 'Cancelled'),
 ('7', 'deleted', 'Deleted');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__voucher_types`
+--
+
+CREATE TABLE `#__voucher_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__voucher_types`
+--
+
+INSERT INTO `#__voucher_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'multi_purpose', 'Multi Purpose (MPV)'),
+(2, 'single_purpose', 'Single Purpose (SPV)');
 
 -- --------------------------------------------------------
 
@@ -1337,6 +1363,12 @@ ALTER TABLE `#__version`
 --
 ALTER TABLE `#__voucher_records`
   ADD PRIMARY KEY (`voucher_id`);
+
+--
+-- Indexes for table `#__voucher_types`
+--
+ALTER TABLE `#__voucher_types`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__voucher_statuses`

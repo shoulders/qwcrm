@@ -21,7 +21,7 @@
         <td class="olohead">{t}Closed{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Blocked{/t}</td>                
-        <td class="olohead">{t}Amount{/t}</td>        
+        <td class="olohead">{t}Unit Net{/t}</td>        
         <td class="olohead">{t}Redeemed By{/t}</td>
         <td class="olohead">{t}Redeemed Invoice{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
@@ -49,7 +49,7 @@
                 {if $display_vouchers[g].blocked == '0'}{t}No{/t}{/if}
                 {if $display_vouchers[g].blocked == '1'}{t}Yes{/t}{/if}
             </td>
-            <td class="olotd4">{$currency_sym}{$display_vouchers[g].amount}</td>            
+            <td class="olotd4">{$currency_sym}{$display_vouchers[g].unit_net}</td>            
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_vouchers[g].redeemed_client_id}">{$display_vouchers[g].redeemed_client_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_vouchers[g].redeemed_invoice_id}">{$display_vouchers[g].redeemed_invoice_id}</a></td>
             <td class="olotd4" nowrap>

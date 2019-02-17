@@ -39,6 +39,14 @@
                                                 <td>{$voucher_details.voucher_code}</td>
                                             </tr>
                                             <tr>
+                                                <td><b>{t}Type{/t}</b></td>
+                                                <td>
+                                                    {section name=s loop=$voucher_types}    
+                                                        {if $voucher_details.type == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
+                                                    {/section}              
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td><b>{t}Client{/t}</b></td>
                                                 <td><a href="index.php?component=client&page_tpl=details&client_id={$voucher_details.client_id}">{$client_details.display_name}</a></td>
                                             </tr>
@@ -65,8 +73,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Amount{/t}</b></td>
-                                                <td>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$voucher_details.amount|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                <td><b>{t}Unit Net{/t}</b></td>
+                                                <td>{$currency_sym}<input name="unit_net" class="olotd5" size="10" value="{$voucher_details.unit_net|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>

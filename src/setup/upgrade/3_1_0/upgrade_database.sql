@@ -362,6 +362,21 @@ INSERT INTO `#__voucher_statuses` (`id`, `status_key`, `display_name`) VALUES
 
 ALTER TABLE `#__voucher_statuses` ADD PRIMARY KEY (`id`);
 
+--
+-- Create Table `#__voucher_types`
+--
+
+CREATE TABLE `#__voucher_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__voucher_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'multi_purpose', 'Multi Purpose (MPV)'),
+(2, 'single_purpose', 'Single Purpose (SPV)');
+
+ALTER TABLE `#__voucher_types` ADD PRIMARY KEY (`id`);
 
 --
 -- Create Table `#__otherincome_types`
@@ -647,6 +662,16 @@ ALTER TABLE `#__otherincome_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SE
 ALTER TABLE `#__refund_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__refund_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 ALTER TABLE `#__refund_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `net_amount`;
+
+ALTER TABLE `#__voucher_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `blocked`;
+ALTER TABLE `#__voucher_records` ADD `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
+ALTER TABLE `#__voucher_records` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__voucher_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
+ALTER TABLE `#__voucher_records` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
+ALTER TABLE `#__voucher_records` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `vat_rate`;
+ALTER TABLE `#__voucher_records` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
+UPDATE `#__voucher_records` SET `unit_gross` = `unit_net`;
+
 
 --
 -- Change from int(10) to int(11)

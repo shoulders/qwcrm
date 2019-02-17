@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'company.php'); // just for get_voucher_vat_tax_code()
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'voucher.php');
@@ -34,7 +35,7 @@ if(!check_payment_method_is_active('voucher')) {
 if(isset($VAR['submit'])) {   
         
     // Create a new Voucher
-    $VAR['voucher_id'] = insert_voucher($VAR['invoice_id'], $VAR['expiry_date'], $VAR['amount'], $VAR['note']);
+    $VAR['voucher_id'] = insert_voucher($VAR['invoice_id'], $VAR['type'], $VAR['expiry_date'], $VAR['unit_net'], $VAR['note']);
 
     // Load the attached invoice Details page
     force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
@@ -43,4 +44,5 @@ if(isset($VAR['submit'])) {
     
 // Build the page
 $smarty->assign('client_details', get_client_details(get_invoice_details($VAR['invoice_id'], 'client_id')));
+$smarty->assign('voucher_types', get_voucher_types());
 $BuildPage .= $smarty->fetch('voucher/new.tpl');

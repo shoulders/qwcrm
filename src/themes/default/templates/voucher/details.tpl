@@ -66,6 +66,14 @@
                                             <td><a href="index.php?component=payment&page_tpl=details&payment_id={$voucher_details.payment_id}">{$voucher_details.payment_id}</a></td>            
                                         </tr>
                                         <tr>
+                                            <td><b>{t}Type{/t}</b></td>
+                                            <td>
+                                                {section name=s loop=$voucher_types}    
+                                                    {if $voucher_details.type == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
+                                                {/section}              
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td><b>{t}Code{/t}</b></td>
                                             <td>{$voucher_details.voucher_code}</td>
                                         </tr>
@@ -77,8 +85,8 @@
                                             </td>
                                         </tr>                                        
                                         <tr>
-                                            <td><b>{t}Amount{/t}</b></td>
-                                            <td>{$currency_sym}{$voucher_details.amount|string_format:"%.2f"}</td>
+                                            <td><b>{t}Unit Net{/t}</b></td>
+                                            <td>{$currency_sym}{$voucher_details.unit_net|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Created on{/t}</b></td>

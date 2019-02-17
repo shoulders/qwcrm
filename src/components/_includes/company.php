@@ -114,17 +114,34 @@ function get_vat_tax_codes($hidden_status = null, $editable_status = null, $stan
 }
 
 #####################################
-#    Get VAT Tax Codes              # // This gets the default VAT Tax Code based on the company tax system or supplied tax_system
+#    Get default VAT Code           # // This gets the default VAT Tax Code based on the company tax system or supplied tax_system
 #####################################
 
 function get_default_vat_tax_code($tax_system = null) {
     
     if(!$tax_system) {$tax_system = get_company_details('tax_system');}
     
-    if($tax_system == 'none') { return 'T9'; }
+    if($tax_system == 'none') { return 'not_applicable'; }
     if($tax_system == 'vat_standard') { return 'T1'; }
     if($tax_system == 'vat_flat') { return 'T1'; }
-    if($tax_system == 'sales_tax') { return 'na_sales_tax'; }    
+    if($tax_system == 'vat_cash') { return 'T1'; }
+    if($tax_system == 'sales_tax') { return 'not_applicable'; }    
+    
+}
+
+#####################################  // This gets the Voucher VAT Tax Code based on the company tax system or supplied tax_system
+#    Get Voucher default VAT Code   #  // not currently using '$tax_system = null'
+#####################################  // move to vouchers?
+
+function get_voucher_vat_tax_code($tax_system = null) {
+    
+    if(!$tax_system) {$tax_system = get_company_details('tax_system');}
+    
+    if($tax_system == 'none') { return 'not_applicable'; }
+    if($tax_system == 'vat_standard') { return 'T0'; }
+    if($tax_system == 'vat_flat') { return 'T0'; }
+    if($tax_system == 'vat_cash') { return 'T0'; }
+    if($tax_system == 'sales_tax') { return 'not_applicable'; }    
     
 }
 
