@@ -198,7 +198,7 @@ function insert_voucher($invoice_id, $type, $expiry_date, $unit_net, $note) {
     $db = QFactory::getDbo();
     $invoice_details = get_invoice_details($invoice_id);
     
-    $vat_tax_code = get_voucher_vat_tax_code();
+    $vat_tax_code = get_voucher_vat_tax_code($type);
     $vat_rate = get_vat_rate($vat_tax_code);    
     $unit_vat = $unit_net * ($vat_rate/100);    
     
