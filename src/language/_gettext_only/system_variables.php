@@ -26,11 +26,19 @@ _gettext("VAT Cash accounting (UK)");
 _gettext("Sales Tax");
 
 /* Company VAT Tax Codes */
-_gettext("Zero Rated (T0)");
-_gettext("Standard Rate (T1)");
-_gettext("Exempt (T2)");
-_gettext("Reduced Rate (T5)");
-_gettext("None (T9)");
+_gettext("Zero Rate");
+_gettext("Standard Rate");
+_gettext("Exempt");
+_gettext("Sales - Goods - EC VAT Customers");
+_gettext("Reduced Rate");
+_gettext("Zero Rate Purchases - Goods - EC");
+_gettext("Standard Rate Purchases - Goods - EC");
+_gettext("Transactions not involving VAT");
+_gettext("Reverse Charges");
+_gettext("Sales - Services - EC VAT Customers");
+_gettext("Zero Rate / Exempt Purchases - Services - EC");
+_gettext("Standard Rate Purchases - Services - EC");
+_gettext("Flat Rate Capital Asset");
 _gettext("Not Applicable");
 
 /* Expense Types */
