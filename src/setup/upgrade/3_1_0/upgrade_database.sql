@@ -399,6 +399,77 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 ALTER TABLE `#__otherincome_types` ADD PRIMARY KEY (`id`);
 
 --
+-- Create Table `#__expense_statuses`
+--
+
+CREATE TABLE `#__expense_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid', 'Paid'),
+(4, 'cancelled', 'Cancelled'),
+(5, 'deleted', 'Deleted');
+
+ALTER TABLE `#__expense_statuses` ADD PRIMARY KEY (`id`);
+
+--
+-- Create Table `#__otherincome_statuses`
+--
+
+CREATE TABLE `#__otherincome_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__otherincome_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid', 'Paid'),
+(4, 'cancelled', 'Cancelled'),
+(5, 'deleted', 'Deleted');
+
+ALTER TABLE `#__otherincome_statuses` ADD PRIMARY KEY (`id`);
+
+--
+-- Create Table `#__refund_statuses`
+--
+
+CREATE TABLE `#__refund_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__refund_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid', 'Paid'),
+(4, 'cancelled', 'Cancelled'),
+(5, 'deleted', 'Deleted');
+
+ALTER TABLE `#__refund_statuses` ADD PRIMARY KEY (`id`);
+
+--
+-- Create Table `#__supplier_statuses`
+--
+
+CREATE TABLE `#__supplier_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'valid', 'Valid'),
+(1, 'cancelled', 'Cancelled');
+
+--
 -- Rename 'notes' to 'note'
 --
 
@@ -531,20 +602,24 @@ UPDATE `#__company_record` SET
 --
 
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
-('core:403', '1', '1', '1', '1', '1', '1', '1', '1', '1'),
-('invoice:cancel', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
-('invoice:overview', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
+('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+('expense:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('invoice:overview', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
-('payment:delete', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
-('payment:details', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
-('payment:edit', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
-('payment:search', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
-('voucher:status', '1', '1', '0', '0', '1', '0', '0', '0', '0'),
-('workorder:details_edit_comment', '1', '1', '1', '1', '0', '1', '0', '0', '0');
+('otherincome:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('refund:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('supplier:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('voucher:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('workorder:details_edit_comment', 1, 1, 1, 1, 0, 1, 0, 0, 0);
 
 UPDATE `#__user_acl_page` SET `page` = 'client:delete' WHERE `#__user_acl_page`.`page` = 'customer:delete';
 UPDATE `#__user_acl_page` SET `page` = 'client:details' WHERE `#__user_acl_page`.`page` = 'customer:details';
@@ -563,18 +638,18 @@ UPDATE `#__user_acl_page` SET `page` = 'voucher:new' WHERE `#__user_acl_page`.`p
 UPDATE `#__user_acl_page` SET `page` = 'voucher:print' WHERE `#__user_acl_page`.`page` = 'giftcert:print';
 UPDATE `#__user_acl_page` SET `page` = 'voucher:search' WHERE `#__user_acl_page`.`page` = 'giftcert:search';
 
-UPDATE `#__user_acl_page` SET `Clerical` = '0' WHERE `#__user_acl_page`.`page` = 'payment:options';
+UPDATE `#__user_acl_page` SET `Clerical` = 0 WHERE `#__user_acl_page`.`page` = 'payment:options';
 
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:delete';
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:details';
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:edit';
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:new';
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '0', `Technician` = '0', `Clerical` = '1', `Counter` = '0', `Client` = '0', `Guest` = '0', `Public` = '0' WHERE `#__user_acl_page`.`page` = 'refund:search';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 0, `Technician` = 0, `Clerical` = 1, `Counter` = 0, `Client` = 0, `Guest` = 0, `Public` = 0 WHERE `#__user_acl_page`.`page` = 'refund:delete';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 0, `Technician` = 0, `Clerical` = 1, `Counter` = 0, `Client` = 0, `Guest` = 0, `Public` = 0 WHERE `#__user_acl_page`.`page` = 'refund:details';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 0, `Technician` = 0, `Clerical` = 1, `Counter` = 0, `Client` = 0, `Guest` = 0, `Public` = 0 WHERE `#__user_acl_page`.`page` = 'refund:edit';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 0, `Technician` = 0, `Clerical` = 1, `Counter` = 0, `Client` = 0, `Guest` = 0, `Public` = 0 WHERE `#__user_acl_page`.`page` = 'refund:new';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 0, `Technician` = 0, `Clerical` = 1, `Counter` = 0, `Client` = 0, `Guest` = 0, `Public` = 0 WHERE `#__user_acl_page`.`page` = 'refund:search';
 
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:choice';
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:install';
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:migrate';
-UPDATE `#__user_acl_page` SET `Administrator` = '1', `Manager` = '1', `Supervisor` = '1', `Technician` = '1', `Clerical` = '1', `Counter` = '1', `Client` = '1', `Guest` = '1', `Public` = '1' WHERE `#__user_acl_page`.`page` = 'setup:upgrade';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 1, `Technician` = 1, `Clerical` = 1, `Counter` = 1, `Client` = 1, `Guest` = 1, `Public` = 1 WHERE `#__user_acl_page`.`page` = 'setup:choice';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 1, `Technician` = 1, `Clerical` = 1, `Counter` = 1, `Client` = 1, `Guest` = 1, `Public` = 1 WHERE `#__user_acl_page`.`page` = 'setup:install';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 1, `Technician` = 1, `Clerical` = 1, `Counter` = 1, `Client` = 1, `Guest` = 1, `Public` = 1 WHERE `#__user_acl_page`.`page` = 'setup:migrate';
+UPDATE `#__user_acl_page` SET `Administrator` = 1, `Manager` = 1, `Supervisor` = 1, `Technician` = 1, `Clerical` = 1, `Counter` = 1, `Client` = 1, `Guest` = 1, `Public` = 1 WHERE `#__user_acl_page`.`page` = 'setup:upgrade';
 
 UPDATE `#__user_usergroups` SET `display_name` = 'Client' WHERE `#__user_usergroups`.`usergroup_id` = 7;
 
@@ -672,6 +747,14 @@ ALTER TABLE `#__voucher_records` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '
 ALTER TABLE `#__voucher_records` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
 UPDATE `#__voucher_records` SET `unit_gross` = `unit_net`;
 
+--
+-- Add status column to allow for the new payment system (supplier is for futureproofing and not payments)
+--
+
+ALTER TABLE `#__expense_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `gross_amount`;
+ALTER TABLE `#__otherincome_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `gross_amount`;
+ALTER TABLE `#__refund_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `gross_amount`;
+ALTER TABLE `#__supplier_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `country`;
 
 --
 -- Change from int(10) to int(11)

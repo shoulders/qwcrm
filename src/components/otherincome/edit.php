@@ -25,11 +25,19 @@ if(isset($VAR['submit'])) {
     
     // load details page
     force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'information_msg='._gettext("Refund updated successfully.")); 
-}   
+} else {  
 
-// Build the page
-$smarty->assign('otherincome_types', get_otherincome_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );
-$smarty->assign('payment_methods', get_payment_methods('receive', 'enabled'));
-$smarty->assign('otherincome_details', get_otherincome_details($VAR['otherincome_id']));
-$BuildPage .= $smarty->fetch('otherincome/edit.tpl');
+    // Check if payment can be edited
+    if(!check_otherincome_can_be_edited($VAR['otherincome_id'])) {
+        force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'warning_msg='._gettext("You cannot edit this otherincome because its status does not allow it."));
+    }
+    
+    // Build the page
+    $smarty->assign('otherincome_statuses', get_otherincome_statuses());
+    $smarty->assign('otherincome_types', get_otherincome_types());
+    $smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );
+    $smarty->assign('payment_methods', get_payment_methods('receive', 'enabled'));
+    $smarty->assign('otherincome_details', get_otherincome_details($VAR['otherincome_id']));
+    $BuildPage .= $smarty->fetch('otherincome/edit.tpl');
+
+}

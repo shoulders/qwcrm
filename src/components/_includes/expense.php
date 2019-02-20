@@ -203,6 +203,51 @@ function get_expense_details($expense_id, $item = null) {
 }
 
 #####################################
+#    Get Expense Statuses           #
+#####################################
+
+function get_expense_statuses($restricted_statuses = false) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."expense_statuses";
+    
+    // Restrict statuses to those that are allowed to be changed by the user
+    if($restricted_statuses) {
+        $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
+    }
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Expense statuses."));
+    } else {
+        
+        return $rs->GetArray();     
+        
+    }    
+    
+}
+
+######################################
+#  Get Expense status display name   #
+######################################
+
+function get_expense_status_display_name($status_key) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT display_name FROM ".PRFX."expense_statuses WHERE status_key=".$db->qstr($status_key);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the expense status display name."));
+    } else {
+        
+        return $rs->fields['display_name'];
+        
+    }    
+    
+}
+
+#####################################
 #    Get Expense Types              #
 #####################################
 
@@ -261,6 +306,56 @@ function update_expense($expense_id, $VAR) {
     
 } 
 
+############################
+# Update Expense Status    #
+############################
+
+function update_expense_status($expense_id, $new_status, $silent = false) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get expense details
+    $expense_details = get_expense_details($expense_id);
+    
+    // if the new status is the same as the current one, exit
+    if($new_status == $expense_details['status']) {        
+        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        return false;
+    }    
+    
+    $sql = "UPDATE ".PRFX."expense_records SET
+            status               =". $db->qstr( $new_status  )."            
+            WHERE expense_id    =". $db->qstr( $expense_id );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an Expense Status."));
+        
+    } else {    
+        
+        // Status updated message
+        if (!$silent) { postEmulationWrite('information_msg', _gettext("Expense status updated.")); }
+        
+        // For writing message to log file, get expense status display name
+        $expense_status_display_name = _gettext(get_expense_status_display_name($new_status));
+        
+        // Create a Workorder History Note (Not Used)      
+        //insert_workorder_history_note($expense_details['workorder_id'], _gettext("Expense Status updated to").' '.$vexpense_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Log activity        
+        $record = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+        
+        // Update last active record (Not Used)
+        //update_client_last_active($expense_details['client_id']);
+        //update_workorder_last_active($expense_details['workorder_id']);
+        //update_invoice_last_active($expense_details['invoice_id']);
+        
+        return true;
+        
+    }
+    
+}
+
 /** Close Functions **/
 
 /** Delete Functions **/
@@ -276,7 +371,22 @@ function delete_expense($expense_id) {
     // Get invoice_id before deleting the record
     $invoice_id = get_expense_details($expense_id, 'invoice_id');
     
-    $sql = "DELETE FROM ".PRFX."expense_records WHERE expense_id=".$db->qstr($expense_id);
+    $sql = "UPDATE ".PRFX."expense_records SET
+            invoice_id          = '',
+            payee               = '',           
+            date                = '0000-00-00', 
+            tax_system          = '',  
+            item_type           = '',
+            payment_method      = '',
+            net_amount          = '',
+            vat_tax_code        = '',
+            vat_rate            = '0.00',
+            vat_amount          = '0.00',
+            gross_amount        = '0.00',
+            status              = '', 
+            items               = '',
+            note                = ''
+            WHERE expense_id    =". $db->qstr($expense_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
@@ -312,4 +422,231 @@ function last_expense_id_lookup() {
         
     }
     
+}
+
+##########################################################
+#  Check if the expense status is allowed to be changed  #  // not currently used
+##########################################################
+
+ function check_expense_status_can_be_changed($expense_id) {
+     
+    // Get the expense details
+    $expense_details = get_expense_details($expense_id);
+    
+    // Is partially paid
+    if($expense_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($expense_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has payments and is paid."));
+        return false;        
+    }
+    
+    /* Is cancelled
+    if($expense_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has been cancelled."));
+        return false;        
+    }*/
+    
+    // Is deleted
+    if($expense_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has been deleted."));
+        return false;        
+    }
+        
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $expense_id)) {        
+        //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has payments."));
+        return false;        
+    }*/
+
+    // All checks passed
+    return true;     
+     
+ }
+
+###############################################################
+#   Check to see if the expense can be refunded (by status)   #  // not currently used - i DONT think i will use this
+###############################################################
+
+function check_expense_can_be_refunded($expense_id) {
+    
+    // Get the expense details
+    $expense_details = get_expense_details($expense_id);
+    
+    // Is partially paid
+    if($expense_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be refunded because the expense is partially paid."));
+        return false;
+    }
+        
+    // Is refunded
+    if($expense_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be refunded because the expense has already been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($expense_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be refunded because the expense has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($expense_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be refunded because the expense has been deleted."));
+        return false;        
+    }    
+    
+    /* Has no payments (Fallback - is not needed because of statuses)
+    if(!count_payments(null, null, null, null, null, null, $expense_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be refunded because the expense has no payments."));
+        return false;        
+    }*/
+
+    /* Has Refunds (should not be needed)
+    if(count_refunds(null, null, $expense_id) > 0) {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be refunded because the expense has already been refunded."));
+        return false;
+    }*/
+    
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the expense can be cancelled              #  // not currently used
+###############################################################
+
+function check_expense_can_be_cancelled($expense_id) {
+    
+    // Get the expense details
+    $expense_details = get_expense_details($expense_id);
+    
+    // Is partially paid
+    if($expense_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be cancelled because the expense is partially paid."));
+        return false;
+    }
+    
+    // Is paid
+    if($expense_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments and is paid."));
+        return false;        
+    }
+        
+    /* Is cancelled
+    if($expense_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be cancelled because the expense has already been cancelled."));
+        return false;        
+    }*/
+    
+    // Is deleted
+    if($expense_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be cancelled because the expense has been deleted."));
+        return false;        
+    }    
+    
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $expense_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be cancelled because the expense has payments."));
+        return false;        
+    }*/
+   
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the expense can be deleted                #
+###############################################################
+
+function check_expense_can_be_deleted($expense_id) {
+    
+    // Get the expense details
+    $expense_details = get_expense_details($expense_id);
+    
+    // Is partially paid
+    if($expense_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($expense_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments and is paid."));
+        return false;        
+    }
+    
+    /* Is cancelled
+    if($expense_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has been cancelled."));
+        return false;        
+    }*/
+    
+    // Is deleted
+    if($expense_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it already been deleted."));
+        return false;        
+    }
+    
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $expense_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments."));
+        return false;        
+    }*/
+     
+    // All checks passed
+    return true;
+    
+}
+
+##########################################################
+#  Check if the expense status allows editing            #       
+##########################################################
+
+ function check_expense_can_be_edited($expense_id) {
+     
+    // Get the expense details
+    $expense_details = get_expense_details($expense_id);
+    
+    // Is partially paid
+    if($expense_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has payments and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($expense_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has payments and is paid."));
+        return false;        
+    }
+    
+    /* Is cancelled
+    if($expense_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has been cancelled."));
+        return false;        
+    }*/
+    
+    // Is deleted
+    if($expense_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be edited because it has been deleted."));
+        return false;        
+    }
+    
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has payments."));
+        return false;        
+    }*/
+    
+
+    // All checks passed
+    return true;    
+     
 }

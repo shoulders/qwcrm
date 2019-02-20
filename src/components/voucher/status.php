@@ -32,14 +32,11 @@ if(isset($VAR['delete'])) {
     force_page('voucher', 'delete', 'voucher_id='.$VAR['voucher_id']);
 }
 
-// Get statuses that can be changed by the user
-$statuses = get_voucher_statuses(true);
-
 // Build the page with the current status from the database
 $smarty->assign('allowed_to_change_status',     check_voucher_status_can_be_changed($VAR['voucher_id'])       );
 $smarty->assign('voucher_status',              get_voucher_details($VAR['voucher_id'], 'status')             );
 $smarty->assign('voucher_statuses',            get_voucher_statuses() );
 $smarty->assign('allowed_to_delete',            check_voucher_can_be_deleted($VAR['voucher_id'])              );
-$smarty->assign('voucher_edited_statuses',     $statuses );
+$smarty->assign('voucher_selectable_statuses',     get_voucher_statuses(true) );
 
 $BuildPage .= $smarty->fetch('voucher/status.tpl');

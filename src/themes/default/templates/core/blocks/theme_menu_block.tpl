@@ -115,11 +115,17 @@
                     <a href="index.php?component=expense&page_tpl=search">
                         <img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}
                     </a>
-                    {if $expense_id}
+                    {* if $expense_id}
                         <a href="index.php?component=expense&page_tpl=details&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=expense&page_tpl=edit&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                         <a href="index.php?component=expense&page_tpl=delete&expense_id={$expense_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Expense Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                    {/if}                        
+                    {/if *}
+                    
+                    <!-- Expense Admin -->                    
+                    {if $expense_id}
+                        <a href="index.php?component=expense&page_tpl=status&expense_id={$expense_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if}
+                    
                 </div>
                 
                 <!-- Refunds -->
@@ -127,11 +133,17 @@
                     <span>{t}Refunds{/t}</span>                        
                     {*<a href="index.php?component=refund&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>*}
                     <a href="index.php?component=refund&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
-                    {if $refund_id}
+                    {*if $refund_id}
                         <a href="index.php?component=refund&page_tpl=details&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=refund&page_tpl=edit&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                         <a href="index.php?component=refund&page_tpl=delete&refund_id={$refund_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Refund Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                    {/if}                        
+                    {/if*}
+                    
+                    <!-- Refund Admin -->                    
+                    {if $refund_id}
+                        <a href="index.php?component=refund&page_tpl=status&refund_id={$refund_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if} 
+                    
                 </div>   
                 
                 <!-- Other Income -->
@@ -139,11 +151,17 @@
                     <span>{t}Other Income{/t}</span>                        
                     <a href="index.php?component=otherincome&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
                     <a href="index.php?component=otherincome&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
-                    {if $otherincome_id}
+                    {*if $otherincome_id}
                         <a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$otherincome_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=otherincome&page_tpl=edit&otherincome_id={$otherincome_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                         <a href="index.php?component=otherincome&page_tpl=delete&otherincome_id={$otherincome_id}" onclick="return confirmChoice('{t}Are you sure you want to delete this Refund Record?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                    {/if}                        
+                    {/if*}
+                    
+                    <!-- Otherincome Admin -->                    
+                    {if $otherincome_id}
+                        <a href="index.php?component=otherincome&page_tpl=status&otherincome_id={$otherincome_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if} 
+                    
                 </div>
 
                 <!-- Company -->
@@ -159,11 +177,17 @@
                     <span>{t}Suppliers{/t}</span> 
                     <a href="index.php?component=supplier&page_tpl=new"><img src="{$theme_images_dir}icons/new.gif" alt="" border="0" height="14" width="14" />{t}New{/t}</a>
                     <a href="index.php?component=supplier&page_tpl=search"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" />{t}Search{/t}</a>
-                    {if $supplier_id}
+                    {*if $supplier_id}
                         <a href="index.php?component=supplier&page_tpl=details&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/view.gif" alt="" border="0" height="14" width="14" /> {t}Details{/t}</a>
                         <a href="index.php?component=supplier&page_tpl=edit&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/edit.gif" alt="" border="0" height="14" width="14" /> {t}Edit{/t}</a>
                         <a href="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}" onclick="return confirmChoice('{t}Are you Sure you want to delete this Supplier?{/t}');"><img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" /> {t}Delete{/t}</a>
-                    {/if}
+                    {/if*}
+                    
+                    <!-- Supplier Admin -->                    
+                    {if $supplier_id}
+                        <a href="index.php?component=supplier&page_tpl=status&supplier_id={$supplier_id}"><img src="{$theme_images_dir}icons/status.gif" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if} 
+                    
                 </div>                 
 
                 <!-- Administration -->

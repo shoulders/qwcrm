@@ -176,6 +176,14 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
+                                                            <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td>
+                                                                {section name=s loop=$refund_statuses}    
+                                                                    {if $refund_details.status == $refund_statuses[s].status_key}{t}{$refund_statuses[s].display_name}{/t}{/if}        
+                                                                {/section} 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
                                                             <td align="right"><b>{t}Note{/t}</b></td>
                                                             <td><textarea class="olotd5" id="note" name="note" cols="50" rows="15">{$refund_details.note}</textarea></td>
                                                         </tr>                                                        

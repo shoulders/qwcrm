@@ -41,6 +41,13 @@ _gettext("Standard Rate Purchases - Services - EC");
 _gettext("Flat Rate Capital Asset");
 _gettext("Not Applicable");
 
+/* Expense Statuses */
+_gettext("Unpaid");
+_gettext("Partially Paid");
+_gettext("Paid");
+_gettext("Cancelled");
+_gettext("Deleted");
+
 /* Expense Types */
 _gettext("Bank Charges");
 _gettext("Credit");
@@ -74,6 +81,13 @@ _gettext("Refunded");
 _gettext("Cancelled");
 _gettext("Deleted");
 
+/* Other Income Statuses */
+_gettext("Unpaid");
+_gettext("Partially Paid");
+_gettext("Paid");
+_gettext("Cancelled");
+_gettext("Deleted");
+
 /* Other Income Types */
 _gettext("Cancelled Services");
 _gettext("Commision");
@@ -103,8 +117,19 @@ _gettext("Voucher");
 _gettext("Invoice");
 _gettext("Refund");
 
+/* Refund Statuses */
+_gettext("Unpaid");
+_gettext("Partially Paid");
+_gettext("Paid");
+_gettext("Cancelled");
+_gettext("Deleted");
+
 /* Refund Types */
 _gettext("Invoice");
+
+/* Supplier Statuses */
+_gettext("Valid");
+_gettext("Cancelled");
 
 /* Supplier Types*/
 _gettext("Courier");

@@ -33,6 +33,7 @@ if(isset($VAR['submit'])) {
 $smarty->assign('search_category',      $VAR['search_category']                                                                                             );
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                 );
 $smarty->assign('filter_type',          $VAR['filter_type']                                                                                                 );
+$smarty->assign('supplier_statuses',    get_supplier_statuses()   );
 $smarty->assign('supplier_types',       get_supplier_types()                                                                                                );
 $smarty->assign('display_suppliers',    display_suppliers('supplier_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'])   );
 $BuildPage .= $smarty->fetch('supplier/search.tpl');

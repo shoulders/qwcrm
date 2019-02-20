@@ -18,6 +18,7 @@ if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
 } 
 
 // Build the page
+$smarty->assign('refund_statuses', get_refund_statuses()  );
 $smarty->assign('refund_types', get_refund_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes() );
 $smarty->assign('payment_methods', get_payment_methods('send'));

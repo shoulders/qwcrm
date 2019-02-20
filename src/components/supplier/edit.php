@@ -24,9 +24,17 @@ if(isset($VAR['submit'])) {
     // load the supplier details apge
     force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'information_msg='._gettext("Supplier updated successfully."));     
     
-}
+} else {
+    
+    // Check if supplier can be edited
+    if(!check_supplier_can_be_edited($VAR['supplier_id'])) {
+        force_page('supplier', 'details&supplier_id='.$VAR['supplier_id'], 'warning_msg='._gettext("You cannot edit this supplier because its status does not allow it."));
+    }
 
-// Build the page
-$smarty->assign('supplier_types', get_supplier_types());
-$smarty->assign('supplier_details', get_supplier_details($VAR['supplier_id']));
-$BuildPage .= $smarty->fetch('supplier/edit.tpl');
+    // Build the page
+    $smarty->assign('supplier_statuses',   get_supplier_statuses()   );
+    $smarty->assign('supplier_types', get_supplier_types());
+    $smarty->assign('supplier_details', get_supplier_details($VAR['supplier_id']));
+    $BuildPage .= $smarty->fetch('supplier/edit.tpl');
+
+}

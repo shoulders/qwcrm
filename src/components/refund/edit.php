@@ -26,13 +26,21 @@ if(isset($VAR['submit'])) {
     
     // load details page
     force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'information_msg='._gettext("Refund updated successfully.")); 
-}   
+} else {
+    
+    // Check if refund can be edited
+    if(!check_refund_can_be_edited($VAR['refund_id'])) {
+        force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'warning_msg='._gettext("You cannot edit this refund because its status does not allow it."));
+    }
 
-// Build the page
-$refund_details = get_refund_details($VAR['refund_id']);
-$smarty->assign('refund_types', get_refund_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
-$smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
-$smarty->assign('refund_details', $refund_details);
-$smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));
-$BuildPage .= $smarty->fetch('refund/edit.tpl');
+    // Build the page
+    $refund_details = get_refund_details($VAR['refund_id']);
+    $smarty->assign('refund_statuses', get_refund_statuses()  );
+    $smarty->assign('refund_types', get_refund_types());
+    $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
+    $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
+    $smarty->assign('refund_details', $refund_details);
+    $smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));
+    $BuildPage .= $smarty->fetch('refund/edit.tpl');
+
+}

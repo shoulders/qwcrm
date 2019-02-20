@@ -74,6 +74,16 @@
                                             <td class="menutd">{$currency_sym}{$expense_details.gross_amount}</td>
                                         </tr>
                                         <tr>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Status{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=s loop=$expense_statuses}    
+                                                    {if $expense_details.status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}        
+                                                {/section} 
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$expense_details.invoice_id}">{$expense_details.invoice_id}</a></td>
                                             <td></td>

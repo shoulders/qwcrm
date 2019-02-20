@@ -155,6 +155,14 @@
                                                             <td><input id="gross_amount" name="gross_amount" class="olotd5" size="10" value="{$otherincome_details.gross_amount}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                                         </tr>
                                                         <tr>
+                                                            <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td>
+                                                                {section name=s loop=$otherincome_statuses}    
+                                                                    {if $otherincome_details.status == $otherincome_statuses[s].status_key}{t}{$otherincome_statuses[s].display_name}{/t}{/if}        
+                                                                {/section} 
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
                                                             <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td><textarea class="olotd5 mceCheckForContent" id="items" name="items" cols="50" rows="15">{$otherincome_details.items}</textarea></td>
                                                         </tr>

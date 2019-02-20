@@ -250,9 +250,33 @@ CREATE TABLE `#__expense_records` (
   `vat_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__expense_statuses`
+--
+
+CREATE TABLE `#__expense_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__expense_statuses`
+--
+
+INSERT INTO `#__expense_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid', 'Paid'),
+(4, 'cancelled', 'Cancelled'),
+(5, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -442,9 +466,33 @@ CREATE TABLE `#__otherincome_records` (
   `vat_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__otherincome_statuses`
+--
+
+CREATE TABLE `#__otherincome_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__otherincome_statuses`
+--
+
+INSERT INTO `#__otherincome_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid', 'Paid'),
+(4, 'cancelled', 'Cancelled'),
+(5, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -629,8 +677,32 @@ CREATE TABLE `#__refund_records` (
   `vat_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__refund_statuses`
+--
+
+CREATE TABLE `#__refund_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__refund_statuses`
+--
+
+INSERT INTO `#__refund_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'unpaid', 'Unpaid'),
+(2, 'partially_paid', 'Partially Paid'),
+(3, 'paid', 'Paid'),
+(4, 'cancelled', 'Cancelled'),
+(5, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -706,9 +778,30 @@ CREATE TABLE `#__supplier_records` (
   `state` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `zip` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `country` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__supplier_statuses`
+--
+
+CREATE TABLE `#__supplier_statuses` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `status_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__supplier_statuses`
+--
+
+INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
+(1, 'valid', 'Valid'),
+(1, 'cancelled', 'Cancelled');
 
 -- --------------------------------------------------------
 
@@ -1214,6 +1307,12 @@ ALTER TABLE `#__expense_records`
   ADD PRIMARY KEY (`expense_id`);
 
 --
+-- Indexes for table `#__expense_statuses`
+--
+ALTER TABLE `#__expense_statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `#__expense_types`
 --
 ALTER TABLE `#__expense_types`
@@ -1254,6 +1353,12 @@ ALTER TABLE `#__invoice_statuses`
 --
 ALTER TABLE `#__otherincome_records`
   ADD PRIMARY KEY (`otherincome_id`);
+
+--
+-- Indexes for table `#__otherincome_statuses`
+--
+ALTER TABLE `#__otherincome_statuses`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__otherincome_types`
@@ -1304,6 +1409,12 @@ ALTER TABLE `#__refund_records`
   ADD PRIMARY KEY (`refund_id`);
 
 --
+-- Indexes for table `#__refund_statuses`
+--
+ALTER TABLE `#__refund_statuses`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `#__refund_types`
 --
 ALTER TABLE `#__refund_types`
@@ -1328,6 +1439,12 @@ ALTER TABLE `#__session`
 --
 ALTER TABLE `#__supplier_records`
   ADD PRIMARY KEY (`supplier_id`);
+
+--
+-- Indexes for table `#__supplier_statuses`
+--
+ALTER TABLE `#__supplier_statuses`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `#__supplier_types`

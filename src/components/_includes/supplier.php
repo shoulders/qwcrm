@@ -229,6 +229,51 @@ function get_supplier_details($supplier_id, $item = null) {
 }
 
 #####################################
+#    Get Supplier Statuses          #
+#####################################
+
+function get_supplier_statuses($restricted_statuses = false) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."supplier_statuses";
+    
+    // Restrict statuses to those that are allowed to be changed by the user
+    if($restricted_statuses) {
+        $sql .= "\nWHERE status_key NOT IN ('invalid')";  // NB: 'invalid' does not currently exist
+    }
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Supplier statuses."));
+    } else {
+        
+        return $rs->GetArray();     
+        
+    }    
+    
+}
+
+#######################################
+#  Get Supplier status display name   #
+#######################################
+
+function get_supplier_status_display_name($status_key) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT display_name FROM ".PRFX."supplier_statuses WHERE status_key=".$db->qstr($status_key);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the supplier status display name."));
+    } else {
+        
+        return $rs->fields['display_name'];
+        
+    }    
+    
+}
+
+#####################################
 #    Get Supplier Types             #
 #####################################
 
@@ -290,6 +335,56 @@ function update_supplier($VAR) {
     
 } 
 
+#############################
+# Update Supplier Status    #
+#############################
+
+function update_supplier_status($supplier_id, $new_status, $silent = false) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get supplier details
+    $supplier_details = get_supplier_details($supplier_id);
+    
+    // if the new status is the same as the current one, exit
+    if($new_status == $supplier_details['status']) {        
+        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        return false;
+    }    
+    
+    $sql = "UPDATE ".PRFX."supplier_records SET
+            status               =". $db->qstr( $new_status  )."            
+            WHERE supplier_id    =". $db->qstr( $supplier_id );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
+        
+    } else {    
+        
+        // Status updated message
+        if (!$silent) { postEmulationWrite('information_msg', _gettext("supplier status updated.")); }
+        
+        // For writing message to log file, get supplier status display name
+        $supplier_status_display_name = _gettext(get_supplier_status_display_name($new_status));
+        
+        // Create a Workorder History Note (Not Used)
+        //insert_workorder_history_note($supplier_details['workorder_id'], _gettext("supplier Status updated to").' '.$vsupplier_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Log activity        
+        $record = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+        
+        // Update last active record (Not Used)
+        //update_client_last_active($supplier_details['client_id']);
+        //update_workorder_last_active($supplier_details['workorder_id']);
+        //update_invoice_last_active($supplier_details['invoice_id']);*/               
+        
+        return true;
+        
+    }
+    
+}
+
 /** Close Functions **/
 
 /** Delete Functions **/
@@ -339,4 +434,85 @@ function last_supplier_id_lookup() {
         
     }
     
+}
+
+###########################################################
+#  Check if the supplier status is allowed to be changed  #  // this is mainly a placeholder and not really used
+###########################################################
+
+ function check_supplier_status_can_be_changed($supplier_id) {
+     
+    // Get the supplier details
+    $supplier_details = get_supplier_details($supplier_id); 
+    
+    // Is cancelled
+    if($supplier_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The supplier cannot be changed because the supplier has been deleted."));
+        return false;        
+    }  
+
+    // All checks passed
+    return true;     
+     
+ }
+
+
+###############################################################
+#   Check to see if the supplier can be cancelled             #  // not currently used
+###############################################################
+
+function check_supplier_can_be_cancelled($supplier_id) {
+    
+    // Get the supplier details
+    $supplier_details = get_supplier_details($supplier_id);   
+   
+    // Is cancelled
+    if($supplier_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
+        return false;        
+    }  
+   
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the supplier can be deleted               #  // not currently used
+###############################################################
+
+function check_supplier_can_be_deleted($supplier_id) {
+    
+    // Get the supplier details
+    $supplier_details = get_supplier_details($supplier_id);
+    
+    // Is cancelled
+    if($supplier_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("This supplier cannot be deleted because it has been cancelled."));
+        return false;        
+    }
+     
+    // All checks passed
+    return true;
+    
+}
+
+##########################################################
+#  Check if the supplier status allows editing           #  // This is really just a placeholder for now 
+##########################################################
+
+ function check_supplier_can_be_edited($supplier_id) {
+     
+    // Get the supplier details
+    $supplier_details = get_supplier_details($supplier_id);
+    
+    // Is cancelled
+    if($supplier_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The supplier cannot be edited because it has been cancelled."));
+        return false;        
+    }
+    
+    // All checks passed
+    return true;    
+     
 }

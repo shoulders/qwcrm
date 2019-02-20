@@ -138,6 +138,12 @@ class Upgrade3_1_0 extends QSetup {
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax', '!');
+        
+        // Populate newley created status columns
+        $this->update_column_values(PRFX.'expense_records', 'status', '*', 'paid');
+        $this->update_column_values(PRFX.'otherincome_records', 'status', '*', 'paid');
+        $this->update_column_values(PRFX.'refund_records', 'status', '*', 'paid');
+        $this->update_column_values(PRFX.'supplier_records', 'status', '*', 'valid');
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');

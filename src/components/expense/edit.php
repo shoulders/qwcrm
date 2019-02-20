@@ -25,7 +25,13 @@ if(isset($VAR['submit'])) {
 
 } else {
     
+    // Check if expense can be edited
+    if(!check_expense_can_be_edited($VAR['expense_id'])) {
+        force_page('expense', 'details&expense_id='.$VAR['expense_id'], 'warning_msg='._gettext("You cannot edit this expense because its status does not allow it."));
+    }
+    
     // Build the page       
+    $smarty->assign('expense_statuses', get_expense_statuses()            );
     $smarty->assign('expense_types', get_expense_types());
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
     $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));

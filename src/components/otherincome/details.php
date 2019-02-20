@@ -18,6 +18,7 @@ if(!isset($VAR['otherincome_id']) || !$VAR['otherincome_id']) {
 } 
 
 // Build the page
+$smarty->assign('otherincome_statuses', get_otherincome_statuses());
 $smarty->assign('otherincome_types', get_otherincome_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes() );
 $smarty->assign('payment_methods', get_payment_methods('receive'));

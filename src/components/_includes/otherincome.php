@@ -24,9 +24,9 @@ defined('_QWEXEC') or die;
 
 /** Display Functions **/
    
-#############################
-#     Display otherincomes       #
-#############################
+###############################
+#  Display otherincomes       #
+###############################
 
 function display_otherincomes($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $payment_method = null) {
     
@@ -199,6 +199,51 @@ function get_otherincome_details($otherincome_id, $item = null) {
 }
 
 #####################################
+#    Get Otherincome Statuses       #
+#####################################
+
+function get_otherincome_statuses($restricted_statuses = false) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT * FROM ".PRFX."otherincome_statuses";
+    
+    // Restrict statuses to those that are allowed to be changed by the user
+    if($restricted_statuses) {
+        $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
+    }
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Otherincome statuses."));
+    } else {
+        
+        return $rs->GetArray();     
+        
+    }    
+    
+}
+
+##########################################
+#  Get Otherincome status display name   #
+##########################################
+
+function get_otherincome_status_display_name($status_key) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT display_name FROM ".PRFX."otherincome_statuses WHERE status_key=".$db->qstr($status_key);
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the otherincome status display name."));
+    } else {
+        
+        return $rs->fields['display_name'];
+        
+    }    
+    
+}
+
+#####################################
 #    Get Otherincome Types          #
 #####################################
 
@@ -256,6 +301,56 @@ function update_otherincome($VAR) {
     
 } 
 
+#############################
+# Update Otherincome Status #
+#############################
+
+function update_otherincome_status($otherincome_id, $new_status, $silent = false) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get otherincome details
+    $otherincome_details = get_otherincome_details($otherincome_id);
+    
+    // if the new status is the same as the current one, exit
+    if($new_status == $otherincome_details['status']) {        
+        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        return false;
+    }    
+    
+    $sql = "UPDATE ".PRFX."otherincome_records SET
+            status               =". $db->qstr( $new_status  )."            
+            WHERE otherincome_id    =". $db->qstr( $otherincome_id );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an otherincome Status."));
+        
+    } else {    
+        
+        // Status updated message
+        if (!$silent) { postEmulationWrite('information_msg', _gettext("otherincome status updated.")); }
+        
+        // For writing message to log file, get otherincome status display name
+        $otherincome_status_display_name = _gettext(get_otherincome_status_display_name($new_status));
+        
+        // Create a Workorder History Note (Not Used)     
+        //insert_workorder_history_note($otherincome_details['workorder_id'], _gettext("otherincome Status updated to").' '.$votherincome_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Log activity        
+        $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '.$otherincome_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+        
+        // Update last active record (Not Used)
+        //update_client_last_active($otherincome_details['client_id']);
+        //update_workorder_last_active($otherincome_details['workorder_id']);
+        //update_invoice_last_active($otherincome_details['invoice_id']);
+        
+        return true;
+        
+    }
+    
+}
+
 /** Close Functions **/
 
 /** Delete Functions **/
@@ -268,14 +363,28 @@ function delete_otherincome($otherincome_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "DELETE FROM ".PRFX."otherincome_records WHERE otherincome_id=".$db->qstr($otherincome_id);
+    $sql = "UPDATE ".PRFX."otherincome_records SET
+        payee               = '',           
+        date                = '0000-00-00', 
+        tax_system          = '',  
+        item_type           = '',
+        payment_method      = '',
+        net_amount          = '',
+        vat_tax_code        = '',
+        vat_rate            = '0.00',
+        vat_amount          = '0.00',
+        gross_amount        = '0.00',
+        status              = '', 
+        items               = '',
+        note                = ''
+        WHERE otherincome_id =". $db->qstr($otherincome_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the otherincome records."));
     } else {
         
         // Log activity        
-        $record = _gettext("Refund Record").' '.$otherincome_id.' '._gettext("deleted.");
+        $record = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("deleted.");
         write_record_to_activity_log($record, null, null, null, null);
         
         return true;
@@ -304,4 +413,225 @@ function last_otherincome_id_lookup() {
         
     }
         
+}
+
+
+##############################################################
+#  Check if the otherincome status is allowed to be changed  #  // not currently used
+##############################################################
+
+ function check_otherincome_status_can_be_changed($otherincome_id) {
+     
+    // Get the otherincome details
+    $otherincome_details = get_otherincome_details($otherincome_id);
+    
+    // Is partially paid
+    if($otherincome_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($otherincome_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments and is paid."));
+        return false;        
+    }
+    
+    /* Is cancelled
+    if($otherincome_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has been cancelled."));
+        return false;        
+    }*/
+    
+    // Is deleted
+    if($otherincome_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has been deleted."));
+        return false;        
+    }
+        
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $otherincome_id)) {        
+        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
+        return false;        
+    }*/
+
+    // All checks passed
+    return true;     
+     
+ }
+
+###################################################################
+#   Check to see if the otherincome can be refunded (by status)   #  // not currently used - i DONT think i will use this
+###################################################################
+
+function check_otherincome_can_be_refunded($otherincome_id) {
+    
+    // Get the otherincome details
+    $otherincome_details = get_otherincome_details($otherincome_id);
+    
+    // Is partially paid
+    if($otherincome_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be refunded because the otherincome is partially paid."));
+        return false;
+    }
+        
+    // Is refunded
+    if($otherincome_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be refunded because the otherincome has already been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($otherincome_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be refunded because the otherincome has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($otherincome_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be refunded because the otherincome has been deleted."));
+        return false;        
+    }    
+
+    /* Has no payments  (Fallback - is not needed because of statuses)
+    if(!count_payments(null, null, null, null, null, null, $otherincome_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
+        return false;        
+    }*/
+    
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the otherincome can be cancelled          #  // not currently used
+###############################################################
+
+function check_otherincome_can_be_cancelled($otherincome_id) {
+    
+    // Get the otherincome details
+    $otherincome_details = get_otherincome_details($otherincome_id);
+    
+    // Is partially paid
+    if($otherincome_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be cancelled because the otherincome is partially paid."));
+        return false;
+    }
+        
+    // Is paid
+    if($expense_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments and is paid."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($otherincome_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be cancelled because the otherincome has already been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($otherincome_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be cancelled because the otherincome has been deleted."));
+        return false;        
+    }    
+    
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $otherincome_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
+        return false;        
+    }*/
+    
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the otherincome can be deleted            #
+###############################################################
+
+function check_otherincome_can_be_deleted($otherincome_id) {
+    
+    // Get the otherincome details
+    $otherincome_details = get_otherincome_details($otherincome_id);
+    
+    // Is partially paid
+    if($otherincome_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($otherincome_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
+        return false;        
+    }
+    
+    /* Is cancelled
+    if($otherincome_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has been cancelled."));
+        return false;        
+    }*/
+    
+    // Is deleted
+    if($otherincome_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it already been deleted."));
+        return false;        
+    }
+    
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $otherincome_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments."));
+        return false;        
+    }*/
+     
+    // All checks passed
+    return true;
+    
+}
+
+##########################################################
+#  Check if the otherincome status allows editing        #       
+##########################################################
+
+ function check_otherincome_can_be_edited($otherincome_id) {
+     
+    // Get the otherincome details
+    $otherincome_details = get_otherincome_details($otherincome_id);
+    
+    // Is partially paid
+    if($otherincome_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($otherincome_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments and is paid."));
+        return false;        
+    }
+    
+    /* Is cancelled
+    if($otherincome_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it already been deleted."));
+        return false;        
+    }*/
+    
+    // Is deleted
+    if($otherincome_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be edited because it has been deleted."));
+        return false;        
+    }
+    
+    /* Has payments (Fallback - is not needed because of statuses)
+    if(count_payments(null, null, null, null, null, null, $invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments."));
+        return false;        
+    }*/    
+
+    // All checks passed
+    return true;    
+     
 }

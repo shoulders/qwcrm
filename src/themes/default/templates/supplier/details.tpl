@@ -89,6 +89,16 @@
                                             <td class="menutd">{$supplier_details.country}</td>
                                             <td class="menutd" colspan="2"></td>
                                         </tr>
+                                        <tr>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Status{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=r loop=$supplier_statuses}    
+                                                    {if $supplier_details.status == $supplier_statuses[r].status_key}{t}{$supplier_statuses[r].display_name}{/t}{/if}        
+                                                {/section} 
+                                            </td>
+                                        </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>

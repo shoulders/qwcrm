@@ -1635,7 +1635,7 @@ function check_invoice_can_be_refunded($invoice_id) {
 }
 
 ###############################################################
-#   Check to see if the invoice can be cancelled              #  // this is not started/finished but just a placeholder for now
+#   Check to see if the invoice can be cancelled              #
 ###############################################################
 
 function check_invoice_can_be_cancelled($invoice_id) {
@@ -1643,7 +1643,7 @@ function check_invoice_can_be_cancelled($invoice_id) {
     // Get the invoice details
     $invoice_details = get_invoice_details($invoice_id);
     
-    // Does not have a blance
+    // Does not have a balance
     if($invoice_details['balance'] == 0) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice does not have a balance."));
         return false;
@@ -1741,7 +1741,7 @@ function check_invoice_can_be_deleted($invoice_id) {
         return false;        
     }
     
-    // Has payments
+    // Has payments (Fallback - is not needed because of statuses)
     if(count_payments(null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments."));
         return false;        

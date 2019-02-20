@@ -470,13 +470,13 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
         if (!$silent) { postEmulationWrite('information_msg', _gettext("Voucher status updated.")); }
         
         // For writing message to log file, get voucher status display name
-        $voucher_status_diplay_name = _gettext(get_voucher_status_display_name($new_status));
+        $voucher_status_display_name = _gettext(get_voucher_status_display_name($new_status));
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($voucher_details['workorder_id'], _gettext("Voucher Status updated to").' '.$voucher_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($voucher_details['workorder_id'], _gettext("Voucher Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
-        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("Status updated to").' '.$voucher_status_diplay_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("Status updated to").' '.$voucher_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_id);
         
         // Update last active record

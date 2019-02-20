@@ -15,7 +15,7 @@ require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm()) {
+if(!check_page_accessed_via_qwcrm('voucher', 'status')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }

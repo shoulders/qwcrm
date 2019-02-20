@@ -36,6 +36,7 @@ $smarty->assign('search_category',          $VAR['search_category']             
 $smarty->assign('search_term',              $VAR['search_term']                                                                                             );
 $smarty->assign('filter_type',              $VAR['filter_type']                                                                                             );
 $smarty->assign('filter_payment_method',    $VAR['filter_payment_method']                                                                                   );
+$smarty->assign('refund_statuses', get_refund_statuses()  );
 $smarty->assign('refund_types',             get_refund_types()                                                                                              );
 $smarty->assign('payment_methods',          get_payment_methods('send')                                                                                     );
 $smarty->assign('payment_methods_search',   get_payment_methods('send', 'enabled')                                                                          );

@@ -53,7 +53,7 @@
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$refund_details.vat_rate|string_format:"%.2f"}}%</td>
+                                            <td class="menutd">{$refund_details.vat_rate|string_format:"%.2f"}%</td>
                                         </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -74,6 +74,16 @@
                                             </td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym}{$refund_details.gross_amount}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Status{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=s loop=$refund_statuses}    
+                                                    {if $refund_details.status == $refund_statuses[s].status_key}{t}{$refund_statuses[s].display_name}{/t}{/if}        
+                                                {/section} 
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Invoice ID{/t}</b></td>

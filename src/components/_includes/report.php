@@ -1068,18 +1068,18 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         
         $revenue_stats = array(                       
             
-            "sum_opened"        =>  sum_vouchers_items('amount', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_closed"        =>  sum_vouchers_items('amount', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_opened"        =>  sum_vouchers_items('unit_net', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_closed"        =>  sum_vouchers_items('unit_net', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
             
-            "sum_unused"        =>  sum_vouchers_items('amount', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_redeemed"      =>  sum_vouchers_items('amount', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_suspended"     =>  sum_vouchers_items('amount', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
-            "sum_expired"       =>  sum_vouchers_items('amount', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_refunded"      =>  sum_vouchers_items('amount', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_cancelled"     =>  sum_vouchers_items('amount', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_unused"        =>  sum_vouchers_items('unit_net', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_redeemed"      =>  sum_vouchers_items('unit_net', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_suspended"     =>  sum_vouchers_items('unit_net', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
+            "sum_expired"       =>  sum_vouchers_items('unit_net', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_refunded"      =>  sum_vouchers_items('unit_net', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_cancelled"     =>  sum_vouchers_items('unit_net', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
             
             // This is where the client has used a Voucher from someone else
-            "sum_claimed"       =>  sum_vouchers_items('amount', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
+            "sum_claimed"       =>  sum_vouchers_items('unit_net', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
             
         );
         

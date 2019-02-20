@@ -75,6 +75,16 @@
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym}{$otherincome_details.gross_amount}</td>
                                         </tr>
+                                        <tr>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Status{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=s loop=$otherincome_statuses}    
+                                                    {if $otherincome_details.status == $otherincome_statuses[s].status_key}{t}{$otherincome_statuses[s].display_name}{/t}{/if}        
+                                                {/section} 
+                                            </td>
+                                        </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>
