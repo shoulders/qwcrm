@@ -150,7 +150,8 @@ function insert_otherincome($VAR) {
             vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
             vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
             vat_amount       =". $db->qstr( $VAR['vat_amount']              ).",
-            gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
+            gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",
+            status           =". $db->qstr( 'unpaid'                        ).",
             items            =". $db->qstr( $VAR['items']                   ).",
             note             =". $db->qstr( $VAR['note']                    );
 

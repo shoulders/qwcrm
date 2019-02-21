@@ -164,6 +164,7 @@ function insert_supplier($VAR) {
             state          =". $db->qstr( $VAR['state']         ).",
             zip            =". $db->qstr( $VAR['zip']           ).",
             country        =". $db->qstr( $VAR['country']       ).",
+            status         =". $db->qstr( 'valid'               ).",
             description    =". $db->qstr( $VAR['description']   ).", 
             note           =". $db->qstr( $VAR['note']          );            
 
