@@ -22,7 +22,7 @@
                         <table class="olotable" width="100%" border="0" cellpadding="2" cellspacing="0" >
                             <tr>
                                 <td class="olohead" align="center">{t}Status{/t}</td>
-                                <td class="olohead" align="center">&nbsp;</td>
+                                <td class="olohead" align="center">{t}Cancel{/t}</td>
                                 <td class="olohead" align="center">{t}Delete{/t}</td>
                             </tr>
                             <tr>
