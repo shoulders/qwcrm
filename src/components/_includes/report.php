@@ -1287,8 +1287,8 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         
         $revenue_stats = array(                       
             
-            "sum_received"               =>  sum_payments_items(null, 'received', $start_date, $end_date, $employee_id, $client_id),
-            "sum_transmitted"            =>  sum_payments_items(null, 'transmitted', $start_date, $end_date, $employee_id, $client_id) 
+            "sum_received"               =>  sum_payments(null, 'received', $start_date, $end_date, $employee_id, $client_id),
+            "sum_transmitted"            =>  sum_payments(null, 'transmitted', $start_date, $end_date, $employee_id, $client_id) 
             
         );
         
@@ -1299,6 +1299,102 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
     return $stats;
     
 }
+
+####################################################
+#     Count Payments                               #
+####################################################
+
+function count_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null, $invoice_id = null) {   
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";  
+    
+    // Restrict by Status
+    $whereTheseRecords .= payment_build_filter_by_status($status);
+    
+    // Restrict by Type
+    $whereTheseRecords .= payment_build_filter_by_type($type); 
+            
+    // Filter by Date
+    $whereTheseRecords .= payment_build_filter_by_date($status, $start_date, $end_date);
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Filter by Invoice
+    if($invoice_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."payment_records
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
+    } else {
+        
+       return $rs->fields['count']; 
+       
+    }
+    
+}
+
+#########################################
+#  Sum selected value of payments       #
+#########################################
+
+function sum_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
+    
+    // Restrict by Status
+    $whereTheseRecords .= payment_build_filter_by_status($status);
+      
+    // Restrict by Type
+    $whereTheseRecords .= payment_build_filter_by_type($type);    
+          
+    // Filter by Date
+    $whereTheseRecords .= payment_build_filter_by_date($start_date, $end_date);
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT SUM(".PRFX."payment_records.amount) AS sum
+            FROM ".PRFX."payment_records
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
+    } else {
+        
+       return $rs->fields['sum']; 
+       
+    }    
+    
+}
+
 
 #####################################
 #  Build payment Status filter SQL  #
@@ -1365,100 +1461,5 @@ function payment_build_filter_by_date($start_date = null, $end_date = null) {
     }
         
     return $whereTheseRecords;
-    
-}
-
-####################################################
-#     Count Payments                               #
-####################################################
-
-function count_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null, $invoice_id = null) {   
-    
-    $db = QFactory::getDbo();
-    
-    // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";  
-    
-    // Restrict by Status
-    $whereTheseRecords .= payment_build_filter_by_status($status);
-    
-    // Restrict by Type
-    $whereTheseRecords .= payment_build_filter_by_type($type); 
-            
-    // Filter by Date
-    $whereTheseRecords .= payment_build_filter_by_date($status, $start_date, $end_date);
-    
-    // Filter by Employee
-    if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$db->qstr($employee_id);
-    }
-    
-    // Filter by Client
-    if($client_id) {
-        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
-    }
-    
-    // Filter by Invoice
-    if($invoice_id) {
-        $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);
-    }
-    
-    // Execute the SQL
-    $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."payment_records
-            ".$whereTheseRecords;                
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of payments."));
-    } else {
-        
-       return $rs->fields['count']; 
-       
-    }
-    
-}
-
-#########################################
-#  Sum selected value of payments       #
-#########################################
-
-function sum_payments_items($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
-    
-    // Restrict by Status
-    $whereTheseRecords .= payment_build_filter_by_status($status);
-      
-    // Restrict by Type
-    $whereTheseRecords .= payment_build_filter_by_type($type);    
-          
-    // Filter by Date
-    $whereTheseRecords .= payment_build_filter_by_date($start_date, $end_date);
-    
-    // Filter by Employee
-    if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($employee_id);
-    }
-    
-    // Filter by Client
-    if($client_id) {
-        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
-    }
-    
-    // Execute the SQL
-    $sql = "SELECT SUM(".PRFX."payment_records.amount) AS sum
-            FROM ".PRFX."payment_records
-            ".$whereTheseRecords;                
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not sum the payment values."));
-    } else {
-        
-       return $rs->fields['sum']; 
-       
-    }    
     
 }
