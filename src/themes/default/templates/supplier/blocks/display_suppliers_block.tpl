@@ -19,7 +19,7 @@
     </tr>                                                    
     {section name=s loop=$display_suppliers}
         <!-- This allows double clicking on a row and opens the corresponding supplier view details -->
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}';" class="row1">                                                           
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}';">                                                           
             <td class="olotd4" nowrap><a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}">{$display_suppliers[s].supplier_id}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=supplier&page_tpl=details&supplier_id={$display_suppliers[s].supplier_id}">{$display_suppliers[s].display_name}</a></td>
             <td class="olotd4" nowrap>

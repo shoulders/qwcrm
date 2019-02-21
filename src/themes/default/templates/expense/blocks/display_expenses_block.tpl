@@ -25,7 +25,7 @@
      </tr>
      {section name=e loop=$display_expenses}
          <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-         <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}';" class="row1">
+         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_expenses[e].status != 'deleted'} onDblClick="window.location='index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}';"{/if}>
             <td class="olotd4" nowrap><a href="index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}">{$display_expenses[e].expense_id}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_expenses[e].invoice_id}">{$display_expenses[e].invoice_id}</a></td>
             <td class="olotd4" nowrap>{$display_expenses[e].payee}</td>

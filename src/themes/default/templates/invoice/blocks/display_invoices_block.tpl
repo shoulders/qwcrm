@@ -21,9 +21,9 @@
         <td class="olohead" nowrap>{t}Balance{/t}</td>
     </tr>
     {section name=i loop=$display_invoices}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}';" class="row1">
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_invoices[i].status != 'deleted'} onDblClick="window.location='index.php?component=invoice&page_tpl={if $display_invoices[i].is_closed}details{else}edit{/if}&invoice_id={$display_invoices[i].invoice_id}';"{/if}>
             <td class="olotd4" nowrap>
-                {if $display_invoices[i].status === 'deleted'}
+                {if $display_invoices[i].status == 'deleted'}
                     {$display_invoices[i].invoice_id}
                 {else}                    
                     <a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_invoices[i].invoice_id}">{$display_invoices[i].invoice_id}</a>

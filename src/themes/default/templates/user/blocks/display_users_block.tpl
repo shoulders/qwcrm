@@ -20,7 +20,7 @@
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=u loop=$display_users}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}';" class="row1">
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}';">
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}">{$display_users[u].user_id}</a></td>
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_users[u].user_id}">{$display_users[u].display_name}</a></td>
             <td class="olotd4">

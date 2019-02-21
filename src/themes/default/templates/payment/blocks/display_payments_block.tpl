@@ -22,7 +22,7 @@
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=p loop=$display_payments}        
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}';" class="row1">
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_payments[p].status != 'deleted'} onDblClick="window.location='index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}';"{/if}>
 
             <!-- Payment ID -->
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}">{$display_payments[p].payment_id}</a></td>

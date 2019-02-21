@@ -28,7 +28,7 @@
         <td class="olohead">{t}Action{/t}</td>
     </tr>
     {section name=g loop=$display_vouchers}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" {if $display_vouchers[g].status != 'deleted'}onDblClick="window.location='index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers[g].voucher_id}';"{/if} class="row1">
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" {if $display_vouchers[g].status != 'deleted'}onDblClick="window.location='index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers[g].voucher_id}';"{/if}>
             <td class="olotd4">{if $display_vouchers[g].status != 'deleted'}<a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_vouchers[g].voucher_id}">{$display_vouchers[g].voucher_id}</a>{else}{$display_vouchers[g].voucher_id}{/if}</td>
             <td class="olotd4"><a href="index.php?component=user&page_tpl=details&user_id={$display_vouchers[g].employee_id}">{$display_vouchers[g].employee_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_vouchers[g].workorder_id}">{$display_vouchers[g].workorder_id}</a></td>

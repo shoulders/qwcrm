@@ -19,7 +19,7 @@
         <td class="olohead"><b>{t}Action{/t}</b></td>
     </tr>
     {section name=s loop=$display_schedules}
-        <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}';" class="row1">
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';" onDblClick="window.location='index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}';">
 
             <!-- Schedule ID -->
             <td class="olotd4"><a href="index.php?component=schedule&page_tpl=details&schedule_id={$display_schedules[s].schedule_id}">{$display_schedules[s].schedule_id}</a></td>
