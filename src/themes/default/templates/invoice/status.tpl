@@ -78,7 +78,7 @@
                             </tr>
                             <tr>
                             
-                                <!-- Refund invoice Button -->
+                                <!-- Refund Button -->
                                 <td class="olotd4" align="center" width="33%" height="150"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_refund}
@@ -88,7 +88,7 @@
                                     {/if}                                        
                                 </td> 
 
-                                <!-- Cancel invoice Button -->
+                                <!-- Cancel Button -->
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_cancel}
@@ -98,7 +98,7 @@
                                     {/if}                                        
                                 </td> 
 
-                                <!-- Delete invoice Button -->                        
+                                <!-- Delete Button -->                        
                                 <td class="olotd4" align="center" width="33%"> 
                                     <!-- if invoice is open and does not have any payments -->                                        
                                     {if $allowed_to_delete}

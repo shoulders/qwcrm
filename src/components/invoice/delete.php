@@ -28,11 +28,6 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
-// Make sure the invoice is allowed to be deleted
-if(!check_invoice_can_be_deleted($VAR['invoice_id'])) {
-    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be deleted."));
-}
-
 // Delete Invoice
 if(!delete_invoice($VAR['invoice_id'])) {    
     

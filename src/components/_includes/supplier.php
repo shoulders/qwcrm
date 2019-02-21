@@ -387,6 +387,40 @@ function update_supplier_status($supplier_id, $new_status, $silent = false) {
 
 /** Close Functions **/
 
+#####################################
+#   Cancel Supplier                 #
+#####################################
+
+function cancel_supplier($supplier) {
+    
+    // Make sure the supplier can be cancelled
+    if(!check_supplier_can_be_cancelled($supplier)) {        
+        return false;
+    }
+    
+    // Get supplier details
+    //$supplier_details = get_supplier_details($supplier);  
+    
+    // Change the supplier status to cancelled (I do this here to maintain consistency)
+    update_supplier_status($supplier, 'cancelled');      
+        
+    // Create a Workorder History Note  
+    //insert_workorder_history_note($supplier_details['supplier'], _gettext("Expense").' '.$supplier.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+
+    // Log activity        
+    $record = _gettext("Supplier").' '.$supplier.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    //write_record_to_activity_log($record, $supplier_details['employee_id'], $supplier_details['client_id'], $supplier_details['workorder_id'], $invoice_id);
+    write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+
+    // Update last active record
+    //update_client_last_active($supplier_details['client_id']);
+    //update_workorder_last_active($supplier_details['workorder_id']);
+    //update_invoice_last_active($invoice);
+
+    return true;
+    
+}
+
 /** Delete Functions **/
 
 #####################################
@@ -445,11 +479,11 @@ function last_supplier_id_lookup() {
     // Get the supplier details
     $supplier_details = get_supplier_details($supplier_id); 
     
-    // Is cancelled
+    /* Is cancelled
     if($supplier_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The supplier cannot be changed because the supplier has been deleted."));
         return false;        
-    }  
+    }*/
 
     // All checks passed
     return true;     

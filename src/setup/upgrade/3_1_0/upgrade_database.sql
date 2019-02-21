@@ -603,9 +603,11 @@ UPDATE `#__company_record` SET
 
 INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`, `Technician`, `Clerical`, `Counter`, `Client`, `Guest`, `Public`) VALUES 
 ('core:403', 1, 1, 1, 1, 1, 1, 1, 1, 1),
+('expense:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('invoice:overview', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('otherincome:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -616,7 +618,9 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('refund:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('supplier:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('supplier:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('voucher:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('workorder:details_edit_comment', 1, 1, 1, 1, 0, 1, 0, 0, 0);

@@ -30,6 +30,7 @@ if(isset($VAR['delete'])) {
 $smarty->assign('allowed_to_change_status',        false       );
 $smarty->assign('expense_status',                  get_expense_details($VAR['expense_id'], 'status')             );
 $smarty->assign('expense_statuses',                get_expense_statuses() );
+$smarty->assign('allowed_to_cancel',               false     );
 $smarty->assign('allowed_to_delete',               check_expense_can_be_deleted($VAR['expense_id'])              );
 $smarty->assign('expense_selectable_statuses',     get_expense_statuses(true) );
 

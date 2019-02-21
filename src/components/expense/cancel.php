@@ -21,8 +21,8 @@ if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {
     force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
 }   
 
-// Delete the expense
-delete_expense($VAR['expense_id']);
+// Cancel the expense
+cancel_expense($VAR['expense_id']);
 
 // Load the expense search page
-force_page('expense', 'search', 'information_msg='._gettext("Expense deleted successfully."));
+force_page('expense', 'search', 'information_msg='._gettext("Expense cancelled successfully."));

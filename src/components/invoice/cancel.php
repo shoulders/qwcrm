@@ -26,12 +26,7 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
-// Make sure the invoice is allowed to be cancelled
-if(!check_invoice_can_be_cancelled($VAR['invoice_id'])) {
-    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be cancelled."));
-}
-
-// Delete Invoice
+// Cancel Invoice
 if(!cancel_invoice($VAR['invoice_id'])) {    
     
     // Load the invoice details page with error

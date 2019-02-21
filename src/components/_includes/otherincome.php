@@ -353,6 +353,40 @@ function update_otherincome_status($otherincome_id, $new_status, $silent = false
 
 /** Close Functions **/
 
+#####################################
+#   Cancel Otherincome              #
+#####################################
+
+function cancel_otherincome($otherincome_id) {
+    
+    // Make sure the otherincome can be cancelled
+    if(!check_otherincome_can_be_cancelled($otherincome_id)) {        
+        return false;
+    }
+    
+    // Get otherincome details
+    //$otherincome_details = get_otherincome_details($otherincome_id);  
+    
+    // Change the otherincome status to cancelled (I do this here to maintain consistency)
+    update_otherincome_status($otherincome_id, 'cancelled');      
+        
+    // Create a Workorder History Note  
+    //insert_workorder_history_note($otherincome_details['workorder_id'], _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+
+    // Log activity        
+    $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    //write_record_to_activity_log($record, $otherincome_details['employee_id'], $otherincome_details['client_id'], $otherincome_details['workorder_id'], $invoice_id);
+    write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+
+    // Update last active record
+    //update_client_last_active($otherincome_details['client_id']);
+    //update_workorder_last_active($otherincome_details['workorder_id']);
+    //update_invoice_last_active($invoice_id);
+
+    return true;
+    
+}
+
 /** Delete Functions **/
 
 #####################################
@@ -437,12 +471,6 @@ function last_otherincome_id_lookup() {
         return false;        
     }
     
-    /* Is cancelled
-    if($otherincome_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has been cancelled."));
-        return false;        
-    }*/
-    
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has been deleted."));
@@ -520,7 +548,7 @@ function check_otherincome_can_be_cancelled($otherincome_id) {
     }
         
     // Is paid
-    if($expense_details['status'] == 'paid') {
+    if($otherincome_details['status'] == 'paid') {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments and is paid."));
         return false;        
     }
@@ -569,11 +597,11 @@ function check_otherincome_can_be_deleted($otherincome_id) {
         return false;        
     }
     
-    /* Is cancelled
+    // Is cancelled
     if($otherincome_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has been cancelled."));
         return false;        
-    }*/
+    }
     
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {
@@ -613,11 +641,11 @@ function check_otherincome_can_be_deleted($otherincome_id) {
         return false;        
     }
     
-    /* Is cancelled
+    // Is cancelled
     if($otherincome_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it already been deleted."));
         return false;        
-    }*/
+    }
     
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {

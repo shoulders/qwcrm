@@ -358,6 +358,40 @@ function update_expense_status($expense_id, $new_status, $silent = false) {
 
 /** Close Functions **/
 
+#####################################
+#   Cancel Expense                  #
+#####################################
+
+function cancel_expense($expense_id) {
+    
+    // Make sure the expense can be cancelled
+    if(!check_expense_can_be_cancelled($expense_id)) {        
+        return false;
+    }
+    
+    // Get expense details
+    //$expense_details = get_expense_details($expense_id);  
+    
+    // Change the expense status to cancelled (I do this here to maintain consistency)
+    update_expense_status($expense_id, 'cancelled');      
+        
+    // Create a Workorder History Note  
+    //insert_workorder_history_note($expense_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+
+    // Log activity        
+    $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    //write_record_to_activity_log($record, $expense_details['employee_id'], $expense_details['client_id'], $expense_details['workorder_id'], $invoice_id);
+    write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+
+    // Update last active record
+    //update_client_last_active($expense_details['client_id']);
+    //update_workorder_last_active($expense_details['workorder_id']);
+    //update_invoice_last_active($invoice_id);
+
+    return true;
+    
+}
+
 /** Delete Functions **/
 
 #####################################
@@ -444,12 +478,6 @@ function last_expense_id_lookup() {
         //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has payments and is paid."));
         return false;        
     }
-    
-    /* Is cancelled
-    if($expense_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has been cancelled."));
-        return false;        
-    }*/
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
@@ -539,11 +567,11 @@ function check_expense_can_be_cancelled($expense_id) {
         return false;        
     }
         
-    /* Is cancelled
+    // Is cancelled
     if($expense_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The expense cannot be cancelled because the expense has already been cancelled."));
         return false;        
-    }*/
+    }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
@@ -583,11 +611,11 @@ function check_expense_can_be_deleted($expense_id) {
         return false;        
     }
     
-    /* Is cancelled
+    // Is cancelled
     if($expense_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has been cancelled."));
         return false;        
-    }*/
+    }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
@@ -627,11 +655,11 @@ function check_expense_can_be_deleted($expense_id) {
         return false;        
     }
     
-    /* Is cancelled
+    // Is cancelled
     if($expense_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has been cancelled."));
         return false;        
-    }*/
+    }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {

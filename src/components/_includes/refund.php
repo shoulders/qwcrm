@@ -368,6 +368,40 @@ function update_refund_status($refund_id, $new_status, $silent = false) {
 
 /** Close Functions **/
 
+#####################################
+#   Cancel Refund                   #
+#####################################
+
+function cancel_refund($refund_id) {
+    
+    // Make sure the refund can be cancelled
+    if(!check_refund_can_be_cancelled($refund_id)) {        
+        return false;
+    }
+    
+    // Get refund details
+    $refund_details = get_refund_details($refund_id);  
+    
+    // Change the refund status to cancelled (I do this here to maintain consistency)
+    update_refund_status($refund_id, 'cancelled');      
+        
+    // Create a Workorder History Note  
+    insert_workorder_history_note($refund_details['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+    
+    // Log activity        
+    $record = _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    //write_record_to_activity_log($record, $refund_details['employee_id'], $refund_details['client_id'], $refund_details['workorder_id'], $invoice_id);
+    write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+
+    // Update last active record
+    update_client_last_active($refund_details['client_id']);
+    update_workorder_last_active($refund_details['workorder_id']);
+    update_invoice_last_active($refund_details['invoice_id']);
+
+    return true;
+    
+}
+
 /** Delete Functions **/
 
 #####################################
@@ -456,12 +490,6 @@ function last_refund_id_lookup() {
         return false;        
     }
     
-    /* Is cancelled
-    if($refund_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has been cancelled."));
-        return false;        
-    }*/
-    
     // Is deleted
     if($refund_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has been deleted."));
@@ -532,12 +560,6 @@ function check_refund_can_be_cancelled($refund_id) {
     // Get the refund details
     $refund_details = get_refund_details($refund_id);
     
-    // Does not have a balance
-    if($refund_details['balance'] == 0) {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be cancelled because the refund does not have a balance."));
-        return false;
-    }
-    
     // Is partially paid
     if($refund_details['status'] == 'partially_paid') {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be cancelled because the refund is partially paid."));
@@ -588,11 +610,11 @@ function check_refund_can_be_deleted($refund_id) {
         return false;        
     }
     
-    /* Is cancelled
+    // Is cancelled
     if($refund_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it has been cancelled."));
         return false;        
-    }*/
+    }
     
     // Is deleted
     if($refund_details['status'] == 'deleted') {
@@ -632,11 +654,11 @@ function check_refund_can_be_deleted($refund_id) {
         return false;        
     }
     
-    /* Is cancelled
+    // Is cancelled
     if($refund_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it already been deleted."));
         return false;        
-    }*/
+    }
     
     // Is deleted
     if($refund_details['status'] == 'deleted') {

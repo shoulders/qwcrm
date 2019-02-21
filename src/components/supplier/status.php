@@ -30,6 +30,7 @@ if(isset($VAR['delete'])) {
 $smarty->assign('allowed_to_change_status',     false       );
 $smarty->assign('supplier_status',              get_supplier_details($VAR['supplier_id'], 'status')             );
 $smarty->assign('supplier_statuses',            get_supplier_statuses() );
+$smarty->assign('allowed_to_cancel',            false      );
 $smarty->assign('allowed_to_delete',            check_supplier_can_be_deleted($VAR['supplier_id'])              );
 $smarty->assign('supplier_selectable_statuses',     get_supplier_statuses(true) );
 

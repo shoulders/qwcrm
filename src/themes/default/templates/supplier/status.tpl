@@ -27,7 +27,7 @@
                             </tr>
                             <tr>
                             
-                                <!-- Update Status -->
+                                <!-- Update Status Button -->
                                 <td class="olotd4" align="center" width="33%">
                                     {if $allowed_to_change_status}
                                         <p>&nbsp;</p>                                    
@@ -56,19 +56,23 @@
                                     {/if}
                                 </td>
 
-                                <!--  --> 
-                                <td class="olotd4" align="center" width="33%">
-                                    <p>&nbsp;</p> 
-                                </td>
+                                <!-- Cancel Button -->
+                                <td class="olotd4" align="center" width="33%"> 
+                                    {if $allowed_to_cancel}
+                                        <button type="button" class="olotd4" onclick="if (confirmChoice('{t}Are you sure you want to cancel this supplier?{/t}')) window.location.href='index.php?component=supplier&page_tpl=cancel&supplier_id={$supplier_id}';">{t}Cancel{/t}</button>                                                                                   
+                                    {else}
+                                        {t}This Supplier cannot be cancelled because it's status does not allow it.{/t}
+                                    {/if}                                        
+                                </td> 
 
-                                <!-- Delete Supplier -->                        
+                                <!-- Delete Button -->                        
                                 <td class="olotd4" align="center" width="33%">                                                                       
                                     {if $allowed_to_delete}
                                         <form method="post" action="index.php?component=supplier&page_tpl=delete&supplier_id={$supplier_id}">
                                             <input name="delete" value="{t}Delete{/t}" type="submit" onclick="return confirmChoice('{t}Are you sure you want to delete this Supplier?{/t}');">                                            
                                         </form>                                            
                                     {else}
-                                        {t}This Supplier cannot be deleted because it's status, or the attached invoice's status does not allow it.{/t}
+                                        {t}This Supplier cannot be deleted because it's status does not allow it.{/t}
                                     {/if}                                        
                                 </td>                                
                                 
