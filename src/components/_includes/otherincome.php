@@ -409,7 +409,7 @@ function delete_otherincome($otherincome_id) {
         vat_rate            = '0.00',
         vat_amount          = '0.00',
         gross_amount        = '0.00',
-        status              = '', 
+        status              = 'deleted', 
         items               = '',
         note                = ''
         WHERE otherincome_id =". $db->qstr($otherincome_id);

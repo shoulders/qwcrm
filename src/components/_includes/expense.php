@@ -418,7 +418,7 @@ function delete_expense($expense_id) {
             vat_rate            = '0.00',
             vat_amount          = '0.00',
             gross_amount        = '0.00',
-            status              = '', 
+            status              = 'deleted', 
             items               = '',
             note                = ''
             WHERE expense_id    =". $db->qstr($expense_id);

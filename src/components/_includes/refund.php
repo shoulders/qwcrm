@@ -428,7 +428,7 @@ function delete_refund($refund_id) {
             vat_rate            = '0.00',
             vat_amount          = '0.00',
             gross_amount        = '0.00',
-            status              = '', 
+            status              = 'deleted', 
             items               = '',
             note                = ''
             WHERE refund_id    =". $db->qstr($refund_id);
