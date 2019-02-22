@@ -160,7 +160,7 @@ function insert_otherincome($VAR) {
     } else {
         
         // Log activity        
-        $record = _gettext("Refund Record").' '.$db->Insert_ID().' '._gettext("created.");
+        $record = _gettext("Otherincome Record").' '.$db->Insert_ID().' '._gettext("created.");
         write_record_to_activity_log($record, null, null, null, null);
         
         return $db->Insert_ID();
@@ -293,7 +293,7 @@ function update_otherincome($VAR) {
     } else {
         
         // Log activity        
-        $record = _gettext("Refund Record").' '.$VAR['otherincome_id'].' '._gettext("updated.");
+        $record = _gettext("Otherincome Record").' '.$VAR['otherincome_id'].' '._gettext("updated.");
         write_record_to_activity_log($record, null, null, null, null);
         
         return true;
