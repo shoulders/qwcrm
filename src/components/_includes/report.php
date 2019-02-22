@@ -102,15 +102,15 @@ function count_clients($start_date = null, $end_date = null, $status = null) {
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."client_records.client_id\n";    
+            
+    // Filter by Create Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."client_records.create_date >= ".$db->qstr($start_date)." AND ".PRFX."client_records.create_date <= ".$db->qstr($end_date.' 23:59:59');
+    }
     
     // Restrict by Status
     if($status) {        
         $whereTheseRecords .= " AND ".PRFX."client_records.active= ".$db->qstr($status);            
-    }
-        
-    // Filter by Create Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."client_records.create_date >= ".$db->qstr($start_date)." AND ".PRFX."client_records.create_date <= ".$db->qstr($end_date.' 23:59:59');
     }
     
     $sql = "SELECT COUNT(*) AS count
@@ -141,7 +141,7 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
     if($record_set) {
     
         $common_stats = array(
-            "count_open"            =>  count_workorders('open', $start_date, $end_date, $employee_id, $client_id)            
+            "count_open"            =>  count_workorders($start_date, $end_date, 'open', $employee_id, $client_id)            
         );
 
         $stats = array_merge($stats, $common_stats);
@@ -152,15 +152,15 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
     if($record_set == 'current' || $record_set == 'all') {        
         
         $current_stats = array(
-            "count_unassigned"              =>  count_workorders('unassigned', $start_date, $end_date, $employee_id, $client_id),
-            "count_assigned"                =>  count_workorders('assigned', $start_date, $end_date, $employee_id, $client_id),
-            "count_waiting_for_parts"       =>  count_workorders('waiting_for_parts', $start_date, $end_date, $employee_id, $client_id),
-            "count_scheduled"               =>  count_workorders('scheduled', $start_date, $end_date, $employee_id, $client_id),
-            "count_with_client"             =>  count_workorders('with_client', $start_date, $end_date, $employee_id, $client_id),
-            "count_on_hold"                 =>  count_workorders('on_hold', $start_date, $end_date, $employee_id, $client_id),
-            "count_management"              =>  count_workorders('management', $start_date, $end_date, $employee_id, $client_id),
-            "count_closed_without_invoice"  =>  count_workorders('closed_without_invoice', $start_date, $end_date, $employee_id, $client_id),
-            "count_closed_with_invoice"     =>  count_workorders('closed_with_invoice', $start_date, $end_date, $employee_id, $client_id)
+            "count_unassigned"              =>  count_workorders($start_date, $end_date, 'unassigned', $employee_id, $client_id),
+            "count_assigned"                =>  count_workorders($start_date, $end_date, 'assigned', $employee_id, $client_id),
+            "count_waiting_for_parts"       =>  count_workorders($start_date, $end_date, 'waiting_for_parts',$employee_id, $client_id),
+            "count_scheduled"               =>  count_workorders($start_date, $end_date, 'scheduled', $employee_id, $client_id),
+            "count_with_client"             =>  count_workorders($start_date, $end_date, 'with_client', $employee_id, $client_id),
+            "count_on_hold"                 =>  count_workorders($start_date, $end_date, 'on_hold', $employee_id, $client_id),
+            "count_management"              =>  count_workorders($start_date, $end_date, 'management', $employee_id, $client_id),
+            "count_closed_without_invoice"  =>  count_workorders($start_date, $end_date, 'closed_without_invoice', $employee_id, $client_id),
+            "count_closed_with_invoice"     =>  count_workorders($start_date, $end_date, 'closed_with_invoice', $employee_id, $client_id)
             
         );
         
@@ -172,9 +172,9 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
     if($record_set == 'historic' || $record_set == 'all') {       
         
         $historic_stats = array(
-            "count_open"                    =>  count_workorders('open', $start_date, $end_date, $employee_id, $client_id),
-            "count_opened"                  =>  count_workorders('opened', $start_date, $end_date, $employee_id, $client_id),            
-            "count_closed"                  =>  count_workorders('closed', $start_date, $end_date, $employee_id, $client_id)
+            "count_open"                    =>  count_workorders($start_date, $end_date, 'open', $employee_id, $client_id),
+            "count_opened"                  =>  count_workorders($start_date, $end_date, 'opened', $employee_id, $client_id),            
+            "count_closed"                  =>  count_workorders($start_date, $end_date, 'closed', $employee_id, $client_id)
             
         );
         
@@ -190,12 +190,21 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
 #     Count Work Orders                 #
 #########################################
 
-function count_workorders($status = null, $start_date = null, $end_date = null, $employee_id = null, $client_id =null) {
+function count_workorders($start_date = null, $end_date = null, $status = null, $employee_id = null, $client_id =null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";  
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        if($status == 'closed') {       
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+        } else {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+        }
+    }
     
     // Restrict by Status
     if($status) {        
@@ -210,16 +219,7 @@ function count_workorders($status = null, $start_date = null, $end_date = null, 
             $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$db->qstr($status);                       
         }
         
-    }   
-    
-    // Filter by Date
-    if($start_date && $end_date) {
-        if($status == 'closed') {       
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
-        } else {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
-        }
-    }
+    }       
     
     // Filter by Employee
     if($employee_id) {
@@ -293,19 +293,19 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'current' || $record_set == 'all') {
     
         $current_stats = array(
-            "count_open"            =>  count_invoices('open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "count_discounted"      =>  count_invoices('discounted', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "count_deleted"         =>  count_invoices('deleted', $start_date, $end_date, null, null, $employee_id, $client_id),         // Not always available  
+            "count_open"            =>  count_invoices($start_date, $end_date, null, 'open', null, $employee_id, $client_id),
+            "count_discounted"      =>  count_invoices($start_date, $end_date, null, 'discounted', null, $employee_id, $client_id),
+            "count_deleted"         =>  count_invoices($start_date, $end_date, null, 'deleted', null, $employee_id, $client_id),         // Not always available  
             
-            "count_pending"         =>  count_invoices('pending', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_unpaid"          =>  count_invoices('unpaid', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_partially_paid"  =>  count_invoices('partially_paid', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_paid"            =>  count_invoices('paid', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_in_dispute"      =>  count_invoices('in_dispute', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_overdue"         =>  count_invoices('overdue', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_collections"     =>  count_invoices('collections', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_refunded"        =>  count_invoices('refunded', $start_date, $end_date, null, null, $employee_id, $client_id),   
-            "count_cancelled"       =>  count_invoices('cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)                    
+            "count_pending"         =>  count_invoices($start_date, $end_date, null, 'pending', null, $employee_id, $client_id),   
+            "count_unpaid"          =>  count_invoices($start_date, $end_date, null, 'unpaid', null, $employee_id, $client_id),   
+            "count_partially_paid"  =>  count_invoices($start_date, $end_date, null, 'partially_paid', null, $employee_id, $client_id),   
+            "count_paid"            =>  count_invoices($start_date, $end_date, null, 'paid', null, $employee_id, $client_id),   
+            "count_in_dispute"      =>  count_invoices($start_date, $end_date, null, 'in_dispute', null, $employee_id, $client_id),   
+            "count_overdue"         =>  count_invoices($start_date, $end_date, null, 'overdue', null, $employee_id, $client_id),   
+            "count_collections"     =>  count_invoices($start_date, $end_date, null, 'collections', null, $employee_id, $client_id),   
+            "count_refunded"        =>  count_invoices($start_date, $end_date, null, 'refunded', null, $employee_id, $client_id),   
+            "count_cancelled"       =>  count_invoices($start_date, $end_date, null, 'cancelled', null, $employee_id, $client_id)                    
         );
 
         $stats = array_merge($stats, $current_stats);
@@ -316,18 +316,18 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'historic' || $record_set == 'all') {       
         
         $historic_stats = array(                       
-            "count_opened"              =>  count_invoices('opened', $start_date, $end_date, 'opened', null, $employee_id, $client_id),
-            "count_closed"              =>  count_invoices('closed', $start_date, $end_date, 'closed', null, $employee_id, $client_id),            
+            "count_opened"              =>  count_invoices($start_date, $end_date, 'opened', 'opened', null, $employee_id, $client_id),
+            "count_closed"              =>  count_invoices($start_date, $end_date, 'closed', 'closed', null, $employee_id, $client_id),            
                                     
-            "count_closed_discounted"   =>  count_invoices('discounted', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
-            "count_closed_paid"         =>  count_invoices('paid', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
-            "count_closed_refunded"     =>  count_invoices('refunded', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
-            "count_closed_cancelled"    =>  count_invoices('cancelled', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
+            "count_closed_discounted"   =>  count_invoices($start_date, $end_date, 'closed', 'discounted', null, $employee_id, $client_id),
+            "count_closed_paid"         =>  count_invoices($start_date, $end_date, 'closed', 'paid', null, $employee_id, $client_id),
+            "count_closed_refunded"     =>  count_invoices($start_date, $end_date, 'closed', 'refunded', null, $employee_id, $client_id),
+            "count_closed_cancelled"    =>  count_invoices($start_date, $end_date, 'closed', 'cancelled', null, $employee_id, $client_id),
             
             // Only used for Basic Stats (when redevelop page, tidy this, these are not historic)
-            "invoiced_total"            =>  sum_invoices('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "received_monies"           =>  sum_invoices('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "outstanding_balance"       =>  sum_invoices('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id)
+            "invoiced_total"            =>  sum_invoices('open', $start_date, $end_date, null, 'gross_amount', null, $employee_id, $client_id),
+            "received_monies"           =>  sum_invoices('open', $start_date, $end_date, null, 'paid_amount', null, $employee_id, $client_id),
+            "outstanding_balance"       =>  sum_invoices('open', $start_date, $end_date, null, 'balance', null, $employee_id, $client_id)
         );
         
         $stats = array_merge($stats, $historic_stats);
@@ -338,22 +338,22 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'revenue' || $record_set == 'all') {       
         
         $revenue_stats = array(                                   
-            "sum_sub_total"             =>  sum_invoices('sub_total', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_discount_amount"       =>  sum_invoices('discount_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
-            "sum_net_amount"            =>  sum_invoices('net_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_tax_amount"            =>  sum_invoices('tax_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
-            "sum_gross_amount"          =>  sum_invoices('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
-            "sum_paid_amount"           =>  sum_invoices('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),         
-            "sum_balance"               =>  sum_invoices('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
+            "sum_sub_total"             =>  sum_invoices('open', $start_date, $end_date, null, 'sub_total', null, $employee_id, $client_id),
+            "sum_discount_amount"       =>  sum_invoices('open', $start_date, $end_date, null, 'discount_amount', null, $employee_id, $client_id),           
+            "sum_net_amount"            =>  sum_invoices('open', $start_date, $end_date, null, 'net_amount', null, $employee_id, $client_id),
+            "sum_tax_amount"            =>  sum_invoices('open', $start_date, $end_date, null, 'tax_amount', null, $employee_id, $client_id),           
+            "sum_gross_amount"          =>  sum_invoices('open', $start_date, $end_date, null, 'gross_amount', null, $employee_id, $client_id),            
+            "sum_paid_amount"           =>  sum_invoices('open', $start_date, $end_date, null, 'paid_amount', null, $employee_id, $client_id),         
+            "sum_balance"               =>  sum_invoices('open', $start_date, $end_date, null, 'balance', null, $employee_id, $client_id),            
             
-            "sum_sales_tax_amount"      =>  sum_invoices('tax_amount', 'open', $start_date, $end_date, null, 'sales_tax', $employee_id, $client_id),
-            "sum_vat_tax_amount"        =>  sum_invoices('tax_amount', 'open', $start_date, $end_date, null, 'vat_standard', $employee_id, $client_id),
+            "sum_sales_tax_amount"      =>  sum_invoices('open', $start_date, $end_date, null, 'tax_amount', 'sales_tax', $employee_id, $client_id),
+            "sum_vat_tax_amount"        =>  sum_invoices('open', $start_date, $end_date, null, 'tax_amount', 'vat_standard', $employee_id, $client_id),
             
-            "sum_refunded_net"          =>  sum_invoices('net_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_refunded_gross"        =>  sum_invoices('gross_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_refunded_net"          =>  sum_invoices('refunded', $start_date, $end_date, null, 'net_amount', null, $employee_id, $client_id),
+            "sum_refunded_gross"        =>  sum_invoices('refunded', $start_date, $end_date, null, 'gross_amount', null, $employee_id, $client_id),
             
-            "sum_cancelled_net"         =>  sum_invoices('net_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_cancelled_gross"       =>  sum_invoices('gross_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)                    
+            "sum_cancelled_net"         =>  sum_invoices('cancelled', $start_date, $end_date, null, 'net_amount', null, $employee_id, $client_id),
+            "sum_cancelled_gross"       =>  sum_invoices('cancelled', $start_date, $end_date, null, 'gross_amount', null, $employee_id, $client_id)                    
         );
         
         $stats = array_merge($stats, $revenue_stats);
@@ -364,9 +364,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'labour' || $record_set == 'all') {       
         
         $labour_stats = array(                 
-            "labour_count_items"    =>  count_labour_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
-            "labour_sum_items"      =>  sum_labour_items('unit_qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
-            "labour_sum_sub_total"  =>  sum_labour_items('sub_total_net', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour               
+            "labour_count_items"    =>  count_labour_items($start_date, $end_date, null, null, $employee_id, $client_id),              // Total Different Items
+            "labour_sum_items"      =>  sum_labour_items('unit_qty', $start_date, $end_date, null, null, $employee_id, $client_id),         // Total Items
+            "labour_sum_sub_total"  =>  sum_labour_items('sub_total_net', $start_date, $end_date, null, null, $employee_id, $client_id)    // Total net amount for labour               
         );
         
         $stats = array_merge($stats, $labour_stats);
@@ -377,9 +377,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'parts' || $record_set == 'all') {       
         
         $parts_stats = array(                       
-            "parts_count_items"    =>  count_parts_items(null, $start_date, $end_date, $employee_id, $client_id),              // Total Different Items
-            "parts_sum_items"      =>  sum_parts_items('unit_qty', null, $start_date, $end_date, $employee_id, $client_id),         // Total Items
-            "parts_sum_sub_total"  =>  sum_parts_items('sub_total_net', null, $start_date, $end_date, $employee_id, $client_id)    // Total net amount for labour
+            "parts_count_items"    =>  count_parts_items($start_date, $end_date, null, null, $employee_id, $client_id),              // Total Different Items
+            "parts_sum_items"      =>  sum_parts_items('unit_qty', $start_date, $end_date, null, null, $employee_id, $client_id),         // Total Items
+            "parts_sum_sub_total"  =>  sum_parts_items('sub_total_net', $start_date, $end_date, null, null, $employee_id, $client_id)    // Total net amount for labour
         );
         
         $stats = array_merge($stats, $parts_stats);
@@ -452,18 +452,18 @@ function invoice_build_filter_by_date($start_date = null, $end_date = null, $dat
 #     Count Invoices                               #
 ####################################################
 
-function count_invoices($status = null, $start_date = null, $end_date = null,  $date_type = null, $tax_system = null, $employee_id = null, $client_id = null) {   
+function count_invoices($start_date = null, $end_date = null, $date_type = null, $status = null, $tax_system = null, $employee_id = null, $client_id = null) {   
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";  
+                
+    // Filter by Date
+    $whereTheseRecords .= invoice_build_filter_by_date($status, $start_date, $end_date, $date_type);
     
     // Restrict by Status
     $whereTheseRecords .= invoice_build_filter_by_status($status);
-            
-    // Filter by Date
-    $whereTheseRecords .= invoice_build_filter_by_date($status, $start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -499,18 +499,18 @@ function count_invoices($status = null, $start_date = null, $end_date = null,  $
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $employee_id = null, $client_id = null) {
+function sum_invoices($value_name, $start_date = null, $end_date = null, $date_type = null, $status = null, $tax_system = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n"; 
+                   
+    // Filter by Date
+    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Restrict by Status
     $whereTheseRecords .= invoice_build_filter_by_status($status);
-            
-    // Filter by Date
-    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -548,18 +548,18 @@ function sum_invoices($value_name, $status = null, $start_date = null, $end_date
 #  Count labour items   #
 #########################
 
-function count_labour_items($status, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function count_labour_items($start_date = null, $end_date = null, $date_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();    
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_labour.invoice_labour_id\n";    
+                
+    // Filter by Date
+    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Restrict by Status
     $whereTheseRecords .= invoice_build_filter_by_status($status);
-            
-    // Filter by Date
-    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
         
     // Filter by Employee
     if($employee_id) {
@@ -590,7 +590,7 @@ function count_labour_items($status, $start_date = null, $end_date = null, $date
 #  Sum selected value of labour items   #
 #########################################
 
-function sum_labour_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+function sum_labour_items($value_name, $start_date = null, $end_date = null, $date_type = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();   
     
@@ -599,12 +599,12 @@ function sum_labour_items($value_name, $status = null, $start_date = null, $end_
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_labour.invoice_labour_id\n"; 
+                
+    // Filter by Date
+    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Restrict by Status
     $whereTheseRecords .= invoice_build_filter_by_status($status);
-            
-    // Filter by Date
-    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
         
     // Filter by Employee
     if($employee_id) {
@@ -642,18 +642,18 @@ function sum_labour_items($value_name, $status = null, $start_date = null, $end_
 #  Count parts items   #
 ########################
 
-function count_parts_items($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+function count_parts_items($start_date = null, $end_date = null, $date_type = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();    
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_parts.invoice_parts_id\n";    
+                
+    // Filter by Date
+    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Restrict by Status
     $whereTheseRecords .= invoice_build_filter_by_status($status);
-            
-    // Filter by Date
-    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
         
     // Filter by Employee
     if($employee_id) {
@@ -690,7 +690,7 @@ function count_parts_items($status = null, $start_date = null, $end_date = null,
 #  Sum selected value of Parts    #
 ###################################
 
-function sum_parts_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function sum_parts_items($value_name, $start_date = null, $end_date = null, $date_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();   
     
@@ -700,11 +700,11 @@ function sum_parts_items($value_name, $status = null, $start_date = null, $end_d
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."invoice_parts.invoice_parts_id\n"; 
     
-    // Restrict by Status
-    $whereTheseRecords .= invoice_build_filter_by_status($status);
-            
     // Filter by Date
     $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
+    
+    // Restrict by Status
+    $whereTheseRecords .= invoice_build_filter_by_status($status);
         
     // Filter by Employee
     if($employee_id) {
@@ -1031,15 +1031,15 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
     
         $current_stats = array(
                         
-            "count_open"        =>  count_vouchers('open', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_open"        =>  count_vouchers($start_date, $end_date, null, 'open', $employee_id, $client_id),
             
-            "count_unused"      =>  count_vouchers('unused', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_redeemed"    =>  count_vouchers('redeemed', $start_date, $end_date, null,  $employee_id, $client_id),
-            "count_suspended"   =>  count_vouchers('suspended', $start_date, $end_date, null, $employee_id, $client_id),            
-            "count_expired"     =>  count_vouchers('expired', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_refunded"    =>  count_vouchers('refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_cancelled"   =>  count_vouchers('refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_deleted"     =>  count_vouchers('deleted', $start_date, $end_date, null, $employee_id, $client_id), // not always available                
+            "count_unused"      =>  count_vouchers($start_date, $end_date, null, 'unused', $employee_id, $client_id),
+            "count_redeemed"    =>  count_vouchers($start_date, $end_date, null, 'redeemed', $employee_id, $client_id),
+            "count_suspended"   =>  count_vouchers($start_date, $end_date, null, 'suspended', $employee_id, $client_id),            
+            "count_expired"     =>  count_vouchers($start_date, $end_date, null, 'expired', $employee_id, $client_id),
+            "count_refunded"    =>  count_vouchers($start_date, $end_date, null, 'refunded', $employee_id, $client_id),
+            "count_cancelled"   =>  count_vouchers($start_date, $end_date, null, 'refunded', $employee_id, $client_id),
+            "count_deleted"     =>  count_vouchers($start_date, $end_date, null, 'deleted', $employee_id, $client_id), // not always available                
              
         );
 
@@ -1051,11 +1051,11 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'historic' || $record_set == 'all') {       
         
         $historic_stats = array(                       
-            "count_opened"      =>  count_vouchers('opened', $start_date, $end_date, null, $employee_id, $client_id),
-            "count_closed"      =>  count_vouchers('closed', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_opened"      =>  count_vouchers($start_date, $end_date, null, 'opened', $employee_id, $client_id),
+            "count_closed"      =>  count_vouchers($start_date, $end_date, null, 'closed', $employee_id, $client_id),
 
             // This is where the client has used a Voucher from someone else      
-            "count_claimed"     =>  count_vouchers('claimed', $start_date, $end_date, null, $employee_id, $client_id),
+            "count_claimed"     =>  count_vouchers($start_date, $end_date, null, 'claimed', $employee_id, $client_id),
             
         );
         
@@ -1068,18 +1068,18 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         
         $revenue_stats = array(                       
             
-            "sum_opened"        =>  sum_vouchers('unit_net', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_closed"        =>  sum_vouchers('unit_net', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_opened"        =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'opened', $employee_id, $client_id),
+            "sum_closed"        =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'closed', $employee_id, $client_id),
             
-            "sum_unused"        =>  sum_vouchers('unit_net', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_redeemed"      =>  sum_vouchers('unit_net', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_suspended"     =>  sum_vouchers('unit_net', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
-            "sum_expired"       =>  sum_vouchers('unit_net', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_refunded"      =>  sum_vouchers('unit_net', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_cancelled"     =>  sum_vouchers('unit_net', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_unused"        =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'unused', $employee_id, $client_id),
+            "sum_redeemed"      =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'redeemed', $employee_id, $client_id),
+            "sum_suspended"     =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'suspended', $employee_id, $client_id),            
+            "sum_expired"       =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'expired', $employee_id, $client_id),
+            "sum_refunded"      =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'refunded', $employee_id, $client_id),
+            "sum_cancelled"     =>  sum_vouchers('unit_net', $start_date, $end_date, null, 'cancelled', $employee_id, $client_id),
             
             // This is where the client has used a Voucher from someone else
-            "sum_claimed"       =>  sum_vouchers('unit_net', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
+            "sum_claimed"       =>  sum_vouchers('unit_net', $start_date, $end_date, 'date', 'claimed', $employee_id, $client_id)
             
         );
         
@@ -1095,18 +1095,18 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
 #     Count Vouchers                    #
 #########################################
 
-function count_vouchers($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function count_vouchers($start_date = null, $end_date = null, $date_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
+                
+    // Filter by Date
+    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Restrict by Status
     $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
-            
-    // Filter by Date
-    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
 
     // Filter by Employee
     if($employee_id) {
@@ -1139,18 +1139,18 @@ function count_vouchers($status = null, $start_date = null, $end_date = null, $d
 #  Sum selected value of Vouchers         #
 ###########################################
 
-function sum_vouchers($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+function sum_vouchers($value_name, $start_date = null, $end_date = null, $date_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
-        
-    // Restrict by Status
-    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
-            
+                    
     // Filter by Date
     $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
+    
+    // Restrict by Status
+    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
     
     // Filter by Employee
     if($employee_id) {
@@ -1216,7 +1216,7 @@ function voucher_build_filter_by_status($status = null, $client_id = null) {
 #   Build Voucher Date filter SQL   #
 #####################################
 
-function voucher_build_filter_by_date($start_date = null,  $end_date = null, $date_type = null) {
+function voucher_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
     
     $db = QFactory::getDbo();
      
@@ -1260,8 +1260,8 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'current' || $record_set == 'all') {
     
         $current_stats = array(
-            "count_valid"               =>  count_payments('valid', null, $start_date, $end_date, $employee_id, $client_id),
-            "count_deleted"             =>  count_payments('deleted', null, $start_date, $end_date, $employee_id, $client_id)         // Not currently used                 
+            "count_valid"               =>  count_payments($start_date, $end_date, 'valid', null, $employee_id, $client_id),
+            "count_deleted"             =>  count_payments($start_date, $end_date, 'deleted', null, $employee_id, $client_id)         // Not currently used                 
              
         );
 
@@ -1274,8 +1274,8 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         
         $historic_stats = array(                       
             
-            "count_received"            =>  count_payments(null, 'received', $start_date, $end_date, $employee_id, $client_id),
-            "count_transmitted"         =>  count_payments(null, 'transmitted', $start_date, $end_date, $employee_id, $client_id),
+            "count_received"            =>  count_payments($start_date, $end_date, null, 'received', $employee_id, $client_id),
+            "count_transmitted"         =>  count_payments($start_date, $end_date, null, 'transmitted', $employee_id, $client_id),
         );
         
         $stats = array_merge($stats, $historic_stats);
@@ -1287,8 +1287,8 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         
         $revenue_stats = array(                       
             
-            "sum_received"               =>  sum_payments(null, 'received', $start_date, $end_date, $employee_id, $client_id),
-            "sum_transmitted"            =>  sum_payments(null, 'transmitted', $start_date, $end_date, $employee_id, $client_id) 
+            "sum_received"               =>  sum_payments($start_date, $end_date, null, 'received', $employee_id, $client_id),
+            "sum_transmitted"            =>  sum_payments($start_date, $end_date, null, 'transmitted', $employee_id, $client_id) 
             
         );
         
@@ -1304,21 +1304,21 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
 #     Count Payments                               #
 ####################################################
 
-function count_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null, $invoice_id = null) {   
+function count_payments($start_date = null, $end_date = null, $status = null, $type = null, $employee_id = null, $client_id = null, $invoice_id = null) {   
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";  
     
+    // Filter by Date
+    $whereTheseRecords .= payment_build_filter_by_date($status, $start_date, $end_date);
+    
     // Restrict by Status
     $whereTheseRecords .= payment_build_filter_by_status($status);
     
     // Restrict by Type
     $whereTheseRecords .= payment_build_filter_by_type($type); 
-            
-    // Filter by Date
-    $whereTheseRecords .= payment_build_filter_by_date($status, $start_date, $end_date);
     
     // Filter by Employee
     if($employee_id) {
@@ -1354,22 +1354,22 @@ function count_payments($status = null, $type = null, $start_date = null, $end_d
 #  Sum selected value of payments       #
 #########################################
 
-function sum_payments($status = null, $type = null, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+function sum_payments($start_date = null, $end_date = null, $status = null, $type = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
     
+    // Filter by Date
+    $whereTheseRecords .= payment_build_filter_by_date($start_date, $end_date);
+    
     // Restrict by Status
     $whereTheseRecords .= payment_build_filter_by_status($status);
       
     // Restrict by Type
     $whereTheseRecords .= payment_build_filter_by_type($type);    
-          
-    // Filter by Date
-    $whereTheseRecords .= payment_build_filter_by_date($start_date, $end_date);
-    
+              
     // Filter by Employee
     if($employee_id) {
         $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($employee_id);
