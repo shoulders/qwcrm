@@ -325,9 +325,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
             "count_closed_cancelled"    =>  count_invoices('cancelled', $start_date, $end_date, 'closed', null, $employee_id, $client_id),
             
             // Only used for Basic Stats (when redevelop page, tidy this, these are not historic)
-            "invoiced_total"            =>  sum_invoices_items('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "received_monies"           =>  sum_invoices_items('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "outstanding_balance"       =>  sum_invoices_items('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id)
+            "invoiced_total"            =>  sum_invoices('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "received_monies"           =>  sum_invoices('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "outstanding_balance"       =>  sum_invoices('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id)
         );
         
         $stats = array_merge($stats, $historic_stats);
@@ -338,22 +338,22 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'revenue' || $record_set == 'all') {       
         
         $revenue_stats = array(                                   
-            "sum_sub_total"             =>  sum_invoices_items('sub_total', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_discount_amount"       =>  sum_invoices_items('discount_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
-            "sum_net_amount"            =>  sum_invoices_items('net_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_tax_amount"            =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
-            "sum_gross_amount"          =>  sum_invoices_items('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
-            "sum_paid_amount"           =>  sum_invoices_items('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),         
-            "sum_balance"               =>  sum_invoices_items('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
+            "sum_sub_total"             =>  sum_invoices('sub_total', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_discount_amount"       =>  sum_invoices('discount_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
+            "sum_net_amount"            =>  sum_invoices('net_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_tax_amount"            =>  sum_invoices('tax_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),           
+            "sum_gross_amount"          =>  sum_invoices('gross_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
+            "sum_paid_amount"           =>  sum_invoices('paid_amount', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),         
+            "sum_balance"               =>  sum_invoices('balance', 'open', $start_date, $end_date, null, null, $employee_id, $client_id),            
             
-            "sum_sales_tax_amount"      =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'sales_tax', $employee_id, $client_id),
-            "sum_vat_tax_amount"        =>  sum_invoices_items('tax_amount', 'open', $start_date, $end_date, null, 'vat_standard', $employee_id, $client_id),
+            "sum_sales_tax_amount"      =>  sum_invoices('tax_amount', 'open', $start_date, $end_date, null, 'sales_tax', $employee_id, $client_id),
+            "sum_vat_tax_amount"        =>  sum_invoices('tax_amount', 'open', $start_date, $end_date, null, 'vat_standard', $employee_id, $client_id),
             
-            "sum_refunded_net"          =>  sum_invoices_items('net_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_refunded_gross"        =>  sum_invoices_items('gross_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_refunded_net"          =>  sum_invoices('net_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_refunded_gross"        =>  sum_invoices('gross_amount', 'refunded', $start_date, $end_date, null, null, $employee_id, $client_id),
             
-            "sum_cancelled_net"         =>  sum_invoices_items('net_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id),
-            "sum_cancelled_gross"       =>  sum_invoices_items('gross_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)                    
+            "sum_cancelled_net"         =>  sum_invoices('net_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id),
+            "sum_cancelled_gross"       =>  sum_invoices('gross_amount', 'cancelled', $start_date, $end_date, null, null, $employee_id, $client_id)                    
         );
         
         $stats = array_merge($stats, $revenue_stats);
@@ -499,7 +499,7 @@ function count_invoices($status = null, $start_date = null, $end_date = null,  $
 #  Sum selected value of invoices       #
 #########################################
 
-function sum_invoices_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $employee_id = null, $client_id = null) {
+function sum_invoices($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -741,9 +741,9 @@ function get_expenses_stats($start_date = null, $end_date = null, $employee_id =
     
     $stats = array(
         "count_items"       =>  count_expenses($start_date, $end_date, $employee_id, $client_id),
-        "sum_net_amount"    =>  sum_expenses_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_vat_amount"    =>  sum_expenses_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_gross_amount"  =>  sum_expenses_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+        "sum_net_amount"    =>  sum_expenses('net_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_vat_amount"    =>  sum_expenses('vat_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_gross_amount"  =>  sum_expenses('gross_amount', $start_date, $end_date, $employee_id, $client_id)
     );
 
     return $stats;
@@ -792,7 +792,7 @@ function count_expenses($start_date = null, $end_date = null, $invoice_id = null
 #  Sum selected value of expenses #
 ###################################
 
-function sum_expenses_items($value_name, $start_date = null, $end_date = null) {
+function sum_expenses($value_name, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
@@ -828,9 +828,9 @@ function get_refunds_stats($start_date = null, $end_date = null, $employee_id = 
     
     $stats = array(
         "count_items"       =>  count_refunds($start_date, $end_date, $employee_id, $client_id),
-        "sum_net_amount"    =>  sum_refunds_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_vat_amount"    =>  sum_refunds_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_gross_amount"  =>  sum_refunds_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+        "sum_net_amount"    =>  sum_refunds('net_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_vat_amount"    =>  sum_refunds('vat_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_gross_amount"  =>  sum_refunds('gross_amount', $start_date, $end_date, $employee_id, $client_id)
     );
 
     return $stats;
@@ -880,7 +880,7 @@ function count_refunds($start_date = null, $end_date = null, $invoice_id = null)
 #  Sum selected value of Refunds  #
 ###################################
 
-function sum_refunds_items($value_name, $start_date = null, $end_date = null) {
+function sum_refunds($value_name, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
@@ -916,9 +916,9 @@ function get_otherincomes_stats($start_date = null, $end_date = null, $employee_
     
     $stats = array(
         "count_items"       =>  count_otherincomes($start_date, $end_date, $employee_id, $client_id),
-        "sum_net_amount"    =>  sum_otherincomes_items('net_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_vat_amount"    =>  sum_otherincomes_items('vat_amount', $start_date, $end_date, $employee_id, $client_id),
-        "sum_gross_amount"  =>  sum_otherincomes_items('gross_amount', $start_date, $end_date, $employee_id, $client_id)
+        "sum_net_amount"    =>  sum_otherincomes('net_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_vat_amount"    =>  sum_otherincomes('vat_amount', $start_date, $end_date, $employee_id, $client_id),
+        "sum_gross_amount"  =>  sum_otherincomes('gross_amount', $start_date, $end_date, $employee_id, $client_id)
     );
 
     return $stats;
@@ -966,7 +966,7 @@ function count_otherincomes($start_date = null, $end_date = null, $invoice_id = 
 #  Sum selected value of Other Incomes  #
 #########################################
 
-function sum_otherincomes_items($value_name, $start_date = null, $end_date = null) {
+function sum_otherincomes($value_name, $start_date = null, $end_date = null) {
     
     $db = QFactory::getDbo();
     
@@ -1068,18 +1068,18 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         
         $revenue_stats = array(                       
             
-            "sum_opened"        =>  sum_vouchers_items('unit_net', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_closed"        =>  sum_vouchers_items('unit_net', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_opened"        =>  sum_vouchers('unit_net', 'opened', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_closed"        =>  sum_vouchers('unit_net', 'closed', $start_date, $end_date, null, $employee_id, $client_id),
             
-            "sum_unused"        =>  sum_vouchers_items('unit_net', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_redeemed"      =>  sum_vouchers_items('unit_net', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_suspended"     =>  sum_vouchers_items('unit_net', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
-            "sum_expired"       =>  sum_vouchers_items('unit_net', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_refunded"      =>  sum_vouchers_items('unit_net', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
-            "sum_cancelled"     =>  sum_vouchers_items('unit_net', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_unused"        =>  sum_vouchers('unit_net', 'unused', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_redeemed"      =>  sum_vouchers('unit_net', 'redeemed', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_suspended"     =>  sum_vouchers('unit_net', 'suspended', $start_date, $end_date, null, $employee_id, $client_id),            
+            "sum_expired"       =>  sum_vouchers('unit_net', 'expired', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_refunded"      =>  sum_vouchers('unit_net', 'refunded', $start_date, $end_date, null, $employee_id, $client_id),
+            "sum_cancelled"     =>  sum_vouchers('unit_net', 'cancelled', $start_date, $end_date, null, $employee_id, $client_id),
             
             // This is where the client has used a Voucher from someone else
-            "sum_claimed"       =>  sum_vouchers_items('unit_net', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
+            "sum_claimed"       =>  sum_vouchers('unit_net', 'claimed', $start_date, $end_date, 'date', $employee_id, $client_id)
             
         );
         
@@ -1088,6 +1088,92 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
     }     
        
     return $stats;
+    
+}
+
+#########################################
+#     Count Vouchers                    #
+#########################################
+
+function count_vouchers($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
+    
+    // Restrict by Status
+    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
+            
+    // Filter by Date
+    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
+
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id && $status != 'claimed') {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."voucher_records
+            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
+            ".$whereTheseRecords;    
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
+        
+    } else {      
+        
+        return $rs->fields['count'];
+        
+    }
+    
+}
+
+###########################################
+#  Sum selected value of Vouchers         #
+###########################################
+
+function sum_vouchers($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
+        
+    // Restrict by Status
+    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
+            
+    // Filter by Date
+    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.voucher_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id && $status != 'claimed') {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
+    }
+    
+    $sql = "SELECT SUM(".PRFX."voucher_records.$value_name) AS sum
+            FROM ".PRFX."voucher_records
+            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
+            ".$whereTheseRecords;
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
+    } else {
+        
+        return $rs->fields['sum'];
+        
+    }   
     
 }
 
@@ -1157,92 +1243,6 @@ function voucher_build_filter_by_date($start_date = null,  $end_date = null, $da
     }
         
     return $whereTheseRecords;
-    
-}
-
-#########################################
-#     Count Vouchers                    #
-#########################################
-
-function count_vouchers($status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
-    
-    // Restrict by Status
-    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
-            
-    // Filter by Date
-    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
-
-    // Filter by Employee
-    if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."voucher_records.employee_id=".$db->qstr($employee_id);
-    }
-    
-    // Filter by Client
-    if($client_id && $status != 'claimed') {
-        $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
-    }
-    
-    // Execute the SQL
-    $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."voucher_records
-            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
-            ".$whereTheseRecords;    
-            
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Vouchers."));
-        
-    } else {      
-        
-        return $rs->fields['count'];
-        
-    }
-    
-}
-
-###########################################
-#  Sum selected value of Vouchers         #
-###########################################
-
-function sum_vouchers_items($value_name, $status = null, $start_date = null, $end_date = null, $date_type = null, $employee_id = null, $client_id = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."voucher_records.voucher_id\n";  
-        
-    // Restrict by Status
-    $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
-            
-    // Filter by Date
-    $whereTheseRecords .= voucher_build_filter_by_date($start_date, $end_date, $date_type);
-    
-    // Filter by Employee
-    if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."voucher_records.voucher_records.employee_id=".$db->qstr($employee_id);
-    }
-    
-    // Filter by Client
-    if($client_id && $status != 'claimed') {
-        $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
-    }
-    
-    $sql = "SELECT SUM(".PRFX."voucher_records.$value_name) AS sum
-            FROM ".PRFX."voucher_records
-            LEFT JOIN ".PRFX."invoice_records ON ".PRFX."voucher_records.invoice_id = ".PRFX."invoice_records.invoice_id
-            ".$whereTheseRecords;
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Vouchers."));
-    } else {
-        
-        return $rs->fields['sum'];
-        
-    }   
     
 }
 
