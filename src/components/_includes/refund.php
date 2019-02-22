@@ -498,7 +498,7 @@ function last_refund_id_lookup() {
     }
         
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $refund_id)) {        
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {        
         //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has payments."));
         return false;        
     }*/
@@ -542,7 +542,7 @@ function check_refund_can_be_refunded($refund_id) {
     }    
 
     /* Has no payments (Fallback - is not needed because of statuses)
-    if(!count_payments(null, null, null, null, null, null, $refund_id)) {
+    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be refunded because the refund has no payments."));
         return false;        
     }*/
@@ -580,7 +580,7 @@ function check_refund_can_be_cancelled($refund_id) {
     }    
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $refund_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be cancelled because the refund has payments."));
         return false;        
     }*/
@@ -624,7 +624,7 @@ function check_refund_can_be_deleted($refund_id) {
     }
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $refund_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it has payments."));
         return false;        
     }*/ 
@@ -668,7 +668,7 @@ function check_refund_can_be_deleted($refund_id) {
     }
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $invoice_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments."));
         return false;        
     }*/    

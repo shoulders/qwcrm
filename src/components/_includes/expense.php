@@ -487,7 +487,7 @@ function last_expense_id_lookup() {
     }
         
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $expense_id)) {        
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {        
         //postEmulationWrite('warning_msg', _gettext("The expense status cannot be changed because the expense has payments."));
         return false;        
     }*/
@@ -531,13 +531,13 @@ function check_expense_can_be_refunded($expense_id) {
     }    
     
     /* Has no payments (Fallback - is not needed because of statuses)
-    if(!count_payments(null, null, null, null, null, null, $expense_id)) {
+    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be refunded because the expense has no payments."));
         return false;        
     }*/
 
     /* Has Refunds (should not be needed)
-    if(count_refunds(null, null, $expense_id) > 0) {
+    if(count_refunds(null, null, null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("The expense cannot be refunded because the expense has already been refunded."));
         return false;
     }*/
@@ -581,7 +581,7 @@ function check_expense_can_be_cancelled($expense_id) {
     }    
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $expense_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be cancelled because the expense has payments."));
         return false;        
     }*/
@@ -625,7 +625,7 @@ function check_expense_can_be_deleted($expense_id) {
     }
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $expense_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments."));
         return false;        
     }*/
@@ -669,7 +669,7 @@ function check_expense_can_be_deleted($expense_id) {
     }
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $invoice_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has payments."));
         return false;        
     }*/

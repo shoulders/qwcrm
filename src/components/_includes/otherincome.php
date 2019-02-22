@@ -479,7 +479,7 @@ function last_otherincome_id_lookup() {
     }
         
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $otherincome_id)) {        
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {        
         //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
         return false;        
     }*/
@@ -523,7 +523,7 @@ function check_otherincome_can_be_refunded($otherincome_id) {
     }    
 
     /* Has no payments  (Fallback - is not needed because of statuses)
-    if(!count_payments(null, null, null, null, null, null, $otherincome_id)) {
+    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
         return false;        
     }*/
@@ -567,7 +567,7 @@ function check_otherincome_can_be_cancelled($otherincome_id) {
     }    
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $otherincome_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
         return false;        
     }*/
@@ -611,7 +611,7 @@ function check_otherincome_can_be_deleted($otherincome_id) {
     }
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $otherincome_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments."));
         return false;        
     }*/
@@ -655,7 +655,7 @@ function check_otherincome_can_be_deleted($otherincome_id) {
     }
     
     /* Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, $invoice_id)) {
+    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments."));
         return false;        
     }*/    
