@@ -211,7 +211,7 @@ function insert_payment($qpayment) {
         insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Payment").' '.$insert_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        $record = _gettext("Payment").' '.$insert_id.' '._gettext("added.");
+        $record = _gettext("Payment").' '.$insert_id.' '._gettext("created.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $qpayment['invoice_id']);
         
         // Update last active record    
@@ -426,7 +426,7 @@ function update_payment($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."payment_records SET        
-            employee_id     = ".$db->qstr( $VAR['employee_id']              ).",
+            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id ).",
             client_id       = ".$db->qstr( $VAR['client_id']                ).",
             workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
             invoice_id      = ".$db->qstr( $VAR['invoice_id']               ).",            
@@ -450,7 +450,7 @@ function update_payment($VAR) {
 
         // Log activity 
         $record = _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated.");
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['client_id'], $VAR['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
         update_client_last_active($VAR['client_id']);

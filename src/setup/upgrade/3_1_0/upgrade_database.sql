@@ -761,6 +761,15 @@ ALTER TABLE `#__refund_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLL
 ALTER TABLE `#__supplier_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `country`;
 
 --
+-- Add employee_id to various components
+--
+
+ALTER TABLE `#__expense_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `expense_id`;
+ALTER TABLE `#__otherincome_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `otherincome_id`;
+ALTER TABLE `#__refund_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `refund_id`;
+ALTER TABLE `#__supplier_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `supplier_id`;
+
+--
 -- Change from int(10) to int(11)
 --
 

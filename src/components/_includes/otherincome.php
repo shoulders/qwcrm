@@ -133,7 +133,7 @@ function display_otherincomes($order_by, $direction, $use_pages = false, $record
 /** Insert Functions **/
 
 ##########################################
-#      Insert Refund                     #
+#      Insert Otherincome                #
 ##########################################
 
 function insert_otherincome($VAR) {
@@ -141,6 +141,7 @@ function insert_otherincome($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."otherincome_records SET
+            employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             tax_system       =". $db->qstr(get_company_details('tax_system')).",            
@@ -161,8 +162,8 @@ function insert_otherincome($VAR) {
         
         // Log activity        
         $record = _gettext("Otherincome Record").' '.$db->Insert_ID().' '._gettext("created.");
-        write_record_to_activity_log($record, null, null, null, null);
-        
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+                
         return $db->Insert_ID();
         
     } 
@@ -275,6 +276,7 @@ function update_otherincome($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."otherincome_records SET
+            employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",            
             item_type        =". $db->qstr( $VAR['item_type']               ).",
@@ -294,7 +296,7 @@ function update_otherincome($VAR) {
         
         // Log activity        
         $record = _gettext("Otherincome Record").' '.$VAR['otherincome_id'].' '._gettext("updated.");
-        write_record_to_activity_log($record, null, null, null, null);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
         
         return true;
       
@@ -334,17 +336,9 @@ function update_otherincome_status($otherincome_id, $new_status, $silent = false
         // For writing message to log file, get otherincome status display name
         $otherincome_status_display_name = _gettext(get_otherincome_status_display_name($new_status));
         
-        // Create a Workorder History Note (Not Used)     
-        //insert_workorder_history_note($otherincome_details['workorder_id'], _gettext("otherincome Status updated to").' '.$votherincome_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
-        
         // Log activity        
         $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("Status updated to").' '.$otherincome_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
-        
-        // Update last active record (Not Used)
-        //update_client_last_active($otherincome_details['client_id']);
-        //update_workorder_last_active($otherincome_details['workorder_id']);
-        //update_invoice_last_active($otherincome_details['invoice_id']);
         
         return true;
         
@@ -365,24 +359,12 @@ function cancel_otherincome($otherincome_id) {
         return false;
     }
     
-    // Get otherincome details
-    //$otherincome_details = get_otherincome_details($otherincome_id);  
-    
     // Change the otherincome status to cancelled (I do this here to maintain consistency)
     update_otherincome_status($otherincome_id, 'cancelled');      
         
-    // Create a Workorder History Note  
-    //insert_workorder_history_note($otherincome_details['workorder_id'], _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
-
     // Log activity        
     $record = _gettext("Otherincome").' '.$otherincome_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
-    //write_record_to_activity_log($record, $otherincome_details['employee_id'], $otherincome_details['client_id'], $otherincome_details['workorder_id'], $invoice_id);
     write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
-
-    // Update last active record
-    //update_client_last_active($otherincome_details['client_id']);
-    //update_workorder_last_active($otherincome_details['workorder_id']);
-    //update_invoice_last_active($invoice_id);
 
     return true;
     
@@ -398,7 +380,11 @@ function delete_otherincome($otherincome_id) {
     
     $db = QFactory::getDbo();
     
+    // Change the otherincome status to deleted (I do this here to maintain consistency)
+    update_otherincome_status($otherincome_id, 'deleted'); 
+    
     $sql = "UPDATE ".PRFX."otherincome_records SET
+        employee_id         = '',
         payee               = '',           
         date                = '0000-00-00', 
         tax_system          = '',  
@@ -420,7 +406,7 @@ function delete_otherincome($otherincome_id) {
         
         // Log activity        
         $record = _gettext("Otherincome Record").' '.$otherincome_id.' '._gettext("deleted.");
-        write_record_to_activity_log($record, null, null, null, null);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
         
         return true;
         

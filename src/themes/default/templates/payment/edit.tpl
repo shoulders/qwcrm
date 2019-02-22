@@ -43,7 +43,6 @@
                                                         <td align="right"><b>{t}Employee{/t}</b></td>
                                                         <td colspan="3">
                                                             <a href="index.php?component=user&page_tpl=details&user_id={$payment_details.employee_id}">{$employee_display_name}</a>
-                                                            <input name="employee_id" value="{$payment_details.employee_id}" type="hidden">                                                            
                                                         </td>
                                                     </tr>
                                                     <tr>

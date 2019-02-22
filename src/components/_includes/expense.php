@@ -145,6 +145,7 @@ function insert_expense($VAR) {
     
     $sql = "INSERT INTO ".PRFX."expense_records SET
             invoice_id      =". $db->qstr( $VAR['invoice_id']              ).",
+            employee_id     =". $db->qstr( QFactory::getUser()->login_user_id ).",
             payee           =". $db->qstr( $VAR['payee']                   ).",
             date            =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             tax_system      =". $db->qstr(get_company_details('tax_system')).",              
@@ -163,9 +164,20 @@ function insert_expense($VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
     } else {
         
+        // Get related invoice details
+        $invoice_details = get_invoice_details($VAR['invoice_id']);
+        
+        // Create a Workorder History Note
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+                
         // Log activity        
         $record = _gettext("Expense Record").' '.$db->Insert_ID().' '._gettext("created.");
-        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $VAR['invoice_id']);
+        
+        // Update last active record
+        update_client_last_active($invoice_details['client_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($VAR['invoice_id']); 
     
         return $db->Insert_ID();
         
@@ -280,6 +292,7 @@ function update_expense($expense_id, $VAR) {
     
     $sql = "UPDATE ".PRFX."expense_records SET
             invoice_id          =". $db->qstr( $VAR['invoice_id']               ).",
+            employee_id         =". $db->qstr( QFactory::getUser()->login_user_id ).",
             payee               =". $db->qstr( $VAR['payee']                    ).",            
             date                =". $db->qstr( date_to_mysql_date($VAR['date']) ).",            
             item_type           =". $db->qstr( $VAR['item_type']                ).",
@@ -297,9 +310,20 @@ function update_expense($expense_id, $VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
     } else {
         
+        // Get related invoice details
+        $invoice_details = get_invoice_details($VAR['invoice_id']);
+        
+        // Create a Workorder History Note
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("updated").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        
         // Log activity
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("updated.");
-        write_record_to_activity_log($record, null, null, null, $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $VAR['invoice_id']);
+        
+        // Update last active record
+        update_client_last_active($invoice_details['client_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($VAR['invoice_id']); 
         
         return true;
         
@@ -326,12 +350,15 @@ function update_expense_status($expense_id, $new_status, $silent = false) {
     
     $sql = "UPDATE ".PRFX."expense_records SET
             status               =". $db->qstr( $new_status  )."            
-            WHERE expense_id    =". $db->qstr( $expense_id );
+            WHERE expense_id     =". $db->qstr( $expense_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an Expense Status."));
         
     } else {    
+        
+        // Get related invoice details
+        $invoice_details = get_invoice_details($expense_details['invoice_id']);
         
         // Status updated message
         if (!$silent) { postEmulationWrite('information_msg', _gettext("Expense status updated.")); }
@@ -340,16 +367,16 @@ function update_expense_status($expense_id, $new_status, $silent = false) {
         $expense_status_display_name = _gettext(get_expense_status_display_name($new_status));
         
         // Create a Workorder History Note (Not Used)      
-        //insert_workorder_history_note($expense_details['workorder_id'], _gettext("Expense Status updated to").' '.$vexpense_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
         $record = _gettext("Expense").' '.$expense_id.' '._gettext("Status updated to").' '.$expense_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
         
         // Update last active record (Not Used)
-        //update_client_last_active($expense_details['client_id']);
-        //update_workorder_last_active($expense_details['workorder_id']);
-        //update_invoice_last_active($expense_details['invoice_id']);
+        update_client_last_active($invoice_details['client_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($expense_details['invoice_id']);
         
         return true;
         
@@ -371,24 +398,26 @@ function cancel_expense($expense_id) {
     }
     
     // Get expense details
-    //$expense_details = get_expense_details($expense_id);  
+    $expense_details = get_expense_details($expense_id);
+    
+    // Get related invoice details
+    $invoice_details = get_invoice_details($expense_details['invoice_id']);
     
     // Change the expense status to cancelled (I do this here to maintain consistency)
     update_expense_status($expense_id, 'cancelled');      
         
     // Create a Workorder History Note  
-    //insert_workorder_history_note($expense_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+    insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
 
     // Log activity        
     $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
-    //write_record_to_activity_log($record, $expense_details['employee_id'], $expense_details['client_id'], $expense_details['workorder_id'], $invoice_id);
-    write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
-
+    write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
+    
     // Update last active record
-    //update_client_last_active($expense_details['client_id']);
-    //update_workorder_last_active($expense_details['workorder_id']);
-    //update_invoice_last_active($invoice_id);
-
+    update_client_last_active($invoice_details['client_id']);
+    update_workorder_last_active($invoice_details['workorder_id']);
+    update_invoice_last_active($expense_details['invoice_id']);
+    
     return true;
     
 }
@@ -406,8 +435,15 @@ function delete_expense($expense_id) {
     // Get invoice_id before deleting the record
     $invoice_id = get_expense_details($expense_id, 'invoice_id');
     
+    // Get related invoice details before deleting the record
+    $invoice_details = get_invoice_details($invoice_id);
+    
+    // Change the expense status to deleted (I do this here to maintain consistency)
+    update_expense_status($expense_id, 'deleted');  
+    
     $sql = "UPDATE ".PRFX."expense_records SET
             invoice_id          = '',
+            employee_id         = '',
             payee               = '',           
             date                = '0000-00-00', 
             tax_system          = '',  
@@ -427,10 +463,18 @@ function delete_expense($expense_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the expense record."));
     } else {
         
+        // Create a Workorder History Note  
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+
         // Log activity        
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
-        write_record_to_activity_log($record, null, null, null, $invoice_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
         
+        // Update last active record
+        update_client_last_active($invoice_details['client_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        //update_invoice_last_active($invoice_id);
+    
         return true;
         
     } 

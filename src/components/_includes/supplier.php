@@ -149,7 +149,8 @@ function insert_supplier($VAR) {
     
     $db = QFactory::getDbo();
     
-    $sql = "INSERT INTO ".PRFX."supplier_records SET            
+    $sql = "INSERT INTO ".PRFX."supplier_records SET       
+            employee_id    =". $db->qstr( QFactory::getUser()->login_user_id ).",
             company_name   =". $db->qstr( $VAR['company_name']  ).",
             first_name     =". $db->qstr( $VAR['first_name']    ).",
             last_name      =". $db->qstr( $VAR['last_name']     ).",
@@ -173,8 +174,9 @@ function insert_supplier($VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("created."));
-
+        $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("created.");
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+        
         return $db->Insert_ID();
         
     }
@@ -305,6 +307,7 @@ function update_supplier($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."supplier_records SET
+            employee_id    =". $db->qstr( QFactory::getUser()->login_user_id ).",
             company_name   =". $db->qstr( $VAR['company_name']  ).",
             first_name     =". $db->qstr( $VAR['first_name']    ).",
             last_name      =". $db->qstr( $VAR['last_name']     ).",
@@ -327,8 +330,9 @@ function update_supplier($VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
     } else {
         
-        // Log activity        
-        write_record_to_activity_log(_gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("updated."));
+        // Log activity      
+        $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("updated.");
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
 
         return true;
         
@@ -368,17 +372,9 @@ function update_supplier_status($supplier_id, $new_status, $silent = false) {
         // For writing message to log file, get supplier status display name
         $supplier_status_display_name = _gettext(get_supplier_status_display_name($new_status));
         
-        // Create a Workorder History Note (Not Used)
-        //insert_workorder_history_note($supplier_details['workorder_id'], _gettext("supplier Status updated to").' '.$vsupplier_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
-        
         // Log activity        
         $record = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
-        
-        // Update last active record (Not Used)
-        //update_client_last_active($supplier_details['client_id']);
-        //update_workorder_last_active($supplier_details['workorder_id']);
-        //update_invoice_last_active($supplier_details['invoice_id']);*/               
         
         return true;
         
@@ -405,18 +401,9 @@ function cancel_supplier($supplier) {
     // Change the supplier status to cancelled (I do this here to maintain consistency)
     update_supplier_status($supplier, 'cancelled');      
         
-    // Create a Workorder History Note  
-    //insert_workorder_history_note($supplier_details['supplier'], _gettext("Expense").' '.$supplier.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
-
     // Log activity        
     $record = _gettext("Supplier").' '.$supplier.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
-    //write_record_to_activity_log($record, $supplier_details['employee_id'], $supplier_details['client_id'], $supplier_details['workorder_id'], $invoice_id);
     write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
-
-    // Update last active record
-    //update_client_last_active($supplier_details['client_id']);
-    //update_workorder_last_active($supplier_details['workorder_id']);
-    //update_invoice_last_active($invoice);
 
     return true;
     
@@ -440,8 +427,9 @@ function delete_supplier($supplier_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
     } else {
         
-        // Log activity        
-        write_record_to_activity_log(_gettext("Supplier Record").' '.$supplier_id.' ('.$display_name.') '._gettext("deleted."));
+        // Log activity     
+        $record = _gettext("Supplier Record").' '.$supplier_id.' ('.$display_name.') '._gettext("deleted.");
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
         
         return true;
         

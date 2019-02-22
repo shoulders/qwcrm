@@ -239,6 +239,7 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 
 CREATE TABLE `#__expense_records` (
   `expense_id` int(10) NOT NULL,
+  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
@@ -456,6 +457,7 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 
 CREATE TABLE `#__otherincome_records` (
   `otherincome_id` int(10) NOT NULL,
+  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `payee` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
@@ -666,6 +668,7 @@ INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 
 CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
+  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
@@ -764,6 +767,7 @@ CREATE TABLE `#__session` (
 
 CREATE TABLE `#__supplier_records` (
   `supplier_id` int(10) NOT NULL,
+  `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `company_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
