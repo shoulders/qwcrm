@@ -402,7 +402,7 @@ function count_invoices($start_date = null, $end_date = null, $date_type = null,
     $whereTheseRecords = "WHERE ".PRFX."invoice_records.invoice_id\n";  
                 
     // Filter by Date
-    $whereTheseRecords .= invoice_build_filter_by_date($status, $start_date, $end_date, $date_type);
+    $whereTheseRecords .= invoice_build_filter_by_date($start_date, $end_date, $date_type);
         
     // Filter by Tax System
     if($tax_system) {
