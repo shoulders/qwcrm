@@ -638,7 +638,8 @@ CREATE TABLE `#__payment_statuses` (
 
 INSERT INTO `#__payment_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'valid', 'Valid'),
-(2, 'deleted', 'Deleted');
+(2, 'cancelled', 'Cancelled'),
+(3, 'deleted', 'Deleted');
 
 -- --------------------------------------------------------
 
@@ -915,12 +916,14 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('otherincome:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:new', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('payment:options', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('payment:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('payment:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),

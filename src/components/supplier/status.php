@@ -21,11 +21,6 @@ if(isset($VAR['change_status'])){
     force_page('supplier', 'status&supplier_id='.$VAR['supplier_id']);
 }
 
-// Delete a Work Order
-if(isset($VAR['delete'])) {    
-    force_page('supplier', 'delete', 'supplier_id='.$VAR['supplier_id']);
-}
-
 // Build the page with the current status from the database
 $smarty->assign('allowed_to_change_status',     false       );
 $smarty->assign('supplier_status',              get_supplier_details($VAR['supplier_id'], 'status')             );

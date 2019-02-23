@@ -586,65 +586,6 @@ function delete_payment($payment_id) {
 
 /** Other Functions **/
 
-##########################################################
-#  Check if the payment status allows editing            #       
-##########################################################
-
- function check_payment_can_be_edited($payment_id) {
-     
-    // Get the payment details
-    $payment_details = get_payment_details($payment_id);
-    
-    // Is the current payment method active, if not you cannot edit
-    if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
-        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it's current payment method is not available."));
-        return false;        
-    }
-           
-    // Is Deleted
-    if($payment_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it has been deleted."));
-        return false;        
-    }
-
-    // All checks passed
-    return true;    
-     
-}
-
-####################################################
-#      Check if a payment method is active         #
-####################################################
-
-function check_payment_method_is_active($method, $direction = null) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT *
-            FROM ".PRFX."payment_methods
-            WHERE method_key=".$db->qstr($method);
-        
-    if(!$rs = $db->execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
-        
-    } else {
-    
-        // If module is disabled, always return disabled for both directions
-        if(!$rs->fields['enabled']) { return false; }
-        
-        // If send direction is specified
-        if($direction == 'send') { return $rs->fields['send']; }
-        
-        // If receive direction is specified
-        if($direction == 'receive') { return $rs->fields['receive']; }
-        
-        // Fallback behaviour
-        return true;
-        
-    }
-    
-}
-
 #########################################################################
 #   validate and calculate new invoice totals for the payment method    #
 #########################################################################
@@ -693,4 +634,179 @@ function payments_sub_total($invoice_id) {
         
     }    
     
+}
+
+####################################################
+#      Check if a payment method is active         #
+####################################################
+
+function check_payment_method_is_active($method, $direction = null) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT *
+            FROM ".PRFX."payment_methods
+            WHERE method_key=".$db->qstr($method);
+        
+    if(!$rs = $db->execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
+        
+    } else {
+    
+        // If module is disabled, always return disabled for both directions
+        if(!$rs->fields['enabled']) { return false; }
+        
+        // If send direction is specified
+        if($direction == 'send') { return $rs->fields['send']; }
+        
+        // If receive direction is specified
+        if($direction == 'receive') { return $rs->fields['receive']; }
+        
+        // Fallback behaviour
+        return true;
+        
+    }
+    
+}
+
+##########################################################
+#  Check if the payment status is allowed to be changed  #  // not currently used
+##########################################################
+
+ function check_payment_status_can_be_changed($payment_id) {
+     
+    // Get the payment details
+    $payment_details = get_payment_details($payment_id);
+    
+    // Is the current payment method active, if not you cannot change status
+    if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
+        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it's current payment method is not available."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($payment_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because the payment has been deleted."));
+        return false;        
+    }
+        
+    // All checks passed
+    return true;     
+     
+ }
+
+###############################################################
+#   Check to see if the payment can be refunded (by status)   #  // not currently used - i DONT think i will use this
+###############################################################
+
+function check_payment_can_be_refunded($payment_id) {
+    
+    // Get the payment details
+    $payment_details = get_payment_details($payment_id);
+    
+    // Is partially paid
+    if($payment_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This payment cannot be refunded because the payment is partially paid."));
+        return false;
+    }
+        
+    // Is refunded
+    if($payment_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the payment has already been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($payment_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the payment has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($payment_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the payment has been deleted."));
+        return false;        
+    }    
+    
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the payment can be cancelled              #  // not currently used
+###############################################################
+
+function check_payment_can_be_cancelled($payment_id) {
+    
+    // Get the payment details
+    $payment_details = get_payment_details($payment_id);
+    
+    // Is cancelled
+    if($payment_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be cancelled because the payment has already been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($payment_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be cancelled because the payment has been deleted."));
+        return false;        
+    }    
+    
+    // All checks passed
+    return true;
+    
+}
+
+###############################################################
+#   Check to see if the payment can be deleted                #
+###############################################################
+
+function check_payment_can_be_deleted($payment_id) {
+    
+    // Get the payment details
+    $payment_details = get_payment_details($payment_id);
+    
+    // Is cancelled
+    if($payment_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("This payment cannot be deleted because it has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($payment_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("This payment cannot be deleted because it already been deleted."));
+        return false;        
+    }
+    
+    // All checks passed
+    return true;
+    
+}
+
+##########################################################
+#  Check if the payment status allows editing            #       
+##########################################################
+
+ function check_payment_can_be_edited($payment_id) {
+     
+    // Get the payment details
+    $payment_details = get_payment_details($payment_id);
+    
+    // Is the current payment method active, if not you cannot change status
+    if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
+        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it's current payment method is not available."));
+        return false;        
+    }
+           
+    // Is Deleted
+    if($payment_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it has been deleted."));
+        return false;        
+    }
+
+    // All checks passed
+    return true;   
+     
 }

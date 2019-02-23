@@ -21,11 +21,6 @@ if(isset($VAR['change_status'])){
     force_page('refund', 'status&refund_id='.$VAR['refund_id']);
 }
 
-// Delete a Work Order
-if(isset($VAR['delete'])) {    
-    force_page('refund', 'delete', 'refund_id='.$VAR['refund_id']);
-}
-
 // Build the page with the current status from the database
 $smarty->assign('allowed_to_change_status',     false      );
 $smarty->assign('refund_status',              get_refund_details($VAR['refund_id'], 'status')             );

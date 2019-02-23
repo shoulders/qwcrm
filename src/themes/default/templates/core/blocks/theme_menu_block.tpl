@@ -105,7 +105,9 @@
                     <!-- Payments -->
                     <a href="index.php?component=payment&page_tpl=options"><img src="{$theme_images_dir}icons/money.png" alt="" border="0" height="14" width="14" /> {t}Payment Options{/t}</a>
                     <a href="index.php?component=payment&page_tpl=search"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Payment Search{/t}</a>
-                
+                    {if $payment_id}
+                        <a href="index.php?component=payment&page_tpl=status&payment_id={$payment_id}"><img src="{$theme_images_dir}icons/gift.png" alt="" border="0" height="14" width="14" /> {t}Status{/t}</a>
+                    {/if}
                 </div>                    
 
                 <!-- Expenses -->

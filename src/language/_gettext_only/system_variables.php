@@ -113,6 +113,11 @@ _gettext("Other");
 _gettext("PayPal");
 _gettext("Voucher");
 
+/* Payment Statuses */
+_gettext("Valid");
+_gettext("Cancelled");
+_gettext("Deleted");
+
 /* Payment Types */
 _gettext("Invoice");
 _gettext("Refund");

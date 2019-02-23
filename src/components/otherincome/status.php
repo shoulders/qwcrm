@@ -21,11 +21,6 @@ if(isset($VAR['change_status'])){
     force_page('otherincome', 'status&otherincome_id='.$VAR['otherincome_id']);
 }
 
-// Delete a Work Order
-if(isset($VAR['delete'])) {    
-    force_page('otherincome', 'delete', 'otherincome_id='.$VAR['otherincome_id']);
-}
-
 // Build the page with the current status from the database
 $smarty->assign('allowed_to_change_status',     false       );
 $smarty->assign('otherincome_status',              get_otherincome_details($VAR['otherincome_id'], 'status')             );

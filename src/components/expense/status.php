@@ -21,11 +21,6 @@ if(isset($VAR['change_status'])){
     force_page('expense', 'status&expense_id='.$VAR['expense_id']);
 }
 
-// Delete the Expense
-if(isset($VAR['delete'])) {    
-    force_page('expense', 'delete', 'expense_id='.$VAR['expense_id']);
-}
-
 // Build the page with the current status from the database
 $smarty->assign('allowed_to_change_status',        false       );
 $smarty->assign('expense_status',                  get_expense_details($VAR['expense_id'], 'status')             );

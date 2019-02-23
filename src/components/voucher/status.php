@@ -27,11 +27,6 @@ if(isset($VAR['change_status'])){
     force_page('voucher', 'status&voucher_id='.$VAR['voucher_id']);
 }
 
-// Delete a Work Order
-if(isset($VAR['delete'])) {    
-    force_page('voucher', 'delete', 'voucher_id='.$VAR['voucher_id']);
-}
-
 // Build the page with the current status from the database
 $smarty->assign('allowed_to_change_status',     check_voucher_status_can_be_changed($VAR['voucher_id'])       );
 $smarty->assign('voucher_status',              get_voucher_details($VAR['voucher_id'], 'status')             );
