@@ -144,6 +144,7 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'otherincome_records', 'status', '*', 'paid');
         $this->update_column_values(PRFX.'refund_records', 'status', '*', 'paid');
         $this->update_column_values(PRFX.'supplier_records', 'status', '*', 'valid');
+        $this->update_column_values(PRFX.'payment_records', 'status', '*', 'valid');
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
