@@ -150,6 +150,20 @@ _gettext("CORE_MAINTENANCE_HELP_CONTENT");
 
 /* Expense */
 
+// expense:cancel
+//_gettext("EXPENSE_CANCEL_PAGE_TITLE");
+//_gettext("EXPENSE_CANCEL_META_DESCRIPTION");
+//_gettext("EXPENSE_CANCEL_META_KEYWORDS");
+//_gettext("EXPENSE_CANCEL_HELP_TITLE");
+//_gettext("EXPENSE_CANCEL_HELP_CONTENT");
+
+// expense:delete
+//_gettext("EXPENSE_DELETE_PAGE_TITLE");
+//_gettext("EXPENSE_DELETE_META_DESCRIPTION");
+//_gettext("EXPENSE_DELETE_META_KEYWORDS");
+//_gettext("EXPENSE_DELETE_HELP_TITLE");
+//_gettext("EXPENSE_DELETE_HELP_CONTENT");
+
 // expense:details
 _gettext("EXPENSE_DETAILS_PAGE_TITLE");
 _gettext("EXPENSE_DETAILS_META_DESCRIPTION");
@@ -210,12 +224,19 @@ _gettext("HELP_LICENSE_DETAILS_HELP_CONTENT");
 
 /* Invoice */
 
-// invoice:closed
-_gettext("INVOICE_CLOSED_PAGE_TITLE");
-_gettext("INVOICE_CLOSED_META_DESCRIPTION");
-_gettext("INVOICE_CLOSED_META_KEYWORDS");
-_gettext("INVOICE_CLOSED_HELP_TITLE");
-_gettext("INVOICE_CLOSED_HELP_CONTENT");
+// invoice:cancel
+//_gettext("INVOICE_CANCEL_PAGE_TITLE");
+//_gettext("INVOICE_CANCEL_META_DESCRIPTION");
+//_gettext("INVOICE_CANCEL_META_KEYWORDS");
+//_gettext("INVOICE_CANCEL_HELP_TITLE");
+//_gettext("INVOICE_CANCEL_HELP_CONTENT");
+
+// invoice:delete
+//_gettext("INVOICE_DELETE_PAGE_TITLE");
+//_gettext("INVOICE_DELETE_META_DESCRIPTION");
+//_gettext("INVOICE_DELETE_META_KEYWORDS");
+//_gettext("INVOICE_DELETE_HELP_TITLE");
+//_gettext("INVOICE_DELETE_HELP_CONTENT");
 
 // invoice:details
 _gettext("INVOICE_DETAILS_PAGE_TITLE");
@@ -230,13 +251,6 @@ _gettext("INVOICE_EDIT_META_DESCRIPTION");
 _gettext("INVOICE_EDIT_META_KEYWORDS");
 _gettext("INVOICE_EDIT_HELP_TITLE");
 _gettext("INVOICE_EDIT_HELP_CONTENT");
-
-// invoice:open
-_gettext("INVOICE_OPEN_PAGE_TITLE");
-_gettext("INVOICE_OPEN_META_DESCRIPTION");
-_gettext("INVOICE_OPEN_META_KEYWORDS");
-_gettext("INVOICE_OPEN_HELP_TITLE");
-_gettext("INVOICE_OPEN_HELP_CONTENT");
 
 // invoice:overview
 _gettext("INVOICE_OVERVIEW_PAGE_TITLE");
@@ -282,6 +296,20 @@ _gettext("INVOICE_STATUS_HELP_CONTENT");
 
 /* Otherincome */
 
+// otherincome:cancel
+//_gettext("OTHERINCOME_CANCEL_PAGE_TITLE");
+//_gettext("OTHERINCOME_CANCEL_META_DESCRIPTION");
+//_gettext("OTHERINCOME_CANCEL_META_KEYWORDS");
+//_gettext("OTHERINCOME_CANCEL_HELP_TITLE");
+//_gettext("OTHERINCOME_CANCEL_HELP_CONTENT");
+
+// otherincome:delete
+//_gettext("OTHERINCOME_DELETE_PAGE_TITLE");
+//_gettext("OTHERINCOME_DELETE_META_DESCRIPTION");
+//_gettext("OTHERINCOME_DELETE_META_KEYWORDS");
+//_gettext("OTHERINCOME_DELETE_HELP_TITLE");
+//_gettext("OTHERINCOME_DELETE_HELP_CONTENT");
+
 // otherincome:details
 _gettext("OTHERINCOME_DETAILS_PAGE_TITLE");
 _gettext("OTHERINCOME_DETAILS_META_DESCRIPTION");
@@ -318,6 +346,20 @@ _gettext("OTHERINCOME_STATUS_HELP_TITLE");
 _gettext("OTHERINCOME_STATUS_HELP_CONTENT");
 
 /* Payment */
+
+// payment:cancel
+//_gettext("OTHERINCOME_CANCEL_PAGE_TITLE");
+//_gettext("OTHERINCOME_CANCEL_META_DESCRIPTION");
+//_gettext("OTHERINCOME_CANCEL_META_KEYWORDS");
+//_gettext("OTHERINCOME_CANCEL_HELP_TITLE");
+//_gettext("OTHERINCOME_CANCEL_HELP_CONTENT");
+
+// payment:delete
+//_gettext("OTHERINCOME_DELETE_PAGE_TITLE");
+//_gettext("OTHERINCOME_DELETE_META_DESCRIPTION");
+//_gettext("OTHERINCOME_DELETE_META_KEYWORDS");
+//_gettext("OTHERINCOME_DELETE_HELP_TITLE");
+//_gettext("OTHERINCOME_DELETE_HELP_CONTENT");
 
 // payment:details
 _gettext("PAYMENT_DETAILS_PAGE_TITLE");
@@ -362,6 +404,20 @@ _gettext("PAYMENT_STATUS_HELP_TITLE");
 _gettext("PAYMENT_STATUS_HELP_CONTENT");
 
 /* Refund */
+
+// refund:cancel
+//_gettext("REFUND_CANCEL_PAGE_TITLE");
+//_gettext("REFUND_CANCEL_META_DESCRIPTION");
+//_gettext("REFUND_CANCEL_META_KEYWORDS");
+//_gettext("REFUND_CANCEL_HELP_TITLE");
+//_gettext("REFUND_CANCEL_HELP_CONTENT");
+
+// refund:delete
+//_gettext("REFUND_DELETE_PAGE_TITLE");
+//_gettext("REFUND_DELETE_META_DESCRIPTION");
+//_gettext("REFUND_DELETE_META_KEYWORDS");
+//_gettext("REFUND_DELETE_HELP_TITLE");
+//_gettext("REFUND_DELETE_HELP_CONTENT");
 
 // refund:details
 _gettext("REFUND_DETAILS_PAGE_TITLE");
@@ -421,7 +477,14 @@ _gettext("SCHEDULE_DAY_PAGE_TITLE");
 _gettext("SCHEDULE_DAY_META_DESCRIPTION");
 _gettext("SCHEDULE_DAY_META_KEYWORDS");
 _gettext("SCHEDULE_DAY_HELP_TITLE");
-_gettext("SCHEDULE_DAY_HELP_CONTENT");         
+_gettext("SCHEDULE_DAY_HELP_CONTENT");   
+
+// schedule:delete
+//_gettext("SCHEDULE_DELETE_PAGE_TITLE");
+//_gettext("SCHEDULE_DELETE_META_DESCRIPTION");
+//_gettext("SCHEDULE_DELETE_META_KEYWORDS");
+//_gettext("SCHEDULE_DELETE_HELP_TITLE");
+//_gettext("SCHEDULE_DELETE_HELP_CONTENT");
 
 // schedule:details
 _gettext("SCHEDULE_DETAILS_PAGE_TITLE");
@@ -483,6 +546,20 @@ _gettext("SETUP_UPGRADE_HELP_CONTENT");
 
 /* Supplier */
 
+// supplier:cancel
+//_gettext("SUPPLIER_CANCEL_PAGE_TITLE");
+//_gettext("SUPPLIER_CANCEL_META_DESCRIPTION");
+//_gettext("SUPPLIER_CANCEL_META_KEYWORDS");
+//_gettext("SUPPLIER_CANCEL_HELP_TITLE");
+//_gettext("SUPPLIER_CANCEL_HELP_CONTENT");
+
+// supplier:delete
+//_gettext("SUPPLIER_DELETE_PAGE_TITLE");
+//_gettext("SUPPLIER_DELETE_META_DESCRIPTION");
+//_gettext("SUPPLIER_DELETE_META_KEYWORDS");
+//_gettext("SUPPLIER_DELETE_HELP_TITLE");
+//_gettext("SUPPLIER_DELETE_HELP_CONTENT");
+
 // supplier:details
 _gettext("SUPPLIER_DETAILS_PAGE_TITLE");
 _gettext("SUPPLIER_DETAILS_META_DESCRIPTION");
@@ -519,6 +596,13 @@ _gettext("SUPPLIER_STATUS_HELP_TITLE");
 _gettext("SUPPLIER_STATUS_HELP_CONTENT");
 
 /* User */
+
+// user:delete
+//_gettext("USER_DELETE_PAGE_TITLE");
+//_gettext("USER_DELETE_META_DESCRIPTION");
+//_gettext("USER_DELETE_META_KEYWORDS");
+//_gettext("USER_DELETE_HELP_TITLE");
+//_gettext("USER_DELETE_HELP_CONTENT");
 
 // user:details
 _gettext("USER_DETAILS_PAGE_TITLE");
@@ -563,6 +647,20 @@ _gettext("USER_SEARCH_HELP_TITLE");
 _gettext("USER_SEARCH_HELP_CONTENT");
 
 /* Voucher */
+
+// voucher:cancel
+//_gettext("VOUCHER_CANCEL_PAGE_TITLE");
+//_gettext("VOUCHER_CANCEL_META_DESCRIPTION");
+//_gettext("VOUCHER_CANCEL_META_KEYWORDS");
+//_gettext("VOUCHER_CANCEL_HELP_TITLE");
+//_gettext("VOUCHER_CANCEL_HELP_CONTENT");
+
+// voucher:delete
+//_gettext("VOUCHER_DELETE_PAGE_TITLE");
+//_gettext("VOUCHER_DELETE_META_DESCRIPTION");
+//_gettext("VOUCHER_DELETE_META_KEYWORDS");
+//_gettext("VOUCHER_DELETE_HELP_TITLE");
+//_gettext("VOUCHER_DELETE_HELP_CONTENT");
 
 // voucher:details
 _gettext("VOUCHER_DETAILS_PAGE_TITLE");
