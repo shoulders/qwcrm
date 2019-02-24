@@ -633,6 +633,74 @@ function cancel_voucher($voucher_id) {
         
 }
 
+##########################################
+#  Refund all of an Invoice's Vouchers   #
+##########################################
+
+function refund_invoice_vouchers($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+        
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            // Refund Voucher
+            refund_voucher($rs->fields['voucher_id']);
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        
+        return;
+
+    }
+
+}
+
+##########################################
+#  Cancel all of an Invoice's Vouchers   #
+##########################################
+
+function cancel_invoice_vouchers($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+        
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            // Cancel Voucher
+            cancel_voucher($rs->fields['voucher_id']);
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        
+        return;
+
+    }
+
+}
+
 /** Delete Functions **/
 
 ##############################
@@ -705,10 +773,86 @@ function delete_voucher($voucher_id) {
         
 }
 
+##########################################
+#  Delete all of an Invoice's Vouchers   #
+##########################################
+
+function delete_invoice_vouchers($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+        
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            // Refund Voucher
+            delete_voucher($rs->fields['voucher_id']);
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        
+        return;
+
+    }
+
+}
+
 /** Other Functions **/
 
+##############################################################
+#  Check if the Voucher can be used for a payment            #
+##############################################################
+
+function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
+    
+    $voucher_details = get_voucher_details($voucher_id);
+        
+    // Voucher can not be used to pay for itself
+    if($voucher_details['invoice_id'] == $redeem_invoice_id) {
+        //force_page('core','error', 'error_msg='._gettext("This voucher cannot be used to pay for itself."));
+        return false;        
+    }
+    
+    // Voucher must have been paid for
+    if(get_invoice_details($voucher_details['invoice_id'], 'status') !== 'paid') {
+        //force_page('core','error', 'error_msg='._gettext("This voucher has not been paid for."));
+        return false;        
+    }
+    
+    // Check if expired - This does a live check for expiry as it is not always upto date
+    if(check_voucher_is_expired($voucher_id)) {
+        //force_page('core', 'error', 'error_msg='._gettext("This voucher is expired."));        
+        return false;        
+    }
+    
+    // Check if unused (any other status causes failure)
+    if($voucher_details['status'] !== 'unused') {
+        //force_page('core', 'error', 'error_msg='._gettext("This voucher is unused."));
+        return false;        
+    }    
+    
+    // Check if blocked
+    if($voucher_details['blocked']) {
+        //force_page('core','error', 'error_msg='._gettext("This voucher is blocked."));
+        return false;        
+    }
+    
+    return true;
+    
+}
+
 ###########################################################
-#  Check if the voucher status is allowed to be changed  #
+#  Check if the voucher status is allowed to be changed   #
 ###########################################################
 
  function check_voucher_status_can_be_changed($voucher_id) {
@@ -755,102 +899,6 @@ function delete_voucher($voucher_id) {
     // All checks passed
     return true;     
      
-}
-
-##############################################################
-#  Check if the Voucher can be used for a payment            #
-##############################################################
-
-function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
-    
-    $voucher_details = get_voucher_details($voucher_id);
-        
-    // Voucher can not be used to pay for itself
-    if($voucher_details['invoice_id'] == $redeem_invoice_id) {
-        //force_page('core','error', 'error_msg='._gettext("This voucher cannot be used to pay for itself."));
-        return false;        
-    }
-    
-    // Voucher must have been paid for
-    if(get_invoice_details($voucher_details['invoice_id'], 'status') !== 'paid') {
-        //force_page('core','error', 'error_msg='._gettext("This voucher has not been paid for."));
-        return false;        
-    }
-    
-    // Check if expired - This does a live check for expiry as it is not always upto date
-    if(check_voucher_is_expired($voucher_id)) {
-        //force_page('core', 'error', 'error_msg='._gettext("This voucher is expired."));        
-        return false;        
-    }
-    
-    // Check if unused (any other status causes failure)
-    if($voucher_details['status'] !== 'unused') {
-        //force_page('core', 'error', 'error_msg='._gettext("This voucher is unused."));
-        return false;        
-    }    
-    
-    // Check if blocked
-    if($voucher_details['blocked']) {
-        //force_page('core','error', 'error_msg='._gettext("This voucher is blocked."));
-        return false;        
-    }
-    
-    return true;
-    
-}
-
-##########################################################
-#  Check if the voucher status allows editing            #
-##########################################################
-
- function check_voucher_status_allows_editing($voucher_id) {
-     
-    // Get the voucher details
-    $voucher_details = get_voucher_details($voucher_id);
-    
-    // Is Redeemed
-    if($voucher_details['status'] == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been redeemed."));
-        return false;        
-    }
-        
-    // Is Refunded
-    if($voucher_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been refunded."));
-        return false;        
-    }
-    
-    // Is Cancelled
-    if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
-        return false;        
-    }
-    
-    // Is Deleted
-    if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
-        return false;        
-    }
-
-    // All checks passed
-    return true;     
-     
-}
-
-###############################################################
-#   Check to see if the voucher can be refunded               #
-###############################################################
-
-function check_voucher_can_be_refunded($voucher_id) {
-        
-    // This checks the parent invoice and it's associated vouchers including the supplied voucher
-    if(!check_invoice_can_be_refunded(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
-        return false;
-    }
-    
-    return true;
-    
 }
 
 ###############################################################
@@ -910,19 +958,72 @@ function check_voucher_status_allows_refunding($voucher_id) {
 } 
 
 ###############################################################
-#   Check to see if the voucher can be cancelled              #  // not currently used
+#   Check to see if the voucher can be refunded               #
 ###############################################################
 
-function check_voucher_can_be_cancelled($voucher_id) {
+function check_voucher_can_be_refunded($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
-    if(!check_invoice_can_be_cancelled(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be cancelled because the invoice it is attached to, does not allow it."));
+    if(!check_invoice_can_be_refunded(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
         return false;
     }
     
     return true;
     
+}
+
+############################################################################
+# Check an invoices vouchers do not prevent the invoice getting refunded   #
+############################################################################
+
+function check_invoice_vouchers_allow_refunding($invoice_id) {
+    
+    $db = QFactory::getDbo();
+
+    $vouchers_allow_refunding = true;    
+        
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+            
+            //$voucher_details = $rs->GetRowAssoc();
+            
+            // Make sure correct expiry status is set (unused/expired)
+            check_voucher_is_expired($rs->fields['voucher_id']);
+
+            // Check the Voucher to see if it can be refunded
+            if(!check_voucher_status_allows_refunding($rs->fields['voucher_id'])) {                    
+                $vouchers_allow_refunding = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        
+        // Check to if any vouchers prevent the invoice from being deleted
+        if(!$vouchers_allow_refunding) {            
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+       
+    }
+
 }
 
 ###############################################################
@@ -971,20 +1072,72 @@ function check_voucher_status_allows_cancellation($voucher_id) {
 }
 
 ###############################################################
-#   Check to see if the voucher can be deleted                #
+#   Check to see if the voucher can be cancelled              #  // not currently used
 ###############################################################
 
-function check_voucher_can_be_deleted($voucher_id) {
+function check_voucher_can_be_cancelled($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
-    if(!check_invoice_can_be_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+    if(!check_invoice_can_be_cancelled(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be cancelled because the invoice it is attached to, does not allow it."));
         return false;
     }
     
     return true;
     
 }
+
+############################################################################
+# Check an invoices vouchers do not prevent the invoice getting cancelled  #
+############################################################################
+
+function check_invoice_vouchers_allow_cancellation($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+    $vouchers_allow_cancellation = true;
+    
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            //$voucher_details = $rs->GetRowAssoc(); 
+            
+            // Make sure correct expiry status is set (unused/expired)
+            check_voucher_is_expired($rs->fields['voucher_id']);
+
+            // Check the Voucher to see if it can be deleted
+            if(!check_voucher_status_allows_cancellation($rs->fields['voucher_id'])) {                    
+                $vouchers_allow_cancellation = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        // Check to if any vouchers prevent the invoice from being deleted
+        if(!$vouchers_allow_cancellation) {            
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']);                               
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']); 
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+
+    }
+
+}
+
 
 ###############################################################
 #   Check to see if the voucher status allows deletion        #
@@ -1034,6 +1187,111 @@ function check_voucher_status_allows_deletion($voucher_id) {
     // All checks passed
     return true;
     
+}
+
+###############################################################
+#   Check to see if the voucher can be deleted                #
+###############################################################
+
+function check_voucher_can_be_deleted($voucher_id) {
+        
+    // This checks the parent invoice and it's associated vouchers including the supplied voucher
+    if(!check_invoice_can_be_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
+###########################################################################
+# Check an invoices vouchers do not prevent the invoice getting deleted   #
+###########################################################################
+         
+function check_invoice_vouchers_allow_deletion($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+    $vouchers_allow_deletion = true;
+    
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            //$voucher_details = $rs->GetRowAssoc();        
+            
+            // Make sure correct expiry status is set (unused/expired)
+            check_voucher_is_expired($rs->fields['voucher_id']);            
+
+            // Check the Voucher to see if it can be deleted
+            if(!check_voucher_status_allows_deletion($rs->fields['voucher_id'])) {                    
+                $vouchers_allow_deletion = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        // Check to if any vouchers prevent the invoice from being deleted
+        if(!$vouchers_allow_deletion) {            
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+
+    }
+
+}
+
+##########################################################
+#  Check if the voucher status allows editing            #
+##########################################################
+
+ function check_voucher_status_allows_editing($voucher_id) {
+     
+    // Get the voucher details
+    $voucher_details = get_voucher_details($voucher_id);
+    
+    // Is Redeemed
+    if($voucher_details['status'] == 'redeemed') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been redeemed."));
+        return false;        
+    }
+        
+    // Is Refunded
+    if($voucher_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been refunded."));
+        return false;        
+    }
+    
+    // Is Cancelled
+    if($voucher_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
+        return false;        
+    }
+    
+    // Is Deleted
+    if($voucher_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
+        return false;        
+    }
+
+    // All checks passed
+    return true;     
+     
 }
 
 ############################################
@@ -1101,262 +1359,4 @@ function check_voucher_is_expired($voucher_id) {
         
     }
     
-}
-
-
-############################################################################
-# Check an invoices vouchers do not prevent the invoice getting refunded   #
-############################################################################
-
-function check_invoice_vouchers_allow_refunding($invoice_id) {
-    
-    $db = QFactory::getDbo();
-
-    $vouchers_allow_refunding = true;    
-        
-    $sql = "SELECT *
-            FROM ".PRFX."voucher_records
-            WHERE invoice_id = ".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {
-
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
-
-    } else {
-
-        while(!$rs->EOF) {            
-            
-            //$voucher_details = $rs->GetRowAssoc();
-            
-            // Make sure correct expiry status is set (unused/expired)
-            check_voucher_is_expired($rs->fields['voucher_id']);
-
-            // Check the Voucher to see if it can be refunded
-            if(!check_voucher_status_allows_refunding($rs->fields['voucher_id'])) {                    
-                $vouchers_allow_refunding = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-        
-        // Check to if any vouchers prevent the invoice from being deleted
-        if(!$vouchers_allow_refunding) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
-            return false;
-            
-        } else {
-            
-            return true;
-            
-        }
-       
-    }
-
-}
-
-############################################################################
-# Check an invoices vouchers do not prevent the invoice getting cancelled  #
-############################################################################
-
-function check_invoice_vouchers_allow_cancellation($invoice_id) {
-    
-    $db = QFactory::getDbo();    
-    $vouchers_allow_cancellation = true;
-    
-    $sql = "SELECT *
-            FROM ".PRFX."voucher_records
-            WHERE invoice_id = ".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {
-
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
-
-    } else {
-
-        while(!$rs->EOF) {            
-
-            //$voucher_details = $rs->GetRowAssoc(); 
-            
-            // Make sure correct expiry status is set (unused/expired)
-            check_voucher_is_expired($rs->fields['voucher_id']);
-
-            // Check the Voucher to see if it can be deleted
-            if(!check_voucher_status_allows_cancellation($rs->fields['voucher_id'])) {                    
-                $vouchers_allow_cancellation = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-        // Check to if any vouchers prevent the invoice from being deleted
-        if(!$vouchers_allow_cancellation) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']);                               
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']); 
-            return false;
-            
-        } else {
-            
-            return true;
-            
-        }
-
-    }
-
-}
-
-###########################################################################
-# Check an invoices vouchers do not prevent the invoice getting deleted   #
-###########################################################################
-         
-function check_invoice_vouchers_allow_deletion($invoice_id) {
-    
-    $db = QFactory::getDbo();    
-    $vouchers_allow_deletion = true;
-    
-    $sql = "SELECT *
-            FROM ".PRFX."voucher_records
-            WHERE invoice_id = ".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {
-
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
-
-    } else {
-
-        while(!$rs->EOF) {            
-
-            //$voucher_details = $rs->GetRowAssoc();        
-            
-            // Make sure correct expiry status is set (unused/expired)
-            check_voucher_is_expired($rs->fields['voucher_id']);            
-
-            // Check the Voucher to see if it can be deleted
-            if(!check_voucher_status_allows_deletion($rs->fields['voucher_id'])) {                    
-                $vouchers_allow_deletion = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-        // Check to if any vouchers prevent the invoice from being deleted
-        if(!$vouchers_allow_deletion) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
-            return false;
-            
-        } else {
-            
-            return true;
-            
-        }
-
-    }
-
-}
-
-##########################################
-#  Refund all of an Invoice's Vouchers   #
-##########################################
-
-function refund_invoice_vouchers($invoice_id) {
-    
-    $db = QFactory::getDbo();    
-        
-    $sql = "SELECT *
-            FROM ".PRFX."voucher_records
-            WHERE invoice_id = ".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {
-
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
-
-    } else {
-
-        while(!$rs->EOF) {            
-
-            // Refund Voucher
-            refund_voucher($rs->fields['voucher_id']);
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-        
-        return;
-
-    }
-
-}
-
-##########################################
-#  Cancel all of an Invoice's Vouchers   #
-##########################################
-
-function cancel_invoice_vouchers($invoice_id) {
-    
-    $db = QFactory::getDbo();    
-        
-    $sql = "SELECT *
-            FROM ".PRFX."voucher_records
-            WHERE invoice_id = ".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {
-
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
-
-    } else {
-
-        while(!$rs->EOF) {            
-
-            // Cancel Voucher
-            cancel_voucher($rs->fields['voucher_id']);
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-        
-        return;
-
-    }
-
-}
-
-##########################################
-#  Delete all of an Invoice's Vouchers   #
-##########################################
-
-function delete_invoice_vouchers($invoice_id) {
-    
-    $db = QFactory::getDbo();    
-        
-    $sql = "SELECT *
-            FROM ".PRFX."voucher_records
-            WHERE invoice_id = ".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {
-
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
-
-    } else {
-
-        while(!$rs->EOF) {            
-
-            // Refund Voucher
-            delete_voucher($rs->fields['voucher_id']);
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-        
-        return;
-
-    }
-
 }

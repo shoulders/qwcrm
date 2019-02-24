@@ -28,10 +28,10 @@ if(!isset($VAR['voucher_id']) || !$VAR['voucher_id']) {
 // Get invoice_id before deleting
 $invoice_id = get_voucher_details($VAR['voucher_id'], 'invoice_id');
 
-// Delete the Voucher - T Voucher is only deactivated
+// Delete the Voucher - The Voucher is effectively only deactivated
 if(!delete_voucher($VAR['voucher_id'])) {
     
-    // Load the relevant invoice page with failed message
+    // Load the relevant invoice page with fail message
     force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("Voucher failed to be deleted."));
     
 } else {
