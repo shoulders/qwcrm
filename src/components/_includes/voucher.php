@@ -571,7 +571,7 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
 function refund_voucher($voucher_id) {
     
     // make sure the voucher can be cancelled
-    if(!check_voucher_status_allows_refunding($voucher_id)) {
+    if(!check_single_voucher_can_be_refunded($voucher_id)) {
         
         // Load the relevant invoice page with failed message
         force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'), 'warning_msg='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
@@ -608,7 +608,7 @@ function cancel_voucher($voucher_id) {
     
     $voucher_details = get_voucher_details($voucher_id);    
     
-    if(!check_voucher_status_allows_cancellation($voucher_id)) {
+    if(!check_single_voucher_can_be_cancelled($voucher_id)) {
         
         // Load the relevant invoice page with failed message
         force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'warning_msg='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
@@ -712,7 +712,7 @@ function delete_voucher($voucher_id) {
     $db = QFactory::getDbo();
     $voucher_details = get_voucher_details($voucher_id);    
     
-    if(!check_voucher_status_allows_deletion($voucher_id)) {
+    if(!check_single_voucher_can_be_deleted($voucher_id)) {
         
         // Load the relevant invoice page with failed message
         force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'warning_msg='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
@@ -809,6 +809,73 @@ function delete_invoice_vouchers($invoice_id) {
 
 /** Other Functions **/
 
+############################################
+#  Generate Random Voucher code            #
+############################################
+
+function generate_voucher_code() {
+    
+    $acceptedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $max_offset = strlen($acceptedChars)-1;
+    $voucher_code = '';
+    
+    for($i=0; $i < 16; $i++) {
+        $voucher_code .= $acceptedChars{mt_rand(0, $max_offset)};
+    }
+    
+    return $voucher_code;
+    
+}
+
+#################################################
+#   Check to see if the voucher is expired      #  // This does a live check to see if the voucher is expired and tagged as such
+#################################################
+
+function check_voucher_is_expired($voucher_id) {
+    
+    $calculated_status = '';
+    
+    $voucher_details = get_voucher_details($voucher_id);
+    
+    // If the voucher is expired 
+    if (strtotime($voucher_details['expiry_date']) < time() ) {
+        
+        // If the status is not 'expired', update the status silenty (only from unused)
+        if ($voucher_details['status'] == 'unused') {
+            update_voucher_status($voucher_id, 'expired', true);      
+        }
+        
+        $calculated_status = 'expired';
+    
+    }
+    
+    // If the voucher is not expired
+    if (strtotime($voucher_details['expiry_date']) >= time() ) {
+        
+        //  If the status has not been updated, update the status silenty (only from expired)
+        if ($voucher_details['status'] == 'expired') {
+            update_voucher_status($voucher_id, 'unused', true);      
+        }
+        
+        $calculated_status = 'unused';
+        
+    } 
+    
+    // Return the calulates Expiry state
+    if ($calculated_status === 'expired') {
+        
+        // The voucher is expired
+        return true;
+        
+    } else {
+        
+        // The voucher is not expired
+        return false;
+        
+    }
+    
+}
+
 ##############################################################
 #  Check if the Voucher can be used for a payment            #
 ##############################################################
@@ -902,10 +969,26 @@ function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
 }
 
 ###############################################################
+#   Check to see if the voucher can be refunded               #   // not currently used - Needed for cancellation via button on voucher:status (checks parent invoice aswell)
+###############################################################
+
+function check_voucher_can_be_refunded($voucher_id) {
+        
+    // This checks the parent invoice and it's associated vouchers including the supplied voucher
+    if(!check_invoice_can_be_refunded(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
+###############################################################
 #   Check to see if the voucher status allows refunding       #
 ###############################################################
 
-function check_voucher_status_allows_refunding($voucher_id) {
+function check_single_voucher_can_be_refunded($voucher_id) {
     
     // Get the voucher details
     $voucher_details = get_voucher_details($voucher_id);
@@ -957,22 +1040,6 @@ function check_voucher_status_allows_refunding($voucher_id) {
     
 } 
 
-###############################################################
-#   Check to see if the voucher can be refunded               #
-###############################################################
-
-function check_voucher_can_be_refunded($voucher_id) {
-        
-    // This checks the parent invoice and it's associated vouchers including the supplied voucher
-    if(!check_invoice_can_be_refunded(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
-        return false;
-    }
-    
-    return true;
-    
-}
-
 ############################################################################
 # Check an invoices vouchers do not prevent the invoice getting refunded   #
 ############################################################################
@@ -1001,7 +1068,7 @@ function check_invoice_vouchers_allow_refunding($invoice_id) {
             check_voucher_is_expired($rs->fields['voucher_id']);
 
             // Check the Voucher to see if it can be refunded
-            if(!check_voucher_status_allows_refunding($rs->fields['voucher_id'])) {                    
+            if(!check_single_voucher_can_be_refunded($rs->fields['voucher_id'])) {                    
                 $vouchers_allow_refunding = false;
             }
 
@@ -1027,10 +1094,26 @@ function check_invoice_vouchers_allow_refunding($invoice_id) {
 }
 
 ###############################################################
+#   Check to see if the voucher can be cancelled              #  // not currently used - Needed for cancellation via button on voucher:status (checks parent invoice aswell)
+###############################################################
+
+function check_voucher_can_be_cancelled($voucher_id) {
+        
+    // This checks the parent invoice and it's associated vouchers including the supplied voucher
+    if(!check_invoice_can_be_cancelled(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be cancelled because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
+###############################################################
 #   Check to see if the voucher status allows cancellation    #
 ###############################################################
 
-function check_voucher_status_allows_cancellation($voucher_id) {
+function check_single_voucher_can_be_cancelled($voucher_id) {
     
     // Get the voucher status
     $voucher_details = get_voucher_details($voucher_id);
@@ -1071,22 +1154,6 @@ function check_voucher_status_allows_cancellation($voucher_id) {
     
 }
 
-###############################################################
-#   Check to see if the voucher can be cancelled              #  // not currently used
-###############################################################
-
-function check_voucher_can_be_cancelled($voucher_id) {
-        
-    // This checks the parent invoice and it's associated vouchers including the supplied voucher
-    if(!check_invoice_can_be_cancelled(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be cancelled because the invoice it is attached to, does not allow it."));
-        return false;
-    }
-    
-    return true;
-    
-}
-
 ############################################################################
 # Check an invoices vouchers do not prevent the invoice getting cancelled  #
 ############################################################################
@@ -1114,7 +1181,7 @@ function check_invoice_vouchers_allow_cancellation($invoice_id) {
             check_voucher_is_expired($rs->fields['voucher_id']);
 
             // Check the Voucher to see if it can be deleted
-            if(!check_voucher_status_allows_cancellation($rs->fields['voucher_id'])) {                    
+            if(!check_single_voucher_can_be_cancelled($rs->fields['voucher_id'])) {                    
                 $vouchers_allow_cancellation = false;
             }
 
@@ -1138,12 +1205,27 @@ function check_invoice_vouchers_allow_cancellation($invoice_id) {
 
 }
 
+###############################################################
+#   Check to see if the voucher can be deleted                #  // Needed for cancellation via button on voucher:status (checks parent invoice aswell)
+###############################################################
+
+function check_voucher_can_be_deleted($voucher_id) {
+        
+    // This checks the parent invoice and it's associated vouchers including the supplied voucher
+    if(!check_invoice_can_be_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
 
 ###############################################################
 #   Check to see if the voucher status allows deletion        #
 ###############################################################
 
-function check_voucher_status_allows_deletion($voucher_id) {
+function check_single_voucher_can_be_deleted($voucher_id) {
     
     // Get the voucher status
     $voucher_details = get_voucher_details($voucher_id);
@@ -1189,22 +1271,6 @@ function check_voucher_status_allows_deletion($voucher_id) {
     
 }
 
-###############################################################
-#   Check to see if the voucher can be deleted                #
-###############################################################
-
-function check_voucher_can_be_deleted($voucher_id) {
-        
-    // This checks the parent invoice and it's associated vouchers including the supplied voucher
-    if(!check_invoice_can_be_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
-        return false;
-    }
-    
-    return true;
-    
-}
-
 ###########################################################################
 # Check an invoices vouchers do not prevent the invoice getting deleted   #
 ###########################################################################
@@ -1232,7 +1298,7 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
             check_voucher_is_expired($rs->fields['voucher_id']);            
 
             // Check the Voucher to see if it can be deleted
-            if(!check_voucher_status_allows_deletion($rs->fields['voucher_id'])) {                    
+            if(!check_single_voucher_can_be_deleted($rs->fields['voucher_id'])) {                    
                 $vouchers_allow_deletion = false;
             }
 
@@ -1260,7 +1326,7 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
 #  Check if the voucher status allows editing            #
 ##########################################################
 
- function check_voucher_status_allows_editing($voucher_id) {
+ function check_voucher_can_be_edited($voucher_id) {
      
     // Get the voucher details
     $voucher_details = get_voucher_details($voucher_id);
@@ -1292,71 +1358,4 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
     // All checks passed
     return true;     
      
-}
-
-############################################
-#  Generate Random Voucher code            #
-############################################
-
-function generate_voucher_code() {
-    
-    $acceptedChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $max_offset = strlen($acceptedChars)-1;
-    $voucher_code = '';
-    
-    for($i=0; $i < 16; $i++) {
-        $voucher_code .= $acceptedChars{mt_rand(0, $max_offset)};
-    }
-    
-    return $voucher_code;
-    
-}
-
-#################################################
-#   Check to see if the voucher is expired      #  // This does a live check to see if the voucher is expired and tagged as such
-#################################################
-
-function check_voucher_is_expired($voucher_id) {
-    
-    $calculated_status = '';
-    
-    $voucher_details = get_voucher_details($voucher_id);
-    
-    // If the voucher is expired 
-    if (strtotime($voucher_details['expiry_date']) < time() ) {
-        
-        // If the status is not 'expired', update the status silenty (only from unused)
-        if ($voucher_details['status'] == 'unused') {
-            update_voucher_status($voucher_id, 'expired', true);      
-        }
-        
-        $calculated_status = 'expired';
-    
-    }
-    
-    // If the voucher is not expired
-    if (strtotime($voucher_details['expiry_date']) >= time() ) {
-        
-        //  If the status has not been updated, update the status silenty (only from expired)
-        if ($voucher_details['status'] == 'expired') {
-            update_voucher_status($voucher_id, 'unused', true);      
-        }
-        
-        $calculated_status = 'unused';
-        
-    } 
-    
-    // Return the calulates Expiry state
-    if ($calculated_status === 'expired') {
-        
-        // The voucher is expired
-        return true;
-        
-    } else {
-        
-        // The voucher is not expired
-        return false;
-        
-    }
-    
 }

@@ -25,7 +25,7 @@ if(!check_payment_method_is_active('voucher')) {
 }
 
 // Check if voucher can be edited
-if(!check_voucher_status_allows_editing($VAR['voucher_id'])) {
+if(!check_voucher_can_be_edited($VAR['voucher_id'])) {
     force_page('voucher', 'details&voucher_id='.$VAR['voucher_id'], 'warning_msg='._gettext("You cannot edit this Voucher because its status does not allow it."));
 }
 
