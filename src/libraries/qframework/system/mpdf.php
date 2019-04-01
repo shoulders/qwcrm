@@ -27,6 +27,10 @@ function mpdf_output_in_browser($pdf_filename, $pdf_template) {
     
     // Not needed when using full page import, should take it from the page - does not like parsing the header? not HTML5 compliant
     //$mpdf->SetTitle('My Title');
+    
+    // Debugging
+    //$mpdf->showImageErrors = true;
+    //$mpdf->debug = true;
 
     // Build the PDF
     $mpdf->WriteHTML($pdf_template);
