@@ -225,13 +225,13 @@
             <tr>
                 <td class="olohead"><b>{t}Voucher{/t} {t}Code{/t}</b></td>                
                 <td class="olohead" width="80" align="right"><b>{t}Expiry Date{/t}</b></td>                
-                <td class="olohead" width="80" align="right"><b>{t}Price{/t}</b></td>
+                <td class="olohead" width="80" align="right"><b>{t}Gross{/t}</b></td>
             </tr>
             {section name=p loop=$display_vouchers}        
                 <tr class="olotd4">
                     <td class="olotd4">{$display_vouchers[p].voucher_code}</td>                    
                     <td class="olotd4" align="right">{$display_vouchers[p].expiry_date|date_format:$date_format}</td>                    
-                    <td class="olotd4" align="right">{$currency_sym} {$display_vouchers[p].amount}</td>
+                    <td class="olotd4" align="right">{$currency_sym}{$display_vouchers[p].unit_gross}</td>
                 </tr>
             {/section}            
         </table>
