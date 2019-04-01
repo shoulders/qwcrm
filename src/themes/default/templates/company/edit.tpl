@@ -125,7 +125,10 @@
                                                                                     <td><b>{t}Welcome Message{/t}:</b> {t}(Dashboard){/t}</td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td colspan="2"><textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea></td>
+                                                                                    <td colspan="2">
+                                                                                        <textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea>
+                                                                                        <p>* {t}If there is no welcome message, the message box will not be displayed on the dashboard.{/t}</p>
+                                                                                    </td>
                                                                                 </tr>                                                                                                           
                                                                             </table>
                                                                         </td>

@@ -38,19 +38,21 @@
                                         </tr> 
                                         
                                         <!-- Welcome Message -->
-                                        <tr>
-                                            <td>
-                                                <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">
-                                                    <tr class="olotd4">
-                                                        <td class="row2"><b>{t}Welcome Message{/t}</b></td>
-                                                    </tr>
-                                                    <tr class="olotd4">
-                                                        <td>{$welcome_msg}</td>
-                                                    </tr>
-                                                </table>
-                                                <br> 
-                                            </td>
-                                        </tr>
+                                        {if $welcome_msg}
+                                            <tr>
+                                                <td>
+                                                    <table width="700" cellpadding="4" cellspacing="0" border="0" class="olotable">
+                                                        <tr class="olotd4">
+                                                            <td class="row2"><b>{t}Welcome Message{/t}</b></td>
+                                                        </tr>
+                                                        <tr class="olotd4">
+                                                            <td>{$welcome_msg}</td>
+                                                        </tr>
+                                                    </table>
+                                                    <br> 
+                                                </td>
+                                            </tr>
+                                        {/if}
                                         
                                         <!-- Employee Workorder Stats (logged in) -->
                                         <tr>
