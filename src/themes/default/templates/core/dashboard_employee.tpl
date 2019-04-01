@@ -30,6 +30,13 @@
                                 <td>                                    
                                     <table>
                                         
+                                        <!-- Search Bar -->
+                                        <tr>
+                                            <td>
+                                                {include file='core/blocks/theme_searchbar_block.tpl'}
+                                            </td>
+                                        </tr> 
+                                        
                                         <!-- Welcome Message -->
                                         <tr>
                                             <td>

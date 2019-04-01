@@ -310,3 +310,64 @@ function confirmChoice(msg) {
         return false;
     
 }
+
+// Check to see if the 'Enter' button has been press and return true if it has been (Used for search boxes to allow searching when enter is pressed)
+function checkForEnterKeyPress(e) {
+        
+    // Grab the character from the pressed key
+    var key = e.key;
+        
+    if (key === 'Enter')       
+        return true;        
+    else
+        return false;        
+    
+}
+
+// Perform an eBay search from the searchbar (based on eBay HTML Geo Targetted search link)
+function searchbarEbaySearch() {
+
+    // Get the search term
+    var searchTerm = document.getElementById('searchbar_ebay_search_term').value;
+    
+    // Build the search url
+    var url = 
+        'http://rover.ebay.com/rover/1/' +
+        '710-53481-19255-0/1?' +                // Rotation ID (indicates what program (UK/USA etc..) this link is for)
+        'icep_ff3=9' +                          // Link Type
+        '&pub=5574660627' +                     // Publisher ID
+        '&toolid=10001' +                       // Tool ID (what tool was used to create this link)
+        '&campid=5338494954' +                  // Campaign ID
+        '&customid=' +                          // Custom ID 
+        '&icep_uq=' + searchTerm +              // Keyword (This is the search term) 
+        '&icep_sellerId=' +                     // Seller ID
+        '&icep_ex_kw=' +                        // Exclude Keywords
+        '&icep_sortBy=12' +                     // Sort By
+        '&icep_catId=' +                        // Category ID (not available/populated when Geo-targetting)
+        '&icep_minPrice=' +                     // Minimum price
+        '&icep_maxPrice=' +                     // Maximum price
+        
+        // The following parameters are to do with where you are pointing the traffic on the eBay site (Not directly configurable?)
+        '&ipn=psmain' +
+        '&icep_vectorid=229508' +
+        '&kwid=902099' +
+        '&mtid=824' +
+        '&kw=lg';
+
+    /* Build the Tracking pixel (Only used for impression tracking)
+    var pixel =
+        '<img style="text-decoration:none;border:0;padding:0;margin:0;" ' +
+        'src="http://rover.ebay.com/roverimp/1/' +
+        '710-53481-19255-0/1?' +
+        'ff3=9' +
+        '&pub=5574660627' +
+        '&toolid=10001' +
+        '&campid=5338494954' +
+        '&customid=searchbox' +
+        '&uq=' + searchTerm +
+        '&mpt=[CACHEBUSTER]">';*/
+
+    // Open the URL in a new tab
+    window.open(url, '_blank');
+    
+}
