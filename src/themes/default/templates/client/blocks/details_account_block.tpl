@@ -190,17 +190,6 @@
                     <td><b>{t}Cancelled{/t}:</b></td>
                     <td><b>{$voucher_stats.count_cancelled}</b></td>
                     <td><b>({$currency_sym}{$voucher_stats.sum_cancelled|string_format:"%.2f"})</b></td>
-                </tr>                
-                <tr>
-                    <td colspan="3"><h2>{t}Historic{/t}</h2></td>
-                </tr>
-                <tr>
-                    <td><b>{t}Opened{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_opened}</b></td>
-                </tr>
-                <tr>
-                    <td><b>{t}Closed{/t}:</b></td>
-                    <td><b>{$voucher_stats.count_closed}</b></td>
                 </tr>
                 <tr>
                     <td colspan="3"><h2>{t}Claimed{/t}</h2></td>
@@ -214,6 +203,18 @@
                     <td><b>{$voucher_stats.count_claimed}</b></td>
                     <td><b>({$currency_sym}{$voucher_stats.sum_claimed|string_format:"%.2f"})</b></td>
                 </tr>
+                <tr>
+                    <td colspan="3"><h2>{t}Historic{/t}</h2></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Opened{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_opened}</b></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Closed{/t}:</b></td>
+                    <td><b>{$voucher_stats.count_closed}</b></td>
+                </tr>
+                
             </table>
         </td>
                 

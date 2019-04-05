@@ -43,12 +43,12 @@ $smarty->assign('labour_items_sub_totals',         get_labour_items_sub_totals($
 $smarty->assign('parts_items_sub_totals',          get_parts_items_sub_totals($VAR['invoice_id'])                                                           );
 $smarty->assign('vouchers_items_sub_total',       get_vouchers_items_sub_total($VAR['invoice_id'])                                                       );
 
-// Refund Details
+/* Refund Details - This is not used and should be deleted when i am sure I will not use it. I might use something like this to include the refund block
 if(get_invoice_details($VAR['invoice_id'], 'status') == 'refunded') {
     $smarty->assign('refund_details', get_refund_details($invoice_details['refund_id']));    
 } else {
     $smarty->assign('refund_details', null);
-}
+}*/
 
 // Payment Details
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );
