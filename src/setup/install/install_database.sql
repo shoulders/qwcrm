@@ -208,7 +208,7 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 (3, 'T2', 'Exempt', 'Exempt transactions', '0.00', 0, 0, 1, 1),
 (4, 'T3', '', '', '0.00', 0, 0, 0, 0),
 (5, 'T4', 'Sales - Goods - EC VAT Customers', 'Sale of goods to VAT registered customers in EC', '0.00', 0, 0, 0, 1),
-(6, 'T5', 'Reduced Rate', 'Lower rated transactions', '0.00', 0, 0, 0, 1),
+(6, 'T5', 'Reduced Rate', 'Lower rated transactions', '5.00', 0, 0, 0, 1),
 (7, 'T6', '', '', '0.00', 0, 0, 0, 0),
 (8, 'T7', 'Zero Rate Purchases - Goods - EC', 'Zero rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),
 (9, 'T8', 'Standard Rate Purchases - Goods - EC', 'Standard rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),

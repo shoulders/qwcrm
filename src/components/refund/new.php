@@ -61,7 +61,7 @@ if (isset($VAR['invoice_id'])) {
     // Process the submitted refund 
     } else {        
         
-        if(!$VAR['refund_id'] = refund_invoice($VAR)) {
+        if(!$refund_id = refund_invoice($VAR)) {
 
             // Load the invoice details page with error
             force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'].'&information_msg='._gettext("The invoice failed to be refunded."));
@@ -69,7 +69,7 @@ if (isset($VAR['invoice_id'])) {
         } else {
 
             // Load the invoice search page with success message
-            force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("ID").': '.$VAR['refund_id']);
+            force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("ID").': '.$refund_id);
 
         }       
         

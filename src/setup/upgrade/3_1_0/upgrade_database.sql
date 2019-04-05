@@ -82,21 +82,43 @@ ALTER TABLE `#__company_tax_systems` ADD PRIMARY KEY (`id`);
 CREATE TABLE `#__company_vat_tax_codes` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `tax_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(125) COLLATE utf8_unicode_ci NOT NULL,
   `rate` decimal(4,2) NOT NULL,
   `hidden` int(1) NOT NULL DEFAULT '0',
   `editable` int(1) NOT NULL DEFAULT '0',
-  `standard` int(1) NOT NULL DEFAULT '0' COMMENT 'standard VAT tax code'
+  `standard` int(1) NOT NULL DEFAULT '0' COMMENT 'standard VAT tax code',
+  `enabled` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `rate`, `hidden`, `editable`, `standard`) VALUES
-(1, 'T0', 'Zero Rated (T0)', '0.00', 0, 0, 1),
-(2, 'T1', 'Standard Rate (T1)', '20.00', 0, 1, 1),
-(3, 'T2', 'Exempt (T2)', '0.00', 0, 0, 1),
-(4, 'T5', 'Reduced Rate (T5)', '5.00', 0, 1, 1),
-(5, 'T9', 'None (T9)', '0.00', 1, 0, 1),
-(16, 'flat_rate', 'Flat Rate', '10.50', 1, 1, 0),
-(17, 'na_sales_tax', 'Not Applicable (Sales Tax)', '0.00', 1, 0, 0);
+INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `description`, `rate`, `hidden`, `editable`, `standard`, `enabled`) VALUES
+(1, 'T0', 'Zero Rate', 'Zero rated transactions', '0.00', 0, 0, 1, 1),
+(2, 'T1', 'Standard Rate', 'Standard rated transactions', '20.00', 0, 1, 1, 1),
+(3, 'T2', 'Exempt', 'Exempt transactions', '0.00', 0, 0, 1, 1),
+(4, 'T3', '', '', '0.00', 0, 0, 0, 0),
+(5, 'T4', 'Sales - Goods - EC VAT Customers', 'Sale of goods to VAT registered customers in EC', '0.00', 0, 0, 0, 1),
+(6, 'T5', 'Reduced Rate', 'Lower rated transactions', '5.00', 0, 0, 0, 1),
+(7, 'T6', '', '', '0.00', 0, 0, 0, 0),
+(8, 'T7', 'Zero Rate Purchases - Goods - EC', 'Zero rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),
+(9, 'T8', 'Standard Rate Purchases - Goods - EC', 'Standard rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),
+(10, 'T9', 'Transactions not involving VAT', 'Transactions not involving VAT. This is the default non-vatable tax code.', '0.00', 0, 0, 0, 1),
+(11, 'T10', '', '', '0.00', 0, 0, 0, 0),
+(12, 'T11', '', '', '0.00', 0, 0, 0, 0),
+(13, 'T12', '', '', '0.00', 0, 0, 0, 0),
+(14, 'T13', '', '', '0.00', 0, 0, 0, 0),
+(15, 'T14', '', '', '0.00', 0, 0, 0, 0),
+(16, 'T15', '', '', '0.00', 0, 0, 0, 0),
+(17, 'T16', '', '', '0.00', 0, 0, 0, 0),
+(18, 'T17', '', '', '0.00', 0, 0, 0, 0),
+(19, 'T18', '', '', '0.00', 0, 0, 0, 0),
+(20, 'T19', '', '', '0.00', 0, 0, 0, 0),
+(21, 'T20', 'Reverse Charges', 'Sale or purchase of items that fall under the remit of carousel fraud', '0.00', 0, 0, 0, 1),
+(22, 'T21', '', '', '0.00', 0, 0, 0, 0),
+(23, 'T22', 'Sales - Services - EC VAT Customers', 'Sales of services to VAT registered customers in EC', '0.00', 0, 0, 0, 1),
+(24, 'T23', 'Zero Rate / Exempt Purchases - Services - EC', 'Zero rated or exempt purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
+(25, 'T24', 'Standard Rate Purchases - Services - EC', 'Standard rated purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
+(26, 'T25', 'Flat Rate Capital Asset', 'UK Flat Rate scheme only - Purchase or sale of capital items, where the purchase amount is more than £2,000 inclusive of VAT.', '0.00', 0, 0, 0, 1),
+(1000, 'not_applicable', 'Not Applicable', 'VAT is not applicable on this tax system.', '0.00', 1, 0, 0, 1);
 
 ALTER TABLE `#__company_vat_tax_codes` ADD PRIMARY KEY (`id`);
 

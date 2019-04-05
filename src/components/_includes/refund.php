@@ -172,22 +172,24 @@ function insert_refund($VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
     } else {
         
+        $refund_id = $db->Insert_ID();
+                
         // Get related workorder_id
         $workorder_id = get_invoice_details($VAR['invoice_id'], 'workorder_id');
         
         // Create a Workorder History Note
-        insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
                   
         // Log activity        
-        $record = _gettext("Refund Record").' '.$db->Insert_ID().' '._gettext("created.");
+        $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("created.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['client_id'], $workorder_id, $VAR['invoice_id']);
         
         // Update last active record    
         update_client_last_active($VAR['client_id']);
         update_workorder_last_active($workorder_id);
         update_invoice_last_active($VAR['invoice_id']);
-        
-        return $db->Insert_ID();
+                
+        return $refund_id;
         
     } 
     

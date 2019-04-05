@@ -1002,7 +1002,7 @@ function refund_invoice($refund_details) {
     // Add full payment routine here (currently the payment is assumed to be good, live payments will need more work)
     
     // Insert refund record and return refund_id
-    insert_refund($refund_details);
+    $refund_id = insert_refund($refund_details);
     
     // Refund any Vouchers
     refund_invoice_vouchers($refund_details['invoice_id']);    
@@ -1022,7 +1022,7 @@ function refund_invoice($refund_details) {
     update_workorder_last_active($invoice_details['workorder_id']);
     update_invoice_last_active($invoice_details['invoice_id']);
 
-    return true;
+    return $refund_id;
     
 }
 
@@ -1311,7 +1311,7 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $s
     }
     
     // VAT Calculations
-    if($tax_system == 'vat_standard') {        
+    if($tax_system == 'vat_standard' || $tax_system == 'vat_flat' ) {        
         $item_totals['unit_vat'] = $unit_net * ($vat_rate / 100);
         $item_totals['unit_gross'] = $unit_net + $item_totals['unit_vat'];
         $item_totals['sub_total_net'] = $unit_net * $unit_qty;
