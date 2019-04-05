@@ -38,6 +38,7 @@ $smarty->assign('workorders_closed',        display_workorders('workorder_id', '
 
 $smarty->assign('display_schedules',        display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, $VAR['client_id'])  );
 
+$smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                                             );
 $smarty->assign('invoices_open',            display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'open', null, $VAR['client_id'])           );
 $smarty->assign('invoices_closed',          display_invoices('invoice_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'closed', null, $VAR['client_id'])            );
 
