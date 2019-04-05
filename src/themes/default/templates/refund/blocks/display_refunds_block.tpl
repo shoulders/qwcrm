@@ -8,9 +8,8 @@
 <b>{$block_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
     <tr>
-        <td class="olohead">{t}Refund ID{/t}</td>
-        <td class="olohead">{t}Client ID{/t}</td>
-        <td class="olohead">{t}Name{/t}</td>
+        <td class="olohead">{t}Refund ID{/t}</td>        
+        <td class="olohead">{t}Client{/t}</td>
         <td class="olohead">{t}INV ID{/t}</td>              
         <td class="olohead">{t}Date{/t}</td>
         <td class="olohead">{t}Item Type{/t}</td>
@@ -27,7 +26,6 @@
         <!-- This allows double clicking on a row and opens the corresponding refund view details -->
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_refunds[r].status != 'deleted'} onDblClick="window.location='index.php?component=refund&page_tpl=details&refund_id={$display_refunds[r].refund_id}';"{/if}>
             <td class="olotd4" nowrap><a href="index.php?component=refund&page_tpl=details&refund_id={$display_refunds[r].refund_id}">{$display_refunds[r].refund_id}</a></td>
-            <td class="olotd4" nowrap><a href="index.php?component=client&page_tpl=details&client_id={$display_refunds[r].client_id}">{$display_refunds[r].client_id}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=client&page_tpl=details&client_id={$display_refunds[r].client_id}">{$display_refunds[r].client_display_name}</a></td>
             <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_refunds[r].invoice_id}">{$display_refunds[r].invoice_id}</a></td>            
             <td class="olotd4" nowrap>{$display_refunds[r].date|date_format:$date_format}</td>                                                                

@@ -34,8 +34,8 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd"><b>{t}Client ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$refund_details.client_id}</a></td>
+                                            <td class="menutd"><b>{t}Client{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a></td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym}{$refund_details.net_amount}</td>
                                         </tr>                                        
