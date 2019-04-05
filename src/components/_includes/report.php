@@ -293,19 +293,19 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'current' || $record_set == 'all') {
     
         $current_stats = array(
-            "count_open"            =>  count_invoices($start_date, $end_date, null, null, null, 'open', $employee_id, $client_id),
-            "count_discounted"      =>  count_invoices($start_date, $end_date, null, null, null, 'discounted', $employee_id, $client_id),
+            "count_open"            =>  count_invoices($start_date, $end_date, 'date', null, null, 'open', $employee_id, $client_id),
+            "count_discounted"      =>  count_invoices($start_date, $end_date, 'date', null, null, 'discounted', $employee_id, $client_id),
             "count_deleted"         =>  count_invoices($start_date, $end_date, null, null, null, 'deleted', $employee_id, $client_id),         // Not always available  
             
-            "count_pending"         =>  count_invoices($start_date, $end_date, null, null, null, 'pending', $employee_id, $client_id),   
-            "count_unpaid"          =>  count_invoices($start_date, $end_date, null, null, null, 'unpaid', $employee_id, $client_id),   
-            "count_partially_paid"  =>  count_invoices($start_date, $end_date, null, null, null, 'partially_paid', $employee_id, $client_id),   
-            "count_paid"            =>  count_invoices($start_date, $end_date, null, null, null, 'paid', $employee_id, $client_id),   
-            "count_in_dispute"      =>  count_invoices($start_date, $end_date, null, null, null, 'in_dispute', $employee_id, $client_id),   
-            "count_overdue"         =>  count_invoices($start_date, $end_date, null, null, null, 'overdue', $employee_id, $client_id),   
-            "count_collections"     =>  count_invoices($start_date, $end_date, null, null, null, 'collections', $employee_id, $client_id),   
-            "count_refunded"        =>  count_invoices($start_date, $end_date, null, null, null, 'refunded', $employee_id, $client_id),   
-            "count_cancelled"       =>  count_invoices($start_date, $end_date, null, null, null, 'cancelled', $employee_id, $client_id)                    
+            "count_pending"         =>  count_invoices($start_date, $end_date, 'date', null, null, 'pending', $employee_id, $client_id),   
+            "count_unpaid"          =>  count_invoices($start_date, $end_date, 'date', null, null, 'unpaid', $employee_id, $client_id),   
+            "count_partially_paid"  =>  count_invoices($start_date, $end_date, 'date', null, null, 'partially_paid', $employee_id, $client_id),   
+            "count_paid"            =>  count_invoices($start_date, $end_date, 'closed', null, null, 'paid', $employee_id, $client_id),   
+            "count_in_dispute"      =>  count_invoices($start_date, $end_date, 'date', null, null, 'in_dispute', $employee_id, $client_id),   
+            "count_overdue"         =>  count_invoices($start_date, $end_date, 'date', null, null, 'overdue', $employee_id, $client_id),   
+            "count_collections"     =>  count_invoices($start_date, $end_date, 'date', null, null, 'collections', $employee_id, $client_id),   
+            "count_refunded"        =>  count_invoices($start_date, $end_date, 'closed', null, null, 'refunded', $employee_id, $client_id),   
+            "count_cancelled"       =>  count_invoices($start_date, $end_date, 'closed', null, null, 'cancelled', $employee_id, $client_id)                    
         );
 
         $stats = array_merge($stats, $current_stats);
@@ -325,9 +325,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
             "count_closed_cancelled"    =>  count_invoices($start_date, $end_date, 'closed', null, null, 'cancelled', $employee_id, $client_id),
             
             // Only used for Basic Stats (when redevelop page, tidy this, these are not historic)
-            "invoiced_total"            =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'gross_amount', $employee_id, $client_id),
-            "received_monies"           =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'paid_amount', $employee_id, $client_id),
-            "outstanding_balance"       =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'balance', $employee_id, $client_id)
+            "invoiced_total"            =>  sum_invoices('gross_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),
+            "received_monies"           =>  sum_invoices('paid_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),
+            "outstanding_balance"       =>  sum_invoices('balance', $start_date, $end_date, 'date', null, null, 'active', $employee_id, $client_id)
         );
         
         $stats = array_merge($stats, $historic_stats);
@@ -338,22 +338,22 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'revenue' || $record_set == 'all') {       
         
         $revenue_stats = array(                                   
-            "sum_sub_total"             =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'sub_total', $employee_id, $client_id),
-            "sum_discount_amount"       =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'discount_amount', $employee_id, $client_id),           
-            "sum_net_amount"            =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'net_amount', $employee_id, $client_id),
-            "sum_tax_amount"            =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'tax_amount', $employee_id, $client_id),           
-            "sum_gross_amount"          =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'gross_amount', $employee_id, $client_id),            
-            "sum_paid_amount"           =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'paid_amount', $employee_id, $client_id),         
-            "sum_balance"               =>  sum_invoices('open', $start_date, $end_date, null, null, null, 'balance', $employee_id, $client_id),            
+            "sum_sub_total"             =>  sum_invoices('sub_total', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),
+            "sum_discount_amount"       =>  sum_invoices('discount_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),           
+            "sum_net_amount"            =>  sum_invoices('net_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),
+            "sum_tax_amount"            =>  sum_invoices('tax_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),           
+            "sum_gross_amount"          =>  sum_invoices('gross_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),            
+            "sum_paid_amount"           =>  sum_invoices('paid_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),         
+            "sum_balance"               =>  sum_invoices('balance', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),            
             
-            "sum_sales_tax_amount"      =>  sum_invoices('open', $start_date, $end_date, null, 'sales_tax', null, 'tax_amount', $employee_id, $client_id),
-            "sum_vat_tax_amount"        =>  sum_invoices('open', $start_date, $end_date, null, 'vat_standard', null, 'tax_amount', $employee_id, $client_id),
+            "sum_sales_tax_amount"      =>  sum_invoices('tax_amount', $start_date, $end_date, 'date', 'sales_tax', null, null, $employee_id, $client_id),
+            "sum_vat_tax_amount"        =>  sum_invoices('tax_amount', $start_date, $end_date, 'date', 'vat_standard', null, null, $employee_id, $client_id),
             
-            "sum_refunded_net"          =>  sum_invoices('refunded', $start_date, $end_date, null, null, null, 'net_amount', $employee_id, $client_id),
-            "sum_refunded_gross"        =>  sum_invoices('refunded', $start_date, $end_date, null, null, null, 'gross_amount', $employee_id, $client_id),
+            "sum_refunded_net"          =>  sum_invoices('net_amount', $start_date, $end_date, 'closed', null, null, 'refunded', $employee_id, $client_id),
+            "sum_refunded_gross"        =>  sum_invoices('gross_amount', $start_date, $end_date, 'closed', null, null, 'refunded', $employee_id, $client_id),
             
-            "sum_cancelled_net"         =>  sum_invoices('cancelled', $start_date, $end_date, null, null, null, 'net_amount', $employee_id, $client_id),
-            "sum_cancelled_gross"       =>  sum_invoices('cancelled', $start_date, $end_date, null, null, null, 'gross_amount', $employee_id, $client_id)                    
+            "sum_cancelled_net"         =>  sum_invoices('net_amount', $start_date, $end_date, 'closed', null, null, 'cancelled', $employee_id, $client_id),
+            "sum_cancelled_gross"       =>  sum_invoices('gross_amount', $start_date, $end_date, 'closed', null, null, 'cancelled', $employee_id, $client_id)                    
         );
         
         $stats = array_merge($stats, $revenue_stats);
@@ -364,9 +364,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'labour' || $record_set == 'all') {       
         
         $labour_stats = array(                 
-            "labour_count_items"    =>  count_labour_items($start_date, $end_date, null, nul, null, null, $employee_id, $client_id),              // Total Different Items
-            "labour_sum_items"      =>  sum_labour_items('unit_qty', $start_date, $end_date, null, null, null, null, $employee_id, $client_id),         // Total Items
-            "labour_sum_sub_total"  =>  sum_labour_items('sub_total_net', $start_date, $end_date, null, null, null, null, $employee_id, $client_id)    // Total net amount for labour               
+            "labour_count_items"    =>  count_labour_items($start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),              // Total Different Items
+            "labour_sum_items"      =>  sum_labour_items('unit_qty', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),         // Total Items
+            "labour_sum_sub_total"  =>  sum_labour_items('sub_total_net', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id)    // Total net amount for labour               
         );
         
         $stats = array_merge($stats, $labour_stats);
@@ -377,9 +377,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'parts' || $record_set == 'all') {       
         
         $parts_stats = array(                       
-            "parts_count_items"    =>  count_parts_items($start_date, $end_date, null, null, null, null, $employee_id, $client_id),              // Total Different Items
-            "parts_sum_items"      =>  sum_parts_items('unit_qty', $start_date, $end_date, null, null, null, null, $employee_id, $client_id),         // Total Items
-            "parts_sum_sub_total"  =>  sum_parts_items('sub_total_net', $start_date, $end_date, null, null, null, null, $employee_id, $client_id)    // Total net amount for labour
+            "parts_count_items"    =>  count_parts_items($start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),              // Total Different Items
+            "parts_sum_items"      =>  sum_parts_items('unit_qty', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),         // Total Items
+            "parts_sum_sub_total"  =>  sum_parts_items('sub_total_net', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id)    // Total net amount for labour
         );
         
         $stats = array_merge($stats, $parts_stats);
@@ -495,6 +495,34 @@ function sum_invoices($value_name, $start_date = null, $end_date = null, $date_t
 }
 
 #####################################
+#   Build invoice Date filter SQL   #  // add cancelled, refunded
+#####################################
+
+function invoice_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($start_date && $end_date && $date_type) {
+        if($date_type == 'opened') {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'closed') {       
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'active') {       
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'date') {       
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
+        } elseif($date_type == 'due_date') {       
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$db->qstr($end_date);
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+#####################################
 #  Build invoice Status filter SQL  #
 #####################################
 
@@ -522,35 +550,6 @@ function invoice_build_filter_by_status($status = null) {
     
 }
 
-#####################################
-#   Build invoice Date filter SQL   #
-#####################################
-
-function invoice_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
-    
-    $db = QFactory::getDbo();
-     
-    $whereTheseRecords = '';
-    
-    if($start_date && $end_date) {
-        if($date_type == 'opened') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed') {       
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'active') {       
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'date') {       
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
-        } elseif($date_type == 'due_date') {       
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$db->qstr($end_date);
-        } else {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
-        }
-    }
-        
-    return $whereTheseRecords;
-    
-}
 
 /** Labour **/
 
