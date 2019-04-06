@@ -444,7 +444,7 @@ function delete_refund($refund_id) {
     // Get record before deleting the record
     $refund_details = get_refund_details($refund_id);
     
-    // Change the refunnd status to deleted (I do this here to maintain consistency)
+    // Change the refund status to deleted (I do this here to maintain consistency)
     update_refund_status($refund_id, 'deleted');  
     
     $sql = "UPDATE ".PRFX."refund_records SET
@@ -699,8 +699,8 @@ function check_refund_can_be_deleted($refund_id) {
     }
     
     // Is cancelled
-    if($refund_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it already been deleted."));
+    if($refund_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it already been cancelled."));
         return false;        
     }
     

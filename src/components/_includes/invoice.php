@@ -965,8 +965,8 @@ function update_invoice_last_active($invoice_id = null) {
     
 }
 
-/*#################################
-#    Update invoice refund ID   # // not used anymore
+#################################
+#    Update invoice refund ID   #
 #################################
 
 function update_invoice_refund_id($invoice_id, $refund_id) {
@@ -981,7 +981,7 @@ function update_invoice_refund_id($invoice_id, $refund_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add a Refund ID to the invoice."));
     }
     
-}*/
+}
 
 /** Close Functions **/
 
@@ -1005,7 +1005,10 @@ function refund_invoice($refund_details) {
     $refund_id = insert_refund($refund_details);
     
     // Refund any Vouchers
-    refund_invoice_vouchers($refund_details['invoice_id']);    
+    refund_invoice_vouchers($refund_details['invoice_id']);
+
+    // Update the invoice with the new refund_id
+    update_invoice_refund_id($refund_details['invoice_id'], $refund_id);    
     
     // Change the invoice status to refunded (I do this here to maintain consistency)
     update_invoice_status($refund_details['invoice_id'], 'refunded');

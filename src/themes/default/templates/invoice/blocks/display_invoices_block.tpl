@@ -44,9 +44,11 @@
                 {/if}
             </td>
             <td class="olotd4" nowrap>
-                {section name=s loop=$invoice_statuses}    
-                    {if $display_invoices[i].status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
+                {if $display_invoices[i].status == 'refunded'}<a href="index.php?component=refund&page_tpl=details&refund_id={$display_invoices[i].refund_id}">{/if}
+                {section name=s loop=$invoice_statuses}                    
+                    {if $display_invoices[i].status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}                    
                 {/section} 
+                {if $display_invoices[i].status == 'refunded'}</a>{/if}
             </td>            
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].net_amount}</td>                                                          
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].gross_amount}</td>

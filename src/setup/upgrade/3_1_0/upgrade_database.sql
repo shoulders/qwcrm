@@ -709,6 +709,7 @@ ALTER TABLE `#__invoice_parts` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NUL
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
 ALTER TABLE `#__invoice_prefill_items` CHANGE `amount` `net_amount` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
 
 --
 -- Correct #__user_reset index column
