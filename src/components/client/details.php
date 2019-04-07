@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
@@ -55,5 +56,8 @@ $smarty->assign('payment_statuses',         get_payment_statuses()              
 $smarty->assign('payments_received',        display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'received', null, null, null, $VAR['client_id'])        );
 $smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'transmitted', null, null, null, $VAR['client_id'])        );
 $smarty->assign('payment_stats',            get_payments_stats('all', null, null, null, $VAR['client_id'])   );
+
+$smarty->assign('refund_types',            get_refund_types()                                                                                 );
+$smarty->assign('display_refunds',         display_refunds('refund_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, null, null, $VAR['client_id'])        );
 
 $BuildPage .= $smarty->fetch('client/details.tpl');

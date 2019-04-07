@@ -8,7 +8,7 @@
 <table width="100%" border="0" cellpadding="20" cellspacing="0">
     <tr>
         <td>
-            <table width="700" cellpadding="5" cellspacing="0" border="0" >
+            <table width="700" cellpadding="5" cellspacing="0" border="0">
                 <tr>
                     <td class="menuhead2" width="80%">&nbsp;{t}Client Details for{/t} {$client_details.display_name}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">                        
@@ -29,8 +29,9 @@
                                             <li><a href="javascript:void(0)" rel="#tab_4_contents" class="tab"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" />&nbsp;{t}Invoices{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_5_contents" class="tab">{t}Vouchers{/t}</a></li>
                                             <li><a href="javascript:void(0)" rel="#tab_6_contents" class="tab">{t}Payments{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Account{/t}</a></li>
-                                            <li><a href="javascript:void(0)" rel="#tab_8_contents" class="tab">{t}Notes{/t}</a></li>                    
+                                            <li><a href="javascript:void(0)" rel="#tab_7_contents" class="tab">{t}Refunds{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_8_contents" class="tab">{t}Account{/t}</a></li>
+                                            <li><a href="javascript:void(0)" rel="#tab_9_contents" class="tab">{t}Notes{/t}</a></li>                    
                                         </ul>
 
                                         <!-- This is used so the contents don't appear to the right of the tabs -->
@@ -77,13 +78,18 @@
                                                 {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_transmitted block_title=_gettext("Transmitted")}
                                             </div>
                                             
-                                            <!-- Tab 7 Contents (Account) -->
+                                            <!-- Tab 7 Contents (Refunds) -->
                                             <div id="tab_7_contents" class="tab_contents">
+                                                {include file='refund/blocks/display_refunds_block.tpl' display_refundss=$display_refunds block_title=_gettext("Refunds")}
+                                            </div>
+                                            
+                                            <!-- Tab 8 Contents (Account) -->
+                                            <div id="tab_8_contents" class="tab_contents">
                                                 {include file='client/blocks/details_account_block.tpl'}
-                                             </div>
+                                            </div>
 
-                                            <!-- Tab 8 Contents (Client Notes) -->
-                                            <div id="tab_8_contents" class="tab_contents">                        
+                                            <!-- Tab 9 Contents (Client Notes) -->
+                                            <div id="tab_9_contents" class="tab_contents">                        
                                                 {include file='client/blocks/details_notes_block.tpl'}   
                                             </div>
 

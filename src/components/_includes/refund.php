@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display refunds       #
 #############################
 
-function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $payment_method = null) {
+function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $payment_method = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -57,6 +57,15 @@ function display_refunds($order_by, $direction, $use_pages = false, $records_per
         
     // Restrict by Method
     if($payment_method) { $whereTheseRecords .= " AND ".PRFX."refund_records.payment_method= ".$db->qstr($payment_method);} 
+    
+    // Restrict by Status
+    if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$db->qstr($status);}
+
+    // Restrict by Employee
+    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$db->qstr($employee_id);}        
+
+    // Restrict by Client
+    if($client_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$db->qstr($client_id);}
     
     /* The SQL code */
     
