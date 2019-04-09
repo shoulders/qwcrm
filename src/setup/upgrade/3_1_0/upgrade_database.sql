@@ -545,6 +545,7 @@ ALTER TABLE `#__voucher_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COL
 ALTER TABLE `#__voucher_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
 ALTER TABLE `#__voucher_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
 ALTER TABLE `#__voucher_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_client_id`;
+ALTER TABLE `#__voucher_records` ADD `refund_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
 ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `method`;
 

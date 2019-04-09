@@ -342,8 +342,7 @@ class QFactory {
 
     
 /****************** Authentication Object ******************/
-    
-    
+        
      /**
      * Get authentication object.
      *
@@ -483,6 +482,7 @@ class QFactory {
 
 /****************** Database Object ******************/
     
+    
     /**
      * Get a database object.
      *
@@ -542,7 +542,7 @@ class QFactory {
         //require('adodb-exceptions.inc.php');
         //require(VENDOR_DIR.'adodb/adodb-php/adodb-exceptions.inc.php');        
                 
-        //$db->debug = true;  // This delvers a lot of information to the screen about failed SQL queries
+        //$db->debug = true;  // This delivers a lot of information to the screen about failed SQL queries
         //$reporting_level = error_reporting(); // Get current PHP error reporting level (not needed with this version of ADOdb)
         //error_reporting(0); // Disable PHP error reporting (works globally) (not needed with this version of ADOdb)
 
@@ -620,7 +620,7 @@ class QFactory {
     /**
      * Get a Smarty Object
      *
-     * @return  smatry Object
+     * @return  smarty Object
      *
      * @see     
      * @since   
@@ -670,12 +670,12 @@ class QFactory {
 
         // Debugging    
         $smarty->debugging_ctrl         = $conf->get('smarty_debugging_ctrl');
-        //$smarty->debugging            = $conf->get('smarty_debugging');                                     // Does not work with fetch()
+        //$smarty->debugging            = $conf->get('smarty_debugging');                                 // Does not work with fetch()
         //$smarty->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
         //$smarty->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
 
         // Other Settings
-        //$smarty->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads
+        //$smarty->load_filter('output','trimwhitespace');  // removes all whitespace from output. useful to get smaller page payloads (minify?)
         //$smarty->error_unassigned = true;                 // to enable notices.
         //$smarty->error_reporting = E_ALL | E_STRICT;      // Uses standard PHP error levels.
         //$smarty->compileAllTemplates();                   // this is a really cool feature and useful for translations
@@ -689,7 +689,7 @@ class QFactory {
 
 /****************** Client and Site checks ******************/
     
-
+    
     /**
      * Gets the client id of the current running application.
      *

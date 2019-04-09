@@ -561,7 +561,7 @@ function last_refund_id_lookup() {
  }
 
 ###############################################################
-#   Check to see if the refund can be refunded (by status)    #  // not currently used - i DONT think i will use this
+#   Check to see if the refund can be refunded                #  // not currently used - i DONT think i will use this
 ###############################################################
 
 function check_refund_can_be_refunded($refund_id) {

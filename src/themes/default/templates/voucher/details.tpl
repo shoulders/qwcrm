@@ -63,7 +63,11 @@
                                         </tr>
                                         <tr>
                                             <td><b>{t}Payment ID{/t}</b></td>                                            
-                                            <td><a href="index.php?component=payment&page_tpl=details&payment_id={$voucher_details.payment_id}">{$voucher_details.payment_id}</a></td>            
+                                            <td>{if $voucher_details.payment_id}<a href="index.php?component=payment&page_tpl=details&payment_id={$voucher_details.payment_id}">{$voucher_details.payment_id}</a>{else}&nbsp;{/if}</td>            
+                                        </tr>
+                                        <tr>
+                                            <td><b>{t}Refund ID{/t}</b></td>                                            
+                                            <td>{if $voucher_details.refund_id}<a href="index.php?component=refund&page_tpl=details&refund_id={$voucher_details.refund_id}">{$voucher_details.refund_id}</a>{else}&nbsp;{/if}</td>            
                                         </tr>
                                         <tr>
                                             <td><b>{t}Type{/t}</b></td>

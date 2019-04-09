@@ -58,6 +58,8 @@ $smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC
 $smarty->assign('payment_stats',            get_payments_stats('all', null, null, null, $VAR['client_id'])   );
 
 $smarty->assign('refund_types',            get_refund_types()                                                                                 );
+$smarty->assign('refund_statuses',         get_refund_statuses()                                                                                                        );
 $smarty->assign('display_refunds',         display_refunds('refund_id', 'DESC', false, '25', $VAR['page_no'], null, null, null, null, null, null, $VAR['client_id'])        );
+$smarty->assign('refund_stats',            get_refunds_stats('all', null, null, null, $VAR['client_id'])   );
 
 $BuildPage .= $smarty->fetch('client/details.tpl');

@@ -1124,6 +1124,7 @@ CREATE TABLE `#__voucher_records` (
   `workorder_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `refund_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `redeemed_client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `redeemed_invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `open_date` datetime NOT NULL,

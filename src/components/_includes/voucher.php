@@ -521,7 +521,7 @@ function update_voucher_blocked_status($voucher_id, $new_blocked_status) {
 }
 
 ######################################################
-#   Redeem the voucher against an invoice   #
+#   Redeem the voucher against an invoice            #
 ######################################################
 
 function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
@@ -543,7 +543,7 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
             close_date          =". $db->qstr( $datetime                                ).",
             status              =". $db->qstr( 'redeemed'                               ).",                        
             blocked             =". $db->qstr( 1                                        )."
-            WHERE voucher_id   =". $db->qstr( $voucher_id                               );
+            WHERE voucher_id    =". $db->qstr( $voucher_id                              );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher as redeemed."));
@@ -562,13 +562,31 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
     
 }
 
+#################################
+#    Update voucher refund ID   #
+#################################
+
+function update_voucher_refund_id($voucher_id, $refund_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "UPDATE ".PRFX."voucher_records SET
+            refund_id            =".$db->qstr($refund_id)."
+            WHERE voucher_id     =".$db->qstr($voucher_id);
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add an Invoice ID to the voucher."));
+    }
+    
+}
+
 /** Close Functions **/
 
 #####################################
 #   Refund Voucher                  #
 #####################################
 
-function refund_voucher($voucher_id) {
+function refund_voucher($voucher_id, $refund_id) {
     
     // make sure the voucher can be cancelled
     if(!check_single_voucher_can_be_refunded($voucher_id)) {
@@ -581,7 +599,10 @@ function refund_voucher($voucher_id) {
     // Change the voucher status to refunded (I do this here to maintain consistency)
     update_voucher_status($voucher_id, 'refunded', true);
     
-    // Get voucher details before deleting
+    // Update the voucher with the new refund_id
+    update_voucher_refund_id($voucher_id, $refund_id);  
+        
+    // Get voucher details
     $voucher_details = get_voucher_details($voucher_id);    
         
     // Create a Workorder History Note  
@@ -637,7 +658,7 @@ function cancel_voucher($voucher_id) {
 #  Refund all of an Invoice's Vouchers   #
 ##########################################
 
-function refund_invoice_vouchers($invoice_id) {
+function refund_invoice_vouchers($invoice_id, $refund_id) {
     
     $db = QFactory::getDbo();    
         
@@ -654,7 +675,7 @@ function refund_invoice_vouchers($invoice_id) {
         while(!$rs->EOF) {            
 
             // Refund Voucher
-            refund_voucher($rs->fields['voucher_id']);
+            refund_voucher($rs->fields['voucher_id'], $refund_id);
 
             // Advance the loop to the next record
             $rs->MoveNext();           
@@ -729,6 +750,7 @@ function delete_voucher($voucher_id) {
             workorder_id        =   '',
             invoice_id          =   '',
             payment_id          =   '',
+            refund_id           =   '',
             redeemed_client_id  =   '',
             redeemed_invoice_id =   '',
             open_date           =   '0000-00-00 00:00:00',
