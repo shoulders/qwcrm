@@ -15,8 +15,7 @@
         <td class="olohead">{t}Item Type{/t}</td>
         <td class="olohead">{t}Payment Method{/t}</td>
         <td class="olohead">{t}Net Amount{/t}</td>        
-        <td class="olohead">{t}VAT Rate{/t}</td>
-        <td class="olohead">{t}VAT Amount{/t}</td>
+        <td class="olohead">{t}Tax Amount{/t}</td>
         <td class="olohead">{t}Gross Amount{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
@@ -39,9 +38,8 @@
                     {if $display_refunds[r].payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}        
                 {/section} 
             </td>                                                               
-            <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].net_amount}</td>                                                                           
-            <td class="olotd4" nowrap>{$display_refunds[r].vat_rate} %</td>                                                                
-            <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].vat_amount}</td>                                                            
+            <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].net_amount}</td>                                                                          
+            <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].tax_amount}</td>                                                            
             <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].gross_amount}</td> 
             <td class="olotd4" nowrap>
                {section name=s loop=$refund_statuses}    

@@ -42,19 +42,9 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$refund_details.date|date_format:$date_format}</td>
-                                            <td class="menutd" ><b>{t}VAT Tax Code{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$vat_tax_codes}
-                                                    {if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                {/section}
-                                            </td> 
+                                            <td class="menutd"><b>{t}Tax{/t} {t}Amount{/t}</b></td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.tax_amount}</td>                                            
                                         </tr>
-                                        <tr>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$refund_details.vat_rate|string_format:"%.2f"}%</td>
-                                        </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
                                             <td class="menutd">              
@@ -62,8 +52,8 @@
                                                     {if $refund_details.item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
-                                            <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.vat_amount}</td>
+                                            <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.gross_amount}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>
@@ -71,25 +61,19 @@
                                                 {section name=s loop=$payment_methods}    
                                                     {if $refund_details.payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
                                                 {/section}
-                                            </td>
-                                            <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.gross_amount}</td>
+                                            </td> 
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a></td>
                                             <td class="menutd"><b>{t}Status{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$refund_statuses}    
                                                     {if $refund_details.status == $refund_statuses[s].status_key}{t}{$refund_statuses[s].display_name}{/t}{/if}        
                                                 {/section} 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a></td>
-                                            <td colspan="2">&nbsp;</td>
-                                            
+                                            </td>                                            
                                         </tr>                                        
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>

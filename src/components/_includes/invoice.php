@@ -1343,10 +1343,10 @@ function recalculate_invoice($invoice_id) {
     $net_amount             = $items_sub_total - $discount_amount;
 
     // Work out the correct ax based on the type of invoice/tax_system
-    if($invoice_details['tax_system'] == 'vat_standard') {
+    if($invoice_details['tax_system'] == 'vat_standard' || $invoice_details['tax_system'] == 'vat_flat') {
         $tax_amount = $labour_items_sub_totals['sub_total_vat'] + $parts_items_sub_totals['sub_total_vat'];        
     } elseif($invoice_details['tax_system'] == 'sales_tax') {
-        $tax_amount     = $net_amount * ($invoice_details['sales_tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
+        $tax_amount = $net_amount * ($invoice_details['sales_tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
     } else {
         $tax_amount = 0.00;
     }

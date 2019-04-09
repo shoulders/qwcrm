@@ -677,10 +677,8 @@ CREATE TABLE `#__refund_records` (
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
   `item_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `payment_method` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',  
+  `tax_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL

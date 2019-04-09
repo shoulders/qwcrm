@@ -48,12 +48,10 @@ if (isset($VAR['invoice_id'])) {
         $refund_details['invoice_id'] = $invoice_details['invoice_id'];        
         $refund_details['item_type'] = 'invoice';
         $refund_details['payment_method'] = null;
-        $refund_details['net_amount'] = $invoice_details['net_amount'];
-        $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);
-        $refund_details['vat_rate'] = get_vat_rate('standard');
-        $refund_details['vat_amount'] = $invoice_details['tax_amount'];  // the correct vat needs to be calculated here, there might be no VAT
+        $refund_details['net_amount'] = $invoice_details['net_amount'];        
+        $refund_details['tax_amount'] = $invoice_details['tax_amount'];
         $refund_details['gross_amount'] = $invoice_details['gross_amount'];        
-        $refund_details['note'] = '';
+        $refund_details['note'] = _gettext("This is a refund for an Invoice.");
         
         // Get Client display_name
         $client_display_name = get_client_details($invoice_details['client_id'], 'display_name'); 
@@ -80,7 +78,6 @@ if (isset($VAR['invoice_id'])) {
 // Build the page
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes(false)); 
 $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
 $smarty->assign('client_display_name', $client_display_name);
 $BuildPage .= $smarty->fetch('refund/new.tpl');

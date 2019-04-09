@@ -10,8 +10,10 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'company.php');
+require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a refund_id
 if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
@@ -35,9 +37,8 @@ if(isset($VAR['submit'])) {
 
     // Build the page
     $refund_details = get_refund_details($VAR['refund_id']);
-    $smarty->assign('refund_statuses', get_refund_statuses()  );
-    $smarty->assign('refund_types', get_refund_types());
-    $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
+    $smarty->assign('refund_statuses', get_refund_statuses());
+    $smarty->assign('refund_types', get_refund_types());    
     $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
     $smarty->assign('refund_details', $refund_details);
     $smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));

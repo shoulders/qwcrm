@@ -22,7 +22,6 @@ if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
 $refund_details = get_refund_details($VAR['refund_id']);
 $smarty->assign('refund_statuses', get_refund_statuses()  );
 $smarty->assign('refund_types', get_refund_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes() );
 $smarty->assign('payment_methods', get_payment_methods('send'));
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));
