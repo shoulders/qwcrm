@@ -107,9 +107,15 @@
                                         <tr>
                                             <td><b>{t}Status{/t}</b></td>
                                             <td>
-                                                {section name=s loop=$voucher_statuses}    
-                                                    {if $voucher_details.status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}        
-                                                {/section}              
+                                                {section name=s loop=$voucher_statuses}   
+                                                    {if $voucher_details.status == $voucher_statuses[s].status_key}
+                                                        {if $voucher_details.status == 'refunded'}
+                                                            <a href="index.php?component=refund&page_tpl=details&refund_id={$voucher_details.refund_id}">{t}{$voucher_statuses[s].display_name}{/t}</a>
+                                                        {else}
+                                                            {t}{$voucher_statuses[s].display_name}{/t}
+                                                        {/if}                    
+                                                    {/if}        
+                                                {/section} 
                                             </td>
                                         </tr>
                                         <tr>

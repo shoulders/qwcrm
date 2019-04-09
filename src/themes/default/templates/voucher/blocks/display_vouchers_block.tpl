@@ -41,9 +41,15 @@
             <td class="olotd4">{$display_vouchers[g].expiry_date|date_format:$date_format}</td>
             <td class="olotd4">{$display_vouchers[g].redeem_date|date_format:$date_format}</td>
             <td class="olotd4">{$display_vouchers[g].close_date|date_format:$date_format}</td>
-            <td class="olotd4" nowrap>
+            <td class="olotd4">
                 {section name=s loop=$voucher_statuses}    
-                    {if $display_vouchers[g].status == $voucher_statuses[s].status_key}{t}{$voucher_statuses[s].display_name}{/t}{/if}        
+                    {if $display_vouchers[g].status == $voucher_statuses[s].status_key}
+                        {if $display_vouchers[g].status == 'refunded'}
+                            <a href="index.php?component=refund&page_tpl=details&refund_id={$display_vouchers[g].refund_id}">{t}{$voucher_statuses[s].display_name}{/t}</a>
+                        {else}
+                            {t}{$voucher_statuses[s].display_name}{/t}
+                        {/if}                    
+                    {/if}        
                 {/section} 
             </td> 
             <td class="olotd4">

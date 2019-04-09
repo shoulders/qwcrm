@@ -53,7 +53,7 @@ if (isset($VAR['invoice_id'])) {
         $refund_details['vat_rate'] = get_vat_rate('standard');
         $refund_details['vat_amount'] = $invoice_details['tax_amount'];  // the correct vat needs to be calculated here, there might be no VAT
         $refund_details['gross_amount'] = $invoice_details['gross_amount'];        
-        $refund_details['note'] = _gettext("This is a refund for an Invoice.");
+        $refund_details['note'] = '';
         
         // Get Client display_name
         $client_display_name = get_client_details($invoice_details['client_id'], 'display_name'); 
