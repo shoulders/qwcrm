@@ -470,13 +470,13 @@
                                                     {/if}
                                                 </td>                                                
                                                 <td>
+                                                    {if $invoice_details.status == 'refunded'}<a href="index.php?component=refund&page_tpl=details&refund_id={$invoice_details.refund_id}">{/if}
                                                     {section name=s loop=$invoice_statuses}    
                                                         {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
-                                                    {/section}              
-                                                </td>
+                                                    {/section}
+                                                    {if $invoice_details.status == 'refunded'}</a>{/if}                                                    
                                                 <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
-                                                <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
-                                                
+                                                <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>                                                
 
                                             </tr>                                        
                                             <tr class="olotd4">
@@ -584,11 +584,13 @@
                                 
 
                                 <!-- Payments -->                                
-                                <tr>
-                                    <td>                                                
-                                        {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
-                                    </td>
-                                </tr>                                 
+                                {if $display_payments}
+                                    <tr>
+                                        <td>                                                
+                                            {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
+                                        </td>
+                                    </tr>
+                                {/if}
 
                                 <!-- Labour Items -->
                                 <tr>

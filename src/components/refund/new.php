@@ -50,8 +50,8 @@ if (isset($VAR['invoice_id'])) {
         $refund_details['payment_method'] = null;
         $refund_details['net_amount'] = $invoice_details['net_amount'];        
         $refund_details['tax_amount'] = $invoice_details['tax_amount'];
-        $refund_details['gross_amount'] = $invoice_details['gross_amount'];        
-        $refund_details['note'] = _gettext("This is a refund for an Invoice.");
+        $refund_details['gross_amount'] = $invoice_details['gross_amount'];  
+        $refund_details['note'] = ''; // or use this _gettext("This is a refund for an Invoice.")
         
         // Get Client display_name
         $client_display_name = get_client_details($invoice_details['client_id'], 'display_name'); 

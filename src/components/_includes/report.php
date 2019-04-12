@@ -1320,7 +1320,7 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
 #     Count Payments                               #
 ####################################################
 
-function count_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $invoice_id = null) {   
+function count_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null) {   
     
     $db = QFactory::getDbo();
     
@@ -1363,6 +1363,11 @@ function count_payments($start_date = null, $end_date = null, $tax_system = null
     // Filter by Invoice
     if($invoice_id) {
         $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);
+    }
+    
+    // Filter by Refund
+    if($refund_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$db->qstr($refund_id);
     }
     
     // Execute the SQL

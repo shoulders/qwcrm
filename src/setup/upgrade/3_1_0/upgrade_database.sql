@@ -550,6 +550,7 @@ ALTER TABLE `#__voucher_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER
 ALTER TABLE `#__voucher_records` ADD `refund_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
 ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `method`;
+ALTER TABLE `#__payment_records` ADD `refund_id` VARCHAR(10) NOT NULL AFTER `invoice_id`;
 
 --
 -- Rename Columns

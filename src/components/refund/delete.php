@@ -8,7 +8,12 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'refund.php');
+require(INCLUDES_DIR.'report.php');
+require(INCLUDES_DIR.'voucher.php');
+require(INCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('refund', 'status')) {

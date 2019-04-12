@@ -1552,6 +1552,12 @@ function export_invoice_prefill_items_csv() {
         return false;        
     }
     
+    // Is partially refunded (not currently used)
+    if($invoice_details['status'] == 'partially_refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+        return false;        
+    }
+    
     // Is refunded
     if($invoice_details['status'] == 'refunded') {
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been refunded."));
@@ -1576,6 +1582,8 @@ function export_invoice_prefill_items_csv() {
         return false;        
     }
 
+    ///////////////////////////////add voucher checks here /////////////////////
+    
     // All checks passed
     return true;     
      
@@ -1589,17 +1597,17 @@ function check_invoice_can_be_refunded($invoice_id) {
     
     // Get the invoice details
     $invoice_details = get_invoice_details($invoice_id);
-    
-    // Has no payments
-    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
-        return false;        
-    }
-    
+        
     // Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
         return false;
+    }
+    
+    // Is partially refunded (not currently used)
+    if($invoice_details['status'] == 'partially_refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+        return false;        
     }
         
     // Is refunded
@@ -1619,6 +1627,12 @@ function check_invoice_can_be_refunded($invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
         return false;        
     }    
+    
+    // Has no payments
+    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
+        return false;        
+    }
 
     // Has Refunds (should not be needed)
     if(count_refunds(null, null, null, null, $invoice_id) > 0) {
@@ -1657,7 +1671,14 @@ function check_invoice_can_be_cancelled($invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice is partially paid."));
         return false;
     }
-        
+    
+    // Is partially refunded (not currently used)
+    if($invoice_details['status'] == 'partially_refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+        return false;        
+    }
+     
+    
     // Is refunded
     if($invoice_details['status'] == 'refunded') {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
@@ -1725,6 +1746,12 @@ function check_invoice_can_be_deleted($invoice_id) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments and is paid."));
         return false;        
     }
+    
+    // Is partially refunded (not currently used)
+    if($invoice_details['status'] == 'partially_refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has been partially refunded."));
+        return false;        
+    }     
     
     // Is refunded
     if($invoice_details['status'] == 'refunded') {
@@ -1865,3 +1892,103 @@ function assign_invoice_to_employee($invoice_id, $target_employee_id) {
     }
     
  }
+ 
+#############################################################
+#   Check to see if the invoice can have its refund deleted # // this also checks the associated vouchers
+#############################################################
+
+function check_invoice_can_have_refund_deleted($invoice_id) {
+    
+    // Get the invoice details
+    $invoice_details = get_invoice_details($invoice_id);
+       
+    /* Is partially paid
+    if($invoice_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
+        return false;
+    }
+    
+    // Is cancelled
+    if($invoice_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($invoice_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
+        return false;        
+    }*/
+    
+    // Is not refunded (fall back)
+    if($invoice_details['status'] != 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
+        return false;        
+    }
+
+    /* Has no payments (an invoice that has been refunded should always have a payment so this check should not be needed) - also payment.php will need to be included for this to work
+    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
+        return false;        
+    }*/
+    
+    // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+    if(!check_invoice_vouchers_allow_refund_deletion($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+        return false;
+    }    
+    
+    // All checks passed
+    return true;
+    
+}
+
+################################################################
+#   Check to see if the invoice can have its refund cancelled  # // this also checks the associated vouchers
+################################################################
+
+function check_invoice_can_have_refund_cancelled($invoice_id) {
+    
+    // Get the invoice details
+    $invoice_details = get_invoice_details($invoice_id);
+       
+    /* Is partially paid
+    if($invoice_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
+        return false;
+    }
+    
+    // Is cancelled
+    if($invoice_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($invoice_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
+        return false;        
+    }*/
+    
+    // Is not refunded (fall back)
+    if($invoice_details['status'] != 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
+        return false;        
+    }
+
+    /* Has no payments (an invoice that has been refunded should always have a payment so this check should not be needed) - also payment.php will need to be included for this to work
+    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
+        return false;        
+    }*/
+    
+    // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+    if(!check_invoice_vouchers_allow_refund_cancellation($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+        return false;
+    }    
+    
+    // All checks passed
+    return true;
+    
+}

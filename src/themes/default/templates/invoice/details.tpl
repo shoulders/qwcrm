@@ -58,10 +58,11 @@
                                             <td>{$invoice_details.date|date_format:$date_format}</td>                                            
                                             <td>{$invoice_details.due_date|date_format:$date_format}</td>
                                             <td>
+                                                {if $invoice_details.status == 'refunded'}<a href="index.php?component=refund&page_tpl=details&refund_id={$invoice_details.refund_id}">{/if}
                                                 {section name=s loop=$invoice_statuses}    
                                                     {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
-                                                {/section}              
-                                            </td>
+                                                {/section}
+                                                {if $invoice_details.status == 'refunded'}</a>{/if}                                                    
                                             <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
                                             <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>                                            
                                             <td>
