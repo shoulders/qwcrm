@@ -613,6 +613,7 @@ CREATE TABLE `#__payment_records` (
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `voucher_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `refund_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `expense_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `otherincome_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,

@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 // goes here
 
 // Check the Voucher exists and set the voucher_id
-if(!$VAR['qpayment']['voucher_id'] = get_voucher_id_by_gifcert_code($VAR['qpayment']['voucher_code'])) {
+if(!$VAR['qpayment']['voucher_id'] = get_voucher_id_by_voucher_code($VAR['qpayment']['voucher_code'])) {
     
     $smarty->assign('warning_msg', _gettext("There is no Voucher with that code."));
 
@@ -24,7 +24,7 @@ if(!$VAR['qpayment']['voucher_id'] = get_voucher_id_by_gifcert_code($VAR['qpayme
     } else {       
         
         // Set the value of the Voucher to the amount to be applied
-        $VAR['qpayment']['amount'] = get_voucher_details($VAR['qpayment']['voucher_id'], 'amount');
+        $VAR['qpayment']['amount'] = get_voucher_details($VAR['qpayment']['voucher_id'], 'unit_net');
         
         /* Invoice Processing */
 
