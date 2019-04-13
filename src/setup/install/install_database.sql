@@ -614,6 +614,8 @@ CREATE TABLE `#__payment_records` (
   `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `refund_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `expense_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `otherincome_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
