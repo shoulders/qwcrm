@@ -67,8 +67,8 @@ if (isset($VAR['invoice_id'])) {
         } else {
 
             // Load the invoice search page with success message
-            force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("Refund").' '._gettext("ID").': '.$refund_id);
-
+            //force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("Refund").' '._gettext("ID").': '.$refund_id);
+            force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("Refund").' '._gettext("ID").': '.$refund_id);
         }       
         
     }    

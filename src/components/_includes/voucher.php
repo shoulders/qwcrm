@@ -1454,7 +1454,7 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
      
 }
 
-###############################################################   // neded for status button
+###############################################################   // needed for status button
 #   Check to see if the voucher can have refund deleted       #   // all invoices here should be status = 'refunded', this might change with partial refunds
 ###############################################################   // not currently used - might not be needed cause i can just use 'check_single_voucher_can_have_refund_deleted()'
 
