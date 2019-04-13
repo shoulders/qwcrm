@@ -621,6 +621,7 @@ CREATE TABLE `#__payment_records` (
   `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `additional_info` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
   `amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

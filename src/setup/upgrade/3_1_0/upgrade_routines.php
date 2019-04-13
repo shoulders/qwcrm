@@ -64,18 +64,18 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'otherincome_records', 'type', 'credit_note', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'type', 'proxy_invoice', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'type', 'returned_services', 'cancelled_services');
-        
-        // Change supplier record types
-        $this->update_column_values(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
-        $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
-        
-        // Change record payment methods
+                
+        // Change otherincome record payment_methods
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'google_checkout', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'direct_deposit', 'bank_transfer');
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_card', 'card');
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'voucher', 'other');
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'credit_note', 'other');
+        
+        // Change supplier record types
+        $this->update_column_values(PRFX.'supplier_records', 'type', 'advertising', 'marketing');
+        $this->update_column_values(PRFX.'supplier_records', 'type', 'affiliate_marketing', 'marketing');
                        
         // Reverse blocked account values because of the rename active --> blocked
         $this->update_column_values(PRFX.'voucher_records', 'blocked', '0', '9');
@@ -139,12 +139,23 @@ class Upgrade3_1_0 extends QSetup {
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax', '!');
         
-        // Populate newley created status columns
+        // Populate newly created status columns
         $this->update_column_values(PRFX.'expense_records', 'status', '*', 'paid');
         $this->update_column_values(PRFX.'otherincome_records', 'status', '*', 'paid');
         $this->update_column_values(PRFX.'refund_records', 'status', '*', 'paid');
         $this->update_column_values(PRFX.'supplier_records', 'status', '*', 'valid');
         $this->update_column_values(PRFX.'payment_records', 'status', '*', 'valid');
+        
+        // Correct currently upgraded invoice payment records
+        $this->update_column_values(PRFX.'payment_records', 'method', '6', 'direct_deposit');
+        $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
+        
+        // Parse Payment notes and extract information into 'additional_info'
+        $this->payments_parse_import_additional_info();
+        
+        
+        
+        // Convert expense, refund, otherincome, invoice transactions into payment_records
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');

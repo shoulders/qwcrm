@@ -233,7 +233,7 @@ CREATE TABLE `#__payment_types` (
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `#__payment_types` (`id`, `type_ket`, `display_name`) VALUES
+INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'invoice', 'Invoice'),
 (2, 'refund', 'Refund');
 
@@ -554,6 +554,7 @@ ALTER TABLE `#__payment_records` ADD `voucher_id` VARCHAR(10) CHARACTER SET utf8
 ALTER TABLE `#__payment_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NULL AFTER `voucher_id`;
 ALTER TABLE `#__payment_records` ADD `expense_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NULL AFTER `refund_id`;
 ALTER TABLE `#__payment_records` ADD `otherincome_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NULL AFTER `expense_id`;
+ALTER TABLE `#__payment_records` ADD `additional_info` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `amount`;
 
 --
 -- Rename Columns

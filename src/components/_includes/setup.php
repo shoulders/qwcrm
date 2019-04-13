@@ -2375,6 +2375,196 @@ class QSetup {
             
         }          
     
+    }    
+    
+    #################################################################
+    #  Parse Payment records and populate additinal information     #
+    #################################################################
+
+    function payments_parse_import_additional_info() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the payment records
+        $sql = "SELECT * FROM ".PRFX."payment_records";
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `payment_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records, decide and set each Voucher's status
+            while(!$rs->EOF) { 
+                
+                // holding variables
+                $bank_transfer_reference = '';
+                $card_type = '';
+                $name_on_card = '';                
+                $cheque_number = '';
+                $direct_debit_reference = '';
+                $paypal_transaction_id = '';
+                $voucher_id = '';
+                                
+                /* Parse out the infomration from payment notes   */
+                
+                // Bank Transfer
+                if(preg_match('/Deposit ID#: (.*)([ ]{2}|,)/U', $rs->fields['note'], $matches)) {
+                    $bank_transfer_reference =  $matches[1];
+                }              
+                if(preg_match('/Deposit Reference:  (.*),/U', $rs->fields['note'], $matches)) {
+                    $bank_transfer_reference =  $matches[1];
+                }
+                if(preg_match('|<p>Transfer Reference: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $bank_transfer_reference =  $matches[1];
+                } 
+                
+                // Cards
+                if(preg_match('/Card Type: (.*), Name on Card: (.*),/U', $rs->fields['note'], $matches)) {
+                    $card_type =  $matches[1];
+                    $name_on_card =  $matches[2];
+                } 
+                if(preg_match('|<p>Card Type: (.*)<br>Name on Card: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $card_type =  $matches[1];
+                    $name_on_card =  $matches[2];                                             
+                } 
+                if($card_type == 'Visa') {$card_type_key = 'visa';}
+                if($card_type == 'MasterCard') {$card_type_key = 'mastercard';}
+                if($card_type == 'American Express') {$card_type_key = 'american_express';}
+                if($card_type == 'Debit Card') {$card_type_key = 'debit_card';}
+                if($card_type == 'Other') {$card_type_key = 'other';}   
+                
+                // Check / Cheque
+                if(preg_match('/Check Number: ([0-9]+)([ ]{2}|,)/U', $rs->fields['note'], $matches)) {
+                    $cheque_number =  $matches[1];
+                }
+                if(preg_match('/Cheque Number: ([0-9]+)([ ]{2}|,)/U', $rs->fields['note'], $matches)) {
+                    $cheque_number =  $matches[1];
+                }
+                if(preg_match('|<p>Cheque Number: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $cheque_number =  $matches[1];
+                }
+                
+                // Direct Debit
+                if(preg_match('|<p>DD Reference: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $direct_debit_reference =  $matches[1];
+                }
+                
+                // Paypal
+                if(preg_match('/PayPal Transaction ID (.*),/U', $rs->fields['note'], $matches)) {
+                    $paypal_transaction_id =  $matches[1];
+                }
+                if(preg_match('|<p>PayPal Transaction ID: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $paypal_transaction_id =  $matches[1];
+                }
+                
+                // Voucher / Giftcert
+                if(preg_match('/Gift Certificate Code: (.*),/U', $rs->fields['note'], $matches)) {
+                    $voucher_code =  $matches[1];
+                    $voucher_id = get_voucher_id_by_voucher_code($voucher_code);                    
+                } 
+                if(preg_match('|<p>Voucher Code: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $voucher_code =  $matches[1];
+                    $voucher_id = get_voucher_id_by_voucher_code($voucher_code);                    
+                }                
+                
+                
+                
+                // Build 'additional_info' array
+                $additional_info = array();
+                $additional_info['bank_transfer_reference'] = $bank_transfer_reference;
+                $additional_info['card_type_key'] = $card_type_key;
+                $additional_info['name_on_card'] = $name_on_card;
+                $additional_info['cheque_number'] = $cheque_number;
+                $additional_info['direct_debit_reference'] = $direct_debit_reference;
+                $additional_info['paypal_transaction_id'] = $paypal_transaction_id;
+                
+                // Build SQL                
+                $sql = "UPDATE `".PRFX."voucher_records` SET
+                        `voucher_id` = ".$db->qstr($voucher_id).",                        
+                        `additional_info` = ". $db->qstr(json_encode($additional_info))."
+                        WHERE `payment_id` = ".$rs->fields['payment_id'];                
+                
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to import the `additional info` for the Payment record").' '.$rs->fields['voucher_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to import `additional info` for all Payment records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed importing `additional info` for all Payment records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
     }     
     
 }

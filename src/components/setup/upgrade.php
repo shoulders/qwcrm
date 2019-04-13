@@ -10,6 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'administrator.php');
 require(INCLUDES_DIR.'setup.php');
+require(INCLUDES_DIR.'voucher.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
