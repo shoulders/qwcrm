@@ -24,10 +24,11 @@ if(!$new_invoice_totals = validate_payment_method_totals($VAR['qpayment']['invoi
 
     // Live processing goes here
 
-    // Create a specific note string (if applicable)
-    $note = '<p>'._gettext("Card Type").': '.get_card_display_name_from_key($VAR['qpayment']['card_type']).'<br>'._gettext("Name on Card").': '.$VAR['qpayment']['name_on_card'].'</p>';
-    if($VAR['qpayment']['note']) { $note .= '<p>'.$VAR['qpayment']['note'].'</p>'; }
-    $VAR['qpayment']['note'] = $note;
+    // Wrap the submitted note
+    $VAR['qpayment']['note'] = '<p>'.$VAR['qpayment']['note'].'</p>';
+    
+    // Build additional information column
+    $VAR['qpayment']['additional_info'] = build_additional_info_json(null, $card_type_key = $VAR['qpayment']['card_type_key'], $name_on_card = $VAR['qpayment']['name_on_card']);    
 
     // Insert the payment with the calculated information
     insert_payment($VAR['qpayment']);

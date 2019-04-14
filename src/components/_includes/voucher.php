@@ -556,7 +556,7 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
         // Update last active record
         update_client_last_active($voucher_details['client_id']);        
         update_workorder_last_active($voucher_details['workorder_id']);
-        update_invoice_last_active($voucher_details);        
+        update_invoice_last_active($voucher_details['invoice_id']);        
         
     }
     

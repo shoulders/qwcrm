@@ -24,10 +24,11 @@ if(!$new_invoice_totals = validate_payment_method_totals($VAR['qpayment']['invoi
 
     // Live processing goes here
 
-    // Create a specific note string (if applicable)
-    $note = '<p>'._gettext("DD Reference").': '.$VAR['qpayment']['dd_reference'].'</p>';
-    if($VAR['qpayment']['note']) { $note .= '<p>'.$VAR['qpayment']['note'].'</p>'; }
-    $VAR['qpayment']['note'] = $note;
+    // Wrap the submitted note
+    $VAR['qpayment']['note'] = '<p>'.$VAR['qpayment']['note'].'</p>';
+    
+    // Build additional information column
+    $VAR['qpayment']['additional_info'] = build_additional_info_json(null, null, null, null, $direct_debit_reference = $VAR['qpayment']['dd_reference']);    
     
     // Insert the payment with the calculated information
     insert_payment($VAR['qpayment']);

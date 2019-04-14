@@ -184,16 +184,21 @@ function insert_payment($qpayment) {
 
     $invoice_details = get_invoice_details($qpayment['invoice_id']);
     
+    // Voucher ID is not always present
+    $qpayment['voucher_id'] = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : '';
+        
     $sql = "INSERT INTO ".PRFX."payment_records SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
             client_id       = ".$db->qstr( $invoice_details['client_id']               ).",
             workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
-            invoice_id      = ".$db->qstr( $qpayment['invoice_id']                     ).",              
+            invoice_id      = ".$db->qstr( $qpayment['invoice_id']                     ).",
+            voucher_id      = ".$db->qstr( $qpayment['voucher_id']                     ).", 
             date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])       ).",
             type            = ".$db->qstr( $qpayment['type']                           ).",
             method          = ".$db->qstr( $qpayment['method']                         ).",
             status          = 'valid',
             amount          = ".$db->qstr( $qpayment['amount']                         ).",
+            additional_info = ".$db->qstr( $qpayment['additional_info']                ).",
             note            = ".$db->qstr( $qpayment['note']                           );
 
     if(!$rs = $db->execute($sql)){        
@@ -202,16 +207,16 @@ function insert_payment($qpayment) {
     } else {
         
         // Get Payment Record ID
-        $insert_id = $db->Insert_ID();
+        $payment_id = $db->Insert_ID();
         
         // Recalculate invoice totals
         recalculate_invoice($qpayment['invoice_id']);
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Payment").' '.$insert_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
-        $record = _gettext("Payment").' '.$insert_id.' '._gettext("created.");
+        $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $qpayment['invoice_id']);
         
         // Update last active record    
@@ -220,7 +225,7 @@ function insert_payment($qpayment) {
         update_invoice_last_active($qpayment['invoice_id']);
         
         // Return the payment_id
-        return $insert_id;
+        return $payment_id;
                 
     }    
     
@@ -556,6 +561,7 @@ function delete_payment($payment_id) {
             method          = '',
             status          = 'deleted',
             amount          = '0.00',
+            additional_info = '',
             note            = ''
             WHERE payment_id =". $db->qstr( $payment_id );    
     
@@ -808,5 +814,33 @@ function check_payment_can_be_deleted($payment_id) {
 
     // All checks passed
     return true;   
+     
+}
+
+#########################################
+#  Build additional_info JSON           #       
+#########################################
+
+ function build_additional_info_json($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
+    
+    // Proccess supplied variables
+    $bank_transfer_reference = $bank_transfer_reference ? $bank_transfer_reference : '';
+    $card_type_key = $card_type_key ? $card_type_key : '';
+    $name_on_card = $name_on_card ? $name_on_card : '';
+    $cheque_number = $cheque_number ? $cheque_number : '';
+    $direct_debit_reference = $direct_debit_reference ? $direct_debit_reference : '';
+    $paypal_transaction_id = $paypal_transaction_id ? $paypal_transaction_id : '';
+     
+    // Build Array
+    $additional_info = array();
+    $additional_info['bank_transfer_reference'] = $bank_transfer_reference;
+    $additional_info['card_type_key'] = $card_type_key;
+    $additional_info['name_on_card'] = $name_on_card;
+    $additional_info['cheque_number'] = $cheque_number;
+    $additional_info['direct_debit_reference'] = $direct_debit_reference;
+    $additional_info['paypal_transaction_id'] = $paypal_transaction_id;
+
+    // Return the JSON data
+    return json_encode($additional_info);
      
 }

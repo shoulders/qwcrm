@@ -42,10 +42,11 @@ if(!$VAR['qpayment']['voucher_id'] = get_voucher_id_by_voucher_code($VAR['qpayme
 
             // Live processing goes here
 
-            // Create a specific note string (if applicable)
-            $note = '<p>'._gettext("Voucher Code").': '.$VAR['qpayment']['voucher_code'].'</p>';
-            if($VAR['qpayment']['note']) { $note .= '<p>'.$VAR['qpayment']['note'].'</p>'; }
-            $VAR['qpayment']['note'] = $note;
+            // Wrap the submitted note
+            $VAR['qpayment']['note'] = '<p>'.$VAR['qpayment']['note'].'</p>';
+            
+            // Build additional information column
+            $VAR['qpayment']['additional_info'] = build_additional_info_json();    
 
             // Insert the payment with the calculated information
             $payment_id = insert_payment($VAR['qpayment']);

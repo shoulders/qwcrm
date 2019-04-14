@@ -2417,6 +2417,7 @@ class QSetup {
                 // holding variables
                 $bank_transfer_reference = '';
                 $card_type = '';
+                $card_type_key = '';
                 $name_on_card = '';                
                 $cheque_number = '';
                 $direct_debit_reference = '';

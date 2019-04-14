@@ -24,10 +24,11 @@ if(!$new_invoice_totals = validate_payment_method_totals($VAR['qpayment']['invoi
 
     // Live processing goes here
 
-    // Create a specific note string (if applicable)
-    $note = '';
-    if($VAR['qpayment']['note']) { $note .= '<p>'.$VAR['qpayment']['note'].'</p>'; }
-    $VAR['qpayment']['note'] = $note;
+    // Wrap the submitted note
+    $VAR['qpayment']['note'] = '<p>'.$VAR['qpayment']['note'].'</p>';
+    
+    // Build additional information column
+    $VAR['qpayment']['additional_info'] = build_additional_info_json();    
 
     ///// only inseert the refund if the payment has been successful - i also need to define what happens with 'type' of payment. should i call it 'payment_type'
     
