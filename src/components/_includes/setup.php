@@ -2578,6 +2578,450 @@ class QSetup {
             
         }          
     
-    }     
+    }   
+    
+    #######################################################################
+    #  Convert Expenses into a separate item and make a related payment   #
+    #######################################################################
+
+    function payments_convert_expense_records() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the labour records
+        $sql = "SELECT *
+                FROM ".PRFX."expense_records";                
+
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `expense_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records
+            while(!$rs->EOF) { 
+                
+                $sql = "INSERT INTO ".PRFX."payment_records SET            
+                    employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
+                    client_id       = '',
+                    invoice_id      = '',
+                    refund_id       = '',
+                    expense_id      = ".$db->qstr($rs->fields['expense_id']                    ).",
+                    otherincome_id  = '',
+                    date            = ".$db->qstr($rs->fields['date']                          ).",
+                    type            = 'expense',
+                    method          = ".$db->qstr($rs->fields['payment_method']                ).",
+                    status          = 'paid',
+                    amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    additional_info = ".$db->qstr(build_additional_info_json()                 ).",
+                    note            = ".'<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>';               
+                
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to insert the corresponding payment record for expense reocrd").': '.$rs->fields['expense_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        // Delete column
+        if(!$local_error_flag) {
+            $sql = "ALTER TABLE `".PRFX."expense_records` DROP `payment_method`;";
+            
+            // Run the SQL
+            if(!$temp_rs = $db->execute($sql)) {
+
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message                    
+                $record = _gettext("Failed to delete the `expense_record` table `payment_method` column.");
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+
+            }
+                
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to complete converting expense records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed converting expense records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    }    
+    
+    #######################################################################
+    #  Convert Refunds into a separate item and make a related payment    #
+    #######################################################################
+
+    function payments_convert_refund_records() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the labour records
+        $sql = "SELECT *
+                FROM ".PRFX."refund_records";                
+
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `refund_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records
+            while(!$rs->EOF) { 
+                
+                $sql = "INSERT INTO ".PRFX."payment_records SET            
+                    employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
+                    client_id       = ".$db->qstr($rs->fields['client_id']                     ).",
+                    invoice_id      = ".$db->qstr($rs->fields['invoice_id']                    ).",
+                    refund_id       = ".$db->qstr($rs->fields['refund_id']                     ).",
+                    expense_id      = '',
+                    otherincome_id  = '',
+                    date            = ".$db->qstr($rs->fields['date']                          ).",
+                    type            = 'refund',
+                    method          = ".$db->qstr($rs->fields['payment_method']                ).",
+                    status          = 'paid',
+                    amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    additional_info = ".$db->qstr(build_additional_info_json()                 ).",
+                    note            = ".'<p>'._gettext("Created from a refund record during an upgrade of QWcrm.").'</p>';               
+                
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to insert the corresponding payment record for refund record").': '.$rs->fields['refund_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        // Delete column
+        if(!$local_error_flag) {
+            $sql = "ALTER TABLE `".PRFX."refund_records` DROP `payment_method`;";
+            
+            // Run the SQL
+            if(!$temp_rs = $db->execute($sql)) {
+
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message                    
+                $record = _gettext("Failed to delete the `refund_record` table `payment_method` column.");
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+
+            }
+                
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to complete converting refund records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed converting refund records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    }        
+    
+    ############################################################################
+    #  Convert Otherincomes into a separate item and make a related payment    #
+    ############################################################################
+
+    function payments_convert_otherincome_records() {
+        
+        $db = QFactory::getDbo();        
+        
+        $local_error_flag = null;                     
+        
+        // Loop through all of the labour records
+        $sql = "SELECT *
+                FROM ".PRFX."otherincome_records";                
+
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Set the local error flag
+            $local_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to select all the records from the table").' `otherincome_records`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            // The process has failed so stop any further proccesing
+            goto process_end;
+            
+        } else {
+
+            // Loop through all records
+            while(!$rs->EOF) { 
+                
+                $sql = "INSERT INTO ".PRFX."payment_records SET            
+                    employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
+                    client_id       = ".$db->qstr($rs->fields['client_id']                     ).",
+                    invoice_id      = '',
+                    refund_id       = '',
+                    expense_id      = '',
+                    otherincome_id  = ".$db->qstr($rs->fields['otherincome_id']                     ).",
+                    date            = ".$db->qstr($rs->fields['date']                          ).",
+                    type            = 'otherincome',
+                    method          = ".$db->qstr($rs->fields['payment_method']                ).",
+                    status          = 'valid',
+                    amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    additional_info = ".$db->qstr(build_additional_info_json()                 ).",
+                    note            = ".'<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>';               
+                
+                // Run the SQL
+                if(!$temp_rs = $db->execute($sql)) {
+                    
+                    // Set the setup global error flag
+                    self::$setup_error_flag = true;
+                    
+                    // Set the local error flag
+                    $local_error_flag = true;
+                    
+                    // Log Message                    
+                    $record = _gettext("Failed to insert the corresponding payment record for otherincome record").': '.$rs->fields['otherincome_id'];
+                    
+                    // Output message via smarty
+                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+                    
+                    // Log message to setup log
+                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+                    
+                    // The process has failed so stop any further proccesing
+                    goto process_end;
+                    
+                } 
+                                                
+                // Advance the INSERT loop to the next record            
+                $rs->MoveNext();            
+
+            }               
+
+        }
+        
+        // Delete column
+        if(!$local_error_flag) {
+            $sql = "ALTER TABLE `".PRFX."otherincome_records` DROP `payment_method`;";
+            
+            // Run the SQL
+            if(!$temp_rs = $db->execute($sql)) {
+
+                // Set the setup global error flag
+                self::$setup_error_flag = true;
+
+                // Set the local error flag
+                $local_error_flag = true;
+
+                // Log Message                    
+                $record = _gettext("Failed to delete the `otherincome_record` table `payment_method` column.");
+
+                // Output message via smarty
+                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+
+                // Log message to setup log
+                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+
+                // The process has failed so stop any further proccesing
+                goto process_end;
+
+            }
+                
+        }
+        
+        process_end:
+        
+        // Success and fail messages for this whole process (i.e. not one record)
+        if($local_error_flag) {            
+            
+            // Log Message
+            $record = _gettext("Failed to complete converting otherincome records.");            
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+            
+            // Log Message
+            $record = _gettext("Successfully completed converting otherincome records.");
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return true;
+            
+        }          
+    
+    }        
     
 }

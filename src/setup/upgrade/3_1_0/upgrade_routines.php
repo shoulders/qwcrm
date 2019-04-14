@@ -150,10 +150,13 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'payment_records', 'method', '6', 'direct_deposit');
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
-        // Parse Payment notes and extract information into 'additional_info' column
+        // Parse Payment notes and extract information into 'additional_info' column for invoices
         $this->payments_parse_import_additional_info();
         
-        // Convert expense, refund, otherincome, invoice transactions into payment_records
+        // Convert expense, refund and otherincome transactions into separate record and payment
+        $this->payments_convert_expense_records();
+        $this->payments_convert_refund_records();
+        $this->payments_convert_otherincome_records();        
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
@@ -162,7 +165,6 @@ class Upgrade3_1_0 extends QSetup {
         $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;
         $this->write_record_to_setup_log('upgrade', $record);
         
-    }
-     
+    }     
     
 }
