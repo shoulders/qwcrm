@@ -2423,7 +2423,7 @@ class QSetup {
                 $paypal_transaction_id = '';
                 $voucher_id = '';
                                 
-                /* Parse out the infomration from payment notes   */
+                /* Parse out the infomration from payment notes (3.0.0 and MyITCRM) */
                 
                 // Bank Transfer
                 if(preg_match('/Deposit ID#: (.*)([ ]{2}|,)/U', $rs->fields['note'], $matches)) {
@@ -2432,24 +2432,17 @@ class QSetup {
                 if(preg_match('/Deposit Reference:  (.*),/U', $rs->fields['note'], $matches)) {
                     $bank_transfer_reference =  $matches[1];
                 }
-                if(preg_match('|<p>Transfer Reference: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
-                    $bank_transfer_reference =  $matches[1];
-                } 
                 
                 // Cards
                 if(preg_match('/Card Type: (.*), Name on Card: (.*),/U', $rs->fields['note'], $matches)) {
                     $card_type =  $matches[1];
                     $name_on_card =  $matches[2];
-                } 
-                if(preg_match('|<p>Card Type: (.*)<br>Name on Card: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
-                    $card_type =  $matches[1];
-                    $name_on_card =  $matches[2];                                             
-                } 
+                }
                 if($card_type == 'Visa') {$card_type_key = 'visa';}
                 if($card_type == 'MasterCard') {$card_type_key = 'mastercard';}
                 if($card_type == 'American Express') {$card_type_key = 'american_express';}
                 if($card_type == 'Debit Card') {$card_type_key = 'debit_card';}
-                if($card_type == 'Other') {$card_type_key = 'other';}   
+                if($card_type == 'Other') {$card_type_key = 'other';}                  
                 
                 // Check / Cheque
                 if(preg_match('/Check Number: ([0-9]+)([ ]{2}|,)/U', $rs->fields['note'], $matches)) {
@@ -2458,35 +2451,54 @@ class QSetup {
                 if(preg_match('/Cheque Number: ([0-9]+)([ ]{2}|,)/U', $rs->fields['note'], $matches)) {
                     $cheque_number =  $matches[1];
                 }
-                if(preg_match('|<p>Cheque Number: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
-                    $cheque_number =  $matches[1];
-                }
-                
-                // Direct Debit
-                if(preg_match('|<p>DD Reference: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
-                    $direct_debit_reference =  $matches[1];
-                }
                 
                 // Paypal
                 if(preg_match('/PayPal Transaction ID (.*),/U', $rs->fields['note'], $matches)) {
                     $paypal_transaction_id =  $matches[1];
                 }
-                if(preg_match('|<p>PayPal Transaction ID: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
-                    $paypal_transaction_id =  $matches[1];
-                }
-                
+                                
                 // Voucher / Giftcert
                 if(preg_match('/Gift Certificate Code: (.*),/U', $rs->fields['note'], $matches)) {
                     $voucher_code =  $matches[1];
                     $voucher_id = get_voucher_id_by_voucher_code($voucher_code);                    
                 } 
+                               
+                /* Parse out the infomration from payment notes - 3.1.0 only These should not be needed
+                
+                // Bank Transfer
+                if(preg_match('|<p>Transfer Reference: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $bank_transfer_reference =  $matches[1];
+                } 
+                // Cards
+                if(preg_match('|<p>Card Type: (.*)<br>Name on Card: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $card_type =  $matches[1];
+                    $name_on_card =  $matches[2];                                             
+                } 
+                if($card_type == 'Visa') {$card_type_key = 'visa';}
+                if($card_type == 'MasterCard') {$card_type_key = 'mastercard';}
+                if($card_type == 'American Express') {$card_type_key = 'american_express';}
+                if($card_type == 'Debit Card') {$card_type_key = 'debit_card';}
+                if($card_type == 'Other') {$card_type_key = 'other';}  
+                
+                if(preg_match('|<p>Cheque Number: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $cheque_number =  $matches[1];
+                }
+                // Direct Debit
+                if(preg_match('|<p>DD Reference: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $direct_debit_reference =  $matches[1];
+                }
+                // Paypal
+                if(preg_match('|<p>PayPal Transaction ID: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
+                    $paypal_transaction_id =  $matches[1];
+                }
+                // Vouchers
                 if(preg_match('|<p>Voucher Code: (.*)<\/p>|U', $rs->fields['note'], $matches)) {
                     $voucher_code =  $matches[1];
                     $voucher_id = get_voucher_id_by_voucher_code($voucher_code);                    
-                }                
+                } */
                 
-                
-                
+                /* -- */                
+                                
                 // Build 'additional_info' array
                 $additional_info = array();
                 $additional_info['bank_transfer_reference'] = $bank_transfer_reference;
@@ -2512,7 +2524,7 @@ class QSetup {
                     $local_error_flag = true;
                     
                     // Log Message                    
-                    $record = _gettext("Failed to import the `additional info` for the Payment record").' '.$rs->fields['voucher_id'];
+                    $record = _gettext("Failed to import the `additional info` for the Payment record").' '.$rs->fields['payment_id'];
                     
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
