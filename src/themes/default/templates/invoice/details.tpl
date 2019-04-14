@@ -153,7 +153,7 @@
                                                     <br>
                                                 {/if}
                                                 <!-- Edit Button -->
-                                                {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid'}                                                         
+                                                {if $invoice_details.status == 'pending' || $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}                                                         
                                                     <button type="button" onclick="location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_details.invoice_id}';">{t}Edit Invoice{/t}</button>
                                                 {/if}
                                             </td>
