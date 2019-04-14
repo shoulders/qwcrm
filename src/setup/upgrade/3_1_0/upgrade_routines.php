@@ -150,10 +150,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'payment_records', 'method', '6', 'direct_deposit');
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
-        // Parse Payment notes and extract information into 'additional_info'
+        // Parse Payment notes and extract information into 'additional_info' column
         $this->payments_parse_import_additional_info();
-        
-        
         
         // Convert expense, refund, otherincome, invoice transactions into payment_records
                 
