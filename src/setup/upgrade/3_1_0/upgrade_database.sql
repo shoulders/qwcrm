@@ -235,7 +235,9 @@ CREATE TABLE `#__payment_types` (
 
 INSERT INTO `#__payment_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'invoice', 'Invoice'),
-(2, 'refund', 'Refund');
+(2, 'refund', 'Refund'),
+(3, 'expense', 'Expense'),
+(4, 'otherincome', 'Other Income');
 
 ALTER TABLE `#__payment_types` ADD PRIMARY KEY (`id`);
 

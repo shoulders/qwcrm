@@ -61,14 +61,15 @@ function load_system_variables(&$VAR) {
     isset($VAR['employee_id'])      ? $smarty->assign('employee_id', $VAR['employee_id'])       : $smarty->assign('employee_id', null);
     isset($VAR['client_id'])        ? $smarty->assign('client_id', $VAR['client_id'])           : $smarty->assign('client_id', null);
     isset($VAR['workorder_id'])     ? $smarty->assign('workorder_id', $VAR['workorder_id'])     : $smarty->assign('workorder_id', null);
-    isset($VAR['invoice_id'])       ? $smarty->assign('invoice_id', $VAR['invoice_id'])         : $smarty->assign('invoice_id', null);
-    isset($VAR['otherincome_id'])   ? $smarty->assign('otherincome_id', $VAR['otherincome_id']) : $smarty->assign('otherincome_id', null);
-    isset($VAR['payment_id'])       ? $smarty->assign('payment_id', $VAR['payment_id'])         : $smarty->assign('payment_id', null);
-    isset($VAR['voucher_id'])       ? $smarty->assign('voucher_id', $VAR['voucher_id'])         : $smarty->assign('voucher_id', null);
-    isset($VAR['expense_id'])       ? $smarty->assign('expense_id', $VAR['expense_id'])         : $smarty->assign('expense_id', null);
-    isset($VAR['refund_id'])        ? $smarty->assign('refund_id', $VAR['refund_id'])           : $smarty->assign('refund_id', null);
-    isset($VAR['supplier_id'])      ? $smarty->assign('supplier_id', $VAR['supplier_id'])       : $smarty->assign('supplier_id', null);
     isset($VAR['schedule_id'])      ? $smarty->assign('schedule_id', $VAR['schedule_id'])       : $smarty->assign('schedule_id', null);
+    isset($VAR['invoice_id'])       ? $smarty->assign('invoice_id', $VAR['invoice_id'])         : $smarty->assign('invoice_id', null);
+    isset($VAR['voucher_id'])       ? $smarty->assign('voucher_id', $VAR['voucher_id'])         : $smarty->assign('voucher_id', null); 
+    isset($VAR['payment_id'])       ? $smarty->assign('payment_id', $VAR['payment_id'])         : $smarty->assign('payment_id', null);
+    isset($VAR['refund_id'])        ? $smarty->assign('refund_id', $VAR['refund_id'])           : $smarty->assign('refund_id', null);
+    isset($VAR['expense_id'])       ? $smarty->assign('expense_id', $VAR['expense_id'])         : $smarty->assign('expense_id', null);    
+    isset($VAR['otherincome_id'])   ? $smarty->assign('otherincome_id', $VAR['otherincome_id']) : $smarty->assign('otherincome_id', null);      
+    isset($VAR['supplier_id'])      ? $smarty->assign('supplier_id', $VAR['supplier_id'])       : $smarty->assign('supplier_id', null);
+    
    
     // Used throughout the site
     if(!defined('QWCRM_SETUP')) {

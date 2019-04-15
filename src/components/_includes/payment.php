@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #  Display all payments the given status            #
 #####################################################
 
-function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
+function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -181,25 +181,34 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
 function insert_payment($qpayment) {
     
     $db = QFactory::getDbo();
-
-    $invoice_details = get_invoice_details($qpayment['invoice_id']);
     
-    // Voucher ID is not always present
-    $qpayment['voucher_id'] = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : '';
-        
+    //$invoice_details = get_invoice_details($qpayment['invoice_id']);
+    
+    // Allow for all different payment types
+    $client_id = isset($qpayment['client_id']) ? $qpayment['client_id'] : '';
+    $workorder_id = isset($qpayment['workorder_id']) ? $qpayment['workorder_id'] : '';
+    $invoice_id = isset($qpayment['invoice_id']) ? $qpayment['invoice_id'] : '';
+    $voucher_id = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : '';
+    $refund_id = isset($qpayment['refund_id']) ? $qpayment['refund_id'] : '';
+    $expense_id = isset($qpayment['expense_id']) ? $qpayment['expense_id'] : '';
+    $otherincome_id = isset($qpayment['otherincome_id']) ? $qpayment['otherincome_id'] : '';    
+            
     $sql = "INSERT INTO ".PRFX."payment_records SET            
-            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id          ).",
-            client_id       = ".$db->qstr( $invoice_details['client_id']               ).",
-            workorder_id    = ".$db->qstr( $invoice_details['workorder_id']            ).",
-            invoice_id      = ".$db->qstr( $qpayment['invoice_id']                     ).",
-            voucher_id      = ".$db->qstr( $qpayment['voucher_id']                     ).", 
-            date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])       ).",
-            type            = ".$db->qstr( $qpayment['type']                           ).",
-            method          = ".$db->qstr( $qpayment['method']                         ).",
+            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id       ).",
+            client_id       = ".$db->qstr( $client_id                               ).",
+            workorder_id    = ".$db->qstr( $workorder_id                            ).",
+            invoice_id      = ".$db->qstr( $invoice_id                              ).",
+            voucher_id      = ".$db->qstr( $voucher_id                              ).",               
+            refund_id       = ".$db->qstr( $refund_id                               ).", 
+            expense_id      = ".$db->qstr( $expense_id                              ).", 
+            otherincome_id  = ".$db->qstr( $otherincome_id                          ).",
+            date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])    ).",
+            type            = ".$db->qstr( $qpayment['type']                        ).",
+            method          = ".$db->qstr( $qpayment['method']                      ).",
             status          = 'valid',
-            amount          = ".$db->qstr( $qpayment['amount']                         ).",
-            additional_info = ".$db->qstr( $qpayment['additional_info']                ).",
-            note            = ".$db->qstr( $qpayment['note']                           );
+            amount          = ".$db->qstr( $qpayment['amount']                      ).",
+            additional_info = ".$db->qstr( $qpayment['additional_info']             ).",
+            note            = ".$db->qstr( $qpayment['note']                        );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
@@ -210,10 +219,10 @@ function insert_payment($qpayment) {
         $payment_id = $db->Insert_ID();
         
         // Recalculate invoice totals
-        recalculate_invoice($qpayment['invoice_id']);
+        if($qpayment['type'] == 'invoice') {recalculate_invoice($qpayment['invoice_id']);}
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
+        insert_workorder_history_note($workorder_id, _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
@@ -596,7 +605,7 @@ function delete_payment($payment_id) {
 #   validate and calculate new invoice totals for the payment method    #
 #########################################################################
 
-function validate_payment_method_totals($invoice_id, $amount) {
+function validate_payment_invoice($invoice_id, $amount) {
     
     $smarty = QFactory::getSmarty();
 
