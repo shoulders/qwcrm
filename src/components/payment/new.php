@@ -25,7 +25,7 @@ if(isset($VAR['qpayment']['type'])) { $payment_type = $VAR['qpayment']['type']; 
 $payment_method = isset($VAR['qpayment']['method']) ? $VAR['qpayment']['method'] : null;    // On first page load the payment_method variable is not set
 $payment_validated = null;
 
-// Prevent direct access to this page - and Determine whether should 'invoice' or 'refund' payment by referer and then set payment type based on this
+// Prevent direct access to this page, and validate requests
 if(check_page_accessed_via_qwcrm('invoice', 'edit')) {  
     
     // Check we have a valid request
@@ -43,14 +43,14 @@ if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
 } elseif(check_page_accessed_via_qwcrm('expense', 'new')) {
     
     // Check we have a valid request
-    if($VAR['payment_type'] = 'expense' && (!isset($VAR['expense_id']) || !$VAR['expense_id'])) {
+    if($VAR['payment_type'] == 'expense' && (!isset($VAR['expense_id']) || !$VAR['expense_id'])) {
         force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));    
     }
  
 } elseif(check_page_accessed_via_qwcrm('otherincome', 'new')) {
     
     // Check we have a valid request
-    if($VAR['payment_type'] = 'otherincome' && (!isset($VAR['otherincome_id']) || !$VAR['otherincome_id'])) {
+    if($VAR['payment_type'] == 'otherincome' && (!isset($VAR['otherincome_id']) || !$VAR['otherincome_id'])) {
         force_page('otherincome', 'search', 'warning_msg='._gettext("No Otherincome ID supplied."));    
     }
      
