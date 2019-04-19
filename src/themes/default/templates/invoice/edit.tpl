@@ -573,7 +573,7 @@
 
                                                     <!-- Receive Payment Button -->
                                                     {if $invoice_details.balance > 0}                                                            
-                                                        <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
+                                                        <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                     {/if}
 
                                                 </td>

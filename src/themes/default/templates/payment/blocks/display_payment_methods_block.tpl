@@ -62,7 +62,7 @@
                                         {t}Payment Type{/t}:&nbsp;
                                         {section name=t loop=$payment_types}    
                                             {if $payment_type == $payment_types[t].type_key}{t}{$payment_types[t].display_name}{/t}{/if}                    
-                                        {/section}
+                                        {/section}                                        
                                     </td>
                                 </tr>
                                 
@@ -423,7 +423,7 @@
                                         <!-- Hidden Variables -->                                                
                                         <div hidden> 
                                             <input type="hidden" name="qpayment[invoice_id]" value="{$invoice_id}">
-                                            <input type="hidden" name="qpayment[type]" value="{$payment_type}">                                                    
+                                            <input type="hidden" name="qpayment[type]" value="{$payment_type}">                                               
                                         </div>
 
                                     </td>

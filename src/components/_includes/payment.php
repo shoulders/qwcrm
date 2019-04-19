@@ -182,7 +182,7 @@ function insert_payment($qpayment) {
     
     $db = QFactory::getDbo();
     
-    //$invoice_details = get_invoice_details($qpayment['invoice_id']);
+    $invoice_details = get_invoice_details($qpayment['invoice_id']);
     
     // Allow for all different payment types
     $client_id = isset($qpayment['client_id']) ? $qpayment['client_id'] : '';
@@ -601,16 +601,25 @@ function delete_payment($payment_id) {
 
 /** Other Functions **/
 
-#########################################################################
-#   validate and calculate new invoice totals for the payment method    #
-#########################################################################
+######################################################
+#   Make sure the submitted payment amount is valid  #
+######################################################
 
-function validate_payment_invoice($invoice_id, $amount) {
+function validate_payment_amount($record_balance, $payment_amount) {
     
     $smarty = QFactory::getSmarty();
+    
+    // If a negative amount has been submitted. (This should not be allowed because of the <input> masks.)
+    if($payment_amount < 0){
+        
+        $smarty->assign('warning_msg', _gettext("You can not enter a payment with a negative amount."));
+        
+        return false;
+        
+    }
 
     // Has a zero amount been submitted, this is not allowed
-    if($amount == 0){
+    if($payment_amount == 0){
         
         $smarty->assign('warning_msg', _gettext("You can not enter a payment with a zero (0.00) amount."));
         
@@ -619,9 +628,9 @@ function validate_payment_invoice($invoice_id, $amount) {
     }
 
     // Is the payment larger than the outstanding invoice balance, this is not allowed
-    if($amount > get_invoice_details($invoice_id, 'balance')){
+    if($payment_amount > $record_balance){
         
-        $smarty->assign('warning_msg', _gettext("You can not enter more than the outstanding balance of the invoice."));
+        $smarty->assign('warning_msg', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
         
         return false;
         
