@@ -810,3 +810,11 @@ ALTER TABLE `#__supplier_records` ADD `employee_id` VARCHAR(10) CHARACTER SET ut
 --
 
 -- ALTER TABLE `#__client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Add new Payment system
+--
+
+ALTER TABLE `#__refund_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
+ALTER TABLE `#__expense_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
+ALTER TABLE `#__otherincome_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;

@@ -250,6 +250,7 @@ CREATE TABLE `#__expense_records` (
   `vat_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
@@ -467,6 +468,7 @@ CREATE TABLE `#__otherincome_records` (
   `vat_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
@@ -684,6 +686,7 @@ CREATE TABLE `#__refund_records` (
   `net_amount` decimal(10,2) NOT NULL DEFAULT '0.00',  
   `tax_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `gross_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
