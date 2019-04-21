@@ -31,15 +31,7 @@
                                 <td>                                                
                                     {include file='payment/blocks/new_invoice_details_block.tpl'}
                                 </td>
-                            </tr>
-
-                            <!-- Cancel Button -->
-                            <tr>
-                                <td>                                                
-                                    {*<button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>*}
-                                    <button type="button" class="olotd4" onclick="window.location.href='{$cancel_button_url}';">{t}Cancel{/t}</button>
-                                </td>
-                            </tr>                            
+                            </tr>                                                       
 
                             <!-- Payments -->                           
                             <tr>
@@ -48,7 +40,6 @@
                                 </td>
                             </tr>                            
                         </table>
-
 
                         <form method="post" action="index.php?component=payment&page_tpl=new&invoice_id={$invoice_id}">
                             <table width="100%" border="0" cellpadding="10" cellspacing="0">
@@ -60,15 +51,21 @@
                                     </td>
                                 </tr>                            
 
-                                <!-- Submit Button -->
                                 <tr>
-                                    <td>                                        
+                                    <td>
+                                        
+                                        <!-- Submit Button -->
                                         <button type="submit" name="submit" value="submit">{t}Submit Payment{/t}</button>
+                                        
+                                        <!-- Cancel Button -->
+                                        {*<button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>*}
+                                        <button type="button" class="olotd4" onclick="window.location.href='{$cancel_button_url}';">{t}Cancel{/t}</button>     
+                                        
                                     </td>
                                 </tr>
                                 
                             </table>
-                        </form>                          
+                        </form>                                               
                         
                     </td>
                 </tr>
