@@ -36,7 +36,8 @@
                             <!-- Cancel Button -->
                             <tr>
                                 <td>                                                
-                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>
+                                    {*<button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>*}
+                                    <button type="button" class="olotd4" onclick="window.location.href='{$cancel_button_url}';">{t}Cancel{/t}</button>
                                 </td>
                             </tr>                            
 

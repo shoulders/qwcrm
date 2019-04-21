@@ -572,7 +572,7 @@
                                                     {/if}
 
                                                     <!-- Receive Payment Button -->
-                                                    {if $invoice_details.balance > 0}                                                            
+                                                    {if $invoice_details.status == 'unpaid' || $invoice_details.status == 'partially_paid'}                                                            
                                                         <button type="button" onclick="location.href='index.php?component=payment&page_tpl=new&type=invoice&invoice_id={$invoice_details.invoice_id}';">{t}Receive Payment{/t}</button>
                                                     {/if}
 
