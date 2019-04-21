@@ -768,15 +768,12 @@ ALTER TABLE `#__user_reset` CHANGE `reset_code_expiry_time` `reset_code_expiry_t
 
 ALTER TABLE `#__expense_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__expense_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
-ALTER TABLE `#__expense_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `net_amount`;
 
 ALTER TABLE `#__otherincome_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__otherincome_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
-ALTER TABLE `#__otherincome_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `net_amount`;
 
 ALTER TABLE `#__refund_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__refund_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
-ALTER TABLE `#__refund_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `net_amount`;
 
 ALTER TABLE `#__voucher_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `blocked`;
 ALTER TABLE `#__voucher_records` ADD `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
@@ -824,3 +821,9 @@ ALTER TABLE `#__otherincome_records` ADD `last_active` DATETIME NOT NULL AFTER `
 UPDATE `#__refund_records` SET `last_active` = `date`;
 UPDATE `#__expense_records` SET `last_active` = `date`;
 UPDATE `#__otherincome_records` SET `last_active` = `date`;
+ALTER TABLE `#__expense_records` DROP `vat_rate`;
+ALTER TABLE `#__otherincome_records` DROP `vat_rate`;
+ALTER TABLE `#__expense_records` DROP `vat_tax_code`;
+ALTER TABLE `#__otherincome_records` DROP `vat_tax_code`;
+ALTER TABLE `#__expense_records` CHANGE `vat_amount` `tax_amount` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__otherincome_records` CHANGE `vat_amount` `tax_amount` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
