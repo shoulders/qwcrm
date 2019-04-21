@@ -172,6 +172,7 @@ function insert_refund($VAR) {
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",            
             tax_amount       =". $db->qstr( $VAR['tax_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",
+            last_active      =". $db->qstr( mysql_datetime()                ).",   
             status           =". $db->qstr( 'unpaid'                        ).",
             note             =". $db->qstr( $VAR['note']                    );
 
@@ -316,7 +317,8 @@ function update_refund($VAR) {
             payment_method   =". $db->qstr( $VAR['payment_method']          ).",
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",            
             tax_amount       =". $db->qstr( $VAR['tax_amount']              ).",
-            gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",            
+            gross_amount     =". $db->qstr( $VAR['gross_amount']            ).", 
+            last_active      =". $db->qstr( mysql_datetime()                ).",
             note             =". $db->qstr( $VAR['note']                    )."
             WHERE refund_id  =". $db->qstr( $VAR['refund_id']               );                        
             
@@ -486,6 +488,8 @@ function delete_refund($refund_id) {
             net_amount          = '',            
             tax_amount          = '0.00',
             gross_amount        = '0.00',
+            balance             = '0.00'
+            last_active         = '0000-00-00 00:00:00',
             status              = 'deleted',             
             note                = ''
             WHERE refund_id    =". $db->qstr($refund_details['refund_id']);

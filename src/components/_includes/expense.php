@@ -156,6 +156,7 @@ function insert_expense($VAR) {
             vat_rate        =". $db->qstr( $VAR['vat_rate']                ).",
             vat_amount      =". $db->qstr( $VAR['vat_amount']              ).",
             gross_amount    =". $db->qstr( $VAR['gross_amount']            ).",
+            last_active     =". $db->qstr( mysql_datetime()                ).",   
             status          =". $db->qstr( 'unpaid'                        ).",    
             items           =". $db->qstr( $VAR['items']                   ).",
             note            =". $db->qstr( $VAR['note']                    );            
@@ -302,6 +303,7 @@ function update_expense($expense_id, $VAR) {
             vat_rate            =". $db->qstr( $VAR['vat_rate']                 ).",
             vat_amount          =". $db->qstr( $VAR['vat_amount']               ).",
             gross_amount        =". $db->qstr( $VAR['gross_amount']             ).",
+            last_active         =". $db->qstr( mysql_datetime()                 ).",
             items               =". $db->qstr( $VAR['items']                    ).",
             note                =". $db->qstr( $VAR['note']                     )."
             WHERE expense_id    =". $db->qstr( $expense_id                      );                        
@@ -454,6 +456,8 @@ function delete_expense($expense_id) {
             vat_rate            = '0.00',
             vat_amount          = '0.00',
             gross_amount        = '0.00',
+            balance             = '0.00',
+            last_active         = '0000-00-00 00:00:00',
             status              = 'deleted', 
             items               = '',
             note                = ''

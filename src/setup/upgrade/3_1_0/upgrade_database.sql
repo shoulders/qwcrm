@@ -812,9 +812,15 @@ ALTER TABLE `#__supplier_records` ADD `employee_id` VARCHAR(10) CHARACTER SET ut
 -- ALTER TABLE `#__client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Add new Payment system
+-- Add balance and last_active for the new Payment system
 --
 
 ALTER TABLE `#__refund_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
 ALTER TABLE `#__expense_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
 ALTER TABLE `#__otherincome_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
+ALTER TABLE `#__refund_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
+ALTER TABLE `#__expense_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
+ALTER TABLE `#__otherincome_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
+UPDATE `#__refund_records` SET `last_active` = `date`;
+UPDATE `#__expense_records` SET `last_active` = `date`;
+UPDATE `#__otherincome_records` SET `last_active` = `date`;
