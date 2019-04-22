@@ -11,9 +11,9 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'expense.php');
-require(INCLUDES_DIR.'invoice.php');
+//require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'workorder.php');
+//require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an expense_id
 if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {
@@ -37,7 +37,6 @@ if(isset($VAR['submit'])) {
     $smarty->assign('expense_statuses', get_expense_statuses()            );
     $smarty->assign('expense_types', get_expense_types());
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
-    $smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
     $smarty->assign('expense_details', get_expense_details($VAR['expense_id']));
     $BuildPage .= $smarty->fetch('expense/edit.tpl');
     

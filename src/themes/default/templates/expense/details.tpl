@@ -64,12 +64,8 @@
                                             <td class="menutd">{$currency_sym}{$expense_details.vat_amount}</td>
                                         </tr>                                        
                                         <tr>
-                                            <td class="menutd"><b>{t}Payment Method{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$payment_methods}    
-                                                    {if $expense_details.payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
-                                                {/section}
-                                            </td>
+                                            <td class="menutd"></td>
+                                            <td class="menutd"></td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym}{$expense_details.gross_amount}</td>
                                         </tr>
@@ -83,12 +79,6 @@
                                                 {/section} 
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$expense_details.invoice_id}">{$expense_details.invoice_id}</a></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>                                        
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                        

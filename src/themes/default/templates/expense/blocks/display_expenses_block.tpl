@@ -7,27 +7,25 @@
 *}
 <b>{$block_title}</b>
 <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
-     <tr>
-         <td class="olohead">{t}Expense ID{/t}</td>
-         <td class="olohead">{t}INV ID{/t}</td>
-         <td class="olohead">{t}Payee{/t}</td>
-         <td class="olohead">{t}Date{/t}</td>                                                        
-         <td class="olohead">{t}Item Type{/t}</td>
-         <td class="olohead">{t}Payment Method{/t}</td>
-         <td class="olohead">{t}Net Amount{/t}</td>         
-         <td class="olohead">{t}VAT Rate{/t}</td>
-         <td class="olohead">{t}VAT Amount{/t}</td>
-         <td class="olohead">{t}Gross Amount{/t}</td>
-         <td class="olohead">{t}Status{/t}</td>
-         <td class="olohead">{t}Note{/t}</td>
-         <td class="olohead">{t}Items{/t}</td>
-         <td class="olohead">{t}Action{/t}</td>
-     </tr>
-     {section name=e loop=$display_expenses}
-         <!-- This allows double clicking on a row and opens the corresponding expense view details -->
-         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_expenses[e].status != 'deleted'} onDblClick="window.location='index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}';"{/if}>
+    <tr>
+        <td class="olohead">{t}Expense ID{/t}</td>
+        <td class="olohead">{t}Payee{/t}</td>
+        <td class="olohead">{t}Date{/t}</td>                                                        
+        <td class="olohead">{t}Item Type{/t}</td>         
+        <td class="olohead">{t}Net Amount{/t}</td>         
+        <td class="olohead">{t}VAT Rate{/t}</td>
+        <td class="olohead">{t}VAT Amount{/t}</td>
+        <td class="olohead">{t}Gross Amount{/t}</td>
+        <td class="olohead">{t}Gross Amount{/t}</td>
+        <td class="olohead">{t}Status{/t}</td>
+        <td class="olohead">{t}Note{/t}</td>
+        <td class="olohead">{t}Items{/t}</td>
+        <td class="olohead">{t}Action{/t}</td>
+    </tr>
+    {section name=e loop=$display_expenses}
+        <!-- This allows double clicking on a row and opens the corresponding expense view details -->
+        <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_expenses[e].status != 'deleted'} onDblClick="window.location='index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}';"{/if}>
             <td class="olotd4" nowrap><a href="index.php?component=expense&page_tpl=details&expense_id={$display_expenses[e].expense_id}">{$display_expenses[e].expense_id}</a></td>
-            <td class="olotd4" nowrap><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_expenses[e].invoice_id}">{$display_expenses[e].invoice_id}</a></td>
             <td class="olotd4" nowrap>{$display_expenses[e].payee}</td>
             <td class="olotd4" nowrap>{$display_expenses[e].date|date_format:$date_format}</td>                                                            
             <td class="olotd4" nowrap>
@@ -35,15 +33,11 @@
                     {if $display_expenses[e].item_type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
                 {/section} 
             </td>
-            <td class="olotd4" nowrap>
-                {section name=s loop=$payment_methods}    
-                    {if $display_expenses[e].payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}        
-                {/section} 
-            </td>
             <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].net_amount}</td>             
             <td class="olotd4" nowrap>{$display_expenses[e].vat_rate} %</td>
             <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].vat_amount}</td>
             <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].gross_amount}</td>
+            <td class="olotd4" nowrap>{$currency_sym} {$display_expenses[e].balance}</td>
             <td class="olotd4" nowrap>
                {section name=s loop=$expense_statuses}    
                    {if $display_expenses[e].status == $expense_statuses[s].status_key}{t}{$expense_statuses[s].display_name}{/t}{/if}        
@@ -66,7 +60,7 @@
                     <img src="{$theme_images_dir}icons/delete.gif" alt="" border="0" height="14" width="14" onMouseOver="ddrivetip('<b>{t}Delete Expense Record{/t}</b>');" onMouseOut="hideddrivetip();">
                 </a>*}
             </td>
-         </tr>
+        </tr>
     {sectionelse}
         <tr>
             <td colspan="13" class="error">{t}There are no expenses.{/t}</td>

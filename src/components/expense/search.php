@@ -16,7 +16,6 @@ $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
 $VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
 $VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
 $VAR['filter_type'] = isset($VAR['filter_type']) ? $VAR['filter_type'] : null;
-$VAR['filter_payment_method'] = isset($VAR['filter_payment_method']) ? $VAR['filter_payment_method'] : null;
 
 // If a search is submitted
 if(isset($VAR['submit'])) {
@@ -35,10 +34,7 @@ if(isset($VAR['submit'])) {
 $smarty->assign('search_category',          $VAR['search_category']                                                                                         );
 $smarty->assign('search_term',              $VAR['search_term']                                                                                             );
 $smarty->assign('filter_type',              $VAR['filter_type']                                                                                             );
-$smarty->assign('filter_payment_method',    $VAR['filter_payment_method']                                                                                   );
 $smarty->assign('expense_statuses',         get_expense_statuses()                                                                                          );
 $smarty->assign('expense_types',            get_expense_types()                                                                                             );
-$smarty->assign('payment_methods',          get_payment_methods('send')                                                                                     );
-$smarty->assign('payment_methods_search',   get_payment_methods('send', 'enabled')                                                                          );
-$smarty->assign('display_expenses',         display_expenses('expense_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'], $VAR['filter_payment_method']) );
+$smarty->assign('display_expenses',         display_expenses('expense_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type']));
 $BuildPage .= $smarty->fetch('expense/search.tpl');
