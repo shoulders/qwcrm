@@ -12,29 +12,29 @@ class PType {
     
     private $VAR = null;
     private $smarty = null;
+    private $invoice_details = null;
     
     public function __construct(&$VAR) {
         
         $this->VAR = &$VAR;
-        $this->smarty = QFactory::getSmarty();        
+        $this->smarty = QFactory::getSmarty();
+        $this->invoice_details = get_invoice_details($this->VAR['invoice_id']);
+                       
+        // Assign Type specific template variables        
+        $this->smarty->assign('client_details', get_client_details($this->invoice_details['client_id']));
+        $this->smarty->assign('payment_active_methods', get_payment_methods('receive', 'enabled'));
+        $this->smarty->assign('invoice_details', $this->invoice_details);
+        $this->smarty->assign('invoice_statuses', get_invoice_statuses());
         
-        $this->build_buttons();        
         
     }
-    
-    // Build Buttons (I should add the whole button HTML here maybe for consitency ? template/controller location for this?)
-    public function build_buttons() {
         
-        // Build cancel button
-        if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
-            $this->smarty->assign('cancel_button_url', 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id']);
-        } else {
-            $this->smarty->assign('cancel_button_url', 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id']);
-        }
-    }
-    
     // Pre-Processing
-    public function pre_process() {        
+    public function pre_process() {          
+        
+        // Add required variables // should these be place holders for consistency thourhgout the types but just = null where not needed
+        $this->VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];
+        $this->VAR['qpayment']['workorder_id'] = $this->invoice_details['workorder_id'];
         
         // Validate_payment_amount
         if(!validate_payment_amount(get_invoice_details($this->VAR['qpayment']['invoice_id'], 'balance'), $this->VAR['qpayment']['amount'])) {
@@ -47,11 +47,13 @@ class PType {
             
         }
         
+        
+        
         return;
 
     }
 
-    // Processing
+    // Processing (nothing to do here? Kept for reference!)
     public function process() {  
         
         return;
@@ -64,12 +66,27 @@ class PType {
         // Build submit/submit and new buttons etc..
         
         // If the invoice has been closed redirect to the invoice details page / redirect after last payment added.
-        if(get_invoice_details($this->VAR['invoice_id'], 'is_closed')) {
+        if($this->invoice_details['is_closed']) {
             force_page('invoice', 'details&invoice_id='.$this->VAR['invoice_id']);
         }
         
         return;
        
     }
+    
+    // Build Buttons
+    public function build_buttons() {
+        
+        NewPayment::$buttons['cancel']['allowed'] = true;
+        
+        // Build cancel button
+        if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
+            NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+            
+        } else {
+            NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+        }
+        
+    }    
 
 }

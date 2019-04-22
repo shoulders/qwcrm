@@ -182,28 +182,17 @@ function insert_payment($qpayment) {
     
     $db = QFactory::getDbo();
     
-    $invoice_details = get_invoice_details($qpayment['invoice_id']);
-    
-    // Allow for all different payment types
-    $client_id = isset($qpayment['client_id']) ? $qpayment['client_id'] : '';
-    $workorder_id = isset($qpayment['workorder_id']) ? $qpayment['workorder_id'] : '';
-    $invoice_id = isset($qpayment['invoice_id']) ? $qpayment['invoice_id'] : '';
-    $voucher_id = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : '';
-    $refund_id = isset($qpayment['refund_id']) ? $qpayment['refund_id'] : '';
-    $expense_id = isset($qpayment['expense_id']) ? $qpayment['expense_id'] : '';
-    $otherincome_id = isset($qpayment['otherincome_id']) ? $qpayment['otherincome_id'] : '';    
-            
     $sql = "INSERT INTO ".PRFX."payment_records SET            
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id       ).",
-            client_id       = ".$db->qstr( $client_id                               ).",
-            workorder_id    = ".$db->qstr( $workorder_id                            ).",
-            invoice_id      = ".$db->qstr( $invoice_id                              ).",
-            voucher_id      = ".$db->qstr( $voucher_id                              ).",               
-            refund_id       = ".$db->qstr( $refund_id                               ).", 
-            expense_id      = ".$db->qstr( $expense_id                              ).", 
-            otherincome_id  = ".$db->qstr( $otherincome_id                          ).",
+            client_id       = ".$db->qstr( $qpayment['client_id']                   ).",
+            workorder_id    = ".$db->qstr( $qpayment['workorder_id']                ).",
+            invoice_id      = ".$db->qstr( $qpayment['invoice_id']                  ).",
+            voucher_id      = ".$db->qstr( $qpayment['voucher_id']                  ).",               
+            refund_id       = ".$db->qstr( $qpayment['refund_id']                   ).", 
+            expense_id      = ".$db->qstr( $qpayment['expense_id']                  ).", 
+            otherincome_id  = ".$db->qstr( $qpayment['otherincome_id']              ).",
             date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])    ).",
-            type            = ".$db->qstr( $qpayment['type']                        ).",
+            type            = ".$db->qstr( $qpayment['type']                         ).",
             method          = ".$db->qstr( $qpayment['method']                      ).",
             status          = 'valid',
             amount          = ".$db->qstr( $qpayment['amount']                      ).",
@@ -222,15 +211,15 @@ function insert_payment($qpayment) {
         if($qpayment['type'] == 'invoice') {recalculate_invoice($qpayment['invoice_id']);}
         
         // Create a Workorder History Note       
-        insert_workorder_history_note($workorder_id, _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
+        insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
         
         // Log activity        
         $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $qpayment['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
         
         // Update last active record    
-        update_client_last_active($invoice_details['client_id']);
-        update_workorder_last_active($invoice_details['workorder_id']);
+        update_client_last_active($qpayment['client_id']);
+        update_workorder_last_active($qpayment['workorder_id']);
         update_invoice_last_active($qpayment['invoice_id']);
         
         // Return the payment_id

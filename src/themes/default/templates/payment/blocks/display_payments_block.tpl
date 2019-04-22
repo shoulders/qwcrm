@@ -10,7 +10,8 @@
     <tr>
         <td class="olohead"><b>{t}Payment ID{/t}</b></td>
         <td class="olohead"><b>{t}WO ID{/t}</b></td>
-        <td class="olohead"><b>{t}INV ID{/t}</b></td>        
+        <td class="olohead"><b>{t}INV ID{/t}</b></td>  
+        <td class="olohead"><b>{t}Voucher ID{/t}</b></td> 
         <td class="olohead"><b>{t}Employee{/t}</b></td>
         <td class="olohead"><b>{t}Client{/t}</b></td>
         <td class="olohead"><b>{t}Date{/t}</b></td>
@@ -33,6 +34,9 @@
             <!-- INV ID -->
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_payments[p].invoice_id}">{$display_payments[p].invoice_id}</a></td>
             
+            <!-- Voucher ID -->
+            <td class="olotd4"><a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_payments[p].voucher_id}">{$display_payments[p].voucher_id}</a></td>
+                        
             <!-- Employee -->
             <td class="olotd4" nowrap>                
                 <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_payments[p].employee_id}">{$display_payments[p].employee_display_name}</a>

@@ -16,7 +16,10 @@ class PType {
     public function __construct(&$VAR) {
         
         $this->VAR = &$VAR;
-        $this->smarty = QFactory::getSmarty();        
+        $this->smarty = QFactory::getSmarty(); 
+        
+        // Assign Type specific template variables  
+        $this->smarty->assign('payment_active_methods', get_payment_methods('receive', 'enabled'));
         
     }
     

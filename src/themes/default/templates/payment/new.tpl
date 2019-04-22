@@ -16,7 +16,7 @@
         <td>
             <table width="100%" cellpadding="4" cellspacing="0" border="0">
                 <tr>
-                    <td class="menuhead2" width="80%">&nbsp;{t}Payments for{/t} {t}Invoice{/t} {$invoice_details.invoice_id} - {$client_details.display_name}</td>
+                    <td class="menuhead2" width="80%">&nbsp;{t}Add a New Payment{/t}</td>
                     <td class="menuhead2" width="20%" align="right" valign="middle">
                         <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}PAYMENT_NEW_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}PAYMENT_NEW_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
                     </td>
@@ -38,34 +38,16 @@
                                 <td>                                                
                                     {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
                                 </td>
-                            </tr>                            
-                        </table>
+                            </tr>
+                            
+                            <!-- Payment Methods -->
+                            <tr>
+                                <td>
+                                    {include file='payment/blocks/display_payment_methods_block.tpl'}
+                                </td>
+                            </tr>
 
-                        <form method="post" action="index.php?component=payment&page_tpl=new&invoice_id={$invoice_id}">
-                            <table width="100%" border="0" cellpadding="10" cellspacing="0">
-                                
-                                <!-- Payment Methods -->
-                                <tr>
-                                    <td>
-                                        {include file='payment/blocks/display_payment_methods_block.tpl'}
-                                    </td>
-                                </tr>                            
-
-                                <tr>
-                                    <td>
-                                        
-                                        <!-- Submit Button -->
-                                        <button type="submit" name="submit" value="submit">{t}Submit Payment{/t}</button>
-                                        
-                                        <!-- Cancel Button -->
-                                        {*<button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>*}
-                                        <button type="button" class="olotd4" onclick="window.location.href='{$cancel_button_url}';">{t}Cancel{/t}</button>     
-                                        
-                                    </td>
-                                </tr>
-                                
-                            </table>
-                        </form>                                               
+                        </table>                                                                    
                         
                     </td>
                 </tr>

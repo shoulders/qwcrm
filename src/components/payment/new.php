@@ -14,24 +14,30 @@ require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
-// Prevent undefined variable errors (with and without submit)
-$VAR['qpayment']['invoice_id'] = isset($VAR['qpayment']['invoice_id']) ? $VAR['qpayment']['invoice_id'] : null;
-$VAR['qpayment']['invoice_id'] = isset($VAR['invoice_id']) ? $VAR['invoice_id'] : $VAR['qpayment']['invoice_id'];
-$VAR['qpayment']['refund_id'] = isset($VAR['qpayment']['refund_id']) ? $VAR['qpayment']['refund_id'] : null;
-$VAR['qpayment']['refund_id'] = isset($VAR['refund_id']) ? $VAR['refund_id'] : $VAR['qpayment']['refund_id'];
-$VAR['qpayment']['expense_id'] = isset($VAR['qpayment']['expense_id']) ? $VAR['qpayment']['expense_id'] : null;
-$VAR['qpayment']['expense_id'] = isset($VAR['expense_id']) ? $VAR['expense_id'] : $VAR['qpayment']['expense_id'];
-$VAR['qpayment']['otherincome_id'] = isset($VAR['qpayment']['otherincome_id']) ? $VAR['qpayment']['otherincome_id'] : null;
-$VAR['qpayment']['otherincome_id'] = isset($VAR['otherincome_id']) ? $VAR['otherincome_id'] : $VAR['qpayment']['otherincome_id'];
-$VAR['qpayment']['type'] = isset($VAR['qpayment']['type']) ? $VAR['qpayment']['type'] : null;
-$VAR['qpayment']['type'] = isset($VAR['type']) ? $VAR['type'] : $VAR['qpayment']['type'];
-$VAR['qpayment']['method'] = isset($VAR['qpayment']['method']) ? $VAR['qpayment']['method'] : null;
-$payment_validated = null;
-
 // Make sure a payment type is set
-if(!$VAR['qpayment']['type']) { 
+if(!$VAR['type']) { 
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment Type supplied."));    
 } 
+
+// could get rid of some of these ternaries
+
+// Prevent undefined variable errors (with and without submit)
+$VAR['qpayment']['invoice_id'] = isset($VAR['qpayment']['invoice_id']) ? $VAR['qpayment']['invoice_id'] : '';
+$VAR['qpayment']['invoice_id'] = isset($VAR['invoice_id']) ? $VAR['invoice_id'] : $VAR['qpayment']['invoice_id'];
+$VAR['qpayment']['voucher_id'] = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : ''; // Do i need this? probably!
+$VAR['qpayment']['refund_id'] = isset($VAR['qpayment']['refund_id']) ? $VAR['qpayment']['refund_id'] : '';
+$VAR['qpayment']['refund_id'] = isset($VAR['refund_id']) ? $VAR['refund_id'] : $VAR['qpayment']['refund_id'];
+$VAR['qpayment']['expense_id'] = isset($VAR['qpayment']['expense_id']) ? $VAR['qpayment']['expense_id'] : '';
+$VAR['qpayment']['expense_id'] = isset($VAR['expense_id']) ? $VAR['expense_id'] : $VAR['qpayment']['expense_id'];
+$VAR['qpayment']['otherincome_id'] = isset($VAR['qpayment']['otherincome_id']) ? $VAR['qpayment']['otherincome_id'] : '';
+$VAR['qpayment']['otherincome_id'] = isset($VAR['otherincome_id']) ? $VAR['otherincome_id'] : $VAR['qpayment']['otherincome_id'];
+$VAR['qpayment']['type'] = isset($VAR['qpayment']['type']) ? $VAR['qpayment']['type'] : '';
+$VAR['qpayment']['type'] = isset($VAR['type']) ? $VAR['type'] : $VAR['qpayment']['type'];
+$VAR['qpayment']['method'] = isset($VAR['qpayment']['method']) ? $VAR['qpayment']['method'] : '';
+
+
+/*$VAR['qpayment']['client_id'] = '';
+$VAR['qpayment']['workorder_id'] = '';*/
 
 // Prevent direct access to this page, and validate requests
 if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_qwcrm('invoice', 'details')) {  
@@ -73,6 +79,7 @@ class NewPayment {
     private $VAR = null;
     private $type = null;
     private $method = null;
+    public static $buttons = array();
     public static $payment_validated = false;
     public static $payment_processed = false;
     
@@ -80,6 +87,14 @@ class NewPayment {
         
         // Set class variables
         $this->VAR = &$VAR;
+        
+        // Build button array
+        self::$buttons = array(
+            'submit' => array('allowed' => false, 'url' => null),
+            'cancel' => array('allowed' => false, 'url' => null),
+            'returnToRecord' => array('allowed' => false, 'url' => null),
+            'addNewRecord' => array('allowed' => false, 'url' => null)
+        );
                
         // Set the payment type class
         $this->set_payment_type();
@@ -108,6 +123,9 @@ class NewPayment {
             $this->type->post_process();
             
         }
+        
+        // Build the buttons
+        $this->type->build_buttons();
        
     }
         
@@ -195,15 +213,16 @@ class NewPayment {
 // Instanciate New Payment Class
 $payment = new NewPayment($VAR);
 
+// sort this build page becasue it is only for invoices
+
 // Build the page
-$smarty->assign('client_details',                    get_client_details(get_invoice_details($VAR['invoice_id'] , 'client_id'))     );
-$smarty->assign('invoice_details',                   get_invoice_details($VAR['invoice_id'])                                                );
-$smarty->assign('invoice_statuses',                  get_invoice_statuses()                                                                   );
 $smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, $VAR['qpayment']['invoice_id'], $VAR['qpayment']['refund_id'], $VAR['qpayment']['expense_id'], $VAR['qpayment']['otherincome_id'])  );
 $smarty->assign('payment_method',                    $VAR['qpayment']['method']                                                             );
 $smarty->assign('payment_type',                      $VAR['qpayment']['type']                                                                               );
 $smarty->assign('payment_types',                     get_payment_types()                                                             );
-$smarty->assign('payment_methods',                   get_payment_methods('receive', 'enabled')                                                             );
+$smarty->assign('payment_methods',                   get_payment_methods()                                                             );
+$smarty->assign('payment_statuses',                  get_payment_statuses()                                                                          );
 $smarty->assign('payment_active_card_types',         get_payment_active_card_types()                                                                );
+$smarty->assign('buttons',                           NewPayment::$buttons                                                                );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');
