@@ -19,25 +19,25 @@ class PType {
         $this->VAR = &$VAR;
         $this->smarty = QFactory::getSmarty();
         $this->invoice_details = get_invoice_details($this->VAR['invoice_id']);
+        NewPayment::$record_balance = $this->invoice_details['balance'];
                        
         // Assign Type specific template variables        
         $this->smarty->assign('client_details', get_client_details($this->invoice_details['client_id']));
         $this->smarty->assign('payment_active_methods', get_payment_methods('receive', 'enabled'));
         $this->smarty->assign('invoice_details', $this->invoice_details);
-        $this->smarty->assign('invoice_statuses', get_invoice_statuses());
-        
+        $this->smarty->assign('invoice_statuses', get_invoice_statuses());        
         
     }
         
     // Pre-Processing
     public function pre_process() {          
         
-        // Add required variables // should these be place holders for consistency thourhgout the types but just = null where not needed
+        // Add required variables
         $this->VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];
         $this->VAR['qpayment']['workorder_id'] = $this->invoice_details['workorder_id'];
         
         // Validate_payment_amount
-        if(!validate_payment_amount(get_invoice_details($this->VAR['qpayment']['invoice_id'], 'balance'), $this->VAR['qpayment']['amount'])) {
+        if(!validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
             
             NewPayment::$payment_validated = false;            
 
@@ -53,7 +53,7 @@ class PType {
 
     }
 
-    // Processing (nothing to do here? Kept for reference!)
+    // Processing
     public function process() {  
         
         return;
@@ -63,11 +63,9 @@ class PType {
     // Post-Processing 
     public function post_process() {
         
-        // Build submit/submit and new buttons etc..
-        
-        // If the invoice has been closed redirect to the invoice details page / redirect after last payment added.
-        if($this->invoice_details['is_closed']) {
-            force_page('invoice', 'details&invoice_id='.$this->VAR['invoice_id']);
+        // If the balance has been cleared, redirect to the record details page
+        if($this->invoice_details['balance'] == 0) {
+            force_page('invoice', 'details&invoice_id='.$this->VAR['invoice_id'], 'information_msg='._gettext("The balance has been cleared."));
         }
         
         return;
@@ -77,15 +75,35 @@ class PType {
     // Build Buttons
     public function build_buttons() {
         
-        NewPayment::$buttons['cancel']['allowed'] = true;
+        // Submit
+        if($this->invoice_details['balance'] > 0) {
+            NewPayment::$buttons['submit']['allowed'] = true;
+            NewPayment::$buttons['submit']['url'] = null;
+        }        
         
-        // Build cancel button
-        if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
-            NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+        // Cancel
+        if(!$this->invoice_details['balance'] == 0) {
             
-        } else {
-            NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+            if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
+                NewPayment::$buttons['cancel']['allowed'] = true;
+                NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];            
+            }
+            if(check_page_accessed_via_qwcrm('invoice', 'details')) {
+                NewPayment::$buttons['cancel']['allowed'] = true;
+                NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+            }
+            
         }
+        
+        // Return To Record
+        if(check_page_accessed_via_qwcrm('payment', 'new')) {
+            NewPayment::$buttons['returnToRecord']['allowed'] = true;
+            NewPayment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+        }
+        
+        // Add New Record
+        NewPayment::$buttons['addNewRecord']['allowed'] = false;
+        NewPayment::$buttons['sddNewRecord']['url'] = null;        
         
     }    
 

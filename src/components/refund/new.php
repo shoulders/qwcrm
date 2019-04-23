@@ -29,55 +29,51 @@ if(!check_page_accessed_via_qwcrm('refund', 'new') && !check_page_accessed_via_q
 if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('refund', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
-
-if (isset($VAR['invoice_id'])) {
     
-    // Load refund page with the invoice refund details
-    if (!isset($VAR['submit'])) {
+// Process the submitted refund
+if (isset($VAR['submit'])) {
+    
+    // Insert the Refund into the database
+    $refund_id = refund_invoice($VAR);
+    
+        if ($VAR['submit'] == 'submitandpayment') {
 
-        // Make sure the invoice is allowed to be refunded
-        if(!check_invoice_can_be_refunded($VAR['invoice_id'])) {
-            force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be refunded."));
-        }
-        
-        $invoice_details = get_invoice_details($VAR['invoice_id']);
-        
-        // Build array
-        $refund_details['date'] = date('Y-m-d');
-        $refund_details['client_id'] = $invoice_details['client_id'];
-        $refund_details['invoice_id'] = $invoice_details['invoice_id'];        
-        $refund_details['item_type'] = 'invoice';
-        $refund_details['payment_method'] = null;
-        $refund_details['net_amount'] = $invoice_details['net_amount'];        
-        $refund_details['tax_amount'] = $invoice_details['tax_amount'];
-        $refund_details['gross_amount'] = $invoice_details['gross_amount'];  
-        $refund_details['note'] = ''; // or use this _gettext("This is a refund for an Invoice.")
-        
-        // Get Client display_name
-        $client_display_name = get_client_details($invoice_details['client_id'], 'display_name'); 
-        
-    // Process the submitted refund 
-    } else {        
-        
-        if(!$refund_id = refund_invoice($VAR)) {
-
-            // Load the invoice details page with error
-            force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'].'&information_msg='._gettext("The invoice failed to be refunded."));
+            // Load the new payment page for expense
+             force_page('payment', 'new&type=refund&refund_id='.$refund_id );
 
         } else {
 
-            // Load the invoice search page with success message
-            //force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("Refund").' '._gettext("ID").': '.$refund_id);
-            force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("The invoice has been refunded successfully.").' '._gettext("Refund").' '._gettext("ID").': '.$refund_id);
-        }       
-        
-    }    
-    
-}
+            // load refund details page
+            force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);            
+        }    
+
+ // Load refund page with the invoice refund details
+} else { 
+
+    // Make sure the invoice is allowed to be refunded
+    if(!check_invoice_can_be_refunded($VAR['invoice_id'])) {
+        force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("Invoice").': '.$VAR['invoice_id'].' '._gettext("cannot be refunded."));
+    }
+
+    $invoice_details = get_invoice_details($VAR['invoice_id']);
+
+    // Build array
+    $refund_details['date'] = date('Y-m-d');
+    $refund_details['client_id'] = $invoice_details['client_id'];
+    $refund_details['invoice_id'] = $invoice_details['invoice_id'];        
+    $refund_details['item_type'] = 'invoice';        
+    $refund_details['net_amount'] = $invoice_details['net_amount'];        
+    $refund_details['tax_amount'] = $invoice_details['tax_amount'];
+    $refund_details['gross_amount'] = $invoice_details['gross_amount'];  
+    $refund_details['note'] = ''; // or use this _gettext("This is a refund for an Invoice.")
+
+    // Get Client display_name
+    $client_display_name = get_client_details($invoice_details['client_id'], 'display_name'); 
+
+}  
 
 // Build the page
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
-$smarty->assign('payment_methods', get_payment_methods('send', 'enabled'));
 $smarty->assign('client_display_name', $client_display_name);
 $BuildPage .= $smarty->fetch('refund/new.tpl');

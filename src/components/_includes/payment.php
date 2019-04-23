@@ -88,6 +88,15 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
     // Restrict by Invoice
     if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);}    
     
+    // Restrict by Refund
+    if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$db->qstr($refund_id);} 
+    
+    // Restrict by Expense
+    if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$db->qstr($expense_id);} 
+    
+    // Restrict by Otherincome
+    if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$db->qstr($otherincome_id);}             
+    
     /* The SQL code */
     
     $sql =  "SELECT

@@ -118,16 +118,6 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td>
-                                                                                <select id="payment_method" name="payment_method" class="olotd5">
-                                                                                    {section name=s loop=$payment_methods}    
-                                                                                        <option value="{$payment_methods[s].method_key}">{t}{$payment_methods[s].display_name}{/t}</option>
-                                                                                    {/section} 
-                                                                                </select>                                                                            
-                                                                            </td>
-                                                                        </tr>                                                                                                          
-                                                                        <tr>
                                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td><input id="net_amount" name="net_amount" class="olotd5" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('net_amount');"></b></a></td>
                                                                         </tr>
@@ -177,6 +167,7 @@
                                                                             <td colspan="2">
                                                                                 <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                                                 <button type="submit" name="submitandnew" value="submitandnew">{t}Submit and New{/t}</button>
+                                                                                <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>
                                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=otherincome&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>
                                                                         </tr>

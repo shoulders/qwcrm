@@ -125,7 +125,7 @@
                                             <td colspan="9" valign="top" align="left">                                                        
                                                 <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
                                                 <b>{t}Client Discount Rate{/t}:</b>
-                                                {$invoice_details.discount_rate|string_format:"%.2f"} %                                                                                                     
+                                                {$invoice_details.discount_rate|string_format:"%.2f"}%                                                                                                     
                                             </td>
                                         </tr>
 

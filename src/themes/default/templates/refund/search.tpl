@@ -39,8 +39,7 @@
                                                                         <option value="client_display_name"{if $search_category == 'client_display_name'} selected{/if}>{t}Name{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="voucher_id"{if $search_category == 'voucher_id'} selected{/if}>{t}Voucher ID{/t}</option>                                                                                                                                              
-                                                                        <option value="item_type"{if $search_category == 'item_type'} selected{/if}>{t}Item Type{/t}</option>
-                                                                        <option value="payment_method"{if $search_category == 'payment_method'} selected{/if}>{t}Payment Method{/t}</option>
+                                                                        <option value="item_type"{if $search_category == 'item_type'} selected{/if}>{t}Item Type{/t}</option>                                                                        
                                                                         <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>                                                                        
                                                                         <option value="tax_amount"{if $search_category == 'tax_amount'} selected{/if}>{t}Tax{/t} {t}Amount{/t}</option>
                                                                         <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                        
@@ -69,18 +68,6 @@
                                                                     </select>
                                                                 </td>
                                                             </tr> 
-                                                            <tr>
-                                                                <td>
-                                                                    <b>{t}Filter By Payment Method{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_payment_method" name="filter_payment_method">
-                                                                        <option value=""{if $filter_payment_method == ''} selected{/if}>{t}None{/t}</option>
-                                                                        <option disabled>----------</option>                                                                        
-                                                                        {section name=t loop=$payment_methods_search}    
-                                                                            <option value="{$payment_methods_search[t].method_key}"{if $filter_payment_method == $payment_methods_search[t].method_key} selected{/if}>{t}{$payment_methods_search[t].display_name}{/t}</option>        
-                                                                        {/section}
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}Filter By Status{/t}</b><br>

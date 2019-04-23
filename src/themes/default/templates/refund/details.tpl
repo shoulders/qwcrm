@@ -37,13 +37,13 @@
                                             <td class="menutd"><b>{t}Client{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a></td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.net_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.net_amount|string_format:"%.2f"}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$refund_details.date|date_format:$date_format}</td>
                                             <td class="menutd"><b>{t}Tax{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.tax_amount}</td>                                            
+                                            <td class="menutd">{$currency_sym}{$refund_details.tax_amount|string_format:"%.2f"}</td>                                            
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -53,17 +53,13 @@
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.gross_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.gross_amount|string_format:"%.2f"}</td>
                                         </tr>                                        
                                         <tr>
-                                            <td class="menutd"><b>{t}Payment Method{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$payment_methods}    
-                                                    {if $refund_details.payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
-                                                {/section}
-                                            </td> 
                                             <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td> 
+                                            <td class="menutd"><b>{t}Balance{/t}</b></td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.balance|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Invoice ID{/t}</b></td>
@@ -90,6 +86,13 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {if $refund_details.status == 'unpaid' || $refund_details.status == 'partially_paid'}
+                            <button type="button" class="olotd4" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=refund&refund_id={$refund_details.refund_id}';">{t}Submit Payment{/t}</button>
+                        {/if}
                     </td>
                 </tr>
             </table>

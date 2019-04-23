@@ -37,7 +37,7 @@
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
                                             <td class="menutd">{$otherincome_details.payee}</td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.net_amount}</td>                                            
+                                            <td class="menutd">{$currency_sym}{$otherincome_details.net_amount|string_format:"%.2f"}</td>                                            
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
@@ -53,7 +53,7 @@
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd" >&nbsp;</td>
                                             <td class="menutd" ><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$otherincome_details.vat_rate}%</td>
+                                            <td class="menutd">{$otherincome_details.vat_rate|string_format:"%.2f"}%</td>
                                         </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -63,21 +63,17 @@
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.vat_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$otherincome_details.vat_amount|string_format:"%.2f"}</td>
                                         </tr>                                        
                                         <tr>
-                                            <td class="menutd"><b>{t}Other Income Payment Method{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$payment_methods}    
-                                                    {if $otherincome_details.payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}   
-                                                {/section}
-                                            </td>
+                                            <td class="menutd"></td>
+                                            <td class="menutd"></td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.gross_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$otherincome_details.gross_amount|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Balance{/t}</b></td>
+                                            <td class="menutd">{$currency_sym}{$otherincome_details.balance|string_format:"%.2f"}</td>
                                             <td class="menutd"><b>{t}Status{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$otherincome_statuses}    
@@ -111,6 +107,13 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {if $otherincome_details.status == 'unpaid' || $otherincome_details.status == 'partially_paid'}
+                            <button type="button" class="olotd4" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=otherincome&otherincome_id={$otherincome_details.otherincome_id}';">{t}Submit Payment{/t}</button>
+                        {/if}
                     </td>
                 </tr>
             </table>

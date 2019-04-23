@@ -35,7 +35,7 @@
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
                                             <td class="menutd">{$expense_details.payee}</td>                                            
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$expense_details.net_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$expense_details.net_amount|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
@@ -51,7 +51,7 @@
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$expense_details.vat_rate}%</td>
+                                            <td class="menutd">{$expense_details.vat_rate|string_format:"%.2f"}%</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -61,17 +61,17 @@
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$expense_details.vat_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$expense_details.vat_amount|string_format:"%.2f"}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"></td>
                                             <td class="menutd"></td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$expense_details.gross_amount}</td>
+                                            <td class="menutd">{$currency_sym}{$expense_details.gross_amount|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd">&nbsp;</td>
-                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd"><b>{t}Balance{/t}</b></td>
+                                            <td class="menutd">{$currency_sym}{$expense_details.balance|string_format:"%.2f"}</td>
                                             <td class="menutd"><b>{t}Status{/t}</b></td>
                                             <td class="menutd">
                                                 {section name=s loop=$expense_statuses}    
@@ -105,6 +105,13 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        {if $expense_details.status == 'unpaid' || $expense_details.status == 'partially_paid'}
+                            <button type="button" class="olotd4" onclick="window.location.href='index.php?component=payment&page_tpl=new&type=expense&expense_id={$expense_details.expense_id}';">{t}Submit Payment{/t}</button>
+                        {/if}
                     </td>
                 </tr>
             </table>

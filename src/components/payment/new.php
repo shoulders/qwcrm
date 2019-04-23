@@ -9,17 +9,18 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'expense.php');
 require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Make sure a payment type is set
-if(!$VAR['type']) { 
+if(!isset($VAR['type'])) { 
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment Type supplied."));    
 } 
-
-// could get rid of some of these ternaries
 
 // Prevent undefined variable errors (with and without submit)
 $VAR['qpayment']['invoice_id'] = isset($VAR['qpayment']['invoice_id']) ? $VAR['qpayment']['invoice_id'] : '';
@@ -35,10 +36,6 @@ $VAR['qpayment']['type'] = isset($VAR['qpayment']['type']) ? $VAR['qpayment']['t
 $VAR['qpayment']['type'] = isset($VAR['type']) ? $VAR['type'] : $VAR['qpayment']['type'];
 $VAR['qpayment']['method'] = isset($VAR['qpayment']['method']) ? $VAR['qpayment']['method'] : '';
 
-
-/*$VAR['qpayment']['client_id'] = '';
-$VAR['qpayment']['workorder_id'] = '';*/
-
 // Prevent direct access to this page, and validate requests
 if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_qwcrm('invoice', 'details')) {  
     
@@ -47,21 +44,21 @@ if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_q
         force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));    
     }    
     
-} elseif(check_page_accessed_via_qwcrm('refund', 'new')) {   
+} elseif(check_page_accessed_via_qwcrm('refund', 'new') || check_page_accessed_via_qwcrm('refund', 'details')) {   
     
     // Check we have a valid request
     if($VAR['qpayment']['type'] == 'refund' && (!isset($VAR['refund_id']) || !$VAR['refund_id'])) {
         force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));    
     }    
     
-} elseif(check_page_accessed_via_qwcrm('expense', 'new')) {
+} elseif(check_page_accessed_via_qwcrm('expense', 'new') || check_page_accessed_via_qwcrm('expense', 'details')) {
     
     // Check we have a valid request
     if($VAR['qpayment']['type'] == 'expense' && (!isset($VAR['expense_id']) || !$VAR['expense_id'])) {
         force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));    
     }
  
-} elseif(check_page_accessed_via_qwcrm('otherincome', 'new')) {
+} elseif(check_page_accessed_via_qwcrm('otherincome', 'new') || check_page_accessed_via_qwcrm('otherincome', 'details')) {
     
     // Check we have a valid request
     if($VAR['qpayment']['type'] == 'otherincome' && (!isset($VAR['otherincome_id']) || !$VAR['otherincome_id'])) {
@@ -82,6 +79,7 @@ class NewPayment {
     public static $buttons = array();
     public static $payment_validated = false;
     public static $payment_processed = false;
+    public static $record_balance = null;
     
     function __construct(&$VAR) {
         
@@ -213,8 +211,6 @@ class NewPayment {
 // Instanciate New Payment Class
 $payment = new NewPayment($VAR);
 
-// sort this build page becasue it is only for invoices
-
 // Build the page
 $smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, $VAR['qpayment']['invoice_id'], $VAR['qpayment']['refund_id'], $VAR['qpayment']['expense_id'], $VAR['qpayment']['otherincome_id'])  );
 $smarty->assign('payment_method',                    $VAR['qpayment']['method']                                                             );
@@ -223,6 +219,7 @@ $smarty->assign('payment_types',                     get_payment_types()        
 $smarty->assign('payment_methods',                   get_payment_methods()                                                             );
 $smarty->assign('payment_statuses',                  get_payment_statuses()                                                                          );
 $smarty->assign('payment_active_card_types',         get_payment_active_card_types()                                                                );
+$smarty->assign('record_balance',                    NewPayment::$record_balance                                                               );
 $smarty->assign('buttons',                           NewPayment::$buttons                                                                );
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');

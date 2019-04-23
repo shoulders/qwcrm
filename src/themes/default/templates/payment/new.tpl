@@ -26,10 +26,13 @@
                         
                         <table width="100%" border="0" cellpadding="10" cellspacing="0">
 
-                            <!-- Invoice Details -->
+                            <!-- Record Details -->
                             <tr>
                                 <td>                                                
-                                    {include file='payment/blocks/new_invoice_details_block.tpl'}
+                                    {if $payment_type == 'invoice'}{include file='payment/blocks/new_invoice_details_block.tpl'}{/if}
+                                    {if $payment_type == 'refund'}{include file='payment/blocks/new_refund_details_block.tpl'}{/if}
+                                    {if $payment_type == 'expense'}{include file='payment/blocks/new_expense_details_block.tpl'}{/if}
+                                    {if $payment_type == 'otherincome'}{include file='payment/blocks/new_otherincome_details_block.tpl'}{/if}
                                 </td>
                             </tr>                                                       
 

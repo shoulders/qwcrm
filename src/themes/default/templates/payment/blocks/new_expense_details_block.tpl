@@ -5,6 +5,7 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
+<h2>{t}Expense{/t} {t}Payment{/t}</h2>
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
         <td class="olohead"><b>{t}Expense ID{/t}</b></td>        

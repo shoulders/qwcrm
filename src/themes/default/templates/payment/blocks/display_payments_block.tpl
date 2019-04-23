@@ -94,7 +94,7 @@
         </tr>
         {sectionelse}
             <tr>
-                <td colspan="12" class="error">{t}There are no payments.{/t}</td>
+                <td colspan="13" class="error">{t}There are no payments.{/t}</td>
             </tr>        
         {/section}
 </table>

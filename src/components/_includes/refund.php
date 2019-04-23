@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display refunds       #
 #############################
 
-function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $payment_method = null, $status = null, $employee_id = null, $client_id = null) {
+function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -55,9 +55,6 @@ function display_refunds($order_by, $direction, $use_pages = false, $records_per
     // Restrict by Type
     if($type) { $whereTheseRecords .= " AND ".PRFX."refund_records.type= ".$db->qstr($type);}
         
-    // Restrict by Method
-    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."refund_records.payment_method= ".$db->qstr($payment_method);} 
-    
     // Restrict by Status
     if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$db->qstr($status);}
 
@@ -167,8 +164,7 @@ function insert_refund($VAR) {
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",                        
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             tax_system       =". $db->qstr(get_company_details('tax_system')).",            
-            item_type        =". $db->qstr( $VAR['item_type']               ).",
-            payment_method   =". $db->qstr( $VAR['payment_method']          ).",
+            item_type        =". $db->qstr( $VAR['item_type']               ).",            
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",            
             tax_amount       =". $db->qstr( $VAR['tax_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).",
@@ -313,8 +309,7 @@ function update_refund($VAR) {
             client_id        =". $db->qstr( $VAR['client_id']               ).",
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",                        
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",            
-            item_type        =". $db->qstr( $VAR['item_type']               ).",
-            payment_method   =". $db->qstr( $VAR['payment_method']          ).",
+            item_type        =". $db->qstr( $VAR['item_type']               ).",            
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",            
             tax_amount       =". $db->qstr( $VAR['tax_amount']              ).",
             gross_amount     =". $db->qstr( $VAR['gross_amount']            ).", 
@@ -483,8 +478,7 @@ function delete_refund($refund_id) {
             invoice_id          = '',
             date                = '0000-00-00', 
             tax_system          = '',  
-            item_type           = '',
-            payment_method      = '',
+            item_type           = '',            
             net_amount          = '',            
             tax_amount          = '0.00',
             gross_amount        = '0.00',

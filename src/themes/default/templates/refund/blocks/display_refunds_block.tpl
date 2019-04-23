@@ -12,11 +12,11 @@
         <td class="olohead">{t}Client{/t}</td>
         <td class="olohead">{t}INV ID{/t}</td>              
         <td class="olohead">{t}Date{/t}</td>
-        <td class="olohead">{t}Item Type{/t}</td>
-        <td class="olohead">{t}Payment Method{/t}</td>
+        <td class="olohead">{t}Item Type{/t}</td>        
         <td class="olohead">{t}Net Amount{/t}</td>        
         <td class="olohead">{t}Tax Amount{/t}</td>
         <td class="olohead">{t}Gross Amount{/t}</td>
+        <td class="olohead">{t}Balance{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
         <td class="olohead">{t}Action{/t}</td>
@@ -33,14 +33,10 @@
                     {if $display_refunds[r].item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
-            <td class="olotd4" nowrap>
-                {section name=s loop=$payment_methods}    
-                    {if $display_refunds[r].payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}        
-                {/section} 
-            </td>                                                               
-            <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].net_amount}</td>                                                                          
-            <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].tax_amount}</td>                                                            
-            <td class="olotd4" nowrap>{$currency_sym} {$display_refunds[r].gross_amount}</td> 
+            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].net_amount|string_format:"%.2f"}</td>                                                                          
+            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].tax_amount|string_format:"%.2f"}</td>                                                            
+            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].gross_amount|string_format:"%.2f"}</td> 
+            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].balance|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
                {section name=s loop=$refund_statuses}    
                    {if $display_refunds[r].status == $refund_statuses[s].status_key}{t}{$refund_statuses[s].display_name}{/t}{/if}        

@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #  Display otherincomes       #
 ###############################
 
-function display_otherincomes($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $payment_method = null) {
+function display_otherincomes($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -51,9 +51,6 @@ function display_otherincomes($order_by, $direction, $use_pages = false, $record
     // Restrict by Type
     if($type) { $whereTheseRecords .= " AND ".PRFX."otherincome_records.type= ".$db->qstr($type);}
         
-    // Restrict by Method
-    if($payment_method) { $whereTheseRecords .= " AND ".PRFX."otherincome_records.payment_method= ".$db->qstr($payment_method);} 
-    
     /* The SQL code */
     
     $sql =  "SELECT * 
@@ -145,8 +142,7 @@ function insert_otherincome($VAR) {
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             tax_system       =". $db->qstr(get_company_details('tax_system')).",            
-            item_type        =". $db->qstr( $VAR['item_type']               ).",
-            payment_method   =". $db->qstr( $VAR['payment_method']          ).",
+            item_type        =". $db->qstr( $VAR['item_type']               ).",            
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
             vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
             vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
@@ -280,8 +276,7 @@ function update_otherincome($VAR) {
             employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",            
-            item_type        =". $db->qstr( $VAR['item_type']               ).",
-            payment_method   =". $db->qstr( $VAR['payment_method']          ).",
+            item_type        =". $db->qstr( $VAR['item_type']               ).",            
             net_amount       =". $db->qstr( $VAR['net_amount']              ).",
             vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
             vat_rate         =". $db->qstr( $VAR['vat_rate']                ).",
@@ -390,8 +385,7 @@ function delete_otherincome($otherincome_id) {
         payee               = '',           
         date                = '0000-00-00', 
         tax_system          = '',  
-        item_type           = '',
-        payment_method      = '',
+        item_type           = '',        
         net_amount          = '',
         vat_tax_code        = '',
         vat_rate            = '0.00',

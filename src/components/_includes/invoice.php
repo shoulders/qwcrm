@@ -999,8 +999,6 @@ function refund_invoice($refund_details) {
     // Get invoice details
     $invoice_details = get_invoice_details($refund_details['invoice_id']);
     
-    // Add full payment routine here (currently the payment is assumed to be good, live payments will need more work)
-    
     // Insert refund record and return refund_id
     $refund_id = insert_refund($refund_details);
     

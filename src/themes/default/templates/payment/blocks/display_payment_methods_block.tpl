@@ -106,7 +106,7 @@
                                             </script>                                                    
                                         </td>
                                         <td><input name="qpayment[bank_transfer_reference]" class="paymentInput olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
-                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                     </tr>
                                     <tr>
                                         <td valign="top"><b>{t}Note{/t}</b></td>
@@ -145,7 +145,7 @@
                                                 } );                                                        
                                             </script>                                                    
                                         </td>
-                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                     </tr>
                                     <tr>
                                         <td valign="top"><b>{t}Note{/t}</b></td>
@@ -186,7 +186,7 @@
                                             </script>                                                    
                                         </td>
                                         <td><input name="qpayment[cheque_number]" class="paymentInput olotd5" type="text" maxlength="15" required onkeydown="return onlyNumber(event);"></td>                        
-                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                     </tr>
                                     <tr>
                                         <td valign="top"><b>{t}Note{/t}</b></td>
@@ -236,7 +236,7 @@
                                             </select>
                                         </td>                        
                                         <td><input name="qpayment[name_on_card]" class="paymentInput olotd5" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);" disabled></td>
-                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                     </tr>
                                     <tr>
                                         <td valign="top"><b>{t}Note{/t}</b></td>
@@ -277,7 +277,7 @@
                                             </script>                                                    
                                         </td>
                                         <td><input name="qpayment[dd_reference]" class="paymentInput olotd5" type="text" maxlength="35" required onkeydown="return onlyAlphaNumericPunctuation(event);" disabled></td>
-                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" required maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                     </tr>
                                     <tr>
                                         <td valign="top"><b>{t}Note{/t}</b></td>
@@ -355,7 +355,7 @@
                                                 } );                                                        
                                             </script>                                                    
                                         </td>
-                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                     </tr>
                                     <tr>
                                         <td valign="top"><b>{t}Note{/t}</b></td>
@@ -396,7 +396,7 @@
                                             </script>                                                    
                                         </td>
                                         <td><input name="qpayment[paypal_payment_id]" class="paymentInput olotd5" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);" disabled></td>
-                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$invoice_details.balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
+                                        <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                     </tr>
                                     <tr>
                                         <td valign="top"><b>{t}Note{/t}</b></td>
@@ -410,22 +410,10 @@
 
                 <!-- Buttons -->
                 <div>
-                    
-                    <!-- Submit -->
                     {if $buttons.submit.allowed}<button type="submit" name="submit" value="submit">{t}Submit Payment{/t}</button>{/if}
-
-                    <!-- Cancel -->
-                    {*<button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=details&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>*}
                     {if $buttons.cancel.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.cancel.url}';">{t}Cancel{/t}</button>{/if}
-                    
-                    <br>
-                    
-                    <!-- Return to record -->
-                    {if $buttons.returnToRecord.allowed}Retun To Record{/if}
-                    
-                    <!-- Add new record -->
-                    {if $buttons.addNewRecord.allowed}Add New Record{/if}
-                    
+                    {if $buttons.returnToRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.returnToRecord.url}';">{t}Return To Record{/t}</button>{/if}
+                    {if $buttons.addNewRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.addNewRecord.url}';">{t}Add New Record{/t}</button>{/if}                                       
                 </div>
                     
             </td>

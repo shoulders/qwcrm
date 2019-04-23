@@ -82,14 +82,8 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td>
-                                                                                <select id="payment_method" name="payment_method" class="olotd5">
-                                                                                    {section name=s loop=$payment_methods}    
-                                                                                        <option value="{$payment_methods[s].method_key}"{if $refund_details.payment_method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
-                                                                                    {/section} 
-                                                                                </select>                                                                            
-                                                                            </td>
+                                                                            <td align="right"></td>
+                                                                            <td></td>
                                                                         </tr>                                                                                                          
                                                                         <tr>
                                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span> </td>                                                                               
@@ -130,7 +124,8 @@
                                                                     </tbody>
                                                                         <tr>
                                                                             <td colspan="2">
-                                                                                <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>                                                                                
+                                                                                <button type="submit" name="submit" value="submit">{t}Submit{/t}</button> 
+                                                                                <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>
                                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=refund&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>
                                                                         </tr>

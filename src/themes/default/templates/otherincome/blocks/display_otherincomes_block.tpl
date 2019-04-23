@@ -12,11 +12,11 @@
         <td class="olohead">{t}Payee{/t}</td>
         <td class="olohead">{t}Date{/t}</td>
         <td class="olohead">{t}Item Type{/t}</td>
-        <td class="olohead">{t}Payment Method{/t}</td>
         <td class="olohead">{t}Net Amount{/t}</td>        
         <td class="olohead">{t}VAT Rate{/t}</td>
         <td class="olohead">{t}VAT Amount{/t}</td>
         <td class="olohead">{t}Gross Amount{/t}</td>
+        <td class="olohead">{t}Balance{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
         <td class="olohead">{t}Items{/t}</td>
@@ -33,15 +33,11 @@
                     {if $display_otherincomes[r].item_type == $otherincome_types[s].type_key}{t}{$otherincome_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
-            <td class="olotd4" nowrap>
-                {section name=s loop=$payment_methods}    
-                    {if $display_otherincomes[r].payment_method == $payment_methods[s].method_key}{t}{$payment_methods[s].display_name}{/t}{/if}        
-                {/section} 
-            </td>                                                               
-            <td class="olotd4" nowrap>{$currency_sym} {$display_otherincomes[r].net_amount}</td>                                                                      
-            <td class="olotd4" nowrap>{$display_otherincomes[r].vat_rate} %</td>                                                                
-            <td class="olotd4" nowrap>{$currency_sym} {$display_otherincomes[r].vat_amount}</td>                                                            
-            <td class="olotd4" nowrap>{$currency_sym} {$display_otherincomes[r].gross_amount}</td>  
+            <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].net_amount|string_format:"%.2f"}</td>                                                                      
+            <td class="olotd4" nowrap>{$display_otherincomes[r].vat_rate|string_format:"%.2f"}%</td>                                                                
+            <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].vat_amount|string_format:"%.2f"}</td>                                                            
+            <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].gross_amount|string_format:"%.2f"}</td>  
+            <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].balance|string_format:"%.2f"}</td> 
             <td class="olotd4" nowrap>
                {section name=s loop=$otherincome_statuses}    
                    {if $display_otherincomes[r].status == $otherincome_statuses[s].status_key}{t}{$otherincome_statuses[s].display_name}{/t}{/if}        

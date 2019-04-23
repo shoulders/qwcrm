@@ -16,22 +16,22 @@ require(INCLUDES_DIR.'payment.php');
 if(isset($VAR['submit'])) {
 
     // Insert the Expense into the database
-    $VAR['expense_id'] = insert_expense($VAR);
+    $expense_id = insert_expense($VAR);
 
-    if ($VAR['submit'] == 'submitandnew'){
+    if ($VAR['submit'] == 'submitandnew') {
 
          // Load the new expense page
-         force_page('expense', 'new', 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$VAR['expense_id']);
+         force_page('expense', 'new', 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id );
 
     } elseif ($VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for expense
-         force_page('payment', 'new', 'type=expense&expense_id='.$VAR['expense_id']);
+         force_page('payment', 'new&type=expense&expense_id='.$expense_id );
          
     } else {
 
         // load expense details page
-        force_page('expense', 'details&expense_id='.$VAR['expense_id'], 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$VAR['expense_id']);
+        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
 
      }        
 

@@ -119,14 +119,8 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Payment Method{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td>
-                                                            <select id="payment_method" name="payment_method" class="olotd5">
-                                                                {section name=s loop=$payment_methods}    
-                                                                    <option value="{$payment_methods[s].method_key}"{if $otherincome_details.payment_method == $payment_methods[s].method_key} selected{/if}>{t}{$payment_methods[s].display_name}{/t}</option>
-                                                                {/section} 
-                                                            </select>
-                                                        </td>
+                                                            <td align="right"></td>
+                                                            <td></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
