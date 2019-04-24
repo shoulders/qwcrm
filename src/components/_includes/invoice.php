@@ -1109,9 +1109,9 @@ function delete_invoice($invoice_id) {
                                     'gross_amount'      =>  '0.00',
                                     'paid_amount'       =>  '0.00',
                                     'balance'           =>  '0.00',
-                                    'open_date'         =>  $invoice_details['open_date'],
-                                    'close_date'        =>  $invoice_details['close_date'],
-                                    'last_active'       =>  $invoice_details['last_active'],
+                                    'open_date'         =>  '0000-00-00',
+                                    'close_date'        =>  '0000-00-00',
+                                    'last_active'       =>  '0000-00-00 00:00:00',
                                     'status'            =>  'deleted',
                                     'is_closed'         =>  '1'        
                                     );
