@@ -283,7 +283,7 @@ function get_expense_types() {
 #     Update Expense                #
 #####################################
 
-function update_expense($expense_id, $VAR) {
+function update_expense($VAR) {
     
     $db = QFactory::getDbo();
     
@@ -300,7 +300,7 @@ function update_expense($expense_id, $VAR) {
             last_active         =". $db->qstr( mysql_datetime()                 ).",
             items               =". $db->qstr( $VAR['items']                    ).",
             note                =". $db->qstr( $VAR['note']                     )."
-            WHERE expense_id    =". $db->qstr( $expense_id                      );                        
+            WHERE expense_id    =". $db->qstr( $VAR['expense_id']               );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
@@ -494,6 +494,47 @@ function last_expense_id_lookup() {
     } else {
         
         return $rs->fields['expense_id'];
+        
+    }
+    
+}
+
+function recalculate_expense_totals($expense_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $expense_details            = get_expense_details($expense_id);    
+    
+    $gross_amount               = $expense_details['gross_amount'];   
+    $payments_sub_total         = sum_payments(null, null, null, null, null, 'expense', null, null, null, null, $expense_id);    
+    $balance                    = $gross_amount - $payments_sub_total;
+
+    $sql = "UPDATE ".PRFX."expense_records SET
+            balance             =". $db->qstr( $balance    )."
+            WHERE expense_id    =". $db->qstr( $expense_id );
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the expense totals."));
+    } else {
+     
+        /* Update Status - only change if there is a change in status */        
+        
+        // Balance = Gross Amount (i.e no payments)
+        if($gross_amount > 0 && $gross_amount == $balance && $expense_details['status'] != 'unpaid') {
+            update_expense_status($expense_id, 'unpaid');
+        }
+        
+        // Balance < Gross Amount (i.e some payments)
+        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $expense_details['status'] != 'partially_paid') {            
+            update_expense_status($expense_id, 'partially_paid');
+        }
+        
+        // Balance = 0.00 (i.e has payments and is all paid)
+        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $expense_details['status'] != 'paid') {            
+            update_expense_status($expense_id, 'paid');
+        }        
+        
+        return;        
         
     }
     

@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
@@ -33,7 +34,7 @@ if(!check_voucher_can_be_edited($VAR['voucher_id'])) {
 if(isset($VAR['submit'])) {
     
     // Create a new Voucher
-    update_voucher($VAR['voucher_id'], $VAR['expiry_date'], $VAR['amount'], $VAR['note']);
+    update_voucher($VAR['voucher_id'], $VAR['expiry_date'], $VAR['unit_net'], $VAR['note']);
 
     // Load the new Voucher's Details page
     force_page('voucher', 'details&voucher_id='.$VAR['voucher_id']);    

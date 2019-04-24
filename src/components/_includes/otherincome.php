@@ -434,6 +434,46 @@ function last_otherincome_id_lookup() {
         
 }
 
+function recalculate_otherincome_totals($otherincome_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $otherincome_details            = get_otherincome_details($otherincome_id);    
+    
+    $gross_amount                   = $otherincome_details['gross_amount'];   
+    $payments_sub_total             = sum_payments(null, null, null, null, null, 'otherincome', null, null, null, null, null, $otherincome_id);    
+    $balance                        = $gross_amount - $payments_sub_total;
+
+    $sql = "UPDATE ".PRFX."otherincome_records SET
+            balance                 =". $db->qstr( $balance        )."
+            WHERE otherincome_id    =". $db->qstr( $otherincome_id );
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the otherincome totals."));
+    } else {
+     
+        /* Update Status - only change if there is a change in status */        
+        
+        // Balance = Gross Amount (i.e no payments)
+        if($gross_amount > 0 && $gross_amount == $balance && $otherincome_details['status'] != 'unpaid') {
+            update_otherincome_status($otherincome_id, 'unpaid');
+        }
+        
+        // Balance < Gross Amount (i.e some payments)
+        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $otherincome_details['status'] != 'partially_paid') {            
+            update_otherincome_status($otherincome_id, 'partially_paid');
+        }
+        
+        // Balance = 0.00 (i.e has payments and is all paid)
+        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $otherincome_details['status'] != 'paid') {            
+            update_otherincome_status($otherincome_id, 'paid');
+        }        
+        
+        return;        
+        
+    }
+    
+}
 
 ##############################################################
 #  Check if the otherincome status is allowed to be changed  #  // not currently used

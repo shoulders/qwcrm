@@ -23,7 +23,7 @@ class PType {
         
         // Assign Type specific template variables
         $this->smarty->assign('client_details', get_client_details($this->refund_details['client_id']));
-        $this->smarty->assign('payment_active_methods', get_payment_methods('transmit', 'enabled'));
+        $this->smarty->assign('payment_active_methods', get_payment_methods('send', 'enabled'));
         $this->smarty->assign('refund_details', $this->refund_details);
         $this->smarty->assign('refund_statuses', get_refund_statuses());
         
@@ -34,7 +34,7 @@ class PType {
         
         // Add required variables
         $this->VAR['qpayment']['client_id'] = $this->refund_details['client_id'];
-        $this->VAR['qpayment']['workorder_id'] = $this->refund_details['workorder_id'];
+        $this->VAR['qpayment']['workorder_id'] = get_invoice_details($this->refund_details['invoice_id'], 'workorder_id');
         
         // Validate_payment_amount
         if(!validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
@@ -53,6 +53,13 @@ class PType {
 
     // Processing
     public function process() {
+        
+        // Refresh the record data
+        $this->refund_details = get_refund_details($this->VAR['refund_id']);
+        $this->smarty->assign('refund_details', $this->refund_details);
+        NewPayment::$record_balance = $this->refund_details['balance'];
+        
+        return;
         
     }
     

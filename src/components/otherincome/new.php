@@ -11,27 +11,29 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if(isset($VAR['submit'])) {
 
     // insert the otherincome and get the otherincome_id
-    $VAR['otherincome_id'] = insert_otherincome($VAR);
+    $otherincome_id = insert_otherincome($VAR);
+    recalculate_otherincome_totals($otherincome_id);
         
     if ($VAR['submit'] == 'submitandnew') {
 
         // Load New Refund page
-        force_page('otherincome', 'new', 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$VAR['otherincome_id']); 
+        force_page('otherincome', 'new', 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id); 
 
     } elseif ($VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for otherincome
-         force_page('payment', 'new&type=otherincome&otherincome_id='.$VAR['otherincome_id']);
+         force_page('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id);
          
     } else {
 
         // Load Refund Details page
-        force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$VAR['otherincome_id']);      
+        force_page('otherincome', 'details&otherincome_id='.$otherincome_id, 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
 
     }
          

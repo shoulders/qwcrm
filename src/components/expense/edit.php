@@ -13,6 +13,7 @@ require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'expense.php');
 //require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 //require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an expense_id
@@ -23,7 +24,8 @@ if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset($VAR['submit'])) {    
         
-        update_expense($VAR['expense_id'], $VAR);        
+        update_expense($VAR);
+        recalculate_expense_totals($VAR['expense_id']);
         force_page('expense', 'details&expense_id='.$VAR['expense_id'], 'information_msg='._gettext("Expense updated successfully.")); 
 
 } else {

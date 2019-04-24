@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 
 // Check if we have a otherincome_id
 if(!isset($VAR['otherincome_id']) || !$VAR['otherincome_id']) {
@@ -22,6 +23,7 @@ if(isset($VAR['submit'])) {
         
     // Update the otherincome in the database
     update_otherincome($VAR);
+    recalculate_otherincome_totals($VAR['otherincome_id']);
     
     // load details page
     force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'information_msg='._gettext("Refund updated successfully.")); 

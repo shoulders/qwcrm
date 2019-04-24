@@ -53,6 +53,11 @@ class PType {
     // Processing
     public function process() {
         
+        // Refresh the record data
+        $this->expense_details = get_expense_details($this->VAR['expense_id']);
+        $this->smarty->assign('expense_details', $this->expense_details);
+        NewPayment::$record_balance = $this->expense_details['balance'];
+        
         return;
         
     }

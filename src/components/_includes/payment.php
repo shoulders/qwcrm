@@ -216,8 +216,11 @@ function insert_payment($qpayment) {
         // Get Payment Record ID
         $payment_id = $db->Insert_ID();
         
-        // Recalculate invoice totals
-        if($qpayment['type'] == 'invoice') {recalculate_invoice($qpayment['invoice_id']);}
+        // Recalculate record totals
+        if($qpayment['type'] == 'invoice') {recalculate_invoice_totals($qpayment['invoice_id']);}
+        if($qpayment['type'] == 'refund') {recalculate_refund_totals($qpayment['refund_id']);}
+        if($qpayment['type'] == 'expense') {recalculate_expense_totals($qpayment['expense_id']);}
+        if($qpayment['type'] == 'otherincome') {recalculate_otherincome_totals($qpayment['otherincome_id']);}
         
         // Create a Workorder History Note       
         insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
@@ -455,7 +458,7 @@ function update_payment($VAR) {
     } else {
                 
         // Recalculate invoice totals
-        recalculate_invoice($VAR['invoice_id']);       
+        recalculate_invoice_totals($VAR['invoice_id']);       
 
         // Create a Workorder History Note       
         insert_workorder_history_note($VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
@@ -577,7 +580,7 @@ function delete_payment($payment_id) {
     } else {
         
         // Recalculate invoice totals
-        recalculate_invoice($payment_details['invoice_id']);
+        recalculate_invoice_totals($payment_details['invoice_id']);
         
         // Create a Workorder History Note       
         insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);           
@@ -636,26 +639,6 @@ function validate_payment_amount($record_balance, $payment_amount) {
     
     return true;
    
-}
-
-#########################################
-#  Sum Invoice Payments Sub Total       #
-#########################################
-
-function payments_sub_total($invoice_id) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT SUM(amount) AS sub_total_sum FROM ".PRFX."payment_records WHERE invoice_id=". $db->qstr($invoice_id);
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to calculate the payments sub total."));
-    } else {
-        
-        return (float)$rs->fields['sub_total_sum'];
-        
-    }    
-    
 }
 
 ####################################################

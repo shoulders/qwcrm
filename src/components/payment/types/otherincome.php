@@ -53,6 +53,13 @@ class PType {
     // Processing
     public function process() {
         
+        // Refresh the record data
+        $this->otherincome_details = get_otherincome_details($this->VAR['otherincome_id']);
+        $this->smarty->assign('otherincome_details', $this->otherincome_details);
+        NewPayment::$record_balance = $this->otherincome_details['balance'];
+        
+        return;
+        
     }
     
     // Post-Processing 

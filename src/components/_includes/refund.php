@@ -535,6 +535,51 @@ function last_refund_id_lookup() {
         
 }
 
+#####################################
+#   Recalculate Refund Totals       #
+#####################################
+
+function recalculate_refund_totals($refund_id) {
+    
+    $db = QFactory::getDbo();
+    
+    $refund_details             = get_refund_details($refund_id);    
+    
+    $gross_amount               = $refund_details['gross_amount'];   
+    $payments_sub_total         = sum_payments(null, null, null, null, null, 'refund', null, null, null, $refund_id);    
+    $balance                    = $gross_amount - $payments_sub_total;
+
+    $sql = "UPDATE ".PRFX."refund_records SET
+            balance             =". $db->qstr( $balance   )."
+            WHERE refund_id     =". $db->qstr( $refund_id );
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
+    } else {
+     
+        /* Update Status - only change if there is a change in status */        
+        
+        // Balance = Gross Amount (i.e no payments)
+        if($gross_amount > 0 && $gross_amount == $balance && $refund_details['status'] != 'unpaid') {
+            update_refund_status($refund_id, 'unpaid');
+        }
+        
+        // Balance < Gross Amount (i.e some payments)
+        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $refund_details['status'] != 'partially_paid') {            
+            update_refund_status($refund_id, 'partially_paid');
+        }
+        
+        // Balance = 0.00 (i.e has payments and is all paid)
+        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $refund_details['status'] != 'paid') {            
+            update_refund_status($refund_id, 'paid');
+        }        
+        
+        return;        
+        
+    }
+    
+}
+
 ##########################################################
 #  Check if the refund status is allowed to be changed   #  // not currently used (from refund:status), manual change
 ##########################################################

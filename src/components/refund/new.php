@@ -35,6 +35,7 @@ if (isset($VAR['submit'])) {
     
     // Insert the Refund into the database
     $refund_id = refund_invoice($VAR);
+    recalculate_refund_totals($refund_id);
     
         if ($VAR['submit'] == 'submitandpayment') {
 

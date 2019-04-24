@@ -14,6 +14,7 @@ require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'refund.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
@@ -23,18 +24,26 @@ if(!isset($VAR['type'])) {
 } 
 
 // Prevent undefined variable errors (with and without submit)
+
+//$VAR['qpayment']['type'] = isset($VAR['qpayment']['type']) ? $VAR['qpayment']['type'] : '';
+//$VAR['qpayment']['type'] = isset($VAR['type']) ? $VAR['type'] : $VAR['qpayment']['type'];
+
+$VAR['qpayment']['type'] = $VAR['type'];
+$VAR['qpayment']['method'] = isset($VAR['qpayment']['method']) ? $VAR['qpayment']['method'] : null;
+
 $VAR['qpayment']['invoice_id'] = isset($VAR['qpayment']['invoice_id']) ? $VAR['qpayment']['invoice_id'] : '';
 $VAR['qpayment']['invoice_id'] = isset($VAR['invoice_id']) ? $VAR['invoice_id'] : $VAR['qpayment']['invoice_id'];
 $VAR['qpayment']['voucher_id'] = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : ''; // Do i need this? probably!
+
 $VAR['qpayment']['refund_id'] = isset($VAR['qpayment']['refund_id']) ? $VAR['qpayment']['refund_id'] : '';
 $VAR['qpayment']['refund_id'] = isset($VAR['refund_id']) ? $VAR['refund_id'] : $VAR['qpayment']['refund_id'];
+
 $VAR['qpayment']['expense_id'] = isset($VAR['qpayment']['expense_id']) ? $VAR['qpayment']['expense_id'] : '';
 $VAR['qpayment']['expense_id'] = isset($VAR['expense_id']) ? $VAR['expense_id'] : $VAR['qpayment']['expense_id'];
+
 $VAR['qpayment']['otherincome_id'] = isset($VAR['qpayment']['otherincome_id']) ? $VAR['qpayment']['otherincome_id'] : '';
 $VAR['qpayment']['otherincome_id'] = isset($VAR['otherincome_id']) ? $VAR['otherincome_id'] : $VAR['qpayment']['otherincome_id'];
-$VAR['qpayment']['type'] = isset($VAR['qpayment']['type']) ? $VAR['qpayment']['type'] : '';
-$VAR['qpayment']['type'] = isset($VAR['type']) ? $VAR['type'] : $VAR['qpayment']['type'];
-$VAR['qpayment']['method'] = isset($VAR['qpayment']['method']) ? $VAR['qpayment']['method'] : '';
+
 
 // Prevent direct access to this page, and validate requests
 if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_qwcrm('invoice', 'details')) {  
@@ -111,9 +120,9 @@ class NewPayment {
             $this->method->pre_process();
 
             // Process the payment
-            if(self::$payment_validated) {                
+            if(self::$payment_validated) {                 
+                $this->method->process();
                 $this->type->process();
-                $this->method->process();                
             }
 
             // Now do final things like set messages and build buttons        

@@ -56,6 +56,11 @@ class PType {
     // Processing
     public function process() {  
         
+        // Refresh the record data
+        $this->invoice_details = get_invoice_details($this->VAR['invoice_id']);
+        $this->smarty->assign('invoice_details', $this->invoice_details);
+        NewPayment::$record_balance = $this->invoice_details['balance'];
+        
         return;
        
     }

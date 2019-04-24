@@ -11,12 +11,14 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'expense.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if(isset($VAR['submit'])) {
 
     // Insert the Expense into the database
     $expense_id = insert_expense($VAR);
+    recalculate_expense_totals($expense_id);
 
     if ($VAR['submit'] == 'submitandnew') {
 

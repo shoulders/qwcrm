@@ -229,7 +229,7 @@ function insert_voucher($invoice_id, $type, $expiry_date, $unit_net, $note) {
         $voucher_id = $db->Insert_ID();
         
         // Recalculate the invoice totals and update them
-        recalculate_invoice($invoice_details['invoice_id']);
+        recalculate_invoice_totals($invoice_details['invoice_id']);
 
         // Log activity        
         $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.';      
@@ -416,7 +416,7 @@ function update_voucher($voucher_id, $expiry_date, $unit_net, $note) {
         $voucher_details = get_voucher_details($voucher_id);
         
         // Recalculate the invoice totals and update them
-        recalculate_invoice($voucher_details['invoice_id']);
+        recalculate_invoice_totals($voucher_details['invoice_id']);
         
         // Log activity
         $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
@@ -849,7 +849,7 @@ function delete_voucher($voucher_id) {
         } else {
 
             // Recalculate the invoice totals and update them
-            recalculate_invoice($voucher_details['invoice_id']);
+            recalculate_invoice_totals($voucher_details['invoice_id']);
 
             // Log activity        
             $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.';

@@ -12,6 +12,7 @@ require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
@@ -45,7 +46,7 @@ if(isset($VAR['submit'])) {
     
     // update and recalculate the invoice
     update_invoice_static_values($VAR['invoice_id'], $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
-    recalculate_invoice($VAR['invoice_id']);
+    recalculate_invoice_totals($VAR['invoice_id']);
     
 }
     

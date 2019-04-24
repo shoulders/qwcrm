@@ -12,6 +12,7 @@ require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'refund.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'workorder.php');
 
@@ -25,6 +26,7 @@ if(isset($VAR['submit'])) {
         
     // Update the refund in the database
     update_refund($VAR);
+    recalculate_refund_totals($VAR['refund_id']);
     
     // load details page
     force_page('refund', 'details&refund_id='.$VAR['refund_id'], 'information_msg='._gettext("Refund updated successfully.")); 

@@ -1161,7 +1161,7 @@ function delete_invoice_labour_item($invoice_labour_id) {
     } else {
         
         // Recalculate the invoice totals and update them
-        recalculate_invoice($invoice_details['invoice_id']);
+        recalculate_invoice_totals($invoice_details['invoice_id']);
 
         // Create a Workorder History Note 
         // not currently needed
@@ -1219,7 +1219,7 @@ function delete_invoice_parts_item($invoice_parts_id) {
     } else {
         
         // Recalculate the invoice totals and update them
-        recalculate_invoice($invoice_details['invoice_id']);
+        recalculate_invoice_totals($invoice_details['invoice_id']);
         
         // Create a Workorder History Note 
         // not currently needed
@@ -1328,19 +1328,19 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $s
 #   Recalculate Invoice Totals      #
 #####################################
 
-function recalculate_invoice($invoice_id) {
+function recalculate_invoice_totals($invoice_id) {
     
     $db = QFactory::getDbo();
     
-    $invoice_details         = get_invoice_details($invoice_id);    
-    $labour_items_sub_totals = get_labour_items_sub_totals($invoice_id); 
-    $parts_items_sub_totals  = get_parts_items_sub_totals($invoice_id);
+    $invoice_details            = get_invoice_details($invoice_id);    
     
-    $items_sub_total        = $labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'];
-    $discount_amount        = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
-    $net_amount             = $items_sub_total - $discount_amount;
+    $labour_items_sub_totals    = get_labour_items_sub_totals($invoice_id); 
+    $parts_items_sub_totals     = get_parts_items_sub_totals($invoice_id);    
+    $items_sub_total            = $labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'];
+    $discount_amount            = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
+    $net_amount                 = $items_sub_total - $discount_amount;
 
-    // Work out the correct ax based on the type of invoice/tax_system
+    // Work out the correct tax based on the type of invoice/tax_system
     if($invoice_details['tax_system'] == 'vat_standard' || $invoice_details['tax_system'] == 'vat_flat') {
         $tax_amount = $labour_items_sub_totals['sub_total_vat'] + $parts_items_sub_totals['sub_total_vat'];        
     } elseif($invoice_details['tax_system'] == 'sales_tax') {
@@ -1349,9 +1349,9 @@ function recalculate_invoice($invoice_id) {
         $tax_amount = 0.00;
     }
     
-    $gross_amount           = $net_amount + $tax_amount + get_vouchers_items_sub_total($invoice_id);    
-    $payments_sub_total     = payments_sub_total($invoice_id);
-    $balance = $gross_amount - $payments_sub_total;
+    $gross_amount               = $net_amount + $tax_amount + get_vouchers_items_sub_total($invoice_id);    
+    $payments_sub_total         = sum_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id);    
+    $balance                    = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice_records SET
             sub_total           =". $db->qstr( $items_sub_total         ).",
@@ -1367,7 +1367,7 @@ function recalculate_invoice($invoice_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the invoice totals."));
     } else {
      
-        /* update invoice status - only change if there is a change in status */        
+        /* Update Status - only change if there is a change in status*/        
         
         // No invoiceable amount, set to pending (if not already)
         if($gross_amount == 0 && $invoice_details['status'] != 'pending') {
