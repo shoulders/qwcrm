@@ -419,10 +419,10 @@
         <tr>
             <td>                
                 <div>
-                    {if $buttons.submit.allowed}<button type="submit" name="submit" value="submit">{t}Submit Payment{/t}</button>{/if}
-                    {if $buttons.cancel.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.cancel.url}';">{t}Cancel{/t}</button>{/if}
-                    {if $buttons.returnToRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.returnToRecord.url}';">{t}Return To Record{/t}</button>{/if}
-                    {if $buttons.addNewRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.addNewRecord.url}';">{t}Add New Record{/t}</button>{/if}                                       
+                    {if $buttons.submit.allowed}<button type="submit" name="submit" value="submit">{$buttons.submit.title}</button>{/if}
+                    {if $buttons.cancel.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.cancel.url}';">{$buttons.cancel.title}</button>{/if}
+                    {if $buttons.returnToRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.returnToRecord.url}';">{$buttons.returnToRecord.title}</button>{/if}
+                    {if $buttons.addNewRecord.allowed}<button type="button" class="olotd4" onclick="window.location.href='{$buttons.addNewRecord.url}';">{$buttons.addNewRecord.title}</button>{/if}                                       
                 </div>                
             </td>
         </tr>

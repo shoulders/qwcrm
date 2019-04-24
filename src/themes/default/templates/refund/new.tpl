@@ -13,7 +13,6 @@
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 
-
 <table width="100%"   border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>            
@@ -124,7 +123,7 @@
                                                                     </tbody>
                                                                         <tr>
                                                                             <td colspan="2">
-                                                                                <button type="submit" name="submit" value="submit">{t}Submit{/t}</button> 
+                                                                                <button type="submit" name="submit" value="submit" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit{/t}</button> 
                                                                                 <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>
                                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=refund&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>

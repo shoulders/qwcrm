@@ -165,8 +165,8 @@
                                                                     </tbody>
                                                                         <tr>
                                                                             <td colspan="2">
-                                                                                <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                                                <button type="submit" name="submitandnew" value="submitandnew">{t}Submit and New{/t}</button>
+                                                                                <button type="submit" name="submit" value="submit" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit{/t}</button>
+                                                                                <button type="submit" name="submitandnew" value="submitandnew" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit and New{/t}</button>
                                                                                 <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>
                                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=otherincome&page_tpl=search';">{t}Cancel{/t}</button>
                                                                             </td>

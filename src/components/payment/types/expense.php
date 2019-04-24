@@ -84,6 +84,7 @@ class PType {
         if($this->expense_details['balance'] > 0) {
             NewPayment::$buttons['submit']['allowed'] = true;
             NewPayment::$buttons['submit']['url'] = null;
+            NewPayment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }        
         
         // Cancel
@@ -91,6 +92,7 @@ class PType {
             if(check_page_accessed_via_qwcrm('expense', 'new') || check_page_accessed_via_qwcrm('expense', 'details')) {
                 NewPayment::$buttons['cancel']['allowed'] = true;
                 NewPayment::$buttons['cancel']['url'] = 'index.php?component=expense&page_tpl=details&expense_id='.$this->VAR['qpayment']['expense_id'];
+                NewPayment::$buttons['cancel']['title'] = _gettext("Cancel");
             }            
         }
         
@@ -98,11 +100,13 @@ class PType {
         if(check_page_accessed_via_qwcrm('payment', 'new')) {
             NewPayment::$buttons['returnToRecord']['allowed'] = true;
             NewPayment::$buttons['returnToRecord']['url'] = 'index.php?component=expense&page_tpl=details&expense_id='.$this->VAR['qpayment']['expense_id'];
+            NewPayment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
         
         // Add New Record
         NewPayment::$buttons['addNewRecord']['allowed'] = true;
-        NewPayment::$buttons['addNewRecord']['url'] = 'index.php?component=expense&page_tpl=new';       
+        NewPayment::$buttons['addNewRecord']['url'] = 'index.php?component=expense&page_tpl=new';
+        NewPayment::$buttons['addNewRecord']['title'] = _gettext("Add New Expense Record");
         
     }    
 

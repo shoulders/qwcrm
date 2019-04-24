@@ -87,6 +87,7 @@ class PType {
         if($this->invoice_details['balance'] > 0) {
             NewPayment::$buttons['submit']['allowed'] = true;
             NewPayment::$buttons['submit']['url'] = null;
+            NewPayment::$buttons['submit']['title'] = _gettext("Submit Payment");
         }        
         
         // Cancel
@@ -94,11 +95,13 @@ class PType {
             
             if(check_page_accessed_via_qwcrm('invoice', 'edit')) {
                 NewPayment::$buttons['cancel']['allowed'] = true;
-                NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];            
+                NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=edit&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                NewPayment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
             if(check_page_accessed_via_qwcrm('invoice', 'details')) {
                 NewPayment::$buttons['cancel']['allowed'] = true;
                 NewPayment::$buttons['cancel']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+                NewPayment::$buttons['cancel']['title'] = _gettext("Cancel");
             }
             
         }
@@ -107,11 +110,13 @@ class PType {
         if(check_page_accessed_via_qwcrm('payment', 'new')) {
             NewPayment::$buttons['returnToRecord']['allowed'] = true;
             NewPayment::$buttons['returnToRecord']['url'] = 'index.php?component=invoice&page_tpl=details&invoice_id='.$this->VAR['qpayment']['invoice_id'];
+            NewPayment::$buttons['returnToRecord']['title'] = _gettext("Return to Record");
         }
         
         // Add New Record
         NewPayment::$buttons['addNewRecord']['allowed'] = false;
-        NewPayment::$buttons['addNewRecord']['url'] = null;        
+        NewPayment::$buttons['addNewRecord']['url'] = null; 
+        NewPayment::$buttons['addNewRecord']['title'] = null;
         
     }    
 

@@ -97,10 +97,10 @@ class NewPayment {
         
         // Build button array
         self::$buttons = array(
-            'submit' => array('allowed' => false, 'url' => null),
-            'cancel' => array('allowed' => false, 'url' => null),
-            'returnToRecord' => array('allowed' => false, 'url' => null),
-            'addNewRecord' => array('allowed' => false, 'url' => null)
+            'submit' => array('allowed' => false, 'url' => null, 'title' => null),
+            'cancel' => array('allowed' => false, 'url' => null, 'title' => null),
+            'returnToRecord' => array('allowed' => false, 'url' => null, 'title' => null),
+            'addNewRecord' => array('allowed' => false, 'url' => null, 'title' => null)
         );
                
         // Set the payment type class
