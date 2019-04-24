@@ -18,6 +18,12 @@ if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
     force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
 } 
 
+// Payment Details
+$smarty->assign('payment_types',            get_payment_types()                                                                                 );
+$smarty->assign('payment_methods',          get_payment_methods()                                                             ); 
+$smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
+$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'refund', null, null, null, null, null, $VAR['refund_id']));
+
 // Build the page
 $refund_details = get_refund_details($VAR['refund_id']);
 $smarty->assign('refund_statuses', get_refund_statuses()  );

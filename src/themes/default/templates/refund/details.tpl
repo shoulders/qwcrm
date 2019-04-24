@@ -95,6 +95,12 @@
                         {/if}
                     </td>
                 </tr>
+                <!-- Payments -->                                    
+                <tr>
+                    <td>                                                
+                        {include file='payment/blocks/display_payments_block.tpl' display_payments=$display_payments block_title=_gettext("Payments")}
+                    </td>
+                </tr> 
             </table>
         </td>
     </tr>
