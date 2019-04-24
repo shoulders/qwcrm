@@ -53,7 +53,10 @@ class PType {
     // Processing
     public function process() {
         
-        // Refresh the record data
+        // Recalculate record totals
+        recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        
+        // Refresh the record data        
         $this->otherincome_details = get_otherincome_details($this->VAR['otherincome_id']);
         $this->smarty->assign('otherincome_details', $this->otherincome_details);
         NewPayment::$record_balance = $this->otherincome_details['balance'];
@@ -98,8 +101,8 @@ class PType {
         }
         
         // Add New Record
-        NewPayment::$buttons['addNewRecord']['allowed'] = false;
-        NewPayment::$buttons['sddNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new';       
+        NewPayment::$buttons['addNewRecord']['allowed'] = true;
+        NewPayment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new';       
         
     }    
 

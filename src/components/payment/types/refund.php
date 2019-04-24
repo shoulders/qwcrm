@@ -54,7 +54,10 @@ class PType {
     // Processing
     public function process() {
         
-        // Refresh the record data
+        // Recalculate record totals
+        recalculate_refund_totals($this->VAR['qpayment']['refund_id']);
+        
+        // Refresh the record data        
         $this->refund_details = get_refund_details($this->VAR['refund_id']);
         $this->smarty->assign('refund_details', $this->refund_details);
         NewPayment::$record_balance = $this->refund_details['balance'];
@@ -100,7 +103,7 @@ class PType {
         
         // Add New Record
         NewPayment::$buttons['addNewRecord']['allowed'] = false;
-        NewPayment::$buttons['sddNewRecord']['url'] = null;        
+        NewPayment::$buttons['addNewRecord']['url'] = null;        
         
     }    
 

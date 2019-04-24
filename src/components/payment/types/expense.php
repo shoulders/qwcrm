@@ -53,7 +53,10 @@ class PType {
     // Processing
     public function process() {
         
-        // Refresh the record data
+        // Recalculate record totals
+        recalculate_expense_totals($this->VAR['qpayment']['expense_id']);
+        
+        // Refresh the record data        
         $this->expense_details = get_expense_details($this->VAR['expense_id']);
         $this->smarty->assign('expense_details', $this->expense_details);
         NewPayment::$record_balance = $this->expense_details['balance'];
@@ -65,10 +68,10 @@ class PType {
     // Post-Processing 
     public function post_process() {   
         
-        // If the balance has been cleared, redirect to the record details page
+        /* If the balance has been cleared, redirect to the record details page
         if($this->expense_details['balance'] == 0) {
             force_page('expense', 'details&expense_id='.$this->VAR['expense_id'], 'information_msg='._gettext("The balance has been cleared."));
-        }
+        }*/
         
         return;
        
@@ -98,8 +101,8 @@ class PType {
         }
         
         // Add New Record
-        NewPayment::$buttons['addNewRecord']['allowed'] = false;
-        NewPayment::$buttons['sddNewRecord']['url'] = 'index.php?component=expense&page_tpl=new';       
+        NewPayment::$buttons['addNewRecord']['allowed'] = true;
+        NewPayment::$buttons['addNewRecord']['url'] = 'index.php?component=expense&page_tpl=new';       
         
     }    
 

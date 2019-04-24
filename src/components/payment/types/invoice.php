@@ -56,7 +56,10 @@ class PType {
     // Processing
     public function process() {  
         
-        // Refresh the record data
+        // Recalculate record totals
+        recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        
+        // Refresh the record data        
         $this->invoice_details = get_invoice_details($this->VAR['invoice_id']);
         $this->smarty->assign('invoice_details', $this->invoice_details);
         NewPayment::$record_balance = $this->invoice_details['balance'];
@@ -108,7 +111,7 @@ class PType {
         
         // Add New Record
         NewPayment::$buttons['addNewRecord']['allowed'] = false;
-        NewPayment::$buttons['sddNewRecord']['url'] = null;        
+        NewPayment::$buttons['addNewRecord']['url'] = null;        
         
     }    
 

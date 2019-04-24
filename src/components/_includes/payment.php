@@ -214,29 +214,30 @@ function insert_payment($qpayment) {
     } else {
         
         // Get Payment Record ID
-        $payment_id = $db->Insert_ID();
+        if($payment_id = $db->Insert_ID()) {
         
-        // Recalculate record totals
-        if($qpayment['type'] == 'invoice') {recalculate_invoice_totals($qpayment['invoice_id']);}
-        if($qpayment['type'] == 'refund') {recalculate_refund_totals($qpayment['refund_id']);}
-        if($qpayment['type'] == 'expense') {recalculate_expense_totals($qpayment['expense_id']);}
-        if($qpayment['type'] == 'otherincome') {recalculate_otherincome_totals($qpayment['otherincome_id']);}
+            // Create a Workorder History Note       
+            insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
+
+            // Log activity        
+            $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
+            write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
+
+            // Update last active record    
+            update_client_last_active($qpayment['client_id']);
+            update_workorder_last_active($qpayment['workorder_id']);
+            update_invoice_last_active($qpayment['invoice_id']);
+
+            // Return the payment_id
+            return $payment_id;
         
-        // Create a Workorder History Note       
-        insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.QFactory::getUser()->login_display_name);
+        } else {
+            
+            // This statement might not be reached if insert payment fails
+            return false;
+            
+        }
         
-        // Log activity        
-        $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
-        
-        // Update last active record    
-        update_client_last_active($qpayment['client_id']);
-        update_workorder_last_active($qpayment['workorder_id']);
-        update_invoice_last_active($qpayment['invoice_id']);
-        
-        // Return the payment_id
-        return $payment_id;
-                
     }    
     
 }
