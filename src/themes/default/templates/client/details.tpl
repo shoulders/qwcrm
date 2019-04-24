@@ -75,7 +75,7 @@
                                             <div id="tab_6_contents" class="tab_contents">
                                                 {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_received block_title=_gettext("Received")}
                                                 <br>
-                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_transmitted block_title=_gettext("Transmitted")}
+                                                {include file='payment/blocks/display_payments_block.tpl' display_payments=$payments_sent block_title=_gettext("Sent")}
                                             </div>
                                             
                                             <!-- Tab 7 Contents (Refunds) -->

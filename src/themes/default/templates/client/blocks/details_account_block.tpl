@@ -230,9 +230,9 @@
                     <td><span style="color: green;"><b>({$payment_stats.count_received})</b></span></td>                    
                 </tr>
                 <tr>
-                    <td><b>{t}Transmitted{/t} {t}[N]{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_transmitted|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: red;"><b>({$payment_stats.count_transmitted})</b></span></td>
+                    <td><b>{t}Sent{/t} {t}[N]{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_sent|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$payment_stats.count_sent})</b></span></td>
                 </tr>
             </table>
             <table>
@@ -245,9 +245,9 @@
                     <td><span style="color: green;"><b>({$payment_stats.count_received})</b></span></td>                    
                 </tr>
                 <tr>
-                    <td><b>{t}Transmitted{/t} {t}[N]{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_transmitted|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: red;"><b>({$payment_stats.count_transmitted})</b></span></td>
+                    <td><b>{t}Sent{/t} {t}[N]{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_sent|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$payment_stats.count_sent})</b></span></td>
                 </tr>
             </table>
             <table>

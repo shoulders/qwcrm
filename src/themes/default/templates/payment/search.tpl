@@ -60,7 +60,7 @@
                                                                         <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>
                                                                         <option value="received"{if $filter_type == 'received'} selected{/if}>{t}Received{/t}</option> 
-                                                                        <option value="transmitted"{if $filter_type == 'transmitted'} selected{/if}>{t}Transmitted{/t}</option>
+                                                                        <option value="sent"{if $filter_type == 'sent'} selected{/if}>{t}Sent{/t}</option>
                                                                         <option disabled>----------</option>
                                                                         {section name=m loop=$payment_types}    
                                                                             <option value="{$payment_types[m].type_key}"{if $filter_type == $payment_types[m].type_key} selected{/if}>{t}{$payment_types[m].display_name}{/t}</option>        

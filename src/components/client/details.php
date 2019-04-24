@@ -54,7 +54,7 @@ $smarty->assign('payment_types',            get_payment_types()                 
 $smarty->assign('payment_methods',          get_payment_methods()                                                                               );
 $smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
 $smarty->assign('payments_received',        display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'received', null, null, null, $VAR['client_id'])        );
-$smarty->assign('payments_transmitted',     display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'transmitted', null, null, null, $VAR['client_id'])        );
+$smarty->assign('payments_sent',     display_payments('payment_id', 'DESC', false, '25', $VAR['page_no'], null, null, 'sent', null, null, null, $VAR['client_id'])        );
 $smarty->assign('payment_stats',            get_payments_stats('all', null, null, null, $VAR['client_id'])   );
 
 $smarty->assign('refund_types',            get_refund_types()                                                                                 );

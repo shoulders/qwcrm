@@ -62,8 +62,8 @@ function display_payments($order_by, $direction, $use_pages = false, $records_pe
         if($type == 'received') {            
             $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('invoice', 'otherincome')";
             
-        // All transmitted monies
-        } elseif($type == 'transmitted') {            
+        // All sent monies
+        } elseif($type == 'sent') {            
             $whereTheseRecords .= " AND ".PRFX."payment_records.type IN ('expense', 'refund')";        
             
         // Return records for the given type
