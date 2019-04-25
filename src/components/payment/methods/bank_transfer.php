@@ -30,7 +30,7 @@ class PMethod extends NewPayment {
     // Processing
     public function process() {
         
-        // Build additional information column
+        // Build additional_info column
         $this->VAR['qpayment']['additional_info'] = build_additional_info_json($this->VAR['qpayment']['bank_transfer_reference']);     
         
         // Insert the payment with the calculated information

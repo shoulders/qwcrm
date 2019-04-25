@@ -30,7 +30,7 @@ class PMethod {
     // Processing
     public function process() {
         
-        // Build additional information column
+        // Build additional_info column
         $this->VAR['qpayment']['additional_info'] = build_additional_info_json();  
         
         // Insert the payment with the calculated information
