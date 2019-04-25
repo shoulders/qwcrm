@@ -52,12 +52,12 @@ $smarty->assign('invoice_details',                  $invoice_details            
 // Invoice Items
 $smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );
-$smarty->assign('display_vouchers',                display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
+$smarty->assign('display_vouchers',                 display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, $VAR['invoice_id']) );
 
 // Sub Totals
-$smarty->assign('labour_items_sub_totals',     get_labour_items_sub_totals($VAR['invoice_id'])                                                          );
-$smarty->assign('parts_items_sub_totals',      get_parts_items_sub_totals($VAR['invoice_id'])                                                           );
-$smarty->assign('vouchers_items_sub_total',    get_vouchers_items_sub_total($VAR['invoice_id'])                                                       );
+$smarty->assign('labour_items_sub_totals',          get_labour_items_sub_totals($VAR['invoice_id'])                                                          );
+$smarty->assign('parts_items_sub_totals',           get_parts_items_sub_totals($VAR['invoice_id'])                                                           );
+$smarty->assign('vouchers_items_sub_total',         get_vouchers_items_sub_total($VAR['invoice_id'])                                                       );
 
 // Payment Details
 $smarty->assign('payment_options',                  get_payment_options()                                      );

@@ -431,6 +431,68 @@ function get_card_display_name_from_key($type_key) {
     
 }
 
+#####################################
+#  Get Card names as an array       #
+#####################################
+
+function get_payment_card_names() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT type_key, display_name
+            FROM ".PRFX."payment_card_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
+    } else {
+        
+        $records = $rs->GetAssoc();
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
+        
+    }  
+    
+}
+
+##########################################
+#    Get Payment additional info names   #
+##########################################
+
+function get_payment_additional_info_names() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT type_key, display_name
+            FROM ".PRFX."payment_additional_info_types";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment additional info names."));
+    } else {
+        
+        $records = $rs->GetAssoc();
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
+        
+    }  
+    
+}
+
 /** Update Functions **/
 
 #####################

@@ -72,7 +72,13 @@
                                             </td>
                                             <td class="menutd"><b>{t}Amount{/t}</b></td>
                                             <td class="menutd">{$currency_sym} {$payment_details.amount}</td>
-                                        </tr>                                        
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Additional Info{/t}</b></td>
+                                            <td class="menutd">{if $payment_details.additional_info|adinfodisplay}{$payment_details.additional_info|adinfodisplay}{else}{t}none{/t}{/if}</td>
+                                            <td class="menutd"></td>
+                                            <td class="menutd"></td>
+                                        </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Note{/t}</b></td>
                                             <td class="menutd" colspan="3"></td>
