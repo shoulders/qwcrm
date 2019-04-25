@@ -40,6 +40,7 @@
                                                                         <option value="workorder_id"{if $search_category == 'workorder_id'} selected{/if}>{t}Work Order ID{/t}</option>
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="amount"{if $search_category == 'amount'} selected{/if}>{t}Amount{/t}</option>
+                                                                        <option value="additional_info"{if $search_category == 'additional_info'} selected{/if}>{t}Additional Info{/t}</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option> 
                                                                     </select>
                                                                     <br />
