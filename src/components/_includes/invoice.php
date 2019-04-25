@@ -1575,7 +1575,7 @@ function export_invoice_prefill_items_csv() {
     }
         
     // Has payments
-    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {        
+    if(count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) {       
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has payments."));
         return false;        
     }
@@ -1627,7 +1627,7 @@ function check_invoice_can_be_refunded($invoice_id) {
     }    
     
     // Has no payments
-    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+    if(!count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }
@@ -1696,7 +1696,7 @@ function check_invoice_can_be_cancelled($invoice_id) {
     }    
     
     // Has payments
-    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+    if(count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice has payments."));
         return false;        
     }
@@ -1770,7 +1770,7 @@ function check_invoice_can_be_deleted($invoice_id) {
     }
     
     // Has payments (Fallback - is not needed because of statuses)
-    if(count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+    if(count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments."));
         return false;        
     }
@@ -1925,7 +1925,7 @@ function check_invoice_can_have_refund_deleted($invoice_id) {
     }
 
     /* Has no payments (an invoice that has been refunded should always have a payment so this check should not be needed) - also payment.php will need to be included for this to work
-    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+    if(!count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }*/
@@ -1975,7 +1975,7 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
     }
 
     /* Has no payments (an invoice that has been refunded should always have a payment so this check should not be needed) - also payment.php will need to be included for this to work
-    if(!count_payments(null, null, null, null, null, null, null, null, $invoice_id)) {
+    if(!count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }*/

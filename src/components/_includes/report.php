@@ -1291,7 +1291,7 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         $historic_stats = array(                       
             
             "count_received"            =>  count_payments($start_date, $end_date, null, null, null, 'received', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
-            "count_sent"         =>  count_payments($start_date, $end_date, null, null, null, 'sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
+            "count_sent"                =>  count_payments($start_date, $end_date, null, null, null, 'sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
         );
         
         $stats = array_merge($stats, $historic_stats);
@@ -1304,7 +1304,7 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         $revenue_stats = array(                       
             
             "sum_received"               =>  sum_payments($start_date, $end_date, null, null, null, 'received', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
-            "sum_sent"            =>  sum_payments($start_date, $end_date, null, null, null, 'sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id) 
+            "sum_sent"                      =>  sum_payments($start_date, $end_date, null, null, null, 'sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id) 
             
         );
         
