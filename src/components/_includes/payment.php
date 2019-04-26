@@ -887,22 +887,15 @@ function check_payment_can_be_deleted($payment_id) {
 
  function build_additional_info_json($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
     
-    // Proccess supplied variables
-    $bank_transfer_reference = $bank_transfer_reference ? $bank_transfer_reference : '';
-    $card_type_key = $card_type_key ? $card_type_key : '';
-    $name_on_card = $name_on_card ? $name_on_card : '';
-    $cheque_number = $cheque_number ? $cheque_number : '';
-    $direct_debit_reference = $direct_debit_reference ? $direct_debit_reference : '';
-    $paypal_transaction_id = $paypal_transaction_id ? $paypal_transaction_id : '';
-     
-    // Build Array
     $additional_info = array();
-    $additional_info['bank_transfer_reference'] = $bank_transfer_reference;
-    $additional_info['card_type_key'] = $card_type_key;
-    $additional_info['name_on_card'] = $name_on_card;
-    $additional_info['cheque_number'] = $cheque_number;
-    $additional_info['direct_debit_reference'] = $direct_debit_reference;
-    $additional_info['paypal_transaction_id'] = $paypal_transaction_id;
+    
+    // Build Array
+    $additional_info['bank_transfer_reference'] = $bank_transfer_reference ? $bank_transfer_reference : '';
+    $additional_info['card_type_key'] = $card_type_key ? $card_type_key : '';
+    $additional_info['name_on_card'] = $name_on_card ? $name_on_card : '';
+    $additional_info['cheque_number'] = $cheque_number ? $cheque_number : '';
+    $additional_info['direct_debit_reference'] = $direct_debit_reference ? $direct_debit_reference : '';
+    $additional_info['paypal_transaction_id'] = $paypal_transaction_id ? $paypal_transaction_id : '';
 
     // Return the JSON data
     return json_encode($additional_info);
