@@ -1876,8 +1876,7 @@ function assign_invoice_to_employee($invoice_id, $target_employee_id) {
         // Log activity        
         $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
         write_record_to_activity_log($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-        
-        
+                
         // Update last active record
         update_user_last_active($invoice_details['employee_id']);
         update_user_last_active($target_employee_id);

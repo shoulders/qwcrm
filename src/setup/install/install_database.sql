@@ -521,6 +521,28 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (5, 'other', 'Other'),
 (6, 'returned_goods', 'Returned Goods');
 
+--
+-- Table structure for table `#__payment_additional_info_types`
+--
+
+CREATE TABLE `#__payment_additional_info_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `#__payment_additional_info_types`
+--
+
+INSERT INTO `#__payment_additional_info_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'bank_transfer_reference', 'Bank Transfer Reference'),
+(2, 'card_type_key', 'Card Type'),
+(3, 'name_on_card', 'Name on Card'),
+(4, 'cheque_number', 'Cheque Number'),
+(5, 'direct_debit_reference', 'Direct Debit Reference'),
+(6, 'paypal_transaction_id', 'PayPal Transaction ID');
+
 -- --------------------------------------------------------
 
 --
@@ -1382,6 +1404,12 @@ ALTER TABLE `#__otherincome_statuses`
 -- Indexes for table `#__otherincome_types`
 --
 ALTER TABLE `#__otherincome_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `#__payment_additional_info_types`
+--
+ALTER TABLE `#__payment_additional_info_types`
   ADD PRIMARY KEY (`id`);
 
 --

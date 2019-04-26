@@ -180,6 +180,26 @@ INSERT INTO `#__invoice_statuses` (`id`, `status_key`, `display_name`) VALUES
 ALTER TABLE `#__invoice_statuses` ADD PRIMARY KEY (`id`);
 
 --
+-- Create Table `#__payment_additional_info_types`
+--
+
+CREATE TABLE `#__payment_additional_info_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__payment_additional_info_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'bank_transfer_reference', 'Bank Transfer Reference'),
+(2, 'card_type_key', 'Card Type'),
+(3, 'name_on_card', 'Name on Card'),
+(4, 'cheque_number', 'Cheque Number'),
+(5, 'direct_debit_reference', 'Direct Debit Reference'),
+(6, 'paypal_transaction_id', 'PayPal Transaction ID');
+
+ALTER TABLE `#__payment_additional_info_types` ADD PRIMARY KEY (`id`);
+
+--
 -- Create Table `#__payment_methods`
 --
 
