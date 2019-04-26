@@ -1705,7 +1705,7 @@ function check_invoice_can_be_cancelled($invoice_id) {
         return false;        
     }
 
-    // Has Refunds (should not be needed)
+    // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_refunds(null, null, null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because the invoice has been refunded."));
         return false;

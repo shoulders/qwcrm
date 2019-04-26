@@ -747,8 +747,7 @@ function check_expense_can_be_deleted($expense_id) {
     if(count_payments(null, null, null, null, null, 'expense', null, null, null, null, $expense_id)) {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has payments."));
         return false;        
-    }
-    
+    }   
 
     // All checks passed
     return true;    
