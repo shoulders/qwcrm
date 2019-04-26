@@ -45,11 +45,11 @@
                                                                             <option value="Parts" {if $invoice_prefill_items[q].type == 'Parts'} selected{/if}>{t}Parts{/t}</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="amount" class="olotd5" size="10" value="{$invoice_prefill_items[q].net_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="net_amount" class="olotd5" size="10" value="{$invoice_prefill_items[q].net_amount}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                                     <td class="olotd4" nowrap>
-                                                                        <select class="olotd5" name="active">
-                                                                            <option value="0" {if $invoice_prefill_items[q].active == 0} selected{/if}>{t}No{/t}</option>
+                                                                        <select class="olotd5" name="active">                                                                            
                                                                             <option value="1" {if $invoice_prefill_items[q].active == 1} selected{/if}>{t}Yes{/t}</option>
+                                                                            <option value="0" {if $invoice_prefill_items[q].active == 0} selected{/if}>{t}No{/t}</option>
                                                                         </select>
                                                                     </td>
                                                                     <td class="olotd4" nowrap>
@@ -68,7 +68,7 @@
                                                         <tr>
                                                             <td class="olohead">{t}Description{/t}</td>
                                                             <td class="olohead">{t}Type{/t}</td>
-                                                            <td class="olohead">{t}Amount{/t}</td>
+                                                            <td class="olohead">{t}Net Amount{/t}</td>
                                                             <td class="olohead">{t}Active{/t}</td>                                                            
                                                             <td class="olohead">{t}Action{/t}</td>
                                                         </tr>
@@ -82,9 +82,9 @@
                                                             </td>
                                                             <td class="olotd4">{$currency_sym}<input name="net_amount" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <select class="olotd5" name="active">
-                                                                    <option value="0" selected>{t}No{/t}</option>
-                                                                    <option value="1">{t}Yes{/t}</option>
+                                                                <select class="olotd5" name="active">                                                                    
+                                                                    <option value="1" selected>{t}Yes{/t}</option>
+                                                                    <option value="0">{t}No{/t}</option>
                                                                 </select>
                                                             </td>
                                                             <td class="olotd4"><button type="submit" name="submit" value="new">{t}New{/t}</button</td>

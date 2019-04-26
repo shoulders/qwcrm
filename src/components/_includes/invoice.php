@@ -439,7 +439,7 @@ function insert_invoice_prefill_item($VAR) {
     $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
             description =". $db->qstr( $VAR['description']  ).",
             type        =". $db->qstr( $VAR['type']         ).",
-            net_amount  =". $db->qstr( $VAR['amount']       ).",
+            net_amount  =". $db->qstr( $VAR['net_amount']   ).",
             active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
@@ -837,7 +837,7 @@ function update_invoice_prefill_item($VAR) {
     $sql = "UPDATE ".PRFX."invoice_prefill_items SET
             description                 =". $db->qstr( $VAR['description']          ).",
             type                        =". $db->qstr( $VAR['type']                 ).",
-            net_amount                  =". $db->qstr( $VAR['net_amount']               ).",
+            net_amount                  =". $db->qstr( $VAR['net_amount']           ).",
             active                      =". $db->qstr( $VAR['active']               )."            
             WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
 
