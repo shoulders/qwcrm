@@ -640,6 +640,7 @@ CREATE TABLE `#__payment_records` (
   `expense_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `otherincome_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
+  `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `method` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,

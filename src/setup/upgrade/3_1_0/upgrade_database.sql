@@ -577,6 +577,7 @@ ALTER TABLE `#__payment_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 
 ALTER TABLE `#__payment_records` ADD `expense_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NULL AFTER `refund_id`;
 ALTER TABLE `#__payment_records` ADD `otherincome_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL NULL AFTER `expense_id`;
 ALTER TABLE `#__payment_records` ADD `additional_info` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `amount`;
+ALTER TABLE `#__payment_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 
 --
 -- Rename Columns
@@ -844,3 +845,5 @@ ALTER TABLE `#__otherincome_records` ADD `last_active` DATETIME NOT NULL AFTER `
 UPDATE `#__refund_records` SET `last_active` = `date`;
 UPDATE `#__expense_records` SET `last_active` = `date`;
 UPDATE `#__otherincome_records` SET `last_active` = `date`;
+
+

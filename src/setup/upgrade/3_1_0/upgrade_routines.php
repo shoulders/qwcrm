@@ -116,11 +116,12 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax');
         
-        // Update Invoice Items
         $company_tax_system = get_company_details('tax_system');
-        $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $company_tax_system);
-        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $company_tax_system);
         $default_vat_tax_code = get_default_vat_tax_code(); // This is an educated guess
+        
+        // Update Invoice Items        
+        $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $company_tax_system);
+        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $company_tax_system);        
         $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $default_vat_tax_code);
         $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $default_vat_tax_code);
         
@@ -133,8 +134,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->voucher_correct_workorder_id();
         $this->voucher_correct_expiry_date();
         $this->voucher_correct_status();
-        $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', get_company_details('tax_system'));
-        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code()); 
+        $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $company_tax_system);
+        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('multi_purpose', $company_tax_system)); 
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax', '!');
@@ -148,6 +149,7 @@ class Upgrade3_1_0 extends QSetup {
         
         // Correct currently upgraded invoice payment records
         $this->update_column_values(PRFX.'payment_records', 'method', '6', 'direct_deposit');
+        $this->update_column_values(PRFX.'payment_records', 'tax_type', '*', $company_tax_system );
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
         // Parse Payment notes and extract information into 'additional_info' column for invoices
