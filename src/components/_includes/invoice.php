@@ -1580,7 +1580,11 @@ function export_invoice_prefill_items_csv() {
         return false;        
     }
 
-    ///////////////////////////////add voucher checks here /////////////////////
+    // Does the invoice have any Vouchers preventing changing the invoice status
+    if(!check_voucher_status_can_be_changed($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+        return false;
+    } 
     
     // All checks passed
     return true;     
