@@ -1574,7 +1574,7 @@ function export_invoice_prefill_items_csv() {
         return false;        
     }
         
-    // Has payments
+    // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) {       
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has payments."));
         return false;        
@@ -1626,13 +1626,13 @@ function check_invoice_can_be_refunded($invoice_id) {
         return false;        
     }    
     
-    // Has no payments
+    // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(!count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }
 
-    // Has Refunds (should not be needed)
+    // Has Refunds (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_refunds(null, null, null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has already been refunded."));
         return false;
@@ -1695,7 +1695,7 @@ function check_invoice_can_be_cancelled($invoice_id) {
         return false;        
     }    
     
-    // Has payments
+    // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice has payments."));
         return false;        
@@ -1769,7 +1769,7 @@ function check_invoice_can_be_deleted($invoice_id) {
         return false;        
     }
     
-    // Has payments (Fallback - is not needed because of statuses)
+    // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments."));
         return false;        
@@ -1923,11 +1923,11 @@ function check_invoice_can_have_refund_deleted($invoice_id) {
         return false;        
     }
 
-    /* Has no payments (an invoice that has been refunded should always have a payment so this check should not be needed) - also payment.php will need to be included for this to work
+    // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(!count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
-    }*/
+    }
     
     // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
     if(!check_invoice_vouchers_allow_refund_deletion($invoice_id)) {
@@ -1973,11 +1973,11 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
         return false;        
     }
 
-    /* Has no payments (an invoice that has been refunded should always have a payment so this check should not be needed) - also payment.php will need to be included for this to work
+    // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(!count_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
-    }*/
+    }
     
     // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
     if(!check_invoice_vouchers_allow_refund_cancellation($invoice_id)) {
