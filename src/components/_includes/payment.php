@@ -433,6 +433,37 @@ function get_card_display_name_from_key($type_key) {
 }
 
 #####################################
+#  Get status names as an array     #
+#####################################
+
+function get_payment_status_names() {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT status_key, display_name
+            FROM ".PRFX."payment_statuses";
+
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
+    } else {
+        
+        $records = $rs->GetAssoc();
+
+        if(empty($records)){
+            
+            return false;
+            
+        } else {
+            
+            return $records;
+            
+        }
+        
+    }  
+    
+}
+
+#####################################
 #  Get Card names as an array       #
 #####################################
 
@@ -610,7 +641,87 @@ function update_payment_methods_statuses($payment_methods) {
     
 }
 
+############################
+# Update Payment Status    #
+############################
+
+function update_payment_status($payment_id, $new_status, $silent = false) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get payment details
+    $payment_details = get_payment_details($payment_id);
+    
+    // if the new status is the same as the current one, exit
+    if($new_status == $payment_details['status']) {        
+        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        return false;
+    }    
+    
+    $sql = "UPDATE ".PRFX."payment_records SET
+            status               =". $db->qstr( $new_status  )."            
+            WHERE payment_id     =". $db->qstr( $payment_id );
+
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
+        
+    } else {        
+        
+        // Status updated message
+        if (!$silent) { postEmulationWrite('information_msg', _gettext("Payment status updated.")); }
+        
+        // For writing message to log file, get payment status display name
+        $payment_status_names = get_payment_status_names();
+        $payment_status_display_name = _gettext($payment_status_names[$new_status]);
+        
+        // Create a Workorder History Note (Not Used)      
+        insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        
+        // Log activity        
+        $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+        
+        // Update last active record (Not Used)
+        update_client_last_active($payment_details['client_id']);
+        update_workorder_last_active($payment_details['workorder_id']);
+        update_invoice_last_active($payment_details['invoice_id']);
+        
+        return true;
+        
+    }
+    
+}
+
 /** Close Functions **/
+
+function cancel_payment($payment_id) {
+    
+    // Make sure the payment can be cancelled
+    if(!check_payment_can_be_cancelled($payment_id)) {        
+        return false;
+    }
+    
+    // Get payment details
+    $payment_details = get_payment_details($payment_id);
+    
+    // Change the payment status to cancelled (I do this here to maintain consistency)
+    update_payment_status($payment_id, 'cancelled');      
+        
+    // Create a Workorder History Note  
+    insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+
+    // Log activity        
+    $record = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+    
+    // Update last active record
+    update_client_last_active($payment_details['client_id']);
+    update_workorder_last_active($payment_details['workorder_id']);
+    update_invoice_last_active($payment_details['invoice_id']);
+    
+    return true;
+    
+}
 
 /** Delete Functions **/
 
@@ -629,7 +740,11 @@ function delete_payment($payment_id) {
             employee_id     = '',
             client_id       = '',
             workorder_id    = '',
-            invoice_id      = '',            
+            invoice_id      = '',
+            voucher_id      = '',
+            refund_id       = '',
+            expense_id      = '',
+            otherincome_id  = '',
             date            = '0000-00-00',
             tax_system      = '',
             type            = '',
@@ -643,9 +758,6 @@ function delete_payment($payment_id) {
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
     } else {
-        
-        // Recalculate invoice totals
-        recalculate_invoice_totals($payment_details['invoice_id']);
         
         // Create a Workorder History Note       
         insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.QFactory::getUser()->login_display_name);           
@@ -745,6 +857,9 @@ function check_payment_method_is_active($method, $direction = null) {
 
  function check_payment_status_can_be_changed($payment_id) {
      
+    // Disable the ability to manually change status for now
+    return false;
+     
     // Get the payment details
     $payment_details = get_payment_details($payment_id);
     
@@ -766,7 +881,7 @@ function check_payment_method_is_active($method, $direction = null) {
  }
 
 ###############################################################
-#   Check to see if the payment can be refunded (by status)   #  // not currently used - i DONT think i will use this
+#   Check to see if the payment can be refunded (by status)   #  // not currently used - i DONT think i will use this , you cant refund a payment?
 ###############################################################
 
 function check_payment_can_be_refunded($payment_id) {
@@ -822,7 +937,13 @@ function check_payment_can_be_cancelled($payment_id) {
     if($payment_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("The payment cannot be cancelled because the payment has been deleted."));
         return false;        
-    }    
+    }
+    
+    // Is this an invoice payment and parent invoice has been refunded
+    if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be cancelled because the parent invoice has been refunded."));
+        return false;  
+    }
     
     // All checks passed
     return true;
@@ -848,6 +969,12 @@ function check_payment_can_be_deleted($payment_id) {
     if($payment_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("This payment cannot be deleted because it already been deleted."));
         return false;        
+    }
+    
+    // Is this an invoice payment and parent invoice has been refunded
+    if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be deleted because the parent invoice has been refunded."));
+        return false;  
     }
     
     // All checks passed

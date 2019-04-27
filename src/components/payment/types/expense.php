@@ -18,8 +18,8 @@ class PType {
         
         $this->VAR = &$VAR;
         $this->smarty = QFactory::getSmarty();
-        $this->expense_details = get_expense_details($this->VAR['expense_id']);
-        NewPayment::$record_balance = $this->expense_details['balance'];
+        $this->expense_details = get_expense_details($this->VAR['qpayment']['expense_id']);
+        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->expense_details['balance'];} // Dirty hack until full OOP
         
         // Assign Type specific template variables  
         $this->smarty->assign('payment_active_methods', get_payment_methods('receive', 'enabled'));
@@ -57,7 +57,7 @@ class PType {
         recalculate_expense_totals($this->VAR['qpayment']['expense_id']);
         
         // Refresh the record data        
-        $this->expense_details = get_expense_details($this->VAR['expense_id']);
+        $this->expense_details = get_expense_details($this->VAR['qpayment']['expense_id']);
         $this->smarty->assign('expense_details', $this->expense_details);
         NewPayment::$record_balance = $this->expense_details['balance'];
         
@@ -108,6 +108,44 @@ class PType {
         NewPayment::$buttons['addNewRecord']['url'] = 'index.php?component=expense&page_tpl=new';
         NewPayment::$buttons['addNewRecord']['title'] = _gettext("Add New Expense Record");
         
-    }    
+    }   
+    
+    // Cancel Payment
+    public function cancel() {
+        
+        // Cancel the payment
+        cancel_payment($this->VAR['qpayment']['payment_id']);
+                
+        // Recalculate record totals
+        recalculate_expense_totals($this->VAR['qpayment']['expense_id']);
+        
+        // Refresh the record data        
+        //$this->expense_details = get_expense_details($this->VAR['qpayment']['expense_id']);        
+        
+        // Load the relevant record details page
+        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id'], 'information_msg='._gettext("Payment cancelled successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
+    
+    // Delete Payment
+    public function delete() {
+        
+        // Delete the payment
+        delete_payment($this->VAR['qpayment']['payment_id']);
+                
+        // Recalculate record totals
+        recalculate_expense_totals($this->VAR['qpayment']['expense_id']);
+        
+        // Refresh the record data        
+        //$this->expense_details = get_expense_details($this->VAR['qpayment']['expense_id']);        
+        
+        // Load the relevant record details page
+        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id'], 'information_msg='._gettext("Payment deleted successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
 
 }

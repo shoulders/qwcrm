@@ -18,8 +18,8 @@ class PType {
         
         $this->VAR = &$VAR;
         $this->smarty = QFactory::getSmarty(); 
-        $this->otherincome_details = get_otherincome_details($this->VAR['otherincome_id']);
-        NewPayment::$record_balance = $this->otherincome_details['balance'];
+        $this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);
+        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->otherincome_details['balance'];} // Dirty hack until full OOP
         
         // Assign Type specific template variables  
         $this->smarty->assign('payment_active_methods', get_payment_methods('receive', 'enabled'));
@@ -57,7 +57,7 @@ class PType {
         recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
         
         // Refresh the record data        
-        $this->otherincome_details = get_otherincome_details($this->VAR['otherincome_id']);
+        $this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);
         $this->smarty->assign('otherincome_details', $this->otherincome_details);
         NewPayment::$record_balance = $this->otherincome_details['balance'];
         
@@ -110,4 +110,42 @@ class PType {
         
     }    
 
+    // Cancel Payment
+    public function cancel() {
+        
+        // Cancel the payment
+        cancel_payment($this->VAR['qpayment']['payment_id']);
+                
+        // Recalculate record totals
+        recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        
+        // Refresh the record data        
+        //$this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
+        
+        // Load the relevant record details page
+        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'information_msg='._gettext("Payment cancelled successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
+    
+    // Delete Payment
+    public function delete() {
+        
+        // Delete the payment
+        delete_payment($this->VAR['qpayment']['payment_id']);
+                
+        // Recalculate record totals
+        recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        
+        // Refresh the record data        
+        //$this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
+        
+        // Load the relevant record details page
+        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'information_msg='._gettext("Payment deleted successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
+    
 }

@@ -18,8 +18,8 @@ class PType {
         
         $this->VAR = &$VAR;
         $this->smarty = QFactory::getSmarty();
-        $this->invoice_details = get_invoice_details($this->VAR['invoice_id']);
-        NewPayment::$record_balance = $this->invoice_details['balance'];
+        $this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);
+        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->invoice_details['balance'];} // Dirty hack until full OOP
                        
         // Assign Type specific template variables        
         $this->smarty->assign('client_details', get_client_details($this->invoice_details['client_id']));
@@ -60,7 +60,7 @@ class PType {
         recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
         
         // Refresh the record data        
-        $this->invoice_details = get_invoice_details($this->VAR['invoice_id']);
+        $this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);
         $this->smarty->assign('invoice_details', $this->invoice_details);
         NewPayment::$record_balance = $this->invoice_details['balance'];
         
@@ -119,5 +119,43 @@ class PType {
         NewPayment::$buttons['addNewRecord']['title'] = null;
         
     }    
+    
+    // Cancel Payment
+    public function cancel() {
+        
+        // Cancel the payment
+        cancel_payment($this->VAR['qpayment']['payment_id']);
+                
+        // Recalculate record totals
+        recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        
+        // Refresh the record data        
+        //$this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);        
+        
+        // Load the relevant record details page
+        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'information_msg='._gettext("Payment cancelled successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
+    
+    // Delete Payment
+    public function delete() {
+        
+        // Delete the payment
+        delete_payment($this->VAR['qpayment']['payment_id']);
+                
+        // Recalculate record totals
+        recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        
+        // Refresh the record data        
+        //$this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);        
+        
+        // Load the relevant record details page
+        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'information_msg='._gettext("Payment deleted successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
 
 }

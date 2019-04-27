@@ -1350,7 +1350,7 @@ function recalculate_invoice_totals($invoice_id) {
     }
     
     $gross_amount               = $net_amount + $tax_amount + get_vouchers_items_sub_total($invoice_id);    
-    $payments_sub_total         = sum_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id);    
+    $payments_sub_total         = (sum_payments(null, null, null, null, null, 'invoice', null, null, $invoice_id) - sum_payments(null, null, null, null, 'cancelled', 'invoice', null, null, $invoice_id));    
     $balance                    = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice_records SET

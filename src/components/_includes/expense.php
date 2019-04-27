@@ -506,7 +506,7 @@ function recalculate_expense_totals($expense_id) {
     $expense_details            = get_expense_details($expense_id);    
     
     $gross_amount               = $expense_details['gross_amount'];   
-    $payments_sub_total         = sum_payments(null, null, null, null, null, 'expense', null, null, null, null, $expense_id);    
+    $payments_sub_total         = (sum_payments(null, null, null, null, null, 'expense', null, null, null, null, $expense_id) - sum_payments(null, null, null, null, 'cancelled', 'expense', null, null, null, null, $expense_id));    
     $balance                    = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."expense_records SET

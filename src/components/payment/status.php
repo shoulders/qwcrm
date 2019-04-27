@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
 
 // Check if we have a payment_id
@@ -22,10 +23,10 @@ if(isset($VAR['change_status'])){
 }
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',        false       );
+$smarty->assign('allowed_to_change_status',        check_payment_status_can_be_changed($VAR['payment_id'])      );
 $smarty->assign('payment_status',                  get_payment_details($VAR['payment_id'], 'status')             );
 $smarty->assign('payment_statuses',                get_payment_statuses() );
-$smarty->assign('allowed_to_cancel',               false     );
+$smarty->assign('allowed_to_cancel',               check_payment_can_be_cancelled($VAR['payment_id'])   );
 $smarty->assign('allowed_to_delete',               check_payment_can_be_deleted($VAR['payment_id'])              );
 $smarty->assign('payment_selectable_statuses',     get_payment_statuses(true) );
 

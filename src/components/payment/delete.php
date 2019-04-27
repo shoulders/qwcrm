@@ -9,8 +9,12 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'expense.php');
 require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'refund.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
@@ -25,20 +29,71 @@ if(!isset($VAR['payment_id']) || !$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }   
 
-// Get payment details - Do I need this?
-$payment_details = get_payment_details($VAR['payment_id']);
+// This is a dirty hack because QWcrm is not fully OOP yet
+class DeletePayment {
+    
+    private $VAR = null;
+    private $type = null;    
+    private $payment_details = null;
+    
+    function __construct(&$VAR) {
+        
+        // Set class variables
+        $this->VAR = &$VAR;
+        
+        // Set Payment details
+        $this->payment_details = get_payment_details($VAR['payment_id']);
+        
+        // Set the various payment type IDs
+        $this->VAR['qpayment']['payment_id'] = $this->payment_details['payment_id'];
+        $this->VAR['qpayment']['type'] = $this->payment_details['type'];
+        $this->VAR['qpayment']['invoice_id'] = $this->payment_details['invoice_id'];
+        $this->VAR['qpayment']['voucher_id'] = $this->payment_details['voucher_id'];
+        $this->VAR['qpayment']['refund_id'] = $this->payment_details['refund_id'];
+        $this->VAR['qpayment']['expense_id'] = $this->payment_details['expense_id'];
+        $this->VAR['qpayment']['otherincome_id'] = $this->payment_details['otherincome_id'];
+                               
+        // Set the payment type class
+        $this->set_payment_type();
+        
+        // Run the type specific delete routines
+        $this->type->delete();       
+               
+    }
+        
+    function set_payment_type() {
+        
+        // Load the routines specific for the specific payment type
+        switch($this->VAR['qpayment']['type']) {
 
-// Cannot delete Vouchers - Do I need this?
-if($payment_details['method'] == 'voucher') {    
-    force_page('payment', 'search', 'warning_msg='._gettext("You cannot delete a Voucher."));
+            case 'invoice':
+            require(COMPONENTS_DIR.'payment/types/invoice.php');
+            break;
+
+            case 'refund':
+            require(COMPONENTS_DIR.'payment/types/refund.php');
+            break;
+
+            case 'expense':
+            require(COMPONENTS_DIR.'payment/types/expense.php');
+            break;
+
+            case 'otherincome':
+            require(COMPONENTS_DIR.'payment/types/otherincome.php');
+            break;
+
+            default:
+            force_page('payment', 'search', 'warning_msg='._gettext("Invalid Payment Type."));
+            break;
+
+        }
+        
+        // Load and set the relevant class
+        $this->type = new PType($this->VAR);
+    
+    }
+    
 }
 
-// Delete the payment
-delete_payment($VAR['payment_id']);
-
-// Load the payment search page
-if($payment_details['type'] == 'invoice') {
-    force_page('payment', 'search', 'information_msg='._gettext("Payment deleted successfully and invoice").' '.$payment_details['invoice_id'].' '._gettext("has been updated to reflect this change."));
-}
-
-force_page('payment', 'search', 'warning_msg='._gettext("Unknown Payment Type."));
+// Instanciate Delete Payment Class
+$payment = new DeletePayment($VAR);
