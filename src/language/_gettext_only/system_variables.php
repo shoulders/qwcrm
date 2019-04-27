@@ -97,6 +97,14 @@ _gettext("Interest");
 _gettext("Other");
 _gettext("Returned Goods");
 
+/* Payment Additional Info Types */
+_gettext("Bank Transfer Reference");
+_gettext("Card Type");
+_gettext("Name on Card");
+_gettext("Cheque Number");
+_gettext("Direct Debit Reference");
+_gettext("PayPal Transaction ID");
+
 /* Payment Card Types */
 _gettext("Visa");
 _gettext("MasterCard");
