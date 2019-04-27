@@ -19,9 +19,9 @@ require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Make sure a payment type is set
-if(!isset($VAR['type'])) { 
-    force_page('payment', 'search', 'warning_msg='._gettext("No Payment Type supplied."));    
-} 
+if(!isset($VAR['type']) || !$VAR['type'] && ($VAR['type'] == 'invoice' || $VAR['type'] == 'refund' || $VAR['type'] == 'expense' || $VAR['type'] == 'otherincome')) {
+    force_page('payment', 'search', 'warning_msg='._gettext("No Payment Type supplied."));  
+}
 
 // Prevent undefined variable errors (with and without submit)
 $VAR['qpayment']['type'] = $VAR['type'];
