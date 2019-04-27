@@ -874,6 +874,12 @@ function check_payment_method_is_active($method, $direction = null) {
         //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because the payment has been deleted."));
         return false;        
     }
+    
+    // Is this an invoice payment and parent invoice has been refunded
+    if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be changed because the parent invoice has been refunded."));
+        return false;  
+    }
         
     // All checks passed
     return true;     
@@ -912,6 +918,12 @@ function check_payment_can_be_refunded($payment_id) {
         //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the payment has been deleted."));
         return false;        
     }    
+    
+    // Is this an invoice payment and parent invoice has been refunded
+    if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the parent invoice has been refunded."));
+        return false;  
+    }
     
     // All checks passed
     return true;
@@ -1001,6 +1013,12 @@ function check_payment_can_be_deleted($payment_id) {
     if($payment_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it has been deleted."));
         return false;        
+    }
+    
+    // Is this an invoice payment and parent invoice has been refunded
+    if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
+        return false;  
     }
 
     // All checks passed
