@@ -64,7 +64,6 @@ $smarty->assign('invoice_details',          get_invoice_details($VAR['invoice_id
 $smarty->assign('labour_prefill_items',     get_invoice_prefill_items('Labour', '1')                                               ); 
 $smarty->assign('parts_prefill_items',      get_invoice_prefill_items('Parts', '1')                                                );
 $smarty->assign('vat_tax_codes',            get_vat_tax_codes(false)                                                               );
-$copper = get_default_vat_tax_code(get_invoice_details($VAR['invoice_id'], 'tax_system')) ;
 $smarty->assign('default_vat_tax_code',    get_default_vat_tax_code(get_invoice_details($VAR['invoice_id'], 'tax_system'))         );
 
 // Invoice Items

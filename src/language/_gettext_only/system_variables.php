@@ -40,6 +40,7 @@ _gettext("Zero Rate / Exempt Purchases - Services - EC");
 _gettext("Standard Rate Purchases - Services - EC");
 _gettext("Flat Rate Capital Asset");
 _gettext("Not Applicable");
+_gettext("VAT Multi TCode");
 
 /* Expense Statuses */
 _gettext("Unpaid");

@@ -158,7 +158,7 @@ class Upgrade3_1_0 extends QSetup {
         // Convert expense, refund and otherincome transactions into separate record and payment
         $this->payments_convert_expense_records();
         $this->payments_convert_refund_records();
-        $this->payments_convert_otherincome_records();        
+        $this->payments_convert_otherincome_records(); 
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');

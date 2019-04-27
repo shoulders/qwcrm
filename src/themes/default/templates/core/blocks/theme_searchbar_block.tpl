@@ -7,6 +7,13 @@
 *}
 <div id="searchbar">    
     
+    <!-- eBay Search Box -->
+    <div style="display: inline-block; width: 45%;">
+        <img src="{$theme_images_dir}searchbar-eBay-logo.png" alt="">
+        <input id="searchbar_ebay_search_term" name="searchbar_ebay_search_term" class="" size="" alt="" type="text" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="return checkForEnterKeyPress(event) && searchbarEbaySearch();" >
+        <button id="searchbar_ebay_search_button" type="button" onclick="return searchbarEbaySearch();">{t}Search{/t}</button>        
+    </div>
+    
     <!-- Amazon Search Box -->
     <div style="display: inline-block; width: 45%;">
         <script type="text/javascript">
@@ -23,14 +30,7 @@
             amzn_assoc_bg_color ="FFFFFF";
         </script>
         <script src="//z-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1&Marketplace=GB"></script>        
-    </div>
-    
-    <!-- eBay Search Box -->
-    <div style="display: inline-block; width: 45%;">
-        <img src="{$theme_images_dir}searchbar-eBay-logo.png" alt="">
-        <input id="searchbar_ebay_search_term" name="searchbar_ebay_search_term" class="" size="" alt="" type="text" required onkeydown="return onlyAlphaNumeric(event);" onkeyup="return checkForEnterKeyPress(event) && searchbarEbaySearch();" >
-        <button id="searchbar_ebay_search_button" type="button" onclick="return searchbarEbaySearch();">{t}Search{/t}</button>        
-    </div>
+    </div>    
     
     <!-- Universal QWcrm Search Box -->
     <div>        
