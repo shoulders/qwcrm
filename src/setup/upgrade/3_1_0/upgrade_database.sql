@@ -849,4 +849,7 @@ UPDATE `#__refund_records` SET `last_active` = `date`;
 UPDATE `#__expense_records` SET `last_active` = `date`;
 UPDATE `#__otherincome_records` SET `last_active` = `date`;
 
-
+--
+-- Add new status to Workorders
+--
+INSERT INTO `#__workorder_statuses` (`id`, `status_key`, `display_name`) VALUES ('10', 'deleted', 'Deleted');

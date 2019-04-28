@@ -200,3 +200,4 @@ _gettext("On Hold");
 _gettext("Management");
 _gettext("Closed without Invoice");
 _gettext("Closed with Invoice");
+_gettext("Deleted");

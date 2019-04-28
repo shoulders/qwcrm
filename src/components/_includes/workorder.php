@@ -971,8 +971,27 @@ function delete_workorder($workorder_id) {
     // get client_id before deleletion
     $client_id = get_workorder_details($workorder_id, 'client_id');
     
+    // Change the workorder status to deleted (I do this here to maintain consistency)
+    update_workorder_status($workorder_id, 'deleted'); 
+    
     // Delete the workorder primary record
-    $sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id);
+    //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id); (this use to delete the whole record)
+    $sql = "UPDATE ".PRFX."workorder_records SET
+        employee_id         = '',
+        client_id           = '',   
+        invoice_id          = '',
+        created_by          = '',
+        closed_by           = '',
+        open_date           = '0000-00-00 00:00:00',
+        close_date          = '0000-00-00 00:00:00',
+        last_active         = '0000-00-00 00:00:00',
+        status              = 'deleted',
+        is_closed           = '1',
+        scope               = '',
+        description         = '',
+        comment             = '',
+        resolution          = ''
+        WHERE workorder_id =". $db->qstr($workorder_id);
     
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Work Order").' '.$workorder_id.'.');
@@ -1029,28 +1048,73 @@ function delete_workorder($workorder_id) {
 ######################################################
 
 function check_workorder_status_allows_for_deletion($workorder_id) {
+     
+    // Get the otherincome details
+    $workorder_details = get_workorder_details($workorder_id);
     
-    $db = QFactory::getDbo();
+    /* Is Unassigned
+    if($workorder_details['status'] == 'unassigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is unassigned."));
+        return false;        
+    }*/
     
-    $sql = "SELECT status FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id);
-    
-    if(!$rs = $db->Execute($sql)) {        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if a work order is allowed to be deleted."));
-    } else {        
-        
-        // Unassigned and Management are allowed status for deleteion
-        if($rs->fields['status'] == 'unassigned' || $rs->fields['status'] == 'management') {
-            
-            return true;
-            
-        } else {             
-            
-            return false;
-            
-        }
-        
+    // Is Assigned
+    if($workorder_details['status'] == 'assigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is assigned"));
+        return false;        
     }
     
+    // Is Waiting for Parts
+    if($workorder_details['status'] == 'waiting_for_parts') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is waiting for parts."));
+        return false;        
+    }
+    
+    // Is Scheduled
+    if($workorder_details['status'] == 'scheduled') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is scheduled."));
+        return false;        
+    }
+    
+    // With Client
+    if($workorder_details['status'] == 'with_client') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is with the client."));
+        return false;        
+    }
+    
+    // Is On Hold
+    if($workorder_details['status'] == 'on_hold') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is on hold."));
+        return false;        
+    }
+    
+    /* Is with Management
+    if($workorder_details['status'] == 'management') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is with mangement."));
+        return false;        
+    }*/
+    
+    // Closed without Invoice
+    if($workorder_details['status'] == 'closed_without_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
+        return false;        
+    }
+    
+    // Closed with Invoice
+    if($workorder_details['status'] == 'closed_with_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($workorder_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The workorder cannot be deleted because it has already been deleted."));
+        return false;        
+    }
+    
+    // All checks passed
+    return true;    
+     
 }
 
 ####################################

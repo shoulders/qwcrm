@@ -1296,7 +1296,8 @@ INSERT INTO `#__workorder_statuses` (`id`, `status_key`, `display_name`) VALUES
 (6, 'on_hold', 'On Hold'),
 (7, 'management', 'Management'),
 (8, 'closed_without_invoice', 'Closed without Invoice'),
-(9, 'closed_with_invoice', 'Closed with Invoice');
+(9, 'closed_with_invoice', 'Closed with Invoice'),
+(9, 'deleted', 'Deleted');
 
 --
 -- Indexes for dumped tables
