@@ -32,15 +32,12 @@ if(isset($VAR['change_employee'])) {
     force_page('workorder', 'status&workorder_id='.$VAR['workorder_id']);
 }
 
-// Get statuses that can be changed by the user
-$statuses = get_workorder_statuses(true);
- 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',     !get_workorder_details($VAR['workorder_id'], 'invoice_id')        );
-$smarty->assign('allowed_to_change_employee',   !get_workorder_details($VAR['workorder_id'], 'is_closed')         );
+$smarty->assign('allowed_to_change_status',     check_workorder_status_can_be_changed($VAR['workorder_id']) );
+$smarty->assign('allowed_to_change_employee',   check_workorder_allowed_to_change_employee($VAR['workorder_id']));
 $smarty->assign('allowed_to_delete',            check_workorder_status_allows_for_deletion($VAR['workorder_id'])  );
 $smarty->assign('active_employees',             get_active_users('employees')                                     );
-$smarty->assign('workorder_statuses',           $statuses                                                         );
+$smarty->assign('workorder_statuses',           get_workorder_statuses(true)                                      );
 $smarty->assign('workorder_status',             get_workorder_details($VAR['workorder_id'], 'status')             );
 $smarty->assign('workorder_status_display_name',get_workorder_status_display_name(get_workorder_details($VAR['workorder_id'], 'status')));
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                             );

@@ -109,7 +109,8 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
             ".PRFX."workorder_records.open_date AS workorder_open_date,
             ".PRFX."workorder_records.close_date AS workorder_close_date,
             ".PRFX."workorder_records.scope AS workorder_scope,
-            ".PRFX."workorder_records.status AS workorder_status
+            ".PRFX."workorder_records.status AS workorder_status,
+            ".PRFX."workorder_records.status AS workorder_is_closed
                
             FROM ".PRFX."workorder_records
             LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_records.employee_id = ".PRFX."user_records.user_id
@@ -466,7 +467,7 @@ function get_workorder_statuses($restricted_statuses = false) {
     
     // Restrict statuses to those that are allowed to be changed by the user
     if($restricted_statuses) {
-        $sql .= "\nWHERE status_key NOT IN ('closed_with_invoice')";
+        $sql .= "\nWHERE status_key NOT IN ('closed_with_invoice', 'deleted')";
     }
 
     if(!$rs = $db->execute($sql)){        
@@ -1043,80 +1044,6 @@ function delete_workorder($workorder_id) {
     
 }
 
-######################################################
-# Is the workorder in an allowed state to be deleted #
-######################################################
-
-function check_workorder_status_allows_for_deletion($workorder_id) {
-     
-    // Get the otherincome details
-    $workorder_details = get_workorder_details($workorder_id);
-    
-    /* Is Unassigned
-    if($workorder_details['status'] == 'unassigned') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is unassigned."));
-        return false;        
-    }*/
-    
-    // Is Assigned
-    if($workorder_details['status'] == 'assigned') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is assigned"));
-        return false;        
-    }
-    
-    // Is Waiting for Parts
-    if($workorder_details['status'] == 'waiting_for_parts') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is waiting for parts."));
-        return false;        
-    }
-    
-    // Is Scheduled
-    if($workorder_details['status'] == 'scheduled') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is scheduled."));
-        return false;        
-    }
-    
-    // With Client
-    if($workorder_details['status'] == 'with_client') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is with the client."));
-        return false;        
-    }
-    
-    // Is On Hold
-    if($workorder_details['status'] == 'on_hold') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is on hold."));
-        return false;        
-    }
-    
-    /* Is with Management
-    if($workorder_details['status'] == 'management') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is with mangement."));
-        return false;        
-    }*/
-    
-    // Closed without Invoice
-    if($workorder_details['status'] == 'closed_without_invoice') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
-        return false;        
-    }
-    
-    // Closed with Invoice
-    if($workorder_details['status'] == 'closed_with_invoice') {
-        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
-        return false;        
-    }
-    
-    // Is deleted
-    if($workorder_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The workorder cannot be deleted because it has already been deleted."));
-        return false;        
-    }
-    
-    // All checks passed
-    return true;    
-     
-}
-
 ####################################
 #    delete a workorders's note    #
 ####################################
@@ -1255,4 +1182,233 @@ function assign_workorder_to_employee($workorder_id, $target_employee_id) {
         
     }
     
+ }
+
+
+######################################################
+# Is the workorder in an allowed state to be deleted #
+######################################################
+
+function check_workorder_status_allows_for_deletion($workorder_id) {
+     
+    // Get the otherincome details
+    $workorder_details = get_workorder_details($workorder_id);
+    
+    /* Is Unassigned
+    if($workorder_details['status'] == 'unassigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is unassigned."));
+        return false;        
+    }*/
+    
+    // Is Assigned
+    if($workorder_details['status'] == 'assigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is assigned"));
+        return false;        
+    }
+    
+    // Is Waiting for Parts
+    if($workorder_details['status'] == 'waiting_for_parts') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is waiting for parts."));
+        return false;        
+    }
+    
+    // Is Scheduled
+    if($workorder_details['status'] == 'scheduled') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is scheduled."));
+        return false;        
+    }
+    
+    // With Client
+    if($workorder_details['status'] == 'with_client') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is with the client."));
+        return false;        
+    }
+    
+    // Is On Hold
+    if($workorder_details['status'] == 'on_hold') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is on hold."));
+        return false;        
+    }
+    
+    /* Is with Management
+    if($workorder_details['status'] == 'management') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it is with mangement."));
+        return false;        
+    }*/
+    
+    // Closed without Invoice
+    if($workorder_details['status'] == 'closed_without_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
+        return false;        
+    }
+    
+    // Closed with Invoice
+    if($workorder_details['status'] == 'closed_with_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($workorder_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The workorder cannot be deleted because it has already been deleted."));
+        return false;        
+    }
+    
+    // All checks passed
+    return true;    
+     
+}
+
+############################################################
+#  Check if the workorder status is allowed to be changed  #
+############################################################
+
+ function check_workorder_status_can_be_changed($workorder_id) {
+     
+   // Get the otherincome details
+    $workorder_details = get_workorder_details($workorder_id);
+    
+    /* Is Unassigned
+    if($workorder_details['status'] == 'unassigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it is unassigned."));
+        return false;        
+    }*/
+    
+    /* Is Assigned
+    if($workorder_details['status'] == 'assigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it is assigned"));
+        return false;        
+    }*/
+    
+    /* Is Waiting for Parts
+    if($workorder_details['status'] == 'waiting_for_parts') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it is waiting for parts."));
+        return false;        
+    }*/
+    
+    /* Is Scheduled
+    if($workorder_details['status'] == 'scheduled') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it is scheduled."));
+        return false;        
+    }*/
+    
+    /* With Client
+    if($workorder_details['status'] == 'with_client') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it is with the client."));
+        return false;        
+    }*/
+    
+    /* Is On Hold
+    if($workorder_details['status'] == 'on_hold') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it is on hold."));
+        return false;        
+    }*/
+    
+    /* Is with Management
+    if($workorder_details['status'] == 'management') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it is with mangement."));
+        return false;        
+    }*/
+    
+    /* Closed without Invoice
+    if($workorder_details['status'] == 'closed_without_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it has been closed without an invoice."));
+        return false;        
+    }*/
+    
+    // Closed with Invoice
+    if($workorder_details['status'] == 'closed_with_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it has been closed with an invoice."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($workorder_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder status cannot be changed because it has already been deleted."));
+        return false;        
+    }
+    
+    // All checks passed
+    return true;    
+     
+ }
+ 
+ #############################################################
+#  Check if the workorder employee is allowed to be changed  #
+##############################################################
+
+ function check_workorder_allowed_to_change_employee($workorder_id) {
+     
+    // Get the otherincome details
+    $workorder_details = get_workorder_details($workorder_id);
+    
+    /* Is Unassigned
+    if($workorder_details['status'] == 'unassigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it is unassigned."));
+        return false;        
+    }*/
+    
+    /* Is Assigned
+    if($workorder_details['status'] == 'assigned') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it is assigned"));
+        return false;        
+    }*/
+    
+    /* Is Waiting for Parts
+    if($workorder_details['status'] == 'waiting_for_parts') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it is waiting for parts."));
+        return false;        
+    }*/
+    
+    /* Is Scheduled
+    if($workorder_details['status'] == 'scheduled') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it is scheduled."));
+        return false;        
+    }*/
+    
+    /* With Client
+    if($workorder_details['status'] == 'with_client') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it is with the client."));
+        return false;        
+    }*/
+    
+    /* Is On Hold
+    if($workorder_details['status'] == 'on_hold') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it is on hold."));
+        return false;        
+    }*/
+    
+    /* Is with Management
+    if($workorder_details['status'] == 'management') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it is with mangement."));
+        return false;        
+    }*/
+    
+    // Closed without Invoice
+    if($workorder_details['status'] == 'closed_without_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."));
+        return false;        
+    }
+    
+    // Closed with Invoice
+    if($workorder_details['status'] == 'closed_with_invoice') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($workorder_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it has already been deleted."));
+        return false;        
+    }
+    
+    /* Is Closed (old Fallback method)
+    if(!get_workorder_details($workorder_details['workorder_id'], 'is_closed')) {
+        //postEmulationWrite('warning_msg', _gettext("This workorder employee cannot be changed because it has been closes."));
+        return false;  
+    }*/
+    
+    // All checks passed
+    return true;    
+     
  }
