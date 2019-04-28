@@ -19,7 +19,10 @@ class PType {
         $this->VAR = &$VAR;
         $this->smarty = QFactory::getSmarty();
         $this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);
-        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->invoice_details['balance'];} // Dirty hack until full OOP
+        
+        // Set intial record balance
+        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->invoice_details['balance'];}
+        if(class_exists('UpdatePayment')) {UpdatePayment::$record_balance = $this->invoice_details['balance'];}
                        
         // Assign Type specific template variables        
         $this->smarty->assign('client_details', get_client_details($this->invoice_details['client_id']));
@@ -36,18 +39,25 @@ class PType {
         $this->VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];
         $this->VAR['qpayment']['workorder_id'] = $this->invoice_details['workorder_id'];
         
-        // Validate_payment_amount
-        if(!validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
-            
-            NewPayment::$payment_validated = false;            
-
-        } else {
-
-            NewPayment::$payment_validated = true;
-            
+        // Validate payment_amount (New Payments)
+        if(class_exists('NewPayment')) {
+            NewPayment::$record_balance = $this->invoice_details['balance'];
+            if(!validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
+                NewPayment::$payment_validated = false;
+            } else {
+                NewPayment::$payment_validated = true;
+            }
         }
         
-        
+        // Validate payment_amount (Payment Update)
+        if(class_exists('UpdatePayment')) {
+            UpdatePayment::$record_balance = ($this->invoice_details['balance'] + UpdatePayment::$payment_details['amount']);
+            if(!validate_payment_amount(UpdatePayment::$record_balance, UpdatePayment::$payment_details['amount'])) {
+                UpdatePayment::$payment_validated = false;
+            } else {
+                UpdatePayment::$payment_validated = true;
+            }
+        }
         
         return;
 
@@ -119,6 +129,25 @@ class PType {
         NewPayment::$buttons['addNewRecord']['title'] = null;
         
     }    
+    
+    // Update Payment
+    public function update() {
+        
+        // Update the payment
+        update_payment($this->VAR['qpayment']);
+                
+        // Recalculate record totals
+        recalculate_invoice_totals($this->VAR['qpayment']['invoice_id']);
+        
+        // Refresh the record data        
+        //$this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);        
+        
+        // Load the relevant record details page
+        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'information_msg='._gettext("Payment updated successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
     
     // Cancel Payment
     public function cancel() {

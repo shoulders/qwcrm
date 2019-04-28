@@ -19,7 +19,10 @@ class PType {
         $this->VAR = &$VAR;
         $this->smarty = QFactory::getSmarty(); 
         $this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);
-        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->otherincome_details['balance'];} // Dirty hack until full OOP
+        
+        // Set intial record balance
+        if(class_exists('NewPayment')) {NewPayment::$record_balance = $this->otherincome_details['balance'];}
+        if(class_exists('UpdatePayment')) {UpdatePayment::$record_balance = $this->otherincome_details['balance'];}
         
         // Assign Type specific template variables  
         $this->smarty->assign('payment_active_methods', get_payment_methods('receive', 'enabled'));
@@ -35,15 +38,24 @@ class PType {
         $this->VAR['qpayment']['client_id'] = '';
         $this->VAR['qpayment']['workorder_id'] = '';
         
-        // Validate_payment_amount
-        if(!validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
-            
-            NewPayment::$payment_validated = false;            
-
-        } else {
-
-            NewPayment::$payment_validated = true;
-            
+        // Validate payment_amount (New Payments)
+        if(class_exists('NewPayment')) {
+            NewPayment::$record_balance = $this->otherincome_details['balance'];
+            if(!validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
+                NewPayment::$payment_validated = false;
+            } else {
+                NewPayment::$payment_validated = true;
+            }
+        }
+        
+        // Validate payment_amount (Payment Update)
+        if(class_exists('UpdatePayment')) {
+            UpdatePayment::$record_balance = ($this->otherincome_details['balance'] + UpdatePayment::$payment_details['amount']);
+            if(!validate_payment_amount(UpdatePayment::$record_balance, UpdatePayment::$payment_details['amount'])) {
+                UpdatePayment::$payment_validated = false;
+            } else {
+                UpdatePayment::$payment_validated = true;
+            }
         }
         
         return;
@@ -108,7 +120,26 @@ class PType {
         NewPayment::$buttons['addNewRecord']['url'] = 'index.php?component=otherincome&page_tpl=new'; 
         NewPayment::$buttons['addNewRecord']['title'] = _gettext("Add New Other Income Record");
         
-    }    
+    }  
+    
+    // Update Payment
+    public function update() {
+        
+        // Update the payment
+        update_payment($this->VAR['qpayment']);
+                
+        // Recalculate record totals
+        recalculate_otherincome_totals($this->VAR['qpayment']['otherincome_id']);
+        
+        // Refresh the record data        
+        //$this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
+        
+        // Load the relevant record details page
+        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'information_msg='._gettext("Payment updated successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+                
+        return;        
+        
+    }
 
     // Cancel Payment
     public function cancel() {

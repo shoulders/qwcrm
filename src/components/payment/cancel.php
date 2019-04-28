@@ -34,7 +34,6 @@ class CancelPayment {
     
     private $VAR = null;
     private $type = null;
-    public static $record_balance = null;
     private $payment_details = null;
     
     function __construct(&$VAR) {

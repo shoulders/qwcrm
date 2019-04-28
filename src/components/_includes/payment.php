@@ -531,41 +531,33 @@ function get_payment_additional_info_names() {
 #   update payment  #
 #####################
 
-function update_payment($VAR) {    
+function update_payment($qpayment) {    
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."payment_records SET        
             employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id ).",
-            client_id       = ".$db->qstr( $VAR['client_id']                ).",
-            workorder_id    = ".$db->qstr( $VAR['workorder_id']             ).",
-            invoice_id      = ".$db->qstr( $VAR['invoice_id']               ).",            
-            date            = ".$db->qstr( date_to_mysql_date($VAR['date']) ).",
-            type            = ".$db->qstr( $VAR['type']                     ).",
-            method          = ".$db->qstr( $VAR['method']                   ).",
-            amount          = ".$db->qstr( $VAR['amount']                   ).",
-            note            = ".$db->qstr( $VAR['note']                     )."
-            WHERE payment_id =". $db->qstr( $VAR['payment_id']              );
+            date            = ".$db->qstr( date_to_mysql_date($qpayment['date']) ).",
+            amount          = ".$db->qstr( $qpayment['amount']                   ).",
+            note            = ".$db->qstr( $qpayment['note']                     )."
+            WHERE payment_id =". $db->qstr( $qpayment['payment_id']              );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
         
     } else {
                 
-        // Recalculate invoice totals
-        recalculate_invoice_totals($VAR['invoice_id']);       
-
         // Create a Workorder History Note       
-        insert_workorder_history_note($VAR['workorder_id'], _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
+        insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.QFactory::getUser()->login_display_name);           
 
         // Log activity 
-        $record = _gettext("Payment").' '.$VAR['payment_id'].' '._gettext("updated.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['client_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+        $record = _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated.");
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
         
         // Update last active record    
-        update_client_last_active($VAR['client_id']);
-        update_workorder_last_active($VAR['workorder_id']);
-        update_invoice_last_active($VAR['invoice_id']);
+        update_client_last_active($qpayment['client_id']);
+        update_workorder_last_active($qpayment['workorder_id']);
+        update_invoice_last_active($qpayment['invoice_id']);
     
     }
     
@@ -1003,15 +995,21 @@ function check_payment_can_be_deleted($payment_id) {
     // Get the payment details
     $payment_details = get_payment_details($payment_id);
     
-    // Is the current payment method active, if not you cannot change status
+    /* Is the current payment method active, if not you cannot change status
     if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
-        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it's current payment method is not available."));
+        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be edited because it's current payment method is not available."));
+        return false;        
+    }*/
+    
+    // Is Cancelled
+    if($payment_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because it has been cancelled."));
         return false;        
     }
            
     // Is Deleted
     if($payment_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it has been deleted."));
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because it has been deleted."));
         return false;        
     }
     

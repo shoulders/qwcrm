@@ -232,6 +232,11 @@ function insert_client_note($client_id, $note) {
 
 function get_client_details($client_id, $item = null) {
     
+    // This allows blank calls (i.e. payment:details, not all records have a client_id)
+    if(!$client_id) {
+        return;        
+    }
+    
     $db = QFactory::getDbo();
     
     $sql = "SELECT * FROM ".PRFX."client_records WHERE client_id=".$db->qstr($client_id);

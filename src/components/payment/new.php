@@ -96,12 +96,12 @@ class NewPayment {
                
         // Set the payment type class
         $this->set_payment_type();
-        
+                
         // If the form is submitted
         if(isset($this->VAR['submit'])) {  
             
-            // Wrap the submitted note if one is submitted
-            if($this->VAR['qpayment']['note']) {$this->VAR['qpayment']['note'] = '<p>'.$this->VAR['qpayment']['note'].'</p>';}
+            // Wrap the submitted note
+            if($this->VAR['qpayment']['note'] != '') {$this->VAR['qpayment']['note'] = '<p>'.$this->VAR['qpayment']['note'].'</p>';}
             
             // Set payment method class
             $this->set_payment_method();

@@ -52,7 +52,7 @@
                     {if $display_payments[p].status == $payment_statuses[t].status_key}{t}{$payment_statuses[t].display_name}{/t}{/if}                    
                 {/section}
             </td>             
-            <td class="olotd4" nowrap>{$display_payments[p].amount}</td>
+            <td class="olotd4" nowrap>{$display_payments[p].amount|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
                 {if $display_payments[p].additional_info|adinfodisplay}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Additional Info{/t}</strong></div><hr><div>{$display_payments[p].additional_info|adinfodisplay|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
