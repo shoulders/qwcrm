@@ -441,7 +441,7 @@ function recalculate_otherincome_totals($otherincome_id) {
     $otherincome_details            = get_otherincome_details($otherincome_id);    
     
     $gross_amount                   = $otherincome_details['gross_amount'];   
-    $payments_sub_total             = (sum_payments(null, null, null, null, null, 'otherincome', null, null, null, null, null, $otherincome_id) - sum_payments(null, null, null, null, 'cancelled', 'otherincome', null, null, null, null, null, $otherincome_id));    
+    $payments_sub_total             = sum_payments(null, null, null, null, 'valid', 'otherincome', null, null, null, null, null, $otherincome_id);
     $balance                        = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."otherincome_records SET

@@ -549,7 +549,7 @@ function recalculate_refund_totals($refund_id) {
     $refund_details             = get_refund_details($refund_id);    
     
     $gross_amount               = $refund_details['gross_amount'];   
-    $payments_sub_total         = (sum_payments(null, null, null, null, null, 'refund', null, null, null, $refund_id) - sum_payments(null, null, null, null, 'cancelled', 'refund', null, null, null, $refund_id));    
+    $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'refund', null, null, null, $refund_id);
     $balance                    = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."refund_records SET
