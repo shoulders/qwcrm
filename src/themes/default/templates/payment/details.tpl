@@ -44,11 +44,29 @@
                                             <td class="menutd">{if $payment_details.workorder_id}<a href="index.php?component=workorder&page_tpl=details&workorder_id={$payment_details.workorder_id}">{$payment_details.workorder_id}</a>{else}{t}n/a{/t}{/if}</td>
                                         </tr>
                                         <tr>
-                                            <td class="menutd" ><b>{t}Invoice ID{/t}</b></td>
-                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a></td>
                                             <td class="menutd" ><b>{t}Date{/t}</b></td>
                                             <td class="menutd">{$payment_details.date|date_format:$date_format}</td>
-                                        </tr>                                        
+                                            <td class="menutd"></td>
+                                            <td class="menutd"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd" ><b>{t}Invoice ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$payment_details.invoice_id}">{$payment_details.invoice_id}</a></td>
+                                            <td class="menutd" ><b>{t}Voucher ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=voucher&page_tpl=details&voucher_id={$payment_details.voucher_id}">{$payment_details.voucher_id}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd" ><b>{t}Refund ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=refund&page_tpl=details&refund_id={$payment_details.refund_id}">{$payment_details.refund_id}</a></td>
+                                            <td class="menutd" ><b>{t}Expense ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=expense&page_tpl=details&expense_id={$payment_details.expense_id}">{$payment_details.expense_id}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd" ><b>{t}Otherincome ID{/t}</b></td>
+                                            <td class="menutd"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$payment_details.otherincome_id}">{$payment_details.otherincome_id}</a></td>
+                                            <td class="menutd"></td>
+                                            <td class="menutd"></td>
+                                        </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payment Method{/t}</b></td>
                                             <td class="menutd">
