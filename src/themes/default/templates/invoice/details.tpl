@@ -41,7 +41,8 @@
                                             <td class="row2"><b>{t}Due Date{/t}</b></td>                                                                                                                                 
                                             <td class="row2"><b>{t}Status{/t}</b></td>
                                             <td class="row2"><b>{t}Gross{/t}</b></td>
-                                            <td class="row2"><b>{t}Balance{/t}</b></td>                                            
+                                            <td class="row2"><b>{t}Balance{/t}</b></td>
+                                            <td class="row2"><b>{t}Paid{/t}</b></td> 
                                             <td class="row2"><b>{t}Date Closed{/t}</b></td>                                            
                                         </tr>
                                         <tr class="olotd4">
@@ -64,7 +65,8 @@
                                                 {/section}
                                                 {if $invoice_details.status == 'refunded'}</a>{/if}                                                    
                                             <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
-                                            <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>                                            
+                                            <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
+                                            <td><font color="green">{$currency_sym}{$invoice_details.paid_amount|string_format:"%.2f"}</font></td> 
                                             <td>
                                                 {$invoice_details.close_date|date_format:$date_format}<br>
                                                 {if $invoice_details.status == 'refunded'}
@@ -77,7 +79,7 @@
                                             
                                             <!-- Scope -->
                                             <td colspan="2"><b>{t}Work Order Scope{/t}:</b></td>
-                                            <td colspan="7">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
+                                            <td colspan="8">{if $workorder_details.scope}{$workorder_details.scope}{else}{t}n/a{/t}{/if}</td>
                                             
                                         </tr>
                                         <tr>
@@ -102,7 +104,7 @@
                                             </td>
 
                                             <!-- Company Details -->
-                                            <td colspan="4" valign="top" >
+                                            <td colspan="5" valign="top" >
                                                 <b>{t}Pay To{/t}</b>
                                                 <table cellpadding="0" cellspacing="0" width="100%">
                                                     <tr>
@@ -122,7 +124,7 @@
 
                                         <!-- Terms and Discount -->
                                         <tr>
-                                            <td colspan="9" valign="top" align="left">                                                        
+                                            <td colspan="10" valign="top" align="left">                                                        
                                                 <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
                                                 <b>{t}Client Discount Rate{/t}:</b>
                                                 {$invoice_details.discount_rate|string_format:"%.2f"}%                                                                                                     
