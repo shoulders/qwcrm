@@ -853,3 +853,8 @@ UPDATE `#__otherincome_records` SET `last_active` = `date`;
 -- Add new status to Workorders
 --
 INSERT INTO `#__workorder_statuses` (`id`, `status_key`, `display_name`) VALUES ('10', 'deleted', 'Deleted');
+
+--
+-- Add last active to payment records
+ALTER TABLE `#__payment_records` ADD `last_active` DATETIME NOT NULL AFTER `amount`;
+UPDATE `#__payment_records` SET `last_active` = `date`;

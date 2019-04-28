@@ -206,6 +206,7 @@ function insert_payment($qpayment) {
             method          = ".$db->qstr( $qpayment['method']                      ).",
             status          = 'valid',
             amount          = ".$db->qstr( $qpayment['amount']                      ).",
+            last_active     =". $db->qstr( mysql_datetime()                         ).",
             additional_info = ".$db->qstr( $qpayment['additional_info']             ).",
             note            = ".$db->qstr( $qpayment['note']                        );
 
@@ -536,9 +537,10 @@ function update_payment($qpayment) {
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."payment_records SET        
-            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id ).",
+            employee_id     = ".$db->qstr( QFactory::getUser()->login_user_id    ).",
             date            = ".$db->qstr( date_to_mysql_date($qpayment['date']) ).",
             amount          = ".$db->qstr( $qpayment['amount']                   ).",
+            last_active     =". $db->qstr( mysql_datetime()                      ).",
             note            = ".$db->qstr( $qpayment['note']                     )."
             WHERE payment_id =". $db->qstr( $qpayment['payment_id']              );
 
@@ -651,8 +653,9 @@ function update_payment_status($payment_id, $new_status, $silent = false) {
     }    
     
     $sql = "UPDATE ".PRFX."payment_records SET
-            status               =". $db->qstr( $new_status  )."            
-            WHERE payment_id     =". $db->qstr( $payment_id );
+            status               =". $db->qstr( $new_status      ).",
+            last_active          =". $db->qstr( mysql_datetime() ).",
+            WHERE payment_id     =". $db->qstr( $payment_id      );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
