@@ -42,10 +42,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Client{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td colspan="3">
-                                                                <a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a>
-                                                                <input id="client_id" name="client_id" class="olotd5" size="5" value="{$refund_details.client_id}" type="hidden">
-                                                            </td>
+                                                            <td colspan="3"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
@@ -63,18 +60,14 @@
                                                         </tr>                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}Invoice ID{/t}</b></td>
-                                                            <td colspan="3">
-                                                                {if $refund_details.invoice_id}<a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a>{else}{t}n/a{/t}{/if}
-                                                                <input id="invoice_id" name="invoice_id" class="olotd5" size="5" value="{$refund_details.invoice_id}" type="hidden">
-                                                            </td>
+                                                            <td colspan="3">{if $refund_details.invoice_id}<a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a>{else}{t}n/a{/t}{/if}</td>                                                            
                                                         </tr>                                                        
                                                         <tr>
                                                             <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>                                                                 
                                                                 {section name=s loop=$refund_types}    
                                                                     {if $refund_details.item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}                                                                                
-                                                                {/section}    
-                                                                <input id="item_type" name="item_type" class="olotd5" size="5" value="{$refund_details.item_type}" type="hidden">
+                                                                {/section}                                                                
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -83,24 +76,15 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td>
-                                                                {$currency_sym} {$refund_details.net_amount}
-                                                                <input id="net_amount" name="net_amount" class="olotd5" style="border-width: medium;" size="10" value="{$refund_details.net_amount}" type="hidden" onkeyup="calculateTotals('net_amount');"/>
-                                                            </td>
+                                                            <td>{$currency_sym}{$refund_details.net_amount|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Tax{/t} {t}Amount{/t}</b></td>
-                                                            <td>
-                                                                {$currency_sym} {$refund_details.tax_amount}
-                                                                <input id="tax_amount" name="tax_amount" class="olotd5" size="10" value="{$refund_details.tax_amount}" type="hidden">
-                                                            </td>
+                                                            <td>{$currency_sym}{$refund_details.tax_amount|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td>
-                                                                {$currency_sym} {$refund_details.gross_amount}
-                                                                <input id="gross_amount" name="gross_amount" class="olotd5" size="10" value="{$refund_details.gross_amount}" type="hidden">
-                                                            </td>
+                                                            <td>{$currency_sym} {$refund_details.gross_amount|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>

@@ -309,35 +309,31 @@ function update_refund($VAR) {
     
     $sql = "UPDATE ".PRFX."refund_records SET
             employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            client_id        =". $db->qstr( $VAR['client_id']               ).",
-            invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",                        
-            date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",            
-            item_type        =". $db->qstr( $VAR['item_type']               ).",            
-            net_amount       =". $db->qstr( $VAR['net_amount']              ).",            
-            tax_amount       =". $db->qstr( $VAR['tax_amount']              ).",
-            gross_amount     =". $db->qstr( $VAR['gross_amount']            ).", 
-            last_active      =". $db->qstr( mysql_datetime()                ).",
-            note             =". $db->qstr( $VAR['note']                    )."
-            WHERE refund_id  =". $db->qstr( $VAR['refund_id']               );                        
+            date             =". $db->qstr( date_to_mysql_date($VAR['date'])   ).",            
+            last_active      =". $db->qstr( mysql_datetime()                   ).",
+            note             =". $db->qstr( $VAR['note']                       )."
+            WHERE refund_id  =". $db->qstr( $VAR['refund_id']                  );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
     } else {
         
+        $refund_details = get_refund_details($VAR['refund_id']);
+        
         // Get related workorder_id
-        $workorder_id = get_invoice_details($VAR['invoice_id'], 'workorder_id');
+        $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
         
         // Create a Workorder History Note
-        insert_workorder_history_note($workorder_id, _gettext("Refunnd").' '.$VAR['refund_id'].' '._gettext("updated").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$VAR['refund_id'].' '._gettext("updated").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
         $record = _gettext("Refund Record").' '.$VAR['refund_id'].' '._gettext("updated.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['client_id'], $workorder_id, $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
         
         // Update last active record  
-        update_client_last_active($VAR['client_id']);
+        update_client_last_active($refund_details['client_id']);
         update_workorder_last_active($workorder_id);
-        update_invoice_last_active($VAR['invoice_id']);
+        update_invoice_last_active($refund_details['invoice_id']);
         
         return true;
       
@@ -746,11 +742,11 @@ function check_refund_can_be_deleted($refund_id) {
     // Get the refund details
     $refund_details = get_refund_details($refund_id);
     
-    // Is partially paid
+    /* Is unpaid
     if($refund_details['status'] == 'unpaid') {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments and is partially paid."));
         return false;        
-    }
+    }*/
     
     // Is partially paid
     if($refund_details['status'] == 'partially_paid') {
