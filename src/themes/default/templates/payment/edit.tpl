@@ -136,6 +136,10 @@
                                                         <td>{$currency_sym}<input name="qpayment[amount]" class="olotd5" size="10" value="{$payment_details.amount|string_format:"%.2f"}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                     </tr>
                                                     <tr>
+                                                        <td align="right"><b>{t}Additional Info{/t}</b></td>
+                                                        <td>{if $payment_details.additional_info|adinfodisplay}{$payment_details.additional_info|adinfodisplay}{else}{t}none{/t}{/if}</td>
+                                                    </tr> 
+                                                    <tr>
                                                         <td align="right"><b>{t}Note{/t}</b></td>
                                                         <td><textarea name="qpayment[note]" class="olotd5" cols="50" rows="15">{$payment_details.note}</textarea></td>
                                                     </tr>                                                    
