@@ -551,7 +551,7 @@ function recalculate_refund_totals($refund_id) {
     $refund_details             = get_refund_details($refund_id);    
     
     $gross_amount               = $refund_details['gross_amount'];   
-    $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'refund', null, null, null, $refund_id);
+    $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'refund', null, null, null, null, $refund_id);
     $balance                    = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."refund_records SET
@@ -625,7 +625,7 @@ function recalculate_refund_totals($refund_id) {
     }
         
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'refund', null, null, null, $refund_id)) {
+    if(count_payments(null, null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
         //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has payments."));
         return false;        
     }
@@ -669,7 +669,7 @@ function check_refund_can_be_cancelled($refund_id) {
     }    
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'refund', null, null, null, $refund_id)) {
+    if(count_payments(null, null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be cancelled because the refund has payments."));
         return false;        
     }
@@ -719,7 +719,7 @@ function check_refund_can_be_deleted($refund_id) {
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'refund', null, null, null, $refund_id)) {
+    if(count_payments(null, null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it has payments."));
         return false;        
     }
@@ -775,7 +775,7 @@ function check_refund_can_be_deleted($refund_id) {
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'refund', null, null, null, $refund_id)) {
+    if(count_payments(null, null, null, null, null, 'refund', null, null, null, null, $refund_id)) {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments."));
         return false;        
     }

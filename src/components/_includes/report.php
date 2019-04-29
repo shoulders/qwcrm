@@ -1276,8 +1276,8 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
     if($record_set == 'current' || $record_set == 'all') {
     
         $current_stats = array(
-            "count_valid"               =>  count_payments($start_date, $end_date, null, null, 'valid', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
-            "count_deleted"             =>  count_payments($start_date, $end_date, null, null, 'deleted', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id)         // Not currently used                 
+            "count_valid"               =>  count_payments($start_date, $end_date, null, null, 'valid', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
+            "count_deleted"             =>  count_payments($start_date, $end_date, null, null, 'deleted', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id)         // Not currently used                 
              
         );
 
@@ -1290,8 +1290,8 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         
         $historic_stats = array(                       
             
-            "count_received"            =>  count_payments($start_date, $end_date, null, null, null, 'received', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
-            "count_sent"                =>  count_payments($start_date, $end_date, null, null, null, 'sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
+            "count_received"            =>  count_payments($start_date, $end_date, null, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
+            "count_sent"                =>  count_payments($start_date, $end_date, null, null, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
         );
         
         $stats = array_merge($stats, $historic_stats);
@@ -1303,8 +1303,8 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         
         $revenue_stats = array(                       
             
-            "sum_received"               =>  sum_payments($start_date, $end_date, null, null, null, 'received', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
-            "sum_sent"                      =>  sum_payments($start_date, $end_date, null, null, null, 'sent', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id) 
+            "sum_received"               =>  sum_payments($start_date, $end_date, null, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id),
+            "sum_sent"                   =>  sum_payments($start_date, $end_date, null, null, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id) 
             
         );
         
@@ -1320,7 +1320,7 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
 #     Count Payments                               #
 ####################################################
 
-function count_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {   
+function count_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {   
     
     $db = QFactory::getDbo();
     
@@ -1349,6 +1349,11 @@ function count_payments($start_date = null, $end_date = null, $tax_system = null
     
     // Restrict by Type
     $whereTheseRecords .= payment_build_filter_by_type($type); 
+    
+    // Filter by Method
+    if($method) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$db->qstr($method);
+    }
     
     // Filter by Employee
     if($employee_id) {
@@ -1399,7 +1404,7 @@ function count_payments($start_date = null, $end_date = null, $tax_system = null
 #  Sum selected value of payments       #
 #########################################
 
-function sum_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+function sum_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1428,7 +1433,12 @@ function sum_payments($start_date = null, $end_date = null, $tax_system = null, 
       
     // Restrict by Type
     $whereTheseRecords .= payment_build_filter_by_type($type);    
-              
+        
+    // Filter by Method
+    if($method) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$db->qstr($method);
+    }
+    
     // Filter by Employee
     if($employee_id) {
         $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($employee_id);
