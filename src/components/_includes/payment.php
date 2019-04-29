@@ -747,6 +747,7 @@ function delete_payment($payment_id) {
             status          = 'deleted',
             amount          = '0.00',
             additional_info = '',
+            last_active         = '0000-00-00 00:00:00',
             note            = ''
             WHERE payment_id =". $db->qstr( $payment_id );    
     

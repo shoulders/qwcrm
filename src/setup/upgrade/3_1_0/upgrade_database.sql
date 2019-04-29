@@ -270,6 +270,7 @@ CREATE TABLE `#__refund_records` (
   `refund_id` int(10) NOT NULL,
   `employee_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `client_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `workorder_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `invoice_id` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  

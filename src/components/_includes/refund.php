@@ -158,9 +158,13 @@ function insert_refund($VAR) {
     
     $db = QFactory::getDbo();
     
+    // Get related workorder_id
+    $workorder_id = get_invoice_details($VAR['invoice_id'], 'workorder_id');
+    
     $sql = "INSERT INTO ".PRFX."refund_records SET
             employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
             client_id        =". $db->qstr( $VAR['client_id']               ).",
+            workorder_id     =". $db->qstr( $workorder_id                   ).",
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",                        
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
             tax_system       =". $db->qstr(get_company_details('tax_system')).",
@@ -181,9 +185,6 @@ function insert_refund($VAR) {
         
         $refund_id = $db->Insert_ID();
                 
-        // Get related workorder_id
-        $workorder_id = get_invoice_details($VAR['invoice_id'], 'workorder_id');
-        
         // Create a Workorder History Note
         insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
                   
@@ -474,6 +475,7 @@ function delete_refund($refund_id) {
     $sql = "UPDATE ".PRFX."refund_records SET
             employee_id         = '',
             client_id           = '',
+            workorder_id        = '',
             invoice_id          = '',
             date                = '0000-00-00', 
             tax_system          = '',  
