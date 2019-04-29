@@ -12,6 +12,8 @@ defined('_QWEXEC') or die;
 class Upgrade3_1_0 extends QSetup {
     
     private $upgrade_step = null;
+    private $company_tax_system = null;
+    private $default_vat_tax_code = null;
     
     public function __construct(&$VAR) {
         
@@ -20,6 +22,10 @@ class Upgrade3_1_0 extends QSetup {
         
         // Get the upgrade step name
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
+        
+        // Set Some resuable values
+        $this->company_tax_system = get_company_details('tax_system');
+        $this->default_vat_tax_code = get_default_vat_tax_code(); // This is an educated guess
         
         // Perform the upgrade
         $this->pre_database();
@@ -115,15 +121,12 @@ class Upgrade3_1_0 extends QSetup {
         // Update Invoice Tax Types
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax');
-        
-        $company_tax_system = get_company_details('tax_system');
-        $default_vat_tax_code = get_default_vat_tax_code(); // This is an educated guess
-        
+                
         // Update Invoice Items        
-        $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $company_tax_system);
-        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $company_tax_system);        
-        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $default_vat_tax_code);
-        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $default_vat_tax_code);
+        $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $this->company_tax_system);
+        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $this->company_tax_system);        
+        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $this->default_vat_tax_code);
+        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $this->default_vat_tax_code);
         
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
         $this->invoice_correct_labour_totals();
@@ -134,8 +137,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->voucher_correct_workorder_id();
         $this->voucher_correct_expiry_date();
         $this->voucher_correct_status();
-        $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $company_tax_system);
-        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('multi_purpose', $company_tax_system)); 
+        $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
+        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('multi_purpose', $this->company_tax_system)); 
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax', '!');
@@ -149,7 +152,7 @@ class Upgrade3_1_0 extends QSetup {
         
         // Correct currently upgraded invoice payment records
         $this->update_column_values(PRFX.'payment_records', 'method', '6', 'direct_deposit');
-        $this->update_column_values(PRFX.'payment_records', 'tax_type', '*', $company_tax_system );
+        $this->update_column_values(PRFX.'payment_records', 'tax_type', '*', $this->company_tax_system );
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
         // Parse Payment notes and extract information into 'additional_info' column for invoices
@@ -1365,15 +1368,19 @@ class Upgrade3_1_0 extends QSetup {
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
                     employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
                     client_id       = '',
+                    workorder_id    = '',
                     invoice_id      = '',
+                    voucher_id      = '',
                     refund_id       = '',
                     expense_id      = ".$db->qstr($rs->fields['expense_id']                    ).",
                     otherincome_id  = '',
                     date            = ".$db->qstr($rs->fields['date']                          ).",
+                    tax_system      = ".$db->qstr($this->company_tax_system                    ).",
                     type            = 'expense',
                     method          = ".$db->qstr($rs->fields['payment_method']                ).",
                     status          = 'paid',
                     amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
                     note            = ".'<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>';               
                 
@@ -1513,15 +1520,19 @@ class Upgrade3_1_0 extends QSetup {
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
                     employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
                     client_id       = ".$db->qstr($rs->fields['client_id']                     ).",
+                    workorder_id    = ".$db->qstr(get_invoice_details($rs->fields['invoice_id'], 'workorder_id') ).",
                     invoice_id      = ".$db->qstr($rs->fields['invoice_id']                    ).",
+                    voucher_id      = '',   
                     refund_id       = ".$db->qstr($rs->fields['refund_id']                     ).",
                     expense_id      = '',
                     otherincome_id  = '',
                     date            = ".$db->qstr($rs->fields['date']                          ).",
+                    tax_system      = ".$db->qstr($this->company_tax_system                    ).",
                     type            = 'refund',
                     method          = ".$db->qstr($rs->fields['payment_method']                ).",
                     status          = 'paid',
                     amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
                     note            = ".'<p>'._gettext("Created from a refund record during an upgrade of QWcrm.").'</p>';               
                 
@@ -1661,15 +1672,19 @@ class Upgrade3_1_0 extends QSetup {
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
                     employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
                     client_id       = ".$db->qstr($rs->fields['client_id']                     ).",
+                    workorder_id    = '',
                     invoice_id      = '',
+                    voucher_id      = '',
                     refund_id       = '',
                     expense_id      = '',
-                    otherincome_id  = ".$db->qstr($rs->fields['otherincome_id']                     ).",
+                    otherincome_id  = ".$db->qstr($rs->fields['otherincome_id']                ).",
                     date            = ".$db->qstr($rs->fields['date']                          ).",
+                    tax_system      = ".$db->qstr($this->company_tax_system                    ).",
                     type            = 'otherincome',
                     method          = ".$db->qstr($rs->fields['payment_method']                ).",
                     status          = 'valid',
                     amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
                     note            = ".'<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>';               
                 
