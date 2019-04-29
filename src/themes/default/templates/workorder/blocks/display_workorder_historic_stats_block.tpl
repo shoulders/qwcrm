@@ -10,10 +10,12 @@
 <table width="100%" cellpadding="4" cellspacing="0" border="0" class="olotable">
     <tr class="olotd4">
         <td class="row2"><b>{t}Opened{/t}</b></td>                                            
-        <td class="row2"><b>{t}Closed{/t}</b></td>       
+        <td class="row2"><b>{t}Closed{/t}</b></td>
+        <td class="row2"><b>{t}Deleted{/t}</b></td>
     </tr>
     <tr class="olotd4">
         <td>{$workorder_stats.count_opened}</td>
-        <td>{$workorder_stats.count_closed}</td>                                    
+        <td>{$workorder_stats.count_closed}</td>     
+        <td>{$workorder_stats.count_deleted}</td>  
     </tr>
 </table>

@@ -1793,12 +1793,6 @@ function check_invoice_can_be_deleted($invoice_id) {
     }
     */
     
-    // Has Expenses
-    if(count_expenses(null, null, null, null, $invoice_id) > 0) {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has expenses."));
-        return false;
-    }
-        
     // Has Refunds (should not be needed)
     if(count_refunds(null, null, null, null, $invoice_id) > 0) {
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has been refunded."));

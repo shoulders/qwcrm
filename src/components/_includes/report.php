@@ -161,7 +161,6 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
             "count_management"              =>  count_workorders($start_date, $end_date, 'management', $employee_id, $client_id),
             "count_closed_without_invoice"  =>  count_workorders($start_date, $end_date, 'closed_without_invoice', $employee_id, $client_id),
             "count_closed_with_invoice"     =>  count_workorders($start_date, $end_date, 'closed_with_invoice', $employee_id, $client_id)
-            
         );
         
         $stats = array_merge($stats, $current_stats);
@@ -171,11 +170,11 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {       
         
-        $historic_stats = array(
+        $historic_stats = array(            
             "count_open"                    =>  count_workorders($start_date, $end_date, 'open', $employee_id, $client_id),
             "count_opened"                  =>  count_workorders($start_date, $end_date, 'opened', $employee_id, $client_id),            
-            "count_closed"                  =>  count_workorders($start_date, $end_date, 'closed', $employee_id, $client_id)
-            
+            "count_closed"                  =>  count_workorders($start_date, $end_date, 'closed', $employee_id, $client_id),
+            "count_deleted"                 =>  count_workorders($start_date, $end_date, 'deleted', $employee_id, $client_id)            
         );
         
         $stats = array_merge($stats, $historic_stats);
@@ -295,8 +294,7 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $current_stats = array(
             "count_open"            =>  count_invoices($start_date, $end_date, 'date', null, null, 'open', $employee_id, $client_id),
             "count_discounted"      =>  count_invoices($start_date, $end_date, 'date', null, null, 'discounted', $employee_id, $client_id),
-            "count_deleted"         =>  count_invoices($start_date, $end_date, null, null, null, 'deleted', $employee_id, $client_id),         // Not always available  
-            
+            "count_deleted"         =>  count_invoices($start_date, $end_date, null, null, null, 'deleted', $employee_id, $client_id),         // Might not be used             
             "count_pending"         =>  count_invoices($start_date, $end_date, 'date', null, null, 'pending', $employee_id, $client_id),   
             "count_unpaid"          =>  count_invoices($start_date, $end_date, 'date', null, null, 'unpaid', $employee_id, $client_id),   
             "count_partially_paid"  =>  count_invoices($start_date, $end_date, 'date', null, null, 'partially_paid', $employee_id, $client_id),   
@@ -323,6 +321,7 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
             "count_closed_paid"         =>  count_invoices($start_date, $end_date, 'closed', null, null, 'paid', $employee_id, $client_id),
             "count_closed_refunded"     =>  count_invoices($start_date, $end_date, 'closed', null, null, 'refunded', $employee_id, $client_id),
             "count_closed_cancelled"    =>  count_invoices($start_date, $end_date, 'closed', null, null, 'cancelled', $employee_id, $client_id),
+            "count_closed_deleted"      =>  count_invoices($start_date, $end_date, 'closed', null, null, 'deleted', $employee_id, $client_id),
             
             // Only used for Basic Stats (when redevelop page, tidy this, these are not historic)
             "invoiced_total"            =>  sum_invoices('gross_amount', $start_date, $end_date, 'date', null, null, null, $employee_id, $client_id),
@@ -495,7 +494,7 @@ function sum_invoices($value_name, $start_date = null, $end_date = null, $date_t
 }
 
 #####################################
-#   Build invoice Date filter SQL   #  // add cancelled, refunded
+#   Build invoice Date filter SQL   #
 #####################################
 
 function invoice_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
@@ -804,7 +803,7 @@ function get_expenses_stats($start_date = null, $end_date = null) {
 #     Count Expenses                    #
 #########################################
 
-function count_expenses($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $invoice_id = null) {
+function count_expenses($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -825,6 +824,21 @@ function count_expenses($start_date = null, $end_date = null, $tax_system = null
     if($vat_tax_code) {
         $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$db->qstr($vat_tax_code);
     }    
+    
+    // Filter by Item Type
+    if($item_type) {
+        $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$db->qstr($item_type);
+    }
+    
+    // Filter by Status
+    if($status) {
+        $whereTheseRecords .= " AND ".PRFX."expense_records.status = ".$db->qstr($status);                       
+    }
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."expense_records.employee_id=".$db->qstr($employee_id);
+    }
 
     // Filter by invoice_id
     if($invoice_id) {
@@ -851,7 +865,7 @@ function count_expenses($start_date = null, $end_date = null, $tax_system = null
 #  Sum selected value of expenses #
 ###################################
 
-function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null) {
+function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -872,6 +886,21 @@ function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_sy
     if($vat_tax_code) {
         $whereTheseRecords .= " AND ".PRFX."expense_records.vat_tax_code=".$db->qstr($vat_tax_code);
     }      
+    
+    // Filter by Item Type
+    if($item_type) {
+        $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$db->qstr($item_type);
+    }
+    
+    // Filter by Status
+    if($status) {
+        $whereTheseRecords .= " AND ".PRFX."expense_records.status = ".$db->qstr($status);                       
+    }
+
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."expense_records.employee_id=".$db->qstr($employee_id);
+    }
     
     $sql = "SELECT SUM(".PRFX."expense_records.$value_name) AS sum
             FROM ".PRFX."expense_records
@@ -910,7 +939,7 @@ function get_otherincomes_stats($start_date = null, $end_date = null) {
 #     Count Other Incomes               #
 #########################################
 
-function count_otherincomes($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null) {
+function count_otherincomes($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -932,6 +961,21 @@ function count_otherincomes($start_date = null, $end_date = null, $tax_system = 
         $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$db->qstr($vat_tax_code);
     }
 
+    // Filter by Item Type
+    if($item_type) {
+        $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$db->qstr($item_type);
+    }
+    
+    // Filter by Status
+    if($status) {
+        $whereTheseRecords .= " AND ".PRFX."otherincome_records.status = ".$db->qstr($status);                       
+    }
+
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$db->qstr($employee_id);
+    }
+    
     // Execute the SQL
     $sql = "SELECT COUNT(*) AS count
             FROM ".PRFX."otherincome_records
@@ -952,7 +996,7 @@ function count_otherincomes($start_date = null, $end_date = null, $tax_system = 
 #  Sum selected value of Other Incomes  #
 #########################################
 
-function sum_otherincomes($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null) {
+function sum_otherincomes($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -974,6 +1018,20 @@ function sum_otherincomes($value_name, $start_date = null, $end_date = null, $ta
         $whereTheseRecords .= " AND ".PRFX."otherincome_records.vat_tax_code=".$db->qstr($vat_tax_code);
     }
 
+    // Filter by Item Type
+    if($item_type) {
+        $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$db->qstr($item_type);
+    }
+    
+    // Filter by Status
+    if($status) {
+        $whereTheseRecords .= " AND ".PRFX."otherincome_records.status = ".$db->qstr($status);                       
+    }
+
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."otherincome_records.employee_id=".$db->qstr($employee_id);
+    }
     
     $sql = "SELECT SUM(".PRFX."otherincome_records.$value_name) AS sum
             FROM ".PRFX."otherincome_records
@@ -1035,7 +1093,7 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
             "count_expired"     =>  count_vouchers($start_date, $end_date, null, null, null, 'expired', $employee_id, $client_id),
             "count_refunded"    =>  count_vouchers($start_date, $end_date, null, null, null, 'refunded', $employee_id, $client_id),
             "count_cancelled"   =>  count_vouchers($start_date, $end_date, null, null, null, 'refunded', $employee_id, $client_id),
-            "count_deleted"     =>  count_vouchers($start_date, $end_date, null, null, null, 'deleted', $employee_id, $client_id), // not always available                
+            "count_deleted"     =>  count_vouchers($start_date, $end_date, null, null, null, 'deleted', $employee_id, $client_id), // Might not be used             
              
         );
 
@@ -1516,7 +1574,7 @@ function payment_build_filter_by_type($type = null) {
     
 }
 
-/** Refunds **/  ///////////////////////////////////////////////////////////////
+/** Refunds **/
 
 #####################################
 #   Get refund stats                #  // make the variables match the new variable layout ?? or does it already, the sub functions need checking
