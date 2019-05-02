@@ -189,7 +189,7 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
 #     Count Work Orders                 #
 #########################################
 
-function count_workorders($start_date = null, $end_date = null, $status = null, $employee_id = null, $client_id =null) {
+function count_workorders($start_date = null, $end_date = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -776,6 +776,193 @@ function sum_parts_items($value_name, $start_date = null, $end_date = null, $dat
         return $rs->fields['sum'];
         
     }  
+    
+}
+
+/** Refunds **/
+
+#####################################
+#   Get refund stats                #  // make the variables match the new variable layout ?? or does it already, the sub functions need checking
+#####################################
+
+function get_refunds_stats($record_set, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
+    
+    $stats = array();
+    
+    // Current
+    if($record_set == 'current' || $record_set == 'all') {
+    
+        $current_stats = array(
+            //count_refunds($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null)   
+            "count_open"            =>  count_refunds($start_date, $end_date, null, null, null, 'open', $employee_id, $client_id),
+            
+            "count_unpaid"          =>  count_refunds($start_date, $end_date, null, null, null, 'unpaid', $employee_id, $client_id),
+            "count_partially_paid"  =>  count_refunds($start_date, $end_date, null, null, null, 'partially_paid', $employee_id, $client_id),
+            "count_paid"            =>  count_refunds($start_date, $end_date, null, null, null, 'paid', $employee_id, $client_id),            
+            "count_cancelled"       =>  count_refunds($start_date, $end_date, null, null, null, 'cancelled', $employee_id, $client_id),
+            "count_deleted"         =>  count_refunds($start_date, $end_date, null, null, null, 'deleted', $employee_id, $client_id) // not always available                
+             
+        );
+
+        $stats = array_merge($stats, $current_stats);
+    
+    }
+    
+    // Historic
+    if($record_set == 'historic' || $record_set == 'all') {       
+        
+        $historic_stats = array(                       
+            "count_opened"          =>  count_refunds($start_date, $end_date, null, null, null, 'opened', $employee_id, $client_id),
+            "count_closed"          =>  count_refunds($start_date, $end_date, null, null, null, 'closed', $employee_id, $client_id)
+            
+        );
+        
+        $stats = array_merge($stats, $historic_stats);
+    
+    }  
+    
+    // Revenue
+    if($record_set == 'revenue' || $record_set == 'all') {       
+        
+        $revenue_stats = array(                       
+            //sum_refunds($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null)
+            "sum_opened"            =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'opened', $employee_id, $client_id),
+            "sum_closed"            =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'closed', $employee_id, $client_id),
+            
+            "sum_unpaid"            =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'unpaid', $employee_id, $client_id),
+            "sum_partially_paid"    =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'partially_paid', $employee_id, $client_id),
+            "sum_paid"              =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'paid', $employee_id, $client_id),            
+            "sum_cancelled"         =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'cancelled', $employee_id, $client_id)            
+            
+        );
+        
+        $stats = array_merge($stats, $revenue_stats);
+    
+    }     
+       
+    return $stats;
+    
+}
+
+#########################################
+#     Count Refunds                     #
+#########################################
+
+function count_refunds($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
+                
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
+    }
+    
+    // Filter by Tax System
+    if($tax_system) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$db->qstr($tax_system);
+    }
+    
+    // Filter by VAT Tax Code
+    if($vat_tax_code) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$db->qstr($vat_tax_code);
+    }
+    
+    // Filter by Item Type
+    if($item_type) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$db->qstr($item_type);
+    }
+    
+    // Restrict by Status
+    if($status) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.status = ".$db->qstr($status);                       
+    }
+
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."refund_records
+            ".$whereTheseRecords;    
+            
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
+        
+    } else {      
+        
+        return $rs->fields['count'];
+        
+    }
+    
+}
+
+###########################################
+#  Sum selected value of refunds          #
+###########################################
+
+function sum_refunds($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+    
+    $db = QFactory::getDbo();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
+                    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
+    }
+    
+    // Filter by Tax System
+    if($tax_system) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$db->qstr($tax_system);
+    }
+    
+    // Filter by VAT Tax Code
+    if($vat_tax_code) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$db->qstr($vat_tax_code);
+    }
+    
+    // Filter by Item Type
+    if($item_type) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$db->qstr($item_type);
+    }
+    
+    // Restrict by Status
+    if($status) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.status = ".$db->qstr($status);                       
+    }
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.refund_records.employee_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$db->qstr($client_id);
+    }
+    
+    $sql = "SELECT SUM(".PRFX."refund_records.$value_name) AS sum
+            FROM ".PRFX."refund_records
+            ".$whereTheseRecords;
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Refunds."));
+    } else {
+        
+        return $rs->fields['sum'];
+        
+    }   
     
 }
 
@@ -1571,192 +1758,5 @@ function payment_build_filter_by_type($type = null) {
     }
         
     return $whereTheseRecords;
-    
-}
-
-/** Refunds **/
-
-#####################################
-#   Get refund stats                #  // make the variables match the new variable layout ?? or does it already, the sub functions need checking
-#####################################
-
-function get_refunds_stats($record_set, $start_date = null, $end_date = null, $employee_id = null, $client_id = null) {
-    
-    $stats = array();
-    
-    // Current
-    if($record_set == 'current' || $record_set == 'all') {
-    
-        $current_stats = array(
-            //count_refunds($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null)   
-            "count_open"            =>  count_refunds($start_date, $end_date, null, null, null, 'open', $employee_id, $client_id),
-            
-            "count_unpaid"          =>  count_refunds($start_date, $end_date, null, null, null, 'unpaid', $employee_id, $client_id),
-            "count_partially_paid"  =>  count_refunds($start_date, $end_date, null, null, null, 'partially_paid', $employee_id, $client_id),
-            "count_paid"            =>  count_refunds($start_date, $end_date, null, null, null, 'paid', $employee_id, $client_id),            
-            "count_cancelled"       =>  count_refunds($start_date, $end_date, null, null, null, 'cancelled', $employee_id, $client_id),
-            "count_deleted"         =>  count_refunds($start_date, $end_date, null, null, null, 'deleted', $employee_id, $client_id) // not always available                
-             
-        );
-
-        $stats = array_merge($stats, $current_stats);
-    
-    }
-    
-    // Historic
-    if($record_set == 'historic' || $record_set == 'all') {       
-        
-        $historic_stats = array(                       
-            "count_opened"          =>  count_refunds($start_date, $end_date, null, null, null, 'opened', $employee_id, $client_id),
-            "count_closed"          =>  count_refunds($start_date, $end_date, null, null, null, 'closed', $employee_id, $client_id)
-            
-        );
-        
-        $stats = array_merge($stats, $historic_stats);
-    
-    }  
-    
-    // Revenue
-    if($record_set == 'revenue' || $record_set == 'all') {       
-        
-        $revenue_stats = array(                       
-            //sum_refunds($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null)
-            "sum_opened"            =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'opened', $employee_id, $client_id),
-            "sum_closed"            =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'closed', $employee_id, $client_id),
-            
-            "sum_unpaid"            =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'unpaid', $employee_id, $client_id),
-            "sum_partially_paid"    =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'partially_paid', $employee_id, $client_id),
-            "sum_paid"              =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'paid', $employee_id, $client_id),            
-            "sum_cancelled"         =>  sum_refunds('net_amount', $start_date, $end_date, null, null, null, 'cancelled', $employee_id, $client_id)            
-            
-        );
-        
-        $stats = array_merge($stats, $revenue_stats);
-    
-    }     
-       
-    return $stats;
-    
-}
-
-#########################################
-#     Count Refunds                     #
-#########################################
-
-function count_refunds($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
-                
-    // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
-    }
-    
-    // Filter by Tax System
-    if($tax_system) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$db->qstr($tax_system);
-    }
-    
-    // Filter by VAT Tax Code
-    if($vat_tax_code) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$db->qstr($vat_tax_code);
-    }
-    
-    // Filter by Item Type
-    if($item_type) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$db->qstr($item_type);
-    }
-    
-    // Restrict by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.status = ".$db->qstr($status);                       
-    }
-
-    // Filter by Employee
-    if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$db->qstr($employee_id);
-    }
-    
-    // Filter by Client
-    if($client_id) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$db->qstr($client_id);
-    }
-    
-    // Execute the SQL
-    $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."refund_records
-            ".$whereTheseRecords;    
-            
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count Refunds."));
-        
-    } else {      
-        
-        return $rs->fields['count'];
-        
-    }
-    
-}
-
-###########################################
-#  Sum selected value of refunds          #
-###########################################
-
-function sum_refunds($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
-    
-    $db = QFactory::getDbo();
-    
-    // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
-                    
-    // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
-    }
-    
-    // Filter by Tax System
-    if($tax_system) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.tax_system=".$db->qstr($tax_system);
-    }
-    
-    // Filter by VAT Tax Code
-    if($vat_tax_code) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.vat_tax_code=".$db->qstr($vat_tax_code);
-    }
-    
-    // Filter by Item Type
-    if($item_type) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.item_type=".$db->qstr($item_type);
-    }
-    
-    // Restrict by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.status = ".$db->qstr($status);                       
-    }
-    
-    // Filter by Employee
-    if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.refund_records.employee_id=".$db->qstr($employee_id);
-    }
-    
-    // Filter by Client
-    if($client_id) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$db->qstr($client_id);
-    }
-    
-    $sql = "SELECT SUM(".PRFX."refund_records.$value_name) AS sum
-            FROM ".PRFX."refund_records
-            ".$whereTheseRecords;
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the sum value for the selected Refunds."));
-    } else {
-        
-        return $rs->fields['sum'];
-        
-    }   
     
 }

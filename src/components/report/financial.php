@@ -36,7 +36,7 @@ if(isset($VAR['submit'])) {
     $smarty->assign('expense_stats', $expense_stats);    
 
     // Refunds
-    $refund_stats = get_refunds_stats($start_date, $end_date);    
+    $refund_stats = get_refunds_stats('historic', $start_date, $end_date);    
     $smarty->assign('refund_stats', $refund_stats);    
     
     // Otherincomes
