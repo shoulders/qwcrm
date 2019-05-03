@@ -232,7 +232,7 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
     $tax_system = get_company_details('tax_system');
     
     // Sales Tax Rate based on Tax Type
-    $sales_tax_rate = $tax_system == 'sales_tax' ? $sales_tax_rate = get_company_details('sales_tax_rate') : 0.00;
+    $sales_tax_rate = ($tax_system == 'sales_tax') ? $sales_tax_rate = get_company_details('sales_tax_rate') : 0.00;
     
     $sql = "INSERT INTO ".PRFX."invoice_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -279,39 +279,49 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
 #     Insert Labour Items           #
 #####################################
 
-function insert_labour_items($invoice_id, $tax_system, $labour_items = null) {
+function insert_labour_items($invoice_id, $labour_items = null) {
     
     $db = QFactory::getDbo();
     
-    // Get Invoice Sales Tax Rate
-    $sales_tax_rate = get_invoice_details($invoice_id, 'sales_tax_rate');
+    // Get Invoice Details
+    $invoice_details = get_invoice_details($invoice_id); 
     
     // Insert Labour Items into database (if any)
     if($labour_items) {
         
-        $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
            
         foreach($labour_items as $labour_item) {
             
-            // Calculate labour item specific VAT rate
-            $vat_rate = isset($labour_item['vat_tax_code']) ? get_vat_rate($labour_item['vat_tax_code']) : 0.00;            
+            // Add in missing sales tax exempt option - This prevents undefined variable errors
+            $sales_tax_exempt = isset($labour_item['sales_tax_exempt']) ? $labour_item['sales_tax_exempt'] : 0;
             
+            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax' dont have VAT codes) - This prevents undefined variable errors
+            $vat_tax_code = isset($labour_item['vat_tax_code']) ? $labour_item['vat_tax_code'] : get_default_vat_tax_code($invoice_details['tax_system']); 
+            
+            // Calculate the correct tax rate based on tax system (and exemption status)
+            if($invoice_details['tax_system'] == 'sales_tax' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+            elseif($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+            elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = get_vat_rate($labour_item['vat_tax_code']); }
+            else { $unit_tax_rate = 0.00; }
+                       
             // Build labour item totals based on selected TAX system
-            $labour_totals = calculate_invoice_item_sub_totals($tax_system, $labour_item['unit_qty'], $labour_item['unit_net'], $sales_tax_rate, $vat_rate);
+            $labour_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $labour_item['unit_qty'], $labour_item['unit_net'], $unit_tax_rate);
             
             $sql .="(".
                     
                     $db->qstr( $invoice_id                         ).",".                    
-                    $db->qstr( $tax_system                         ).",".                    
+                    $db->qstr( $invoice_details['tax_system']      ).",".                    
                     $db->qstr( $labour_item['description']         ).",".                    
                     $db->qstr( $labour_item['unit_qty']            ).",".
                     $db->qstr( $labour_item['unit_net']            ).",".
-                    $db->qstr( $labour_item['vat_tax_code']        ).",".
-                    $db->qstr( $vat_rate                           ).",".
-                    $db->qstr( $labour_totals['unit_vat']          ).",".
+                    $db->qstr( $sales_tax_exempt                   ).",".
+                    $db->qstr( $vat_tax_code                       ).",".
+                    $db->qstr( $unit_tax_rate                      ).",".
+                    $db->qstr( $labour_totals['unit_tax']          ).",".
                     $db->qstr( $labour_totals['unit_gross']        ).",".                    
                     $db->qstr( $labour_totals['sub_total_net']     ).",".
-                    $db->qstr( $labour_totals['sub_total_vat']     ).",".
+                    $db->qstr( $labour_totals['sub_total_tax']     ).",".
                     $db->qstr( $labour_totals['sub_total_gross']   )."),";
             
         }
@@ -333,39 +343,49 @@ function insert_labour_items($invoice_id, $tax_system, $labour_items = null) {
 #     Insert Parts Items           #
 #####################################
 
-function insert_parts_items($invoice_id, $tax_system, $parts_items = null) {
+function insert_parts_items($invoice_id, $parts_items = null) {
     
     $db = QFactory::getDbo();    
     
-    // Get Invoice Sales Tax Rate
-    $sales_tax_rate = get_invoice_details($invoice_id, 'sales_tax_rate');   
+    // Get Invoice Details
+    $invoice_details = get_invoice_details($invoice_id); 
             
     // Insert Parts Items into database (if any)
     if($parts_items) {
         
-        $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `vat_tax_code`, `vat_rate`, `unit_vat`, `unit_gross`, `sub_total_net`, `sub_total_vat`, `sub_total_gross`) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
            
         foreach($parts_items as $parts_item) {
             
-            // Calculate parts item specific VAT rate
-            $vat_rate = isset($parts_item['vat_tax_code']) ? get_vat_rate($parts_item['vat_tax_code']) : 0.00;  
+            // Add in missing sales tax exempt option - This prevents undefined variable errors
+            $sales_tax_exempt = isset($parts_item['sales_tax_exempt']) ? $parts_item['sales_tax_exempt'] : 0;
             
-            // Build parts item totals based on selected TAX system
-            $parts_totals = calculate_invoice_item_sub_totals($tax_system, $parts_item['unit_qty'], $parts_item['unit_net'], $sales_tax_rate, $vat_rate);
-           
+            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax' dont have VAT codes) - This prevents undefined variable errors
+            $vat_tax_code = isset($parts_item['vat_tax_code']) ? $parts_item['vat_tax_code'] : get_default_vat_tax_code($invoice_details['tax_system']); 
+            
+            // Calculate the correct tax rate based on tax system (and exemption status)
+            if($invoice_details['tax_system'] == 'sales_tax' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+            elseif($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+            elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = get_vat_rate($parts_item['vat_tax_code']); }
+            else { $unit_tax_rate = 0.00; }
+                       
+            // Build labour item totals based on selected TAX system
+            $parts_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $parts_item['unit_qty'], $parts_item['unit_net'], $unit_tax_rate);
+            
             $sql .="(".
                     
                     $db->qstr( $invoice_id                        ).",".                    
-                    $db->qstr( $tax_system                        ).",".                    
+                    $db->qstr( $invoice_details['tax_system']     ).",".                    
                     $db->qstr( $parts_item['description']         ).",".                    
                     $db->qstr( $parts_item['unit_qty']            ).",".
                     $db->qstr( $parts_item['unit_net']            ).",".
-                    $db->qstr( $parts_item['vat_tax_code']        ).",".
-                    $db->qstr( $vat_rate                          ).",".
-                    $db->qstr( $parts_totals['unit_vat']          ).",".
+                    $db->qstr( $sales_tax_exempt                  ).",".
+                    $db->qstr( $vat_tax_code                      ).",".
+                    $db->qstr( $unit_tax_rate                     ).",".
+                    $db->qstr( $parts_totals['unit_tax']          ).",".
                     $db->qstr( $parts_totals['unit_gross']        ).",".                    
                     $db->qstr( $parts_totals['sub_total_net']     ).",".
-                    $db->qstr( $parts_totals['sub_total_vat']     ).",".
+                    $db->qstr( $parts_totals['sub_total_tax']     ).",".
                     $db->qstr( $parts_totals['sub_total_gross']   )."),";
             
         }
@@ -678,11 +698,8 @@ function get_labour_items_sub_totals($invoice_id) {
     // NB: i dont think i need the aliases
     
     $sql = "SELECT
-            SUM(unit_net) AS unit_net,
-            SUM(unit_vat) AS unit_vat,
-            SUM(unit_gross) AS unit_gross,
             SUM(sub_total_net) AS sub_total_net,
-            SUM(sub_total_vat) AS sub_total_vat,
+            SUM(sub_total_tax) AS sub_total_tax,
             SUM(sub_total_gross) AS sub_total_gross
             FROM ".PRFX."invoice_labour
             WHERE invoice_id=". $db->qstr($invoice_id);
@@ -709,11 +726,8 @@ function get_parts_items_sub_totals($invoice_id) {
     // NB: i dont think i need the aliases
     
     $sql = "SELECT
-            SUM(unit_net) AS unit_net,
-            SUM(unit_vat) AS unit_vat,
-            SUM(unit_gross) AS unit_gross,
             SUM(sub_total_net) AS sub_total_net,
-            SUM(sub_total_vat) AS sub_total_vat,
+            SUM(sub_total_tax) AS sub_total_tax,
             SUM(sub_total_gross) AS sub_total_gross
             FROM ".PRFX."invoice_parts
             WHERE invoice_id=". $db->qstr($invoice_id);
@@ -1286,38 +1300,38 @@ function delete_invoice_prefill_item($invoice_prefill_id) {
 /** Other Functions **/
 
 ################################################
-#   calculate an Invoice Item Sub Totals       #  // need tax rate
+#   calculate an Invoice Item Sub Totals       #  // remove sales tax rate? or should i put it back to vat rate
 ################################################
 
-function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $sales_tax_rate = null, $vat_rate = null) {
+function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $unit_tax_rate = null) {
            
     $item_totals = array();
     
     // No Tax
     if($tax_system == 'none') {        
-        $item_totals['unit_vat'] = 0.00;
+        $item_totals['unit_tax'] = 0.00;
         $item_totals['unit_gross'] = $unit_net;
         $item_totals['sub_total_net'] = $unit_net * $unit_qty;
-        $item_totals['sub_total_vat'] = 0.00;
+        $item_totals['sub_total_tax'] = 0.00;
         $item_totals['sub_total_gross'] = $item_totals['sub_total_net'];
     }
     
     // Sales Tax Calculations
     if($tax_system == 'sales_tax') {        
-        $item_totals['unit_vat'] = 0.00;
-        $item_totals['unit_gross'] = $unit_net + ($unit_net * ($sales_tax_rate / 100));
+        $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
+        $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
         $item_totals['sub_total_net'] = $unit_net * $unit_qty;
-        $item_totals['sub_total_vat'] = 0.00;
-        $item_totals['sub_total_gross'] = $item_totals['sub_total_net'] + ($item_totals['sub_total_net'] * ($sales_tax_rate / 100));
+        $item_totals['sub_total_tax'] = $item_totals['sub_total_net'] * ($unit_tax_rate / 100);
+        $item_totals['sub_total_gross'] = $item_totals['sub_total_net'] + $item_totals['sub_total_tax'];
     }
     
     // VAT Calculations
     if($tax_system == 'vat_standard' || $tax_system == 'vat_flat' ) {        
-        $item_totals['unit_vat'] = $unit_net * ($vat_rate / 100);
-        $item_totals['unit_gross'] = $unit_net + $item_totals['unit_vat'];
+        $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
+        $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
         $item_totals['sub_total_net'] = $unit_net * $unit_qty;
-        $item_totals['sub_total_vat'] = $item_totals['sub_total_net'] * ($vat_rate / 100);
-        $item_totals['sub_total_gross'] = $item_totals['sub_total_net'] + $item_totals['sub_total_vat'];
+        $item_totals['sub_total_tax'] = $item_totals['sub_total_net'] * ($unit_tax_rate / 100);
+        $item_totals['sub_total_gross'] = $item_totals['sub_total_net'] + $item_totals['sub_total_tax'];
     }
     
     return $item_totals;
@@ -1325,7 +1339,7 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $s
 }
 
 #####################################
-#   Recalculate Invoice Totals      #
+#   Recalculate Invoice Totals      #   ///  re-check these calcuclationsa s they are wrong (not much though) i should account for vouchers as if they had tax allow for development later.
 #####################################
 
 function recalculate_invoice_totals($invoice_id) {
@@ -1335,26 +1349,28 @@ function recalculate_invoice_totals($invoice_id) {
     $invoice_details            = get_invoice_details($invoice_id);    
     
     $labour_items_sub_totals    = get_labour_items_sub_totals($invoice_id); 
-    $parts_items_sub_totals     = get_parts_items_sub_totals($invoice_id);    
-    $items_sub_total            = $labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'];
-    $discount_amount            = $items_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
-    $net_amount                 = $items_sub_total - $discount_amount;
-
-    // Work out the correct tax based on the type of invoice/tax_system
-    if($invoice_details['tax_system'] == 'vat_standard' || $invoice_details['tax_system'] == 'vat_flat') {
-        $tax_amount = $labour_items_sub_totals['sub_total_vat'] + $parts_items_sub_totals['sub_total_vat'];        
-    } elseif($invoice_details['tax_system'] == 'sales_tax') {
-        $tax_amount = $net_amount * ($invoice_details['sales_tax_rate'] / 100); // divide by 100; turns 17.5 in to 0.175  
-    } else {
-        $tax_amount = 0.00;
-    }
+    $parts_items_sub_totals     = get_parts_items_sub_totals($invoice_id);   
+    $voucher_sub_totals         = get_invoice_vouchers_sub_totals($invoice_id);
     
-    $gross_amount               = $net_amount + $tax_amount + get_vouchers_items_sub_total($invoice_id);    
+    $items_net_sub_total        = $labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net'];
+    $discount_amount            = $items_net_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
+    $net_amount                 = $items_net_sub_total - $discount_amount;
+
+    /* Work out the correct tax based on the type of invoice/tax_system
+    if(preg_match('/^vat_/', $invoice_details['tax_system']) || $invoice_details['tax_system'] == 'sales_tax') {
+        $tax_amount = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];        
+    } else {
+        $tax_amount = 0.00;  // do i need this. is it not 0.00 anyway when i use none now -- check
+    }*/
+    
+    $tax_amount = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
+    
+    $gross_amount               = $net_amount + $tax_amount;    
     $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'invoice', null, null, null, $invoice_id);
     $balance                    = $gross_amount - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice_records SET
-            sub_total           =". $db->qstr( $items_sub_total         ).",
+            sub_total           =". $db->qstr( $items_net_sub_total     ).",
             discount_amount     =". $db->qstr( $discount_amount         ).",
             net_amount          =". $db->qstr( $net_amount              ).",
             tax_amount          =". $db->qstr( $tax_amount              ).",

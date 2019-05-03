@@ -11,6 +11,7 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'payment.php');
+require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 

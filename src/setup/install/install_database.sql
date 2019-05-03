@@ -331,11 +331,12 @@ CREATE TABLE `#__invoice_labour` (
   `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0';
+  `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -353,12 +354,13 @@ CREATE TABLE `#__invoice_parts` (
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0';
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sub_total_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sub_total_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `sub_total_gross` decimal(10,2) NOT NULL DEFAULT '0.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -1169,9 +1171,10 @@ CREATE TABLE `#__voucher_records` (
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0';
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `vat_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
-  `unit_vat` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
+  `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

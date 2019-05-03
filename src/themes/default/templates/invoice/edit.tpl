@@ -163,40 +163,70 @@
                 return false;
         } );
         
+        {if '/^vat_/'|preg_match:$invoice_details.tax_system}
     
+            // VAT Tax Code Cell - Create Cell
+            var buildRow = row.insertCell(4);        
+            //buildRow.setAttribute('width', '100px');
+            //buildRow.setAttribute('class', 'olotd4');
+
+            // VAT Tax Code Cell - Create Select Input
+            var el = document.createElement('select');
+            el.setAttribute('id', 'labour_items['+iteration+'][vat_tax_code]');
+            el.setAttribute('name', 'labour_items['+iteration+'][vat_tax_code]');
+            //el.setAttribute('class', 'olotd4');
+            //el.setAttribute('size', '62');
+            //el.setAttribute('value', '1');
+            //el.setAttribute('type', 'text');  // only required of 'input'
+            //el.setAttribute('maxlength', '100');
+            el.required = true;
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+            buildRow.appendChild(el);
+
+            // Other key press examples - utested, unused
+            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
+            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
+            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+
+
+            // VAT Tax Code Cell  - Populate the Select Options
+            {section loop=$vat_tax_codes name=i}
+                el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
+                {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
+                    el.options[{$smarty.section.i.index}].setAttribute('selected', true);
+                {/if}
+            {/section}
+            
+        {/if}
+            
+        {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}
     
-        // VAT Tax Code Cell - Create Cell
-        var buildRow = row.insertCell(4);        
-        //buildRow.setAttribute('width', '100px');
-        //buildRow.setAttribute('class', 'olotd4');
+            // Sales Tax Exempt Checkbox Cell - Create Cell
+            var buildRow = row.insertCell(4);        
+            //buildRow.setAttribute('width', '100px');
+            //buildRow.setAttribute('class', 'olotd4');
 
-        // VAT Tax Code Cell - Create Select Input
-        var el = document.createElement('select');
-        el.setAttribute('id', 'labour_items['+iteration+'][vat_tax_code]');
-        el.setAttribute('name', 'labour_items['+iteration+'][vat_tax_code]');
-        //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '62');
-        //el.setAttribute('value', '1');
-        //el.setAttribute('type', 'text');  // only required of 'input'
-        //el.setAttribute('maxlength', '100');
-        el.required = true;
-        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-        buildRow.appendChild(el);
+            // Sales Tax Exempt Checkbox Cell Cell - Create Select Input
+            var el = document.createElement('input');
+            el.setAttribute('id', 'labour_items['+iteration+'][sales_tax_exempt]');
+            el.setAttribute('name', 'labour_items['+iteration+'][sales_tax_exempt]');
+            //el.setAttribute('class', 'olotd4');
+            //el.setAttribute('size', '62');
+            el.setAttribute('value', '1');
+            el.setAttribute('type', 'checkbox');
+            //el.setAttribute('maxlength', '100');
+            //el.required = true;
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+            buildRow.appendChild(el);
 
-        // Other key press examples - utested, unused
-        //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
-        //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
-        //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
-        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-
-
-        // VAT Tax Code Cell  - Populate the Select Options
-        {section loop=$vat_tax_codes name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
-            {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
-                el.options[{$smarty.section.i.index}].setAttribute('selected', true);
-            {/if}
-        {/section}
+            // Other key press examples - utested, unused
+            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
+            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
+            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+            
+        {/if}
         
     }
 
@@ -349,35 +379,63 @@
         } );
         
         
-        
-        // VAT Tax Code Cell - Create Cell
-        var buildRow = row.insertCell(4);        
-        //buildRow.setAttribute('width', '100px');
-        //buildRow.setAttribute('class', 'olotd4');
+        {if '/^vat_/'|preg_match:$invoice_details.tax_system}
+            
+            // VAT Tax Code Cell - Create Cell
+            var buildRow = row.insertCell(4);        
+            //buildRow.setAttribute('width', '100px');
+            //buildRow.setAttribute('class', 'olotd4');
 
-        // VAT Tax Code Cell - Create Select Input
-        var el = document.createElement('select');
-        el.setAttribute('id', 'parts_items['+iteration+'][vat_tax_code]');
-        el.setAttribute('name', 'parts_items['+iteration+'][vat_tax_code]');    
-        //el.setAttribute('class', 'olotd4');
-        //el.setAttribute('size', '62');
-        //el.setAttribute('value', '1');
-        //el.setAttribute('type', 'text');
-        //el.setAttribute('maxlength', '100');
-        el.required = true;       
-        //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
-        buildRow.appendChild(el);
-        
-        
-        // VAT Tax Code Cell - Populate the Select Options
-        {section loop=$vat_tax_codes name=i}
-            el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
-        {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
-            el.options[{$smarty.section.i.index}].setAttribute('selected', true);
+            // VAT Tax Code Cell - Create Select Input
+            var el = document.createElement('select');
+            el.setAttribute('id', 'parts_items['+iteration+'][vat_tax_code]');
+            el.setAttribute('name', 'parts_items['+iteration+'][vat_tax_code]');    
+            //el.setAttribute('class', 'olotd4');
+            //el.setAttribute('size', '62');
+            //el.setAttribute('value', '1');
+            //el.setAttribute('type', 'text');
+            //el.setAttribute('maxlength', '100');
+            el.required = true;       
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+            buildRow.appendChild(el);
+
+            // VAT Tax Code Cell - Populate the Select Options
+            {section loop=$vat_tax_codes name=i}
+                el.options[{$smarty.section.i.index}] = new Option('{$vat_tax_codes[i].tax_key} - {$vat_tax_codes[i].display_name} @ {$vat_tax_codes[i].rate|string_format:"%.2f"}%', '{$vat_tax_codes[i].tax_key}');
+                {if $default_vat_tax_code == $vat_tax_codes[i].tax_key}
+                    el.options[{$smarty.section.i.index}].setAttribute('selected', true);
+                {/if}
+            {/section}
+            
         {/if}
-        {/section}
-        
+            
+        {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}
+    
+            // Sales Tax Exempt Checkbox Cell - Create Cell
+            var buildRow = row.insertCell(4);        
+            //buildRow.setAttribute('width', '100px');
+            //buildRow.setAttribute('class', 'olotd4');
 
+            // Sales Tax Exempt Checkbox Cell Cell - Create Select Input
+            var el = document.createElement('input');
+            el.setAttribute('id', 'parts_items['+iteration+'][sales_tax_exempt]');
+            el.setAttribute('name', 'parts_items['+iteration+'][sales_tax_exempt]');
+            //el.setAttribute('class', 'olotd4');
+            //el.setAttribute('size', '62');
+            el.setAttribute('value', '1');
+            el.setAttribute('type', 'checkbox');
+            //el.setAttribute('maxlength', '100');
+            //el.required = true;
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+            buildRow.appendChild(el);
+
+            // Other key press examples - utested, unused
+            //el.setAttribute('onkeypress', 'return onlyAlphaNumericPunctuation(event)');
+            //el.setAttribute('onkeydown', 'return onlyAlphaNumericPunctuation(event)');
+            //el.onkeypress = function(event) { return onlyAlphaNumericPunctuation(event); } ;        
+            //el.onkeydown = 'return onlyAlphaNumericPunctuation(event)';
+            
+        {/if}
     }
 
 
@@ -398,7 +456,7 @@
 
                     <!-- Title -->
                     <tr>
-                        <td class="menuhead2" width="80%">&nbsp;{t}Details for{/t} {t}Invoice ID{/t} {$invoice_details.invoice_id}</td>
+                        <td class="menuhead2" width="80%">&nbsp;{t}Edit{/t} {t}Invoice ID{/t} {$invoice_details.invoice_id}</td>
                         <td class="menuhead2" width="20%" align="right" valign="middle">
                             <a>
                                 <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}INVOICE_EDIT_HELP_TITLE{/t}</strong></div><hr><div>{t escape=tooltip}INVOICE_EDIT_HELP_CONTENT{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -609,9 +667,11 @@
                                                                 <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
                                                                 <td class="row2"><b>{t}Unit Net{/t}</b></td>
                                                                 <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
-                                                                <td class="row2"><b>{t}VAT Rate{/t}</b></td>
-                                                                <td class="row2"><b>{t}VAT Applied{/t}</b></td>                                                                
+                                                                {if $invoice_details.tax_system != 'none'}
+                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                                    <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Applied{/t}</b></td>
+                                                                {/if}
                                                                 <td class="row2"><b>{t}Gross{/t}</b></td>
                                                                 <td class="row2"><b>{t}Actions{/t}</b></td>
                                                             </tr>
@@ -621,17 +681,19 @@
                                                                     <td>{$labour_items[l].description}</td>
                                                                     <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                     <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                                                                                                                  
-                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>
-                                                                    <td>
-                                                                        {section name=s loop=$vat_tax_codes}
-                                                                            {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                                        {/section}
-                                                                    </td>
-                                                                    {if $labour_items[l].vat_tax_code == 'T2'}
-                                                                        <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                    {else}
-                                                                        <td>{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
-                                                                        <td>{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
+                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>  
+                                                                    {if $invoice_details.tax_system != 'none'}
+                                                                        {if $labour_items[l].vat_tax_code == 'T2' || $labour_items[l].sales_tax_exempt}
+                                                                            <td colspan="2" align="center">{t}Exempt{/t}</td>
+                                                                        {elseif '/^vat_/'|preg_match:$invoice_details.tax_system}
+                                                                            <td>
+                                                                                {section name=s loop=$vat_tax_codes}
+                                                                                    {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                                {/section}
+                                                                            </td>
+                                                                        {/if}                                                                    
+                                                                        <td>{$labour_items[l].tax_rate|string_format:"%.2f"}%</td> 
+                                                                        <td>{$currency_sym}{$labour_items[l].sub_total_tax|string_format:"%.2f"}</td>                                                                        
                                                                     {/if}
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
                                                                     <td>
@@ -651,7 +713,9 @@
                                                                         <tr>
                                                                             <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
                                                                             <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
-                                                                            <td width="80" align="right">{t}VAT{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                                                                            {if $invoice_details.tax_system != 'none'}
+                                                                                <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$labour_items_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
+                                                                            {/if}
                                                                             <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
                                                                         </tr>
                                                                     </table>  
@@ -669,7 +733,8 @@
                                                                     <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>                                                                    
                                                                     <td class="row2" style="width: 66px;"><b>{t}Unit Qty{/t}</b></td>
                                                                     <td class="row2" style="width: 110px;"><b>{t}Unit Net{/t}</b></td>
-                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>
+                                                                    {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
+                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>{/if}
                                                                 </tr>
                                                                 <!-- Additional Rows are added here -->
                                                             </table>
@@ -702,9 +767,11 @@
                                                                     <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
                                                                     <td class="row2"><b>{t}Unit Net{/t}</b></td>
                                                                     <td class="row2"><b>{t}Net{/t}</b></td>
-                                                                    <td class="row2"><b>{t}VAT Tax Code{/t}</b></td>
-                                                                    <td class="row2"><b>{t}VAT Rate{/t}</b></td>
-                                                                    <td class="row2"><b>{t}VAT Applied{/t}</b></td>
+                                                                    {if $invoice_details.tax_system != 'none'}
+                                                                        {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                                                                        <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                                        <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Applied{/t}</b></td>
+                                                                    {/if}
                                                                     <td class="row2"><b>{t}Gross{/t}</b></td>
                                                                     <td class="row2"><b>{t}Actions{/t}</b></td>
                                                                 </tr>
@@ -715,17 +782,19 @@
                                                                         <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                         <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>                                                                        
                                                                         <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>
-                                                                        <td>
-                                                                            {section name=s loop=$vat_tax_codes}
-                                                                                {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                                            {/section}
-                                                                        </td>
-                                                                        {if $parts_items[p].vat_tax_code == 'T2'}
-                                                                            <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                        {else}                            
-                                                                            <td>{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>                    
-                                                                            <td>{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>
-                                                                        {/if} 
+                                                                        {if $invoice_details.tax_system != 'none'}
+                                                                            {if $parts_items[p].vat_tax_code == 'T2' || $parts_items[p].sales_tax_exempt}
+                                                                                <td colspan="2" align="center">{t}Exempt{/t}</td>
+                                                                            {elseif '/^vat_/'|preg_match:$invoice_details.tax_system}
+                                                                                <td>
+                                                                                    {section name=s loop=$vat_tax_codes}
+                                                                                        {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                                    {/section}
+                                                                                </td>
+                                                                            {/if}                                                                    
+                                                                            <td>{$parts_items[p].tax_rate|string_format:"%.2f"}%</td> 
+                                                                            <td>{$currency_sym}{$parts_items[p].sub_total_tax|string_format:"%.2f"}</td>                                                                            
+                                                                        {/if}
                                                                         <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
                                                                         <td>
                                                                             {if !$display_payments}
@@ -744,7 +813,9 @@
                                                                             <tr>
                                                                                 <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
                                                                                 <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
-                                                                                <td width="80" align="right">{t}VAT{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                                                                                {if $invoice_details.tax_system != 'none'}
+                                                                                    <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$parts_items_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
+                                                                                {/if}
                                                                                 <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
                                                                             </tr>
                                                                         </table>  
@@ -762,7 +833,8 @@
                                                                     <td class="row2" style="width: 453px;"><b>{t}Description{/t}</b></td>                                                                    
                                                                     <td class="row2" style="width: 66px;"><b>{t}Unit Qty{/t}</b></td>
                                                                     <td class="row2" style="width: 110px;"><b>{t}Unit Net{/t}</b></td>
-                                                                    <td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>
+                                                                    {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
+                                                                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>{/if}
                                                                 </tr>
                                                                 <!-- Additional Rows are added here -->
                                                             </table>
@@ -785,7 +857,18 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="5" style="text-align:right;"><b>{t}Vouchers{/t} {t}Total{/t}</b> {$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>                                    
+                                        <td colspan="10" style="text-align:right;">
+                                            <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;" align="right">
+                                                <tr>
+                                                    <td style="text-align:right;"><b>{t}Voucher{/t} {t}Totals{/t}</b></td>
+                                                    <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$voucher_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                                                    {if $invoice_details.tax_system != 'none'}
+                                                        <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$voucher_items_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
+                                                        {/if}
+                                                    <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$voucher_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
+                                                </tr>
+                                            </table>  
+                                        </td>
                                     </tr>
 
                                 <!-- Totals Section -->
@@ -815,15 +898,15 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t}</b></td>
-                                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
-                                                                    </tr>                                                                    
+                                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$voucher_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                                                                    </tr> 
                                                                     {if $invoice_details.tax_system != 'none'}
                                                                         <tr>
                                                                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
-                                                                        </tr>
+                                                                        </tr>                                                                    
                                                                         <tr>                                                            
-                                                                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_system == 'vat_standard' || $invoice_details.tax_system == 'vat_flat' || $company_details.tax_system != 'vat_cash'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                                            <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$invoice_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
                                                                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                                                                         </tr>
                                                                     {/if}                                                                     

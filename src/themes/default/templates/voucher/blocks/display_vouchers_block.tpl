@@ -77,7 +77,7 @@
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="18" class="error">{t}There are no Vouchers.{/t}</td>
+            <td colspan="19" class="error">{t}There are no Vouchers.{/t}</td>
         </tr>        
     {/section}
 </table>

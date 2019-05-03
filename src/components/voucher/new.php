@@ -36,10 +36,10 @@ if(!check_payment_method_is_active('voucher')) {
 if(isset($VAR['submit'])) {   
         
     // Create a new Voucher
-    $VAR['voucher_id'] = insert_voucher($VAR['invoice_id'], $VAR['type'], $VAR['expiry_date'], $VAR['unit_net'], $VAR['note']);
+    $voucher_id = insert_voucher($VAR['invoice_id'], $VAR['type'], $VAR['expiry_date'], $VAR['unit_net'], $VAR['note']);
 
     // Load the attached invoice Details page
-    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
+    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id'], 'information_msg'._gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
 
 }
     

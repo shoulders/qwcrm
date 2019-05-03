@@ -614,29 +614,31 @@ ALTER TABLE `#__voucher_records` CHANGE `blocked` `blocked` INT(1) NOT NULL DEFA
 
 ALTER TABLE `#__invoice_labour` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `description`;
 ALTER TABLE `#__invoice_labour` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
-ALTER TABLE `#__invoice_labour` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
+ALTER TABLE `#__invoice_labour` ADD `tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 ALTER TABLE `#__invoice_labour` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__invoice_labour` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
-ALTER TABLE `#__invoice_labour` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
+ALTER TABLE `#__invoice_labour` ADD `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+ALTER TABLE `#__invoice_labour` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_tax`;
 ALTER TABLE `#__invoice_labour` CHANGE `qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_labour` CHANGE `sub_total` `sub_total_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__invoice_labour` ADD `sub_total_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
-ALTER TABLE `#__invoice_labour` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_vat`;
+ALTER TABLE `#__invoice_labour` ADD `sub_total_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
+ALTER TABLE `#__invoice_labour` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_tax`;
 ALTER TABLE `#__invoice_labour` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `vat_rate`;
 ALTER TABLE `#__invoice_labour` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
+ALTER TABLE `#__invoice_labour` ADD `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0' AFTER `unit_net`;
 
 ALTER TABLE `#__invoice_parts` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `description`;
 ALTER TABLE `#__invoice_parts` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
-ALTER TABLE `#__invoice_parts` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
+ALTER TABLE `#__invoice_parts` ADD `tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 ALTER TABLE `#__invoice_parts` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__invoice_parts` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
-ALTER TABLE `#__invoice_parts` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
+ALTER TABLE `#__invoice_parts` ADD `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_net`;
+ALTER TABLE `#__invoice_parts` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_tax`;
 ALTER TABLE `#__invoice_parts` CHANGE `qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_parts` CHANGE `sub_total` `sub_total_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__invoice_parts` ADD `sub_total_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
-ALTER TABLE `#__invoice_parts` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_vat`;
+ALTER TABLE `#__invoice_parts` ADD `sub_total_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
+ALTER TABLE `#__invoice_parts` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_tax`;
 ALTER TABLE `#__invoice_parts` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `vat_rate`;
 ALTER TABLE `#__invoice_parts` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
+ALTER TABLE `#__invoice_parts` ADD `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0' AFTER `unit_net`;
 
 --
 -- Convert from integer to currency
@@ -807,10 +809,12 @@ ALTER TABLE `#__voucher_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8
 ALTER TABLE `#__voucher_records` ADD `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
 ALTER TABLE `#__voucher_records` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__voucher_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
-ALTER TABLE `#__voucher_records` ADD `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
-ALTER TABLE `#__voucher_records` ADD `unit_vat` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `vat_rate`;
-ALTER TABLE `#__voucher_records` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_vat`;
+ALTER TABLE `#__voucher_records` ADD `tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
+ALTER TABLE `#__voucher_records` ADD `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `tax_rate`;
+ALTER TABLE `#__voucher_records` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_tax`;
+ALTER TABLE `#__voucher_records` ADD `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0' AFTER `unit_net`;
 UPDATE `#__voucher_records` SET `unit_gross` = `unit_net`;
+
 
 --
 -- Add status column to allow for the new payment system (supplier is for futureproofing and not payments)

@@ -139,35 +139,47 @@
         <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>                
                 <td class="olohead"><b>{t}Description{/t}</b></td>
-                <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>
-                <td class="olohead" width="50" align="right"><b>{t}Unit Net{/t}</b></td>                
-                <td class="olohead" width="50" align="right"><b>{t}Net{/t}</b></td>                
-                <td class="olohead" width="50" align="right"><b>{t}VAT Rate{/t}</b></td>
-                <td class="olohead" width="50" align="right"><b>{t}VAT Applied{/t}</b></td>
-                <td class="olohead" width="50" align="right"><b>{t}Gross{/t}</b></td>
+                <td class="olohead" width="50" align="right"><b>{t}Unit Qty{/t}</b></td>                                                            
+                <td class="olohead" width="50" align="right"><b>{t}Unit Net{/t}</b></td>
+                {if $invoice_details.tax_system != 'none'}
+                    <td class="olohead" width="50" align="right"><b>{t}Net{/t}</b></td>                
+                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="olohead"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                    <td class="olohead" width="50" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                    <td class="olohead" width="50" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Applied{/t}</b></td>  
+                {/if}
+                <td class="olohead" width="50" align="right"><b>{t}Gross{/t}</b></td>                
             </tr>
             {section name=l loop=$labour_items}
                 <tr class="olotd4">                    
-                    <td class="olotd4">{$labour_items[l].description}</td>
-                    <td class="olotd4">{$labour_items[l].unit_qty}</td>
-                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                       
-                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                    
-                    {if $labour_items[l].vat_tax_code == 'T2'}
-                        <td class="olotd4" colspan="2" align="center">{t}Exempt{/t}</td>
-                    {else}
-                        <td class="olotd4" align="right">{$labour_items[l].vat_rate|string_format:"%.2f"}%</td> 
-                        <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_vat|string_format:"%.2f"}</td>
-                    {/if}                                       
-                    <td class="olotd4" align="right">{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
+                    <td>{$labour_items[l].description}</td>
+                    <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
+                    <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>    
+                    {if $invoice_details.tax_system != 'none'}
+                        <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                      
+                        {if $labour_items[l].vat_tax_code == 'T2' || $labour_items[l].sales_tax_exempt}
+                            <td colspan="2" align="center">{t}Exempt{/t}</td>
+                        {elseif '/^vat_/'|preg_match:$invoice_details.tax_system}
+                            <td>
+                                {section name=s loop=$vat_tax_codes}
+                                    {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                {/section}
+                            </td>
+                        {/if}                                                                    
+                        <td>{$labour_items[l].tax_rate|string_format:"%.2f"}%</td> 
+                        <td>{$currency_sym}{$labour_items[l].sub_total_tax|string_format:"%.2f"}</td>                        
+                    {/if}
+                    <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>                    
                 </tr>
-            {/section}
+            {/section} 
         </table>
         <br>
         <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
                 <td style="text-align:right;"><b>{t}Labour{/t} {t}Totals{/t}</b></td>
-                <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
-                <td class="olotd4" width="80" align="right">{t}VAT{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                {if $invoice_details.tax_system != 'none'}
+                    <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                    <td class="olotd4" width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$labour_items_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
+                {/if}
                 <td class="olotd4" width="80" align="right">{t}Gross{/t}: {$currency_sym}{$labour_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
             </tr>
         </table>        
@@ -182,39 +194,51 @@
             </tr>
         </table>
         <table width="750" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-            <tr>                
+            <tr class="olotd4">                
                 <td class="olohead"><b>{t}Description{/t}</b></td>
-                <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>
-                <td class="olohead" width="50" align="right"><b>{t}Unit Net{/t}</b></td>                
-                <td class="olohead" width="50" align="right"><b>{t}Net{/t}</b></td>                
-                <td class="olohead" width="50" align="right"><b>{t}VAT Rate{/t}</b></td>
-                <td class="olohead" width="50" align="right"><b>{t}VAT Applied{/t}</b></td>
-                <td class="olohead" width="50" align="right"><b>{t}Gross{/t}</b></td>
+                <td class="olohead" width="40" align="right"><b>{t}Unit Qty{/t}</b></td>                                                            
+                <td class="olohead" width="40" align="right"><b>{t}Unit Net{/t}</b></td>
+                {if $invoice_details.tax_system != 'none'}
+                    <td class="olohead" width="40" align="right"><b>{t}Net{/t}</b></td>                
+                    {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="olohead"><b>{t}VAT Tax Code{/t}</b></td>{/if}
+                    <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                    <td class="olohead" width="40" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Applied{/t}</b></td>
+                {/if}
+                <td class="olohead" width="40" align="right"><b>{t}Gross{/t}</b></td>                
             </tr>
-            {section name=p loop=$parts_items}        
+            {section name=p loop=$parts_items}
                 <tr class="olotd4">                    
-                    <td class="olotd4" >{$parts_items[p].description}</td>
-                    <td class="olotd4" align="right">{$parts_items[p].unit_qty}</td>
-                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>
-                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                    
-                    {if $parts_items[p].vat_tax_code == 'T2'}
-                        <td class="olotd4" colspan="2" align="center">{t}Exempt{/t}</td>
-                    {else}                            
-                        <td class="olotd4" align="right">{$parts_items[p].vat_rate|string_format:"%.2f"}%</td>                    
-                        <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_vat|string_format:"%.2f"}</td>
-                    {/if}                    
-                    <td class="olotd4" align="right">{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
+                    <td>{$parts_items[p].description}</td>
+                    <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
+                    <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>    
+                    {if $invoice_details.tax_system != 'none'}
+                        <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>
+                        {if $parts_items[p].vat_tax_code == 'T2' || $parts_items[p].sales_tax_exempt}
+                            <td colspan="2" align="center">{t}Exempt{/t}</td>
+                        {elseif '/^vat_/'|preg_match:$invoice_details.tax_system}
+                            <td>
+                                {section name=s loop=$vat_tax_codes}
+                                    {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                {/section}
+                            </td>
+                        {/if}                                                                    
+                        <td>{$parts_items[p].tax_rate|string_format:"%.2f"}%</td> 
+                        <td>{$currency_sym}{$parts_items[p].sub_total_tax|string_format:"%.2f"}</td>                        
+                    {/if}
+                    <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>                
                 </tr>
-            {/section}
+            {/section}                                                        
         </table>
         <br>
         <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
             <tr>
                 <td style="text-align:right;"><b>{t}Parts{/t} {t}Totals{/t}</b></td>
-                <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
-                <td class="olotd4" width="80" align="right">{t}VAT{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_vat|string_format:"%.2f"}</td>
+                {if $invoice_details.tax_system != 'none'}
+                    <td class="olotd4" width="80" align="right">{t}Net{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>                                                                        
+                    <td class="olotd4" width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$parts_items_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
+                {/if}
                 <td class="olotd4" width="80" align="right">{t}Gross{/t}: {$currency_sym}{$parts_items_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
-            </tr>
+            </tr>            
         </table>        
         <br>
     {/if}
@@ -237,9 +261,13 @@
         </table>
         <br>
         <table style="margin-top: 10px;" width="750" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
-            <tr>           
-                <td style="text-align:right;"><b>{t}Vouchers{/t} {t}Total{/t}</b></td>
-                <td class="olotd4" width="80" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
+            <tr>
+                <td style="text-align:right;"><b>{t}Voucher{/t} {t}Totals{/t}</b></td>
+                {if $invoice_details.tax_system != 'none'}
+                    <td width="80" align="right">{t}Net{/t}: {$currency_sym}{$voucher_sub_totals.sub_total_net|string_format:"%.2f"}</td>                                            
+                    <td width="80" align="right">{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: {$currency_sym}{$voucher_sub_totals.sub_total_tax|string_format:"%.2f"}</td>
+                {/if}
+                <td width="80" align="right">{t}Gross{/t}: {$currency_sym}{$voucher_sub_totals.sub_total_gross|string_format:"%.2f"}</td>
             </tr>
         </table>
         <br>
@@ -320,7 +348,7 @@
             
            <!-- Totals Box -->
             <td colspan="2" valign="TOP">
-                <table width="220" border="1" cellpadding="3" cellspacing="0" style="border-collapse: collapse;">
+                <table width="100%" border="1" cellpadding="3" cellspacing="0" class="olotable">
                     <tr>
                         <td class="olotd4" width="80%" align="right"><b>{t}Labour{/t}</b></td>
                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$labour_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
@@ -329,32 +357,28 @@
                         <td class="olotd4" width="80%" align="right"><b>{t}Parts{/t}</b></td>
                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
                     </tr>
-                    {if $invoice_details.discount_amount != 0}
-                        <tr>
-                            <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
-                        </tr>
-                    {/if}
-                    {if $display_vouchers}
-                        <tr>
-                            <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t}</b></td>
-                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$vouchers_items_sub_total|string_format:"%.2f"}</td>
-                        </tr>
-                    {/if}
+                    <tr>
+                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
+                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
+                    </tr>
+                    <tr>
+                        <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t}</b></td>
+                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$voucher_sub_totals.sub_total_net|string_format:"%.2f"}</td>
+                    </tr>
                     {if $invoice_details.tax_system != 'none'}
                         <tr>
                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
                         </tr>
                         <tr>                                                            
-                            <td class="olotd4" width="80%" align="right"><b>{if $invoice_details.tax_system == 'vat_standard' || $invoice_details.tax_system == 'vat_flat' || $company_details.tax_system != 'vat_cash'}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                            <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$invoice_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
                             <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
                         </tr>
-                    {/if}                    
+                    {/if}
                     <tr>
                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
-                    </tr>             
+                    </tr> 
                 </table>
             </td>
         </tr>

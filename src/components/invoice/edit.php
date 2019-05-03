@@ -37,12 +37,9 @@ if(get_invoice_details($VAR['invoice_id'], 'is_closed')) {
 
 if(isset($VAR['submit'])) {
     
-    // get invoice tax type
-    $tax_system = get_invoice_details($VAR['invoice_id'], 'tax_system');
-    
     // insert the parts and labour item arrays
-    insert_labour_items($VAR['invoice_id'], $tax_system, $VAR['labour_items']);
-    insert_parts_items($VAR['invoice_id'], $tax_system, $VAR['parts_items']);
+    insert_labour_items($VAR['invoice_id'], $VAR['labour_items']);
+    insert_parts_items($VAR['invoice_id'], $VAR['parts_items']);
     
     // update and recalculate the invoice
     update_invoice_static_values($VAR['invoice_id'], $VAR['date'], $VAR['due_date'], $VAR['discount_rate']);    
@@ -74,7 +71,7 @@ $smarty->assign('display_vouchers',        display_vouchers('voucher_id', 'DESC'
 // Sub Totals
 $smarty->assign('labour_items_sub_totals',     get_labour_items_sub_totals($VAR['invoice_id'])                                                          );
 $smarty->assign('parts_items_sub_totals',      get_parts_items_sub_totals($VAR['invoice_id'])                                                           );
-$smarty->assign('vouchers_items_sub_total',    get_vouchers_items_sub_total($VAR['invoice_id'])                                                       );
+$smarty->assign('voucher_items_sub_totals',    get_invoice_vouchers_sub_totals($VAR['invoice_id'])                                                       );
 
 // Payment Details
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );
