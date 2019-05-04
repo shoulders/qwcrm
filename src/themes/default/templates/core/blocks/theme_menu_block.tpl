@@ -69,7 +69,7 @@
                     <span>{t}Invoices{/t}</span>
                     <a href="index.php?component=invoice&page_tpl=overview"><img src="{$theme_images_dir}tick.png" alt="" border="0" height="14" width="14" /> {t}Overview{/t} <b><font color="red"></font></b></a>
                     {if $client_id}                        
-                        <a href="index.php?component=invoice&page_tpl=new&client_id={$client_id}&invoice_type=invoice-only"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
+                        <a href="index.php?component=invoice&page_tpl=new&client_id={$client_id}&invoice_type=invoice-only" onclick="return confirmChoice('{t}Are you sure you want to create an invoice without a Work Order?{/t}');"><img src="{$theme_images_dir}icons/invoice.png" alt="" border="0" height="14" width="14" /> {t}Invoice Only{/t}</a>
                     {/if}
                     <a href="index.php?component=invoice&page_tpl=search&filter_status=open"><img src="{$theme_images_dir}icons/warning.gif" alt="" border="0" height="14" width="14" /> {t}Open{/t}</a> 
                     <a href="index.php?component=invoice&page_tpl=search&filter_status=closed"><img src="{$theme_images_dir}icons/16x16/viewmag.gif" alt="" border="0" height="14" width="14" /> {t}Closed{/t}</a>                                       
