@@ -37,7 +37,7 @@
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
                                             <td class="menutd">{$otherincome_details.payee}</td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.net_amount|string_format:"%.2f"}</td>                                            
+                                            <td class="menutd">{$currency_sym}{$otherincome_details.unit_net|string_format:"%.2f"}</td>                                            
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
@@ -53,7 +53,7 @@
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd" >&nbsp;</td>
                                             <td class="menutd" ><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$otherincome_details.vat_rate|string_format:"%.2f"}%</td>
+                                            <td class="menutd">{$otherincome_details.unit_tax_rate|string_format:"%.2f"}%</td>
                                         </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -63,13 +63,13 @@
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.vat_amount|string_format:"%.2f"}</td>
+                                            <td class="menutd">{$currency_sym}{$otherincome_details.unit_tax|string_format:"%.2f"}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"></td>
                                             <td class="menutd"></td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.gross_amount|string_format:"%.2f"}</td>
+                                            <td class="menutd">{$currency_sym}{$otherincome_details.unit_gross|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Balance{/t}</b></td>

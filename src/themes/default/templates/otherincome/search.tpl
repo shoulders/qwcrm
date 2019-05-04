@@ -37,10 +37,10 @@
                                                                         <option value="otherincome_id"{if $search_category == 'otherincome_id'} selected{/if}>{t}Other Income ID{/t}</option>                                                                        
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>                                                                        
                                                                         <option value="item_type"{if $search_category == 'type'} selected{/if}>{t}Item Type{/t}</option>
-                                                                        <option value="net_amount"{if $search_category == 'net_amount'} selected{/if}>{t}Net Amount{/t}</option>                                                                        
-                                                                        <option value="vat_rate"{if $search_category == 'vat_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
-                                                                        <option value="vat_amount"{if $search_category == 'vat_amount'} selected{/if}>{t}VAT{/t} {t}Amount{/t}</option>
-                                                                        <option value="gross_amount"{if $search_category == 'gross_amount'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                      
+                                                                        <option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net Amount{/t}</option>                                                                        
+                                                                        <option value="unit_tax_rate"{if $search_category == 'unit_tax_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
+                                                                        <option value="unit_tax"{if $search_category == 'unit_tax'} selected{/if}>{t}VAT{/t} {t}Amount{/t}</option>
+                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                      
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>
                                                                     </select>

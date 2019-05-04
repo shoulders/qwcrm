@@ -219,7 +219,7 @@
                                                                             {/section}
                                                                         </td>
                                                                     {/if}                                                                    
-                                                                    <td>{$labour_items[l].tax_rate|string_format:"%.2f"}%</td> 
+                                                                    <td>{$labour_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_tax|string_format:"%.2f"}</td>                                                                    
                                                                 {/if}
                                                                 <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>                                                                
@@ -289,7 +289,7 @@
                                                                             {/section}
                                                                         </td>
                                                                     {/if}                                                                    
-                                                                    <td>{$parts_items[p].tax_rate|string_format:"%.2f"}%</td> 
+                                                                    <td>{$parts_items[p].unit_tax_rate|string_format:"%.2f"}%</td> 
                                                                     <td>{$currency_sym}{$parts_items[p].sub_total_tax|string_format:"%.2f"}</td>                                                                    
                                                                 {/if}
                                                                 <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>                                                            

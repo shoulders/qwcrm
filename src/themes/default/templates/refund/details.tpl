@@ -37,13 +37,13 @@
                                             <td class="menutd"><b>{t}Client{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a></td>
                                             <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.net_amount|string_format:"%.2f"}</td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.unit_net|string_format:"%.2f"}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$refund_details.date|date_format:$date_format}</td>
                                             <td class="menutd"><b>{t}Tax{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.tax_amount|string_format:"%.2f"}</td>                                            
+                                            <td class="menutd">{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>                                            
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -53,7 +53,7 @@
                                                 {/section}   
                                             </td>
                                             <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.gross_amount|string_format:"%.2f"}</td>
+                                            <td class="menutd">{$currency_sym}{$refund_details.unit_gross|string_format:"%.2f"}</td>
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd">&nbsp;</td>

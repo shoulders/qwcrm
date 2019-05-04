@@ -33,9 +33,9 @@
                     {if $display_refunds[r].item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
-            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].net_amount|string_format:"%.2f"}</td>                                                                          
-            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].tax_amount|string_format:"%.2f"}</td>                                                            
-            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].gross_amount|string_format:"%.2f"}</td> 
+            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_net|string_format:"%.2f"}</td>                                                                          
+            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_tax|string_format:"%.2f"}</td>                                                            
+            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_gross|string_format:"%.2f"}</td> 
             <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].balance|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>
                {section name=s loop=$refund_statuses}    

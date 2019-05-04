@@ -131,7 +131,6 @@ class Upgrade3_1_0 extends QSetup {
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
         $this->invoice_correct_labour_totals();
         $this->invoice_correct_parts_totals();        
-        $this->invoice_correct_sales_tax_rate();
         
         // Parse Voucher records and correct records        
         $this->voucher_correct_workorder_id();
@@ -152,16 +151,16 @@ class Upgrade3_1_0 extends QSetup {
         
         // Correct currently upgraded invoice payment records
         $this->update_column_values(PRFX.'payment_records', 'method', '6', 'direct_deposit');
-        $this->update_column_values(PRFX.'payment_records', 'tax_type', '*', $this->company_tax_system );
+        $this->update_column_values(PRFX.'payment_records', 'tax_system', '*', $this->company_tax_system );
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
         // Parse Payment notes and extract information into 'additional_info' column for invoices
         $this->payments_parse_import_additional_info();
         
         // Convert expense, refund and otherincome transactions into separate record and payment
-        $this->payments_convert_expense_records();
-        $this->payments_convert_refund_records();
-        $this->payments_convert_otherincome_records(); 
+        $this->payments_create_expense_records_paymentss();
+        $this->payments_create_refund_records_payments();
+        $this->payments_create_otherincome_records_payments(); 
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
@@ -919,7 +918,7 @@ class Upgrade3_1_0 extends QSetup {
     #  Recalculate Labour totals because of the new VAT system      #
     #################################################################
 
-    function invoice_labour_correct_totals() {
+    function invoice_correct_labour_totals() {
         
         $db = QFactory::getDbo();        
         
@@ -954,47 +953,60 @@ class Upgrade3_1_0 extends QSetup {
             // Loop through all records, decide and set each labour items's status
             while(!$rs->EOF) { 
                 
-                $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
+                $invoice_details = get_invoice_details($rs->fields['invoice_id']);    
                 
-                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']);
-                $vat_rate = get_vat_rate($vat_tax_code);
-                
-                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $rs->fields['sales_tax_rate'], $vat_rate);
-                
+                // Set sales tax exempt and all off. this feature was not available in earlier versions so nothing is exempt
+                $sales_tax_exempt = 0;
+
+                // Set the correct VAT code
+                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']); 
+
+                // Calculate the correct tax rate based on tax system (and exemption status)
+                if($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+                elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
+                else { $unit_tax_rate = 0.00; }
+
+                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+
                 $sql = "UPDATE `".PRFX."invoice_labour` SET
-                        `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
-                        `vat_tax_code`      = ".$db->qstr($vat_tax_code)."                       
-                        `vat_rate`          = ".$vat_rate."                           
-                        `unit_vat`          = ".$item_totals['unit_vat'].",
-                        `unit_gross`        = ".$item_totals['unit_gross'].",                        
-                        `sub_total_net`     = ".$item_totals['sub_total_net'].",
-                        `sub_total_vat`     = ".$item_totals['sub_total_vat'].",
-                        `sub_total_gross`   = ".$item_totals['sub_total_gross']."
-                        WHERE `gifcert_id`  = ".$rs->fields['invoice_labour_id'];                
-                
+                    `invoice_id`        = ".$rs->fields['invoice_id'].",
+                    `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
+                    `description`       = ".$rs->fields['description'].",
+                    `unit_qty`          = ".$rs->fields['unit_qty'].",
+                    `unit_net`          = ".$rs->fields['unit_net'].",
+                    `sales_tax_exempt`  = ".$sales_tax_exempt.",
+                    `vat_tax_code`      = ".$db->qstr($vat_tax_code).",                        
+                    `unit_tax_rate`     = ".$unit_tax_rate.",                       
+                    `unit_tax`          = ".$item_totals['unit_vat'].",
+                    `unit_gross`        = ".$item_totals['unit_gross'].",                        
+                    `sub_total_net`     = ".$item_totals['sub_total_net'].",
+                    `sub_total_tax`     = ".$item_totals['sub_total_tax'].",
+                    `sub_total_gross`   = ".$item_totals['sub_total_gross']."
+                    WHERE `invoice_labour_id`  = ".$rs->fields['invoice_labour_id'];                
+
                 // Run the SQL
                 if(!$temp_rs = $db->execute($sql)) {
-                    
+
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
-                    
+
                     // Set the local error flag
                     $local_error_flag = true;
-                    
+
                     // Log Message                    
                     $record = _gettext("Failed to update the `totals` for the labour record").' '.$rs->fields['invoice_labour_id'];
-                    
+
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-                    
+
                     // Log message to setup log
                     $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
-                    
+
                     // The process has failed so stop any further proccesing
                     goto process_end;
-                    
+
                 } 
-                                
+
                 // Advance the INSERT loop to the next record            
                 $rs->MoveNext();            
 
@@ -1041,7 +1053,7 @@ class Upgrade3_1_0 extends QSetup {
     #  Recalculate Parts totals because of the new VAT system       #
     #################################################################
 
-    function invoice_parts_correct_totals() {
+    function invoice_correct_parts_totals() {
         
         $db = QFactory::getDbo();        
         
@@ -1078,21 +1090,34 @@ class Upgrade3_1_0 extends QSetup {
                 
                 $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
                 
-                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']);
-                $vat_rate = get_vat_rate($vat_tax_code);
-                
-                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $rs->fields['sales_tax_rate'], $vat_rate);
-                
+                // Set sales tax exempt and all off. this feature was not available in earlier versions so nothing is exempt
+                $sales_tax_exempt = 0;
+
+                // Set the correct VAT code
+                $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']); 
+
+                // Calculate the correct tax rate based on tax system (and exemption status)
+                if($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+                elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
+                else { $unit_tax_rate = 0.00; }
+
+                $item_totals = calculate_invoice_item_sub_totals($invoice_details['tax_system'], $rs->fields['unit_qty'], $rs->fields['unit_net'], $unit_tax_rate);
+
                 $sql = "UPDATE `".PRFX."invoice_parts` SET
-                        `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
-                        `vat_tax_code`      = ".$db->qstr($vat_tax_code)."                       
-                        `vat_rate`          = ".$vat_rate."                           
-                        `unit_vat`          = ".$item_totals['unit_vat'].",
-                        `unit_gross`        = ".$item_totals['unit_gross'].",                        
-                        `sub_total_net`     = ".$item_totals['sub_total_net'].",
-                        `sub_total_vat`     = ".$item_totals['sub_total_vat'].",
-                        `sub_total_gross`   = ".$item_totals['sub_total_gross']."
-                        WHERE `gifcert_id`  = ".$rs->fields['invoice_labour_id'];                
+                    `invoice_id`        = ".$rs->fields['invoice_id'].",
+                    `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
+                    `description`       = ".$rs->fields['description'].",
+                    `unit_qty`          = ".$rs->fields['unit_qty'].",
+                    `unit_net`          = ".$rs->fields['unit_net'].",
+                    `sales_tax_exempt`  = ".$sales_tax_exempt.",
+                    `vat_tax_code`      = ".$db->qstr($vat_tax_code).",                        
+                    `unit_tax_rate`     = ".$unit_tax_rate.",                       
+                    `unit_tax`          = ".$item_totals['unit_vat'].",
+                    `unit_gross`        = ".$item_totals['unit_gross'].",                        
+                    `sub_total_net`     = ".$item_totals['sub_total_net'].",
+                    `sub_total_tax`     = ".$item_totals['sub_total_tax'].",
+                    `sub_total_gross`   = ".$item_totals['sub_total_gross']."
+                    WHERE `invoice_parts_id`  = ".$rs->fields['invoice_parts_id'];               
                 
                 // Run the SQL
                 if(!$temp_rs = $db->execute($sql)) {
@@ -1330,7 +1355,7 @@ class Upgrade3_1_0 extends QSetup {
     #  Convert Expenses into a separate item and make a related payment   #
     #######################################################################
 
-    function payments_convert_expense_records() {
+    function payments_create_expense_records_paymentss() {
         
         $db = QFactory::getDbo();        
         
@@ -1375,11 +1400,11 @@ class Upgrade3_1_0 extends QSetup {
                     expense_id      = ".$db->qstr($rs->fields['expense_id']                    ).",
                     otherincome_id  = '',
                     date            = ".$db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$db->qstr($this->company_tax_system                    ).",
+                    tax_system      = ".$db->qstr($rs->fields['tax_system']                    ).",
                     type            = 'expense',
                     method          = ".$db->qstr($rs->fields['payment_method']                ).",
                     status          = 'paid',
-                    amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
                     note            = ".'<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>';               
@@ -1482,7 +1507,7 @@ class Upgrade3_1_0 extends QSetup {
     #  Convert Refunds into a separate item and make a related payment    #
     #######################################################################
 
-    function payments_convert_refund_records() {
+    function payments_create_refund_records_payments() {
         
         $db = QFactory::getDbo();        
         
@@ -1527,11 +1552,11 @@ class Upgrade3_1_0 extends QSetup {
                     expense_id      = '',
                     otherincome_id  = '',
                     date            = ".$db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$db->qstr($this->company_tax_system                    ).",
+                    tax_system      = ".$db->qstr($rs->fields['tax_system']                    ).",
                     type            = 'refund',
                     method          = ".$db->qstr($rs->fields['payment_method']                ).",
                     status          = 'paid',
-                    amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
                     note            = ".'<p>'._gettext("Created from a refund record during an upgrade of QWcrm.").'</p>';               
@@ -1634,7 +1659,7 @@ class Upgrade3_1_0 extends QSetup {
     #  Convert Otherincomes into a separate item and make a related payment    #
     ############################################################################
 
-    function payments_convert_otherincome_records() {
+    function payments_create_otherincome_records_payments() {
         
         $db = QFactory::getDbo();        
         
@@ -1679,11 +1704,11 @@ class Upgrade3_1_0 extends QSetup {
                     expense_id      = '',
                     otherincome_id  = ".$db->qstr($rs->fields['otherincome_id']                ).",
                     date            = ".$db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$db->qstr($this->company_tax_system                    ).",
+                    tax_system      = ".$db->qstr($rs->fields['tax_system']                    ).",
                     type            = 'otherincome',
                     method          = ".$db->qstr($rs->fields['payment_method']                ).",
                     status          = 'valid',
-                    amount          = ".$db->qstr($rs->fields['gross_amount']                  ).",
+                    amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
                     note            = ".'<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>';               

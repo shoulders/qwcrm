@@ -225,7 +225,7 @@ function insert_voucher($invoice_id, $type, $expiry_date, $unit_net, $note) {
             unit_net            =". $unit_net                                               .",
             sales_tax_exempt    =". $sales_tax_exempt                                       .",
             vat_tax_code        =". $db->qstr( $vat_tax_code                                ).",
-            tax_rate            =". $unit_tax_rate                                          .", 
+            unit_tax_rate       =". $unit_tax_rate                                          .", 
             unit_tax            =". $unit_net * ($unit_tax_rate/100)                        .",
             unit_gross          =". ($unit_net + ($unit_net * ($unit_tax_rate/100)) )       .",
             note                =". $db->qstr( $note                                        );
@@ -407,8 +407,8 @@ function update_voucher($voucher_id, $expiry_date, $unit_net, $note) {
     
     $db = QFactory::getDbo();
     
-    $tax_rate = get_voucher_details($voucher_id, 'tax_rate');
-    $unit_tax = $unit_net * ($tax_rate/100);    
+    $unit_tax_rate = get_voucher_details($voucher_id, 'unit_tax_rate');
+    $unit_tax = $unit_net * ($unit_tax_rate/100);    
     
     $sql = "UPDATE ".PRFX."voucher_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id           ).",
@@ -851,7 +851,7 @@ function delete_voucher($voucher_id) {
             unit_net            =   0.00,
             sales_tax_exempt    =   0
             vat_tax_code        =   '',
-            tax_rate            =   0.00,
+            unit_tax_rate       =   0.00,
             unit_tax            =   0.00,
             unit_gross          =   0.00,
             note                =   ''

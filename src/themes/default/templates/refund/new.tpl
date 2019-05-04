@@ -87,8 +87,8 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
                                                                             <td>
-                                                                                 {$currency_sym}{$refund_details.net_amount}
-                                                                                <input id="net_amount" name="net_amount" value="{$refund_details.net_amount|string_format:"%.2f"}" type="hidden">
+                                                                                 {$currency_sym}{$refund_details.unit_net}
+                                                                                <input id="unit_net" name="unit_net" value="{$refund_details.unit_net|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -110,15 +110,15 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Tax{/t} {t}Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                {$currency_sym}{$refund_details.tax_amount|string_format:"%.2f"}
-                                                                                <input id="tax_amount" name="tax_amount" value="{$refund_details.tax_amount|string_format:"%.2f"}" type="hidden">
+                                                                                {$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}
+                                                                                <input id="unit_tax" name="unit_tax" value="{$refund_details.unit_tax|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                 {$currency_sym}{$refund_details.gross_amount|string_format:"%.2f"}
-                                                                                 <input id="gross_amount" name="gross_amount" value="{$refund_details.gross_amount|string_format:"%.2f"}" type="hidden">
+                                                                                 {$currency_sym}{$refund_details.unit_gross|string_format:"%.2f"}
+                                                                                 <input id="unit_gross" name="unit_gross" value="{$refund_details.unit_gross|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>

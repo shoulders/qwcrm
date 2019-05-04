@@ -289,7 +289,7 @@ function insert_labour_items($invoice_id, $labour_items = null) {
     // Insert Labour Items into database (if any)
     if($labour_items) {
         
-        $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_labour` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
            
         foreach($labour_items as $labour_item) {
             
@@ -353,7 +353,7 @@ function insert_parts_items($invoice_id, $parts_items = null) {
     // Insert Parts Items into database (if any)
     if($parts_items) {
         
-        $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
+        $sql = "INSERT INTO `".PRFX."invoice_parts` (`invoice_id`, `tax_system`, `description`, `unit_qty`, `unit_net`, `sales_tax_exempt`, `vat_tax_code`, `unit_tax_rate`, `unit_tax`, `unit_gross`, `sub_total_net`, `sub_total_tax`, `sub_total_gross`) VALUES ";
            
         foreach($parts_items as $parts_item) {
             

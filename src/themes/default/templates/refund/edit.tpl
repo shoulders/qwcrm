@@ -76,15 +76,15 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td>{$currency_sym}{$refund_details.net_amount|string_format:"%.2f"}</td>
+                                                            <td>{$currency_sym}{$refund_details.unit_net|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Tax{/t} {t}Amount{/t}</b></td>
-                                                            <td>{$currency_sym}{$refund_details.tax_amount|string_format:"%.2f"}</td>
+                                                            <td>{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td>{$currency_sym} {$refund_details.gross_amount|string_format:"%.2f"}</td>
+                                                            <td>{$currency_sym} {$refund_details.unit_gross|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>
