@@ -194,7 +194,7 @@ CREATE TABLE `#__company_vat_tax_codes` (
   `rate` decimal(4,2) NOT NULL,
   `hidden` int(1) NOT NULL DEFAULT '0',
   `editable` int(1) NOT NULL DEFAULT '0',
-  `standard` int(1) NOT NULL DEFAULT '0' COMMENT 'standard VAT tax code',
+  `system_tax_code` int(1) NOT NULL DEFAULT '0' COMMENT 'Is not a standard VAT code',
   `enabled` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -202,13 +202,13 @@ CREATE TABLE `#__company_vat_tax_codes` (
 -- Dumping data for table `#__company_vat_tax_codes`
 --
 
-INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `description`, `rate`, `hidden`, `editable`, `standard`, `enabled`) VALUES
-(1, 'T0', 'Zero Rate', 'Zero rated transactions', '0.00', 0, 0, 1, 1),
-(2, 'T1', 'Standard Rate', 'Standard rated transactions', '20.00', 0, 1, 1, 1),
-(3, 'T2', 'Exempt', 'Exempt transactions', '0.00', 0, 0, 1, 1),
+INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `description`, `rate`, `hidden`, `editable`, `system_tax_code`, `enabled`) VALUES
+(1, 'T0', 'Zero Rate', 'Zero rated transactions', '0.00', 0, 0, 0, 1),
+(2, 'T1', 'Standard Rate', 'Standard rated transactions', '20.00', 0, 1, 0, 1),
+(3, 'T2', 'Exempt', 'Exempt transactions', '0.00', 0, 0, 0, 1),
 (4, 'T3', '', '', '0.00', 0, 0, 0, 0),
 (5, 'T4', 'Sales - Goods - EC VAT Customers', 'Sale of goods to VAT registered customers in EC', '0.00', 0, 0, 0, 1),
-(6, 'T5', 'Reduced Rate', 'Lower rated transactions', '5.00', 0, 0, 0, 1),
+(6, 'T5', 'Reduced Rate', 'Lower rated transactions', '5.00', 0, 1, 0, 1),
 (7, 'T6', '', '', '0.00', 0, 0, 0, 0),
 (8, 'T7', 'Zero Rate Purchases - Goods - EC', 'Zero rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),
 (9, 'T8', 'Standard Rate Purchases - Goods - EC', 'Standard rated purchases of goods from suppliers in EC', '0.00', 0, 0, 0, 1),
@@ -229,8 +229,8 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 (24, 'T23', 'Zero Rate / Exempt Purchases - Services - EC', 'Zero rated or exempt purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
 (25, 'T24', 'Standard Rate Purchases - Services - EC', 'Standard rated purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
 (26, 'T25', 'Flat Rate Capital Asset', 'UK Flat Rate scheme only - Purchase or sale of capital items, where the purchase amount is more than £2,000 inclusive of VAT.', '0.00', 0, 0, 0, 1),
-(1000, 'not_applicable', 'Not Applicable', 'VAT is not applicable on this tax system.', '0.00', 1, 0, 0, 1),
-(1001, 'vat_multi_tcode', 'VAT Multi TCode', 'This record has sub records that might all have different T codes.', '0.00', 1, 0, 0, 1);
+(1000, 'not_applicable', 'Not Applicable', 'VAT is not applicable on this tax system.', '0.00', 1, 0, 1, 1),
+(1001, 'vat_multi_tcode', 'VAT Multi TCode', 'This record has sub records that might all have different T codes.', '0.00', 1, 0, 1, 1);
 
 -- --------------------------------------------------------
 

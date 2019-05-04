@@ -73,7 +73,7 @@ if (isset($VAR['submit'])) {
     $refund_details['invoice_id'] = $invoice_details['invoice_id'];        
     $refund_details['item_type'] = $VAR['type'];        
     $refund_details['net_amount'] = $invoice_details['net_amount'];
-    if(($tax_system == 'vat_standard' || $tax_system == 'vat_flat' || $tax_system == 'vat_cash') && $VAR['type'] == 'invoice') {
+    if(preg_match('/^vat_/', $tax_system) && $VAR['type'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'vat_multi_tcode';
     } else {
         $refund_details['vat_tax_code'] = isset($VAR['vat_tax_code']) ? $VAR['vat_tax_code'] : get_default_vat_tax_code($tax_system);
@@ -91,6 +91,6 @@ if (isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes()); 
+$smarty->assign('vat_tax_codes', get_vat_tax_codes(false)); 
 $smarty->assign('client_display_name', $client_display_name);
 $BuildPage .= $smarty->fetch('refund/new.tpl');

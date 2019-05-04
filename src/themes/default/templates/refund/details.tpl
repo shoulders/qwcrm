@@ -46,6 +46,16 @@
                                             <td class="menutd">{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>                                            
                                         </tr>
                                         <tr>
+                                            <td class="menutd" ><b>{t}VAT Tax Code{/t}</b></td>
+                                            <td class="menutd">
+                                                {section name=s loop=$vat_tax_codes}
+                                                    {if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                {/section}
+                                            </td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
+                                        </tr>
+                                        <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
                                             <td class="menutd">              
                                                 {section name=s loop=$refund_types}

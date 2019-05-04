@@ -395,7 +395,7 @@
                 </td>
             </tr>
         {/if}
-        {if $invoice_details.tax_system == 'vat_standard' || $invoice_details.tax_system == 'vat_flat' || $company_details.tax_system != 'vat_cash'}
+        {if '/^vat_/'|preg_match:$invoice_details.tax_system}
             <tr>
                 <td align="center"><b>{t}VAT Number{/t}:</b> {$company_details.vat_number}</td>
             </tr>

@@ -76,10 +76,10 @@ function get_vat_rate($vat_tax_code) {
 }
 
 #####################################
-#    Get VAT Tax Codes              # use true/false : statdard status is whether is is a normal VAT Tax Code, nit currently used
-#####################################
+#    Get VAT Tax Codes              # Editable is only used in company:edit
+##################################### system_tax_code is not currently used and might be removed
 
-function get_vat_tax_codes($hidden_status = null, $editable_status = null, $standard_status = null) {
+function get_vat_tax_codes($hidden_status = null, $editable_status = null, $system_tax_code = null) {
     
     $db = QFactory::getDbo();
     
@@ -98,9 +98,9 @@ function get_vat_tax_codes($hidden_status = null, $editable_status = null, $stan
         $sql .= "\nAND editable = ".$db->qstr($editable_status);
     }
     
-    // Restrict by editable status
-    if(!is_null($standard_status)) {
-        $sql .= "\nAND standard = ".$db->qstr($standard_status);
+    // Restrict by tax code type
+    if(!is_null($system_tax_code)) {
+        $sql .= "\nAND standard = ".$db->qstr($system_tax_code);
     }
         
     if(!$rs = $db->execute($sql)){        

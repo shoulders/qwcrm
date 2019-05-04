@@ -1326,7 +1326,7 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $u
     }
     
     // VAT Calculations
-    if($tax_system == 'vat_standard' || $tax_system == 'vat_flat' ) {        
+    if(preg_match('/^vat_/', $tax_system)) {        
         $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
         $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
         $item_totals['sub_total_net'] = $unit_net * $unit_qty;
