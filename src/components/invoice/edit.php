@@ -26,9 +26,9 @@ if(!isset($VAR['invoice_id']) || !$VAR['invoice_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
 }
 
-// Check if the invoice is closed
-if(get_invoice_details($VAR['invoice_id'], 'is_closed')) {
-    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("You cannot edit the invoice because it is closed."));
+// Check if invoice can be edited
+if(!check_invoice_can_be_edited($VAR['invoice_id'])) {
+    force_page('invoice', 'details&invoice_id='.$VAR['invoice_id'], 'warning_msg='._gettext("You cannot edit this invoice because its status does not allow it."));
 }
 
 ##################################

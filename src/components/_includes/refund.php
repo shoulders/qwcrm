@@ -742,6 +742,12 @@ function check_refund_can_be_deleted($refund_id) {
     // Get the refund details
     $refund_details = get_refund_details($refund_id);
     
+    // Is on a different tax system
+    if($refund_details['tax_system'] != get_company_details('tax_system')) {
+        //postEmulationWrite('warning_msg', _gettext("The refund cannot be edited because it is on a different Tax system."));
+        return false;        
+    }
+    
     /* Is unpaid
     if($refund_details['status'] == 'unpaid') {
         //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments and is partially paid."));

@@ -999,6 +999,12 @@ function check_payment_can_be_deleted($payment_id) {
     // Get the payment details
     $payment_details = get_payment_details($payment_id);
     
+    // Is on a different tax system
+    if($payment_details['tax_system'] != get_company_details('tax_system')) {
+        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because it is on a different Tax system."));
+        return false;        
+    }
+    
     /* Is the current payment method active, if not you cannot change status
     if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
         //postEmulationWrite('warning_msg', _gettext("The payment status cannot be edited because it's current payment method is not available."));

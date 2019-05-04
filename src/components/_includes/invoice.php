@@ -1545,6 +1545,85 @@ function export_invoice_prefill_items_csv() {
     
 }
 
+
+#########################################
+# Assign Workorder to another employee  #
+#########################################
+
+function assign_invoice_to_employee($invoice_id, $target_employee_id) {
+    
+    $db = QFactory::getDbo();
+    
+    // get the invoice details
+    $invoice_details = get_invoice_details($invoice_id);
+    
+    // if the new employee is the same as the current one, exit
+    if($target_employee_id == $invoice_details['employee_id']) {         
+        postEmulationWrite('warning_msg', _gettext("Nothing done. The new employee is the same as the current employee."));
+        return false;
+    }     
+    
+    // only change invoice status if unassigned
+    if($invoice_details['status'] == 'unassigned') {
+        
+        $sql = "UPDATE ".PRFX."invoice_records SET
+                employee_id         =". $db->qstr( $target_employee_id  ).",
+                status              =". $db->qstr( 'assigned'           )."
+                WHERE invoice_id    =". $db->qstr( $invoice_id          );
+
+    // Keep the same invoice status    
+    } else {    
+        
+        $sql = "UPDATE ".PRFX."invoice_records SET
+                employee_id         =". $db->qstr( $target_employee_id  )."            
+                WHERE invoice_id    =". $db->qstr( $invoice_id          );
+
+    }
+    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to assign a Work Order to an employee."));
+        
+    } else {
+        
+        // Assigned employee success message
+        postEmulationWrite('information_msg', _gettext("Assigned employee updated."));        
+        
+        // Get Logged in Employee's Display Name        
+        $logged_in_employee_display_name = QFactory::getUser()->login_display_name;
+        
+        // Get the currently assigned employee ID
+        $assigned_employee_id = $invoice_details['employee_id'];
+        
+        // Get the Display Name of the currently Assigned Employee
+        if($assigned_employee_id == ''){
+            $assigned_employee_display_name = _gettext("Unassigned");            
+        } else {            
+            $assigned_employee_display_name = get_user_details($assigned_employee_id, 'display_name');
+        }
+        
+        // Get the Display Name of the Target Employee        
+        $target_employee_display_name = get_user_details($target_employee_id, 'display_name');
+        
+        // Creates a History record
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
+
+        // Log activity        
+        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
+        write_record_to_activity_log($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
+                
+        // Update last active record
+        update_user_last_active($invoice_details['employee_id']);
+        update_user_last_active($target_employee_id);
+        update_client_last_active($invoice_details['client_id']);
+        update_workorder_last_active($invoice_details['workorder_id']);
+        update_invoice_last_active($invoice_id);
+        
+        return true;
+        
+    }
+    
+}
+ 
 ##########################################################
 #  Check if the invoice status is allowed to be changed  #
 ##########################################################
@@ -1597,7 +1676,7 @@ function export_invoice_prefill_items_csv() {
     }
 
     // Does the invoice have any Vouchers preventing changing the invoice status
-    if(!check_voucher_status_can_be_changed($invoice_id)) {
+    if(!check_invoice_vouchers_allow_editing($invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
         return false;
     } 
@@ -1825,84 +1904,6 @@ function check_invoice_can_be_deleted($invoice_id) {
     return true;
     
 }
-
-#########################################
-# Assign Workorder to another employee  #
-#########################################
-
-function assign_invoice_to_employee($invoice_id, $target_employee_id) {
-    
-    $db = QFactory::getDbo();
-    
-    // get the invoice details
-    $invoice_details = get_invoice_details($invoice_id);
-    
-    // if the new employee is the same as the current one, exit
-    if($target_employee_id == $invoice_details['employee_id']) {         
-        postEmulationWrite('warning_msg', _gettext("Nothing done. The new employee is the same as the current employee."));
-        return false;
-    }     
-    
-    // only change invoice status if unassigned
-    if($invoice_details['status'] == 'unassigned') {
-        
-        $sql = "UPDATE ".PRFX."invoice_records SET
-                employee_id         =". $db->qstr( $target_employee_id  ).",
-                status              =". $db->qstr( 'assigned'           )."
-                WHERE invoice_id    =". $db->qstr( $invoice_id          );
-
-    // Keep the same invoice status    
-    } else {    
-        
-        $sql = "UPDATE ".PRFX."invoice_records SET
-                employee_id         =". $db->qstr( $target_employee_id  )."            
-                WHERE invoice_id    =". $db->qstr( $invoice_id          );
-
-    }
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to assign a Work Order to an employee."));
-        
-    } else {
-        
-        // Assigned employee success message
-        postEmulationWrite('information_msg', _gettext("Assigned employee updated."));        
-        
-        // Get Logged in Employee's Display Name        
-        $logged_in_employee_display_name = QFactory::getUser()->login_display_name;
-        
-        // Get the currently assigned employee ID
-        $assigned_employee_id = $invoice_details['employee_id'];
-        
-        // Get the Display Name of the currently Assigned Employee
-        if($assigned_employee_id == ''){
-            $assigned_employee_display_name = _gettext("Unassigned");            
-        } else {            
-            $assigned_employee_display_name = get_user_details($assigned_employee_id, 'display_name');
-        }
-        
-        // Get the Display Name of the Target Employee        
-        $target_employee_display_name = get_user_details($target_employee_id, 'display_name');
-        
-        // Creates a History record
-        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
-
-        // Log activity        
-        $record = _gettext("Invoice").' '.$invoice_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-        write_record_to_activity_log($record, $target_employee_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
-                
-        // Update last active record
-        update_user_last_active($invoice_details['employee_id']);
-        update_user_last_active($target_employee_id);
-        update_client_last_active($invoice_details['client_id']);
-        update_workorder_last_active($invoice_details['workorder_id']);
-        update_invoice_last_active($invoice_id);
-        
-        return true;
-        
-    }
-    
- }
  
 #############################################################
 #   Check to see if the invoice can have its refund deleted # // this also checks the associated vouchers
@@ -1965,41 +1966,109 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
        
     /* Is partially paid
     if($invoice_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice is partially paid."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot have its refunded cancelled because the invoice is partially paid."));
         return false;
     }
     
     // Is cancelled
     if($invoice_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been cancelled."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot have its refunded cancelled because the invoice has been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($invoice_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because the invoice has been deleted."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot have its refunded cancelled because the invoice has been deleted."));
         return false;        
     }*/
     
     // Is not refunded (fall back)
     if($invoice_details['status'] != 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot have its refunded cancelled because it is not refunded."));
         return false;        
     }
 
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(!count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
-        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot have its refunded cancelled because the invoice has no payments."));
         return false;        
     }
     
     // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
     if(!check_invoice_vouchers_allow_refund_cancellation($invoice_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot have its refunded cancelled because of Vouchers on it prevent this."));
         return false;
     }    
     
     // All checks passed
     return true;
     
+}
+
+##########################################################
+#  Check if the invoice status is allowed to be changed  #
+##########################################################
+
+ function check_invoice_can_be_edited($invoice_id) {
+     
+    // Get the invoice details
+    $invoice_details = get_invoice_details($invoice_id);
+    
+    // Is on a different tax system
+    if($invoice_details['tax_system'] != get_company_details('tax_system')) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because it is on a different Tax system."));
+        return false;        
+    }
+    
+    // Is partially paid
+    if($invoice_details['status'] == 'partially_paid') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has payments and is partially paid."));
+        return false;        
+    }
+    
+    // Is paid
+    if($invoice_details['status'] == 'paid') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has payments and is paid."));
+        return false;        
+    }
+    
+    // Is partially refunded (not currently used)
+    if($invoice_details['status'] == 'partially_refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has been partially refunded."));
+        return false;        
+    }
+    
+    // Is refunded
+    if($invoice_details['status'] == 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has been refunded."));
+        return false;        
+    }
+    
+    // Is cancelled
+    if($invoice_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has been cancelled."));
+        return false;        
+    }
+    
+    // Is deleted
+    if($invoice_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has been deleted."));
+        return false;        
+    }
+        
+    // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+    if(count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) {       
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has payments."));
+        return false;        
+    }
+
+    // Does the invoice have any Vouchers preventing changing the invoice status
+    if(!check_voucher_status_can_be_changed($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
+        return false;
+    }
+    
+    // All checks passed
+    return true;     
+     
 }

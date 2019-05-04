@@ -1431,14 +1431,36 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
 
 }
 
+###############################################################
+#   Check to see if the voucher can be edited                 #
+###############################################################
+
+function check_voucher_can_be_edited($voucher_id) {
+        
+    // This checks the parent invoice and it's associated vouchers including the supplied voucher
+    if(!check_invoice_can_be_edited(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
 ##########################################################
 #  Check if the voucher status allows editing            #
 ##########################################################
 
- function check_voucher_can_be_edited($voucher_id) {
+ function check_single_voucher_can_be_edited($voucher_id) {
      
     // Get the voucher details
     $voucher_details = get_voucher_details($voucher_id);
+    
+    // Is on a different tax system
+    if($voucher_details['tax_system'] != get_company_details('tax_system')) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be edited because it is on a different Tax system."));
+        return false;        
+    }
     
     // Is Redeemed
     if($voucher_details['status'] == 'redeemed') {
@@ -1467,6 +1489,57 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
     // All checks passed
     return true;     
      
+}
+
+############################################################################
+# Check an invoice's vouchers do not prevent the invoice getting edited    #
+############################################################################
+         
+function check_invoice_vouchers_allow_editing($invoice_id) {
+    
+    $db = QFactory::getDbo();    
+    $vouchers_allow_deletion = true;
+    
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            //$voucher_details = $rs->GetRowAssoc();        
+            
+            // Make sure correct expiry status is set (unused/expired)
+            check_voucher_is_expired($rs->fields['voucher_id']);            
+
+            // Check the Voucher to see if it can be deleted
+            if(!check_single_voucher_can_be_edited($rs->fields['voucher_id'])) {                    
+                $vouchers_allow_editing = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        // Check to if any vouchers prevent the invoice from being deleted
+        if(!$vouchers_allow_editing) {            
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be edited because of Voucher").': '.$voucher_details['voucher_id']);
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because of Voucher").': '.$voucher_details['voucher_id']);
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+
+    }
+
 }
 
 ###############################################################   // needed for status button

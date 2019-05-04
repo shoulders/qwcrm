@@ -719,6 +719,12 @@ function check_expense_can_be_deleted($expense_id) {
     // Get the expense details
     $expense_details = get_expense_details($expense_id);
     
+    // Is on a different tax system
+    if($expense_details['tax_system'] != get_company_details('tax_system')) {
+        //postEmulationWrite('warning_msg', _gettext("The expense cannot be edited because it is on a different Tax system."));
+        return false;        
+    }
+    
     // Is partially paid
     if($expense_details['status'] == 'partially_paid') {
         //postEmulationWrite('warning_msg', _gettext("This expense cannot be edited because it has payments and is partially paid."));
