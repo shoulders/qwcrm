@@ -880,3 +880,5 @@ ALTER TABLE `#__expense_records` CHANGE `net_amount` `unit_net` DECIMAL(10,2) NO
 ALTER TABLE `#__expense_records` CHANGE `vat_rate` `unit_tax_rate` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__expense_records` CHANGE `vat_amount` `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__expense_records` CHANGE `gross_amount` `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+
+ALTER TABLE `#__invoice_records` CHANGE `sales_tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `net_amount`;

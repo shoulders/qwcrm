@@ -158,16 +158,13 @@ function insert_refund($VAR) {
     
     $db = QFactory::getDbo();
     
-    // Get related workorder_id
-    $workorder_id = get_invoice_details($VAR['invoice_id'], 'workorder_id');
-    
     $sql = "INSERT INTO ".PRFX."refund_records SET
             employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
             client_id        =". $db->qstr( $VAR['client_id']               ).",
-            workorder_id     =". $db->qstr( $workorder_id                   ).",
+            workorder_id     =". $db->qstr( $VAR['workorder_id']            ).",
             invoice_id       =". $db->qstr( $VAR['invoice_id']              ).",                        
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
-            tax_system       =". $db->qstr(get_company_details('tax_system')).",
+            tax_system       =". $db->qstr( $VAR['tax_system']              ).",
             item_type        =". $db->qstr( $VAR['item_type']               ).",             
             unit_net         =". $db->qstr( $VAR['unit_net']                ).", 
             vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).", 
@@ -186,15 +183,15 @@ function insert_refund($VAR) {
         $refund_id = $db->Insert_ID();
                 
         // Create a Workorder History Note
-        insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($VAR['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
                   
         // Log activity        
         $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("created.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['client_id'], $workorder_id, $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $VAR['client_id'], $VAR['workorder_id'], $VAR['invoice_id']);
         
         // Update last active record    
         update_client_last_active($VAR['client_id']);
-        update_workorder_last_active($workorder_id);
+        update_workorder_last_active($VAR['workorder_id']);
         update_invoice_last_active($VAR['invoice_id']);
                 
         return $refund_id;
@@ -548,7 +545,7 @@ function recalculate_refund_totals($refund_id) {
     
     $refund_details             = get_refund_details($refund_id);    
     
-    $gross_amount               = $refund_details['gross_amount'];   
+    $gross_amount               = $refund_details['unit_gross'];   
     $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'refund', null, null, null, null, $refund_id);
     $balance                    = $gross_amount - $payments_sub_total;
 

@@ -62,25 +62,23 @@ if (isset($VAR['submit'])) {
     }
 
     $invoice_details = get_invoice_details($VAR['invoice_id']);
-    $tax_system = get_company_details('tax_system');
-    
-    //$vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']);
-    //$vat_rate = get_vat_rate($vat_tax_code);
-    
+        
     // Build array
-    $refund_details['date'] = date('Y-m-d');
     $refund_details['client_id'] = $invoice_details['client_id'];
-    $refund_details['invoice_id'] = $invoice_details['invoice_id'];        
-    $refund_details['item_type'] = $VAR['type'];        
-    $refund_details['net_amount'] = $invoice_details['net_amount'];
-    if(preg_match('/^vat_/', $tax_system) && $VAR['type'] == 'invoice') {
+    $refund_details['workorder_id'] = $invoice_details['workorder_id'];
+    $refund_details['invoice_id'] = $invoice_details['invoice_id'];
+    $refund_details['date'] = date('Y-m-d');
+    $refund_details['tax_system'] = $invoice_details['tax_system'];    
+    $refund_details['item_type'] = $VAR['type'];    
+    $refund_details['unit_net'] = $invoice_details['net_amount'];
+    if(preg_match('/^vat_/', $invoice_details['tax_system']) && $VAR['type'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'vat_multi_tcode';
     } else {
-        $refund_details['vat_tax_code'] = isset($VAR['vat_tax_code']) ? $VAR['vat_tax_code'] : get_default_vat_tax_code($tax_system);
+        $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);
     }
-    $refund_details['tax_rate'] = ($tax_system == 'sales_tax_rate') ? $invoice_details['sales_tax'] : '0.00';    
-    $refund_details['tax_amount'] = $invoice_details['tax_amount'];
-    $refund_details['gross_amount'] = $invoice_details['gross_amount'];  
+    $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_rate') ? $invoice_details['sales_tax_rate'] : get_vat_rate($refund_details['vat_tax_code']); 
+    $refund_details['unit_tax'] = $invoice_details['tax_amount'];
+    $refund_details['unit_gross'] = $invoice_details['gross_amount'];  
     $refund_details['note'] = '';
 
     // Get Client display_name
@@ -91,6 +89,6 @@ if (isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes(false)); 
+$smarty->assign('vat_tax_codes', get_vat_tax_codes()); 
 $smarty->assign('client_display_name', $client_display_name);
 $BuildPage .= $smarty->fetch('refund/new.tpl');

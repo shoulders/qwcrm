@@ -21,7 +21,7 @@
         <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$refund_details.invoice_id}">{$refund_details.invoice_id}</a></td>        
         <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$client_details.client_id}">{$client_details.display_name}</a></td>
         <td class="olotd4">{$refund_details.date|date_format:$date_format}</td>        
-        <td class="olotd4">{$currency_sym}{$refund_details.gross_amount|string_format:"%.2f"}</td>        
+        <td class="olotd4">{$currency_sym}{$refund_details.unit_gross|string_format:"%.2f"}</td>        
         <td class="olotd4"><font color="#cc0000"><b>{$currency_sym}{$refund_details.balance|string_format:"%.2f"}</b></font></td>  
         <td class="olotd4">
             {section name=s loop=$refund_statuses}

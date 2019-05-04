@@ -17,7 +17,7 @@
     <tr class="olotd4">
         <td class="olotd4"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$otherincome_details.otherincome_id}">{$otherincome_details.otherincome_id}</a></td>         
         <td class="olotd4">{$otherincome_details.date|date_format:$date_format}</td>        
-        <td class="olotd4">{$currency_sym}{$otherincome_details.gross_amount|string_format:"%.2f"}</td>        
+        <td class="olotd4">{$currency_sym}{$otherincome_details.unit_gross|string_format:"%.2f"}</td>        
         <td class="olotd4"><font color="#cc0000"><b>{$currency_sym}{$otherincome_details.balance|string_format:"%.2f"}</b></font></td>  
         <td class="olotd4">
             {section name=s loop=$otherincome_statuses}

@@ -37,7 +37,7 @@ class PType {
         
         // Add required variables
         $this->VAR['qpayment']['client_id'] = $this->refund_details['client_id'];
-        $this->VAR['qpayment']['workorder_id'] = $this->refund_details['workorder_id_id'];
+        $this->VAR['qpayment']['workorder_id'] = $this->refund_details['workorder_id'];
         
         // Validate payment_amount (New Payments)
         if(class_exists('NewPayment')) {

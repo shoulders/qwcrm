@@ -94,7 +94,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
                                                                             <td>
-                                                                                {section name=s loop=$vat_tax_codes}    
+                                                                                {section name=s loop=$vat_tax_codes}
                                                                                        {if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%{/if}
                                                                                 {/section} 
                                                                                 <input id="vat_tax_code" name="vat_tax_code" value="{$refund_details.vat_tax_code}" type="hidden">
@@ -103,8 +103,8 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Tax Rate{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
                                                                             <td>
-                                                                                 {$currency_sym}{$refund_details.tax_rate|string_format:"%.2f"}
-                                                                                <input id="tax_rate" name="tax_rate" value="{$refund_details.tax_rate|string_format:"%.2f"}" type="hidden">
+                                                                                 {$currency_sym}{$refund_details.unit_tax_rate|string_format:"%.2f"}
+                                                                                <input id="unit_tax_rate" name="unit_tax_rate" value="{$refund_details.unit_tax_rate|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -139,6 +139,8 @@
                                                                     </tbody>
                                                                         <tr>
                                                                             <td colspan="2">
+                                                                                <input type="hidden" name="workorder_id" value="{$refund_details.workorder_id}">
+                                                                                <input type="hidden" name="tax_system" value="{$refund_details.tax_system}">
                                                                                 <button type="submit" name="submit" value="submit" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit{/t}</button> 
                                                                                 <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>
                                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=refund&page_tpl=search';">{t}Cancel{/t}</button>
