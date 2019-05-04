@@ -32,7 +32,7 @@
                                         <table>
                                             <tr>
                                                 <td><b>{t}Client{/t}</b></td>
-                                                <td><a href="index.php?component=client&page_tpl=details&client_id={$client_id}">{$client_details.display_name}</a></td>
+                                                <td><a href="index.php?component=client&page_tpl=details&client_id={$client_details.client_id}">{$client_details.display_name}</a></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Invoice{/t}</b></td>
@@ -77,7 +77,7 @@
                                             <tr>
                                                 <td colspan="2">                                                    
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_id}';">{t}Cancel{/t}</button>
+                                                    <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=edit&invoice_id={$invoice_id}';">{t}Cancel{/t}</button>
                                                 </td>
                                             </tr>
                                         </table>
