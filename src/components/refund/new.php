@@ -26,7 +26,7 @@ if(!check_page_accessed_via_qwcrm('refund', 'new') && !check_page_accessed_via_q
 }
 
 // Check if we have a refund type and is valid
-if(!isset($VAR['type']) || !$VAR['type'] && ($VAR['type'] == 'invoice' || $VAR['type'] == 'cash_purchase')) {
+if(!isset($VAR['item_type']) || !$VAR['item_type'] && ($VAR['item_type'] == 'invoice' || $VAR['item_type'] == 'cash_purchase')) {
     force_page('refund', 'search', 'warning_msg='._gettext("No Refund Type."));
 }
 
@@ -69,9 +69,9 @@ if (isset($VAR['submit'])) {
     $refund_details['invoice_id'] = $invoice_details['invoice_id'];
     $refund_details['date'] = date('Y-m-d');
     $refund_details['tax_system'] = $invoice_details['tax_system'];    
-    $refund_details['item_type'] = $VAR['type'];    
+    $refund_details['item_type'] = $VAR['item_type'];    
     $refund_details['unit_net'] = $invoice_details['net_amount'];
-    if(preg_match('/^vat_/', $invoice_details['tax_system']) && $VAR['type'] == 'invoice') {
+    if(preg_match('/^vat_/', $invoice_details['tax_system']) && $VAR['item_type'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'vat_multi_tcode';
     } else {
         $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);
