@@ -1,4 +1,4 @@
-<!-- new_refund_details_block.tpl -->
+<!-- display_refund_balance_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/

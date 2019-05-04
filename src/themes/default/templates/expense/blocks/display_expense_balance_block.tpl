@@ -1,4 +1,4 @@
-<!-- new_expense_details_block.tpl -->
+<!-- display_expense_balance_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/

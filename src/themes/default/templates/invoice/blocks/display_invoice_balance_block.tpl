@@ -1,4 +1,4 @@
-<!-- new_invoice_details_block.tpl -->
+<!-- display_invoice_balance_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/

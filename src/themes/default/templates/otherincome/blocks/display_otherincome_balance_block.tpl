@@ -1,4 +1,4 @@
-<!-- new_otherincome_details_block.tpl -->
+<!-- display_otherincome_balance_block.tpl -->
 {*
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
