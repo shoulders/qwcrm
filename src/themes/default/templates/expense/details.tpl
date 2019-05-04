@@ -39,19 +39,29 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
-                                            <td class="menutd">{$expense_details.date|date_format:$date_format}</td>                                            
-                                            <td class="menutd"><b>{t}VAT Tax Code{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$vat_tax_codes}
-                                                    {if $expense_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                {/section}
-                                            </td>
+                                            <td class="menutd">{$expense_details.date|date_format:$date_format}</td>
+                                            {if '/^vat_/'|preg_match:$expense_details.tax_system}
+                                                <td class="menutd"><b>{t}VAT Tax Code{/t}</b></td>
+                                                <td class="menutd">
+                                                    {section name=s loop=$vat_tax_codes}
+                                                        {if $expense_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                    {/section}
+                                                </td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr>
                                         <tr>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd">&nbsp;</td>
-                                            <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$expense_details.unit_tax_rate|string_format:"%.2f"}%</td>
+                                            {if '/^vat_/'|preg_match:$expense_details.tax_system}
+                                                <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
+                                                <td class="menutd">{$expense_details.unit_tax_rate|string_format:"%.2f"}%</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -60,8 +70,13 @@
                                                     {if $expense_details.item_type == $expense_types[s].type_key}{t}{$expense_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
-                                            <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$expense_details.unit_tax|string_format:"%.2f"}</td>
+                                            {if '/^vat_/'|preg_match:$expense_details.tax_system}
+                                                <td class="menutd"><b>{t}VAT{/t} {t}Applied{/t}</b></td>
+                                                <td class="menutd">{$currency_sym}{$expense_details.unit_tax|string_format:"%.2f"}</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"></td>

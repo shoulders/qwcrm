@@ -75,6 +75,7 @@ function load_system_variables(&$VAR) {
     if(!defined('QWCRM_SETUP')) {
         $smarty->assign('currency_sym', get_company_details('currency_symbol')     );
         $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
+        $smarty->assign('qw_tax_system',get_company_details('tax_system')       ); 
         $smarty->assign('date_format',  DATE_FORMAT                                );
     }
 

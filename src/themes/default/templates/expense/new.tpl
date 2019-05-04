@@ -31,32 +31,50 @@
         } );
             
     } );
-
-    // automatically calculate totals
-    function calculateTotals(fieldName) {
-        
-        // Get input field values
-        var unit_net  = Number(document.getElementById('unit_net').value);
-        var unit_tax_rate    = Number(document.getElementById('unit_tax_rate').value);
-        var unit_tax  = Number(document.getElementById('unit_tax').value);
-        
-        // Calculations        
-        var auto_unit_tax = (unit_net * (unit_tax_rate/100));        
-        if(fieldName !== 'unit_tax') {
-            var auto_unit_gross = (unit_net + auto_unit_tax);
-        } else {            
-            var auto_unit_gross = (unit_net + unit_tax);
-        }
-        
-        // Set the new unit_tax input value if not editing the unit_tax input field
-        if(fieldName !== 'unit_tax') {
-            document.getElementById('unit_tax').value = auto_unit_tax.toFixed(2);
-        }
-        
-        // Set the new unit_gross input value
-        document.getElementById('unit_gross').value = auto_unit_gross.toFixed(2);        
     
-    }
+    {if '/^vat_/'|preg_match:$qw_tax_system}
+        
+        // VAT Auto Calculations - Automatically calculate totals
+        function calculateTotals(fieldName) {
+
+            // Get input field values
+            var unit_net  = Number(document.getElementById('unit_net').value);
+            var unit_tax_rate    = Number(document.getElementById('unit_tax_rate').value);
+            var unit_tax  = Number(document.getElementById('unit_tax').value);
+
+            // Calculations        
+            var auto_unit_tax = (unit_net * (unit_tax_rate/100));        
+            if(fieldName !== 'unit_tax') {
+                var auto_unit_gross = (unit_net + auto_unit_tax);
+            } else {            
+                var auto_unit_gross = (unit_net + unit_tax);
+            }
+
+            // Set the new unit_tax input value if not editing the unit_tax input field
+            if(fieldName !== 'unit_tax') {
+                document.getElementById('unit_tax').value = auto_unit_tax.toFixed(2);
+            }
+
+            // Set the new unit_gross input value
+            document.getElementById('unit_gross').value = auto_unit_gross.toFixed(2);        
+
+        }
+    
+    {else}
+        
+        // Non-VAT Auto Calculations - Automatically populate Gross with the Net figure
+        function calculateTotals(fieldName) {
+
+            // Get input field values
+            var unit_net  = Number(document.getElementById('unit_net').value);
+            var unit_gross  = Number(document.getElementById('unit_gross').value);
+
+            // Set the new unit_gross input value
+            document.getElementById('unit_gross').value = unit_net.toFixed(2);
+        
+        }
+        
+    {/if}
 
 </script>
 
@@ -121,7 +139,7 @@
                                                                             <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td><a><input id="unit_net" class="olotd5" name="unit_net" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></b></a></td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
                                                                             <td>
                                                                                 <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
@@ -131,11 +149,11 @@
                                                                                 </select>   
                                                                             </td>
                                                                         </tr> 
-                                                                        <tr>
+                                                                        <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</td>
                                                                             <td><input id="unit_tax_rate" name="unit_tax_rate" class="olotd5" size="5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax_rate');" readonly/><b>%</b></td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
                                                                             <td><input id="unit_tax" name="unit_tax" class="olotd5" size="10" value="0.00" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax');"/></td>
                                                                         </tr>
