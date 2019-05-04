@@ -49,6 +49,9 @@ $smarty->assign('client_details',                   $client_details             
 $smarty->assign('workorder_details',                get_workorder_details($invoice_details['workorder_id'])    );
 $smarty->assign('invoice_details',                  $invoice_details                                           );
 
+// Prefill Items
+$smarty->assign('vat_tax_codes',            get_vat_tax_codes(false)                                                               );
+
 // Invoice Items
 $smarty->assign('labour_items',                     get_invoice_labour_items($VAR['invoice_id'])               );
 $smarty->assign('parts_items',                      get_invoice_parts_items($VAR['invoice_id'])                );
