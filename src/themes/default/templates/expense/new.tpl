@@ -159,7 +159,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input id="unit_gross" name="unit_gross" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                                            <td><input id="unit_gross" name="unit_gross" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"{if !'/^vat_/'|preg_match:$qw_tax_system} readonly{/if}/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

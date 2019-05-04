@@ -151,7 +151,7 @@
                                                     </tr>                                                    
                                                     <tr>
                                                         <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                        <td><input id="unit_gross" name="unit_gross" class="olotd5" size="10" value="{$expense_details.unit_gross}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"{if $expense_details.tax_system != 'none'} readonly{/if}/></td>
+                                                        <td><input id="unit_gross" name="unit_gross" class="olotd5" size="10" value="{$expense_details.unit_gross}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"{if !'/^vat_/'|preg_match:$expense_details.tax_system} readonly{/if}/></td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>
