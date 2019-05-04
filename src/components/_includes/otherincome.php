@@ -440,9 +440,9 @@ function recalculate_otherincome_totals($otherincome_id) {
     
     $otherincome_details            = get_otherincome_details($otherincome_id);    
     
-    $gross_amount                   = $otherincome_details['gross_amount'];   
+    $unit_gross                   = $otherincome_details['unit_gross'];   
     $payments_sub_total             = sum_payments(null, null, null, null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
-    $balance                        = $gross_amount - $payments_sub_total;
+    $balance                        = $unit_gross - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."otherincome_records SET
             balance                 =". $db->qstr( $balance        )."
@@ -455,17 +455,17 @@ function recalculate_otherincome_totals($otherincome_id) {
         /* Update Status - only change if there is a change in status */        
         
         // Balance = Gross Amount (i.e no payments)
-        if($gross_amount > 0 && $gross_amount == $balance && $otherincome_details['status'] != 'unpaid') {
+        if($unit_gross > 0 && $unit_gross == $balance && $otherincome_details['status'] != 'unpaid') {
             update_otherincome_status($otherincome_id, 'unpaid');
         }
         
         // Balance < Gross Amount (i.e some payments)
-        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $otherincome_details['status'] != 'partially_paid') {            
+        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $otherincome_details['status'] != 'partially_paid') {            
             update_otherincome_status($otherincome_id, 'partially_paid');
         }
         
         // Balance = 0.00 (i.e has payments and is all paid)
-        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $otherincome_details['status'] != 'paid') {            
+        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $otherincome_details['status'] != 'paid') {            
             update_otherincome_status($otherincome_id, 'paid');
         }        
         

@@ -19,7 +19,7 @@ if(isset($VAR['workorder_id']) && $VAR['workorder_id'] && !get_workorder_details
     $VAR['client_id'] = get_workorder_details($VAR['workorder_id'], 'client_id');
     
     // Create the invoice and return the new invoice_id
-    $VAR['invoice_id'] = insert_invoice($VAR['client_id'], $VAR['workorder_id'], get_client_details($VAR['client_id'], 'discount_rate'));
+    $VAR['invoice_id'] = insert_invoice($VAR['client_id'], $VAR['workorder_id'], get_client_details($VAR['client_id'], 'unit_discount_rate'));
     
     // Update the workorder with the new invoice_id
     update_workorder_invoice_id($VAR['workorder_id'], $VAR['invoice_id']);
@@ -33,7 +33,7 @@ if(isset($VAR['workorder_id']) && $VAR['workorder_id'] && !get_workorder_details
 if((isset($VAR['client_id'], $VAR['invoice_type']) && $VAR['client_id'] && $VAR['invoice_type'] == 'invoice-only')) {
     
     // Create the invoice and return the new invoice_id
-    $VAR['invoice_id'] = insert_invoice($VAR['client_id'], '', get_client_details($VAR['client_id'], 'discount_rate'));
+    $VAR['invoice_id'] = insert_invoice($VAR['client_id'], '', get_client_details($VAR['client_id'], 'unit_discount_rate'));
 
     // Load the newly created invoice edit page
     force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);

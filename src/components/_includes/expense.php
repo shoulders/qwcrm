@@ -505,9 +505,9 @@ function recalculate_expense_totals($expense_id) {
     
     $expense_details            = get_expense_details($expense_id);    
     
-    $gross_amount               = $expense_details['gross_amount'];   
+    $unit_gross               = $expense_details['unit_gross'];   
     $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
-    $balance                    = $gross_amount - $payments_sub_total;
+    $balance                    = $unit_gross - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."expense_records SET
             balance             =". $db->qstr( $balance    )."
@@ -520,17 +520,17 @@ function recalculate_expense_totals($expense_id) {
         /* Update Status - only change if there is a change in status */        
         
         // Balance = Gross Amount (i.e no payments)
-        if($gross_amount > 0 && $gross_amount == $balance && $expense_details['status'] != 'unpaid') {
+        if($unit_gross > 0 && $unit_gross == $balance && $expense_details['status'] != 'unpaid') {
             update_expense_status($expense_id, 'unpaid');
         }
         
         // Balance < Gross Amount (i.e some payments)
-        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $expense_details['status'] != 'partially_paid') {            
+        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $expense_details['status'] != 'partially_paid') {            
             update_expense_status($expense_id, 'partially_paid');
         }
         
         // Balance = 0.00 (i.e has payments and is all paid)
-        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $expense_details['status'] != 'paid') {            
+        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $expense_details['status'] != 'paid') {            
             update_expense_status($expense_id, 'paid');
         }        
         

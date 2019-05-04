@@ -64,9 +64,9 @@
                                                     {if $invoice_details.status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}        
                                                 {/section}
                                                 {if $invoice_details.status == 'refunded'}</a>{/if}                                                    
-                                            <td>{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
+                                            <td>{$currency_sym}{$invoice_details.unit_gross|string_format:"%.2f"}</td>
                                             <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
-                                            <td><font color="green">{$currency_sym}{$invoice_details.paid_amount|string_format:"%.2f"}</font></td> 
+                                            <td><font color="green">{$currency_sym}{$invoice_details.unit_paid|string_format:"%.2f"}</font></td> 
                                             <td>
                                                 {$invoice_details.close_date|date_format:$date_format}<br>
                                                 {if $invoice_details.status == 'refunded'}
@@ -127,7 +127,7 @@
                                             <td colspan="10" valign="top" align="left">                                                        
                                                 <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
                                                 <b>{t}Client Discount Rate{/t}:</b>
-                                                {$invoice_details.discount_rate|string_format:"%.2f"}%                                                                                                     
+                                                {$invoice_details.unit_discount_rate|string_format:"%.2f"}%                                                                                                     
                                             </td>
                                         </tr>
 
@@ -146,7 +146,7 @@
                                             <td class="menutd2">
                                                 
                                                 <!-- Print Buttons --> 
-                                                {if $invoice_details.gross_amount > 0 }                                                      
+                                                {if $invoice_details.unit_gross > 0 }                                                      
                                                     <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_html&print_content=invoice&theme=print');">{t}Print HTML{/t}</button>
                                                     <button type="button" onclick="window.open('index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=print_pdf&print_content=invoice&theme=print');"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Print PDF{/t}</button>
                                                     <button type="button" onclick="confirmChoice('Are you sure you want to email this invoice to the client?') && $.ajax( { url:'index.php?component=invoice&page_tpl=print&invoice_id={$invoice_details.invoice_id}&print_type=email_pdf&print_content=invoice&theme=print', success: function(data) { $('body').append(data); } } );"><img src="{$theme_images_dir}icons/pdf_small.png"  height="14" alt="pdf">{t}Email PDF{/t}</button>
@@ -357,8 +357,8 @@
                                                         <td class="olotd4" width="20%" align="right">{$currency_sym}{$parts_items_sub_totals.sub_total_net|string_format:"%.2f"}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.discount_rate|string_format:"%.2f"}%)</b></td>
-                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.discount_amount|string_format:"%.2f"}</td>
+                                                        <td class="olotd4" width="80%" align="right"><b>{t}Discount{/t} (@ {$invoice_details.unit_discount_rate|string_format:"%.2f"}%)</b></td>
+                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_discount|string_format:"%.2f"}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Vouchers{/t}</b></td>
@@ -367,16 +367,16 @@
                                                     {if $invoice_details.tax_system != 'none'}
                                                         <tr>
                                                             <td class="olotd4" width="80%" align="right"><b>{t}Net{/t}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.net_amount|string_format:"%.2f"}</td>
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_net|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>                                                            
                                                             <td class="olotd4" width="80%" align="right"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t} (@ {$invoice_details.sales_tax_rate|string_format:"%.2f"}%){/if}</b></td>
-                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.tax_amount|string_format:"%.2f"}</td>                                                            
+                                                            <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_tax|string_format:"%.2f"}</td>                                                            
                                                         </tr>
                                                     {/if}
                                                     <tr>
                                                         <td class="olotd4" width="80%" align="right"><b>{t}Gross{/t}</b></td>
-                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.gross_amount|string_format:"%.2f"}</td>
+                                                        <td class="olotd4" width="20%" align="right">{$currency_sym}{$invoice_details.unit_gross|string_format:"%.2f"}</td>
                                                     </tr> 
                                                 </table>
                                             </td>

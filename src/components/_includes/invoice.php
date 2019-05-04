@@ -224,7 +224,7 @@ function display_invoices($order_by, $direction, $use_pages = false, $records_pe
 #     insert invoice                #
 #####################################
 
-function insert_invoice($client_id, $workorder_id, $discount_rate) {
+function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
     
     $db = QFactory::getDbo();
     
@@ -240,7 +240,7 @@ function insert_invoice($client_id, $workorder_id, $discount_rate) {
             workorder_id    =". $db->qstr( $workorder_id                        ).",
             date            =". $db->qstr( mysql_date()                         ).",
             due_date        =". $db->qstr( mysql_date()                         ).",            
-            discount_rate   =". $db->qstr( $discount_rate                       ).",
+            unit_discount_rate   =". $db->qstr( $unit_discount_rate                       ).",
             tax_system      =". $db->qstr( $tax_system                          ).",
             sales_tax_rate  =". $db->qstr( $sales_tax_rate                      ).",
             open_date       =". $db->qstr( mysql_datetime()                     ).",
@@ -459,7 +459,7 @@ function insert_invoice_prefill_item($VAR) {
     $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
             description =". $db->qstr( $VAR['description']  ).",
             type        =". $db->qstr( $VAR['type']         ).",
-            net_amount  =". $db->qstr( $VAR['net_amount']   ).",
+            unit_net  =". $db->qstr( $VAR['unit_net']   ).",
             active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
@@ -747,14 +747,14 @@ function get_parts_items_sub_totals($invoice_id) {
 #   update invoice static values   #  // This is used when a user updates an invoice before any payments
 ####################################
 
-function update_invoice_static_values($invoice_id, $date, $due_date, $discount_rate) {
+function update_invoice_static_values($invoice_id, $date, $due_date, $unit_discount_rate) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."invoice_records SET
             date                =". $db->qstr( date_to_mysql_date($date)     ).",
             due_date            =". $db->qstr( date_to_mysql_date($due_date) ).",
-            discount_rate       =". $db->qstr( $discount_rate                )."               
+            unit_discount_rate       =". $db->qstr( $unit_discount_rate                )."               
             WHERE invoice_id    =". $db->qstr( $invoice_id                   );
 
     if(!$rs = $db->execute($sql)){        
@@ -795,15 +795,14 @@ function update_invoice_full($VAR, $doNotLog = false) {
             workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",               
             date                =". $db->qstr( $VAR['date']            ).",
             due_date            =". $db->qstr( $VAR['due_date']        ).", 
-            discount_rate       =". $db->qstr( $VAR['discount_rate']   ).",
-            tax_system          =". $db->qstr( $VAR['tax_system']      ).",   
-            sub_total           =". $db->qstr( $VAR['sub_total']       ).",    
-            discount_amount     =". $db->qstr( $VAR['discount_amount'] ).",   
-            net_amount          =". $db->qstr( $VAR['net_amount']      ).",
+            unit_discount_rate       =". $db->qstr( $VAR['unit_discount_rate']   ).",
+            tax_system          =". $db->qstr( $VAR['tax_system']      ).",                 
+            unit_discount     =". $db->qstr( $VAR['unit_discount'] ).",   
+            unit_net          =". $db->qstr( $VAR['unit_net']      ).",
             sales_tax_rate      =". $db->qstr( $VAR['sales_tax_rate']  ).",
-            tax_amount          =". $db->qstr( $VAR['tax_amount']      ).",             
-            gross_amount        =". $db->qstr( $VAR['gross_amount']    ).", 
-            paid_amount         =". $db->qstr( $VAR['paid_amount']     ).",
+            unit_tax          =". $db->qstr( $VAR['unit_tax']      ).",             
+            unit_gross        =". $db->qstr( $VAR['unit_gross']    ).", 
+            unit_paid         =". $db->qstr( $VAR['unit_paid']     ).",
             balance             =". $db->qstr( $VAR['balance']         ).",
             open_date           =". $db->qstr( $VAR['open_date']       ).",
             close_date          =". $db->qstr( $VAR['close_date']      ).",
@@ -851,7 +850,7 @@ function update_invoice_prefill_item($VAR) {
     $sql = "UPDATE ".PRFX."invoice_prefill_items SET
             description                 =". $db->qstr( $VAR['description']          ).",
             type                        =". $db->qstr( $VAR['type']                 ).",
-            net_amount                  =". $db->qstr( $VAR['net_amount']           ).",
+            unit_net                  =". $db->qstr( $VAR['unit_net']           ).",
             active                      =". $db->qstr( $VAR['active']               )."            
             WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
 
@@ -1110,18 +1109,18 @@ function delete_invoice($invoice_id) {
                                     'invoice_id'        =>  $invoice_details['invoice_id'],
                                     'employee_id'       =>  '',
                                     'client_id'         =>  '',
-                                    'workorder_id'      =>  '',                                    
+                                    'workorder_id'      =>  '', 
+                                    'refund_id'         =>  '', 
                                     'date'              =>  '0000-00-00',
-                                    'due_date'          =>  '0000-00-00',        
-                                    'discount_rate'     =>  '0.00',
-                                    'tax_system'        =>  '',                                    
-                                    'sub_total'         =>  '0.00',
-                                    'discount_amount'   =>  '0.00',        
-                                    'net_amount'        =>  '0.00',
+                                    'due_date'          =>  '0000-00-00',       
+                                    'tax_system'        =>  '',   
+                                    'unit_unit_discount_rate' =>  '0.00', 
+                                    'unit_discount'     =>  '0.00',
+                                    'unit_net'          =>  '0.00',        
                                     'sales_tax_rate'    =>  '0.00',
-                                    'tax_amount'        =>  '0.00',
-                                    'gross_amount'      =>  '0.00',
-                                    'paid_amount'       =>  '0.00',
+                                    'unit_tax'          =>  '0.00',
+                                    'unit_gross'        =>  '0.00',
+                                    'unit_paid'         =>  '0.00',
                                     'balance'           =>  '0.00',
                                     'open_date'         =>  '0000-00-00',
                                     'close_date'        =>  '0000-00-00',
@@ -1340,7 +1339,7 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $u
 
 #####################################
 #   Recalculate Invoice Totals      #   ///  re-check these calcuclationsa s they are wrong (not much though) i should account for vouchers as if they had tax allow for development later.
-#####################################
+#####################################  // Vouchers are not discounted
 
 function recalculate_invoice_totals($invoice_id) {
     
@@ -1352,30 +1351,19 @@ function recalculate_invoice_totals($invoice_id) {
     $parts_items_sub_totals     = get_parts_items_sub_totals($invoice_id);   
     $voucher_sub_totals         = get_invoice_vouchers_sub_totals($invoice_id);
     
-    $items_net_sub_total        = $labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net'];
-    $discount_amount            = $items_net_sub_total * ($invoice_details['discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
-    $net_amount                 = $items_net_sub_total - $discount_amount;
-
-    /* Work out the correct tax based on the type of invoice/tax_system
-    if(preg_match('/^vat_/', $invoice_details['tax_system']) || $invoice_details['tax_system'] == 'sales_tax') {
-        $tax_amount = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];        
-    } else {
-        $tax_amount = 0.00;  // do i need this. is it not 0.00 anyway when i use none now -- check
-    }*/
-    
-    $tax_amount = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
-    
-    $gross_amount               = $net_amount + $tax_amount;    
+    $unit_discount            = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net']) * ($invoice_details['unit_discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
+    $unit_net                 = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;
+    $unit_tax                 = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
+    $unit_gross               = $unit_net + $unit_tax;    
     $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'invoice', null, null, null, $invoice_id);
-    $balance                    = $gross_amount - $payments_sub_total;
+    $balance                    = $unit_gross - $payments_sub_total;
 
-    $sql = "UPDATE ".PRFX."invoice_records SET
-            sub_total           =". $db->qstr( $items_net_sub_total     ).",
-            discount_amount     =". $db->qstr( $discount_amount         ).",
-            net_amount          =". $db->qstr( $net_amount              ).",
-            tax_amount          =". $db->qstr( $tax_amount              ).",
-            gross_amount        =". $db->qstr( $gross_amount            ).",
-            paid_amount         =". $db->qstr( $payments_sub_total      ).",
+    $sql = "UPDATE ".PRFX."invoice_records SET            
+            unit_discount     =". $db->qstr( $unit_discount         ).",
+            unit_net          =". $db->qstr( $unit_net              ).",
+            unit_tax          =". $db->qstr( $unit_tax              ).",
+            unit_gross        =". $db->qstr( $unit_gross            ).",
+            unit_paid         =". $db->qstr( $payments_sub_total      ).",
             balance             =". $db->qstr( $balance                 )."
             WHERE invoice_id    =". $db->qstr( $invoice_id              );
 
@@ -1386,22 +1374,22 @@ function recalculate_invoice_totals($invoice_id) {
         /* Update Status - only change if there is a change in status*/        
         
         // No invoiceable amount, set to pending (if not already)
-        if($gross_amount == 0 && $invoice_details['status'] != 'pending') {
+        if($unit_gross == 0 && $invoice_details['status'] != 'pending') {
             update_invoice_status($invoice_id, 'pending');
         }
         
         // Has invoiceable amount with no payments, set to unpaid (if not already)
-        elseif($gross_amount > 0 && $gross_amount == $balance && $invoice_details['status'] != 'unpaid') {
+        elseif($unit_gross > 0 && $unit_gross == $balance && $invoice_details['status'] != 'unpaid') {
             update_invoice_status($invoice_id, 'unpaid');
         }
         
         // Has invoiceable amount with partially payment, set to partially paid (if not already)
-        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $invoice_details['status'] != 'partially_paid') {            
+        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $invoice_details['status'] != 'partially_paid') {            
             update_invoice_status($invoice_id, 'partially_paid');
         }
         
         // Has invoicable amount and the payment(s) match the invoiceable amount, set to paid (if not already)
-        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $invoice_details['status'] != 'paid') {            
+        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $invoice_details['status'] != 'paid') {            
             update_invoice_status($invoice_id, 'paid');
         }        
         
@@ -1466,7 +1454,7 @@ function upload_invoice_prefill_items_csv($VAR) {
                     continue;               
                 }
 
-                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, net_amount, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
+                $sql = "INSERT INTO ".PRFX."invoice_prefill_items(description, type, unit_net, active) VALUES ('$data[0]','$data[1]','$data[2]','$data[3]')";
 
                 if(!$rs = $db->execute($sql)) {
                     force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the new prefill items into the database."));
@@ -1511,7 +1499,7 @@ function export_invoice_prefill_items_csv() {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT description, type, net_amount, active FROM ".PRFX."invoice_prefill_items";
+    $sql = "SELECT description, type, unit_net, active FROM ".PRFX."invoice_prefill_items";
     
     if(!$rs = $db->Execute($sql)) {        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice prefill items from the database."));
@@ -1531,7 +1519,7 @@ function export_invoice_prefill_items_csv() {
 
         // loop over the rows, outputting them
         foreach($prefill_items as $key => $value) {
-            $row = array($value['description'], $value['type'], $value['net_amount'], $value['active']);
+            $row = array($value['description'], $value['type'], $value['unit_net'], $value['active']);
             fputcsv($output_stream, $row);            
         }       
         

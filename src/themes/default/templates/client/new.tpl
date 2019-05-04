@@ -60,7 +60,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><a><input name="discount_rate" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"><b>%</b></a></td>
+                                                                            <td><a><input name="unit_discount_rate" class="olotd5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"><b>%</b></a></td>
                                                                         </tr>                                                                                  
                                                                     </table>
                                                                 </td>

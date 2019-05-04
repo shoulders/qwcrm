@@ -545,9 +545,9 @@ function recalculate_refund_totals($refund_id) {
     
     $refund_details             = get_refund_details($refund_id);    
     
-    $gross_amount               = $refund_details['unit_gross'];   
+    $unit_gross               = $refund_details['unit_gross'];   
     $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'refund', null, null, null, null, $refund_id);
-    $balance                    = $gross_amount - $payments_sub_total;
+    $balance                    = $unit_gross - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."refund_records SET
             balance             =". $db->qstr( $balance   )."
@@ -560,17 +560,17 @@ function recalculate_refund_totals($refund_id) {
         /* Update Status - only change if there is a change in status */        
         
         // Balance = Gross Amount (i.e no payments)
-        if($gross_amount > 0 && $gross_amount == $balance && $refund_details['status'] != 'unpaid') {
+        if($unit_gross > 0 && $unit_gross == $balance && $refund_details['status'] != 'unpaid') {
             update_refund_status($refund_id, 'unpaid');
         }
         
         // Balance < Gross Amount (i.e some payments)
-        elseif($gross_amount > 0 && $payments_sub_total > 0 && $payments_sub_total < $gross_amount && $refund_details['status'] != 'partially_paid') {            
+        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $refund_details['status'] != 'partially_paid') {            
             update_refund_status($refund_id, 'partially_paid');
         }
         
         // Balance = 0.00 (i.e has payments and is all paid)
-        elseif($gross_amount > 0 && $gross_amount == $payments_sub_total && $refund_details['status'] != 'paid') {            
+        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $refund_details['status'] != 'paid') {            
             update_refund_status($refund_id, 'paid');
         }        
         

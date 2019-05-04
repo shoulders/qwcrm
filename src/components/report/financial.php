@@ -47,11 +47,11 @@ if(isset($VAR['submit'])) {
     /* Revenue Calculations */   
 
     // VAT    
-    $vat_total_in = $invoice_stats['sum_vat_tax_amount']  + $otherincome_stats['sum_vat_amount'];
+    $vat_total_in = $invoice_stats['sum_vat_unit_tax']  + $otherincome_stats['sum_vat_amount'];
     $vat_total_out = $expense_stats['sum_vat_amount'] + $refund_stats['sum_vat_amount'];
-    $vat_balance = ($invoice_stats['sum_vat_tax_amount']  + $otherincome_stats['sum_vat_amount']) - ($expense_stats['sum_vat_amount'] + $refund_stats['sum_vat_amount']);    
+    $vat_balance = ($invoice_stats['sum_vat_unit_tax']  + $otherincome_stats['sum_vat_amount']) - ($expense_stats['sum_vat_amount'] + $refund_stats['sum_vat_amount']);    
     $vat_totals = array(
-            "invoice"       =>  $invoice_stats['sum_vat_tax_amount'],   
+            "invoice"       =>  $invoice_stats['sum_vat_unit_tax'],   
             "otherincome"   =>  $otherincome_stats['sum_vat_amount'],   
             "expense"       =>  $expense_stats['sum_vat_amount'],   
             "refund"        =>  $refund_stats['sum_vat_amount'],   
@@ -62,11 +62,11 @@ if(isset($VAR['submit'])) {
     $smarty->assign('vat_totals', $vat_totals );       
     
     // Profit
-    $profit_no_tax_ = ($invoice_stats['sum_gross_amount'] + $otherincome_stats['sum_gross_amount']) - ($expense_stats['sum_gross_amount'] + $refund_stats['sum_gross_amount']);
-    $profit_sales_tax = ($invoice_stats['sum_net_amount']   + $otherincome_stats['sum_gross_amount']) - ($expense_stats['sum_gross_amount'] + $refund_stats['sum_gross_amount']);
-    $profit_vat_tax = ($invoice_stats['sum_net_amount']   + $otherincome_stats['sum_net_amount'])   - ($expense_stats['sum_net_amount']   + $refund_stats['sum_net_amount']);
+    $profit_no_tax_ = ($invoice_stats['sum_unit_gross'] + $otherincome_stats['sum_unit_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
+    $profit_sales_tax = ($invoice_stats['sum_unit_net']   + $otherincome_stats['sum_unit_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
+    $profit_vat_tax = ($invoice_stats['sum_unit_net']   + $otherincome_stats['sum_unit_net'])   - ($expense_stats['sum_unit_net']   + $refund_stats['sum_unit_net']);
     $profit_totals = array(
-            "no_tax"      =>  $invoice_stats['sum_vat_tax_amount'],   
+            "no_tax"      =>  $invoice_stats['sum_vat_unit_tax'],   
             "sales_tax"   =>  $otherincome_stats['sum_vat_amount'],   
             "vat_tax"     =>  $expense_stats['sum_vat_amount']         
         );

@@ -50,8 +50,8 @@
                 {/section} 
                 {if $display_invoices[i].status == 'refunded'}</a>{/if}
             </td>            
-            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].net_amount|string_format:"%.2f"}</td>                                                          
-            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].gross_amount|string_format:"%.2f"}</td>
+            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_net|string_format:"%.2f"}</td>                                                          
+            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_gross|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].balance|string_format:"%.2f"}</td> 
         </tr>
     {sectionelse}

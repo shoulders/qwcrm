@@ -882,3 +882,13 @@ ALTER TABLE `#__expense_records` CHANGE `vat_amount` `unit_tax` DECIMAL(10,2) NO
 ALTER TABLE `#__expense_records` CHANGE `gross_amount` `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 
 ALTER TABLE `#__invoice_records` CHANGE `sales_tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `net_amount`;
+ALTER TABLE `#__invoice_records` DROP `sub_total`;
+ALTER TABLE `#__invoice_records` CHANGE `discount_rate` `unit_discount_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `tax_system`;
+ALTER TABLE `#__invoice_records` CHANGE `discount_amount` `unit_discount` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `unit_discount_rate`;
+ALTER TABLE `#__invoice_records` CHANGE `net_amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_records` CHANGE `tax_amount` `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_records` CHANGE `gross_amount` `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__invoice_records` CHANGE `paid_amount` `unit_paid` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+
+ALTER TABLE `#__invoice_prefill_items` CHANGE `net_amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__client_records` CHANGE `discount_rate` `unit_discount_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';

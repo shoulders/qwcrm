@@ -40,7 +40,7 @@ if (isset($VAR['submit'])) {
     
     // Insert the Refund into the database
     $refund_id = refund_invoice($VAR);
-    recalculate_refund_totals($refund_id);  // This is not strictly needed here because balance = gross_amount
+    recalculate_refund_totals($refund_id);  // This is not strictly needed here because balance = unit_gross
     
         if ($VAR['submit'] == 'submitandpayment') {
 
@@ -70,15 +70,15 @@ if (isset($VAR['submit'])) {
     $refund_details['date'] = date('Y-m-d');
     $refund_details['tax_system'] = $invoice_details['tax_system'];    
     $refund_details['item_type'] = $VAR['item_type'];    
-    $refund_details['unit_net'] = $invoice_details['net_amount'];
+    $refund_details['unit_net'] = $invoice_details['unit_net'];
     if(preg_match('/^vat_/', $invoice_details['tax_system']) && $VAR['item_type'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'vat_multi_tcode';
     } else {
         $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);
     }
     $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_rate') ? $invoice_details['sales_tax_rate'] : get_vat_rate($refund_details['vat_tax_code']); 
-    $refund_details['unit_tax'] = $invoice_details['tax_amount'];
-    $refund_details['unit_gross'] = $invoice_details['gross_amount'];  
+    $refund_details['unit_tax'] = $invoice_details['unit_tax'];
+    $refund_details['unit_gross'] = $invoice_details['unit_gross'];  
     $refund_details['note'] = '';
 
     // Get Client display_name

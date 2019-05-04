@@ -278,33 +278,33 @@
                 </tr>
                 <tr>
                     <td><b>{t}Discount{/t} {t}Applied{/t} {t}[N]{/t}:</b> not 100% happy with this, does not account for cancelled invoices</td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_discount_amount|string_format:"%.2f"}</b></td>
+                    <td><b>{$currency_sym}{$invoice_stats.sum_unit_discount|string_format:"%.2f"}</b></td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
                     <td><b>{t}Sales Tax{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_sales_tax_amount|string_format:"%.2f"}</b></td>
+                    <td><b>{$currency_sym}{$invoice_stats.sum_sales_unit_tax|string_format:"%.2f"}</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}VAT Tax{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_vat_tax_amount|string_format:"%.2f"}</b></td>
+                    <td><b>{$currency_sym}{$invoice_stats.sum_vat_unit_tax|string_format:"%.2f"}</b></td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
                     <td><b>{t}Invoiced{/t} {t}[N]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_net_amount|string_format:"%.2f"}</b></td>
+                    <td><b>{$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"}</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Invoiced{/t} {t}[G]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_gross_amount|string_format:"%.2f"}</b></td>
+                    <td><b>{$currency_sym}{$invoice_stats.sum_unit_gross|string_format:"%.2f"}</b></td>
                 </tr>                 
                 <tr>
                     <td><b>{t}Paid{/t} {t}Invoices{/t} {t}[G]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_paid_amount|string_format:"%.2f"}</b></td>
+                    <td><b>{$currency_sym}{$invoice_stats.sum_unit_paid|string_format:"%.2f"}</b></td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
