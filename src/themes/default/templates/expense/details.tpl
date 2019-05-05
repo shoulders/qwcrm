@@ -33,9 +33,14 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
-                                            <td class="menutd">{$expense_details.payee}</td>                                            
-                                            <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$expense_details.unit_net|string_format:"%.2f"}</td>
+                                            <td class="menutd">{$expense_details.payee}</td> 
+                                            {if $expense_details.tax_system != 'none'}
+                                                <td class="menutd"><b>{t}Net{/t}</b></td>
+                                                <td class="menutd">{$currency_sym}{$expense_details.unit_net|string_format:"%.2f"}</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
@@ -71,7 +76,7 @@
                                                 {/section}   
                                             </td>
                                             {if '/^vat_/'|preg_match:$expense_details.tax_system}
-                                                <td class="menutd"><b>{t}VAT{/t} {t}Applied{/t}</b></td>
+                                                <td class="menutd"><b>{t}VAT{/t}</b></td>
                                                 <td class="menutd">{$currency_sym}{$expense_details.unit_tax|string_format:"%.2f"}</td>
                                             {else}
                                                 <td class="menutd">&nbsp;</td>
@@ -81,7 +86,7 @@
                                         <tr>
                                             <td class="menutd"></td>
                                             <td class="menutd"></td>
-                                            <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
+                                            <td class="menutd"><b>{t}Gross{/t}</b></td>
                                             <td class="menutd">{$currency_sym}{$expense_details.unit_gross|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>

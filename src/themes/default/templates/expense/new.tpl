@@ -12,9 +12,9 @@
 <script src="{$theme_js_dir}jscal2/jscal2.js"></script>
 <script src="{$theme_js_dir}jscal2/unicode-letter.js"></script>
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
-<script>
+<script>    
     
-    $( document ).ready(function() {
+    $(document).ready(function() {
         
         // Set the intial VAT rate from the selected VAT Tax Code
         var selected_vat_tax_code = $('#vat_tax_code').find('option:selected');
@@ -30,51 +30,50 @@
             calculateTotals('vat_tax_code');
         } );
             
-    } );
-    
-    {if '/^vat_/'|preg_match:$qw_tax_system}
+        {if !'/^vat_/'|preg_match:$qw_tax_system}
+
+            // Non-VAT Auto Calculations - Automatically populate Net with the Gross figure
+            $('#new_expense').submit(function( event ) {                   
+
+                // Get input field values
+                var unit_gross  = Number(document.getElementById('unit_gross').value);
+
+                // Set the new unit_gross input value
+                document.getElementById('unit_net').value = unit_gross.toFixed(2);
+
+            } );
+
+        {/if}
+            
+    } );  
         
-        // VAT Auto Calculations - Automatically calculate totals
-        function calculateTotals(fieldName) {
+    // VAT Auto Calculations - Automatically calculate totals
+    function calculateTotals(fieldName) {
 
-            // Get input field values
-            var unit_net  = Number(document.getElementById('unit_net').value);
-            var unit_tax_rate    = Number(document.getElementById('unit_tax_rate').value);
-            var unit_tax  = Number(document.getElementById('unit_tax').value);
+        // Get input field values
+        var unit_net  = Number(document.getElementById('unit_net').value);
+        var unit_tax_rate    = Number(document.getElementById('unit_tax_rate').value);
+        var unit_tax  = Number(document.getElementById('unit_tax').value);
 
-            // Calculations        
-            var auto_unit_tax = (unit_net * (unit_tax_rate/100));        
-            if(fieldName !== 'unit_tax') {
-                var auto_unit_gross = (unit_net + auto_unit_tax);
-            } else {            
-                var auto_unit_gross = (unit_net + unit_tax);
-            }
-
-            // Set the new unit_tax input value if not editing the unit_tax input field
-            if(fieldName !== 'unit_tax') {
-                document.getElementById('unit_tax').value = auto_unit_tax.toFixed(2);
-            }
-
-            // Set the new unit_gross input value
-            document.getElementById('unit_gross').value = auto_unit_gross.toFixed(2);        
-
+        // Calculations        
+        var auto_unit_tax = (unit_net * (unit_tax_rate/100));        
+        if(fieldName !== 'unit_tax') {
+            var auto_unit_gross = (unit_net + auto_unit_tax);
+        } else {            
+            var auto_unit_gross = (unit_net + unit_tax);
         }
-    
-    {else}
-        
-        // Non-VAT Auto Calculations - Automatically populate Gross with the Net figure
-        function calculateTotals(fieldName) {
 
-            // Get input field values
-            var unit_net  = Number(document.getElementById('unit_net').value);
-            var unit_gross  = Number(document.getElementById('unit_gross').value);
-
-            // Set the new unit_gross input value
-            document.getElementById('unit_gross').value = unit_net.toFixed(2);
-        
+        // Set the new unit_tax input value if not editing the unit_tax input field
+        if(fieldName !== 'unit_tax') {
+            document.getElementById('unit_tax').value = auto_unit_tax.toFixed(2);
         }
-        
-    {/if}
+
+        {if '/^vat_/'|preg_match:$qw_tax_system}
+            // Set the new unit_gross input value
+            document.getElementById('unit_gross').value = auto_unit_gross.toFixed(2);
+        {/if}
+
+    }    
 
 </script>
 
@@ -95,10 +94,10 @@
                         <table class="olotable" width="100%" border="0" cellpadding="5" cellspacing="0">
                             <tr>
                                 <td class="menutd">
-                                    <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2" >
+                                    <table class="menutable" width="100%" border="0" cellpadding="2" cellspacing="2">
                                         <tr>
                                             <td>                                                                                             
-                                                <form action="index.php?component=expense&page_tpl=new" method="post" name="new_expense" id="new_expense">                                                
+                                                <form method="post" action="index.php?component=expense&page_tpl=new" name="new_expense" id="new_expense">
                                                     <table width="100%" cellpadding="3" cellspacing="0" border="0">
                                                         <tr>
                                                             <td colspan="2" align="left">
@@ -135,9 +134,9 @@
                                                                                 </select>
                                                                             </td>                                                                                
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><a><input id="unit_net" class="olotd5" name="unit_net" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></b></a></td>
+                                                                        <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
+                                                                            <td align="right"><b>{t}Net{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td><a><input id="unit_net" name="unit_net" class="olotd5" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}"{if '/^vat_/'|preg_match:$qw_tax_system} required{/if} onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></b></a></td>
                                                                         </tr>
                                                                         <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
@@ -154,12 +153,12 @@
                                                                             <td><input id="unit_tax_rate" name="unit_tax_rate" class="olotd5" size="5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax_rate');" readonly/><b>%</b></td>
                                                                         </tr>
                                                                         <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
-                                                                            <td align="right"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
+                                                                            <td align="right"><b>{t}VAT{/t}</b></td>
                                                                             <td><input id="unit_tax" name="unit_tax" class="olotd5" size="10" value="0.00" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax');"/></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input id="unit_gross" name="unit_gross" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"{if !'/^vat_/'|preg_match:$qw_tax_system} readonly{/if}/></td>
+                                                                            <td align="right"><b>{t}Gross{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td><input id="unit_gross" name="unit_gross" class="olotd5"{if !'/^vat_/'|preg_match:$qw_tax_system}style="border-width: medium;"{/if} size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
