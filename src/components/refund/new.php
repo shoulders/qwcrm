@@ -72,7 +72,7 @@ if (isset($VAR['submit'])) {
     $refund_details['item_type'] = $VAR['item_type'];    
     $refund_details['unit_net'] = $invoice_details['unit_net'];
     if(preg_match('/^vat_/', $invoice_details['tax_system']) && $VAR['item_type'] == 'invoice') {
-        $refund_details['vat_tax_code'] = 'vat_multi_tcode';
+        $refund_details['vat_tax_code'] = 'TVM';
     } else {
         $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);
     }

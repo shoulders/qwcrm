@@ -121,11 +121,11 @@ function get_default_vat_tax_code($tax_system = null) {
     
     if(!$tax_system) {$tax_system = get_company_details('tax_system');}
     
-    if($tax_system == 'none') { return 'not_applicable'; }
+    if($tax_system == 'none') { return 'TNA'; }
     if($tax_system == 'vat_standard') { return 'T1'; }
     if($tax_system == 'vat_flat') { return 'T1'; }
     if($tax_system == 'vat_cash') { return 'T1'; }
-    if($tax_system == 'sales_tax') { return 'not_applicable'; }    
+    if($tax_system == 'sales_tax') { return 'TNA'; }    
     
 }
 
@@ -138,19 +138,19 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
     if(!$tax_system) {$tax_system = get_company_details('tax_system');}
     
     if($type == 'multi_purpose') {
-        if($tax_system == 'none') { return 'not_applicable'; }
+        if($tax_system == 'none') { return 'TNA'; }
         if($tax_system == 'vat_standard') { return 'T0'; }
         if($tax_system == 'vat_flat') { return 'T0'; }
         if($tax_system == 'vat_cash') { return 'T0'; }
-        if($tax_system == 'sales_tax') { return 'not_applicable'; } 
+        if($tax_system == 'sales_tax') { return 'TNA'; } 
     }
     
     if($type == 'single_purpose') {
-        if($tax_system == 'none') { return 'not_applicable'; }
+        if($tax_system == 'none') { return 'TNA'; }
         if($tax_system == 'vat_standard') { return 'T1'; }
         if($tax_system == 'vat_flat') { return 'T1'; }
         if($tax_system == 'vat_cash') { return 'T1'; }
-        if($tax_system == 'sales_tax') { return 'not_applicable'; } 
+        if($tax_system == 'sales_tax') { return 'TNA'; } 
     }    
     
 }
