@@ -200,7 +200,7 @@ if($VAR['stage'] == 'database_install_results_qwcrm') {
     } else {
         
         // Output Execution results to the screen
-        $smarty->assign('executed_sql_results' ,QSetup::$executed_sql_results);        
+        $smarty->assign('executed_sql_results', QSetup::$executed_sql_results);        
         $smarty->assign('stage', 'database_install_results_qwcrm');
     }
     

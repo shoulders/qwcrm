@@ -331,7 +331,7 @@ CREATE TABLE `#__invoice_labour` (
   `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0';
+  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0',
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -354,7 +354,7 @@ CREATE TABLE `#__invoice_parts` (
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0';
+  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0',
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -841,7 +841,7 @@ CREATE TABLE `#__supplier_statuses` (
 
 INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'valid', 'Valid'),
-(1, 'cancelled', 'Cancelled');
+(2, 'cancelled', 'Cancelled');
 
 -- --------------------------------------------------------
 
@@ -1170,7 +1170,7 @@ CREATE TABLE `#__voucher_records` (
   `tax_system` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0';
+  `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0',
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -1301,7 +1301,7 @@ INSERT INTO `#__workorder_statuses` (`id`, `status_key`, `display_name`) VALUES
 (7, 'management', 'Management'),
 (8, 'closed_without_invoice', 'Closed without Invoice'),
 (9, 'closed_with_invoice', 'Closed with Invoice'),
-(9, 'deleted', 'Deleted');
+(10, 'deleted', 'Deleted');
 
 --
 -- Indexes for dumped tables
