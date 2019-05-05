@@ -12,10 +12,12 @@
         <td class="olohead">{t}Payee{/t}</td>
         <td class="olohead">{t}Date{/t}</td>
         <td class="olohead">{t}Item Type{/t}</td>
-        <td class="olohead">{t}Net Amount{/t}</td>        
-        <td class="olohead">{t}VAT Rate{/t}</td>
-        <td class="olohead">{t}VAT Amount{/t}</td>
-        <td class="olohead">{t}Gross Amount{/t}</td>
+        {if '/^vat_/'|preg_match:$qw_tax_system} 
+            <td class="olohead">{t}Net{/t}</td>
+            <td class="olohead">{t}VAT{/t} {t}Rate{/t}</td>
+            <td class="olohead">{t}VAT{/t}</td>
+        {/if}
+        <td class="olohead">{t}Gross{/t}</td>
         <td class="olohead">{t}Balance{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Note{/t}</td>
@@ -33,9 +35,11 @@
                     {if $display_otherincomes[r].item_type == $otherincome_types[s].type_key}{t}{$otherincome_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
-            <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].unit_net|string_format:"%.2f"}</td>                                                                      
-            <td class="olotd4" nowrap>{$display_otherincomes[r].unit_tax_rate|string_format:"%.2f"}%</td>                                                                
-            <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].unit_tax|string_format:"%.2f"}</td>                                                            
+             {if '/^vat_/'|preg_match:$qw_tax_system} 
+                <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].unit_net|string_format:"%.2f"}</td>
+                <td class="olotd4" nowrap>{$display_otherincomes[r].unit_tax_rate|string_format:"%.2f"}%</td>
+                <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].unit_tax|string_format:"%.2f"}</td>
+            {/if}                                                            
             <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].unit_gross|string_format:"%.2f"}</td>  
             <td class="olotd4" nowrap>{$currency_sym}{$display_otherincomes[r].balance|string_format:"%.2f"}</td> 
             <td class="olotd4" nowrap>

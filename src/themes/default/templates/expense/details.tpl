@@ -34,7 +34,7 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
                                             <td class="menutd">{$expense_details.payee}</td> 
-                                            {if $expense_details.tax_system != 'none'}
+                                            {if '/^vat_/'|preg_match:$expense_details.tax_system}
                                                 <td class="menutd"><b>{t}Net{/t}</b></td>
                                                 <td class="menutd">{$currency_sym}{$expense_details.unit_net|string_format:"%.2f"}</td>
                                             {else}

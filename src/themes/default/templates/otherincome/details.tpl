@@ -36,24 +36,39 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Payee{/t}</b></td>
                                             <td class="menutd">{$otherincome_details.payee}</td>
-                                            <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.unit_net|string_format:"%.2f"}</td>                                            
+                                            {if '/^vat_/'|preg_match:$otherincome_details.tax_system}
+                                                <td class="menutd"><b>{t}Net{/t}</b></td>
+                                                <td class="menutd">{$currency_sym}{$otherincome_details.unit_net|string_format:"%.2f"}</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}                                           
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$otherincome_details.date|date_format:$date_format}</td>
-                                            <td class="menutd" ><b>{t}VAT Tax Code{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$vat_tax_codes}
-                                                    {if $otherincome_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                {/section}
-                                            </td>                                            
+                                            {if '/^vat_/'|preg_match:$otherincome_details.tax_system}
+                                                <td class="menutd"><b>{t}VAT Tax Code{/t}</b></td>
+                                                <td class="menutd">
+                                                    {section name=s loop=$vat_tax_codes}
+                                                        {if $otherincome_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                    {/section}
+                                                </td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}                                           
                                         </tr>
                                         <tr>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd" >&nbsp;</td>
-                                            <td class="menutd" ><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                            <td class="menutd">{$otherincome_details.unit_tax_rate|string_format:"%.2f"}%</td>
+                                            {if '/^vat_/'|preg_match:$otherincome_details.tax_system}
+                                                <td class="menutd"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
+                                                <td class="menutd">{$otherincome_details.unit_tax_rate|string_format:"%.2f"}%</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr> 
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -62,13 +77,18 @@
                                                     {if $otherincome_details.item_type == $otherincome_types[s].type_key}{t}{$otherincome_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
-                                            <td class="menutd"><b>{t}VAT{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$otherincome_details.unit_tax|string_format:"%.2f"}</td>
+                                            {if '/^vat_/'|preg_match:$otherincome_details.tax_system}
+                                                <td class="menutd"><b>{t}VAT{/t}</b></td>
+                                                <td class="menutd">{$currency_sym}{$otherincome_details.unit_tax|string_format:"%.2f"}</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"></td>
                                             <td class="menutd"></td>
-                                            <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
+                                            <td class="menutd"><b>{t}Gross{/t}</b></td>
                                             <td class="menutd">{$currency_sym}{$otherincome_details.unit_gross|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>

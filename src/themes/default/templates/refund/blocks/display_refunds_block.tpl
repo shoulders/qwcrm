@@ -13,9 +13,12 @@
         <td class="olohead">{t}INV ID{/t}</td>              
         <td class="olohead">{t}Date{/t}</td>
         <td class="olohead">{t}Item Type{/t}</td>        
-        <td class="olohead">{t}Net Amount{/t}</td>        
-        <td class="olohead">{t}Tax Amount{/t}</td>
-        <td class="olohead">{t}Gross Amount{/t}</td>
+        {if $qw_tax_system != 'none'}
+            <td class="olohead">{t}Net{/t}</td>   
+            <td class="olohead">{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</td>
+            <td class="olohead">{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</td>
+        {/if}
+        <td class="olohead">{t}Gross{/t}</td>
         <td class="olohead">{t}Balance{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
         <td class="olohead">{t}Note{/t}</td>        
@@ -33,8 +36,11 @@
                     {if $display_refunds[r].item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                 {/section}   
             </td>                                                                
-            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_net|string_format:"%.2f"}</td>                                                                          
-            <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_tax|string_format:"%.2f"}</td>                                                            
+            {if $qw_tax_system != 'none'}
+                <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_net|string_format:"%.2f"}</td>
+                <td class="olotd4" nowrap>{$display_refunds[r].unit_tax_rate|string_format:"%.2f"}%</td>
+                <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_tax|string_format:"%.2f"}</td>
+            {/if}                                                           
             <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].unit_gross|string_format:"%.2f"}</td> 
             <td class="olotd4" nowrap>{$currency_sym}{$display_refunds[r].balance|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>

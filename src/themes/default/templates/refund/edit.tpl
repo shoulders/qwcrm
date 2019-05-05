@@ -74,16 +74,20 @@
                                                             <td align="right"></td>
                                                             <td></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                        <tr{if !'/^vat_/'|preg_match:$refund_details.tax_system} hidden{/if}>
+                                                            <td align="right"><b>{t}Net{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>{$currency_sym}{$refund_details.unit_net|string_format:"%.2f"}</td>
                                                         </tr>
-                                                        <tr>
-                                                            <td align="right"><b>{t}Tax{/t} {t}Amount{/t}</b></td>
+                                                        <tr{if $refund_details.tax_system == 'none'} hidden{/if}>
+                                                            <td align="right"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                            <td>{if $refund_details.vat_tax_code == 'vat_multi_tcode'}{t}n/a{/t}{else}{$currency_sym}{$refund_details.unit_tax_rate|string_format:"%.2f"}{/if}</td>
+                                                        </tr>
+                                                        <tr{if $refund_details.tax_system == 'none'} hidden{/if}>
+                                                            <td align="right"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                                                             <td>{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                            <td align="right"><b>{t}Gross{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>{$currency_sym} {$refund_details.unit_gross|string_format:"%.2f"}</td>
                                                         </tr>
                                                         <tr>

@@ -36,24 +36,39 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Client{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a></td>
-                                            <td class="menutd"><b>{t}Net Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.unit_net|string_format:"%.2f"}</td>
+                                            {if $refund_details.tax_system != 'none'}
+                                                <td class="menutd"><b>{t}Net{/t}</b></td>
+                                                <td class="menutd">{$currency_sym}{$refund_details.unit_net|string_format:"%.2f"}</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr>                                        
                                         <tr>
                                             <td class="menutd"><b>{t}Date{/t}</b></td>
                                             <td class="menutd" >{$refund_details.date|date_format:$date_format}</td>
-                                            <td class="menutd"><b>{t}Tax{/t} {t}Amount{/t}</b></td>
-                                            <td class="menutd">{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>                                            
+                                            {if '/^vat_/'|preg_match:$refund_details.tax_system}
+                                                <td class="menutd"><b>{t}VAT Tax Code{/t}</b></td>
+                                                <td class="menutd">
+                                                    {section name=s loop=$vat_tax_codes}
+                                                        {if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                    {/section}
+                                                </td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}                                          
                                         </tr>
                                         <tr>
-                                            <td class="menutd" ><b>{t}VAT Tax Code{/t}</b></td>
-                                            <td class="menutd">
-                                                {section name=s loop=$vat_tax_codes}
-                                                    {if $refund_details.vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                {/section}
-                                            </td>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd">&nbsp;</td>
+                                            {if $refund_details.tax_system != 'none'}
+                                                <td class="menutd"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
+                                                <td class="menutd">{if $refund_details.vat_tax_code == 'vat_multi_tcode'}{t}n/a{/t}{else}{$refund_details.unit_tax_rate|string_format:"%.2f"}%{/if}</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Item Type{/t}</b></td>
@@ -62,9 +77,20 @@
                                                     {if $refund_details.item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
-                                            <td class="menutd"><b>{t}Gross Amount{/t}</b></td>
+                                            {if $refund_details.tax_system != 'none'}
+                                                <td class="menutd"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+                                                <td class="menutd">{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>
+                                            {else}
+                                                <td class="menutd">&nbsp;</td>
+                                                <td class="menutd">&nbsp;</td>
+                                            {/if}
+                                        </tr>  
+                                        <tr>
+                                            <td class="menutd"></td>
+                                            <td class="menutd"></td>
+                                            <td class="menutd"><b>{t}Gross{/t}</b></td>
                                             <td class="menutd">{$currency_sym}{$refund_details.unit_gross|string_format:"%.2f"}</td>
-                                        </tr>                                        
+                                        </tr>
                                         <tr>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd">&nbsp;</td> 

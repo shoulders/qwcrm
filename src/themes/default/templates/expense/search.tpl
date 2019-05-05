@@ -37,8 +37,8 @@
                                                                         <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{t}Expense ID{/t}</option>                                                                        
                                                                         <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="item_type"{if $search_category == 'item_type'} selected{/if}>{t}Item Type{/t}</option>                                                                        
-                                                                        {if $qw_tax_system != 'none'}<option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net{/t}</option>{/if}
                                                                         {if '/^vat_/'|preg_match:$qw_tax_system}
+                                                                            <option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net{/t}</option>
                                                                             <option value="unit_tax_rate"{if $search_category == 'unit_tax_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
                                                                             <option value="unit_tax"{if $search_category == 'unit_tax'} selected{/if}>{t}VAT{/t}</option>
                                                                         {/if}

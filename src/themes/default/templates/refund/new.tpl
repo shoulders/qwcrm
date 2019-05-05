@@ -84,14 +84,14 @@
                                                                             <td align="right"></td>
                                                                             <td></td>
                                                                         </tr>                                                                                                          
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Net Amount{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
+                                                                        <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
+                                                                            <td align="right"><b>{t}Net{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
                                                                             <td>
                                                                                  {$currency_sym}{$refund_details.unit_net}
                                                                                 <input id="unit_net" name="unit_net" value="{$refund_details.unit_net|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
-                                                                        <tr>
+                                                                        <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
                                                                             <td>
                                                                                 {section name=s loop=$vat_tax_codes}
@@ -100,22 +100,22 @@
                                                                                 <input id="vat_tax_code" name="vat_tax_code" value="{$refund_details.vat_tax_code}" type="hidden">
                                                                             </td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Tax Rate{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
+                                                                        <tr{if $qw_tax_system == 'none'} hidden{/if}>
+                                                                            <td align="right"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
                                                                             <td>
-                                                                                 {$currency_sym}{$refund_details.unit_tax_rate|string_format:"%.2f"}
+                                                                                {if $refund_details.vat_tax_code == 'vat_multi_tcode'}{t}n/a{/t}{else}{$currency_sym}{$refund_details.unit_tax_rate|string_format:"%.2f"}{/if}
                                                                                 <input id="unit_tax_rate" name="unit_tax_rate" value="{$refund_details.unit_tax_rate|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td align="right"><b>{t}Tax{/t} {t}Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                        <tr{if $qw_tax_system == 'none'} hidden{/if}>
+                                                                            <td align="right"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
                                                                                 {$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}
                                                                                 <input id="unit_tax" name="unit_tax" value="{$refund_details.unit_tax|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td align="right"><b>{t}Gross Amount{/t}</b><span style="color: #ff0000"> *</span></td>
+                                                                            <td align="right"><b>{t}Gross{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
                                                                                  {$currency_sym}{$refund_details.unit_gross|string_format:"%.2f"}
                                                                                  <input id="unit_gross" name="unit_gross" value="{$refund_details.unit_gross|string_format:"%.2f"}" type="hidden">
