@@ -193,12 +193,16 @@
                                                             <td class="row2"><b>{t}No{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
                                                             <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
-                                                            <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                            {if $invoice_details.tax_system != 'none'}
+                                                                <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                            {else}
+                                                                <td class="row2"><b>{t}Unit Gross{/t}</b></td> 
+                                                            {/if}
                                                             {if $invoice_details.tax_system != 'none'}
                                                                 <td class="row2"><b>{t}Net{/t}</b></td>                                                            
                                                                 {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
                                                                 <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Applied{/t}</b></td>  
+                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>  
                                                             {/if}
                                                             <td class="row2"><b>{t}Gross{/t}</b></td>                                                            
                                                         </tr>
@@ -206,8 +210,8 @@
                                                             <tr class="olotd4">
                                                                 <td>{$smarty.section.q.index+1}</td>
                                                                 <td>{$labour_items[l].description}</td>
-                                                                <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                
-                                                                <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>   
+                                                                <td>{$labour_items[l].unit_qty|string_format:"%.2f"}</td>                                                                  
+                                                                <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                                                 
                                                                 {if $invoice_details.tax_system != 'none'}
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                                                                  
                                                                     {if $labour_items[l].vat_tax_code == 'T2' || $labour_items[l].sales_tax_exempt}
@@ -262,13 +266,17 @@
                                                         <tr class="olotd4">
                                                             <td class="row2"><b>{t}No{/t}</b></td>
                                                             <td class="row2"><b>{t}Description{/t}</b></td>
-                                                            <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>                                                            
-                                                            <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                            <td class="row2" width="12"><b>{t}Unit Qty{/t}</b></td>
+                                                            {if $invoice_details.tax_system != 'none'}
+                                                                <td class="row2"><b>{t}Unit Net{/t}</b></td>
+                                                            {else}
+                                                                <td class="row2"><b>{t}Unit Gross{/t}</b></td> 
+                                                            {/if}                                                             
                                                             {if $invoice_details.tax_system != 'none'}
                                                                 <td class="row2"><b>{t}Net{/t}</b></td>                                                            
                                                                 {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2"><b>{t}VAT Tax Code{/t}</b></td>{/if}
                                                                 <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
-                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Applied{/t}</b></td>
+                                                                <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                                                             {/if}
                                                             <td class="row2"><b>{t}Gross{/t}</b></td>                                                            
                                                         </tr>

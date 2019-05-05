@@ -29,7 +29,11 @@
                                                         <td class="olohead">{t}ID{/t}</td>
                                                         <td class="olohead">{t}Description{/t}</td>
                                                         <td class="olohead" align="center">{t}Type{/t}</td>
-                                                        <td class="olohead" align="center">{t}Net Amount{/t}</td>
+                                                        {if $qw_tax_system != 'none'}
+                                                            <td class="olohead" align="center"><b>{t}Net{/t}</b></td>
+                                                        {else}
+                                                            <td class="olohead" align="center"><b>{t}Gross{/t}</b></td> 
+                                                        {/if} 
                                                         <td class="olohead" align="center">{t}Active{/t}</td>                                                                                                               
                                                         <td class="olohead" align="center">{t}Action{/t}</td>
                                                     </tr>
@@ -68,7 +72,11 @@
                                                         <tr>
                                                             <td class="olohead">{t}Description{/t}</td>
                                                             <td class="olohead">{t}Type{/t}</td>
-                                                            <td class="olohead">{t}Net Amount{/t}</td>
+                                                            {if $qw_tax_system != 'none'}
+                                                                <td class="olohead"><b>{t}Net{/t}</b></td>
+                                                            {else}
+                                                                <td class="olohead"><b>{t}Gross{/t}</b></td> 
+                                                            {/if}
                                                             <td class="olohead">{t}Active{/t}</td>                                                            
                                                             <td class="olohead">{t}Action{/t}</td>
                                                         </tr>

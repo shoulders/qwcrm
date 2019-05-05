@@ -15,8 +15,11 @@
         <td class="olohead" nowrap>{t}Employee{/t}</td>
         <td class="olohead" nowrap>{t}Labour{/t}</td>
         <td class="olohead" nowrap>{t}Parts{/t}</td>
-        <td class="olohead" nowrap>{t}Status{/t}</td>        
-        <td class="olohead" nowrap>{t}Net{/t}</td>
+        <td class="olohead" nowrap>{t}Status{/t}</td> 
+        {if $qw_tax_system != 'none'}
+            <td class="olohead" nowrap>{t}Net{/t}</td>
+            <td class="olohead"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+        {/if}
         <td class="olohead" nowrap>{t}Gross{/t}</td>
         <td class="olohead" nowrap>{t}Balance{/t}</td>
     </tr>
@@ -49,8 +52,11 @@
                     {if $display_invoices[i].status == $invoice_statuses[s].status_key}{t}{$invoice_statuses[s].display_name}{/t}{/if}                    
                 {/section} 
                 {if $display_invoices[i].status == 'refunded'}</a>{/if}
-            </td>            
-            <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_net|string_format:"%.2f"}</td>                                                          
+            </td>
+            {if $qw_tax_system != 'none'}
+                <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_net|string_format:"%.2f"}</td> 
+                <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_tax|string_format:"%.2f"}</td>
+            {/if}
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_gross|string_format:"%.2f"}</td>
             <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].balance|string_format:"%.2f"}</td> 
         </tr>
