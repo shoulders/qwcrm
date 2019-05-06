@@ -12,6 +12,64 @@
 <script>{include file="`$theme_js_dir_finc`jscal2/language.js"}</script>
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
+<script>
+
+    $(document).ready(function() {
+
+        // Display the relevant Tax boxes
+        taxSystemChange();
+        
+        // Bind an action to the VAT Tax Code dropdown to update the totals on change
+        $('#tax_system').change(function() {            
+            taxSystemChange();
+        } );
+
+    } );
+    
+    // When user changes Tax system, alter the options
+    function taxSystemChange() { 
+    
+        var tax_system = document.getElementById('tax_system').value;  
+        console.log(tax_system);
+
+        if(tax_system === 'none') {        
+            $('.sales_tax_rate').hide();
+            $('.vat_number').hide();
+            $('.vat_flat_rate').hide();
+            $('.vat_tax_codes').hide();
+        }
+
+        if(tax_system === 'sales_tax') {
+            $('.sales_tax_rate').show();
+            $('.vat_number').hide();
+            $('.vat_flat_rate').hide();
+            $('.vat_tax_codes').hide();
+        }
+
+        if(tax_system === 'vat_standard') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').hide();
+            $('.vat_tax_codes').show();
+        }
+        
+        if(tax_system === 'vat_flat') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').show();
+            $('.vat_tax_codes').show();
+        }
+        
+        if(tax_system === 'vat_cash') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').hide();
+            $('.vat_tax_codes').show();
+        }        
+
+    }
+
+</script>
 
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
@@ -186,24 +244,24 @@
                                                                             </select>
                                                                         </td>
                                                                     </tr>
-                                                                    <tr{if $company_details.tax_system != 'sales_tax'} style="display: none;"{/if}>
+                                                                    <tr style="display: none;" class="sales_tax_rate">
                                                                         <td align="right"><b>{t}Sales Tax Rate{/t}:</b></td>
                                                                         <td><input id="sales_tax_rate" name="sales_tax_rate" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                     </tr>                                                                    
-                                                                    <tr{if !'/^vat_/'|preg_match:$company_details.tax_system} style="display: none;"{/if}>
+                                                                    <tr class="vat_number">
                                                                         <td align="right"><b>{t}VAT Number{/t}:</b></td>
                                                                         <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                     </tr>
-                                                                    <tr{if $company_details.tax_system != 'vat_flat'} style="display: none;"{/if}>
+                                                                    <tr class="vat_flat_rate">
                                                                         <td align="right"><b>{t}VAT Flat Rate{/t}:</b></td>
                                                                         <td><input name="vat_flat_rate" class="olotd5" value="{$company_details.vat_flat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);">%</td>
                                                                     </tr>
-                                                                    <tr{if !'/^vat_/'|preg_match:$company_details.tax_system} style="display: none;"{/if}>
+                                                                    <tr class="vat_tax_codes">
                                                                         <td align="right"><b>{t}VAT Tax Codes{/t}</b></td>
                                                                         <td>&nbsp;</td>
                                                                     </tr>
                                                                     {section name=r loop=$vat_tax_codes}
-                                                                        <tr{if !'/^vat_/'|preg_match:$company_details.tax_system} style="display: none;"{/if}>
+                                                                        <tr class="vat_tax_codes">
                                                                             <td align="right"><b>{t}{$vat_tax_codes[r].display_name}{/t}:</b></td>
                                                                             <td>
                                                                                 <input name="vat_tax_codes[{$vat_tax_codes[r].tax_key}]" class="olotd5" size="6" value="{$vat_tax_codes[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_tax_codes[r].editable} disabled{/if}/>%

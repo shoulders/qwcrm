@@ -151,7 +151,7 @@ class QSetup {
         ajax_clear_onscreen_notifications();
 
         // Build a success or failure message
-        if(removeDirectory(SETUP_DIR)) {        
+        if($this->removeDirectory(SETUP_DIR)) {        
 
             // Build success messgae
             $record = _gettext("The Setup folder has been deleted successfully.");
@@ -205,7 +205,7 @@ class QSetup {
         // Cycle through the objects discovered in the directory
         foreach ($objects as $object) {        
 
-            is_dir($object) ? removeDirectory($object) : unlink($object);
+            is_dir($object) ? $this->removeDirectory($object) : unlink($object);
 
         }
 

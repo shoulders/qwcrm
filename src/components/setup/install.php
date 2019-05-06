@@ -197,6 +197,7 @@ if($VAR['stage'] == 'company_details') {
         $smarty->assign('date_format', get_company_details('date_format'));
         $smarty->assign('date_formats', get_date_formats());
         $smarty->assign('tax_systems', get_tax_systems());
+        $smarty->assign('vat_tax_codes', get_vat_tax_codes(null, true) );
         $smarty->assign('stage', 'company_details');
         
     }
