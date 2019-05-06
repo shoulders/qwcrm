@@ -20,8 +20,12 @@
         <td class="olohead">{t}Date Redeemed{/t}</td> 
         <td class="olohead">{t}Closed{/t}</td>
         <td class="olohead">{t}Status{/t}</td>
-        <td class="olohead">{t}Blocked{/t}</td>                
-        <td class="olohead">{t}Unit Net{/t}</td>
+        <td class="olohead">{t}Blocked{/t}</td>   
+        {if $qw_tax_system != 'none'}
+            <td class="olohead" nowrap>{t}Net{/t}</td>
+            <td class="olohead"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
+        {/if}        
+        <td class="olohead">{t}Gross{/t}</td>        
         <td class="olohead">{t}Refund ID{/t}</td>
         <td class="olohead">{t}Redeemed By{/t}</td>
         <td class="olohead">{t}Redeemed Invoice{/t}</td>
@@ -56,7 +60,11 @@
                 {if $display_vouchers[g].blocked == '0'}{t}No{/t}{/if}
                 {if $display_vouchers[g].blocked == '1'}{t}Yes{/t}{/if}
             </td>
-            <td class="olotd4">{$currency_sym}{$display_vouchers[g].unit_net}</td>
+            {if $qw_tax_system != 'none'}
+                <td class="olotd4">{$currency_sym}{$display_vouchers[g].unit_net}</td>
+                <td class="olotd4">{$currency_sym}{$display_vouchers[g].unit_tax}</td>
+            {/if}
+            <td class="olotd4">{$currency_sym}{$display_vouchers[g].unit_gross}</td>            
             <td class="olotd4">{if $display_vouchers}<a href="index.php?component=refund&page_tpl=details&refund_id={$display_vouchers[g].refund_id}">{$display_vouchers[g].refund_id}</a>{else}&nbsp;{/if}</td>
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_vouchers[g].redeemed_client_id}">{$display_vouchers[g].redeemed_client_display_name}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_vouchers[g].redeemed_invoice_id}">{$display_vouchers[g].redeemed_invoice_id}</a></td>
@@ -77,7 +85,7 @@
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="19" class="error">{t}There are no Vouchers.{/t}</td>
+            <td colspan="21" class="error">{t}There are no Vouchers.{/t}</td>
         </tr>        
     {/section}
 </table>

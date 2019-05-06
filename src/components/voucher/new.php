@@ -46,4 +46,5 @@ if(isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('client_details', get_client_details(get_invoice_details($VAR['invoice_id'], 'client_id')));
 $smarty->assign('voucher_types', get_voucher_types());
+$smarty->assign('voucher_tax_system', get_invoice_details($VAR['invoice_id'], 'tax_system'));
 $BuildPage .= $smarty->fetch('voucher/new.tpl');
