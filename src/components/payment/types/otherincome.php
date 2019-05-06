@@ -179,4 +179,20 @@ class PType {
         
     }
     
+    // Check Payment is allowed
+    public function check_payment_allowed() {
+        
+        // Is on a different tax system
+        if($this->otherincome_details['tax_system'] != get_company_details('tax_system')) {
+            //postEmulationWrite('warning_msg', _gettext("The other income cannot receive a payment because it is on a different tax system."));
+            //return false;            
+            force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'warning_msg='._gettext("The other income cannot receive a payment because it is on a different tax system."));
+            
+        }
+
+        // All checks passed
+        return true;
+       
+    }
+    
 }

@@ -178,5 +178,21 @@ class PType {
         return;        
         
     }
+    
+    // Check Payment is allowed
+    public function check_payment_allowed() {
+        
+        // Is on a different tax system
+        if($this->expense_details['tax_system'] != get_company_details('tax_system')) {
+            //postEmulationWrite('warning_msg', _gettext("The expense cannot receive a payment because it is on a different tax system."));
+            //return false;            
+            force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id'], 'warning_msg='._gettext("The expense cannot receive a payment because it is on a different tax system."));
+            
+        }
+
+        // All checks passed
+        return true;
+       
+    }
 
 }

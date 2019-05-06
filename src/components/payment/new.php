@@ -19,7 +19,7 @@ require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Make sure a payment type is set
-if(!isset($VAR['type']) || !$VAR['type'] && ($VAR['type'] == 'invoice' || $VAR['type'] == 'refund' || $VAR['type'] == 'expense' || $VAR['type'] == 'otherincome')) {
+if(!isset($VAR['type']) && ($VAR['type'] == 'invoice' || $VAR['type'] == 'refund' || $VAR['type'] == 'expense' || $VAR['type'] == 'otherincome')) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment Type supplied."));  
 }
 
@@ -96,7 +96,10 @@ class NewPayment {
                
         // Set the payment type class
         $this->set_payment_type();
-                
+        
+        // Is the payment allowed
+        $this->type->check_payment_allowed();
+        
         // If the form is submitted
         if(isset($this->VAR['submit'])) {  
             

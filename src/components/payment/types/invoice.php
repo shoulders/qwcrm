@@ -34,7 +34,7 @@ class PType {
         
     // Pre-Processing
     public function pre_process() {          
-        
+                
         // Add required variables
         $this->VAR['qpayment']['client_id'] = $this->invoice_details['client_id'];
         $this->VAR['qpayment']['workorder_id'] = $this->invoice_details['workorder_id'];
@@ -185,6 +185,22 @@ class PType {
                 
         return;        
         
+    }
+    
+    // Check Payment is allowed
+    public function check_payment_allowed() {
+        
+        // Is on a different tax system
+        if($this->invoice_details['tax_system'] != get_company_details('tax_system')) {
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
+            //return false;            
+            force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'warning_msg='._gettext("The invoice cannot receive a payment because it is on a different tax system."));
+            
+        }
+
+        // All checks passed
+        return true;
+       
     }
 
 }
