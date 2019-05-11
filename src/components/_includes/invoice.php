@@ -2051,7 +2051,7 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
     }
 
     // Does the invoice have any Vouchers preventing changing the invoice status
-    if(!check_voucher_status_can_be_changed($invoice_id)) {
+    if(!check_invoice_vouchers_allow_editing($invoice_id)) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because of Vouchers on it prevent this."));
         return false;
     }

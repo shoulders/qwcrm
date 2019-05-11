@@ -1006,8 +1006,8 @@ function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
         return false;        
     }
     
-    // Check if expired - This does a live check for expiry as it is not always upto date
-    if(check_voucher_is_expired($voucher_id)) {
+    // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+    if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
         //force_page('core', 'error', 'error_msg='._gettext("This voucher is expired."));        
         return false;        
     }
@@ -1035,40 +1035,40 @@ function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
  function check_voucher_status_can_be_changed($voucher_id) {
      
     // Get the voucher status
-    $status = get_voucher_details($voucher_id, 'status');
+    $voucher_details = get_voucher_details($voucher_id, 'status');
         
     // Unused and Expired
-    if($status == 'unused' && check_voucher_is_expired($voucher_id)) {
+    if($voucher_details['status'] == 'unused' && check_voucher_is_expired($voucher_id)) {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has expired."));
         return false;        
     }
     
     // Is Redeemed
-    if($status == 'redeemed') {
+    if($voucher_details['status'] == 'redeemed') {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been redeemed."));
         return false;        
     }   
     
-    // Is Expired
-    if($status == 'expired') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has expired."));
+    // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+    if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been expired."));
         return false;        
-    }    
+    }   
         
     // Is Refunded
-    if($status == 'refunded') {
+    if($voucher_details['status'] == 'refunded') {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
-    if($status == 'cancelled') {
+    if($voucher_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
-    if($status == 'deleted') {
+    if($voucher_details['status'] == 'deleted') {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
         return false;        
     }
@@ -1103,12 +1103,6 @@ function check_single_voucher_can_be_refunded($voucher_id) {
     // Get the voucher details
     $voucher_details = get_voucher_details($voucher_id);
     
-    // Unused and Expired
-    if($voucher_details['status'] == 'unused' && check_voucher_is_expired($voucher_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has expired."));
-        return false;        
-    }
-    
     // Is Redeemed
     if($voucher_details['status'] == 'redeemed') {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been redeemed."));
@@ -1121,9 +1115,9 @@ function check_single_voucher_can_be_refunded($voucher_id) {
         return false;        
     }  
     
-    // Is Expired
-    if($voucher_details['status'] == 'expired') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has expired."));
+    // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+    if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be refunded because it has been expired."));
         return false;        
     }
     
@@ -1174,9 +1168,6 @@ function check_invoice_vouchers_allow_refunding($invoice_id) {
             
             //$voucher_details = $rs->GetRowAssoc();
             
-            // Make sure correct expiry status is set (unused/expired)
-            check_voucher_is_expired($rs->fields['voucher_id']);
-
             // Check the Voucher to see if it can be refunded
             if(!check_single_voucher_can_be_refunded($rs->fields['voucher_id'])) {                    
                 $vouchers_allow_refunding = false;
@@ -1239,6 +1230,12 @@ function check_single_voucher_can_be_cancelled($voucher_id) {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been suspended."));
         return false;        
     }
+    
+    // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+    if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been expired."));
+        return false;        
+    }
             
     // Is Refunded
     if($voucher_details['status'] == 'refunded') {
@@ -1286,9 +1283,6 @@ function check_invoice_vouchers_allow_cancellation($invoice_id) {
 
             //$voucher_details = $rs->GetRowAssoc(); 
             
-            // Make sure correct expiry status is set (unused/expired)
-            check_voucher_is_expired($rs->fields['voucher_id']);
-
             // Check the Voucher to see if it can be deleted
             if(!check_single_voucher_can_be_cancelled($rs->fields['voucher_id'])) {                    
                 $vouchers_allow_cancellation = false;
@@ -1351,9 +1345,9 @@ function check_single_voucher_can_be_deleted($voucher_id) {
         return false;        
     }
     
-    // Is Expired
-    if($voucher_details['status'] == 'expired') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because it has expired."));
+    // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+    if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be deleted because it has been expired."));
         return false;        
     }
             
@@ -1400,11 +1394,6 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
     } else {
 
         while(!$rs->EOF) {            
-
-            //$voucher_details = $rs->GetRowAssoc();        
-            
-            // Make sure correct expiry status is set (unused/expired)
-            check_voucher_is_expired($rs->fields['voucher_id']);            
 
             // Check the Voucher to see if it can be deleted
             if(!check_single_voucher_can_be_deleted($rs->fields['voucher_id'])) {                    
@@ -1474,6 +1463,12 @@ function check_voucher_can_be_edited($voucher_id) {
         return false;        
     }
     
+    // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+    if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been expired."));
+        return false;        
+    }
+    
     // Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
@@ -1498,7 +1493,7 @@ function check_voucher_can_be_edited($voucher_id) {
 function check_invoice_vouchers_allow_editing($invoice_id) {
     
     $db = QFactory::getDbo();    
-    $vouchers_allow_deletion = true;
+    $vouchers_allow_editing = true;
     
     $sql = "SELECT *
             FROM ".PRFX."voucher_records
@@ -1511,11 +1506,6 @@ function check_invoice_vouchers_allow_editing($invoice_id) {
     } else {
 
         while(!$rs->EOF) {            
-
-            //$voucher_details = $rs->GetRowAssoc();        
-            
-            // Make sure correct expiry status is set (unused/expired)
-            check_voucher_is_expired($rs->fields['voucher_id']);            
 
             // Check the Voucher to see if it can be deleted
             if(!check_single_voucher_can_be_edited($rs->fields['voucher_id'])) {                    
