@@ -15,6 +15,10 @@ defined('_QWEXEC') or die;
 function load_system_variables(&$VAR) {
     
     $smarty = QFactory::getSmarty();
+    
+    if(!defined('QWCRM_SETUP')) {
+        $company_details = get_company_details();
+    }
 
     // Acquire variables from classes examples
     // $user->login_user_id;                                    // This is a public variable defined in the class
@@ -34,9 +38,10 @@ function load_system_variables(&$VAR) {
         $VAR = array_merge($_POST, $_GET, $VAR);
     }
 
-    // Set Date Format - If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
+    // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
     if(!defined('QWCRM_SETUP')) {
-        define('DATE_FORMAT', get_company_details('date_format'));
+        define('DATE_FORMAT',   $company_details['date_format']);
+        define('QW_TAX_SYSTEM', $company_details['tax_system'] );
     }
 
     ##########################################################################
@@ -68,15 +73,14 @@ function load_system_variables(&$VAR) {
     isset($VAR['refund_id'])        ? $smarty->assign('refund_id', $VAR['refund_id'])           : $smarty->assign('refund_id', null);
     isset($VAR['expense_id'])       ? $smarty->assign('expense_id', $VAR['expense_id'])         : $smarty->assign('expense_id', null);    
     isset($VAR['otherincome_id'])   ? $smarty->assign('otherincome_id', $VAR['otherincome_id']) : $smarty->assign('otherincome_id', null);      
-    isset($VAR['supplier_id'])      ? $smarty->assign('supplier_id', $VAR['supplier_id'])       : $smarty->assign('supplier_id', null);
-    
+    isset($VAR['supplier_id'])      ? $smarty->assign('supplier_id', $VAR['supplier_id'])       : $smarty->assign('supplier_id', null);    
    
     // Used throughout the site
     if(!defined('QWCRM_SETUP')) {
-        $smarty->assign('currency_sym', get_company_details('currency_symbol')     );
-        $smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo') );
-        $smarty->assign('qw_tax_system',get_company_details('tax_system')       ); 
-        $smarty->assign('date_format',  DATE_FORMAT                                );
+        $smarty->assign('currency_sym',  $company_details['currency_symbol']     );
+        $smarty->assign('company_logo',  QW_MEDIA_DIR . $company_details['logo'] );
+        $smarty->assign('qw_tax_system', QW_TAX_SYSTEM                           ); 
+        $smarty->assign('date_format',   DATE_FORMAT                             );
     }
 
     #############################

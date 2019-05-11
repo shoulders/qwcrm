@@ -79,53 +79,65 @@
             <table>                
                 <tr>
                     <td colspan="2"><h2>{t}Current{/t}</h2></td>
+                    <td><b>{t}[G]{/t}</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Open{/t}:</b></td>
                     <td><b>{$invoice_stats.count_open}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_open_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Discounted{/t}:</b></td>
                     <td><b>{$invoice_stats.count_discounted}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_discounted_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
-                    <td colspan="2">&nbsp;</td>
+                    <td colspan="3">&nbsp;</td>
                 </tr>
                 <tr>
                     <td><b>{t}Pending{/t}:</b></td>
-                    <td><b>{$invoice_stats.count_pending}</b></td>                    
+                    <td><b>{$invoice_stats.count_pending}</b></td> 
+                    <td><b>({$currency_sym}{$invoice_stats.sum_pending_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Unpaid{/t}:</b></td>
                     <td><b>{$invoice_stats.count_unpaid}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_unpaid_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Partially Paid{/t}:</b></td>
                     <td><b>{$invoice_stats.count_partially_paid}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_partially_paid_gross|string_format:"%.2f"})</b></td>
                 </tr>       
                 <tr>
                     <td><b>{t}Paid{/t}:</b></td>
                     <td><b>{$invoice_stats.count_paid}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_paid_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}In Dispute{/t}:</b></td>
                     <td><b>{$invoice_stats.count_in_dispute}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_in_dispute_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Overdue{/t}:</b></td>
                     <td><b>{$invoice_stats.count_overdue}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_overdue_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Collections{/t}:</b></td>
                     <td><b>{$invoice_stats.count_collections}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_collections_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Refunded{/t}:</b></td>
                     <td><b>{$invoice_stats.count_refunded}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_refunded_gross|string_format:"%.2f"})</b></td>
                 </tr>                
                 <tr>
                     <td><b>{t}Cancelled{/t}:</b></td>
                     <td><b>{$invoice_stats.count_cancelled}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_cancelled_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td colspan="2"><h2>{t}Historic{/t}</h2></td>
@@ -133,10 +145,12 @@
                 <tr>
                     <td><b>{t}Opened{/t}:</b></td>
                     <td><b>{$invoice_stats.count_opened}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_opened_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Closed{/t}:</b></td>
                     <td><b>{$invoice_stats.count_closed}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_closed_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
@@ -144,6 +158,7 @@
                 <tr>
                     <td><b>{t}Closed{/t} {t}with{/t} {t}Discount{/t}:</b></td>
                     <td><b>{$invoice_stats.count_closed_discounted}</b></td>
+                    <td><b>({$currency_sym}{$invoice_stats.sum_closed_discounted_gross|string_format:"%.2f"})</b></td>
                 </tr>                
             </table>
         </td>   
@@ -152,11 +167,13 @@
         <td class="olotd4" valign="top">
             <table>                
                 <tr>
-                    <td colspan="3"><h2>{t}Current{/t} ({t}Purchased{/t})</h2></td>
+                    <td colspan="2"><h2>{t}Current{/t} ({t}Purchased{/t})</h2></td>
+                    <td><b>{t}[G]{/t}</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Open{/t}:</b></td>
                     <td><b>{$voucher_stats.count_open}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_open_gross|string_format:"%.2f"})</b></td>
                 </tr>                
                 <tr>
                     <td colspan="3">&nbsp;</td>
@@ -164,32 +181,32 @@
                 <tr>
                     <td><b>{t}Unused{/t}:</b></td>
                     <td><b>{$voucher_stats.count_unused}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_unused|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_unused_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Redeemed{/t}:</b></td>
                     <td><b>{$voucher_stats.count_redeemed}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_redeemed|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_redeemed_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Suspended{/t}:</b></td>
                     <td><b>{$voucher_stats.count_suspended}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_suspended|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_suspended_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Expired{/t}:</b></td>
                     <td><b>{$voucher_stats.count_expired}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_expired|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_expired_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Refunded{/t}:</b></td>
                     <td><b>{$voucher_stats.count_refunded}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_refunded|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_refunded_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Cancelled{/t}:</b></td>
                     <td><b>{$voucher_stats.count_cancelled}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_cancelled|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_cancelled_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td colspan="3"><h2>{t}Claimed{/t}</h2></td>
@@ -201,7 +218,7 @@
                 <tr>
                     <td><b>{t}Claimed{/t}:</b></td>
                     <td><b>{$voucher_stats.count_claimed}</b></td>
-                    <td><b>({$currency_sym}{$voucher_stats.sum_claimed|string_format:"%.2f"})</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_claimed_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td colspan="3"><h2>{t}Historic{/t}</h2></td>
@@ -209,10 +226,12 @@
                 <tr>
                     <td><b>{t}Opened{/t}:</b></td>
                     <td><b>{$voucher_stats.count_opened}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_opened_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 <tr>
                     <td><b>{t}Closed{/t}:</b></td>
                     <td><b>{$voucher_stats.count_closed}</b></td>
+                    <td><b>({$currency_sym}{$voucher_stats.sum_closed_gross|string_format:"%.2f"})</b></td>
                 </tr>
                 
             </table>
@@ -222,96 +241,50 @@
         <td class="olotd4" valign="top">
             <table>
                 <tr>
-                    <td colspan="2"><h2>{t}{t}Payments{/t}{/t}</h2></td>
+                    <td colspan="3"><h2>{t}{t}Payments{/t}{/t}</h2></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Received{/t} {t}[N]{/t}:</b></td>
-                    <td><span style="color: green;"><b>{$currency_sym}{$payment_stats.sum_received|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: green;"><b>({$payment_stats.count_received})</b></span></td>                    
+                    <td><b>{t}Invoices{/t}:</b></td>
+                    <td><span style="color: green;"><b>{$currency_sym}{$payment_stats.sum_invoice|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: green;"><b>({$payment_stats.count_sent})</b></span></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Sent{/t} {t}[N]{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_sent|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: red;"><b>({$payment_stats.count_sent})</b></span></td>
-                </tr>
+                    <td><b>{t}Refunds{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_refund|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$payment_stats.count_received})</b></span></td>                    
+                </tr>               
             </table>
-            <table>
+            <table>                
                 <tr>
-                    <td colspan="2"><h2>{t}{t}Refunds{/t}{/t}</h2></td>
+                    <td colspan="3"><h2>{t}{t}Invoiced{/t}{/t}</h2></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Received{/t} {t}[N]{/t}:</b></td>
-                    <td><span style="color: green;"><b>{$currency_sym}{$payment_stats.sum_received|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: green;"><b>({$payment_stats.count_received})</b></span></td>                    
-                </tr>
-                <tr>
-                    <td><b>{t}Sent{/t} {t}[N]{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_sent|string_format:"%.2f"}</b></span></td>
-                    <td><span style="color: red;"><b>({$payment_stats.count_sent})</b></span></td>
-                </tr>
-            </table>
-            <table>
-                <tr>
-                    <td colspan="2"><h2>{t}Revenue{/t}</h2></td>
-                </tr>                
-                <tr>
-                    <td><b>{t}Refunded{/t} {t}[N]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_refunded_net|string_format:"%.2f"}</b></td>
-                </tr>
-                <tr>
-                    <td><b>{t}Refunded{/t} {t}[G]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_refunded_gross|string_format:"%.2f"}</b></td>
-                </tr>
-                <tr>
-                    <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><b>{t}Cancelled{/t} {t}[N]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_cancelled_net|string_format:"%.2f"}</b></td>
-                </tr>
-                <tr>
-                    <td><b>{t}Cancelled{/t} {t}[G]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_cancelled_gross|string_format:"%.2f"}</b></td>
-                </tr>
-                <tr>
-                    <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><b>{t}Discount{/t} {t}Applied{/t} {t}[N]{/t}:</b> not 100% happy with this, does not account for cancelled invoices</td>
+                    <td><b>{t}Discount{/t}:</b></td>
                     <td><b>{$currency_sym}{$invoice_stats.sum_unit_discount|string_format:"%.2f"}</b></td>
                 </tr>
+                {if $qw_tax_system != 'none'}                    
+                    <tr>
+                        <td><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}:</b></td>
+                        <td><b>{$currency_sym}{$invoice_stats.sum_unit_tax|string_format:"%.2f"}</b></td>
+                    </tr>                
+                    <tr>
+                        <td colspan="2">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td><b>{t}Invoiced{/t}&nbsp;{t}[N]{/t}:</b></td>
+                        <td><b>{$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"}</b></td>
+                    </tr>
+                {/if}
                 <tr>
-                    <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><b>{t}Sales Tax{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_sales_unit_tax|string_format:"%.2f"}</b></td>
-                </tr>
-                <tr>
-                    <td><b>{t}VAT Tax{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_vat_unit_tax|string_format:"%.2f"}</b></td>
-                </tr>
-                <tr>
-                    <td colspan="2">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td><b>{t}Invoiced{/t} {t}[N]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"}</b></td>
-                </tr>
-                <tr>
-                    <td><b>{t}Invoiced{/t} {t}[G]{/t}:</b></td>
+                    <td><b>{t}Invoiced{/t}&nbsp;{t}[G]{/t}:</b></td>
                     <td><b>{$currency_sym}{$invoice_stats.sum_unit_gross|string_format:"%.2f"}</b></td>
                 </tr>                 
-                <tr>
-                    <td><b>{t}Paid{/t} {t}Invoices{/t} {t}[G]{/t}:</b></td>
-                    <td><b>{$currency_sym}{$invoice_stats.sum_unit_paid|string_format:"%.2f"}</b></td>
-                </tr>
                 <tr>
                     <td colspan="2">&nbsp;</td>
                 </tr>
                 <tr>
                     <td>
-                        <span style="font-size: 15px;{if $invoice_stats.sum_balance > 0} color: red;{else} color: green;{/if}"><b>{t}Balance{/t} {t}[G]{/t}:</b></span>
+                        <span style="font-size: 15px;{if $invoice_stats.sum_balance > 0} color: red;{else} color: green;{/if}"><b>{t}Balance{/t}:</b></span>
                     </td>
                     <td>
                         <hr>

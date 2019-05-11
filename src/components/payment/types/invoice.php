@@ -191,7 +191,7 @@ class PType {
     public function check_payment_allowed() {
         
         // Is on a different tax system
-        if($this->invoice_details['tax_system'] != get_company_details('tax_system')) {
+        if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
             //postEmulationWrite('warning_msg', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
             //return false;            
             force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'warning_msg='._gettext("The invoice cannot receive a payment because it is on a different tax system."));

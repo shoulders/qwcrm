@@ -24,7 +24,7 @@ class Upgrade3_1_0 extends QSetup {
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
         
         // Set Some resuable values
-        $this->company_tax_system = get_company_details('tax_system');
+        $this->company_tax_system = QW_TAX_SYSTEM;
         $this->default_vat_tax_code = get_default_vat_tax_code(); // This is an educated guess
         
         // Perform the upgrade

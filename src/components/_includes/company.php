@@ -119,7 +119,7 @@ function get_vat_tax_codes($hidden_status = null, $editable_status = null, $syst
 
 function get_default_vat_tax_code($tax_system = null) {
     
-    if(!$tax_system) {$tax_system = get_company_details('tax_system');}
+    if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
     
     if($tax_system == 'none') { return 'TNA'; }
     if($tax_system == 'vat_standard') { return 'T1'; }
@@ -135,7 +135,7 @@ function get_default_vat_tax_code($tax_system = null) {
 
 function get_voucher_vat_tax_code($type, $tax_system = null) {
     
-    if(!$tax_system) {$tax_system = get_company_details('tax_system');}
+    if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
     
     if($type == 'multi_purpose') {
         if($tax_system == 'none') { return 'TNA'; }

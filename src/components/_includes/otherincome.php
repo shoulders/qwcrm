@@ -141,7 +141,7 @@ function insert_otherincome($VAR) {
             employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
             payee            =". $db->qstr( $VAR['payee']                   ).",
             date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
-            tax_system       =". $db->qstr(get_company_details('tax_system')).",            
+            tax_system       =". $db->qstr( QW_TAX_SYSTEM                   ).",            
             item_type        =". $db->qstr( $VAR['item_type']               ).",            
             unit_net         =". $db->qstr( $VAR['unit_net']                ).",
             vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
@@ -655,7 +655,7 @@ function check_otherincome_can_be_deleted($otherincome_id) {
     $otherincome_details = get_otherincome_details($otherincome_id);
     
     // Is on a different tax system
-    if($otherincome_details['tax_system'] != get_company_details('tax_system')) {
+    if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
         //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be edited because it is on a different Tax system."));
         return false;        
     }

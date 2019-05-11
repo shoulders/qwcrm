@@ -22,6 +22,6 @@
         <td>{$invoice_stats.count_closed_deleted}</td>
         <td><font color="green">{$currency_sym}{$invoice_stats.invoiced_total|string_format:"%.2f"}</font> [G]</td>
         <td><font color="green">{$currency_sym}{$invoice_stats.received_monies|string_format:"%.2f"}</font> [G]</td>
-        <td><font color="cc0000">{$currency_sym}{$invoice_stats.outstanding_balance|string_format:"%.2f"}</font> [G]</td>
+        <td><font color="cc0000">{$currency_sym}{$invoice_stats.balance|string_format:"%.2f"}</font> [G]</td>
     </tr>
 </table>

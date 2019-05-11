@@ -229,7 +229,7 @@ function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
     $db = QFactory::getDbo();
     
     // Get invoice tax type
-    $tax_system = get_company_details('tax_system');
+    $tax_system = QW_TAX_SYSTEM;
     
     // Sales Tax Rate based on Tax Type
     $sales_tax_rate = ($tax_system == 'sales_tax') ? $sales_tax_rate = get_company_details('sales_tax_rate') : 0.00;
@@ -2003,7 +2003,7 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
     $invoice_details = get_invoice_details($invoice_id);
     
     // Is on a different tax system
-    if($invoice_details['tax_system'] != get_company_details('tax_system')) {
+    if($invoice_details['tax_system'] != QW_TAX_SYSTEM) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because it is on a different Tax system."));
         return false;        
     }

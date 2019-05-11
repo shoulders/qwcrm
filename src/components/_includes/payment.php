@@ -201,7 +201,7 @@ function insert_payment($qpayment) {
             expense_id      = ".$db->qstr( $qpayment['expense_id']                  ).", 
             otherincome_id  = ".$db->qstr( $qpayment['otherincome_id']              ).",
             date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])    ).",
-            tax_system      = ".$db->qstr( get_company_details('tax_system')        ).",   
+            tax_system      = ".$db->qstr( QW_TAX_SYSTEM                            ).",   
             type            = ".$db->qstr( $qpayment['type']                        ).",
             method          = ".$db->qstr( $qpayment['method']                      ).",
             status          = 'valid',
@@ -1021,7 +1021,7 @@ function check_payment_can_be_deleted($payment_id) {
     $payment_details = get_payment_details($payment_id);
     
     // Is on a different tax system
-    if($payment_details['tax_system'] != get_company_details('tax_system')) {
+    if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
         //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because it is on a different Tax system."));
         return false;        
     }

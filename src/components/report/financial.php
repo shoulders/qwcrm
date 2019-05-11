@@ -8,6 +8,7 @@
 
 defined('_QWEXEC') or die;
 
+require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'report.php');
 
 if(isset($VAR['submit'])) {
@@ -25,36 +26,40 @@ if(isset($VAR['submit'])) {
     $smarty->assign('workorder_stats', get_workorders_stats('historic', $start_date, $end_date) );
              
     // Invoices
-    $invoice_stats = get_invoices_stats('all', $start_date, $end_date);
+    $invoice_stats = get_invoices_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);
     $smarty->assign('invoice_stats', $invoice_stats );       
         
     // Vouchers
-    $smarty->assign('voucher_stats', get_vouchers_stats('all', $start_date, $end_date));
+    $voucher_stats = get_vouchers_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);
+    $smarty->assign('voucher_stats', $voucher_stats);
+       
+    // Payments
+    $payment_stats = get_payments_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $smarty->assign('payment_stats', $payment_stats);   
+    
+    // Refunds
+    $refund_stats = get_refunds_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $smarty->assign('refund_stats', $refund_stats);   
         
     // Expense    
-    $expense_stats = get_expenses_stats($start_date, $end_date);    
+    $expense_stats = get_expenses_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $smarty->assign('expense_stats', $expense_stats);    
-
-    // Refunds
-    $refund_stats = get_refunds_stats('historic', $start_date, $end_date);    
-    $smarty->assign('refund_stats', $refund_stats);    
     
     // Otherincomes
-    $otherincome_stats = get_otherincomes_stats($start_date, $end_date);    
-    //$smarty->assign('otherincome_stats',   $otherincome_stats);
-    $smarty->assign('otherincome_stats',   null);
+    $otherincome_stats = get_otherincomes_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $smarty->assign('otherincome_stats', $otherincome_stats);    
     
     /* Revenue Calculations */   
 
     // VAT    
-    $vat_total_in = $invoice_stats['sum_vat_unit_tax']  + $otherincome_stats['sum_vat_amount'];
-    $vat_total_out = $expense_stats['sum_vat_amount'] + $refund_stats['sum_vat_amount'];
-    $vat_balance = ($invoice_stats['sum_vat_unit_tax']  + $otherincome_stats['sum_vat_amount']) - ($expense_stats['sum_vat_amount'] + $refund_stats['sum_vat_amount']);    
+    $vat_total_in = $invoice_stats['sum_unit_tax']  + $otherincome_stats['sum_unit_tax'];
+    $vat_total_out = $expense_stats['sum_unit_tax'] + $refund_stats['sum_unit_tax'];
+    $vat_balance = ($invoice_stats['sum_unit_tax']  + $otherincome_stats['sum_unit_tax']) - ($expense_stats['sum_unit_tax'] + $refund_stats['sum_unit_tax']);    
     $vat_totals = array(
-            "invoice"       =>  $invoice_stats['sum_vat_unit_tax'],   
-            "otherincome"   =>  $otherincome_stats['sum_vat_amount'],   
-            "expense"       =>  $expense_stats['sum_vat_amount'],   
-            "refund"        =>  $refund_stats['sum_vat_amount'],   
+            "invoice"       =>  $invoice_stats['sum_unit_tax'],   
+            "otherincome"   =>  $otherincome_stats['sum_unit_tax'],   
+            "expense"       =>  $expense_stats['sum_unit_tax'],   
+            "refund"        =>  $refund_stats['sum_unit_tax'],   
             "total_in"      =>  $vat_total_in,   
             "total_out"     =>  $vat_total_out,   
             "balance"       =>  $vat_balance            
@@ -66,16 +71,16 @@ if(isset($VAR['submit'])) {
     $profit_sales_tax = ($invoice_stats['sum_unit_net']   + $otherincome_stats['sum_unit_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
     $profit_vat_tax = ($invoice_stats['sum_unit_net']   + $otherincome_stats['sum_unit_net'])   - ($expense_stats['sum_unit_net']   + $refund_stats['sum_unit_net']);
     $profit_totals = array(
-            "no_tax"      =>  $invoice_stats['sum_vat_unit_tax'],   
-            "sales_tax"   =>  $otherincome_stats['sum_vat_amount'],   
-            "vat_tax"     =>  $expense_stats['sum_vat_amount']         
+            "no_tax"      =>  $invoice_stats['sum_unit_tax'],   
+            "sales_tax"   =>  $otherincome_stats['sum_unit_tax'],   
+            "vat_tax"     =>  $expense_stats['sum_unit_tax']         
         );
     $smarty->assign('profit_totals', $profit_totals);    
     
     /* Misc */ 
     
     // Company Tax Type
-    $smarty->assign('tax_system', get_company_details('tax_system'));
+    //$smarty->assign('tax_system', QW_TAX_SYSTEM);
     
     // Enable Report Section
     $smarty->assign('enable_report_section', true);
@@ -99,4 +104,5 @@ if(isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('start_date', $start_date);
 $smarty->assign('end_date', $end_date);
+$smarty->assign('tax_systems', get_tax_systems() );
 $BuildPage .= $smarty->fetch('report/financial.tpl');

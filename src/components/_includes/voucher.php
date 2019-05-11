@@ -1457,7 +1457,7 @@ function check_voucher_can_be_edited($voucher_id) {
     $voucher_details = get_voucher_details($voucher_id);
     
     // Is on a different tax system
-    if($voucher_details['tax_system'] != get_company_details('tax_system')) {
+    if($voucher_details['tax_system'] != QW_TAX_SYSTEM) {
         //postEmulationWrite('warning_msg', _gettext("The voucher cannot be edited because it is on a different Tax system."));
         return false;        
     }
