@@ -273,12 +273,12 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}: </b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total_tax|string_format:"%.2f"}</b></font></td>
+                                                                            <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total_tax|string_format:"%.2f"}</b></font></td>
                                                                         </tr>                                                                        
                                                                     {/if}
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}: </b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total_gross|string_format:"%.2f"}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>    
@@ -581,15 +581,15 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_net}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>   
                                                                     <tr>
                                                                         <td><b>{t}Tax{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_tax}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_tax|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_gross}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>  
                                                                     <tr>
                                                                         <td><hr></td>
@@ -599,15 +599,15 @@
                                                                     </tr>                                                                    
                                                                     <tr>
                                                                         <td><b>{t}Net{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_net}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_net|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Tax{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_tax}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_redeemed_tax|string_format:"%.2f"}</b></font></td>
                                                                     </tr>   
                                                                     <tr>
                                                                         <td><b>{t}Gross{/t}</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_gross}</b></font></td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_expired_gross|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -664,7 +664,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Balance{/t}:</b></td>
-                                                                        <td><font color="red"><b>{$currency_sym}{$vat_totals.balance|string_format:"%.2f"}</b></font> (in/out) need to calculate......</td>
+                                                                        <td><font color="red"><b>{$currency_sym}{$vat_totals.balance|string_format:"%.2f"}</b></font>&nbsp;&nbsp;&nbsp;({$vat_totals.note})</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2"></td>
@@ -703,28 +703,49 @@
                                                                         </td>
                                                                     </tr>
                                                                     
-                                                                     <!-- No Tax -->
-                                                                    <tr>
-                                                                        <td style="text-align: center;">
-                                                                            <p><strong>{t}No Tax{/t}</strong></p>
-                                                                            <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;( {t}Invoiced{/t}{t}[G]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Other Incomes{/t}{t}[G]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Expired{/t} {t}Vouchers{/t}{t}[G]{/t} )&nbsp;&nbsp;-&nbsp;&nbsp;( {t}Expenses{/t}{t}[G]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Refunds{/t}{t}[G]{/t} )</p>                                                                       
-                                                                            <p>{$currency_sym}{$profit_totals.no_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_unit_gross|string_format:"%.2f"} + {$currency_sym}{$otherincome_stats.sum_unit_gross|string_format:"%.2f"}) - ({$currency_sym}{$expense_stats.sum_unit_gross|string_format:"%.2f"} + {$currency_sym}{$refund_stats.sum_unit_gross|string_format:"%.2f"})</p>                                                                        
-                                                                        </td>
-                                                                    </tr>
+                                                                    <!-- No Tax -->
+                                                                    {if $qw_tax_system == 'none'}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">
+                                                                                <p><strong>{t}No Tax System{/t}</strong></p>
+                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;( {t}Invoiced{/t}{t}[P]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Other Incomes{/t}{t}[P]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Expired{/t} {t}Vouchers{/t}{t}[G]{/t} )&nbsp;&nbsp;-&nbsp;&nbsp;( {t}Expenses{/t}{t}[P]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Refunds{/t}{t}[P]{/t} )</p>                                                                       
+                                                                                <p>{$currency_sym}{$profit_totals.none|string_format:"%.2f"} = ({$currency_sym}{$payment_stats.sum_invoice|string_format:"%.2f"} + {$currency_sym}{$payment_stats.sum_otherincome|string_format:"%.2f"} + {$currency_sym}{$voucher_stats.sum_expired_gross|string_format:"%.2f"}) - ({$currency_sym}{$payment_stats.sum_expense|string_format:"%.2f"} + {$currency_sym}{$payment_stats.sum_refund|string_format:"%.2f"})</p>                                                                        
+                                                                                <p>{t}NB{/t}: {t}This is calculated by the monies you have sent and received rather than the transactions themselves, except for vouchers becasue you should of already been paid for these.{/t}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if}
                                                                     
                                                                     <!-- Sales Tax (Cash Basis)-->
                                                                     <tr>
                                                                         <td style="text-align: center;">                                                                        
                                                                             <p><strong>{t}Sales Tax{/t}</strong> ({t}Cash Basis{/t})</p>
                                                                             <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;( {t}Invoiced{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Other Incomes{/t}{t}[G]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Expired Vouchers{/t}{t}[G]{/t} )&nbsp;&nbsp;-&nbsp;&nbsp;( {t}Expenses{/t}{t}[G]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Refunds{/t}{t}[G]{/t} )</p>
-                                                                            <p>{$currency_sym}{$profit_totals.sales_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$otherincome_stats.sum_unit_gross|string_format:"%.2f"}) - ({$currency_sym}{$expense_stats.sum_unit_gross|string_format:"%.2f"} + {$currency_sym}{$refund_stats.sum_unit_gross|string_format:"%.2f"}) - {$currency_sym}{$refund_stats.sum_unit_gross|string_format:"%.2f"}</p>
+                                                                            <p>{$currency_sym}{$profit_totals.sales_tax|string_format:"%.2f"} = ({$currency_sym}{$payment_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$otherincome_stats.sum_unit_gross|string_format:"%.2f"}) - ({$currency_sym}{$expense_stats.sum_unit_gross|string_format:"%.2f"} + {$currency_sym}{$refund_stats.sum_unit_gross|string_format:"%.2f"}) - {$currency_sym}{$refund_stats.sum_unit_gross|string_format:"%.2f"}</p>
                                                                         </td>
                                                                     </tr>
                                                                     
-                                                                    <!-- VAT Tax (Standard) -->
+                                                                    <!-- VAT (Standard) -->
                                                                     <tr>
                                                                         <td style="text-align: center;">                                                                        
                                                                             <p><strong>{t}VAT{/t} {t}Standard{/t}</strong></p>
+                                                                            <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;( {t}Invoiced{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Other Incomes{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Expired Vouchers{/t}{t}[N]{/t} )&nbsp;&nbsp;-&nbsp;&nbsp;( {t}Expenses{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t} )</p> 
+                                                                            <p>{$currency_sym}{$profit_totals.vat_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$otherincome_stats.sum_unit_net|string_format:"%.2f"}) - ({$currency_sym}{$expense_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$refund_stats.sum_unit_net|string_format:"%.2f"}) - {$currency_sym}{$refund_stats.sum_unit_net|string_format:"%.2f"}</p>                                                                            
+                                                                        </td>
+                                                                    </tr>  
+                                                                    
+                                                                    <!-- VAT (Flat) -->
+                                                                    <tr>
+                                                                        <td style="text-align: center;">                                                                        
+                                                                            <p><strong>{t}VAT{/t} {t}Flat{/t}</strong></p>
+                                                                            <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;( {t}Invoiced{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Other Incomes{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Expired Vouchers{/t}{t}[N]{/t} )&nbsp;&nbsp;-&nbsp;&nbsp;( {t}Expenses{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t} )</p> 
+                                                                            <p>{$currency_sym}{$profit_totals.vat_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$otherincome_stats.sum_unit_net|string_format:"%.2f"}) - ({$currency_sym}{$expense_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$refund_stats.sum_unit_net|string_format:"%.2f"}) - {$currency_sym}{$refund_stats.sum_unit_net|string_format:"%.2f"}</p>                                                                            
+                                                                        </td>
+                                                                    </tr>  
+                                                                    
+                                                                    <!-- VAT (Cash) -->
+                                                                    <tr>
+                                                                        <td style="text-align: center;">                                                                        
+                                                                            <p><strong>{t}VAT{/t} {t}Cash{/t}</strong></p>
                                                                             <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;( {t}Invoiced{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Other Incomes{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Expired Vouchers{/t}{t}[N]{/t} )&nbsp;&nbsp;-&nbsp;&nbsp;( {t}Expenses{/t}{t}[N]{/t}&nbsp;&nbsp;+&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t} )</p> 
                                                                             <p>{$currency_sym}{$profit_totals.vat_tax|string_format:"%.2f"} = ({$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$otherincome_stats.sum_unit_net|string_format:"%.2f"}) - ({$currency_sym}{$expense_stats.sum_unit_net|string_format:"%.2f"} + {$currency_sym}{$refund_stats.sum_unit_net|string_format:"%.2f"}) - {$currency_sym}{$refund_stats.sum_unit_net|string_format:"%.2f"}</p>                                                                            
                                                                         </td>

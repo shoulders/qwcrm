@@ -10,9 +10,13 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'company.php');
 require(INCLUDES_DIR.'report.php');
+require(INCLUDES_DIR.'voucher.php');
 
 if(isset($VAR['submit'])) {
 
+    // Update all Voucher expiry statuses
+    check_all_vouchers_for_expiry();
+    
     /* Build Basic Data Set */
 
     // Change dates to proper timestamps
@@ -42,45 +46,152 @@ if(isset($VAR['submit'])) {
     $smarty->assign('refund_stats', $refund_stats);   
         
     // Expense    
-    $expense_stats = get_expenses_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
+    $expense_stats = get_expenses_stats('revenue', $start_date, $end_date, QW_TAX_SYSTEM);    
     $smarty->assign('expense_stats', $expense_stats);    
     
     // Otherincomes
     $otherincome_stats = get_otherincomes_stats('all', $start_date, $end_date, QW_TAX_SYSTEM);    
     $smarty->assign('otherincome_stats', $otherincome_stats);    
     
-    /* Revenue Calculations */   
-
-    // VAT    
-    $vat_total_in = $invoice_stats['sum_unit_tax']  + $otherincome_stats['sum_unit_tax'];
-    $vat_total_out = $expense_stats['sum_unit_tax'] + $refund_stats['sum_unit_tax'];
-    $vat_balance = ($invoice_stats['sum_unit_tax']  + $otherincome_stats['sum_unit_tax']) - ($expense_stats['sum_unit_tax'] + $refund_stats['sum_unit_tax']);    
-    $vat_totals = array(
-            "invoice"       =>  $invoice_stats['sum_unit_tax'],   
-            "otherincome"   =>  $otherincome_stats['sum_unit_tax'],   
-            "expense"       =>  $expense_stats['sum_unit_tax'],   
-            "refund"        =>  $refund_stats['sum_unit_tax'],   
-            "total_in"      =>  $vat_total_in,   
-            "total_out"     =>  $vat_total_out,   
-            "balance"       =>  $vat_balance            
-        );  
-    $smarty->assign('vat_totals', $vat_totals );       
+    /* VAT Calculations */ // this only works for standard accounting becasue it is done on the day of invoice not on payment date
     
-    // Profit
-    $profit_no_tax_ = ($invoice_stats['sum_unit_gross'] + $otherincome_stats['sum_unit_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
-    $profit_sales_tax = ($invoice_stats['sum_unit_net']   + $otherincome_stats['sum_unit_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
-    $profit_vat_tax = ($invoice_stats['sum_unit_net']   + $otherincome_stats['sum_unit_net'])   - ($expense_stats['sum_unit_net']   + $refund_stats['sum_unit_net']);
+    if(preg_match('/^vat_/', QW_TAX_SYSTEM)) {
+        $vat_total_in = $invoice_stats['sum_unit_tax']  + $otherincome_stats['sum_unit_tax'];
+        $vat_total_out = $expense_stats['sum_unit_tax'] + $refund_stats['sum_unit_tax'];
+        $vat_balance = ($invoice_stats['sum_unit_tax']  + $otherincome_stats['sum_unit_tax']) - ($expense_stats['sum_unit_tax'] + $refund_stats['sum_unit_tax']);
+
+        // Tell the user who the balance is owed to
+        if($vat_balance < 0) {
+            $vat_note = _gettext("The Tax Man owes you this amount.");
+        } elseif ($vat_balance == 0) { 
+            $vat_note = _gettext("There is nothing to pay."); 
+        } else { 
+            $vat_note = _gettext("You owe the Tax Man this amount.");  
+        }
+
+        $vat_totals = array(
+                "invoice"       =>  $invoice_stats['sum_unit_tax'],   
+                "otherincome"   =>  $otherincome_stats['sum_unit_tax'],   
+                "expense"       =>  $expense_stats['sum_unit_tax'],   
+                "refund"        =>  $refund_stats['sum_unit_tax'],   
+                "total_in"      =>  $vat_total_in,   
+                "total_out"     =>  $vat_total_out,   
+                "balance"       =>  abs($vat_balance),            
+                "note"          =>  $vat_note            
+            );  
+        $smarty->assign('vat_totals', $vat_totals );       
+    }
+    
+    
+    
+    
+    
+    
+    
+    /* Sales Tax Calculations */  // needs to be done in the profit prorata
+    
+    if(QW_TAX_SYSTEM == 'sales_tax') {
+        $sales_tax_totals = array(
+                "invoice"       =>  $invoice_stats['sum_unit_tax']                         
+            );  
+        $smarty->assign('sales_tax_totals', $sales_tax_totals );
+    }
+    
+    /* Profit */
+    
     $profit_totals = array(
-            "no_tax"      =>  $invoice_stats['sum_unit_tax'],   
+                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "voucher_expired" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)
+                        );
+    
+    // Expired Vouchers are common, add here
+    $profit_totals['voucher_expired']['net'] = $voucher_stats['sum_expired_net'];
+    $profit_totals['voucher_expired']['tax'] = $voucher_stats['sum_expired_tax'];
+    $profit_totals['voucher_expired']['gross'] = $voucher_stats['sum_expired_gross'];
+    
+    // Straight profit and loss calculations
+    if(QW_TAX_SYSTEM == 'none') {
+        
+        $profit_totals['invoice']['gross'] = $invoice_stats['sum_unit_gross'];        
+        $profit_totals['refund']['gross'] = $refund_stats['sum_unit_gross'];
+        $profit_totals['expense']['gross'] = $expense_stats['sum_unit_gross'];
+        $profit_totals['otherincome']['gross'] = $otherincome_stats['sum_unit_gross'];
+        $profit_totals['profit'] = ($invoice_stats['sum_unit_gross'] + $otherincome_stats['sum_unit_gross'] + $voucher_stats['sum_expired_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
+    }
+        
+    // Prorata Calculations - both revenue and tax due is prorataed
+    if (QW_TAX_SYSTEM == 'sales_tax' || QW_TAX_SYSTEM == 'vat_cash') {
+        $profit_totals = array_merge($profit_totals, prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM));
+    }    
+    
+    //the revenue is prorataed but the vat is not. that is due on the invoice date
+    if(QW_TAX_SYSTEM == 'vat_standard') {
+        $profit_totals = prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM);
+    }
+    
+    // revenue might be prorated but the vat is not. turnover * vat_flat_rate = vat liability for the period
+    if(QW_TAX_SYSTEM == 'vat_flat') {
+        $profit_totals = prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM);
+    }
+    
+    
+    
+    
+    $profit_sales_tax = ($invoice_stats['sum_unit_net'] + $otherincome_stats['sum_unit_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
+    $profit_vat_tax = ($invoice_stats['sum_unit_net']   + $otherincome_stats['sum_unit_net'])   - ($expense_stats['sum_unit_net']   + $refund_stats['sum_unit_net']);
+    $aprofit_totals = array(
+            "none"      =>  $invoice_stats['sum_unit_tax'],   
             "sales_tax"   =>  $otherincome_stats['sum_unit_tax'],   
             "vat_tax"     =>  $expense_stats['sum_unit_tax']         
-        );
-    $smarty->assign('profit_totals', $profit_totals);    
+                );
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /*if(QW_TAX_SYSTEM == 'none') {
+        $profit_totals['gross'] = ($invoice_stats['sum_unit_gross'] + $otherincome_stats['sum_unit_gross'] + $voucher_stats['sum_expired_gross']) - ($expense_stats['sum_unit_gross'] + $refund_stats['sum_unit_gross']);
+    } else
+    
+    if(QW_TAX_SYSTEM == 'sales_tax') {
+        
+        $profit_totals = array_merge($profit_totals, prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM));
+
+    }
+    
+    if(QW_TAX_SYSTEM == 'vat_standard') {
+        $profit_totals = prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM);
+    }
+    
+    if(QW_TAX_SYSTEM == 'vat_flat') {
+        $profit_totals = prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM);
+    }
+    
+    if(QW_TAX_SYSTEM == 'vat_cash') {
+        $profit_totals = prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM);
+    }*/
+    
+    
+    
+    
+    $smarty->assign('profit_totals', $profit_totals);
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    
+    
+    
     
     /* Misc */ 
-    
-    // Company Tax Type
-    //$smarty->assign('tax_system', QW_TAX_SYSTEM);
     
     // Enable Report Section
     $smarty->assign('enable_report_section', true);

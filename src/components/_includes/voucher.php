@@ -941,9 +941,47 @@ function generate_voucher_code() {
 #   Check to see if the voucher is expired      #  // This does a live check to see if the voucher is expired and tagged as such
 #################################################
 
+function check_all_vouchers_for_expiry() {
+    
+    $db = QFactory::getDbo();
+
+    $sql = "SELECT voucher_id, status
+            FROM ".PRFX."voucher_records;";
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {
+            
+            // Skip checkign vouchers with these statues becasuse it is not required
+            if($rs->fields['status'] == 'redeemed' || $rs->fields['status'] == 'expired' || $rs->fields['status'] == 'refunded' || $rs->fields['status'] == 'cancelled' || $rs->fields['status'] == 'deleted') {
+                $rs->MoveNext();
+                continue;
+            }
+            
+            check_voucher_is_expired($rs->fields['voucher_id']);
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        
+        return;
+       
+    }
+
+}
+
+#################################################
+#   Check to see if the voucher is expired      #  // This does a live check to see if the voucher is expired and tagged as such
+#################################################
+
 function check_voucher_is_expired($voucher_id) {
     
-    $calculated_status = '';
+    $expired_status = false;
     
     $voucher_details = get_voucher_details($voucher_id);
     
@@ -955,11 +993,11 @@ function check_voucher_is_expired($voucher_id) {
             update_voucher_status($voucher_id, 'expired', true);      
         }
         
-        $calculated_status = 'expired';
+        $expired_status = true;
     
     }
     
-    // If the voucher is not expired
+    /* If the voucher has status of 'expired' but the date has been changed to a valid one - This is no longer used becasue expired vouchers are used in revenuem calculations
     if (strtotime($voucher_details['expiry_date']) >= time() ) {
         
         //  If the status has not been updated, update the status silenty (only from expired)
@@ -967,22 +1005,12 @@ function check_voucher_is_expired($voucher_id) {
             update_voucher_status($voucher_id, 'unused', true);      
         }
         
-        $calculated_status = 'unused';
+        $expired_status = false;
         
-    } 
+    }*/
     
-    // Return the calulates Expiry state
-    if ($calculated_status === 'expired') {
-        
-        // The voucher is expired
-        return true;
-        
-    } else {
-        
-        // The voucher is not expired
-        return false;
-        
-    }
+    // Return the Expiry state
+    return $expired_status;    
     
 }
 

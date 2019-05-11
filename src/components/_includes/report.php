@@ -778,10 +778,10 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {       
         
-        $stats['count_items'] = count_parts_items($start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);    
-        $stats['sum_unit_net'] = sum_parts_items('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-        $stats['sum_unit_tax'] = sum_parts_items('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-        $stats['sum_unit_gross'] = sum_parts_items('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);        
+        $stats['count_items'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);    
+        $stats['sum_unit_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
+        $stats['sum_unit_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
+        $stats['sum_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);        
         $stats['sum_redeemed_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);
         $stats['sum_redeemed_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);
         $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);        
@@ -800,8 +800,7 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_opened_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'opened', $employee_id, $client_id);
         $stats['sum_closed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'closed', $employee_id, $client_id);
         $stats['sum_claimed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
-        
-        
+              
     }
        
     return $stats;
@@ -996,8 +995,6 @@ function get_refunds_stats($record_set, $start_date = null, $end_date = null, $t
     // Current
     if($record_set == 'current' || $record_set == 'all') {
     
-        //count_refunds($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null)   
-        
         $stats['count_unpaid'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id, $client_id);
         $stats['count_partially_paid'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id, $client_id);
         $stats['count_paid'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id, $client_id);          
@@ -1156,36 +1153,28 @@ function sum_refunds($value_name, $start_date = null, $end_date = null, $tax_sys
 #   Get expense stats               #
 #####################################
 
-function get_expenses_stats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null) {
+function get_expenses_stats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null) {
     
     $stats = array();
     
     // Current
     if($record_set == 'current' || $record_set == 'all') {    
     
-        $stats['count_unpaid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id, $client_id);
-        $stats['count_partially_paid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id, $client_id);
-        $stats['count_paid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id, $client_id);            
-        $stats['count_cancelled'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
+        $stats['count_unpaid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id);
+        $stats['count_partially_paid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id);
+        $stats['count_paid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id);            
+        $stats['count_cancelled'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id); 
     
     }
-    
-    // Historic
-    if($record_set == 'historic' || $record_set == 'all') {            
-                    
-        $stats['count_opened'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'opened', $employee_id, $client_id);
-        $stats['count_closed'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'closed', $employee_id, $client_id);
-            
-    }  
     
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {            
                    
-        $stats['count_items'] = count_expenses($start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
-        $stats['sum_unit_net'] = sum_refunds('unit_net', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
-        $stats['sum_unit_tax'] = sum_refunds('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);       
-        $stats['sum_unit_gross'] = sum_refunds('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);                   
-        $stats['sum_balance'] = sum_refunds('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
+        $stats['count_items'] = count_expenses($start_date, $end_date, $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_net'] = sum_expenses('unit_net', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_tax'] = sum_expenses('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id);       
+        $stats['sum_unit_gross'] = sum_expenses('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
+        $stats['sum_balance'] = sum_expenses('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
 
     }     
        
@@ -1317,38 +1306,36 @@ function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_sy
 #   Get Otherincomes stats          #
 #####################################
 
-function get_otherincomes_stats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null, $client_id = null) {
+function get_otherincomes_stats($record_set, $start_date = null, $end_date = null, $tax_system = null, $employee_id = null) {
     
     $stats = array();
     
     // Current
     if($record_set == 'current' || $record_set == 'all') {    
     
-        //count_otherincomes($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null)   
-        
-        $stats['count_unpaid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id, $client_id);
-        $stats['count_partially_paid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id, $client_id);
-        $stats['count_paid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id, $client_id);            
-        $stats['count_cancelled'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['count_unpaid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id);
+        $stats['count_partially_paid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id);
+        $stats['count_paid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id);            
+        $stats['count_cancelled'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
     
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {            
                     
-        $stats['count_opened'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'opened', $employee_id, $client_id);
-        $stats['count_closed'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'closed', $employee_id, $client_id);
+        $stats['count_opened'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'opened', $employee_id);
+        $stats['count_closed'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'closed', $employee_id);
             
     }  
     
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {            
                    
-        $stats['count_items'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
-        $stats['sum_unit_net'] = sum_otherincomes('unit_net', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
-        $stats['sum_unit_tax'] = sum_otherincomes('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);       
-        $stats['sum_unit_gross'] = sum_otherincomes('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);                   
-        $stats['sum_balance'] = sum_otherincomes('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
+        $stats['count_items'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_net'] = sum_otherincomes('unit_net', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_tax'] = sum_otherincomes('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id);       
+        $stats['sum_unit_gross'] = sum_otherincomes('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
+        $stats['sum_balance'] = sum_otherincomes('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
 
     }     
        
@@ -1735,3 +1722,170 @@ function count_suppliers() {
     }
     
 }
+
+##############################################################################################
+#  Calulate the revenue and tax liability for a ALL payments against their parent record     # // I don not use most of these filters at the minute
+##############################################################################################
+
+function prorata_payments_against_records($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+    
+    $db = QFactory::getDbo();    
+    /*$prorata_totals = array(
+                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)
+                        ); */
+    
+    $prorata_totals = array();
+    
+    // Default Action
+    $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
+    
+    // Filter by Date
+    if($start_date && $end_date) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$db->qstr($end_date);
+    }
+        
+    // Filter by Tax System
+    if($tax_system) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.tax_system=".$db->qstr($tax_system);
+    }
+    
+    // Filter by VAT Tax Code
+    if($vat_tax_code) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.vat_tax_code=".$db->qstr($vat_tax_code);
+    }
+    
+    // Restrict by Status
+    if($status) {   
+        $whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$db->qstr($status);  
+    }
+      
+    // Restrict by Type
+    $whereTheseRecords .= payment_build_filter_by_type($type);    
+        
+    // Filter by Method
+    if($method) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.method=".$db->qstr($method);
+    }
+    
+    // Filter by Employee
+    if($employee_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($employee_id);
+    }
+    
+    // Filter by Client
+    if($client_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Filter by Invoice
+    if($invoice_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);
+    }
+    
+    // Filter by Refund
+    if($refund_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$db->qstr($refund_id);
+    }
+    
+    // Filter by Expense
+    if($expense_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$db->qstr($expense_id);
+    }
+    
+    // Filter by Otherincome
+    if($otherincome_id) {
+        $whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$db->qstr($otherincome_id);
+    }
+    
+    // Execute the SQL
+    $sql = "SELECT *
+            FROM ".PRFX."payment_records
+            ".$whereTheseRecords;                
+
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+
+            $prorata_record = null;
+            
+            if($rs->Fields['type'] == 'invoice') {
+                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'invoice');
+                $prorata_totals['invoice']['net'] +=  $prorata_record['net'];
+                $prorata_totals['invoice']['tax'] +=  $prorata_record['tax']; 
+                $prorata_totals['invoice']['gross'] +=  $prorata_record['gross'];
+            }
+            
+            if($rs->Fields['type'] == 'refund') {
+                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'refund');
+                $prorata_totals['refund']['net'] +=  $prorata_record['net'];
+                $prorata_totals['refund']['tax'] +=  $prorata_record['tax']; 
+                $prorata_totals['refund']['gross'] +=  $prorata_record['gross'];
+                
+            }   
+            
+            if($rs->Fields['type'] == 'expense') {
+                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'expense');
+                $prorata_totals['expense']['net'] +=  $prorata_record['net'];
+                $prorata_totals['expense']['tax'] +=  $prorata_record['tax']; 
+                $prorata_totals['exepnse']['gross'] +=  $prorata_record['gross'];
+                
+            }      
+            
+            if($rs->Fields['type'] == 'otherincome') {
+                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'otherincome');
+                $prorata_totals['otherincome']['net'] +=  $prorata_record['net'];
+                $prorata_totals['otherincome']['tax'] +=  $prorata_record['tax']; 
+                $prorata_totals['otherincome']['gross'] +=  $prorata_record['gross'];                
+            }            
+            
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        
+        return $prorata_totals;
+
+    }
+
+}
+
+##############################################################################################
+#  Calulate the revenue and tax liability for a single payments against their parent record  #
+##############################################################################################
+
+function prorata_payment_against_record($payment_id, $record_type) {  // i need to add tax system in, no tax type has already been determines
+    
+    $payment_details = get_payment_details($payment_id);
+    
+    // Get the correct record details to process
+    if($record_type == 'invoice') {$record_details = get_invoice_details($payment_details['invoice_id']);}
+    if($record_type == 'refund') {$record_details = get_refund_details($payment_details['refund_id']);}
+    if($record_type == 'expense') {$record_details = get_expense_details($payment_details['expense_id']);}
+    if($record_type == 'otherincome') {$record_details = get_otherincome_details($payment_details['otherincome_id']);}    
+    
+    // Calcualte the proata values
+    $percentage = $payment_details['amount'] / $record_details['unit_gross'];
+    $net = $record_details['unit_net'] * $percentage;
+    $tax = $record_details['unit_tax'] * $percentage;
+    $gross = $record_details['unit_gross'] * $percentage;
+    
+    $prorata_totals = array("net" => $net, "tax" => $tax, "gross" => $gross);
+    
+    return $prorata_totals;
+    
+}
+
+
+
+
+
+/*function prorata_tax_calculation_refund($payment_id) {}
+function prorata_tax_calculation_expense($payment_id) {}
+function prorata_tax_calculation_otherincome($payment_id) {}*/
