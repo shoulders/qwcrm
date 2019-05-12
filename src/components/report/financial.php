@@ -141,7 +141,7 @@ if(isset($VAR['submit'])) {
         
         $tax_totals['total_in'] = $tax_totals['invoice']  + $tax_totals['otherincome'];
         $tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
-        $tax_totals['balance'] = ($tax_totals['invoice']  + $tax_totals['otherincome']) - ($tax_totals['expense'] + $tax_totals['refund']);
+        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
         
     }  
     
@@ -155,7 +155,7 @@ if(isset($VAR['submit'])) {
         
         $tax_totals['total_in'] = $tax_totals['invoice']  + $tax_totals['otherincome'];
         $tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
-        $tax_totals['balance'] = ($tax_totals['invoice']  + $tax_totals['otherincome']) - ($tax_totals['expense'] + $tax_totals['refund']);
+        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
         
     }
     
@@ -169,7 +169,7 @@ if(isset($VAR['submit'])) {
         
         $tax_totals['total_in'] = $tax_totals['invoice']  + $tax_totals['otherincome'];
         $tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
-        $tax_totals['balance'] = ($tax_totals['invoice']  + $tax_totals['otherincome']) - ($tax_totals['expense'] + $tax_totals['refund']);
+        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
         
     }    
     
@@ -178,13 +178,15 @@ if(isset($VAR['submit'])) {
         
         $tax_totals['invoice'] = $invoice_stats['sum_unit_tax'];        
         $tax_totals['otherincome'] = $otherincome_stats['sum_unit_tax'];  
-        $tax_totals['expense'] = $expense_stats['sum_unit_tax'];
-        $tax_totals['refund'] = $refund_stats['sum_unit_tax']; 
+        //$tax_totals['expense'] = $expense_stats['sum_unit_tax'];
+        //$tax_totals['refund'] = $refund_stats['sum_unit_tax'];
         
-        //$tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
+        $tax_totals['invoice_net'] = $invoice_stats['sum_unit_net'];
+        $tax_totals['otherincome_net'] = $otherincome_stats['sum_unit_net']; 
+                
         $tax_totals['total_in'] = $tax_totals['invoice'] + $tax_totals['otherincome'];
-        $tax_totals['total_out'] = ($invoice_stats['sum_unit_net'] + $otherincome_stats['sum_unit_net']) * get_company_details('vat_flat_rate'); // Adjusted for flat rate
-        $tax_totals['balance'] = ($tax_totals['invoice']  + $tax_totals['otherincome']) - ($tax_totals['expense'] + $tax_totals['refund']);
+        $tax_totals['total_out'] = ($tax_totals['invoice_net'] + $tax_totals['otherincome_net']) * (get_company_details('vat_flat_rate')/100); // Adjusted for flat rate
+        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
 
     }
     
@@ -192,18 +194,20 @@ if(isset($VAR['submit'])) {
     if(QW_TAX_SYSTEM == 'vat_flat_cash') {
         $tax_totals['invoice'] = $prorata_totals['invoice']['tax'];
         $tax_totals['refund'] = $prorata_totals['refund']['tax'];
-        $tax_totals['expense'] = $prorata_totals['expense']['tax'];
-        $tax_totals['otherincome'] = $prorata_totals['otherincome']['tax'];
+        //$tax_totals['expense'] = $prorata_totals['expense']['tax'];
+        //$tax_totals['otherincome'] = $prorata_totals['otherincome']['tax'];
         
-        //$tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
+        $tax_totals['invoice_net'] = $prorata_totals['invoice']['net'];
+        $tax_totals['otherincome_net'] = $prorata_totals['otherincome']['net']; 
+                
         $tax_totals['total_in'] = $tax_totals['invoice'] + $tax_totals['otherincome'];
-        $tax_totals['total_out'] = ($prorata_totals['invoice']['net'] + $prorata_totals['otherincome']['net']) * get_company_details('vat_flat_rate'); // Adjusted for flat rate
-        $tax_totals['balance'] = ($tax_totals['invoice']  + $tax_totals['otherincome']) - ($tax_totals['expense'] + $tax_totals['refund']);
+        $tax_totals['total_out'] = ($tax_totals['invoice_net'] + $tax_totals['otherincome_net']) * (get_company_details('vat_flat_rate')/100); // Adjusted for flat rate
+        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
         
     }
     
     // Tell the user who the balance is owed to
-    if($tax_totals['balance'] < 0) { $message = _gettext("The Tax Man owes you this amount."); }
+    if($tax_totals['balance'] > 0) { $message = _gettext("The Tax Man owes you this amount."); }
     elseif ($tax_totals['balance'] == 0) {$message = _gettext("There is nothing to pay.");} 
     else { $message = _gettext("You owe the Tax Man this amount.");}
     $tax_totals['message'] = $message;     
@@ -238,4 +242,5 @@ if(isset($VAR['submit'])) {
 $smarty->assign('start_date', $start_date);
 $smarty->assign('end_date', $end_date);
 $smarty->assign('tax_systems', get_tax_systems() );
+$smarty->assign('vat_flat_rate', get_company_details('vat_flat_rate') );
 $BuildPage .= $smarty->fetch('report/financial.tpl');

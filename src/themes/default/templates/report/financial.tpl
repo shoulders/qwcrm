@@ -513,7 +513,7 @@
                                                             <td class="olohead">{t}Payments{/t}</td>  
                                                             <td class="olohead">{t}Vouchers{/t}</td>
                                                             {if $qw_tax_system == 'sales_tax'}<td class="olohead">{t}Sales Tax{/t}</td>{/if}
-                                                            {if '/^vat_/'|preg_match:$qw_tax_system}<td class="olohead">{t}VAT{/t} {t}Liability{/t}</td>{/if}                                                                                                                                                                            
+                                                            {if '/^vat_/'|preg_match:$qw_tax_system}<td class="olohead">{t}VAT{/t} {t}Liability{/t}{if '/^vat_flat/'|preg_match:$qw_tax_system} - {t}Flat Rate{/t} @ {$vat_flat_rate}%{/if}</td>{/if}                                                                                                                                                                            
                                                         </tr>                                                    
 
                                                         <tr>
@@ -681,19 +681,33 @@
                                                                         <tr>
                                                                             <td colspan="2"></td>
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td colspan="2">{t}Out{/t} ({t}Input VAT{/t})</td>
-                                                                        </tr>
-                                                                        
-                                                                        {*<tr>
-                                                                            <td><b>{t}Expenses{/t}:</b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$tax_totals.expense|string_format:"%.2f"}</b></font></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><b>{t}Refunds{/t}:</b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$tax_totals.refund|string_format:"%.2f"}</b></font></td>
-                                                                        </tr>*}  
-                                                                        
+                                                                        <!-- Flat Rate -->
+                                                                        {if '/^vat_flat/'|preg_match:$qw_tax_system}
+                                                                            <tr>
+                                                                                <td colspan="2">{t}Net figures for calculation{/t}</td>
+                                                                            </tr>                                                                        
+                                                                            <tr>
+                                                                                <td><b>{t}Invoice{/t} {t}[N]{/t}</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.invoice_net|string_format:"%.2f"}</b></font></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><b>{t}Otherincome{/t} {t}[N]{/t}</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.otherincome_net|string_format:"%.2f"}</b></font></td>
+                                                                            </tr>                                                                            
+                                                                        <!-- Normal -->
+                                                                        {else}
+                                                                            <tr>
+                                                                                <td colspan="2">{t}Out{/t} ({t}Input VAT{/t})</td>
+                                                                            </tr> 
+                                                                            <tr>
+                                                                                <td><b>{t}Expenses{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.expense|string_format:"%.2f"}</b></font></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><b>{t}Refunds{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.refund|string_format:"%.2f"}</b></font></td>
+                                                                            </tr>                                                                            
+                                                                        {/if}
                                                                         <tr>
                                                                             <td colspan="2"></td>
                                                                         </tr>
