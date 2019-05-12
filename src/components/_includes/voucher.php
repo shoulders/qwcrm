@@ -1007,7 +1007,7 @@ function check_voucher_is_expired($voucher_id) {
         
         $expired_status = false;
         
-    }*/
+    }
     
     // Return the Expiry state
     return $expired_status;    
@@ -1471,7 +1471,7 @@ function check_voucher_can_be_edited($voucher_id) {
  function check_single_voucher_can_be_edited($voucher_id) {
     
     // Validate voucher expired status
-    check_voucher_is_expired($voucher_id)
+    check_voucher_is_expired($voucher_id);
      
     // Get the voucher details
     $voucher_details = get_voucher_details($voucher_id);
