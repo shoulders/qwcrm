@@ -513,7 +513,6 @@ function invoice_build_filter_by_status($status = null) {
     
 }
 
-
 /** Labour **/
 
 #########################
@@ -687,7 +686,6 @@ function count_parts_items($start_date = null, $end_date = null, $date_type = nu
     
 }
 
-
 ###################################
 #  Sum selected value of Parts    #
 ###################################
@@ -784,7 +782,8 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);        
         $stats['sum_redeemed_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);
         $stats['sum_redeemed_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);
-        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);        
+        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id); 
+        
         $stats['sum_expired_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'expired', $employee_id, $client_id);
         $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, 'expired', $employee_id, $client_id);
         $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'expired', $employee_id, $client_id);
@@ -927,12 +926,8 @@ function voucher_build_filter_by_status($status = null, $client_id = null) {
                 
         if($status == 'open') {            
             $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date = '0000-00-00 00:00:00'";
-        } elseif($status == 'opened') {
-            // Do nothing
-        } elseif($status == 'expired') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date != '0000-00-00 00:00:00'";   
-        } elseif($status == 'redeemed') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeem_date != '0000-00-00 00:00:00'";   
+        } elseif($status == 'opened') {            
+            // Do nothing                 
         } elseif($status == 'closed') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date != '0000-00-00 00:00:00'";
         } elseif($status == 'claimed' && $client_id) {
@@ -1700,44 +1695,21 @@ function payment_build_filter_by_type($type = null) {
     
 }
 
-/** Suppliers **/
-
-#############################################
-#    Count Suppliers                        #  // not currently used
-#############################################
-
-function count_suppliers() { 
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT COUNT(*) AS count
-            FROM ".PRFX."supplier_records";                           
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
-    } else {
-        
-       return $rs->fields['count']; 
-       
-    }
-    
-}
-
 ##############################################################################################
-#  Calulate the revenue and tax liability for a ALL payments against their parent record     # // I don not use most of these filters at the minute
+#  Calulate the revenue and tax liability for a ALL payments against their parent record     # // I don not use most of these filters at the minute (only start_date, end_date and tax_system)
 ##############################################################################################
 
 function prorata_payments_against_records($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
     
-    $db = QFactory::getDbo();    
-    /*$prorata_totals = array(
-                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+    $db = QFactory::getDbo();  
+    
+    // Holding array for prorata totals
+    $prorata_totals = array(
+                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),                        
                         "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
-                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)
-                        ); */
-    
-    $prorata_totals = array();
+                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)                        
+                        );
     
     // Default Action
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
@@ -1814,32 +1786,30 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
         while(!$rs->EOF) {            
 
             $prorata_record = null;
-            
-            if($rs->Fields['type'] == 'invoice') {
-                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'invoice');
+                        
+            if($rs->fields['type'] == 'invoice') {
+                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'invoice');
                 $prorata_totals['invoice']['net'] +=  $prorata_record['net'];
                 $prorata_totals['invoice']['tax'] +=  $prorata_record['tax']; 
                 $prorata_totals['invoice']['gross'] +=  $prorata_record['gross'];
             }
             
-            if($rs->Fields['type'] == 'refund') {
-                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'refund');
+            if($rs->fields['type'] == 'refund') {
+                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'refund');
                 $prorata_totals['refund']['net'] +=  $prorata_record['net'];
                 $prorata_totals['refund']['tax'] +=  $prorata_record['tax']; 
-                $prorata_totals['refund']['gross'] +=  $prorata_record['gross'];
-                
+                $prorata_totals['refund']['gross'] +=  $prorata_record['gross'];                
             }   
             
-            if($rs->Fields['type'] == 'expense') {
-                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'expense');
+            if($rs->fields['type'] == 'expense') {
+                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'expense');
                 $prorata_totals['expense']['net'] +=  $prorata_record['net'];
                 $prorata_totals['expense']['tax'] +=  $prorata_record['tax']; 
-                $prorata_totals['exepnse']['gross'] +=  $prorata_record['gross'];
-                
+                $prorata_totals['expense']['gross'] +=  $prorata_record['gross'];                
             }      
             
-            if($rs->Fields['type'] == 'otherincome') {
-                $prorata_record = prorata_payment_against_record($rs->Fields['payment_id'], 'otherincome');
+            if($rs->fields['type'] == 'otherincome') {
+                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'otherincome');
                 $prorata_totals['otherincome']['net'] +=  $prorata_record['net'];
                 $prorata_totals['otherincome']['tax'] +=  $prorata_record['tax']; 
                 $prorata_totals['otherincome']['gross'] +=  $prorata_record['gross'];                
@@ -1882,10 +1852,25 @@ function prorata_payment_against_record($payment_id, $record_type) {  // i need 
     
 }
 
+/** Suppliers **/
 
+#############################################
+#    Count Suppliers                        #  // not currently used
+#############################################
 
+function count_suppliers() { 
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT COUNT(*) AS count
+            FROM ".PRFX."supplier_records";                           
 
-
-/*function prorata_tax_calculation_refund($payment_id) {}
-function prorata_tax_calculation_expense($payment_id) {}
-function prorata_tax_calculation_otherincome($payment_id) {}*/
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not count the number of suppliers."));
+    } else {
+        
+       return $rs->fields['count']; 
+       
+    }
+    
+}
