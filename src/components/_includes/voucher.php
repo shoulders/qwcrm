@@ -997,7 +997,7 @@ function check_voucher_is_expired($voucher_id) {
     
     }
     
-    /* If the voucher has status of 'expired' but the date has been changed to a valid one - This is no longer used becasue expired vouchers are used in revenuem calculations
+    // If the voucher has status of 'expired' but the date has been changed to a valid one
     if (strtotime($voucher_details['expiry_date']) >= time() ) {
         
         //  If the status has not been updated, update the status silenty (only from expired)
@@ -1469,6 +1469,9 @@ function check_voucher_can_be_edited($voucher_id) {
 ##########################################################
 
  function check_single_voucher_can_be_edited($voucher_id) {
+    
+    // Validate voucher expired status
+    check_voucher_is_expired($voucher_id)
      
     // Get the voucher details
     $voucher_details = get_voucher_details($voucher_id);
@@ -1491,11 +1494,11 @@ function check_voucher_can_be_edited($voucher_id) {
         return false;        
     }
     
-    // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
+    /* Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
     if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been expired."));
         return false;        
-    }
+    }*/
     
     // Is Cancelled
     if($voucher_details['status'] == 'cancelled') {

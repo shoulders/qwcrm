@@ -81,11 +81,6 @@ if(isset($VAR['submit'])) {
     // Use Prorata data as a base
     $profit_totals = $prorata_totals;   
     
-    // Expired Vouchers - They are complete payments so are effectively prorata'd at 100% anyway so do not require proceesing, just adding
-    $profit_totals['voucher_expired']['net'] = $voucher_stats['sum_expired_net'];
-    $profit_totals['voucher_expired']['tax'] = $voucher_stats['sum_expired_tax'];
-    $profit_totals['voucher_expired']['gross'] = $voucher_stats['sum_expired_gross'];
-    
     // None - Straight profit and loss calculations
     if(QW_TAX_SYSTEM == 'none') {
         
@@ -93,23 +88,18 @@ if(isset($VAR['submit'])) {
         $profit_totals['refund']['gross'] = $refund_stats['sum_unit_gross'];
         $profit_totals['expense']['gross'] = $expense_stats['sum_unit_gross'];
         $profit_totals['otherincome']['gross'] = $otherincome_stats['sum_unit_gross'];        
-        $profit_totals['profit'] = ($profit_totals['invoice']['gross'] + $profit_totals['otherincome']['gross'] + $profit_totals['voucher_expired']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['gross']);}
-        
+        $profit_totals['profit'] = ($profit_totals['invoice']['gross'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['gross']);}
+            
     // Sales Tax - Prorated Profit
-    if (QW_TAX_SYSTEM == 'sales_tax_cash') {$profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['gross'] + $profit_totals['voucher_expired']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['gross']);}
+    if (QW_TAX_SYSTEM == 'sales_tax_cash') {
+        $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['net']);        
+    }
        
-    // VAT Standard - Prorated Profit
-    if(QW_TAX_SYSTEM == 'vat_standard') {$profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net'] + $profit_totals['voucher_expired']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);}
-        
-    // VAT Cash - Prorated Profit
-    if (QW_TAX_SYSTEM == 'vat_cash') {$profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net'] + $profit_totals['voucher_expired']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);}
-        
-    // VAT Flat Standard - Prorated Profit
-    if(QW_TAX_SYSTEM == 'vat_flat_standard') {$profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net'] + $profit_totals['voucher_expired']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);}
-        
-    // VAT Flat Cash - Prorated Profit
-    if(QW_TAX_SYSTEM == 'vat_flat_cash') {$profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net'] + $profit_totals['voucher_expired']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);}
-      
+    // VAT - Prorated Profit
+    if(QW_TAX_SYSTEM == 'vat_standard' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_standard' || QW_TAX_SYSTEM == 'vat_flat_cash') {
+        $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);        
+    }
+    
     $smarty->assign('profit_totals', $profit_totals);
            
     /* Tax Calculations */
@@ -136,11 +126,11 @@ if(isset($VAR['submit'])) {
         
         $tax_totals['invoice'] = $prorata_totals['invoice']['tax'];
         $tax_totals['refund'] = $prorata_totals['refund']['tax'];
-        $tax_totals['expense'] = $prorata_totals['expense']['tax'];
-        $tax_totals['otherincome'] = $prorata_totals['otherincome']['tax'];  
+        //$tax_totals['expense'] = $prorata_totals['expense']['tax'];
+        //$tax_totals['otherincome'] = $prorata_totals['otherincome']['tax'];  
         
-        $tax_totals['total_in'] = $tax_totals['invoice']  + $tax_totals['otherincome'];
-        $tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
+        $tax_totals['total_in'] = $tax_totals['invoice'];
+        $tax_totals['total_out'] = $tax_totals['refund'];
         $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
         
     }  
