@@ -207,7 +207,7 @@ if(isset($VAR['submit'])) {
     }
     
     // Tell the user who the balance is owed to
-    if($tax_totals['balance'] > 0) { $message = _gettext("The Tax Man owes you this amount."); }
+    if($tax_totals['balance'] < 0) { $message = _gettext("The Tax Man owes you this amount."); }
     elseif ($tax_totals['balance'] == 0) {$message = _gettext("There is nothing to pay.");} 
     else { $message = _gettext("You owe the Tax Man this amount.");}
     $tax_totals['message'] = $message;     
