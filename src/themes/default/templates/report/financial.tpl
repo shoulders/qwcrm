@@ -837,7 +837,11 @@
                 </tr>
                 <tr>
                     <td>
-                        <b>{t}NB{/t}:</b> {t}Cancelled transactions (Records) are ignored in calculations.{/t}
+                        <b>{t}NB{/t}:</b>
+                        <ul>
+                            <li>{t}Cancelled transactions (Records) are ignored in calculations.{/t}</li>
+                            <li>{t}This report does not replace the need for having an accountant.{/t}</li>
+                        </ul>
                     </td>
                 </tr>                
             </table>
