@@ -16,12 +16,13 @@
 
     $(document).ready(function() {
 
-        // Display the relevant Tax boxes
+        // Display the correct tax boxes for page load
         taxSystemChange();
         
         // Bind an action to the VAT Tax Code dropdown to update the totals on change
         $('#tax_system').change(function() {            
             taxSystemChange();
+            alert('{t}Are you sure you want to change the tax system?{/t}');
         } );
 
     } );
@@ -30,8 +31,7 @@
     function taxSystemChange() { 
     
         var tax_system = document.getElementById('tax_system').value;  
-        console.log(tax_system);
-
+        
         if(tax_system === 'none') {        
             $('.sales_tax_rate').hide();
             $('.vat_number').hide();
@@ -53,19 +53,26 @@
             $('.vat_tax_codes').show();
         }
         
-        if(tax_system === 'vat_flat') {
+        if(tax_system === 'vat_cash') {
+            $('.sales_tax_rate').hide();
+            $('.vat_number').show();
+            $('.vat_flat_rate').hide();
+            $('.vat_tax_codes').show();
+        }
+        
+        if(tax_system === 'vat_flat_standard') {
             $('.sales_tax_rate').hide();
             $('.vat_number').show();
             $('.vat_flat_rate').show();
             $('.vat_tax_codes').show();
         }
         
-        if(tax_system === 'vat_cash') {
+        if(tax_system === 'vat_flat_cash') {
             $('.sales_tax_rate').hide();
             $('.vat_number').show();
-            $('.vat_flat_rate').hide();
+            $('.vat_flat_rate').show();
             $('.vat_tax_codes').show();
-        }        
+        }                
 
     }
 
