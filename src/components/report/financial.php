@@ -72,7 +72,7 @@ if(isset($VAR['submit'])) {
     // Run Prorata the records if appropriate
     if(QW_TAX_SYSTEM == 'none') {        
         // Do nothing       
-    } elseif (QW_TAX_SYSTEM == 'sales_tax' || QW_TAX_SYSTEM == 'vat_standard' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_standard' || QW_TAX_SYSTEM == 'vat_flat_cash') {
+    } elseif (QW_TAX_SYSTEM == 'sales_tax_cash' || QW_TAX_SYSTEM == 'vat_standard' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_standard' || QW_TAX_SYSTEM == 'vat_flat_cash') {
         $prorata_totals = array_merge($prorata_totals, prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM));        
     }     
         
@@ -122,7 +122,7 @@ if(isset($VAR['submit'])) {
     }
         
     // Sales Tax - Prorated TAX
-    if (QW_TAX_SYSTEM == 'sales_tax') {
+    if (QW_TAX_SYSTEM == 'sales_tax_cash') {
         
         $tax_totals['invoice'] = $prorata_totals['invoice']['tax'];
         $tax_totals['refund'] = $prorata_totals['refund']['tax'];

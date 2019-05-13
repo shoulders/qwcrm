@@ -39,7 +39,7 @@
             $('.vat_tax_codes').hide();
         }
 
-        if(tax_system === 'sales_tax') {
+        if(tax_system === 'sales_tax_cash') {
             $('.sales_tax_rate').show();
             $('.vat_number').hide();
             $('.vat_flat_rate').hide();

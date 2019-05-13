@@ -200,7 +200,7 @@
             
         {/if}
             
-        {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}
+        {if $invoice_details.tax_system == 'sales_tax_cash'}
     
             // Sales Tax Exempt Checkbox Cell - Create Cell
             var buildRow = row.insertCell(4);        
@@ -409,7 +409,7 @@
             
         {/if}
             
-        {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}
+        {if $invoice_details.tax_system == 'sales_tax_cash'}
     
             // Sales Tax Exempt Checkbox Cell - Create Cell
             var buildRow = row.insertCell(4);        
@@ -741,7 +741,7 @@
                                                                     {else}
                                                                         <td class="row2" style="width: 110px;"><b>{t}Unit Gross{/t}</b></td>
                                                                     {/if} 
-                                                                    {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
+                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
                                                                     {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>{/if}
                                                                 </tr>
                                                                 <!-- Additional Rows are added here -->
@@ -849,7 +849,7 @@
                                                                     {else}
                                                                         <td class="row2" style="width: 110px;"><b>{t}Unit Gross{/t}</b></td>
                                                                     {/if}
-                                                                    {if '/^sales_tax$/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
+                                                                    {if $invoice_details.tax_system == 'sales_tax_cash'}<td class="row2" style="width: 110px;"><b>{t}Exempt from Sales Tax{/t}</b></td>{/if}
                                                                     {if '/^vat_/'|preg_match:$invoice_details.tax_system}<td class="row2" style="width: 66px;"><b>{t}VAT Tax Code{/t}</b></td>{/if}
                                                                 </tr>
                                                                 <!-- Additional Rows are added here -->

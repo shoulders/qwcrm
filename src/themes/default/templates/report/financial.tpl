@@ -512,7 +512,7 @@
                                                         <tr>  
                                                             <td class="olohead">{t}Payments{/t}</td>  
                                                             <td class="olohead">{t}Vouchers{/t}</td>
-                                                            {if $qw_tax_system == 'sales_tax'}<td class="olohead">{t}Sales Tax{/t}</td>{/if}
+                                                            {if $qw_tax_system == 'sales_tax_cash'}<td class="olohead">{t}Sales Tax{/t}</td>{/if}
                                                             {if '/^vat_/'|preg_match:$qw_tax_system}<td class="olohead">{t}VAT{/t} {t}Liability{/t}{if '/^vat_flat/'|preg_match:$qw_tax_system} - {t}Flat Rate{/t} @ {$vat_flat_rate}%{/if}</td>{/if}                                                                                                                                                                            
                                                         </tr>                                                    
 
@@ -609,7 +609,7 @@
                                                             </td>
 
                                                             <!-- Sales Tax -->
-                                                            {if $qw_tax_system == 'sales_tax'}
+                                                            {if $qw_tax_system == 'sales_tax_cash'}
                                                                 <td class="olotd4" valign="top">
                                                                     <table>
                                                                         <tr>
@@ -737,7 +737,7 @@
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_flat_standard'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding tax amounts to calculate your tax liability.{/t}
-                                                                                {elseif $qw_tax_system == 'sales_tax' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_cash'}
+                                                                                {elseif $qw_tax_system == 'sales_tax_cash' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_cash'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding tax amounts and then are used to calculate your tax liability.{/t}
                                                                                 {/if}
                                                                             </td>                                                                        

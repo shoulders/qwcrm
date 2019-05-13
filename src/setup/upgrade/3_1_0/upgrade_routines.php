@@ -120,7 +120,7 @@ class Upgrade3_1_0 extends QSetup {
         
         // Update Invoice Tax Types
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
-        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax');
+        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax_cash');
                 
         // Update Invoice Items        
         $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $this->company_tax_system);
@@ -139,8 +139,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
         $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('multi_purpose', $this->company_tax_system)); 
         
-        // Sales Tax Rate should be zero except for all invoices of 'sales_tax' type
-        $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax', '!');
+        // Sales Tax Rate should be zero except for all invoices of 'sales_tax_cash' type
+        $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax_cash', '!');
         
         // Populate newly created status columns
         $this->update_column_values(PRFX.'expense_records', 'status', '*', 'paid');
@@ -962,7 +962,7 @@ class Upgrade3_1_0 extends QSetup {
                 $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
-                if($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+                if($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
                 elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 
@@ -1097,7 +1097,7 @@ class Upgrade3_1_0 extends QSetup {
                 $vat_tax_code = get_default_vat_tax_code($invoice_details['tax_system']); 
 
                 // Calculate the correct tax rate based on tax system (and exemption status)
-                if($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+                if($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
                 elseif($invoice_details['tax_system'] == 'vat_standard') { $unit_tax_rate = get_vat_rate($vat_tax_code); }
                 else { $unit_tax_rate = 0.00; }
 

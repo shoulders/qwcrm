@@ -232,7 +232,7 @@ function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
     $tax_system = QW_TAX_SYSTEM;
     
     // Sales Tax Rate based on Tax Type
-    $sales_tax_rate = ($tax_system == 'sales_tax') ? $sales_tax_rate = get_company_details('sales_tax_rate') : 0.00;
+    $sales_tax_cash_rate = ($tax_system == 'sales_tax_cash') ? $sales_tax_cash_rate = get_company_details('sales_tax_cash_rate') : 0.00;
     
     $sql = "INSERT INTO ".PRFX."invoice_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -296,12 +296,12 @@ function insert_labour_items($invoice_id, $labour_items = null) {
             // Add in missing sales tax exempt option - This prevents undefined variable errors
             $sales_tax_exempt = isset($labour_item['sales_tax_exempt']) ? $labour_item['sales_tax_exempt'] : 0;
             
-            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax' dont have VAT codes) - This prevents undefined variable errors
+            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
             $vat_tax_code = isset($labour_item['vat_tax_code']) ? $labour_item['vat_tax_code'] : get_default_vat_tax_code($invoice_details['tax_system']); 
             
             // Calculate the correct tax rate based on tax system (and exemption status)
-            if($invoice_details['tax_system'] == 'sales_tax' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-            elseif($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+            if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+            elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
             elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = get_vat_rate($labour_item['vat_tax_code']); }
             else { $unit_tax_rate = 0.00; }
                        
@@ -360,12 +360,12 @@ function insert_parts_items($invoice_id, $parts_items = null) {
             // Add in missing sales tax exempt option - This prevents undefined variable errors
             $sales_tax_exempt = isset($parts_item['sales_tax_exempt']) ? $parts_item['sales_tax_exempt'] : 0;
             
-            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax' dont have VAT codes) - This prevents undefined variable errors
+            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
             $vat_tax_code = isset($parts_item['vat_tax_code']) ? $parts_item['vat_tax_code'] : get_default_vat_tax_code($invoice_details['tax_system']); 
             
             // Calculate the correct tax rate based on tax system (and exemption status)
-            if($invoice_details['tax_system'] == 'sales_tax' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-            elseif($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
+            if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+            elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; }
             elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = get_vat_rate($parts_item['vat_tax_code']); }
             else { $unit_tax_rate = 0.00; }
                        
@@ -1316,7 +1316,7 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $u
     }
     
     // Sales Tax Calculations
-    if($tax_system == 'sales_tax') {        
+    if($tax_system == 'sales_tax_cash') {        
         $item_totals['unit_tax'] = $unit_net * ($unit_tax_rate / 100);
         $item_totals['unit_gross'] = $unit_net + $item_totals['unit_tax'];
         $item_totals['sub_total_net'] = $unit_net * $unit_qty;

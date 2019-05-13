@@ -198,15 +198,15 @@ function insert_voucher($invoice_id, $type, $expiry_date, $unit_net, $note) {
     $db = QFactory::getDbo();
     $invoice_details = get_invoice_details($invoice_id);
         
-    // Add in missing sales tax exempt option - This prevents undefined variable errors (ALL 'sales_tax' vouchers and coupons should be exempt)
-    $sales_tax_exempt = ($invoice_details['tax_system'] == 'sales_tax') ? 1 : 0;
+    // Add in missing sales tax exempt option - This prevents undefined variable errors (ALL 'sales_tax_cash' vouchers and coupons should be exempt)
+    $sales_tax_exempt = ($invoice_details['tax_system'] == 'sales_tax_cash') ? 1 : 0;
 
-    // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax' dont have VAT codes) - This prevents undefined variable errors
+    // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
     $vat_tax_code = get_voucher_vat_tax_code($type, $invoice_details['tax_system']);
 
     // Calculate the correct tax rate based on tax system (and exemption status) -- KEEP this for reference
-    if($invoice_details['tax_system'] == 'sales_tax' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
-    //elseif($invoice_details['tax_system'] == 'sales_tax') { $unit_tax_rate = $invoice_details['sales_tax_rate']; } will not be used while $sales_tax_exempt = ...
+    if($invoice_details['tax_system'] == 'sales_tax_cash' && $sales_tax_exempt) { $unit_tax_rate = 0.00; }
+    //elseif($invoice_details['tax_system'] == 'sales_tax_cash') { $unit_tax_rate = $invoice_details['sales_tax_rate']; } will not be used while $sales_tax_exempt = ...
     elseif(preg_match('/^vat_/', $invoice_details['tax_system'])) { $unit_tax_rate = get_vat_rate($vat_tax_code); }
     else { $unit_tax_rate = 0.00; }
     
