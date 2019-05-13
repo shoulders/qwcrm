@@ -1063,7 +1063,7 @@ function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
  function check_voucher_status_can_be_changed($voucher_id) {
      
     // Get the voucher status
-    $voucher_details = get_voucher_details($voucher_id, 'status');
+    $voucher_details = get_voucher_details($voucher_id);
         
     // Unused and Expired
     if($voucher_details['status'] == 'unused' && check_voucher_is_expired($voucher_id)) {

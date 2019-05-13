@@ -144,8 +144,7 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
         if($tax_system == 'vat_standard') { return 'T0'; }        
         if($tax_system == 'vat_cash') { return 'T0'; }
         if($tax_system == 'vat_flat_standard') { return 'T0'; }
-        if($tax_system == 'vat_flat_cash') { return 'T0'; }
-        
+        if($tax_system == 'vat_flat_cash') { return 'T0'; }       
     }
     
     if($type == 'single_purpose') {
@@ -154,9 +153,7 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
         if($tax_system == 'vat_standard') { return 'T1'; }
         if($tax_system == 'vat_cash') { return 'T1'; }
         if($tax_system == 'vat_flat_standard') { return 'T1'; }
-        if($tax_system == 'vat_flat_cash') { return 'T1'; }
-        
-         
+        if($tax_system == 'vat_flat_cash') { return 'T1'; }         
     }    
     
 }
