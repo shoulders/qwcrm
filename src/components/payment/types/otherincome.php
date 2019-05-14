@@ -42,9 +42,7 @@ class PType {
         if(class_exists('NewPayment')) {
             NewPayment::$record_balance = $this->otherincome_details['balance'];
             if(!validate_payment_amount(NewPayment::$record_balance, $this->VAR['qpayment']['amount'])) {
-                NewPayment::$payment_validated = false;
-            } else {
-                NewPayment::$payment_validated = true;
+                NewPayment::$payment_valid = false;
             }
         }
         
@@ -52,9 +50,7 @@ class PType {
         if(class_exists('UpdatePayment')) {
             UpdatePayment::$record_balance = ($this->otherincome_details['balance'] + UpdatePayment::$payment_details['amount']);
             if(!validate_payment_amount(UpdatePayment::$record_balance, UpdatePayment::$payment_details['amount'])) {
-                UpdatePayment::$payment_validated = false;
-            } else {
-                UpdatePayment::$payment_validated = true;
+                UpdatePayment::$payment_valid = false;
             }
         }
         

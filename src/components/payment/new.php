@@ -77,7 +77,7 @@ class NewPayment {
     private $type = null;
     private $method = null;
     public static $buttons = array();
-    public static $payment_validated = false;
+    public static $payment_valid = true;
     public static $payment_processed = false;
     public static $record_balance = null;
     
@@ -109,12 +109,14 @@ class NewPayment {
             // Set payment method class
             $this->set_payment_method();
             
-            // Prep/validate the data        
-            $this->type->pre_process();
-            $this->method->pre_process();
+            // Prep/validate the data
+            if(self::$payment_valid) {
+                $this->type->pre_process();
+                $this->method->pre_process();
+            }
 
             // Process the payment
-            if(self::$payment_validated) {                 
+            if(self::$payment_valid) {                 
                 $this->method->process();
                 $this->type->process();
             }

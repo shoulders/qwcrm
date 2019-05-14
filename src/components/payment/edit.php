@@ -35,7 +35,7 @@ class UpdatePayment {
     private $VAR = null;
     private $type = null;    
     public static $payment_details = array();
-    public static $payment_validated = false;
+    public static $payment_valid = false;
     public static $record_balance = null;
     
     function __construct(&$VAR) {
@@ -65,7 +65,7 @@ class UpdatePayment {
         if(isset($this->VAR['submit'])) {            
             
             // Process the update if valid
-            if(self::$payment_validated) {  
+            if(self::$payment_valid) {  
                 $this->type->update();
                 self::$payment_details = get_payment_details($VAR['payment_id']);
             }

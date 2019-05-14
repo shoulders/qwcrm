@@ -34,14 +34,8 @@ class PMethod extends NewPayment {
         $this->VAR['qpayment']['additional_info'] = build_additional_info_json($this->VAR['qpayment']['bank_transfer_reference']);     
         
         // Insert the payment with the calculated information
-        if(!insert_payment($this->VAR['qpayment'])) {
-            
-            NewPayment::$payment_processed = false;  
-            
-        } else {
-        
-            NewPayment::$payment_processed = true;
-        
+        if(insert_payment($this->VAR['qpayment'])) {            
+            NewPayment::$payment_processed = true;            
         }
         
         return;
@@ -52,7 +46,7 @@ class PMethod extends NewPayment {
     public function post_process() { 
         
         // Set success/failure message
-        if(!NewPayment::$payment_validated ) {
+        if(!NewPayment::$payment_processed) {
         
             $this->smarty->assign('warning_msg', _gettext("Bank Transfer payment was not successful."));
         

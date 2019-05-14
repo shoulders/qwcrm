@@ -232,7 +232,7 @@ function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
     $tax_system = QW_TAX_SYSTEM;
     
     // Sales Tax Rate based on Tax Type
-    $sales_tax_cash_rate = ($tax_system == 'sales_tax_cash') ? $sales_tax_cash_rate = get_company_details('sales_tax_cash_rate') : 0.00;
+    $sales_tax_rate = ($tax_system == 'sales_tax_cash') ? $sales_tax_rate = get_company_details('sales_tax_rate') : 0.00;
     
     $sql = "INSERT INTO ".PRFX."invoice_records SET     
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
@@ -240,7 +240,7 @@ function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
             workorder_id    =". $db->qstr( $workorder_id                        ).",
             date            =". $db->qstr( mysql_date()                         ).",
             due_date        =". $db->qstr( mysql_date()                         ).",            
-            unit_discount_rate   =". $db->qstr( $unit_discount_rate                       ).",
+            unit_discount_rate   =". $db->qstr( $unit_discount_rate             ).",
             tax_system      =". $db->qstr( $tax_system                          ).",
             sales_tax_rate  =". $db->qstr( $sales_tax_rate                      ).",
             open_date       =". $db->qstr( mysql_datetime()                     ).",
