@@ -1789,30 +1789,53 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
                         
             if($rs->fields['type'] == 'invoice') {
                 $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'invoice');
-                $prorata_totals['invoice']['net'] +=  $prorata_record['net'];
-                $prorata_totals['invoice']['tax'] +=  $prorata_record['tax']; 
-                $prorata_totals['invoice']['gross'] +=  $prorata_record['gross'];
+                
+                // Vouchers must be compensated for
+                if($rs->fields['method'] == 'voucher') {
+                    
+                    $voucher_type = get_voucher_details($rs->fields['voucher_id'], 'type');
+                
+                    // Multi Purpose
+                    if($voucher_type == 'multi_purpose') {
+                        $prorata_record['net'] = 0.00;
+                        $prorata_record['tax'] = $prorata_record['tax']; 
+                        $prorata_record['gross'] = 0.00;
+                    }
+                    
+                    // Single Use
+                    if($voucher_type == 'single_use') {
+                        $prorata_record['net'] = 0.00;
+                        $prorata_record['tax'] = 0.00; 
+                        $prorata_record['gross'] = 0.00;
+                    }
+                    
+                }              
+                
+                $prorata_totals['invoice']['net'] += $prorata_record['net'];
+                $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
+                $prorata_totals['invoice']['gross'] += $prorata_record['gross'];
+                
             }
             
             if($rs->fields['type'] == 'refund') {
                 $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'refund');
-                $prorata_totals['refund']['net'] +=  $prorata_record['net'];
-                $prorata_totals['refund']['tax'] +=  $prorata_record['tax']; 
-                $prorata_totals['refund']['gross'] +=  $prorata_record['gross'];                
+                $prorata_totals['refund']['net'] += $prorata_record['net'];
+                $prorata_totals['refund']['tax'] += $prorata_record['tax']; 
+                $prorata_totals['refund']['gross'] += $prorata_record['gross'];                
             }   
             
             if($rs->fields['type'] == 'expense') {
                 $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'expense');
-                $prorata_totals['expense']['net'] +=  $prorata_record['net'];
-                $prorata_totals['expense']['tax'] +=  $prorata_record['tax']; 
-                $prorata_totals['expense']['gross'] +=  $prorata_record['gross'];                
+                $prorata_totals['expense']['net'] += $prorata_record['net'];
+                $prorata_totals['expense']['tax'] += $prorata_record['tax']; 
+                $prorata_totals['expense']['gross'] += $prorata_record['gross'];                
             }      
             
             if($rs->fields['type'] == 'otherincome') {
                 $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'otherincome');
-                $prorata_totals['otherincome']['net'] +=  $prorata_record['net'];
-                $prorata_totals['otherincome']['tax'] +=  $prorata_record['tax']; 
-                $prorata_totals['otherincome']['gross'] +=  $prorata_record['gross'];                
+                $prorata_totals['otherincome']['net'] += $prorata_record['net'];
+                $prorata_totals['otherincome']['tax'] += $prorata_record['tax']; 
+                $prorata_totals['otherincome']['gross'] += $prorata_record['gross'];                
             }            
             
             // Advance the loop to the next record
