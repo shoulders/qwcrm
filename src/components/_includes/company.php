@@ -141,10 +141,10 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
     if($type == 'multi_purpose') {
         if($tax_system == 'none') { return 'TNA'; }
         if($tax_system == 'sales_tax_cash') { return 'TNA'; } 
-        if($tax_system == 'vat_standard') { return 'T0'; }        
-        if($tax_system == 'vat_cash') { return 'T0'; }
-        if($tax_system == 'vat_flat_standard') { return 'T0'; }
-        if($tax_system == 'vat_flat_cash') { return 'T0'; }       
+        if($tax_system == 'vat_standard') { return 'T9'; }        
+        if($tax_system == 'vat_cash') { return 'T9'; }
+        if($tax_system == 'vat_flat_standard') { return 'T9'; }
+        if($tax_system == 'vat_flat_cash') { return 'T9'; }       
     }
     
     if($type == 'single_purpose') {
