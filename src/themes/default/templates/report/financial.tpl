@@ -760,6 +760,70 @@
                                                         </tr>
                                                     </table>
                                                 </td>
+                                            </tr>                                            
+                                            <tr>
+                                                <td colspan="2">&nbsp;</td>
+                                            </tr>
+                                            
+                                            <!-- Turnover -->
+                                            <tr>
+                                                <td class="olotd5" colspan="2">
+                                                    <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
+
+                                                        <tr>                                                            
+                                                            <td class="olohead" colspan="3">{t}Turnover{/t} - {section name=s loop=$tax_systems}{if $qw_tax_system == $tax_systems[s].type_key}{$tax_systems[s].display_name}{/if}{/section}</td>                                                        
+                                                        </tr>                                                    
+                                                        <tr>
+                                                            <td class="olotd4" valign="top">
+                                                                <table cellpadding="5" style="margin: auto auto;">
+                                                                    
+                                                                    <!-- Legend -->
+                                                                    <tr>
+                                                                        <td style="text-align: center;">                                                                        
+                                                                            <p>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[P]{/t} = {t}Payment{/t}</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    
+                                                                    <!-- No Tax -->
+                                                                    {if $qw_tax_system == 'none'}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">                                                                                
+                                                                                <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;+&nbsp;{t}Refunds{/t}{t}[P]{/t}</p>                                                                       
+                                                                                <p>{$currency_sym}{$profit_totals.turnover|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.gross|string_format:"%.2f"})</p>                                                                        
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t}<p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if}
+                                                                    
+                                                                    <!-- Sales Tax -->
+                                                                    {if $qw_tax_system == 'sales_tax_cash'}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">                                                                                
+                                                                                <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.turnover|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"}</p>
+                                                                                <hr style="border-top: dotted 1px;" />
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if} 
+                                                                    
+                                                                    <!-- All VAT Based systems -->
+                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_standard' || $qw_tax_system == 'vat_flat_cash'}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">                                                                        
+                                                                                <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[N]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.turnover|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.net|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"}</p>
+                                                                                <hr style="border-top: dotted 1px;" />
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if}                                                                  
+                                                                    
+                                                                </table>
+                                                            </td>
+                                                        </tr>                                                        
+                                                    </table>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2">&nbsp;</td>
@@ -824,12 +888,12 @@
                                                         </tr>                                                        
                                                     </table>
                                                 </td>
-                                            </tr>
+                                            </tr>                                            
+                                            
                                         </table>
                                     </td>
                                 </tr>
-                            </table>
-                                                                    
+                            </table>                                                                    
                         {else}
                             <table width="730px" class="olotable"  border="0" cellpadding="4" cellspacing="0">
                                 <tr>

@@ -69,6 +69,7 @@ if(isset($VAR['submit'])) {
                         "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "turnover" => 0.00,
                         "profit" => 0.00
                         );
     
@@ -90,16 +91,20 @@ if(isset($VAR['submit'])) {
         $profit_totals['invoice']['gross'] = $payment_stats['sum_invoice'];        
         $profit_totals['refund']['gross'] = $payment_stats['sum_refund']; 
         $profit_totals['expense']['gross'] = $payment_stats['sum_expense']; 
-        $profit_totals['otherincome']['gross'] = $payment_stats['sum_otherincome'];        
-        $profit_totals['profit'] = ($profit_totals['invoice']['gross'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['gross']);}
+        $profit_totals['otherincome']['gross'] = $payment_stats['sum_otherincome'];
+        $profit_totals['turnover'] = ($profit_totals['invoice']['gross'] + $profit_totals['otherincome']['gross']) - $profit_totals['refund']['gross'];
+        $profit_totals['profit'] = ($profit_totals['invoice']['gross'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['gross']);
+    }
             
     // Sales Tax - Prorated Profit
     if (QW_TAX_SYSTEM == 'sales_tax_cash') {
+        $profit_totals['turnover'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['gross']) - $profit_totals['refund']['net'];
         $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['net']);        
     }
        
     // VAT - Prorated Profit
     if(QW_TAX_SYSTEM == 'vat_standard' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_standard' || QW_TAX_SYSTEM == 'vat_flat_cash') {
+        $profit_totals['turnover'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - $profit_totals['refund']['net'];  
         $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);        
     }
     
