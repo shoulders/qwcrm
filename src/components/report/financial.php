@@ -16,6 +16,7 @@ require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'voucher.php');
+require(INCLUDES_DIR.'workorder.php');
 
 if(isset($VAR['submit'])) {
 
@@ -86,10 +87,10 @@ if(isset($VAR['submit'])) {
     // None - Straight profit and loss calculations
     if(QW_TAX_SYSTEM == 'none') {
         
-        $profit_totals['invoice']['gross'] = $invoice_stats['sum_unit_gross'];        
-        $profit_totals['refund']['gross'] = $refund_stats['sum_unit_gross'];
-        $profit_totals['expense']['gross'] = $expense_stats['sum_unit_gross'];
-        $profit_totals['otherincome']['gross'] = $otherincome_stats['sum_unit_gross'];        
+        $profit_totals['invoice']['gross'] = $payment_stats['sum_invoice'];        
+        $profit_totals['refund']['gross'] = $payment_stats['sum_refund']; 
+        $profit_totals['expense']['gross'] = $payment_stats['sum_expense']; 
+        $profit_totals['otherincome']['gross'] = $payment_stats['sum_otherincome'];        
         $profit_totals['profit'] = ($profit_totals['invoice']['gross'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['gross']);}
             
     // Sales Tax - Prorated Profit

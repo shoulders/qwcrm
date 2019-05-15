@@ -369,13 +369,13 @@ function update_refund_status($refund_id, $new_status, $silent = false) {
         $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('information_msg', _gettext("refund status updated.")); }
+        if (!$silent) { postEmulationWrite('information_msg', _gettext("Refund status updated.")); }
         
         // For writing message to log file, get refund status display name
         $refund_status_display_name = _gettext(get_refund_status_display_name($new_status));
         
         // Create a Workorder History Note
-        insert_workorder_history_note($workorder_id, _gettext("refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($workorder_id, _gettext("Refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity        
         $record = _gettext("Refund").' '.$refund_id.' '._gettext("Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';

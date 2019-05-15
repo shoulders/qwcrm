@@ -849,7 +849,7 @@ function delete_voucher($voucher_id) {
             tax_system          =   '',
             type                =   '',
             unit_net            =   0.00,
-            sales_tax_exempt    =   0
+            sales_tax_exempt    =   0,
             vat_tax_code        =   '',
             unit_tax_rate       =   0.00,
             unit_tax            =   0.00,
