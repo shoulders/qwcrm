@@ -222,9 +222,10 @@
                                                                                 {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
                                                                             {/section}
                                                                         </td>
-                                                                    {/if}                                                                    
-                                                                    <td>{$labour_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                                                    <td>{$currency_sym}{$labour_items[l].sub_total_tax|string_format:"%.2f"}</td>                                                                    
+                                                                    {else}                                                                    
+                                                                        <td>{$labour_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
+                                                                        <td>{$currency_sym}{$labour_items[l].sub_total_tax|string_format:"%.2f"}</td>
+                                                                    {/if}
                                                                 {/if}
                                                                 <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>                                                                
                                                             </tr>
@@ -296,9 +297,10 @@
                                                                                 {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
                                                                             {/section}
                                                                         </td>
-                                                                    {/if}                                                                    
-                                                                    <td>{$parts_items[p].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                                                    <td>{$currency_sym}{$parts_items[p].sub_total_tax|string_format:"%.2f"}</td>                                                                    
+                                                                    {else}                                                                    
+                                                                        <td>{$parts_items[p].unit_tax_rate|string_format:"%.2f"}%</td> 
+                                                                        <td>{$currency_sym}{$parts_items[p].sub_total_tax|string_format:"%.2f"}</td>   
+                                                                    {/if}
                                                                 {/if}
                                                                 <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>                                                            
                                                             </tr>
