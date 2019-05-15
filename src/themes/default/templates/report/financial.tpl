@@ -771,7 +771,7 @@
                                                     <table width="100%"class="olotable"  border="0" cellpadding="5" cellspacing="0">
 
                                                         <tr>                                                            
-                                                            <td class="olohead" colspan="3">{t}Profit{/t}</td>                                                        
+                                                            <td class="olohead" colspan="3">{t}Profit{/t} - {section name=s loop=$tax_systems}{if $qw_tax_system == $tax_systems[s].type_key}{$tax_systems[s].display_name}{/if}{/section}</td>                                                        
                                                         </tr>                                                    
                                                         <tr>
                                                             <td class="olotd4" valign="top">
@@ -787,8 +787,7 @@
                                                                     <!-- No Tax -->
                                                                     {if $qw_tax_system == 'none'}
                                                                         <tr>
-                                                                            <td style="text-align: center;">
-                                                                                <p><strong>{t}No Tax System{/t}</strong></p>
+                                                                            <td style="text-align: center;">                                                                                
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[P]{/t})</p>                                                                       
                                                                                 <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;({$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.refund.gross|string_format:"%.2f"})</p>                                                                        
                                                                                 <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t}<p>
@@ -799,8 +798,7 @@
                                                                     <!-- Sales Tax -->
                                                                     {if $qw_tax_system == 'sales_tax_cash'}
                                                                         <tr>
-                                                                            <td style="text-align: center;">                                                                        
-                                                                                <p><strong>{section name=s loop=$tax_systems}{if $qw_tax_system == $tax_systems[s].type_key}{$tax_systems[s].display_name}{/if}{/section}</strong></p>
+                                                                            <td style="text-align: center;">                                                                                
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[G]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[N]{/t})</p>
                                                                                 <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;({$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"})</p>
                                                                                 <hr style="border-top: dotted 1px;" />
@@ -813,7 +811,6 @@
                                                                     {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_standard' || $qw_tax_system == 'vat_flat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                        
-                                                                                <p><strong>{section name=s loop=$tax_systems}{if $qw_tax_system == $tax_systems[s].type_key}{$tax_systems[s].display_name}{/if}{/section}</strong></p>
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[N]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[N]{/t})</p>
                                                                                 <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.net|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;({$currency_sym}{$profit_totals.expense.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"})</p>
                                                                                 <hr style="border-top: dotted 1px;" />
