@@ -677,7 +677,7 @@
                                                                     <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                                                                 {/if}
                                                                 <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                                <td class="row2"><b>{t}Actions{/t}</b></td>
+                                                                <td class="row2"><b>{t}Actions{/t}</b></td>                                                                
                                                             </tr>
                                                             {section name=l loop=$labour_items}
                                                                 <tr class="olotd4">
@@ -687,17 +687,20 @@
                                                                     <td>{$currency_sym}{$labour_items[l].unit_net|string_format:"%.2f"}</td>                                                                      
                                                                     {if $invoice_details.tax_system != 'none'}
                                                                         <td>{$currency_sym}{$labour_items[l].sub_total_net|string_format:"%.2f"}</td>                                                                        
-                                                                        {if $labour_items[l].vat_tax_code == 'T2' || $labour_items[l].sales_tax_exempt}
+                                                                        {if $labour_items[l].sales_tax_exempt}
                                                                             <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                        {elseif '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                                                            <td>
-                                                                                {section name=s loop=$vat_tax_codes}
-                                                                                    {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                                                {/section}
-                                                                            </td>
-                                                                        {else}                                                                    
+                                                                        {elseif $labour_items[l].vat_tax_code == 'T2'}
+                                                                            <td colspan="3" align="center">{t}Exempt{/t}</td>
+                                                                        {else}    
+                                                                            {if '/^vat_/'|preg_match:$invoice_details.tax_system}
+                                                                                <td>
+                                                                                    {section name=s loop=$vat_tax_codes}
+                                                                                        {if $labour_items[l].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                                    {/section}
+                                                                                </td>                                                                               
+                                                                            {/if}
                                                                             <td>{$labour_items[l].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                                                            <td>{$currency_sym}{$labour_items[l].sub_total_tax|string_format:"%.2f"}</td>   
+                                                                            <td>{$currency_sym}{$labour_items[l].sub_total_tax|string_format:"%.2f"}</td>
                                                                         {/if}
                                                                     {/if}
                                                                     <td>{$currency_sym}{$labour_items[l].sub_total_gross|string_format:"%.2f"}</td>
@@ -786,7 +789,7 @@
                                                                         <td class="row2"><b>{if '/^vat_/'|preg_match:$invoice_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                                                                     {/if}
                                                                     <td class="row2"><b>{t}Gross{/t}</b></td>
-                                                                    <td class="row2"><b>{t}Actions{/t}</b></td>
+                                                                    <td class="row2"><b>{t}Actions{/t}</b></td>                                                                    
                                                                 </tr>
                                                                 {section name=p loop=$parts_items}
                                                                     <tr class="olotd4">
@@ -795,18 +798,21 @@
                                                                         <td>{$parts_items[p].unit_qty|string_format:"%.2f"}</td>                                                                
                                                                         <td>{$currency_sym}{$parts_items[p].unit_net|string_format:"%.2f"}</td>                                                                         
                                                                         {if $invoice_details.tax_system != 'none'}
-                                                                            <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>
-                                                                            {if $parts_items[p].vat_tax_code == 'T2' || $parts_items[p].sales_tax_exempt}
-                                                                                <td colspan="2" align="center">{t}Exempt{/t}</td>
-                                                                            {elseif '/^vat_/'|preg_match:$invoice_details.tax_system}
-                                                                                <td>
-                                                                                    {section name=s loop=$vat_tax_codes}
-                                                                                        {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
-                                                                                    {/section}
-                                                                                </td>
-                                                                            {else}                                                                    
+                                                                            <td>{$currency_sym}{$parts_items[p].sub_total_net|string_format:"%.2f"}</td>                                                                            
+                                                                            {if $parts_items[p].sales_tax_exempt}
+                                                                                <td colspan="2" align="center">{t}Exempt{/t}</td> 
+                                                                            {elseif $parts_items[p].vat_tax_code == 'T2'}
+                                                                                <td colspan="3" align="center">{t}Exempt{/t}</td>
+                                                                            {else}
+                                                                                {if '/^vat_/'|preg_match:$invoice_details.tax_system}
+                                                                                    <td>
+                                                                                        {section name=s loop=$vat_tax_codes}
+                                                                                            {if $parts_items[p].vat_tax_code == $vat_tax_codes[s].tax_key}{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t}{/if}
+                                                                                        {/section}
+                                                                                    </td>                                                                                  
+                                                                                {/if}
                                                                                 <td>{$parts_items[p].unit_tax_rate|string_format:"%.2f"}%</td> 
-                                                                                <td>{$currency_sym}{$parts_items[p].sub_total_tax|string_format:"%.2f"}</td>  
+                                                                                <td>{$currency_sym}{$parts_items[p].sub_total_tax|string_format:"%.2f"}</td>                                                                                
                                                                             {/if}
                                                                         {/if}
                                                                         <td>{$currency_sym}{$parts_items[p].sub_total_gross|string_format:"%.2f"}</td>
