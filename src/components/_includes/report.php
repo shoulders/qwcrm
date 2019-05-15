@@ -754,51 +754,54 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
     // Current
     if($record_set == 'current' || $record_set == 'all') {
     
-        $stats['count_open'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'open', $employee_id, $client_id);
-        $stats['count_unused'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'unused', $employee_id, $client_id);
-        $stats['count_redeemed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'redeemed', $employee_id, $client_id);
-        $stats['count_suspended'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'suspended', $employee_id, $client_id);           
-        $stats['count_expired'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'expired', $employee_id, $client_id);
-        $stats['count_refunded'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'refunded', $employee_id, $client_id);
-        $stats['count_cancelled'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'cancelled', $employee_id, $client_id);                                
+        $stats['count_open'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'open', $employee_id, $client_id);
+        $stats['count_unused'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'unused', $employee_id, $client_id);
+        $stats['count_redeemed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+        $stats['count_suspended'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'suspended', $employee_id, $client_id);           
+        $stats['count_expired'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['count_refunded'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'refunded', $employee_id, $client_id);
+        $stats['count_cancelled'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'cancelled', $employee_id, $client_id);                                
 
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {       
                              
-        $stats['count_opened'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'opened', $employee_id, $client_id);
-        $stats['count_closed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'closed', $employee_id, $client_id);            
-        $stats['count_claimed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else  
+        $stats['count_opened'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'opened', $employee_id, $client_id);
+        $stats['count_closed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'closed', $employee_id, $client_id);            
+        $stats['count_claimed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else  
     
     }  
        
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {       
         
-        $stats['count_items'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);    
-        $stats['sum_unit_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-        $stats['sum_unit_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-        $stats['sum_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);        
-        $stats['sum_redeemed_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);
-        $stats['sum_redeemed_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);
-        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id); 
+        $stats['count_items'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);    
+        $stats['sum_unit_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
+        $stats['sum_unit_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
+        $stats['sum_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);        
+        $stats['sum_redeemed_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+        $stats['sum_redeemed_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id); 
         
-        $stats['sum_expired_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'expired', $employee_id, $client_id);
-        $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, 'expired', $employee_id, $client_id);
-        $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'expired', $employee_id, $client_id);
+        $stats['sum_expired_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
         
         // Only used on Client Tab        
-        $stats['sum_unused_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'unused', $employee_id, $client_id);
-        //$stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'redeemed', $employee_id, $client_id);
-        $stats['sum_suspended_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'suspended', $employee_id, $client_id);         
-        //$stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'expired', $employee_id, $client_id);
-        $stats['sum_refunded_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'refunded', $employee_id, $client_id);
-        $stats['sum_cancelled_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id); 
-        $stats['sum_open_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'open', $employee_id, $client_id);
-        $stats['sum_opened_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'opened', $employee_id, $client_id);
-        $stats['sum_closed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'closed', $employee_id, $client_id);
-        $stats['sum_claimed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
+        $stats['sum_unused_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'unused', $employee_id, $client_id);
+        //$stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+        $stats['sum_suspended_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'suspended', $employee_id, $client_id);         
+        //$stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['sum_refunded_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'refunded', $employee_id, $client_id);
+        $stats['sum_cancelled_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
+        $stats['sum_open_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'open', $employee_id, $client_id);
+        $stats['sum_opened_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'opened', $employee_id, $client_id);
+        $stats['sum_closed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id, $client_id);
+        $stats['sum_claimed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
+        
+        // Only used for VAT flat rate calculations - i needed to exclude MPV vouchers from profit calculations
+        $stats['sum_unit_net_mpv'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', null, $employee_id, $client_id);
               
     }
        
@@ -810,7 +813,7 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
 #     Count Vouchers                    #
 #########################################
 
-function count_vouchers($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
+function count_vouchers($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -830,6 +833,11 @@ function count_vouchers($start_date = null, $end_date = null, $date_type = null,
         $whereTheseRecords .= " AND ".PRFX."voucher_records.vat_tax_code=".$db->qstr($vat_tax_code);
     }
     
+    // Filter by Item Type
+    if($type) {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.type=".$db->qstr($type);
+    }
+    
     // Restrict by Status
     $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
 
@@ -841,6 +849,11 @@ function count_vouchers($start_date = null, $end_date = null, $date_type = null,
     // Filter by Claimed status
     if($client_id && $status != 'claimed') {
         $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Filter by Invoice
+    if($invoice_id) {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$db->qstr($invoice_id);
     }
     
     // Execute the SQL
@@ -864,7 +877,7 @@ function count_vouchers($start_date = null, $end_date = null, $date_type = null,
 #  Sum selected value of Vouchers         #
 ###########################################
 
-function sum_vouchers($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $status = null, $employee_id = null, $client_id = null) {
+function sum_vouchers($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $type = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -884,6 +897,11 @@ function sum_vouchers($value_name, $start_date = null, $end_date = null, $date_t
         $whereTheseRecords .= " AND ".PRFX."voucher_records.vat_tax_code=".$db->qstr($vat_tax_code);
     }
     
+    // Filter by Item Type
+    if($type) {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.type=".$db->qstr($type);
+    }
+    
     // Restrict by Status
     $whereTheseRecords .= voucher_build_filter_by_status($status, $client_id);
     
@@ -895,6 +913,11 @@ function sum_vouchers($value_name, $start_date = null, $end_date = null, $date_t
     // Filter by Client
     if($client_id && $status != 'claimed') {
         $whereTheseRecords .= " AND ".PRFX."voucher_records.client_id=".$db->qstr($client_id);
+    }
+    
+    // Filter by Invoice
+    if($invoice_id) {
+        $whereTheseRecords .= " AND ".PRFX."voucher_records.invoice_id=".$db->qstr($invoice_id);
     }
     
     $sql = "SELECT SUM(".PRFX."voucher_records.$value_name) AS sum
@@ -1697,15 +1720,16 @@ function payment_build_filter_by_type($type = null) {
 
 ##############################################################################################
 #  Calulate the revenue and tax liability for a ALL payments against their parent record     # // I don not use most of these filters at the minute (only start_date, end_date and tax_system)
-##############################################################################################
+##############################################################################################  // this delivers the correct ratio of the individual compoenents on an invoice depeneding on the percentage of invoice paid
 
 function prorata_payments_against_records($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
     
     $db = QFactory::getDbo();  
     
-    // Holding array for prorata totals
+    // Holding array for prorata totals // I could use a blank array here??? but it is a good reference
     $prorata_totals = array(
-                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),                        
+                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "voucher_mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),                        
                         "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)                        
@@ -1790,30 +1814,39 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
             if($rs->fields['type'] == 'invoice') {
                 $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'invoice');
                 
-                // Vouchers must be compensated for
+                // Vouchers must be compensated for profit purposes
                 if($rs->fields['method'] == 'voucher') {
                     
                     $voucher_type = get_voucher_details($rs->fields['voucher_id'], 'type');
                 
                     // Multi Purpose
                     if($voucher_type == 'multi_purpose') {
-                        $prorata_record['net'] = 0.00;
-                        $prorata_record['tax'] = $prorata_record['tax']; 
-                        $prorata_record['gross'] = 0.00;
+                        $prorata_totals['invoice']['net'] += 0.00;
+                        $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
+                        $prorata_totals['invoice']['gross'] += 0.00;        
                     }
                     
                     // Single Use
                     if($voucher_type == 'single_use') {
-                        $prorata_record['net'] = 0.00;
-                        $prorata_record['tax'] = 0.00; 
-                        $prorata_record['gross'] = 0.00;
+                        $prorata_totals['invoice']['net'] += 0.00;
+                        $prorata_totals['invoice']['tax'] += 0.00; 
+                        $prorata_totals['invoice']['gross'] += 0.00;
                     }
+                   
+                // Normal Payments    
+                } else {   
                     
-                }              
+                    // How much of MPV vouchers have been paid (prorated)
+                    $prorata_totals['voucher_mpv']['net'] += $prorata_record['voucher_mpv']['net'];
+                    $prorata_totals['voucher_mpv']['tax'] += $prorata_record['voucher_mpv']['tax']; 
+                    $prorata_totals['voucher_mpv']['gross'] += $prorata_record['voucher_mpv']['gross'];
                 
-                $prorata_totals['invoice']['net'] += $prorata_record['net'];
-                $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
-                $prorata_totals['invoice']['gross'] += $prorata_record['gross'];
+                    // Record main totals prorated)
+                    $prorata_totals['invoice']['net'] += $prorata_record['net'];
+                    $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
+                    $prorata_totals['invoice']['gross'] += $prorata_record['gross'];
+                
+                }
                 
             }
             
@@ -1853,9 +1886,17 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
 #  Calulate the revenue and tax liability for a single payments against their parent record  #
 ##############################################################################################
 
-function prorata_payment_against_record($payment_id, $record_type) {  // i need to add tax system in, no tax type has already been determines
+function prorata_payment_against_record($payment_id, $record_type) {
     
     $payment_details = get_payment_details($payment_id);
+    
+    // Holding array
+    $prorata_totals = array(
+                        "net" => 0.00,
+                        "tax" => 0.00,
+                        "gross" => 0.00,                       
+                        "voucher_mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)                     
+                        );    
     
     // Get the correct record details to process
     if($record_type == 'invoice') {$record_details = get_invoice_details($payment_details['invoice_id']);}
@@ -1869,7 +1910,16 @@ function prorata_payment_against_record($payment_id, $record_type) {  // i need 
     $tax = $record_details['unit_tax'] * $percentage;
     $gross = $record_details['unit_gross'] * $percentage;
     
-    $prorata_totals = array("net" => $net, "tax" => $tax, "gross" => $gross);
+    // I need to prorata invoice MPV vouchers to exclude them (further up the tree so i can display these numbers; could be done here though)
+    if($record_type == 'invoice') {        
+        $prorata_totals['voucher_mpv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
+        $prorata_totals['voucher_mpv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
+        $prorata_totals['voucher_mpv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;     
+    }
+    
+    $prorata_totals['net'] = $net; 
+    $prorata_totals['tax'] = $tax;
+    $prorata_totals['gross'] = $gross;
     
     return $prorata_totals;
     

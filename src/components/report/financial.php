@@ -63,10 +63,12 @@ if(isset($VAR['submit'])) {
 
     // Holding array for profit totals (prorata'ed where needed)
     $prorata_totals = array(
-                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),                        
+                        "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), 
+                        "voucher_mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),                        
                         "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
-                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)                        
+                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
+                        "profit" => 0.00
                         );
     
     // Run Prorata the records if appropriate
@@ -106,15 +108,16 @@ if(isset($VAR['submit'])) {
     
     // Holding array for tax totals (prorata'ed where needed)
     $tax_totals = array(
-                "invoice"       =>  0.00,   
-                "refund"        =>  0.00,
-                "expense"       =>  0.00,   
-                "otherincome"   =>  0.00,
+                "invoice" => array("net" => 0.00, "tax" => 0.00), 
+                "voucher_mpv" => array("net" => 0.00, "tax" => null),
+                "refund" => array("net" => 0.00, "tax" => 0.00),
+                "expense" => array("net" => null, "tax" => 0.00),
+                "otherincome" => array("net" => 0.00, "tax" => 0.00),
                 "total_in"      =>  0.00,   
                 "total_out"     =>  0.00,   
                 "balance"       =>  0.00,            
-                "message"       =>  ''           
-                ); 
+                "message"       =>  ''
+                );
     
     // None - No Tax to process
     if(QW_TAX_SYSTEM == 'none') {        
@@ -124,75 +127,76 @@ if(isset($VAR['submit'])) {
     // Sales Tax - Prorated TAX
     if (QW_TAX_SYSTEM == 'sales_tax_cash') {
         
-        $tax_totals['invoice'] = $prorata_totals['invoice']['tax'];
-        $tax_totals['refund'] = $prorata_totals['refund']['tax'];
-        //$tax_totals['expense'] = $prorata_totals['expense']['tax'];
-        //$tax_totals['otherincome'] = $prorata_totals['otherincome']['tax'];  
+        $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];
+        $tax_totals['refund']['tax'] = $prorata_totals['refund']['tax'];         
         
-        $tax_totals['total_in'] = $tax_totals['invoice'];
-        $tax_totals['total_out'] = $tax_totals['refund'];
-        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
+        $tax_totals['total_in'] = $tax_totals['invoice']['tax'];
+        $tax_totals['total_out'] = $tax_totals['refund']['tax'];
+        $tax_totals['balance'] = $tax_totals['total_in'] - $tax_totals['total_out'];
         
     }  
     
     // VAT Standard - Date based TAX
     if(QW_TAX_SYSTEM == 'vat_standard') {
         
-        $tax_totals['invoice'] = $invoice_stats['sum_unit_tax'];        
-        $tax_totals['otherincome'] = $otherincome_stats['sum_unit_tax'];  
-        $tax_totals['expense'] = $expense_stats['sum_unit_tax'];
-        $tax_totals['refund'] = $refund_stats['sum_unit_tax']; 
+        $tax_totals['invoice']['tax'] = $invoice_stats['sum_unit_tax'];        
+        $tax_totals['otherincome']['tax'] = $otherincome_stats['sum_unit_tax'];  
+        $tax_totals['expense']['tax'] = $expense_stats['sum_unit_tax'];
+        $tax_totals['refund']['tax'] = $refund_stats['sum_unit_tax']; 
         
-        $tax_totals['total_in'] = $tax_totals['invoice']  + $tax_totals['otherincome'];
-        $tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
-        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
+        $tax_totals['total_in'] = $tax_totals['invoice']['tax']  + $tax_totals['otherincome']['tax'];
+        $tax_totals['total_out'] = $tax_totals['expense']['tax'] + $tax_totals['refund']['tax'];
+        $tax_totals['balance'] = $tax_totals['total_in'] - $tax_totals['total_out'];
         
     }
     
     // VAT Cash - Prorated TAX
     if (QW_TAX_SYSTEM == 'vat_cash') {
          
-        $tax_totals['invoice'] = $prorata_totals['invoice']['tax'];
-        $tax_totals['refund'] = $prorata_totals['refund']['tax'];
-        $tax_totals['expense'] = $prorata_totals['expense']['tax'];
-        $tax_totals['otherincome'] = $prorata_totals['otherincome']['tax']; 
+        $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];
+        $tax_totals['refund']['tax'] = $prorata_totals['refund']['tax'];
+        $tax_totals['expense']['tax'] = $prorata_totals['expense']['tax'];
+        $tax_totals['otherincome']['tax'] = $prorata_totals['otherincome']['tax']; 
         
-        $tax_totals['total_in'] = $tax_totals['invoice']  + $tax_totals['otherincome'];
-        $tax_totals['total_out'] = $tax_totals['expense'] + $tax_totals['refund'];
-        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
+        $tax_totals['total_in'] = $tax_totals['invoice']['tax']  + $tax_totals['otherincome']['tax'];
+        $tax_totals['total_out'] = $tax_totals['expense']['tax'] + $tax_totals['refund']['tax'];
+        $tax_totals['balance'] = $tax_totals['total_in'] - $tax_totals['total_out'];
         
     }    
     
     // VAT Flat Standard - Date based NET x flat rate
     if(QW_TAX_SYSTEM == 'vat_flat_standard') {
         
-        $tax_totals['invoice'] = $invoice_stats['sum_unit_tax'];        
-        $tax_totals['otherincome'] = $otherincome_stats['sum_unit_tax'];  
-        //$tax_totals['expense'] = $expense_stats['sum_unit_tax'];
-        //$tax_totals['refund'] = $refund_stats['sum_unit_tax'];
+        $tax_totals['invoice']['tax'] = $invoice_stats['sum_unit_tax']; 
+        $tax_totals['refund']['tax'] = $refund_stats['sum_unit_tax'];        
+        $tax_totals['otherincome']['tax'] = $otherincome_stats['sum_unit_tax'];          
         
-        $tax_totals['invoice_net'] = $invoice_stats['sum_unit_net'];
-        $tax_totals['otherincome_net'] = $otherincome_stats['sum_unit_net']; 
+        $tax_totals['invoice']['net'] = $invoice_stats['sum_unit_net'];
+        $tax_totals['refund']['net'] = $refund_stats['sum_unit_net'];
+        $tax_totals['otherincome']['net'] = $otherincome_stats['sum_unit_net'];
+        $tax_totals['voucher_mpv']['net'] = $voucher_stats['sum_unit_net_mpv']; 
                 
-        $tax_totals['total_in'] = $tax_totals['invoice'] + $tax_totals['otherincome'];
-        $tax_totals['total_out'] = ($tax_totals['invoice_net'] + $tax_totals['otherincome_net']) * (get_company_details('vat_flat_rate')/100); // Adjusted for flat rate
-        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
+        $tax_totals['total_in'] = $tax_totals['invoice']['tax'] + $tax_totals['otherincome']['tax'] - $tax_totals['refund']['tax'];
+        $tax_totals['total_out'] = (($tax_totals['invoice']['net'] + $tax_totals['otherincome']['net']) - ($tax_totals['refund']['net'] + $tax_totals['voucher_mpv']['net'])) * (get_company_details('vat_flat_rate')/100); // Adjusted for flat rate
+        $tax_totals['balance'] = $tax_totals['total_in'] - $tax_totals['total_out'];
 
     }
     
     // VAT Flat Cash - Prorated NET x flat rate
     if(QW_TAX_SYSTEM == 'vat_flat_cash') {
-        $tax_totals['invoice'] = $prorata_totals['invoice']['tax'];
-        $tax_totals['refund'] = $prorata_totals['refund']['tax'];
-        //$tax_totals['expense'] = $prorata_totals['expense']['tax'];
-        //$tax_totals['otherincome'] = $prorata_totals['otherincome']['tax'];
         
-        $tax_totals['invoice_net'] = $prorata_totals['invoice']['net'];
-        $tax_totals['otherincome_net'] = $prorata_totals['otherincome']['net']; 
-                
-        $tax_totals['total_in'] = $tax_totals['invoice'] + $tax_totals['otherincome'];
-        $tax_totals['total_out'] = ($tax_totals['invoice_net'] + $tax_totals['otherincome_net']) * (get_company_details('vat_flat_rate')/100); // Adjusted for flat rate
-        $tax_totals['balance'] = $tax_totals['total_out'] - $tax_totals['total_in'];
+        $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];
+        $tax_totals['refund']['tax'] = $prorata_totals['refund']['tax'];        
+        $tax_totals['otherincome']['tax'] = $prorata_totals['otherincome']['tax'];
+        
+        $tax_totals['invoice']['net'] = $prorata_totals['invoice']['net'];
+        $tax_totals['refund']['net'] = $prorata_totals['refund']['net']; 
+        $tax_totals['otherincome']['net'] = $prorata_totals['otherincome']['net'];         
+        $tax_totals['voucher_mpv']['net'] = $prorata_totals['voucher_mpv']['net'];
+                        
+        $tax_totals['total_in'] = $tax_totals['invoice']['tax'] + $tax_totals['otherincome']['tax'] - $tax_totals['refund']['tax'];
+        $tax_totals['total_out'] = (($tax_totals['invoice']['net'] + $tax_totals['otherincome']['net']) - ($tax_totals['refund']['net'] + $tax_totals['voucher_mpv']['net'])) * (get_company_details('vat_flat_rate')/100); // Adjusted for flat rate
+        $tax_totals['balance'] = $tax_totals['total_in'] - $tax_totals['total_out'];
         
     }
     
