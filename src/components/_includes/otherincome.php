@@ -689,6 +689,12 @@ function check_otherincome_can_be_deleted($otherincome_id) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments."));
         return false;        
     }
+    
+    // The current record VAT code is enabled
+    if(!get_vat_tax_code_status($otherincome_details['vat_tax_code'])) {
+        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."));
+        return false; 
+    }
 
     // All checks passed
     return true;    

@@ -113,6 +113,28 @@ function get_vat_tax_codes($hidden_status = null, $editable_status = null, $syst
     
 }
 
+############################
+#  Get VAT Code Status     #  // Only return true is a valid configuration for the code
+############################
+
+function get_vat_tax_code_status($vat_tax_code) {
+    
+    $db = QFactory::getDbo();
+    
+    $sql = "SELECT enabled
+            FROM ".PRFX."company_vat_tax_codes
+            WHERE tax_key = ".$db->qstr($vat_tax_code);
+    
+    if(!$rs = $db->execute($sql)){        
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
+    } else {       
+        
+        return $rs->fields['enabled'];
+        
+    }   
+    
+}
+
 #####################################
 #    Get default VAT Code           # // This gets the default VAT Tax Code based on the company tax system or supplied tax_system
 #####################################

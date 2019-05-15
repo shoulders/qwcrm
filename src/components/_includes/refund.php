@@ -786,6 +786,12 @@ function check_refund_can_be_deleted($refund_id) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
         return false;
     }
+    
+    // The current record VAT code is enabled
+    if(!get_vat_tax_code_status($refund_details['vat_tax_code'])) {
+        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it's current VAT Tax Code is not enabled."));
+        return false; 
+    }
 
     // All checks passed
     return true;    

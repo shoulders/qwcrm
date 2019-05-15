@@ -2056,7 +2056,35 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
         return false;
     }
     
+    // The current record VAT code is enabled
+    if(!check_invoice_vat_tax_code_statuses($invoice_id)) {
+        //postEmulationWrite('warning_msg', _gettext("This invoice cannot be edited because one or more of the parts or labour have a VAT Tax Code that is not enabled."));
+        return false; 
+    }
+    
     // All checks passed
     return true;     
      
+}
+
+####################################################################
+#   Check invoice Labour and parts VAT Tax Codes are all enabled   #
+####################################################################
+
+function check_invoice_vat_tax_code_statuses($invoice_id) {
+    
+    $vat_tax_codes_all_enabled = true;
+    
+    // Check all labour
+    foreach (get_invoice_labour_items($invoice_id) as $key => $value) {        
+        if(!get_vat_tax_code_status($value['vat_tax_code'])) { $vat_tax_codes_all_enabled = false;}        
+    }
+    
+    // Check all parts
+    foreach (get_invoice_parts_items($invoice_id) as $key => $value) {        
+        if(!get_vat_tax_code_status($value['vat_tax_code'])) { $vat_tax_codes_all_enabled = false;}        
+    }
+    
+    return $vat_tax_codes_all_enabled; 
+    
 }

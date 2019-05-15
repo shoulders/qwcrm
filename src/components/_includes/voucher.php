@@ -1511,6 +1511,12 @@ function check_voucher_can_be_edited($voucher_id) {
         //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
         return false;        
     }
+    
+    // The current record VAT code is enabled
+    if(!get_vat_tax_code_status($voucher_details['vat_tax_code'])) {
+        //postEmulationWrite('warning_msg', _gettext("This voucher cannot be edited because it's current VAT Tax Code is not enabled."));
+        return false; 
+    }
 
     // All checks passed
     return true;     
