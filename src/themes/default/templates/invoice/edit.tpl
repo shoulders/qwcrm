@@ -322,7 +322,7 @@
         el.setAttribute('name', 'parts_items['+iteration+'][unit_qty]');
         //el.setAttribute('class', 'olotd4');
         el.setAttribute('size', '6');        
-        el.setAttribute('value', '1');
+        el.setAttribute('value', '1.00');
         el.setAttribute('type', 'text');
         el.setAttribute('maxlength', '6');
         el.required = true;
