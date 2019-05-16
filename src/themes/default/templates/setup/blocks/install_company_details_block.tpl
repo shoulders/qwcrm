@@ -155,8 +155,8 @@
                                                                                         <td><input name="zip" class="olotd5" value="{$company_details.zip}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td align="right"><b>{t}Country{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                        <td><input name="country" class="olotd5" value="{$company_details.country}" type="text" maxlength="50" required onkeydown="return onlyAlpha(event);"></td>
+                                                                                        <td align="right"><b>{t}Country{/t}:</b></td>
+                                                                                        <td><input name="country" class="olotd5" value="{$company_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Primary Phone{/t}:</b></td>
