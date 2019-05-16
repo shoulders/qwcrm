@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.0.0\n"
-"POT-Creation-Date: 2019-05-16 16:24+0100\n"
-"PO-Revision-Date: 2019-05-16 16:36+0100\n"
+"POT-Creation-Date: 2019-05-16 19:06+0100\n"
+"PO-Revision-Date: 2019-05-16 19:06+0100\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -5932,9 +5932,9 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_install_results_qwcrm_block.tpl:25
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_block.tpl:24
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_results_block.tpl:30
-#: themes/default/templates/setup/choice.tpl:213
-#: themes/default/templates/setup/choice.tpl:221
-#: themes/default/templates/setup/choice.tpl:229
+#: themes/default/templates/setup/choice.tpl:216
+#: themes/default/templates/setup/choice.tpl:224
+#: themes/default/templates/setup/choice.tpl:232
 msgid "Next"
 msgstr ""
 
@@ -6311,29 +6311,29 @@ msgstr ""
 msgid "Start Upgrade"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:107
-#: themes/default/templates/setup/install.tpl:11
-#: themes/default/templates/setup/migrate.tpl:11
+#: themes/default/templates/setup/choice.tpl:108
+#: themes/default/templates/setup/install.tpl:12
+#: themes/default/templates/setup/migrate.tpl:12
 msgid "The Back Button has been disabled."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:115
+#: themes/default/templates/setup/choice.tpl:118
 msgid "QWcrm Installation / MyITCRM Migration / QWcrm Upgrade"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:118
+#: themes/default/templates/setup/choice.tpl:121
 #: language/_gettext_only/pages.php:523
 msgid "SETUP_CHOICE_HELP_TITLE"
 msgstr "Help"
 
-#: themes/default/templates/setup/choice.tpl:118
+#: themes/default/templates/setup/choice.tpl:121
 #: language/_gettext_only/pages.php:524
 msgid "SETUP_CHOICE_HELP_CONTENT"
 msgstr ""
 "Decide if you want to do a fresh installation of QWcrm or migrate from "
 "MyITCRM."
 
-#: themes/default/templates/setup/choice.tpl:133
+#: themes/default/templates/setup/choice.tpl:136
 msgid "SETUP_LICENSE_AGREEMENT"
 msgstr ""
 "<p>Copyright (C) 2017 Jon Brown <a href=\"https://quantumwarp.com/"
@@ -6358,39 +6358,39 @@ msgstr ""
 "<p>You must confirm you understand and accept the license before continuing."
 "</p>"
 
-#: themes/default/templates/setup/choice.tpl:139
+#: themes/default/templates/setup/choice.tpl:142
 msgid "I have read and understood the license."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:140
+#: themes/default/templates/setup/choice.tpl:143
 msgid "Accept License"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:164
+#: themes/default/templates/setup/choice.tpl:167
 msgid ""
 "Choose choose whether you want to install a fresh copy of QWcrm or migrate "
 "from MyITCRM"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:171
+#: themes/default/templates/setup/choice.tpl:174
 msgid "Install QWcrm"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:178
+#: themes/default/templates/setup/choice.tpl:181
 msgid "Migrate from MyITCRM"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:188
+#: themes/default/templates/setup/choice.tpl:191
 msgid ""
 "There is an upgrade pending for QWcrm and needs to be applied before you can "
 "use this software."
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:194
+#: themes/default/templates/setup/choice.tpl:197
 msgid "Start QWcrm Upgrade"
 msgstr ""
 
-#: themes/default/templates/setup/choice.tpl:212
+#: themes/default/templates/setup/choice.tpl:215
 msgid "SETUP_INSTALL_MESSAGE"
 msgstr ""
 "<h1>QWcrm Installation Notes</h1>\n"
@@ -6408,7 +6408,7 @@ msgstr ""
 "screen so you can access QWcrm straight away.</p>\n"
 "<p><strong><em>QWcrm Team</em></strong></p>"
 
-#: themes/default/templates/setup/choice.tpl:220
+#: themes/default/templates/setup/choice.tpl:223
 msgid "SETUP_MIGRATE_MESSAGE"
 msgstr ""
 "<h1>MyITCRM to QWcrm Migration Notes</h1>\n"
@@ -6477,7 +6477,7 @@ msgstr ""
 "QWcrm up to the correct version before use.</p>\n"
 "<p><strong><em>QWcrm Team</em></strong></p>"
 
-#: themes/default/templates/setup/choice.tpl:228
+#: themes/default/templates/setup/choice.tpl:231
 msgid "SETUP_UPGRADE_MESSAGE"
 msgstr ""
 "<p><em>The upgrade mechanism is currently not enabled</em></p>\n"
@@ -6494,19 +6494,19 @@ msgstr ""
 "so you can access QWcrm straight away.</p>\n"
 "<p><strong><em>QWcrm Team</em></strong></p>"
 
-#: themes/default/templates/setup/install.tpl:18
-#: themes/default/templates/setup/migrate.tpl:18
+#: themes/default/templates/setup/install.tpl:22
+#: themes/default/templates/setup/migrate.tpl:21
 msgid "QWcrm Installation"
 msgstr ""
 
-#: themes/default/templates/setup/install.tpl:21
-#: themes/default/templates/setup/migrate.tpl:21
+#: themes/default/templates/setup/install.tpl:25
+#: themes/default/templates/setup/migrate.tpl:24
 #: language/_gettext_only/pages.php:530
 msgid "SETUP_INSTALL_HELP_TITLE"
 msgstr "Help"
 
-#: themes/default/templates/setup/install.tpl:21
-#: themes/default/templates/setup/migrate.tpl:21
+#: themes/default/templates/setup/install.tpl:25
+#: themes/default/templates/setup/migrate.tpl:24
 #: language/_gettext_only/pages.php:531
 msgid "SETUP_INSTALL_HELP_CONTENT"
 msgstr "Follow these easy steps to install QWcrm."
@@ -7548,6 +7548,10 @@ msgstr ""
 
 #: components/_includes/administrator.php:656
 msgid "ACL permissions reset to default settings."
+msgstr ""
+
+#: components/_includes/administrator.php:675
+msgid "The QWcrm live config registry has been refreshed from the config file."
 msgstr ""
 
 #: components/_includes/client.php:88
@@ -9946,57 +9950,57 @@ msgstr ""
 msgid "QWcrm installation has begun."
 msgstr ""
 
-#: components/setup/install.php:49 components/setup/migrate.php:43
+#: components/setup/install.php:48 components/setup/migrate.php:43
 msgid "Database connection successful."
 msgstr ""
 
-#: components/setup/install.php:52 components/setup/migrate.php:55
+#: components/setup/install.php:51 components/setup/migrate.php:55
 msgid ""
 "Connected successfully to the database with the supplied credentials and "
 "added them to the config file."
 msgstr ""
 
-#: components/setup/install.php:60 components/setup/migrate.php:63
+#: components/setup/install.php:59 components/setup/migrate.php:63
 msgid "Failed to connect to the database with the supplied credentials."
 msgstr ""
 
-#: components/setup/install.php:96 components/setup/migrate.php:142
+#: components/setup/install.php:95 components/setup/migrate.php:142
 msgid "Config settings have been added to the config file."
 msgstr ""
 
-#: components/setup/install.php:117 components/setup/migrate.php:163
+#: components/setup/install.php:116 components/setup/migrate.php:163
 msgid "Starting Database installation."
 msgstr ""
 
-#: components/setup/install.php:122 components/setup/migrate.php:168
+#: components/setup/install.php:121 components/setup/migrate.php:168
 msgid "The database installed successfully."
 msgstr ""
 
-#: components/setup/install.php:130 components/setup/migrate.php:176
+#: components/setup/install.php:129 components/setup/migrate.php:176
 msgid "The database failed to install."
 msgstr ""
 
-#: components/setup/install.php:187 components/setup/migrate.php:229
+#: components/setup/install.php:186 components/setup/migrate.php:229
 msgid "Company options inserted."
 msgstr ""
 
-#: components/setup/install.php:216
+#: components/setup/install.php:215
 msgid "Starting Work Order number has been set to"
 msgstr ""
 
-#: components/setup/install.php:221
+#: components/setup/install.php:220
 msgid "Starting Invoice number has been set to"
 msgstr ""
 
-#: components/setup/install.php:241 components/setup/migrate.php:334
+#: components/setup/install.php:240 components/setup/migrate.php:334
 msgid "The administrator account has been created."
 msgstr ""
 
-#: components/setup/install.php:242 components/setup/install.php:243
+#: components/setup/install.php:241 components/setup/install.php:242
 msgid "The QWcrm installation process has completed successfully."
 msgstr ""
 
-#: components/setup/install.php:299
+#: components/setup/install.php:298
 msgid "QWcrm installation has finished."
 msgstr ""
 
@@ -11494,19 +11498,19 @@ msgid "Sales Tax (Cash Basis)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:24
-msgid "VAT Standard accounting (UK)"
+msgid "VAT Standard Accounting (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:25
-msgid "VAT Cash accounting (UK)"
+msgid "VAT Cash Accounting (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:26
-msgid "VAT Flat rate (Standard) (UK)"
+msgid "VAT Flat Rate (Standard) (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:27
-msgid "VAT Flat rate (Cash) (UK)"
+msgid "VAT Flat Rate (Cash) (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:30

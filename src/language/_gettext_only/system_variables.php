@@ -21,10 +21,10 @@ _gettext("Goverment");
 /* Company Tax Systems*/
 _gettext("No Tax");
 _gettext("Sales Tax (Cash Basis)");
-_gettext("VAT Standard accounting (UK)");
-_gettext("VAT Cash accounting (UK)");
-_gettext("VAT Flat rate (Standard) (UK)");
-_gettext("VAT Flat rate (Cash) (UK)");
+_gettext("VAT Standard Accounting (UK)");
+_gettext("VAT Cash Accounting (UK)");
+_gettext("VAT Flat Rate (Standard) (UK)");
+_gettext("VAT Flat Rate (Cash) (UK)");
 
 /* Company VAT Tax Codes */
 _gettext("Zero Rate");

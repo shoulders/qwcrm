@@ -176,10 +176,10 @@ CREATE TABLE `#__company_tax_systems` (
 INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
 (1, 'no_tax', 'No Tax'),
 (2, 'sales_tax_cash', 'Sales Tax (Cash Basis)'),
-(3, 'vat_standard', 'VAT Standard accounting (UK)'),
-(4, 'vat_cash', 'VAT Cash accounting (UK)'),
-(5, 'vat_flat_standard', 'VAT Flat rate (Standard) (UK)'),
-(6, 'vat_flat_cash', 'VAT Flat rate (Cash) (UK)');
+(3, 'vat_standard', 'VAT Standard Accounting (UK)'),
+(4, 'vat_cash', 'VAT Cash Accounting (UK)'),
+(5, 'vat_flat_standard', 'VAT Flat Rate (Standard) (UK)'),
+(6, 'vat_flat_cash', 'VAT Flat Rate (Cash) (UK)');
 
 -- --------------------------------------------------------
 
