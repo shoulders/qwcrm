@@ -119,7 +119,7 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
         
         // Update Invoice Tax Types
-        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
+        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_cash');
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax_cash');
                 
         // Update Invoice Items        
