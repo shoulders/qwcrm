@@ -998,7 +998,7 @@ function check_voucher_is_expired($voucher_id) {
     }
     
     // If the voucher has status of 'expired' but the date has been changed to a valid one
-    if (strtotime($voucher_details['expiry_date']) >= time() ) {
+    if (strtotime($voucher_details['expiry_date'].' 23:59:59') >= time() ) {
         
         //  If the status has not been updated, update the status silenty (only from expired)
         if ($voucher_details['status'] == 'expired') {
