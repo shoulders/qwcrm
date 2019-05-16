@@ -1570,102 +1570,6 @@ function check_invoice_vouchers_allow_editing($invoice_id) {
 }
 
 ###############################################################   // needed for status button
-#   Check to see if the voucher can have refund deleted       #   // all invoices here should be status = 'refunded', this might change with partial refunds
-###############################################################   // not currently used - might not be needed cause i can just use 'check_single_voucher_can_have_refund_deleted()'
-
-function check_voucher_can_have_refund_deleted($voucher_id) {
-        
-    // This checks the parent invoice and it's associated vouchers including the supplied voucher
-    if(!check_invoice_can_have_refund_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
-        return false;
-    }
-    
-    return true;
-    
-}
-
-#################################################################################
-# Check an invoices vouchers do not prevent the invoice refund getting deleted  #
-#################################################################################
-
-function check_invoice_vouchers_allow_refund_deletion($invoice_id) {
-    
-    $db = QFactory::getDbo();
-
-    $vouchers_allow_refund_deletion = true;    
-        
-    $sql = "SELECT *
-            FROM ".PRFX."voucher_records
-            WHERE invoice_id = ".$invoice_id;
-    
-    if(!$rs = $db->Execute($sql)) {
-
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
-
-    } else {
-
-        while(!$rs->EOF) {            
-            
-            // Check the Voucher to see if it can be refunded
-            if(!check_single_voucher_can_have_refund_deleted($rs->fields['voucher_id'])) {                    
-                $vouchers_allow_refund_deletion = false;
-            }
-
-            // Advance the loop to the next record
-            $rs->MoveNext();           
-
-        }
-        
-        // Check to if any vouchers prevent the invoice from being deleted
-        if(!$vouchers_allow_refund_deletion) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
-            return false;
-            
-        } else {
-            
-            return true;
-            
-        }
-       
-    }
-
-}
-
-###############################################################
-#   Check to see if the voucher status allows refunding       #
-###############################################################
-
-function check_single_voucher_can_have_refund_deleted($voucher_id) {
-    
-    // Get the voucher details
-    $voucher_details = get_voucher_details($voucher_id);
-           
-    /* Is Cancelled
-    if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
-        return false;        
-    }
-    
-    // Is Deleted
-    if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
-        return false;        
-    }*/
-    
-    // Is not refunded
-    if($voucher_details['status'] != 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
-        return false;        
-    }
-    
-    // All checks passed
-    return true;
-    
-} 
-
-###############################################################   // needed for status button
 #   Check to see if the voucher can have refund cancelled     #   // all invoices here should be status = 'refunded', this might change with partial refunds
 ###############################################################   // not currently used - might not be needed cause i can just use 'check_single_voucher_can_have_refund_cancelled()'
 
@@ -1734,6 +1638,102 @@ function check_invoice_vouchers_allow_refund_cancellation($invoice_id) {
 ###############################################################
 
 function check_single_voucher_can_have_refund_cancelled($voucher_id) {
+    
+    // Get the voucher details
+    $voucher_details = get_voucher_details($voucher_id);
+           
+    /* Is Cancelled
+    if($voucher_details['status'] == 'cancelled') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
+        return false;        
+    }
+    
+    // Is Deleted
+    if($voucher_details['status'] == 'deleted') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
+        return false;        
+    }*/
+    
+    // Is not refunded
+    if($voucher_details['status'] != 'refunded') {
+        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
+        return false;        
+    }
+    
+    // All checks passed
+    return true;
+    
+} 
+
+###############################################################   // needed for status button
+#   Check to see if the voucher can have refund deleted       #   // all invoices here should be status = 'refunded', this might change with partial refunds
+###############################################################   // not currently used - might not be needed cause i can just use 'check_single_voucher_can_have_refund_deleted()'
+
+function check_voucher_can_have_refund_deleted($voucher_id) {
+        
+    // This checks the parent invoice and it's associated vouchers including the supplied voucher
+    if(!check_invoice_can_have_refund_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
+        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        return false;
+    }
+    
+    return true;
+    
+}
+
+#################################################################################
+# Check an invoices vouchers do not prevent the invoice refund getting deleted  #
+#################################################################################
+
+function check_invoice_vouchers_allow_refund_deletion($invoice_id) {
+    
+    $db = QFactory::getDbo();
+
+    $vouchers_allow_refund_deletion = true;    
+        
+    $sql = "SELECT *
+            FROM ".PRFX."voucher_records
+            WHERE invoice_id = ".$invoice_id;
+    
+    if(!$rs = $db->Execute($sql)) {
+
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching Vouchers."));
+
+    } else {
+
+        while(!$rs->EOF) {            
+            
+            // Check the Voucher to see if it can be refunded
+            if(!check_single_voucher_can_have_refund_deleted($rs->fields['voucher_id'])) {                    
+                $vouchers_allow_refund_deletion = false;
+            }
+
+            // Advance the loop to the next record
+            $rs->MoveNext();           
+
+        }
+        
+        // Check to if any vouchers prevent the invoice from being deleted
+        if(!$vouchers_allow_refund_deletion) {            
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
+            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
+            return false;
+            
+        } else {
+            
+            return true;
+            
+        }
+       
+    }
+
+}
+
+###############################################################
+#   Check to see if the voucher status allows refunding       #
+###############################################################
+
+function check_single_voucher_can_have_refund_deleted($voucher_id) {
     
     // Get the voucher details
     $voucher_details = get_voucher_details($voucher_id);

@@ -670,7 +670,7 @@ function check_refund_can_be_cancelled($refund_id) {
     }
     
     // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
-    if(!check_invoice_vouchers_allow_cancellation($refund_details['invoice_id'])) {
+    if(!check_invoice_vouchers_allow_refund_cancellation($refund_details['invoice_id'])) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
         return false;
     }
@@ -720,7 +720,7 @@ function check_refund_can_be_deleted($refund_id) {
     }
     
     // Does the invoice status allow it to have its refund deleted (including vouchers)
-    if(!check_invoice_can_have_refund_deleted($refund_details['invoice_id'])) {
+    if(!check_invoice_vouchers_allow_refund_deletion($refund_details['invoice_id'])) {
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
         return false;
     } 
