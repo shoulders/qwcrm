@@ -647,7 +647,7 @@ function update_payment_status($payment_id, $new_status, $silent = false) {
     
     $sql = "UPDATE ".PRFX."payment_records SET
             status               =". $db->qstr( $new_status      ).",
-            last_active          =". $db->qstr( mysql_datetime() ).",
+            last_active          =". $db->qstr( mysql_datetime() )."
             WHERE payment_id     =". $db->qstr( $payment_id      );
 
     if(!$rs = $db->Execute($sql)) {

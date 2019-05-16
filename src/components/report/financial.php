@@ -180,7 +180,7 @@ if(isset($VAR['submit'])) {
         $tax_totals['invoice']['net'] = $invoice_stats['sum_unit_net'];
         $tax_totals['refund']['net'] = $refund_stats['sum_unit_net'];
         $tax_totals['otherincome']['net'] = $otherincome_stats['sum_unit_net'];
-        $tax_totals['voucher_mpv']['net'] = $voucher_stats['sum_unit_net_mpv']; 
+        $tax_totals['voucher_mpv']['net'] = $voucher_stats['sum_voucher_mpv_unit_net']; 
                 
         $tax_totals['total_in'] = $tax_totals['invoice']['tax'] + $tax_totals['otherincome']['tax'] - $tax_totals['refund']['tax'];
         $tax_totals['total_out'] = (($tax_totals['invoice']['net'] + $tax_totals['otherincome']['net']) - ($tax_totals['refund']['net'] + $tax_totals['voucher_mpv']['net'])) * (get_company_details('vat_flat_rate')/100); // Adjusted for flat rate

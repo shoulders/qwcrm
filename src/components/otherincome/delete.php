@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'otherincome.php');
+require(INCLUDES_DIR.'report.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('otherincome', 'status')) {

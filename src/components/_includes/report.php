@@ -308,7 +308,7 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_unit_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);           
         $stats['sum_unit_paid'] = sum_invoices('unit_paid', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);       
         $stats['sum_balance'] = sum_invoices('balance', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);       
-        
+                
         // Only used on Client Tab        
         $stats['sum_pending_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'pending', $employee_id, $client_id);
         $stats['sum_unpaid_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'unpaid', $employee_id, $client_id);
@@ -320,12 +320,21 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_refunded_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'refunded', $employee_id, $client_id);
         $stats['sum_cancelled_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);        
         $stats['sum_open_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'open', $employee_id, $client_id);
-        $stats['sum_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'discounted', $employee_id, $client_id);
+        $stats['sum_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
         $stats['sum_opened_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'opened', $tax_system, null, 'opened', $employee_id, $client_id);
         $stats['sum_closed_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed', $tax_system, null, 'closed', $employee_id, $client_id);
-        $stats['sum_closed_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed', $tax_system, null, 'discounted', $employee_id, $client_id);
+        $stats['sum_closed_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed', $tax_system, null, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
+        
+        // Adjust for Cancelled records    
+        $stats['sum_unit_discount'] -= sum_invoices('unit_discount', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id); 
+        $stats['sum_unit_net'] -= sum_invoices('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_tax'] -= sum_invoices('unit_tax', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);        
+        $stats['sum_unit_gross'] -= sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_paid'] -= sum_invoices('unit_paid', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_balance'] -= sum_invoices('balance', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        
+    }
     
-    } 
     
     // Labour
     if($record_set == 'labour' || $record_set == 'all') {        
@@ -335,7 +344,14 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['labour_sum_sub_total_net'] = sum_labour_items('sub_total_net', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);   // Total net amount for labour               
         $stats['labour_sum_sub_total_tax'] = sum_labour_items('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
         $stats['labour_sum_sub_total_gross'] = sum_labour_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-    
+        
+        // Adjust for Cancelled records  
+        $stats['labour_count_items'] -= count_labour_items($start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_items'] -= sum_labour_items('unit_qty', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_sub_total_net'] -= sum_labour_items('sub_total_net', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_sub_total_tax'] -= sum_labour_items('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_sub_total_gross'] -= sum_labour_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);        
+       
     }
     
     // Parts
@@ -347,6 +363,13 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['parts_sum_sub_total_tax'] = sum_parts_items('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
         $stats['parts_sum_sub_total_gross'] = sum_parts_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
     
+        // Adjust for Cancelled records  
+        $stats['parts_count_items'] -= count_parts_items($start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_items'] -= sum_parts_items('unit_qty', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_sub_total_net'] -= sum_parts_items('sub_total_net', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_sub_total_tax'] -= sum_parts_items('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_sub_total_gross'] -= sum_parts_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        
     }   
     
     return $stats;
@@ -782,11 +805,13 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);        
         $stats['sum_redeemed_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
         $stats['sum_redeemed_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id); 
-        
+        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);         
         $stats['sum_expired_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
         $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
         $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        
+        // Only used for VAT flat rate calculations - i needed to exclude MPV vouchers from profit calculations
+        $stats['sum_voucher_mpv_unit_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', null, $employee_id, $client_id);
         
         // Only used on Client Tab        
         $stats['sum_unused_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'unused', $employee_id, $client_id);
@@ -799,10 +824,14 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_opened_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'opened', $employee_id, $client_id);
         $stats['sum_closed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id, $client_id);
         $stats['sum_claimed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
+                     
+        // Adjust for Cancelled records  
+        $stats['count_items'] -= count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);    
+        $stats['sum_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_tax'] -= sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);            
+        $stats['sum_voucher_mpv_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', 'cancelled', $employee_id, $client_id);        
         
-        // Only used for VAT flat rate calculations - i needed to exclude MPV vouchers from profit calculations
-        $stats['sum_unit_net_mpv'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', null, $employee_id, $client_id);
-              
     }
        
     return $stats;
@@ -1037,6 +1066,13 @@ function get_refunds_stats($record_set, $start_date = null, $end_date = null, $t
         $stats['sum_unit_gross'] = sum_refunds('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);                   
         $stats['sum_balance'] = sum_refunds('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
     
+        // Adjust for Cancelled records  
+        $stats['count_items'] -= count_refunds($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_net'] -= sum_refunds('unit_net', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_tax'] -= sum_refunds('unit_tax', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);           
+        $stats['sum_unit_gross'] -= sum_refunds('unit_gross', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_balance'] -= sum_refunds('balance', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);        
+        
     }     
        
     return $stats;
@@ -1193,8 +1229,15 @@ function get_expenses_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_unit_tax'] = sum_expenses('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id);       
         $stats['sum_unit_gross'] = sum_expenses('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
         $stats['sum_balance'] = sum_expenses('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
-
-    }     
+        
+        // Adjust for Cancelled records  
+        $stats['count_items'] -= count_expenses($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_net'] -= sum_expenses('unit_net', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_tax'] -= sum_expenses('unit_tax', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);       
+        $stats['sum_unit_gross'] -= sum_expenses('unit_gross', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_balance'] -= sum_expenses('balance', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);   
+        
+    }        
        
     return $stats;
     
@@ -1355,6 +1398,13 @@ function get_otherincomes_stats($record_set, $start_date = null, $end_date = nul
         $stats['sum_unit_gross'] = sum_otherincomes('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
         $stats['sum_balance'] = sum_otherincomes('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
 
+        // Adjust for Cancelled records  
+        $stats['count_items'] -= count_otherincomes($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_net'] -= sum_otherincomes('unit_net', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_tax'] -= sum_otherincomes('unit_tax', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);       
+        $stats['sum_unit_gross'] -= sum_otherincomes('unit_gross', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_balance'] -= sum_otherincomes('balance', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);        
+        
     }     
        
     return $stats;
@@ -1512,6 +1562,14 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_sent'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
         $stats['sum_received'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             
+        // Adjust for Cancelled records  
+        $stats['sum_invoice'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_refund'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_expense'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_otherincome'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_sent'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_received'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+               
     } 
     
     return $stats;
@@ -1718,8 +1776,8 @@ function payment_build_filter_by_type($type = null) {
     
 }
 
-##############################################################################################
-#  Calulate the revenue and tax liability for a ALL payments against their parent record     # // I don not use most of these filters at the minute (only start_date, end_date and tax_system)
+##############################################################################################  // cancelled records are ignored
+#  Calulate the revenue and tax liability for a ALL payments against their parent record     #  // I don not use most of these filters at the minute (only start_date, end_date and tax_system)
 ##############################################################################################  // this delivers the correct ratio of the individual compoenents on an invoice depeneding on the percentage of invoice paid
 
 function prorata_payments_against_records($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
@@ -1810,6 +1868,12 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
         while(!$rs->EOF) {            
 
             $prorata_record = null;
+            
+            // Adjust for Cancelled records - By ignoring them
+            if($rs->fields['status'] == 'cancelled') { 
+                $rs->MoveNext(); 
+                continue;                
+            }
                         
             if($rs->fields['type'] == 'invoice') {
                 $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'invoice');

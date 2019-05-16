@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'expense.php');
+require(INCLUDES_DIR.'report.php');
 
 // Check if we have a expense_id
 if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {
@@ -22,10 +23,10 @@ if(isset($VAR['change_status'])){
 }
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',        false       );
+$smarty->assign('allowed_to_change_status',        false       ); // I am not sure this is needed
 $smarty->assign('expense_status',                  get_expense_details($VAR['expense_id'], 'status')             );
 $smarty->assign('expense_statuses',                get_expense_statuses() );
-$smarty->assign('allowed_to_cancel',               false     );
+$smarty->assign('allowed_to_cancel',               check_expense_can_be_cancelled($VAR['expense_id'])     );
 $smarty->assign('allowed_to_delete',               check_expense_can_be_deleted($VAR['expense_id'])              );
 $smarty->assign('expense_selectable_statuses',     get_expense_statuses(true) );
 
