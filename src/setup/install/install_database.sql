@@ -251,8 +251,9 @@ CREATE TABLE `#__expense_records` (
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `unit_tax_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',  
   `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `last_active` datetime NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
@@ -331,8 +332,8 @@ CREATE TABLE `#__invoice_labour` (
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `unit_qty` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
-  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0',
+  `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,  
   `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -472,6 +473,7 @@ CREATE TABLE `#__otherincome_records` (
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `last_active` datetime NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `items` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
@@ -717,6 +719,7 @@ CREATE TABLE `#__refund_records` (
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `last_active` datetime NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
