@@ -8,8 +8,12 @@
 <script>
     // Disable Back Button
     history.pushState(null, null, location.href);
-    window.onpopstate = function () { alert('{t}The Back Button has been disabled.{/t}'); };
+    window.onpopstate = function () { 
+        alert('{t}The Back Button has been disabled.{/t}');
+        history.go(1);
+    };
 </script>
+
 <table width="100%" border="0" cellpadding="20" cellspacing="5">
     <tr>
         <td>            
