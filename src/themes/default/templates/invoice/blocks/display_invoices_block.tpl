@@ -16,7 +16,7 @@
         <td class="olohead" nowrap>{t}Labour{/t}</td>
         <td class="olohead" nowrap>{t}Parts{/t}</td>
         <td class="olohead" nowrap>{t}Status{/t}</td> 
-        {if $qw_tax_system != 'none'}
+        {if $qw_tax_system != 'no_tax'}
             <td class="olohead" nowrap>{t}Net{/t}</td>
             <td class="olohead"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
         {/if}
@@ -53,7 +53,7 @@
                 {/section} 
                 {if $display_invoices[i].status == 'refunded'}</a>{/if}
             </td>
-            {if $qw_tax_system != 'none'}
+            {if $qw_tax_system != 'no_tax'}
                 <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_net|string_format:"%.2f"}</td> 
                 <td class="olotd4" nowrap>{$currency_sym}{$display_invoices[i].unit_tax|string_format:"%.2f"}</td>
             {/if}

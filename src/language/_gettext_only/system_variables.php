@@ -19,7 +19,7 @@ _gettext("Educational");
 _gettext("Goverment");
 
 /* Company Tax Systems*/
-_gettext("None");
+_gettext("No Tax");
 _gettext("Sales Tax (Cash Basis)");
 _gettext("VAT Standard accounting (UK)");
 _gettext("VAT Cash accounting (UK)");

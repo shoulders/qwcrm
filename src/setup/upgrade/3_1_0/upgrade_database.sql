@@ -67,7 +67,7 @@ CREATE TABLE `#__company_tax_systems` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
-(1, 'none', 'None'),
+(1, 'no_tax', 'No Tax'),
 (2, 'sales_tax_cash', 'Sales Tax (Cash Basis)'),
 (3, 'vat_standard', 'VAT Standard accounting (UK)'),
 (4, 'vat_cash', 'VAT Cash accounting (UK)'),

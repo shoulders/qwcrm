@@ -36,7 +36,7 @@
                                         <tr>
                                             <td class="menutd"><b>{t}Client{/t}</b></td>
                                             <td class="menutd"><a href="index.php?component=client&page_tpl=details&client_id={$refund_details.client_id}">{$client_display_name}</a></td>
-                                            {if $refund_details.tax_system != 'none'}
+                                            {if $refund_details.tax_system != 'no_tax'}
                                                 <td class="menutd"><b>{t}Net{/t}</b></td>
                                                 <td class="menutd">{$currency_sym}{$refund_details.unit_net|string_format:"%.2f"}</td>
                                             {else}
@@ -62,7 +62,7 @@
                                         <tr>
                                             <td class="menutd">&nbsp;</td>
                                             <td class="menutd">&nbsp;</td>
-                                            {if $refund_details.tax_system != 'none'}
+                                            {if $refund_details.tax_system != 'no_tax'}
                                                 <td class="menutd"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b></td>
                                                 <td class="menutd">{if $refund_details.vat_tax_code == 'TVM'}{t}n/a{/t}{else}{$refund_details.unit_tax_rate|string_format:"%.2f"}%{/if}</td>
                                             {else}
@@ -77,7 +77,7 @@
                                                     {if $refund_details.item_type == $refund_types[s].type_key}{t}{$refund_types[s].display_name}{/t}{/if}        
                                                 {/section}   
                                             </td>
-                                            {if $refund_details.tax_system != 'none'}
+                                            {if $refund_details.tax_system != 'no_tax'}
                                                 <td class="menutd"><b>{if '/^vat_/'|preg_match:$refund_details.tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b></td>
                                                 <td class="menutd">{$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}</td>
                                             {else}

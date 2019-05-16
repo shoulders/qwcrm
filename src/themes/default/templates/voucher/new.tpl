@@ -65,7 +65,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><b>{if $voucher_tax_system != 'none'}{t}Net{/t}{else}{t}Gross{/t}{/if}</b></td>                                                
+                                                <td><b>{if $voucher_tax_system != 'no_tax'}{t}Net{/t}{else}{t}Gross{/t}{/if}</b></td>                                                
                                                 <td>{$currency_sym}<input name="unit_net" class="olotd5" size="10" value="" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>

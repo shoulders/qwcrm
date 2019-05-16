@@ -88,7 +88,7 @@
                                                 {if $voucher_details.blocked == '1'}{t}Yes{/t}{/if}
                                             </td>
                                         </tr> 
-                                        {if $voucher_details.tax_system != 'none'}
+                                        {if $voucher_details.tax_system != 'no_tax'}
                                             <tr>
                                                 <td><b>{t}Net{/t}</b></td>
                                                 <td>{$currency_sym}{$voucher_details.unit_net|string_format:"%.2f"}</td>

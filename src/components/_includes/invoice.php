@@ -296,7 +296,7 @@ function insert_labour_items($invoice_id, $labour_items = null) {
             // Add in missing sales tax exempt option - This prevents undefined variable errors
             $sales_tax_exempt = isset($labour_item['sales_tax_exempt']) ? $labour_item['sales_tax_exempt'] : 0;
             
-            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
+            // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
             $vat_tax_code = isset($labour_item['vat_tax_code']) ? $labour_item['vat_tax_code'] : get_default_vat_tax_code($invoice_details['tax_system']); 
             
             // Calculate the correct tax rate based on tax system (and exemption status)
@@ -360,7 +360,7 @@ function insert_parts_items($invoice_id, $parts_items = null) {
             // Add in missing sales tax exempt option - This prevents undefined variable errors
             $sales_tax_exempt = isset($parts_item['sales_tax_exempt']) ? $parts_item['sales_tax_exempt'] : 0;
             
-            // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
+            // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
             $vat_tax_code = isset($parts_item['vat_tax_code']) ? $parts_item['vat_tax_code'] : get_default_vat_tax_code($invoice_details['tax_system']); 
             
             // Calculate the correct tax rate based on tax system (and exemption status)
@@ -1307,7 +1307,7 @@ function calculate_invoice_item_sub_totals($tax_system, $unit_qty, $unit_net, $u
     $item_totals = array();
     
     // No Tax
-    if($tax_system == 'none') {        
+    if($tax_system == 'no_tax') {        
         $item_totals['unit_tax'] = 0.00;
         $item_totals['unit_gross'] = $unit_net;
         $item_totals['sub_total_net'] = $unit_net * $unit_qty;

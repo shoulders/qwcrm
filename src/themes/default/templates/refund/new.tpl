@@ -100,14 +100,14 @@
                                                                                 <input id="vat_tax_code" name="vat_tax_code" value="{$refund_details.vat_tax_code}" type="hidden">
                                                                             </td>
                                                                         </tr>
-                                                                        <tr{if $qw_tax_system == 'none'} hidden{/if}>
+                                                                        <tr{if $qw_tax_system == 'no_tax'} hidden{/if}>
                                                                             <td align="right"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if} {t}Rate{/t}</b><span style="color: #ff0000"> *</span></td>                                                                               
                                                                             <td>
                                                                                 {if $refund_details.vat_tax_code == 'TVM'}{t}n/a{/t}{else}{$currency_sym}{$refund_details.unit_tax_rate|string_format:"%.2f"}{/if}
                                                                                 <input id="unit_tax_rate" name="unit_tax_rate" value="{$refund_details.unit_tax_rate|string_format:"%.2f"}" type="hidden">
                                                                             </td>
                                                                         </tr>
-                                                                        <tr{if $qw_tax_system == 'none'} hidden{/if}>
+                                                                        <tr{if $qw_tax_system == 'no_tax'} hidden{/if}>
                                                                             <td align="right"><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
                                                                                 {$currency_sym}{$refund_details.unit_tax|string_format:"%.2f"}

@@ -23,10 +23,6 @@ class Upgrade3_1_0 extends QSetup {
         // Get the upgrade step name
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
         
-        // Set Some resuable values
-        $this->company_tax_system = QW_TAX_SYSTEM;
-        $this->default_vat_tax_code = get_default_vat_tax_code(); // This is an educated guess
-        
         // Perform the upgrade
         $this->pre_database();
         $this->process_database();
@@ -119,8 +115,16 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
         
         // Update Invoice Tax Types
+        $this->update_column_values(PRFX.'company_record', 'tax_system', 'none', 'no_tax');
+        $this->update_column_values(PRFX.'company_record', 'tax_system', 'vat', 'vat_cash');
+        $this->update_column_values(PRFX.'company_record', 'tax_system', 'sales', 'sales_tax_cash');        
+        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'none', 'no_tax');
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_cash');
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax_cash');
+        
+        // Set the Company Tax system and VAT tax code now the Company Record has been updated
+        $this->company_tax_system = get_company_details('tax_system');
+        $this->default_vat_tax_code = get_default_vat_tax_code($this->company_tax_system); // This is an educated guess
                 
         // Update Invoice Items        
         $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $this->company_tax_system);

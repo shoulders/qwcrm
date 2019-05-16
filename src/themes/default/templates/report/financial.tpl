@@ -234,7 +234,7 @@
                                                                         <td><b>{t}Qty{/t}: </b></td>
                                                                         <td><font color="red"><b>{$invoice_stats.labour_sum_items|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
-                                                                    {if $qw_tax_system != 'none'}
+                                                                    {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}: </b></td>
                                                                             <td><font color="red"><b>{$currency_sym}{$invoice_stats.labour_sum_sub_total_net|string_format:"%.2f"}</b></font></td>
@@ -262,7 +262,7 @@
                                                                         <td><b>{t}Qty{/t}:</b></td>
                                                                         <td><font color="red"><b>{$invoice_stats.parts_sum_items|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
-                                                                    {if $qw_tax_system != 'none'}
+                                                                    {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}: </b></td>
                                                                             <td><font color="red"><b>{$currency_sym}{$invoice_stats.parts_sum_sub_total_net|string_format:"%.2f"}</b></font></td>
@@ -289,7 +289,7 @@
                                                                         <td><b>{t}Qty{/t}:</b></td>
                                                                         <td><font color="red"><b>{$voucher_stats.count_items}</b></font></td>
                                                                     </tr>
-                                                                    {if $qw_tax_system != 'none'}
+                                                                    {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}: </b></td>
                                                                             <td><font color="red"><b>{$currency_sym}{$voucher_stats.sum_unit_net|string_format:"%.2f"}</b></font></td>
@@ -328,7 +328,7 @@
                                                                         <td><b>{t}Discount{/t}:</b></td>
                                                                         <td><font color="red"><b>{$currency_sym}{$invoice_stats.sum_unit_discount|string_format:"%.2f"}</b></font></td>
                                                                     </tr>
-                                                                    {if $qw_tax_system != 'none'}
+                                                                    {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}:</b></td>
                                                                             <td><font color="red"><b>{$currency_sym}{$invoice_stats.sum_unit_net|string_format:"%.2f"}</b></font></td>
@@ -394,7 +394,7 @@
                                                                         <td><b>{t}Items{/t}: </b></td>
                                                                         <td><font color="red"><b>{$refund_stats.count_items}</b></font></td>
                                                                     </tr>
-                                                                    {if $qw_tax_system != 'none'}
+                                                                    {if $qw_tax_system != 'no_tax'}
                                                                         <tr>
                                                                             <td><b>{t}Net{/t}:</b></td>
                                                                             <td><font color="red"><b>{$currency_sym}{$refund_stats.sum_unit_net|string_format:"%.2f"}</b></font></td>
@@ -785,7 +785,7 @@
                                                                     </tr>
                                                                     
                                                                     <!-- No Tax -->
-                                                                    {if $qw_tax_system == 'none'}
+                                                                    {if $qw_tax_system == 'no_tax'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                                
                                                                                 <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;+&nbsp;{t}Refunds{/t}{t}[P]{/t}</p>                                                                       
@@ -849,7 +849,7 @@
                                                                     </tr>
                                                                     
                                                                     <!-- No Tax -->
-                                                                    {if $qw_tax_system == 'none'}
+                                                                    {if $qw_tax_system == 'no_tax'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                                
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[P]{/t})</p>                                                                       

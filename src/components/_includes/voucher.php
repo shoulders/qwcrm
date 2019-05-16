@@ -201,7 +201,7 @@ function insert_voucher($invoice_id, $type, $expiry_date, $unit_net, $note) {
     // Add in missing sales tax exempt option - This prevents undefined variable errors (ALL 'sales_tax_cash' vouchers and coupons should be exempt)
     $sales_tax_exempt = ($invoice_details['tax_system'] == 'sales_tax_cash') ? 1 : 0;
 
-    // Add in missing vat_tax_codes (i.e. submissions from 'none' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
+    // Add in missing vat_tax_codes (i.e. submissions from 'no_tax' and 'sales_tax_cash' dont have VAT codes) - This prevents undefined variable errors
     $vat_tax_code = get_voucher_vat_tax_code($type, $invoice_details['tax_system']);
 
     // Calculate the correct tax rate based on tax system (and exemption status) -- KEEP this for reference

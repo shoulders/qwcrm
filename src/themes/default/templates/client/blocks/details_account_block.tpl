@@ -262,7 +262,7 @@
                     <td><b>{t}Discount{/t}:</b></td>
                     <td><b>{$currency_sym}{$invoice_stats.sum_unit_discount|string_format:"%.2f"}</b></td>
                 </tr>
-                {if $qw_tax_system != 'none'}                    
+                {if $qw_tax_system != 'no_tax'}                    
                     <tr>
                         <td><b>{if '/^vat_/'|preg_match:$qw_tax_system}{t}VAT{/t}{else}{t}Sales Tax{/t}{/if}:</b></td>
                         <td><b>{$currency_sym}{$invoice_stats.sum_unit_tax|string_format:"%.2f"}</b></td>

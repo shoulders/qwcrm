@@ -74,7 +74,7 @@ if(isset($VAR['submit'])) {
                         );
     
     // Run Prorata the records if appropriate
-    if(QW_TAX_SYSTEM == 'none') {        
+    if(QW_TAX_SYSTEM == 'no_tax') {        
         // Do nothing       
     } elseif (QW_TAX_SYSTEM == 'sales_tax_cash' || QW_TAX_SYSTEM == 'vat_standard' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_standard' || QW_TAX_SYSTEM == 'vat_flat_cash') {
         $prorata_totals = array_merge($prorata_totals, prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM));        
@@ -85,8 +85,8 @@ if(isset($VAR['submit'])) {
     // Use Prorata data as a base
     $profit_totals = $prorata_totals;   
     
-    // None - Straight profit and loss calculations
-    if(QW_TAX_SYSTEM == 'none') {
+    // No Tax - Straight profit and loss calculations
+    if(QW_TAX_SYSTEM == 'no_tax') {
         
         $profit_totals['invoice']['gross'] = $payment_stats['sum_invoice'];        
         $profit_totals['refund']['gross'] = $payment_stats['sum_refund']; 
@@ -146,8 +146,8 @@ if(isset($VAR['submit'])) {
                 "message"       =>  ''
                 );
     
-    // None - No Tax to process
-    if(QW_TAX_SYSTEM == 'none') {        
+    // No Tax - No Tax to process
+    if(QW_TAX_SYSTEM == 'no_tax') {        
         // Do Nothing        
     }
         

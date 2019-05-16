@@ -29,7 +29,7 @@
                                                         <td class="olohead">{t}ID{/t}</td>
                                                         <td class="olohead">{t}Description{/t}</td>
                                                         <td class="olohead" align="center">{t}Type{/t}</td>
-                                                        {if $qw_tax_system != 'none'}
+                                                        {if $qw_tax_system != 'no_tax'}
                                                             <td class="olohead" align="center"><b>{t}Net{/t}</b></td>
                                                         {else}
                                                             <td class="olohead" align="center"><b>{t}Gross{/t}</b></td> 
@@ -72,7 +72,7 @@
                                                         <tr>
                                                             <td class="olohead">{t}Description{/t}</td>
                                                             <td class="olohead">{t}Type{/t}</td>
-                                                            {if $qw_tax_system != 'none'}
+                                                            {if $qw_tax_system != 'no_tax'}
                                                                 <td class="olohead"><b>{t}Net{/t}</b></td>
                                                             {else}
                                                                 <td class="olohead"><b>{t}Gross{/t}</b></td> 
