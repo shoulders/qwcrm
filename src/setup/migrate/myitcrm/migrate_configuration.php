@@ -10,7 +10,7 @@ class QConfig {
     public $theme_name = 'default';
     public $default_language = 'en_GB';
     public $autodetect_language = '1';
-    public $google_server = 'https://www.google.co.uk/';
+    public $google_server = 'https://www.google.com/';
     public $email_online = '1';
     public $email_mailer = 'phpmail';
     public $email_mailfrom = '';

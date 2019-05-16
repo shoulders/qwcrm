@@ -261,7 +261,7 @@ function update_qwcrm_config_settings_file($new_config) {
 /* Delete Functions */
 
 ############################################
-#   Update s QWcrm setting                 #
+#   Delete s QWcrm setting                 #
 ############################################
 
 function delete_qwcrm_config_setting($key) {
@@ -452,8 +452,8 @@ function process_config_data($new_config) {
     // Get a fresh copy of the current settings as an array        
     $current_config = get_qwcrm_config_settings();
     
-    // Process Google server URL (makes ure there is a https?://
-    $new_config['google_server'] = process_inputted_url($new_config['google_server']);
+    // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
+    if(isset($new_config['google_server'])) { $new_config['google_server'] = process_inputted_url($new_config['google_server']); }
     
     // Purge the database session table if we are changing to the database handler.
     if(!defined('QWCRM_SETUP')) {
@@ -655,6 +655,25 @@ function reset_acl_permissions() {
     // Log activity        
     write_record_to_activity_log(_gettext("ACL permissions reset to default settings."));    
     
+    return;
+    
+}
+
+######################################################
+#   Refresh Live Config Registry with config file    #  // not currently used
+######################################################
+
+function refresh_qwcrm_live_config_from_file() {
+    
+    // wipe the live registry
+    QFactory::$config = null;
+     
+    // Re-populate the Live registry
+    QFactory::getConfig();
+    
+    // Log activity
+    write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file."));    
+
     return;
     
 }
