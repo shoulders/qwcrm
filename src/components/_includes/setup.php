@@ -195,7 +195,7 @@ class QSetup {
     public function removeDirectory($directory) {
 
         // Safety first
-        if(!$directory || $directory = '' || $directory == '/') {
+        if(!$directory || $directory == '' || $directory == '/') {
             die(_gettext("Do not delete the root folder and files!!!"));        
         }            
 
