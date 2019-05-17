@@ -208,7 +208,7 @@ ALTER TABLE `#__payment_additional_info_types` ADD PRIMARY KEY (`id`);
 CREATE TABLE `#__payment_methods` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `method_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `send` int(1) NOT NULL DEFAULT '0',
   `receive` int(1) NOT NULL DEFAULT '0',
   `send_protected` int(1) NOT NULL DEFAULT '1' COMMENT 'send cannot be changed',
@@ -282,11 +282,14 @@ CREATE TABLE `#__refund_records` (
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `last_active` datetime NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `#__refund_records` ADD PRIMARY KEY (`refund_id`);
+
+ALTER TABLE `#__refund_records` MODIFY `refund_id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- Create Table `#__refund_types`
@@ -519,7 +522,9 @@ CREATE TABLE `#__supplier_statuses` (
 
 INSERT INTO `#__supplier_statuses` (`id`, `status_key`, `display_name`) VALUES
 (1, 'valid', 'Valid'),
-(1, 'cancelled', 'Cancelled');
+(2, 'cancelled', 'Cancelled');
+
+ALTER TABLE `#__supplier_statuses` ADD PRIMARY KEY (`id`);
 
 --
 -- Rename 'notes' to 'note'
@@ -734,7 +739,7 @@ ALTER TABLE `#__invoice_records` CHANGE `tax_type` `tax_system` VARCHAR(30) CHAR
 ALTER TABLE `#__invoice_records` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__company_record` CHANGE `tax_type` `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__company_record` ADD `vat_flat_rate` DECIMAL(4,2) NOT NULL DEFAULT '10.50' AFTER `vat_number`;
+ALTER TABLE `#__company_record` ADD `vat_flat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_number`;
 ALTER TABLE `#__invoice_labour` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
 ALTER TABLE `#__invoice_labour` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 ALTER TABLE `#__invoice_parts` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
@@ -816,7 +821,6 @@ ALTER TABLE `#__voucher_records` ADD `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT
 ALTER TABLE `#__voucher_records` ADD `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0' AFTER `unit_net`;
 UPDATE `#__voucher_records` SET `unit_gross` = `unit_net`;
 
-
 --
 -- Add status column to allow for the new payment system (supplier is for futureproofing and not payments)
 --
@@ -851,9 +855,6 @@ ALTER TABLE `#__otherincome_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAUL
 ALTER TABLE `#__refund_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
 ALTER TABLE `#__expense_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
 ALTER TABLE `#__otherincome_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
-UPDATE `#__refund_records` SET `last_active` = `date`;
-UPDATE `#__expense_records` SET `last_active` = `date`;
-UPDATE `#__otherincome_records` SET `last_active` = `date`;
 
 --
 -- Add new status to Workorders
@@ -873,12 +874,7 @@ UPDATE `#__payment_records` SET `last_active` = `date`;
 --
 
 ALTER TABLE `#__expense_records` CHANGE `net_amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__expense_records` CHANGE `vat_rate` `unit_tax_rate` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__expense_records` CHANGE `vat_amount` `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__expense_records` CHANGE `gross_amount` `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-
-ALTER TABLE `#__expense_records` CHANGE `net_amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__expense_records` CHANGE `vat_rate` `unit_tax_rate` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__expense_records` CHANGE `vat_rate` `unit_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__expense_records` CHANGE `vat_amount` `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__expense_records` CHANGE `gross_amount` `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 
@@ -893,3 +889,24 @@ ALTER TABLE `#__invoice_records` CHANGE `paid_amount` `unit_paid` DECIMAL(10,2) 
 
 ALTER TABLE `#__invoice_prefill_items` CHANGE `net_amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__client_records` CHANGE `discount_rate` `unit_discount_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+
+--
+-- Misc corrections compare develop_qwcrm (Source) --> develop_blank (Target) (Operations are performed on the Target to match the source)
+--
+
+ALTER TABLE `#__invoice_labour` MODIFY COLUMN `tax_system` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
+ALTER TABLE `#__invoice_labour` MODIFY COLUMN `sales_tax_exempt` int(1) NOT NULL DEFAULT 0 AFTER `unit_net`;
+ALTER TABLE `#__invoice_labour` MODIFY COLUMN `unit_tax_rate` decimal(4, 2) NOT NULL DEFAULT 0.00 AFTER `vat_tax_code`;
+ALTER TABLE `#__invoice_parts` MODIFY COLUMN `tax_system` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
+ALTER TABLE `#__invoice_parts` MODIFY COLUMN `sales_tax_exempt` int(1) NOT NULL DEFAULT 0 AFTER `unit_net`;
+ALTER TABLE `#__invoice_parts` MODIFY COLUMN `unit_tax_rate` decimal(4, 2) NOT NULL DEFAULT 0.00 AFTER `vat_tax_code`;
+ALTER TABLE `#__otherincome_records` CHANGE `net_amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__otherincome_records` CHANGE `vat_rate` `unit_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__otherincome_records` CHANGE `vat_amount` `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__otherincome_records` CHANGE `gross_amount` `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE `#__payment_options` ADD PRIMARY KEY (`bank_account_name`);
+ALTER TABLE `#__payment_records` MODIFY COLUMN `voucher_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
+ALTER TABLE `#__payment_records` MODIFY COLUMN `refund_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `voucher_id`;
+ALTER TABLE `#__payment_records` MODIFY COLUMN `expense_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `refund_id`;
+ALTER TABLE `#__payment_records` MODIFY COLUMN `otherincome_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `expense_id`;
+ALTER TABLE `#__voucher_records` MODIFY COLUMN `expiry_date` date NOT NULL AFTER `open_date`;

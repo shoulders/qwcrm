@@ -91,8 +91,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_date(PRFX.'voucher_records', 'date_expires', 'voucher_id');
         $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'date', 'invoice_id');
         $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'due_date', 'invoice_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'payment_records', 'date', 'payment_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'refund_records', 'date', 'refund_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'payment_records', 'date', 'payment_id');        
+        $this->column_timestamp_to_mysql_date(PRFX.'otherincome_records', 'date', 'otherincome_id');
         
         // Convert timestamps to MySQL DATETIME
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'date', 'client_note_id');
@@ -113,6 +113,10 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'open_date', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'close_date', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
+        
+        // Populate the last_active columns with record date for the following becasue they have only just received last_Active
+        $this->copy_columnA_to_columnB('expense_records', 'date', 'last_active');
+        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');        
         
         // Update Invoice Tax Types
         $this->update_column_values(PRFX.'company_record', 'tax_system', 'none', 'no_tax');
@@ -149,7 +153,7 @@ class Upgrade3_1_0 extends QSetup {
         // Populate newly created status columns
         $this->update_column_values(PRFX.'expense_records', 'status', '*', 'paid');
         $this->update_column_values(PRFX.'otherincome_records', 'status', '*', 'paid');
-        $this->update_column_values(PRFX.'refund_records', 'status', '*', 'paid');
+        //$this->update_column_values(PRFX.'refund_records', 'status', '*', 'paid'); // this table did not exist until this version
         $this->update_column_values(PRFX.'supplier_records', 'status', '*', 'valid');
         $this->update_column_values(PRFX.'payment_records', 'status', '*', 'valid');
         
@@ -162,8 +166,7 @@ class Upgrade3_1_0 extends QSetup {
         $this->payments_parse_import_additional_info();
         
         // Convert expense, refund and otherincome transactions into separate record and payment
-        $this->payments_create_expense_records_paymentss();
-        $this->payments_create_refund_records_payments();
+        $this->payments_create_expense_records_payments();        
         $this->payments_create_otherincome_records_payments(); 
                 
         // Update database version number
@@ -699,7 +702,6 @@ class Upgrade3_1_0 extends QSetup {
         }          
     
     } 
-
     
     #################################
     #  Voucher correct expiry date  #
@@ -981,7 +983,7 @@ class Upgrade3_1_0 extends QSetup {
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",
                     `vat_tax_code`      = ".$db->qstr($vat_tax_code).",                        
                     `unit_tax_rate`     = ".$unit_tax_rate.",                       
-                    `unit_tax`          = ".$item_totals['unit_vat'].",
+                    `unit_tax`          = ".$item_totals['unit_tax'].",
                     `unit_gross`        = ".$item_totals['unit_gross'].",                        
                     `sub_total_net`     = ".$item_totals['sub_total_net'].",
                     `sub_total_tax`     = ".$item_totals['sub_total_tax'].",
@@ -1116,12 +1118,12 @@ class Upgrade3_1_0 extends QSetup {
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",
                     `vat_tax_code`      = ".$db->qstr($vat_tax_code).",                        
                     `unit_tax_rate`     = ".$unit_tax_rate.",                       
-                    `unit_tax`          = ".$item_totals['unit_vat'].",
+                    `unit_tax`          = ".$item_totals['unit_tax'].",
                     `unit_gross`        = ".$item_totals['unit_gross'].",                        
                     `sub_total_net`     = ".$item_totals['sub_total_net'].",
                     `sub_total_tax`     = ".$item_totals['sub_total_tax'].",
                     `sub_total_gross`   = ".$item_totals['sub_total_gross']."
-                    WHERE `invoice_parts_id`  = ".$rs->fields['invoice_parts_id'];               
+                    WHERE `invoice_parts_id` = ".$rs->fields['invoice_parts_id'];               
                 
                 // Run the SQL
                 if(!$temp_rs = $db->execute($sql)) {
@@ -1133,7 +1135,7 @@ class Upgrade3_1_0 extends QSetup {
                     $local_error_flag = true;
                     
                     // Log Message                    
-                    $record = _gettext("Failed to update the `totals` for the parts record").' '.$rs->fields['invoice_labour_id'];
+                    $record = _gettext("Failed to update the `totals` for the parts record").' '.$rs->fields['invoice_parts_id'];
                     
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -1359,11 +1361,11 @@ class Upgrade3_1_0 extends QSetup {
     #  Convert Expenses into a separate item and make a related payment   #
     #######################################################################
 
-    function payments_create_expense_records_paymentss() {
+    function payments_create_expense_records_payments() {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;                     
+        $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
@@ -1411,7 +1413,7 @@ class Upgrade3_1_0 extends QSetup {
                     amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
-                    note            = ".'<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>';               
+                    note            = ".$db->qstr('<p>'._gettext("Created from an expense record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
                 if(!$temp_rs = $db->execute($sql)) {
@@ -1507,158 +1509,6 @@ class Upgrade3_1_0 extends QSetup {
     
     }    
     
-    #######################################################################
-    #  Convert Refunds into a separate item and make a related payment    #
-    #######################################################################
-
-    function payments_create_refund_records_payments() {
-        
-        $db = QFactory::getDbo();        
-        
-        $local_error_flag = null;                     
-        
-        // Loop through all of the labour records
-        $sql = "SELECT *
-                FROM ".PRFX."refund_records";                
-
-        if(!$rs = $db->Execute($sql)) {
-            
-            // Set the setup global error flag
-            self::$setup_error_flag = true;
-            
-            // Set the local error flag
-            $local_error_flag = true;
-            
-            // Log Message
-            $record = _gettext("Failed to select all the records from the table").' `refund_records`.';
-            
-            // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-            
-            // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
-            
-            // The process has failed so stop any further proccesing
-            goto process_end;
-            
-        } else {
-
-            // Loop through all records
-            while(!$rs->EOF) { 
-                
-                $sql = "INSERT INTO ".PRFX."payment_records SET            
-                    employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
-                    client_id       = ".$db->qstr($rs->fields['client_id']                     ).",
-                    workorder_id    = ".$db->qstr(get_invoice_details($rs->fields['invoice_id'], 'workorder_id') ).",
-                    invoice_id      = ".$db->qstr($rs->fields['invoice_id']                    ).",
-                    voucher_id      = '',   
-                    refund_id       = ".$db->qstr($rs->fields['refund_id']                     ).",
-                    expense_id      = '',
-                    otherincome_id  = '',
-                    date            = ".$db->qstr($rs->fields['date']                          ).",
-                    tax_system      = ".$db->qstr($rs->fields['tax_system']                    ).",
-                    type            = 'refund',
-                    method          = ".$db->qstr($rs->fields['payment_method']                ).",
-                    status          = 'paid',
-                    amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
-                    last_active     = ".$db->qstr($rs->fields['date']                          ).",
-                    additional_info = ".$db->qstr(build_additional_info_json()                 ).",
-                    note            = ".'<p>'._gettext("Created from a refund record during an upgrade of QWcrm.").'</p>';               
-                
-                // Run the SQL
-                if(!$temp_rs = $db->execute($sql)) {
-                    
-                    // Set the setup global error flag
-                    self::$setup_error_flag = true;
-                    
-                    // Set the local error flag
-                    $local_error_flag = true;
-                    
-                    // Log Message                    
-                    $record = _gettext("Failed to insert the corresponding payment record for refund record").': '.$rs->fields['refund_id'];
-                    
-                    // Output message via smarty
-                    self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-                    
-                    // Log message to setup log
-                    $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
-                    
-                    // The process has failed so stop any further proccesing
-                    goto process_end;
-                    
-                } 
-                                                
-                // Advance the INSERT loop to the next record            
-                $rs->MoveNext();            
-
-            }               
-
-        }
-        
-        // Delete column
-        if(!$local_error_flag) {
-            $sql = "ALTER TABLE `".PRFX."refund_records` DROP `payment_method`;";
-            
-            // Run the SQL
-            if(!$temp_rs = $db->execute($sql)) {
-
-                // Set the setup global error flag
-                self::$setup_error_flag = true;
-
-                // Set the local error flag
-                $local_error_flag = true;
-
-                // Log Message                    
-                $record = _gettext("Failed to delete the `refund_record` table `payment_method` column.");
-
-                // Output message via smarty
-                self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-
-                // Log message to setup log
-                $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
-
-                // The process has failed so stop any further proccesing
-                goto process_end;
-
-            }
-                
-        }
-        
-        process_end:
-        
-        // Success and fail messages for this whole process (i.e. not one record)
-        if($local_error_flag) {            
-            
-            // Log Message
-            $record = _gettext("Failed to complete converting refund records.");            
-            
-            // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
-            self::$executed_sql_results .= '<div>&nbsp;</div>';
-            
-            // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
-            
-            return false;
-            
-        } else {
-            
-            // Log Message
-            $record = _gettext("Successfully completed converting refund records.");
-            
-            // Output message via smarty
-            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
-            self::$executed_sql_results .= '<div>&nbsp;</div>';
-            
-            // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
-            
-            return true;
-            
-        }          
-    
-    }        
-    
     ############################################################################
     #  Convert Otherincomes into a separate item and make a related payment    #
     ############################################################################
@@ -1667,7 +1517,7 @@ class Upgrade3_1_0 extends QSetup {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;                     
+        $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
@@ -1700,7 +1550,7 @@ class Upgrade3_1_0 extends QSetup {
                 
                 $sql = "INSERT INTO ".PRFX."payment_records SET            
                     employee_id     = ".$db->qstr($rs->fields['employee_id']                   ).",
-                    client_id       = ".$db->qstr($rs->fields['client_id']                     ).",
+                    client_id       = '',
                     workorder_id    = '',
                     invoice_id      = '',
                     voucher_id      = '',
@@ -1715,7 +1565,7 @@ class Upgrade3_1_0 extends QSetup {
                     amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",
-                    note            = ".'<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>';               
+                    note            = ".$db->qstr('<p>'._gettext("Created from a otherincome record during an upgrade of QWcrm.").'</p>');               
                 
                 // Run the SQL
                 if(!$temp_rs = $db->execute($sql)) {

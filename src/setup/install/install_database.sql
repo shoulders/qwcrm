@@ -249,7 +249,7 @@ CREATE TABLE `#__expense_records` (
   `item_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',  
   `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -469,7 +469,7 @@ CREATE TABLE `#__otherincome_records` (
   `item_type` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `unit_net` decimal(10,2) NOT NULL DEFAULT '0.00',
   `vat_tax_code` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `unit_tax_rate` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `unit_tax_rate` decimal(4,2) NOT NULL DEFAULT '0.00',
   `unit_tax` decimal(10,2) NOT NULL DEFAULT '0.00',
   `unit_gross` decimal(10,2) NOT NULL DEFAULT '0.00',
   `balance` decimal(10,2) NOT NULL DEFAULT '0.00',
@@ -1112,7 +1112,7 @@ CREATE TABLE `#__user_reset` (
 
 CREATE TABLE `#__user_usergroups` (
   `usergroup_id` int(4) NOT NULL,
-  `display_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `user_type` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

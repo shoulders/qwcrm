@@ -1331,20 +1331,17 @@ class QSetup {
         // This pattern scans within the folder for objects (files and directories)
         $directories = glob(SETUP_DIR.'upgrade/' . '*', GLOB_ONLYDIR);
         
-        // Convert directory names into numbers (not needed because version_compare() does this on the fly)
-        //$directories = str_replace('_', '.', $directories);
-
         // Cycle through the directories discovered
         foreach ($directories as $directory) {
             
-            // Remove path from directory and just leave the directory name
-            $directoryNoPath = basename($directory);
+            // Remove path from directory and just leave the directory name (aka version number)
+            $stepVersionNumber = basename($directory);
             
-            // Remove uneeded upgrade steps) - Is the version number less than or equal to the Current DB Version
-            if(version_compare($directoryNoPath, $current_db_version, '>')) {
+             // Add only the required upgrade steps - Is the version number less than or equal to the Current DB Version
+            if(version_compare($stepVersionNumber, $current_db_version, '>')) {
                 
                 // Add to the new array
-                $upgrade_steps[] = $directory;
+                $upgrade_steps[] = $stepVersionNumber;
                 
             }           
             
@@ -1357,10 +1354,7 @@ class QSetup {
         
         // Sort version numbers in to ascending order
         usort($upgrade_steps, 'version_compare');
-        
-        // Convert directory names back into strings (not needed because version_compare() does this on the fly)
-        //$upgrade_steps = str_replace('_', '.', $directories);
-        
+                
         return $upgrade_steps;
         
     }
@@ -1390,6 +1384,52 @@ class QSetup {
         
         return;
         
+    }
+    
+        ############################################################################
+    #  Convert Otherincomes into a separate item and make a related payment    #
+    ############################################################################
+
+    function copy_columnA_to_columnB($table, $columnA, $columnB) {
+        
+        $db = QFactory::getDbo();        
+        
+        // Loop through all of the labour records
+        $sql = "UPDATE `".PRFX.$table."` SET `".$columnB."` = `".$columnA."`";          
+
+        if(!$rs = $db->Execute($sql)) {
+            
+            // Set the setup global error flag
+            self::$setup_error_flag = true;
+            
+            // Log Message
+            $record = _gettext("Failed to copy ColumnA to ColumnB in the table").' `'.$table.'`.';
+            
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            
+            return false;
+            
+        } else {
+
+            // Log Message
+            $record = _gettext("Successfully copied ColumnA to ColumnB in the table").' `'.$table.'`.';
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+
+            // Log message to setup log
+            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+
+            return true;
+
+        }   
+                      
     }
     
 }

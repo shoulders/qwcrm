@@ -9,6 +9,9 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'administrator.php');
+require(INCLUDES_DIR.'company.php');
+require(INCLUDES_DIR.'invoice.php');
+require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'setup.php');
 require(INCLUDES_DIR.'voucher.php');
 
@@ -36,7 +39,7 @@ if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_pag
 
 ##################################################
 
-// Temp for testing
+// Temp for testing - This allows the database processing to happen otherwise it shows the uppgrade.tpl i.e. 'This is a holding page for the upgrade procedure, you should not see this.'
 $VAR['stage'] = 'database_upgrade_qwcrm';
 $VAR['submit'] = 'database_upgrade_qwcrm';
 
@@ -44,9 +47,7 @@ $VAR['submit'] = 'database_upgrade_qwcrm';
 
 
 // Check Compatability tests - add a refresh button and a next when all tests pass
-if($VAR['stage'] == 'compatibility_tests' || !isset($VAR['stage'])) {
-    
-    
+if($VAR['stage'] == 'compatibility_tests' || !isset($VAR['stage'])) {    
     
     if(isset($VAR['submit']) && $VAR['submit'] == 'compatibility_tests') {
         
@@ -86,9 +87,9 @@ if($VAR['stage'] == 'database_upgrade_qwcrm') {
     
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_upgrade_qwcrm') {
         
-        $qsetup->write_record_to_setup_log('migrate', _gettext("Starting Database upgrade."));
+        $qsetup->write_record_to_setup_log('upgrade', _gettext("Starting Database upgrade."));
         
-        // set version number to 0.0.0'
+        // set version number to 0.0.0' - not sure about this statement
 
         // Build a List of all of the upgrade version steps
         $upgrade_steps = QSetup::get_upgrade_steps();
@@ -146,7 +147,6 @@ if($VAR['stage'] == 'delete_setup_folder') {
     }
     
 }
-
 
 // Build the page
 $BuildPage .= $smarty->fetch('setup/upgrade.tpl');
