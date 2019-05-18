@@ -883,7 +883,6 @@ ALTER TABLE `#__otherincome_records` CHANGE `net_amount` `unit_net` DECIMAL(10,2
 ALTER TABLE `#__otherincome_records` CHANGE `vat_rate` `unit_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__otherincome_records` CHANGE `vat_amount` `unit_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__otherincome_records` CHANGE `gross_amount` `unit_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__payment_options` ADD PRIMARY KEY (`bank_account_name`);
 ALTER TABLE `#__payment_records` MODIFY COLUMN `voucher_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
 ALTER TABLE `#__payment_records` MODIFY COLUMN `refund_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `voucher_id`;
 ALTER TABLE `#__payment_records` MODIFY COLUMN `expense_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `refund_id`;

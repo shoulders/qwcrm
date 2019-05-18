@@ -141,13 +141,14 @@
                                                                                         <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                                     </tr>                                                                                
                                                                                     <tr>
-                                                                                        <td align="right"><b>{t}Tax Type{/t}:</b> <span style="color: #ff0000">*</span></td>
+                                                                                        <td align="right"><b>{t}Tax Type{/t}:</b> <span style="color: #ff0000">*</span>{$company_details.tax_type}</td>
                                                                                         <td>
-                                                                                            <select class="olotd5" id="tax_system" name="tax_system">                                                       
-                                                                                                <option value="none"{if $company_details.tax_system == 'none'} selected{/if}>{t}None{/t}</option>
-                                                                                                <option value="sales"{if $company_details.tax_system == 'sales'} selected{/if}>{t}Sales{/t}</option>
-                                                                                                <option value="vat"{if $company_details.tax_system == 'vat'} selected{/if}>{t}VAT{/t}</option>
-                                                                                            </select>                                                    
+                                                                                            <select class="olotd5" id="tax_type" name="tax_type" required>                                                                                               
+                                                                                                <option selected hidden disabled></option>
+                                                                                                <option value="none">{t}None{/t}</option>
+                                                                                                <option value="sales">{t}Sales{/t}</option>
+                                                                                                <option value="vat">{t}VAT{/t}</option>
+                                                                                            </select>                                                                                            
                                                                                         </td> 
                                                                                     </tr>                                            
                                                                                     <tr>
