@@ -63,7 +63,7 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
     }    
 
     // Fetch the Debug Block
-    if($config->get('qwcrm_debug')){
+    if(!defined('QWCRM_SETUP') && $config->get('qwcrm_debug')){
         require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');        
         $BuildPage .= "\r\n</body>\r\n</html>";
     } else {

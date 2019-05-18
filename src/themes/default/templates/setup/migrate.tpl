@@ -33,7 +33,7 @@
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">                                        
                                         
                                         <!-- Database connection and test (QWcrm) -->
-                                        {if $stage == 'database_connection_qwcrm' || !$stage}                                        
+                                        {if !$stage || $stage == 'database_connection_qwcrm'}                                        
                                             <tr>
                                                 <td>                                                                                                  
                                                     {include file='setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl'}

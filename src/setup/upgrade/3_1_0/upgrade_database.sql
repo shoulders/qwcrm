@@ -600,14 +600,9 @@ ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10)
 ALTER TABLE `#__voucher_records` CHANGE `giftcert_id` `voucher_id` INT(10) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__voucher_records` CHANGE `giftcert_code` `voucher_code` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0';
-
--- ALTER TABLE `#__voucher_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
--- ALTER TABLE `#__voucher_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
--- ALTER TABLE `#__voucher_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `date_created` `open_date` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `date_expires` `expiry_date` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `date_redeemed` `redeem_date` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-
 ALTER TABLE `#__otherincome_records` CHANGE `refund_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__payment_options` CHANGE `bank_transaction_msg` `invoice_bank_transfer_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_options` CHANGE `cheque_payable_to_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
@@ -636,7 +631,7 @@ ALTER TABLE `#__invoice_labour` CHANGE `qty` `unit_qty` DECIMAL(10,2) NOT NULL D
 ALTER TABLE `#__invoice_labour` CHANGE `sub_total` `sub_total_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_labour` ADD `sub_total_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
 ALTER TABLE `#__invoice_labour` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_tax`;
-ALTER TABLE `#__invoice_labour` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `vat_rate`;
+ALTER TABLE `#__invoice_labour` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
 ALTER TABLE `#__invoice_labour` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
 ALTER TABLE `#__invoice_labour` ADD `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0' AFTER `unit_net`;
 
@@ -650,18 +645,9 @@ ALTER TABLE `#__invoice_parts` CHANGE `qty` `unit_qty` DECIMAL(10,2) NOT NULL DE
 ALTER TABLE `#__invoice_parts` CHANGE `sub_total` `sub_total_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_parts` ADD `sub_total_tax` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_net`;
 ALTER TABLE `#__invoice_parts` ADD `sub_total_gross` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `sub_total_tax`;
-ALTER TABLE `#__invoice_parts` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `vat_rate`;
+ALTER TABLE `#__invoice_parts` CHANGE `description` `description` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
 ALTER TABLE `#__invoice_parts` CHANGE `unit_qty` `unit_qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `description`;
 ALTER TABLE `#__invoice_parts` ADD `sales_tax_exempt` INT(1) NOT NULL DEFAULT '0' AFTER `unit_net`;
-
---
--- Convert from integer to currency
---
-
-ALTER TABLE `#__invoice_labour` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
-ALTER TABLE `#__invoice_parts` CHANGE `qty` `qty` DECIMAL(10,2) NOT NULL;
-ALTER TABLE `#__voucher_records` MODIFY COLUMN `amount` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `blocked`;
-ALTER TABLE `#__invoice_parts` MODIFY COLUMN `qty` decimal(10, 2) NOT NULL DEFAULT 0.00 AFTER `amount`;
 
 --
 -- Update Email signature and email
@@ -749,9 +735,9 @@ ALTER TABLE `#__company_record` CHANGE `tax_type` `tax_system` VARCHAR(30) CHARA
 ALTER TABLE `#__company_record` CHANGE `tax_rate` `sales_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__company_record` ADD `vat_flat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_number`;
 ALTER TABLE `#__invoice_labour` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
-ALTER TABLE `#__invoice_labour` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
+ALTER TABLE `#__invoice_labour` CHANGE `unit_tax_rate` `unit_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 ALTER TABLE `#__invoice_parts` CHANGE `vat_tax_code` `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `unit_net`;
-ALTER TABLE `#__invoice_parts` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
+ALTER TABLE `#__invoice_parts` CHANGE `unit_tax_rate` `unit_tax_rate` DECIMAL(4,2) NOT NULL DEFAULT '0.00' AFTER `vat_tax_code`;
 
 --
 -- Misc Column Changes
@@ -814,10 +800,6 @@ ALTER TABLE `#__otherincome_records` CHANGE `type` `item_type` VARCHAR(20) CHARA
 ALTER TABLE `#__otherincome_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 ALTER TABLE `#__otherincome_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `net_amount`;
 
-ALTER TABLE `#__refund_records` CHANGE `type` `item_type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__refund_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
-ALTER TABLE `#__refund_records` ADD `vat_tax_code` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `net_amount`;
-
 ALTER TABLE `#__voucher_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `blocked`;
 ALTER TABLE `#__voucher_records` ADD `type` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `tax_system`;
 ALTER TABLE `#__voucher_records` CHANGE `amount` `unit_net` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
@@ -834,7 +816,6 @@ UPDATE `#__voucher_records` SET `unit_gross` = `unit_net`;
 
 ALTER TABLE `#__expense_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `gross_amount`;
 ALTER TABLE `#__otherincome_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `gross_amount`;
-ALTER TABLE `#__refund_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `gross_amount`;
 ALTER TABLE `#__supplier_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `country`;
 
 --
@@ -843,23 +824,14 @@ ALTER TABLE `#__supplier_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 CO
 
 ALTER TABLE `#__expense_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `expense_id`;
 ALTER TABLE `#__otherincome_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `otherincome_id`;
-ALTER TABLE `#__refund_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `refund_id`;
 ALTER TABLE `#__supplier_records` ADD `employee_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `supplier_id`;
-
---
--- Change from int(10) to int(11)
---
-
--- ALTER TABLE `#__client_notes` CHANGE `client_note_id` `client_note_id` INT(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Add balance and last_active for the new Payment system
 --
 
-ALTER TABLE `#__refund_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
 ALTER TABLE `#__expense_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
 ALTER TABLE `#__otherincome_records` ADD `balance` DECIMAL(10,2) NOT NULL DEFAULT '0.00' AFTER `gross_amount`;
-ALTER TABLE `#__refund_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
 ALTER TABLE `#__expense_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
 ALTER TABLE `#__otherincome_records` ADD `last_active` DATETIME NOT NULL AFTER `balance`;
 

@@ -54,18 +54,18 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
         // Change expense record types
-        $this->update_column_values(PRFX.'expense_records', 'type', 'broadband', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'landline', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'mobile_phone', 'telco');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'advertising', 'marketing');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'customer_refund', 'other');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'tax', 'other');
-        $this->update_column_values(PRFX.'expense_records', 'type', 'gift_certificate', 'voucher');
+        $this->update_column_values(PRFX.'expense_records', 'item_type', 'broadband', 'telco');
+        $this->update_column_values(PRFX.'expense_records', 'item_type', 'landline', 'telco');
+        $this->update_column_values(PRFX.'expense_records', 'item_type', 'mobile_phone', 'telco');
+        $this->update_column_values(PRFX.'expense_records', 'item_type', 'advertising', 'marketing');
+        $this->update_column_values(PRFX.'expense_records', 'item_type', 'customer_refund', 'other');
+        $this->update_column_values(PRFX.'expense_records', 'item_type', 'tax', 'other');
+        $this->update_column_values(PRFX.'expense_records', 'item_type', 'gift_certificate', 'voucher');
 
         // Change otherincome record types
-        $this->update_column_values(PRFX.'otherincome_records', 'type', 'credit_note', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'type', 'proxy_invoice', 'other');
-        $this->update_column_values(PRFX.'otherincome_records', 'type', 'returned_services', 'cancelled_services');
+        $this->update_column_values(PRFX.'otherincome_records', 'item_type', 'credit_note', 'other');
+        $this->update_column_values(PRFX.'otherincome_records', 'item_type', 'proxy_invoice', 'other');
+        $this->update_column_values(PRFX.'otherincome_records', 'item_type', 'returned_services', 'cancelled_services');
                 
         // Change otherincome record payment_methods
         $this->update_column_values(PRFX.'otherincome_records', 'payment_method', 'google_checkout', 'other');
@@ -982,7 +982,10 @@ class Upgrade3_1_0 extends QSetup {
             // Loop through all records, decide and set each labour items's status
             while(!$rs->EOF) { 
                 
-                $invoice_details = get_invoice_details($rs->fields['invoice_id']);    
+                // Get the invoice details or use manual options here (compensates for records with missing invoices)
+                if(!$invoice_details = get_invoice_details($rs->fields['invoice_id'])) {
+                    $invoice_details['tax_system'] = 'no_tax';
+                } 
                 
                 // Set sales tax exempt and all off. this feature was not available in earlier versions so nothing is exempt
                 $sales_tax_exempt = 0;
@@ -1000,7 +1003,7 @@ class Upgrade3_1_0 extends QSetup {
                 $sql = "UPDATE `".PRFX."invoice_labour` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
                     `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
-                    `description`       = ".$rs->fields['description'].",
+                    `description`       = ".$db->qstr($rs->fields['description']).",
                     `unit_qty`          = ".$rs->fields['unit_qty'].",
                     `unit_net`          = ".$rs->fields['unit_net'].",
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",
@@ -1116,8 +1119,11 @@ class Upgrade3_1_0 extends QSetup {
 
             // Loop through all records, decide and set each parts items's status
             while(!$rs->EOF) { 
-                
-                $invoice_details = get_invoice_details($rs->fields['invoice_id']);          
+                                
+                // Get the invoice details or use manual options here (compensates for records with missing invoices)
+                if(!$invoice_details = get_invoice_details($rs->fields['invoice_id'])) {
+                    $invoice_details['tax_system'] = 'no_tax';
+                }                
                 
                 // Set sales tax exempt and all off. this feature was not available in earlier versions so nothing is exempt
                 $sales_tax_exempt = 0;
@@ -1135,7 +1141,7 @@ class Upgrade3_1_0 extends QSetup {
                 $sql = "UPDATE `".PRFX."invoice_parts` SET
                     `invoice_id`        = ".$rs->fields['invoice_id'].",
                     `tax_system`        = ".$db->qstr($invoice_details['tax_system']).",
-                    `description`       = ".$rs->fields['description'].",
+                    `description`       = ".$db->qstr($rs->fields['description']).",
                     `unit_qty`          = ".$rs->fields['unit_qty'].",
                     `unit_net`          = ".$rs->fields['unit_net'].",
                     `sales_tax_exempt`  = ".$sales_tax_exempt.",

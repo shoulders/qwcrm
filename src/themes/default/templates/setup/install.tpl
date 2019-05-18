@@ -34,7 +34,7 @@
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">                                        
                                         
                                         <!-- Database Connection and test -->
-                                        {if $stage == 'database_connection' || !$stage}                                        
+                                        {if !$stage || $stage == 'database_connection'}                                        
                                             <tr>
                                                 <td>                                                                                                  
                                                     {include file='setup/blocks/install_database_connection_block.tpl'}

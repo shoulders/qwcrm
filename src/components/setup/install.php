@@ -38,7 +38,7 @@ if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_pag
 $qsetup->write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 
 // Database Connection
-if($VAR['stage'] == 'database_connection' || !isset($VAR['stage'])) {
+if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection') {
     
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection') {
         

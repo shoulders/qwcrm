@@ -1066,7 +1066,6 @@ class QSetup {
             // Set setup_error_flag used in smarty templates
             $this->smarty->assign('setup_error_flag', true);
 
-
             return false;
 
         } else {
@@ -1323,7 +1322,7 @@ class QSetup {
     #   Get upgrade steps                      #
     ############################################
 
-    public static function get_upgrade_steps() {
+    public function get_upgrade_steps() {
         
         $upgrade_steps = array();
         $current_db_version = get_qwcrm_database_version_number();
@@ -1363,7 +1362,7 @@ class QSetup {
     #   Process upgrade steps                  #
     ############################################
 
-    public static function process_upgrade_steps(&$VAR, $upgrade_steps = null) {
+    public function process_upgrade_steps(&$VAR, $upgrade_steps = null) {
         
         // Cycle through each step
         foreach ($upgrade_steps as $upgrade_step) {        
@@ -1382,11 +1381,56 @@ class QSetup {
            
         }
         
-        return;
+        /* Final stuff */
+
+        // Final statement
+        if(self::$setup_error_flag) {
+
+            // Log message
+            $record = _gettext("The database upgrade process failed, check the logs.");
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            self::$executed_sql_results .= '<div style="color: red;"><strong>'.$record.'</strong></div>';
+
+            // Log message to setup log        
+            $this->write_record_to_setup_log('upgrade', $record);
+
+        } else {
+
+            // Log message
+            $record = _gettext("The database upgrade process was successful.");
+
+            // Output message via smarty
+            self::$executed_sql_results .= '<div>&nbsp;</div>';
+            self::$executed_sql_results .= '<div style="color: green;"><strong>'.$record.'</strong></div>';
+
+            // Log message to setup log        
+            $this->write_record_to_setup_log('upgrade', $record);
+
+        }    
+
+        // Return reflecting the installation status
+        if(self::$setup_error_flag) {
+
+            /* Upgrade failed */
+
+            // Set setup_error_flag used in smarty templates
+            $this->smarty->assign('setup_error_flag', true);
+
+            return false;
+
+        } else {
+
+            /* Upgrade successful */
+
+            return true;
+
+        }
         
     }
     
-        ############################################################################
+    ############################################################################
     #  Convert Otherincomes into a separate item and make a related payment    #
     ############################################################################
 

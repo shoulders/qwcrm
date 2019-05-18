@@ -33,7 +33,7 @@ $smarty->assign('stage', $VAR['stage']);
 $MigrateMyitcrm = new MigrateMyitcrm($VAR);
 
 // Database Connection (QWcrm)
-if($VAR['stage'] == 'database_connection_qwcrm' || !isset($VAR['stage'])) {    
+if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection_qwcrm') {    
     
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection_qwcrm') {
         

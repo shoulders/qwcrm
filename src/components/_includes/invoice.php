@@ -490,16 +490,23 @@ function get_invoice_details($invoice_id, $item = null) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get invoice details."));
     } else {
         
-        if($item === null){
+        // This makes sure there is a record to return to prevent errors (currently only needed for upgrade)
+        if(!$rs->recordCount()) {
             
-            return $rs->GetRowAssoc(); 
-            
+            return false;
+                    
         } else {
-            
-            return $rs->fields[$item];   
-            
-        } 
         
+            if($item === null){
+
+                return $rs->GetRowAssoc(); 
+
+            } else {
+
+                return $rs->fields[$item];   
+
+            } 
+        }
     }
         
 }

@@ -39,90 +39,102 @@ if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_pag
 
 ##################################################
 
-// Temp for testing - This allows the database processing to happen otherwise it shows the uppgrade.tpl i.e. 'This is a holding page for the upgrade procedure, you should not see this.'
-$VAR['stage'] = 'database_upgrade_qwcrm';
-$VAR['submit'] = 'database_upgrade_qwcrm';
+// Temp for testing - This allows skips straight to database processing
+//$VAR['stage'] = 'database_upgrade';
+//$VAR['submit'] = 'database_upgrade_q';
 
 ##################################################
 
 
-// Check Compatability tests - add a refresh button and a next when all tests pass
-if($VAR['stage'] == 'compatibility_tests' || !isset($VAR['stage'])) {    
+// Database Connection
+if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection') {
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'compatibility_tests') {
+    if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection') {
         
-        // Test the supplied database connection details and store details if successful
-        if($qsetup->verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
-                           
-        } else {
-                                   
+        // Load the Upgrade Database page        
+        $smarty->assign('qwcrm_config', array('from' => get_qwcrm_database_version_number(), 'to' => QWCRM_VERSION));
+        $smarty->assign('stage', 'database_upgrade'); 
             
+    } else {
+        
+        $qwcrm_config = new QConfig;
+        
+        // Test the supplied database connection details, set message and button permission
+        if($qsetup->verify_database_connection_details($qwcrm_config->db_host, $qwcrm_config->db_user, $qwcrm_config->db_pass, $qwcrm_config->db_name)) {            
+            $smarty->assign('enable_next', true);
+            $record = _gettext("Connected successfully to the database with the supplied credentials from the config file.");
+            $smarty->assign('information_msg', $record);
+            $qsetup->write_record_to_setup_log('upgrade', $record);                   
+        } else {            
+            $smarty->assign('enable_next', false);
+            $record = _gettext("Failed to connect to the database with the supplied credentials. Check your config file.");
+            $smarty->assign('Warning_msg', $record);
+            $qsetup->write_record_to_setup_log('upgrade', $record);            
         }
         
-    // Load the page
-    } else {        
-        
-        // Prevent undefined variable errors
-        $qwcrm_config = array
-                            (
-                                'db_host' => null,
-                                'db_name' => null,
-                                'db_user' => null,
-                                'db_pass' => null
-                            );
-        
-        // Log message to setup log
-        $qsetup->write_record_to_setup_log('upgrade', _gettext("QWcrm upgrade has begun"));
-
-        // Load the page            
-        $smarty->assign('stage', 'compatibility_tests'); 
+        // Load the Database Connection page
+        $smarty->assign('qwcrm_config', array('db_host' => $qwcrm_config->db_host, 'db_name' => $qwcrm_config->db_name, 'db_user' => $qwcrm_config->db_user));
+        $smarty->assign('stage', 'database_connection');         
         
     }
     
 }
 
-
-// Upgrade the database (QWcrm)
-if($VAR['stage'] == 'database_upgrade_qwcrm') {    
+// Upgrade the database
+if($VAR['stage'] == 'database_upgrade') {    
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_upgrade_qwcrm') {
-        
+    if(isset($VAR['submit']) && $VAR['submit'] == 'database_upgrade') {
+       
         $qsetup->write_record_to_setup_log('upgrade', _gettext("Starting Database upgrade."));
         
-        // set version number to 0.0.0' - not sure about this statement
-
         // Build a List of all of the upgrade version steps
-        $upgrade_steps = QSetup::get_upgrade_steps();
-
-        // Process each upgrade step
-        QSetup::process_upgrade_steps($VAR, $upgrade_steps);
+        $upgrade_steps = $qsetup->get_upgrade_steps();
+        
+        // Upgrade the database by Process each upgrade step
+        $qsetup->process_upgrade_steps($VAR, $upgrade_steps);
+        
+        if(!QSetup::$setup_error_flag) {            
+            $record = _gettext("The database upgraded successfully.");            
+            $smarty->assign('information_msg', $record); 
+            $qsetup->write_record_to_setup_log('upgrade', $record);
+            $VAR['stage'] = 'database_upgrade_results';            
+        
+        // Load the results page with the error message      
+        } else {              
+           $record = _gettext("The database failed to upgrade.");                      
+           $smarty->assign('warning_msg', $record);
+           $qsetup->write_record_to_setup_log('upgrade', $record);
+           $VAR['stage'] = 'database_upgrade_results';
+           
+        }        
     
     // Load the page
     } else {
-        $smarty->assign('stage', 'database_install_qwcrm');        
+        $smarty->assign('stage', 'database_upgrade');        
     }
     
 }
 
-
-// Database Upgrade Results (QWcrm)
+// Database Upgrade Results
 if($VAR['stage'] == 'database_upgrade_results') {    
 
     // load the next page
     if(isset($VAR['submit']) && $VAR['submit'] == 'database_upgrade_results') {
         
-        $VAR['stage'] = 'company_details';      
+        $record = _gettext("The QWcrm upgrade process has completed successfully.");
+        $qsetup->write_record_to_setup_log('upgrade', $record);
+        $smarty->assign('information_msg', $record);
+        $VAR['stage'] = 'delete_setup_folder';           
     
     // Load the page  
     } else {
         
         // Output Execution results to the screen
         $smarty->assign('executed_sql_results', QSetup::$executed_sql_results);        
-        $smarty->assign('stage', 'database_install_results_qwcrm');
+        $smarty->assign('stage', 'database_upgrade_results');
     }
     
 }
-
 
 // Delete Setup folder
 if($VAR['stage'] == 'delete_setup_folder') {

@@ -962,12 +962,12 @@ function check_all_vouchers_for_expiry() {
     } else {
 
         while(!$rs->EOF) {
-            /*
+            
             // Skip checking vouchers with these statuses becasuse it is not required
             if($rs->fields['status'] == 'redeemed' || $rs->fields['status'] == 'expired' || $rs->fields['status'] == 'refunded' || $rs->fields['status'] == 'cancelled' || $rs->fields['status'] == 'deleted') {
                 $rs->MoveNext();
                 continue;
-            }*/
+            }
             
             check_voucher_is_expired($rs->fields['voucher_id']);
 
