@@ -36,7 +36,7 @@
                                                                                 
                                                                                 <!-- Remove Setup folder message -->
                                                                                 <p style="text-align: center;">
-                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER.{/t}</strong>
+                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE SETUP FOLDER.{/t}</strong>
                                                                                     <br />
                                                                                     {t}You will not be able to use QWcrm until the Setup folder has been removed. This is a security feature of QWcrm!{/t}
                                                                                 </p>

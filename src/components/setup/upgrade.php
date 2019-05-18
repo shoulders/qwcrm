@@ -32,7 +32,7 @@ $VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
 $qsetup = new QSetup($VAR);
 
 // Delete Setup files Action
-if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'install')) {
+if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'upgrade')) {
     $qsetup->delete_setup_folder();
 }
 

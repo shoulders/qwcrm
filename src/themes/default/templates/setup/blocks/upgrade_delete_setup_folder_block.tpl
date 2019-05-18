@@ -36,13 +36,13 @@
                                                                                 
                                                                                 <!-- Remove Setup folder message -->
                                                                                 <p style="text-align: center;">
-                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER.{/t}</strong>
+                                                                                    <strong>{t}PLEASE REMEMBER TO COMPLETELY REMOVE THE SETUP FOLDER.{/t}</strong>
                                                                                     <br />
                                                                                     {t}You will not be able to use QWcrm until the Setup folder has been removed. This is a security feature of QWcrm!{/t}
                                                                                 </p>
 
                                                                                 <!-- Delete Setup folder Button -->       
-                                                                                <button id="delete_setup_folder_button" type="button" style="display: block; margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=install&action=delete_setup_folder&theme=off', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
+                                                                                <button id="delete_setup_folder_button" type="button" style="display: block; margin: auto auto;" onclick="$.ajax( { url:'index.php?component=setup&page_tpl=upgrade&action=delete_setup_folder&theme=off', success: function(data) { $('body').append(data); } } );">{t}Delete Setup Folder{/t}</button>
                                                                                 
                                                                             </div>
                                                                             
