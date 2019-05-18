@@ -88,18 +88,18 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_start', 'company_name');
         $this->column_timestamp_to_mysql_date(PRFX.'company_record', 'year_end', 'company_name');
         $this->column_timestamp_to_mysql_date(PRFX.'expense_records', 'date', 'expense_id');
-        $this->column_timestamp_to_mysql_date(PRFX.'voucher_records', 'date_expires', 'voucher_id');
+        $this->column_timestamp_to_mysql_date(PRFX.'voucher_records', 'expiry_date', 'voucher_id');
         $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'date', 'invoice_id');
         $this->column_timestamp_to_mysql_date(PRFX.'invoice_records', 'due_date', 'invoice_id');
         $this->column_timestamp_to_mysql_date(PRFX.'payment_records', 'date', 'payment_id');        
         $this->column_timestamp_to_mysql_date(PRFX.'otherincome_records', 'date', 'otherincome_id');
-        
+                
         // Convert timestamps to MySQL DATETIME
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'date', 'client_note_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'create_date', 'client_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'last_active', 'client_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'date_created', 'voucher_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'date_redeemed', 'voucher_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'open_date', 'voucher_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'redeem_date', 'voucher_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'open_date', 'invoice_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'close_date', 'invoice_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
@@ -116,7 +116,8 @@ class Upgrade3_1_0 extends QSetup {
         
         // Populate the last_active columns with record date for the following becasue they have only just received last_Active
         $this->copy_columnA_to_columnB('expense_records', 'date', 'last_active');
-        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');        
+        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');
+        $this->copy_columnA_to_columnB('payment_records', 'date', 'last_active');  
         
         // Update Invoice Tax Types
         $this->update_column_values(PRFX.'company_record', 'tax_system', 'none', 'no_tax');
@@ -132,33 +133,41 @@ class Upgrade3_1_0 extends QSetup {
                 
         // Update Invoice Items        
         $this->update_column_values(PRFX.'invoice_labour', 'tax_system', '*', $this->company_tax_system);
-        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $this->company_tax_system);        
+        $this->update_column_values(PRFX.'invoice_parts', 'tax_system', '*', $this->company_tax_system);         
         $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $this->default_vat_tax_code);
-        $this->update_column_values(PRFX.'invoice_labour', 'vat_tax_code', '*', $this->default_vat_tax_code);
+        $this->update_column_values(PRFX.'invoice_parts', 'vat_tax_code', '*', $this->default_vat_tax_code);
         
         // Parse Labour and Parts records and update their totals to reflect the new VAT system
         $this->invoice_correct_labour_totals();
         $this->invoice_correct_parts_totals();        
         
         // Parse Voucher records and correct records        
-        $this->voucher_correct_workorder_id();
-        $this->voucher_correct_expiry_date();
-        $this->voucher_correct_status();
+        //$this->voucher_correct_workorder_id();
+        //$this->voucher_correct_expiry_date(); not needed
+        //$this->voucher_correct_status();
+        $this->voucher_correct_records();
+        $this->update_column_values(PRFX.'voucher_records', 'type', '*', 'multi_purpose');
         $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
         $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('multi_purpose', $this->company_tax_system)); 
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax_cash' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax_cash', '!');
         
+        // Populate newley created 'tax_system' and 'vat_tax_code' columns
+        $this->update_column_values(PRFX.'expense_records', 'tax_system', '*', $this->company_tax_system);
+        $this->update_column_values(PRFX.'expense_records', 'vat_tax_code', '*', $this->default_vat_tax_code);  
+        $this->update_column_values(PRFX.'otherincome_records', 'tax_system', '*', $this->company_tax_system);
+        $this->update_column_values(PRFX.'otherincome_records', 'vat_tax_code', '*', $this->default_vat_tax_code);
+        
         // Populate newly created status columns
-        $this->update_column_values(PRFX.'expense_records', 'status', '*', 'paid');
-        $this->update_column_values(PRFX.'otherincome_records', 'status', '*', 'paid');
-        //$this->update_column_values(PRFX.'refund_records', 'status', '*', 'paid'); // this table did not exist until this version
+        $this->update_column_values(PRFX.'expense_records', 'status', '*', 'valid');
+        $this->update_column_values(PRFX.'otherincome_records', 'status', '*', 'valid');        
         $this->update_column_values(PRFX.'supplier_records', 'status', '*', 'valid');
         $this->update_column_values(PRFX.'payment_records', 'status', '*', 'valid');
         
-        // Correct currently upgraded invoice payment records
-        $this->update_column_values(PRFX.'payment_records', 'method', '6', 'direct_deposit');
+        // Correct currently upgraded invoice payment records  
+        $this->update_column_values(PRFX.'payment_records', 'method', '6', 'bank_transfer'); // This might be a MyITCRM correction
+        $this->update_column_values(PRFX.'payment_records', 'method', 'direct_deposit', 'bank_transfer');
         $this->update_column_values(PRFX.'payment_records', 'tax_system', '*', $this->company_tax_system );
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
         
@@ -189,7 +198,7 @@ class Upgrade3_1_0 extends QSetup {
         $db = QFactory::getDbo();
         $mysql_date = null;
         $temp_prfx = 'temp_';
-        $local_error_flag = null;
+        $local_error_flag = false;
         $column_comment = null;
         
         // Get Column Comment if present
@@ -375,7 +384,7 @@ class Upgrade3_1_0 extends QSetup {
         $db = QFactory::getDbo();
         $mysql_datetime = null;
         $temp_prfx = 'temp_';
-        $local_error_flag = null;
+        $local_error_flag = false;
         $column_comment = null;
         
         // Get Column Comment if present
@@ -593,15 +602,15 @@ class Upgrade3_1_0 extends QSetup {
         
     } 
     
-    #######################################################################
-    #  Parse Voucher records and populate with appropriate workorder_id   #
+    /*#######################################################################
+    #  Parse Voucher records and populate with appropriate workorder_id   #  // This will only get the information about the invoice the voucher was spent on == broekn
     #######################################################################
 
     function voucher_correct_workorder_id() {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;                     
+        $local_error_flag = false;                     
         
         // Loop through all of the Voucher records
         $sql = "SELECT * FROM ".PRFX."voucher_records";
@@ -659,11 +668,12 @@ class Upgrade3_1_0 extends QSetup {
                     // Update gifcert record with the new workorder_id
                     $this->update_record_value(PRFX.'voucher_records', 'workorder_id', $temp_rs->fields['workorder_id'], 'voucher_id', $rs->fields['voucher_id']);
                     
+                    
                 }
-                                
-                // Advance the INSERT loop to the next record            
-                $rs->MoveNext();            
-
+                
+                // Advance the loop to the next record            
+                $rs->MoveNext(); 
+                    
             }               
 
         }
@@ -701,17 +711,17 @@ class Upgrade3_1_0 extends QSetup {
             
         }          
     
-    } 
+    }*/ 
     
-    #################################
-    #  Voucher correct expiry date  #
+    /*#################################
+    #  Voucher correct expiry date  # // expiry date is not a DATE - so this is not needed currently
     #################################
 
     function voucher_correct_expiry_date() {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;
+        $local_error_flag = false;
 
         // Loop through all of the Voucher records
         $sql = "SELECT * FROM ".PRFX."voucher_records";
@@ -741,15 +751,15 @@ class Upgrade3_1_0 extends QSetup {
             while(!$rs->EOF) { 
                                 
                 // Correct the Voucher expiry date - 00:00:00 to 23:59:59
-                $correct_expiry_date = preg_replace("00:00:00", "23:59:59", $rs->fields['workorder_id']);
+                $correct_expiry_date = preg_replace('/00:00:00/', '23:59:59', $rs->fields['expiry_date']);
                                  
                 // Update gifcert with the new expiry date
                 $this->update_record_value(PRFX.'voucher_records', 'expiry_date', $correct_expiry_date , 'voucher_id', $rs->fields['voucher_id']);
+                
+                // Advance the loop to the next record            
+                $rs->MoveNext(); 
                     
-            }
-                                
-            // Advance the INSERT loop to the next record            
-            $rs->MoveNext();            
+            }                       
 
         }               
 
@@ -786,17 +796,18 @@ class Upgrade3_1_0 extends QSetup {
             
         }          
     
-    }  
+    }*/  
     
     #################################################################
     #  Parse Voucher records and populate with appropriate status   #  // This is after conversion to mysql DATE
-    #################################################################
+    #################################################################  / call this voucher_correct_records / correct_voucher_records
+                                                                        // add in the other fixes to the vouceher records here and deleete the others
 
-    function voucher_correct_status() {
+    function voucher_correct_records() {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;                     
+        $local_error_flag = false;                     
         
         // Loop through all of the Voucher records
         $sql = "SELECT * FROM ".PRFX."voucher_records";
@@ -824,7 +835,13 @@ class Upgrade3_1_0 extends QSetup {
 
             // Loop through all records, decide and set each Voucher's status
             while(!$rs->EOF) { 
-
+                
+                /* Redeemed Client ID */
+                
+                $redeemed_client_id = $rs->fields['redeemed_invoice_id'] ? get_invoice_details($rs->fields['redeemed_invoice_id'], 'client_id') : '';
+                
+                /* Close Date / Status / Blocked */
+                
                 // Set qualifying Vouchers to redeemed status
                 if($rs->fields['redeem_date'] != '0000-00-00 00:00:00') {
                     
@@ -833,9 +850,9 @@ class Upgrade3_1_0 extends QSetup {
                     $blocked = 1;
                 
                 // Set qualifying Vouchers to expired status
-                } elseif (mysql_datetime() > $rs->fields['expiry_date']) {
+                } elseif (time() > strtotime($rs->fields['expiry_date'].' 23:59:59')) {
                     
-                    $close_date = $rs->fields['expiry_date'];
+                    $close_date = $rs->fields['expiry_date'].' 23:59:59';
                     $status = 'expired';                    
                     $blocked = 1;
                 
@@ -848,11 +865,17 @@ class Upgrade3_1_0 extends QSetup {
                     
                 }
                 
+                /* Build SQL */ 
+                
+                // 'invoice_id = 0' is because imported vouchers do not have an invoice and htis is required
+                
                 $sql = "UPDATE `".PRFX."voucher_records` SET
-                        `close_date` = ".$status.",
-                        `status` = ".$status.",                        
+                        `invoice_id` = '0', 
+                        `redeemed_client_id` = ".$db->qstr($redeemed_client_id).",                        
+                        `close_date` = ".$db->qstr($close_date).",
+                        `status` = ".$db->qstr($status).",                        
                         `blocked` = ".$blocked."
-                        WHERE `gifcert_id` = ".$rs->fields['voucher_id'];
+                        WHERE `voucher_id` = ".$rs->fields['voucher_id'];
                 
                 
                 // Run the SQL
@@ -865,7 +888,7 @@ class Upgrade3_1_0 extends QSetup {
                     $local_error_flag = true;
                     
                     // Log Message                    
-                    $record = _gettext("Failed to update the `status` for the Voucher record").' '.$rs->fields['voucher_id'];
+                    $record = _gettext("Failed to correct the the Voucher record").' '.$rs->fields['voucher_id'];
                     
                     // Output message via smarty
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -878,8 +901,8 @@ class Upgrade3_1_0 extends QSetup {
                     
                 } 
                                 
-                // Advance the INSERT loop to the next record            
-                $rs->MoveNext();            
+                // Advance the loop to the next record            
+                $rs->MoveNext();           
 
             }               
 
@@ -891,7 +914,7 @@ class Upgrade3_1_0 extends QSetup {
         if($local_error_flag) {            
             
             // Log Message
-            $record = _gettext("Failed to complete assigning `status` to all Voucher records.");            
+            $record = _gettext("Failed to complete correcting all Voucher records.");            
             
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -928,7 +951,7 @@ class Upgrade3_1_0 extends QSetup {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;                     
+        $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
@@ -1063,7 +1086,7 @@ class Upgrade3_1_0 extends QSetup {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;                     
+        $local_error_flag = false;                     
         
         // Loop through all of the labour records
         $sql = "SELECT *
@@ -1198,7 +1221,7 @@ class Upgrade3_1_0 extends QSetup {
         
         $db = QFactory::getDbo();        
         
-        $local_error_flag = null;                     
+        $local_error_flag = false;                     
         
         // Loop through all of the payment records
         $sql = "SELECT * FROM ".PRFX."payment_records";
@@ -1287,7 +1310,7 @@ class Upgrade3_1_0 extends QSetup {
                 $additional_info['paypal_transaction_id'] = $paypal_transaction_id;
                 
                 // Build SQL                
-                $sql = "UPDATE `".PRFX."voucher_records` SET
+                $sql = "UPDATE `".PRFX."payment_records` SET
                         `voucher_id` = ".$db->qstr($voucher_id).",                        
                         `additional_info` = ". $db->qstr(json_encode($additional_info))."
                         WHERE `payment_id` = ".$rs->fields['payment_id'];                
@@ -1409,7 +1432,7 @@ class Upgrade3_1_0 extends QSetup {
                     tax_system      = ".$db->qstr($rs->fields['tax_system']                    ).",
                     type            = 'expense',
                     method          = ".$db->qstr($rs->fields['payment_method']                ).",
-                    status          = 'paid',
+                    status          = 'valid',
                     amount          = ".$db->qstr($rs->fields['unit_gross']                    ).",
                     last_active     = ".$db->qstr($rs->fields['date']                          ).",
                     additional_info = ".$db->qstr(build_additional_info_json()                 ).",

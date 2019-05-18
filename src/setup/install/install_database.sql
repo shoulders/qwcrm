@@ -191,7 +191,7 @@ CREATE TABLE `#__company_vat_tax_codes` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `tax_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(125) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `rate` decimal(4,2) NOT NULL,
   `hidden` int(1) NOT NULL DEFAULT '0',
   `editable` int(1) NOT NULL DEFAULT '0',
@@ -229,7 +229,7 @@ INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 (23, 'T22', 'Sales - Services - EC VAT Customers', 'Sales of services to VAT registered customers in EC', '0.00', 0, 0, 0, 1),
 (24, 'T23', 'Zero Rate / Exempt Purchases - Services - EC', 'Zero rated or exempt purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
 (25, 'T24', 'Standard Rate Purchases - Services - EC', 'Standard rated purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
-(26, 'T25', 'Flat Rate Capital Asset', 'UK Flat Rate scheme only - Purchase or sale of capital items, where the purchase amount is more than £2,000 inclusive of VAT.', '0.00', 0, 0, 0, 1),
+(26, 'T25', 'Flat Rate Capital Asset', 'UK Flat Rate scheme only - Purchase or sale of capital items, where the purchase amount is more than &pound;2,000 inclusive of VAT.', '0.00', 0, 0, 0, 1),
 (1000, 'TNA', 'Not Applicable', 'VAT is not applicable on this tax system.', '0.00', 1, 0, 1, 1),
 (1001, 'TVM', 'VAT Multi TCode', 'This record has sub records that might all have different T codes.', '0.00', 1, 0, 1, 1);
 
@@ -934,6 +934,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('expense:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('expense:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('expense:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('help:about', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:attribution', 1, 1, 1, 1, 1, 1, 0, 0, 0),
 ('help:license', 1, 1, 1, 1, 1, 1, 0, 0, 0),
@@ -955,6 +956,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('otherincome:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('otherincome:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('otherincome:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:cancel', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:delete', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('payment:details', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -969,6 +971,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('refund:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('refund:search', 1, 1, 0, 0, 1, 0, 0, 0, 0),
+('refund:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('report:basic_stats', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('report:financial', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('schedule:day', 1, 1, 1, 1, 0, 0, 0, 0, 0),
@@ -988,6 +991,7 @@ INSERT INTO `#__user_acl_page` (`page`, `Administrator`, `Manager`, `Supervisor`
 ('supplier:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('supplier:new', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('supplier:search', 1, 1, 1, 1, 1, 0, 0, 0, 0),
+('supplier:status', 1, 1, 0, 0, 1, 0, 0, 0, 0),
 ('user:delete', 1, 1, 0, 0, 0, 0, 0, 0, 0),
 ('user:details', 1, 1, 1, 0, 1, 0, 0, 0, 0),
 ('user:edit', 1, 1, 0, 0, 1, 0, 0, 0, 0),
@@ -1049,9 +1053,9 @@ CREATE TABLE `#__user_locations` (
 --
 
 INSERT INTO `#__user_locations` (`id`, `location_key`, `display_name`) VALUES
-(1, 'home', 'Home'),
-(2, 'office', 'Office'),
-(3, 'onsite', 'OnSite');
+(1, 'office', 'Office'),
+(2, 'onsite', 'OnSite'),
+(3, 'home', 'Home');
 
 -- --------------------------------------------------------
 

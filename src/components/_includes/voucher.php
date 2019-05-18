@@ -464,8 +464,15 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
         return false;
     }    
     
+    // Set the close date base on the new status
+    $close_date = $voucher_details['close_date'];
+    $close_date = ($new_status == 'unused') ? '0000-00-00 00:00:00' : $close_date;
+    $close_date = ($new_status == 'redeemed') ? $voucher_details['redeem_date'] : $close_date;
+    $close_date = ($new_status == 'expired') ? $voucher_details['expiry_date'].' 23:59:59' : $close_date;    
+    
     $sql = "UPDATE ".PRFX."voucher_records SET
-            status               =". $db->qstr( $new_status  )."            
+            close_date          =". $db->qstr( $close_date  ).", 
+            status              =". $db->qstr( $new_status  )."            
             WHERE voucher_id    =". $db->qstr( $voucher_id );
 
     if(!$rs = $db->Execute($sql)) {
@@ -841,7 +848,7 @@ function delete_voucher($voucher_id) {
             redeemed_client_id  =   '',
             redeemed_invoice_id =   '',
             open_date           =   '0000-00-00 00:00:00',
-            expiry_date         =   '0000-00-00 00:00:00',
+            expiry_date         =   '0000-00-00',
             redeem_date         =   '0000-00-00 00:00:00',
             close_date          =   '0000-00-00 00:00:00',
             status              =   'deleted',            
@@ -955,12 +962,12 @@ function check_all_vouchers_for_expiry() {
     } else {
 
         while(!$rs->EOF) {
-            
-            // Skip checkign vouchers with these statues becasuse it is not required
+            /*
+            // Skip checking vouchers with these statuses becasuse it is not required
             if($rs->fields['status'] == 'redeemed' || $rs->fields['status'] == 'expired' || $rs->fields['status'] == 'refunded' || $rs->fields['status'] == 'cancelled' || $rs->fields['status'] == 'deleted') {
                 $rs->MoveNext();
                 continue;
-            }
+            }*/
             
             check_voucher_is_expired($rs->fields['voucher_id']);
 
@@ -986,10 +993,10 @@ function check_voucher_is_expired($voucher_id) {
     $voucher_details = get_voucher_details($voucher_id);
     
     // If the voucher is expired 
-    if (strtotime($voucher_details['expiry_date']) < time() ) {
+    if (time() > strtotime($voucher_details['expiry_date'].' 23:59:59')) {
         
         // If the status is not 'expired', update the status silenty (only from unused)
-        if ($voucher_details['status'] == 'unused') {
+        if ($voucher_details['status'] == 'unused' || $voucher_details['status'] == 'suspended') {
             update_voucher_status($voucher_id, 'expired', true);      
         }
         
@@ -998,7 +1005,7 @@ function check_voucher_is_expired($voucher_id) {
     }
     
     // If the voucher has status of 'expired' but the date has been changed to a valid one
-    if (strtotime($voucher_details['expiry_date'].' 23:59:59') >= time() ) {
+    if (time() <= strtotime($voucher_details['expiry_date'].' 23:59:59')) {
         
         //  If the status has not been updated, update the status silenty (only from expired)
         if ($voucher_details['status'] == 'expired') {

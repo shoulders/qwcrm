@@ -84,7 +84,7 @@ CREATE TABLE `#__company_vat_tax_codes` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `tax_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(125) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `rate` decimal(4,2) NOT NULL,
   `hidden` int(1) NOT NULL DEFAULT '0',
   `editable` int(1) NOT NULL DEFAULT '0',
@@ -92,7 +92,7 @@ CREATE TABLE `#__company_vat_tax_codes` (
   `enabled` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `qw_company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `description`, `rate`, `hidden`, `editable`, `system_tax_code`, `enabled`) VALUES
+INSERT INTO `#__company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `description`, `rate`, `hidden`, `editable`, `system_tax_code`, `enabled`) VALUES
 (1, 'T0', 'Zero Rate', 'Zero rated transactions', '0.00', 0, 0, 0, 1),
 (2, 'T1', 'Standard Rate', 'Standard rated transactions', '20.00', 0, 1, 0, 1),
 (3, 'T2', 'Exempt', 'Exempt transactions', '0.00', 0, 0, 0, 1),
@@ -118,7 +118,7 @@ INSERT INTO `qw_company_vat_tax_codes` (`id`, `tax_key`, `display_name`, `descri
 (23, 'T22', 'Sales - Services - EC VAT Customers', 'Sales of services to VAT registered customers in EC', '0.00', 0, 0, 0, 1),
 (24, 'T23', 'Zero Rate / Exempt Purchases - Services - EC', 'Zero rated or exempt purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
 (25, 'T24', 'Standard Rate Purchases - Services - EC', 'Standard rated purchases of services from suppliers in EC', '0.00', 0, 0, 0, 1),
-(26, 'T25', 'Flat Rate Capital Asset', 'UK Flat Rate scheme only - Purchase or sale of capital items, where the purchase amount is more than £2,000 inclusive of VAT.', '0.00', 0, 0, 0, 1),
+(26, 'T25', 'Flat Rate Capital Asset', 'UK Flat Rate scheme only - Purchase or sale of capital items, where the purchase amount is more than &pound;2,000 inclusive of VAT.', '0.00', 0, 0, 0, 1),
 (1000, 'TNA', 'Not Applicable', 'VAT is not applicable on this tax system.', '0.00', 1, 0, 1, 1),
 (1001, 'TVM', 'VAT Multi TCode', 'This record has sub records that might all have different T codes.', '0.00', 1, 0, 1, 1);
 
@@ -578,7 +578,6 @@ ALTER TABLE `#__voucher_records` ADD `close_date` DATETIME NOT NULL AFTER `date_
 ALTER TABLE `#__voucher_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `close_date`;
 ALTER TABLE `#__voucher_records` ADD `payment_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `invoice_id`;
 ALTER TABLE `#__voucher_records` ADD `redeemed_client_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
-ALTER TABLE `#__voucher_records` ADD `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_client_id`;
 ALTER TABLE `#__voucher_records` ADD `refund_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `payment_id`;
 ALTER TABLE `#__payment_records` ADD `type` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 ALTER TABLE `#__payment_records` ADD `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `method`;
@@ -589,6 +588,10 @@ ALTER TABLE `#__payment_records` ADD `otherincome_id` VARCHAR(10) CHARACTER SET 
 ALTER TABLE `#__payment_records` ADD `additional_info` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `amount`;
 ALTER TABLE `#__payment_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `date`;
 
+ALTER TABLE `#__voucher_records` CHANGE `invoice_id` `redeemed_invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_client_id`;
+ALTER TABLE `#__voucher_records` ADD `invoice_id` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
+
+
 --
 -- Rename Columns
 --
@@ -596,10 +599,15 @@ ALTER TABLE `#__payment_records` ADD `tax_system` VARCHAR(30) CHARACTER SET utf8
 ALTER TABLE `#__client_notes` CHANGE `customer_note_id` `client_note_id` INT(10) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__voucher_records` CHANGE `giftcert_id` `voucher_id` INT(10) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__voucher_records` CHANGE `giftcert_code` `voucher_code` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
-ALTER TABLE `#__voucher_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
-ALTER TABLE `#__voucher_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
-ALTER TABLE `#__voucher_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `active` `blocked` INT(1) NOT NULL DEFAULT '0';
+
+-- ALTER TABLE `#__voucher_records` CHANGE `date_created` `open_date` DATETIME NOT NULL;
+-- ALTER TABLE `#__voucher_records` CHANGE `date_expires` `expiry_date` DATE NOT NULL;
+-- ALTER TABLE `#__voucher_records` CHANGE `date_redeemed` `redeem_date` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `date_created` `open_date` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `date_expires` `expiry_date` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `date_redeemed` `redeem_date` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+
 ALTER TABLE `#__otherincome_records` CHANGE `refund_id` `otherincome_id` INT(10) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__payment_options` CHANGE `bank_transaction_msg` `invoice_bank_transfer_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__payment_options` CHANGE `cheque_payable_to_msg` `invoice_cheque_msg` TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
@@ -750,7 +758,6 @@ ALTER TABLE `#__invoice_parts` CHANGE `vat_rate` `vat_rate` DECIMAL(4,2) NOT NUL
 --
 
 ALTER TABLE `#__user_records` CHANGE `based` `based` VARCHAR(30) NOT NULL;
-ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
 ALTER TABLE `#__invoice_prefill_items` CHANGE `amount` `net_amount` DECIMAL(10,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE `#__invoice_records` ADD `refund_id` VARCHAR(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `workorder_id`;
 
@@ -909,4 +916,3 @@ ALTER TABLE `#__payment_records` MODIFY COLUMN `voucher_id` varchar(10) CHARACTE
 ALTER TABLE `#__payment_records` MODIFY COLUMN `refund_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `voucher_id`;
 ALTER TABLE `#__payment_records` MODIFY COLUMN `expense_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `refund_id`;
 ALTER TABLE `#__payment_records` MODIFY COLUMN `otherincome_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `expense_id`;
-ALTER TABLE `#__voucher_records` MODIFY COLUMN `expiry_date` date NOT NULL AFTER `open_date`;

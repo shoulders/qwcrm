@@ -105,8 +105,8 @@
                                                             <!-- Left Side Buttons -->                                                            
                                                             <td>  
                                                                 {if $previous_page_no && $display_payments} 
-                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>
                                                     
@@ -114,11 +114,11 @@
                                                             <td>                                                                    
                                                                 <select id="changeThisPage" onChange="changePage();">
                                                                     {section name=page loop=$total_pages start=1}
-                                                                        <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_method}&filter_method={$filter_method}{/if}" {if $page_no == $smarty.section.page.index } Selected {/if}>
+                                                                        <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$smarty.section.page.index}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}" {if $page_no == $smarty.section.page.index } Selected {/if}>
                                                                             {t}Page{/t} {$smarty.section.page.index} {t}of{/t} {$total_pages} 
                                                                         </option>
                                                                     {/section}
-                                                                    <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_method}&filter_method={$filter_method}{/if}" {if $page_no == $total_pages} selected {/if}>
+                                                                    <option value="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}" {if $page_no == $total_pages} selected {/if}>
                                                                         {t}Page{/t} {$total_pages} {t}of{/t} {$total_pages}
                                                                     </option>
                                                                 </select>
@@ -127,8 +127,8 @@
                                                             <!-- Right Side Buttons --> 
                                                             <td>
                                                                 {if $next_page_no && $display_payments}
-                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=payment&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_type}&filter_type={$filter_type}{/if}{if $filter_method}&filter_method={$filter_method}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
                                                     
