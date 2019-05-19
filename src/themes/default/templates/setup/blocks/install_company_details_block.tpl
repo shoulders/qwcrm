@@ -185,9 +185,10 @@
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Tax System{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                                         <td>
-                                                                                            <select class="olotd5" id="tax_system" name="tax_system">               
+                                                                                            <select class="olotd5" id="tax_system" name="tax_system" required>
+                                                                                                <option selected hidden disabled></option>
                                                                                                 {section name=s loop=$tax_systems}
-                                                                                                    <option value="{$tax_systems[s].type_key}"{if $company_details.tax_system == $tax_systems[s].type_key} selected{/if}>{t}{$tax_systems[s].display_name}{/t}</option>
+                                                                                                    <option value="{$tax_systems[s].type_key}">{t}{$tax_systems[s].display_name}{/t}</option>
                                                                                                 {/section}
                                                                                             </select>
                                                                                         </td>
