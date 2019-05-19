@@ -47,7 +47,7 @@ class Upgrade3_1_0 extends QSetup {
         
         // Config File
         insert_qwcrm_config_setting('sef', '0');
-        insert_qwcrm_config_setting('error_handler_whoops', '0');
+        insert_qwcrm_config_setting('error_handler_whoops', '1');
         update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
         
         // Tag all previous payments as type 'invoice'
