@@ -13,9 +13,11 @@
 // Define the application's minimum supported PHP version as a constant so it can be referenced within the application.
 define('QWCRM_MINIMUM_PHP', '5.6.21');
 
-// Check the PHP version is high enough to run QWcrm (cant use _gettext() here)
+// Check the PHP version is within compatable range
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run.'.' Your current version is '.PHP_VERSION);
+} elseif (version_compare(PHP_VERSION, '7.1.29', '>')) {
+    die('QWcrm does not work with PHP versions higher than 7.1.29; Your current version is '.PHP_VERSION);
 }
 
 // Disable magic quotes
