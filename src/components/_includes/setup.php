@@ -285,8 +285,8 @@ class QSetup {
         
         // Check the maximum PHP Version is not exceeded
         $option = new stdClass;
-        $option->label  = _gettext("PHP Version").' <=  7.1.29';
-        $option->state  = version_compare(PHP_VERSION, '7.1.29', '<=');
+        $option->label  = _gettext("PHP Version").' <= '.QWCRM_MAXIMUM_PHP;
+        $option->state  = version_compare(PHP_VERSION, QWCRM_MAXIMUM_PHP, '<=');
         $option->notice = null;
         $options[] = $option;
 
