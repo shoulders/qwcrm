@@ -236,7 +236,7 @@ function count_schedules($workorder_id = null) {
 
     // Filter by workorder_id
     if($workorder_id) {
-        $whereTheseRecords .= " AND ".PRFX."workorder_records.workorder_id=".$db->qstr($workorder_id);
+        $whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$db->qstr($workorder_id);
     }    
     
     $sql = "SELECT COUNT(*) AS count

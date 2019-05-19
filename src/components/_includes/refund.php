@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display refunds       #
 #############################
 
-function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null, $employee_id = null, $client_id = null) {
+function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -53,7 +53,7 @@ function display_refunds($order_by, $direction, $use_pages = false, $records_per
     /* Filter the Records */  
     
     // Restrict by Type
-    if($type) { $whereTheseRecords .= " AND ".PRFX."refund_records.type= ".$db->qstr($type);}
+    if($item_type) { $whereTheseRecords .= " AND ".PRFX."refund_records.item_type= ".$db->qstr($item_type);}
         
     // Restrict by Status
     if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$db->qstr($status);}
@@ -482,7 +482,7 @@ function delete_refund($refund_id) {
             unit_tax_rate       = '0.00',
             unit_tax            = '0.00',
             unit_gross          = '0.00',
-            balance             = '0.00'
+            balance             = '0.00',
             last_active         = '0000-00-00 00:00:00',
             status              = 'deleted',             
             note                = ''

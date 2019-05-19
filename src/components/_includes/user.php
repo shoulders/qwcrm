@@ -58,7 +58,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     if($status) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$db->qstr($status);}  
     
     // Restrict results by user type
-    if($usertype) {
+    if($usertype && !$usergroup) {
         
         if($usertype == 'client') { 
             $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr(7);}            

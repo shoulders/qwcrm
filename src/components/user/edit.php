@@ -34,7 +34,7 @@ if(isset($VAR['submit'])) {
         update_user($VAR);
 
         // Redirect to the new users's details page
-        force_page('user', 'details&user_id='.$VAR['user_id']);
+        force_page('user', 'details&user_id='.$VAR['user_id'], 'information_msg='._gettext("User details updated."));
             
     }
 

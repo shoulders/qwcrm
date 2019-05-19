@@ -18,15 +18,15 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a workorder_note_id
-if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
+if(!isset($VAR['workorder_note_id']) || !$VAR['workorder_note_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Work Order Note ID supplied."));
 }
 
 // Get the workorder_id before we delete the record
-$VAR['workorder_id'] = get_workorder_note($VAR['workorder_note_id'], 'workorder_id');
+$workorder_id = get_workorder_note_details($VAR['workorder_note_id'], 'workorder_id');
 
 // Delete the record
 delete_workorder_note($VAR['workorder_note_id']);
 
 // Reload the workorder details page
-force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("The note has been deleted."));
+force_page('workorder', 'details&workorder_id='.$workorder_id, 'information_msg='._gettext("The note has been deleted."));

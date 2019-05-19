@@ -19,7 +19,7 @@ if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
 }
 
 // Check there is a print content and print type set
-if(!!isset($VAR['print_content'], $VAR['print_type']) || !$VAR['print_content'] || !$VAR['print_type']) {
+if(!isset($VAR['print_content'], $VAR['print_type']) || !$VAR['print_content'] || !$VAR['print_type']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
 }
 

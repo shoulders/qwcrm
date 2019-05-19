@@ -789,7 +789,7 @@ function update_invoice_static_values($invoice_id, $date, $due_date, $unit_disco
 }
 
 #####################################
-#     update invoice (full)         #
+#     update invoice (full)         #  // not currently used
 #####################################
 
 function update_invoice_full($VAR, $doNotLog = false) {
@@ -802,14 +802,14 @@ function update_invoice_full($VAR, $doNotLog = false) {
             workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",               
             date                =". $db->qstr( $VAR['date']            ).",
             due_date            =". $db->qstr( $VAR['due_date']        ).", 
-            unit_discount_rate       =". $db->qstr( $VAR['unit_discount_rate']   ).",
-            tax_system          =". $db->qstr( $VAR['tax_system']      ).",                 
-            unit_discount     =". $db->qstr( $VAR['unit_discount'] ).",   
-            unit_net          =". $db->qstr( $VAR['unit_net']      ).",
+            tax_system          =". $db->qstr( $VAR['tax_system']      ).", 
+            unit_discount_rate  =". $db->qstr( $VAR['unit_discount_rate']   ).",                            
+            unit_discount       =". $db->qstr( $VAR['unit_discount'] ).",   
+            unit_net            =". $db->qstr( $VAR['unit_net']      ).",
             sales_tax_rate      =". $db->qstr( $VAR['sales_tax_rate']  ).",
-            unit_tax          =". $db->qstr( $VAR['unit_tax']      ).",             
-            unit_gross        =". $db->qstr( $VAR['unit_gross']    ).", 
-            unit_paid         =". $db->qstr( $VAR['unit_paid']     ).",
+            unit_tax            =". $db->qstr( $VAR['unit_tax']      ).",             
+            unit_gross          =". $db->qstr( $VAR['unit_gross']    ).", 
+            unit_paid           =". $db->qstr( $VAR['unit_paid']     ).",
             balance             =". $db->qstr( $VAR['balance']         ).",
             open_date           =". $db->qstr( $VAR['open_date']       ).",
             close_date          =". $db->qstr( $VAR['close_date']      ).",
@@ -1112,31 +1112,29 @@ function delete_invoice($invoice_id) {
     update_invoice_status($invoice_id, 'deleted'); 
     
     // Build the data to replace the invoice record (some stuff has just been updated with update_invoice_status())
-    $deleted_invoice_details = array(
-                                    'invoice_id'        =>  $invoice_details['invoice_id'],
-                                    'employee_id'       =>  '',
-                                    'client_id'         =>  '',
-                                    'workorder_id'      =>  '', 
-                                    'refund_id'         =>  '', 
-                                    'date'              =>  '0000-00-00',
-                                    'due_date'          =>  '0000-00-00',       
-                                    'tax_system'        =>  '',   
-                                    'unit_unit_discount_rate' =>  '0.00', 
-                                    'unit_discount'     =>  '0.00',
-                                    'unit_net'          =>  '0.00',        
-                                    'sales_tax_rate'    =>  '0.00',
-                                    'unit_tax'          =>  '0.00',
-                                    'unit_gross'        =>  '0.00',
-                                    'unit_paid'         =>  '0.00',
-                                    'balance'           =>  '0.00',
-                                    'open_date'         =>  '0000-00-00',
-                                    'close_date'        =>  '0000-00-00',
-                                    'last_active'       =>  '0000-00-00 00:00:00',
-                                    'status'            =>  'deleted',
-                                    'is_closed'         =>  '1'        
-                                    );
+    $sql = "UPDATE ".PRFX."invoice_records SET        
+            employee_id         = '', 
+            client_id           = '',
+            workorder_id        = '',               
+            date                = '0000-00-00',    
+            due_date            = '0000-00-00', 
+            tax_system          = '',  
+            unit_discount_rate  = '0.00',                         
+            unit_discount       = '0.00', 
+            unit_net            = '0.00', 
+            sales_tax_rate      = '0.00', 
+            unit_tax            = '0.00',             
+            unit_gross          = '0.00',  
+            unit_paid           = '0.00', 
+            balance             = '0.00', 
+            open_date           = '0000-00-00 00:00:00',
+            close_date          = '0000-00-00 00:00:00',
+            last_active         = '0000-00-00 00:00:00',
+            status              = 'deleted',
+            is_closed           = '1'            
+            WHERE invoice_id    =". $db->qstr( $invoice_id  );
     
-    if(!update_invoice_full($deleted_invoice_details, true)){        
+    if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), null, _gettext("Failed to delete the invoice."));
     } else {
         

@@ -55,7 +55,7 @@
         </tr>
     {sectionelse}
         <tr>
-            <td colspan="9" class="error">{t}There are no users.{/t}</td>
+            <td colspan="10" class="error">{t}There are no users.{/t}</td>
         </tr>        
     {/section}
 </table>

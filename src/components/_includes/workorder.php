@@ -401,7 +401,7 @@ function get_workorder_details($workorder_id = null, $item = null) {
 #  Get a single workorder note      #
 #####################################
 
-function get_workorder_note($workorder_note_id, $item = null) {
+function get_workorder_note_details($workorder_note_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -840,7 +840,7 @@ function update_workorder_note($workorder_note_id, $note) {
         
     } else {
         
-        $workorder_details = get_workorder_details(get_workorder_note($workorder_note_id, 'workorder_id'));
+        $workorder_details = get_workorder_details(get_workorder_note_details($workorder_note_id, 'workorder_id'));
         
         // Create a Workorder History Note       
         insert_workorder_history_note($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("updated by").' '.QFactory::getUser()->login_display_name.'.');
@@ -1053,7 +1053,7 @@ function delete_workorder_note($workorder_note_id) {
     $db = QFactory::getDbo();
     
     // Get workorder details before any deleting
-    $workorder_details = get_workorder_details(get_workorder_note($workorder_note_id, 'workorder_id'));
+    $workorder_details = get_workorder_details(get_workorder_note_details($workorder_note_id, 'workorder_id'));
     
     $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$db->qstr( $workorder_note_id );
 

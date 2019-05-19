@@ -31,4 +31,4 @@ $VAR['workorder_id'] = get_schedule_details($VAR['schedule_id'], 'workorder_id')
 delete_schedule($VAR['schedule_id']);
 
 // load schedule search page
-force_page('workorder', 'details&workorder_id='.$VAR['workorder_id']);
+force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("Schedule record has been deleted."));

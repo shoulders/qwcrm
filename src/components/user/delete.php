@@ -31,6 +31,6 @@ if(!delete_user($VAR['user_id'])) {
 } else {
     
     // load the user search page
-    force_page('user', 'search');
+    force_page('user', 'search', 'information_msg='._gettext("User record deleted."));   
     
 }
