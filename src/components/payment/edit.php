@@ -35,7 +35,7 @@ class UpdatePayment {
     private $VAR = null;
     private $type = null;    
     public static $payment_details = array();
-    public static $payment_valid = false;
+    public static $payment_valid = true;
     public static $record_balance = null;
     
     function __construct(&$VAR) {
