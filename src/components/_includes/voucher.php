@@ -216,9 +216,9 @@ function insert_voucher($invoice_id, $type, $expiry_date, $unit_net, $note) {
             client_id           =". $db->qstr( $invoice_details['client_id']                ).",
             workorder_id        =". $db->qstr( $invoice_details['workorder_id']             ).",
             invoice_id          =". $db->qstr( $invoice_details['invoice_id']               ).",
-            open_date           =". $db->qstr( mysql_datetime()                             ).",
-            expiry_date         =". $db->qstr( date_to_mysql_date($expiry_date).' 23:59:59' ).",            
-            status              =". $db->qstr( 'unused'                                     ).",  
+            expiry_date         =". $db->qstr( date_to_mysql_date($expiry_date).' 23:59:59' ).",
+            status              =". $db->qstr( 'unused'                                     ).",
+            opened_on           =". $db->qstr( mysql_datetime()                             ).",
             blocked             =". $db->qstr( '0'                                          ).",
             tax_system          =". $db->qstr( $invoice_details['tax_system']               ).",    
             type                =". $db->qstr( $type                                        ).",
@@ -465,14 +465,14 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
     }    
     
     // Set the close date base on the new status
-    $close_date = $voucher_details['close_date'];
-    $close_date = ($new_status == 'unused') ? '0000-00-00 00:00:00' : $close_date;
-    $close_date = ($new_status == 'redeemed') ? $voucher_details['redeem_date'] : $close_date;
-    $close_date = ($new_status == 'expired') ? $voucher_details['expiry_date'].' 23:59:59' : $close_date;    
+    $closed_on = $voucher_details['closed_on'];
+    $closed_on = ($new_status == 'unused') ? '0000-00-00 00:00:00' : $closed_on;
+    $closed_on = ($new_status == 'redeemed') ? $voucher_details['redeemed_on'] : $closed_on;
+    $closed_on = ($new_status == 'expired') ? $voucher_details['expiry_date'].' 23:59:59' : $closed_on;    
     
     $sql = "UPDATE ".PRFX."voucher_records SET
-            close_date          =". $db->qstr( $close_date  ).", 
-            status              =". $db->qstr( $new_status  )."            
+            status              =". $db->qstr( $new_status  ).",
+            closed_on          =". $db->qstr( $closed_on  )."                       
             WHERE voucher_id    =". $db->qstr( $voucher_id );
 
     if(!$rs = $db->Execute($sql)) {
@@ -551,7 +551,7 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
     
     $voucher_details = get_invoice_details($invoice_id);
     
-    // Make sure redeem_date and close_date are the same
+    // Make sure redeemed_on and closed_on are the same
     $datetime = mysql_datetime();
     
     // some information has already been applied (as below) using update_voucher_status() earlier in the process
@@ -559,10 +559,10 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
             employee_id         =". $db->qstr( QFactory::getUser()->login_user_id       ).",
             payment_id          =". $db->qstr( $payment_id                              ).",
             redeemed_client_id  =". $db->qstr( $voucher_details['client_id']            ).",   
-            redeemed_invoice_id =". $db->qstr( $invoice_id                              ).",
-            redeem_date         =". $db->qstr( $datetime                                ).", 
-            close_date          =". $db->qstr( $datetime                                ).",
-            status              =". $db->qstr( 'redeemed'                               ).",                        
+            redeemed_invoice_id =". $db->qstr( $invoice_id                              ).",            
+            status              =". $db->qstr( 'redeemed'                               ).",
+            redeemed_on         =". $db->qstr( $datetime                                ).", 
+            closed_on           =". $db->qstr( $datetime                                ).",
             blocked             =". $db->qstr( 1                                        )."
             WHERE voucher_id    =". $db->qstr( $voucher_id                              );
     
@@ -847,11 +847,11 @@ function delete_voucher($voucher_id) {
             refund_id           =   '',
             redeemed_client_id  =   '',
             redeemed_invoice_id =   '',
-            open_date           =   '0000-00-00 00:00:00',
             expiry_date         =   '0000-00-00',
-            redeem_date         =   '0000-00-00 00:00:00',
-            close_date          =   '0000-00-00 00:00:00',
-            status              =   'deleted',            
+            status              =   'deleted',
+            opened_on           =   '0000-00-00 00:00:00',
+            redeemed_on         =   '0000-00-00 00:00:00',
+            closed_on          =   '0000-00-00 00:00:00',            
             blocked             =   1,
             tax_system          =   '',
             type                =   '',

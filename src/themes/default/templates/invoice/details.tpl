@@ -68,7 +68,7 @@
                                             <td><font color="#cc0000">{$currency_sym}{$invoice_details.balance|string_format:"%.2f"}</font></td>
                                             <td><font color="green">{$currency_sym}{$invoice_details.unit_paid|string_format:"%.2f"}</font></td> 
                                             <td>
-                                                {$invoice_details.close_date|date_format:$date_format}<br>
+                                                {$invoice_details.closed_on|date_format:$date_format}<br>
                                                 {if $invoice_details.status == 'refunded'}
                                                     <a href="index.php?component=refund&page_tpl=details&refund_id={$invoice_details.refund_id}">{t}Refund ID{/t}: {$invoice_details.refund_id}
                                                 {/if}                                                

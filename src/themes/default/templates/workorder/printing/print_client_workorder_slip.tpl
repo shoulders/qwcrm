@@ -152,7 +152,7 @@
                     </tr>
                     <tr>
                         <td valign="top" nowrap><b>{t}Opened{/t}</b></td>
-                        <td valign="top">{$workorder_details.open_date|date_format:$date_format}</td>
+                        <td valign="top">{$workorder_details.opened_on|date_format:$date_format}</td>
                     </tr>                
                     <tr>
                         <td valign="top" nowrap><b>{t}Employee{/t}</b></td>

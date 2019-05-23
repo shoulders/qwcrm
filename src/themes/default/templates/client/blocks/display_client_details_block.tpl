@@ -88,7 +88,7 @@
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Account Created{/t}</b></td>
-                                            <td class="menutd">{$client_details.create_date|date_format:$date_format}</td>
+                                            <td class="menutd">{$client_details.opened_on|date_format:$date_format}</td>
                                             <td class="menutd"><b>{t}Last Active{/t}</b></td>
                                             <td class="menutd">{$client_details.last_active|date_format:$date_format}</td>
                                         </tr>

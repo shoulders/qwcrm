@@ -27,7 +27,7 @@
         <td class="olotd4" align="center"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$workorder_details.invoice_id}">{$workorder_details.invoice_id}</a></td>                                                                
         
         <!-- Opened -->
-        <td class="olotd4" align="center">{$workorder_details.open_date|date_format:$date_format}</td>        
+        <td class="olotd4" align="center">{$workorder_details.opened_on|date_format:$date_format}</td>        
         
         <!-- Scope -->
         <td class="olotd4" valign="middle" align="center">{$workorder_details.scope}</td>
@@ -159,7 +159,7 @@
                         {if $workorder_details.closed_by != ''}
                             <p>
                                 <b>{t}Closed by{/t}: </b>{$employee_details.display_name}<br>
-                                <b>{t}Date{/t}: </b>{$workorder_details.close_date|date_format:$date_format}<br>
+                                <b>{t}Date{/t}: </b>{$workorder_details.closed_on|date_format:$date_format}<br>
                             </p>
                         {/if}
                         <div>{$workorder_details.resolution}</div>                        

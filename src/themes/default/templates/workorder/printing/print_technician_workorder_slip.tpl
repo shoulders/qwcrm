@@ -158,8 +158,8 @@
                         <td><b>{t}Resolution{/t}:</b></td>
                     </tr>                    
                     <tr>                                    
-                        {if $workorder_details.close_date != ''}                            
-                            <td><b>{t}Closed by{/t}:</b>{$employee_details.display_name} on <b>{t}Date{/t}: </b>{$workorder_details.close_date|date_format:$date_format}</td>                                                       
+                        {if $workorder_details.closed_on != ''}                            
+                            <td><b>{t}Closed by{/t}:</b>{$employee_details.display_name} on <b>{t}Date{/t}: </b>{$workorder_details.closed_on|date_format:$date_format}</td>                                                       
                         {/if}
                     </tr>
                     <tr>
@@ -208,7 +208,7 @@
                     </tr>
                     <tr>
                         <td valign="top" nowrap><b>{t}Opened{/t}</b></td>
-                        <td valign="top">{$workorder_details.open_date|date_format:$date_format}</td>
+                        <td valign="top">{$workorder_details.opened_on|date_format:$date_format}</td>
                     </tr>                
                     <tr>
                         <td valign="top" nowrap><b>{t}Technician{/t}</b></td>

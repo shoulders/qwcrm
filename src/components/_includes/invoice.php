@@ -228,6 +228,9 @@ function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
     
     $db = QFactory::getDbo();
     
+    // Get current timestamp
+    $timestamp = time();
+    
     // Get invoice tax type
     $tax_system = QW_TAX_SYSTEM;
     
@@ -238,13 +241,13 @@ function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id   ).",
             client_id       =". $db->qstr( $client_id                           ).",
             workorder_id    =". $db->qstr( $workorder_id                        ).",
-            date            =". $db->qstr( mysql_date()                         ).",
-            due_date        =". $db->qstr( mysql_date()                         ).",            
+            date            =". $db->qstr( mysql_date($timestamp)               ).",
+            due_date        =". $db->qstr( mysql_date($timestamp)               ).",            
             unit_discount_rate   =". $db->qstr( $unit_discount_rate             ).",
             tax_system      =". $db->qstr( $tax_system                          ).",
-            sales_tax_rate  =". $db->qstr( $sales_tax_rate                      ).",
-            open_date       =". $db->qstr( mysql_datetime()                     ).",
-            status          =". $db->qstr( 'pending'                            ).",   
+            sales_tax_rate  =". $db->qstr( $sales_tax_rate                      ).",            
+            status          =". $db->qstr( 'pending'                            ).",
+            opened_on       =". $db->qstr( mysql_datetime($timestamp)           ).",
             is_closed       =". $db->qstr( 0                                    ); 
 
     if(!$rs = $db->Execute($sql)) {
@@ -459,7 +462,7 @@ function insert_invoice_prefill_item($VAR) {
     $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
             description =". $db->qstr( $VAR['description']  ).",
             type        =". $db->qstr( $VAR['type']         ).",
-            unit_net  =". $db->qstr( $VAR['unit_net']   ).",
+            unit_net    =". $db->qstr( $VAR['unit_net']     ).",
             active      =". $db->qstr( $VAR['active']       );
 
     if(!$rs = $db->execute($sql)){        
@@ -761,7 +764,7 @@ function update_invoice_static_values($invoice_id, $date, $due_date, $unit_disco
     $sql = "UPDATE ".PRFX."invoice_records SET
             date                =". $db->qstr( date_to_mysql_date($date)     ).",
             due_date            =". $db->qstr( date_to_mysql_date($due_date) ).",
-            unit_discount_rate       =". $db->qstr( $unit_discount_rate                )."               
+            unit_discount_rate  =". $db->qstr( $unit_discount_rate           )."               
             WHERE invoice_id    =". $db->qstr( $invoice_id                   );
 
     if(!$rs = $db->execute($sql)){        
@@ -811,8 +814,8 @@ function update_invoice_full($VAR, $doNotLog = false) {
             unit_gross          =". $db->qstr( $VAR['unit_gross']    ).", 
             unit_paid           =". $db->qstr( $VAR['unit_paid']     ).",
             balance             =". $db->qstr( $VAR['balance']         ).",
-            open_date           =". $db->qstr( $VAR['open_date']       ).",
-            close_date          =". $db->qstr( $VAR['close_date']      ).",
+            opened_on           =". $db->qstr( $VAR['opened_on']       ).",
+            closed_on           =". $db->qstr( $VAR['closed_on']       ).",
             last_active         =". $db->qstr( $VAR['last_active']     ).",
             status              =". $db->qstr( $VAR['status']          ).",
             is_closed           =". $db->qstr( $VAR['is_closed']       )."            
@@ -857,7 +860,7 @@ function update_invoice_prefill_item($VAR) {
     $sql = "UPDATE ".PRFX."invoice_prefill_items SET
             description                 =". $db->qstr( $VAR['description']          ).",
             type                        =". $db->qstr( $VAR['type']                 ).",
-            unit_net                  =". $db->qstr( $VAR['unit_net']           ).",
+            unit_net                    =". $db->qstr( $VAR['unit_net']             ).",
             active                      =". $db->qstr( $VAR['active']               )."            
             WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
 
@@ -944,7 +947,7 @@ function update_invoice_closed_status($invoice_id, $new_closed_status) {
     if($new_closed_status == 'open') {
         
         $sql = "UPDATE ".PRFX."invoice_records SET
-                close_date          ='',
+                closed_on           = '0000-00-00 00:00:00',
                 is_closed           =". $db->qstr( 0                )."
                 WHERE invoice_id    =". $db->qstr( $invoice_id      );
                 
@@ -953,7 +956,7 @@ function update_invoice_closed_status($invoice_id, $new_closed_status) {
     if($new_closed_status == 'closed') {
         
         $sql = "UPDATE ".PRFX."invoice_records SET
-                close_date          =". $db->qstr( mysql_datetime() ).",
+                closed_on           =". $db->qstr( mysql_datetime() ).",
                 is_closed           =". $db->qstr( 1                )."
                 WHERE invoice_id    =". $db->qstr( $invoice_id      );
     }    
@@ -1126,11 +1129,11 @@ function delete_invoice($invoice_id) {
             unit_tax            = '0.00',             
             unit_gross          = '0.00',  
             unit_paid           = '0.00', 
-            balance             = '0.00', 
-            open_date           = '0000-00-00 00:00:00',
-            close_date          = '0000-00-00 00:00:00',
-            last_active         = '0000-00-00 00:00:00',
+            balance             = '0.00',
             status              = 'deleted',
+            opened_on           = '0000-00-00 00:00:00',
+            closed_on           = '0000-00-00 00:00:00',
+            last_active         = '0000-00-00 00:00:00',            
             is_closed           = '1'            
             WHERE invoice_id    =". $db->qstr( $invoice_id  );
     
@@ -1356,21 +1359,21 @@ function recalculate_invoice_totals($invoice_id) {
     $parts_items_sub_totals     = get_parts_items_sub_totals($invoice_id);   
     $voucher_sub_totals         = get_invoice_vouchers_sub_totals($invoice_id);
     
-    $unit_discount            = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net']) * ($invoice_details['unit_discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
-    $unit_net                 = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;
-    $unit_tax                 = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
-    $unit_gross               = $unit_net + $unit_tax;    
+    $unit_discount              = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net']) * ($invoice_details['unit_discount_rate'] / 100); // divide by 100; turns 17.5 in to 0.17575
+    $unit_net                   = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;
+    $unit_tax                   = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
+    $unit_gross                 = $unit_net + $unit_tax;    
     $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'invoice', null, null, null, $invoice_id);
     $balance                    = $unit_gross - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice_records SET            
-            unit_discount     =". $db->qstr( $unit_discount         ).",
-            unit_net          =". $db->qstr( $unit_net              ).",
-            unit_tax          =". $db->qstr( $unit_tax              ).",
-            unit_gross        =". $db->qstr( $unit_gross            ).",
-            unit_paid         =". $db->qstr( $payments_sub_total      ).",
-            balance             =". $db->qstr( $balance                 )."
-            WHERE invoice_id    =". $db->qstr( $invoice_id              );
+            unit_discount       =". $db->qstr( $unit_discount       ).",
+            unit_net            =". $db->qstr( $unit_net            ).",
+            unit_tax            =". $db->qstr( $unit_tax            ).",
+            unit_gross          =". $db->qstr( $unit_gross          ).",
+            unit_paid           =". $db->qstr( $payments_sub_total  ).",
+            balance             =". $db->qstr( $balance             )."
+            WHERE invoice_id    =". $db->qstr( $invoice_id          );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the invoice totals."));

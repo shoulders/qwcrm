@@ -41,10 +41,10 @@
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_vouchers[g].payment_id}">{$display_vouchers[g].payment_id}</a></td>            
             <td class="olotd4">{$display_vouchers[g].voucher_code}</td>
             <td class="olotd4"><a href="index.php?component=client&page_tpl=details&client_id={$display_vouchers[g].client_id}">{$display_vouchers[g].client_display_name}</a></td>
-            <td class="olotd4">{$display_vouchers[g].open_date|date_format:$date_format}</td>
+            <td class="olotd4">{$display_vouchers[g].opened_on|date_format:$date_format}</td>
             <td class="olotd4">{$display_vouchers[g].expiry_date|date_format:$date_format}</td>
-            <td class="olotd4">{$display_vouchers[g].redeem_date|date_format:$date_format}</td>
-            <td class="olotd4">{$display_vouchers[g].close_date|date_format:$date_format}</td>
+            <td class="olotd4">{$display_vouchers[g].redeemed_on|date_format:$date_format}</td>
+            <td class="olotd4">{$display_vouchers[g].closed_on|date_format:$date_format}</td>
             <td class="olotd4">
                 {section name=s loop=$voucher_statuses}    
                     {if $display_vouchers[g].status == $voucher_statuses[s].status_key}

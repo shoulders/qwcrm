@@ -887,3 +887,25 @@ ALTER TABLE `#__payment_records` MODIFY COLUMN `voucher_id` varchar(10) CHARACTE
 ALTER TABLE `#__payment_records` MODIFY COLUMN `refund_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `voucher_id`;
 ALTER TABLE `#__payment_records` MODIFY COLUMN `expense_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `refund_id`;
 ALTER TABLE `#__payment_records` MODIFY COLUMN `otherincome_id` varchar(10) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `expense_id`;
+
+--
+-- Unify date columns on records
+--
+
+ALTER TABLE `#__invoice_records` CHANGE `open_date` `opened_on` DATETIME NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `close_date` `closed_on` DATETIME NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
+ALTER TABLE `#__workorder_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `closed_by`;
+ALTER TABLE `#__workorder_records` CHANGE `open_date` `opened_on` DATETIME NOT NULL;
+ALTER TABLE `#__workorder_records` CHANGE `close_date` `closed_on` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_invoice_id`;
+ALTER TABLE `#__voucher_records` CHANGE `open_date` `opened_on` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATE NOT NULL AFTER `redeemed_invoice_id`;
+ALTER TABLE `#__voucher_records` CHANGE `redeem_date` `redeemed_on` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `close_date` `closed_on` DATETIME NOT NULL;
+ALTER TABLE `#__client_records` CHANGE `create_date` `opened_on` DATETIME NOT NULL AFTER `client_id`;
+ALTER TABLE `#__client_records` CHANGE `last_active` `last_active` DATETIME NOT NULL AFTER `opened_on`;
+ALTER TABLE `qw_client_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
+
+-- above changes, below will be adding new fields
+

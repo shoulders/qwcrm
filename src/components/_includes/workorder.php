@@ -106,8 +106,8 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
             ".PRFX."client_records.fax AS client_fax,
                 
             ".PRFX."workorder_records.workorder_id, employee_id, invoice_id,
-            ".PRFX."workorder_records.open_date AS workorder_open_date,
-            ".PRFX."workorder_records.close_date AS workorder_close_date,
+            ".PRFX."workorder_records.opened_on AS workorder_opened_on,
+            ".PRFX."workorder_records.closed_on AS workorder_closed_on,
             ".PRFX."workorder_records.scope AS workorder_scope,
             ".PRFX."workorder_records.status AS workorder_status,
             ".PRFX."workorder_records.status AS workorder_is_closed
@@ -258,10 +258,10 @@ function insert_workorder($client_id, $scope, $description, $comment) {
     
     $sql = "INSERT INTO ".PRFX."workorder_records SET            
             client_id       =". $db->qstr( $client_id                           ).",
-            open_date       =". $db->qstr( mysql_datetime()                     ).",
-            status          =". $db->qstr( 'unassigned'                         ).",
-            is_closed       =". $db->qstr( 0                                    ).", 
             created_by      =". $db->qstr( QFactory::getUser()->login_user_id   ).",
+            status          =". $db->qstr( 'unassigned'                         ).",
+            opened_on       =". $db->qstr( mysql_datetime()                     ).",            
+            is_closed       =". $db->qstr( 0                                    ).",            
             scope           =". $db->qstr( $scope                               ).",
             description     =". $db->qstr( $description                         ).",            
             comment         =". $db->qstr( $comment                             );
@@ -759,7 +759,7 @@ function update_workorder_closed_status($workorder_id, $new_closed_status) {
         
         $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           ='',
-                close_date          ='',
+                closed_on           ='0000-00-00 00:00:00',
                 is_closed           =". $db->qstr( 0                                    )."
                 WHERE workorder_id  =". $db->qstr( $workorder_id                        );
         
@@ -768,7 +768,7 @@ function update_workorder_closed_status($workorder_id, $new_closed_status) {
     if($new_closed_status == 'close') {        
         $sql = "UPDATE ".PRFX."workorder_records SET
                 closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-                close_date          =". $db->qstr( mysql_datetime()                     ).",
+                closed_on           =". $db->qstr( mysql_datetime()                     ).",
                 is_closed           =". $db->qstr( 1                                    )."
                 WHERE workorder_id  =". $db->qstr( $workorder_id                        );
         
@@ -869,9 +869,9 @@ function close_workorder_without_invoice($workorder_id, $resolution) {
     
     // Insert resolution and close information
     $sql = "UPDATE ".PRFX."workorder_records SET
-            closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            close_date          =". $db->qstr( mysql_datetime()                     ).",            
+            closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",                        
             status              =". $db->qstr( 'closed_without_invoice'             ).",
+            closed_on           =". $db->qstr( mysql_datetime()                     ).",
             is_closed           =". $db->qstr( 1                                    ).",
             resolution          =". $db->qstr( $resolution                          )."
             WHERE workorder_id  =". $db->qstr( $workorder_id                        );
@@ -914,8 +914,8 @@ function close_workorder_with_invoice($workorder_id, $resolution) {
     // Insert resolution and close information
     $sql = "UPDATE ".PRFX."workorder_records SET
             closed_by           =". $db->qstr( QFactory::getUser()->login_user_id   ).",
-            close_date          =". $db->qstr( mysql_datetime()                     ).",            
             status              =". $db->qstr( 'closed_with_invoice'                ).",
+            closed_on          =". $db->qstr( mysql_datetime()                     ).",            
             is_closed           =". $db->qstr( 1                                    ).",
             resolution          =". $db->qstr( $resolution                          )."
             WHERE workorder_id  =". $db->qstr( $workorder_id                        );
@@ -983,10 +983,10 @@ function delete_workorder($workorder_id) {
         invoice_id          = '',
         created_by          = '',
         closed_by           = '',
-        open_date           = '0000-00-00 00:00:00',
-        close_date          = '0000-00-00 00:00:00',
-        last_active         = '0000-00-00 00:00:00',
         status              = 'deleted',
+        opened_on           = '0000-00-00 00:00:00',
+        closed_on           = '0000-00-00 00:00:00',
+        last_active         = '0000-00-00 00:00:00',        
         is_closed           = '1',
         scope               = '',
         description         = '',

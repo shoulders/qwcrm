@@ -96,12 +96,12 @@ class Upgrade3_1_0 extends QSetup {
                 
         // Convert timestamps to MySQL DATETIME
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'date', 'client_note_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'create_date', 'client_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'opened_on', 'client_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'last_active', 'client_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'open_date', 'voucher_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'redeem_date', 'voucher_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'open_date', 'invoice_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'close_date', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'opened_on', 'voucher_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'redeemed_on', 'voucher_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'opened_on', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'closed_on', 'invoice_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'start_time', 'schedule_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'end_time', 'schedule_id');
@@ -110,8 +110,8 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_reset_time', 'user_id');        
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_history', 'date', 'history_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_notes', 'date', 'workorder_note_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'open_date', 'workorder_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'close_date', 'workorder_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'opened_on', 'workorder_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'closed_on', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
         
         // Populate the last_active columns with record date for the following becasue they have only just received last_Active
@@ -843,23 +843,23 @@ class Upgrade3_1_0 extends QSetup {
                 /* Close Date / Status / Blocked */
                 
                 // Set qualifying Vouchers to redeemed status
-                if($rs->fields['redeem_date'] != '0000-00-00 00:00:00') {
+                if($rs->fields['redeemed_on'] != '0000-00-00 00:00:00') {
                     
-                    $close_date = $rs->fields['redeem_date'];
+                    $closed_on = $rs->fields['redeemed_on'];
                     $status = 'redeemed';                    
                     $blocked = 1;
                 
                 // Set qualifying Vouchers to expired status
                 } elseif (time() > strtotime($rs->fields['expiry_date'].' 23:59:59')) {
                     
-                    $close_date = $rs->fields['expiry_date'].' 23:59:59';
+                    $closed_on = $rs->fields['expiry_date'].' 23:59:59';
                     $status = 'expired';                    
                     $blocked = 1;
                 
                 // If not redeemed or expired it must be unused
                 } else {
                     
-                    $close_date = '0000-00-00 00:00:00';
+                    $closed_on = '0000-00-00 00:00:00';
                     $status = 'unused';                    
                     $blocked = 0;
                     
@@ -872,7 +872,7 @@ class Upgrade3_1_0 extends QSetup {
                 $sql = "UPDATE `".PRFX."voucher_records` SET
                         `invoice_id` = '0', 
                         `redeemed_client_id` = ".$db->qstr($redeemed_client_id).",                        
-                        `close_date` = ".$db->qstr($close_date).",
+                        `closed_on` = ".$db->qstr($closed_on).",
                         `status` = ".$db->qstr($status).",                        
                         `blocked` = ".$blocked."
                         WHERE `voucher_id` = ".$rs->fields['voucher_id'];

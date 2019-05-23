@@ -28,8 +28,8 @@
                 {/if}
             </td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_workorders[w].invoice_id}">{$display_workorders[w].invoice_id}</a></td>
-            <td class="olotd4"> {$display_workorders[w].workorder_open_date|date_format:$date_format}</td>
-            <td class="olotd4">{$display_workorders[w].workorder_close_date|date_format:$date_format}</td>
+            <td class="olotd4"> {$display_workorders[w].workorder_opened_on|date_format:$date_format}</td>
+            <td class="olotd4">{$display_workorders[w].workorder_closed_on|date_format:$date_format}</td>
             <td class="olotd4" nowrap>
                 {if $display_workorders[w].workorder_status != 'deleted'}
                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<b><center>{t}Client Info{/t}</b></center><hr><b>{t}Contact{/t}:</b> {$display_workorders[w].client_first_name} {$display_workorders[w].client_last_name}<br><b>{t}Phone{/t}: </b>{$display_workorders[w].client_phone}<br><b>{t}Mobile{/t}: </b>{$display_workorders[w].client_mobile_phone}<br><b>{t}Fax{/t}: </b>{$display_workorders[w].client_phone}<br><b>{t}Address{/t}: </b><br>{$display_workorders[w].client_address|nl2br|regex_replace:"/[\r\t\n]/":" "}<br>{$display_workorders[w].client_city}<br>{$display_workorders[w].client_state}<br>{$display_workorders[w].client_zip}<br>{$display_workorders[w].client_country}');" onMouseOut="hideddrivetip();">

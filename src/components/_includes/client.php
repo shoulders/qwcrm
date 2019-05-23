@@ -156,6 +156,7 @@ function insert_client($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."client_records SET
+            opened_on       =". $db->qstr( mysql_datetime()         ).",
             company_name    =". $db->qstr( $VAR['company_name']     ).",
             first_name      =". $db->qstr( $VAR['first_name']       ).",
             last_name       =". $db->qstr( $VAR['last_name']        ).",
@@ -173,8 +174,7 @@ function insert_client($VAR) {
             state           =". $db->qstr( $VAR['state']            ).", 
             zip             =". $db->qstr( $VAR['zip']              ).",
             country         =". $db->qstr( $VAR['country']          ).",
-            note            =". $db->qstr( $VAR['note']             ).",
-            create_date     =". $db->qstr( mysql_datetime()         );          
+            note            =". $db->qstr( $VAR['note']             );          
                         
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));

@@ -93,7 +93,7 @@ function count_clients($start_date = null, $end_date = null, $status = null) {
             
     // Filter by Create Date
     if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."client_records.create_date >= ".$db->qstr($start_date)." AND ".PRFX."client_records.create_date <= ".$db->qstr($end_date.' 23:59:59');
+        $whereTheseRecords .= " AND ".PRFX."client_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."client_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
     }
     
     // Restrict by Status
@@ -175,9 +175,9 @@ function count_workorders($start_date = null, $end_date = null, $status = null, 
     // Filter by Date
     if($start_date && $end_date) {
         if($status == 'closed') {       
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
         } else {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
         }
     }
     
@@ -185,11 +185,11 @@ function count_workorders($start_date = null, $end_date = null, $status = null, 
     if($status) {        
         
         if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.close_date = '0000-00-00 00:00:00'"; 
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on = '0000-00-00 00:00:00'"; 
         } elseif($status == 'opened') {
             // Do nothing         
         } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.close_date != '0000-00-00 00:00:00'";  
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on != '0000-00-00 00:00:00'";  
         } else {
             $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$db->qstr($status);                       
         }
@@ -492,9 +492,9 @@ function invoice_build_filter_by_date($start_date = null, $end_date = null, $dat
     
     if($start_date && $end_date && $date_type) {
         if($date_type == 'opened') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'closed') {       
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'active') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
@@ -520,11 +520,11 @@ function invoice_build_filter_by_status($status = null) {
     
     if($status) {   
         if($status == 'open') {            
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.close_date = '0000-00-00 00:00:00'";                  
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on = '0000-00-00 00:00:00'";                  
         } elseif($status == 'opened') {            
             // Do nothing                 
         } elseif($status == 'closed') {            
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.close_date != '0000-00-00 00:00:00'"; 
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on != '0000-00-00 00:00:00'"; 
         } elseif($status == 'discounted') {            
             $whereTheseRecords .= " AND ".PRFX."invoice_records.unit_discount > 0";                    
         } else {            
@@ -977,11 +977,11 @@ function voucher_build_filter_by_status($status = null, $client_id = null) {
     if($status) {
                 
         if($status == 'open') {            
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date = '0000-00-00 00:00:00'";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on = '0000-00-00 00:00:00'";
         } elseif($status == 'opened') {            
             // Do nothing                 
         } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date != '0000-00-00 00:00:00'";
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on != '0000-00-00 00:00:00'";
         } elseif($status == 'claimed' && $client_id) {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.status = 'redeemed'";
             $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_client_id = ".$db->qstr($client_id);
@@ -1008,13 +1008,13 @@ function voucher_build_filter_by_date($start_date = null, $end_date = null, $dat
     if($start_date && $end_date) {
         
         if($date_type == 'opened') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.open_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.open_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type== 'expired') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'redeemed') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeem_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.redeem_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.redeemed_on <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.close_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.close_date <= ".$db->qstr($end_date.' 23:59:59');
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
         } elseif($date_type == 'due_date') {       

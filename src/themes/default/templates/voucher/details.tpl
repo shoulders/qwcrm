@@ -104,7 +104,7 @@
                                         </tr>
                                         <tr>
                                             <td><b>{t}Created on{/t}</b></td>
-                                            <td>{$voucher_details.open_date|date_format:$date_format}</td>
+                                            <td>{$voucher_details.opened_on|date_format:$date_format}</td>
                                         </tr>                                        
                                         <tr>
                                             <td><b>{t}Expires{/t}</b></td>
@@ -112,7 +112,7 @@
                                         </tr>
                                         <tr>
                                             <td><b>{t}Redeemed on{/t}</b></td>
-                                            <td>{$voucher_details.redeem_date|date_format:$date_format}</td>
+                                            <td>{$voucher_details.redeemed_on|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Status{/t}</b></td>
