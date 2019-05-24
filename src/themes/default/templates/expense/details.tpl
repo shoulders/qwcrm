@@ -99,6 +99,18 @@
                                                 {/section} 
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Opened On{/t}</b></td>
+                                            <td class="menutd">{$expense_details.opened_on|date_format:$date_format}</td>
+                                            <td class="menutd"><b>{t}Closed On{/t}</b></td>
+                                            <td class="menutd">{$expense_details.closed_on|date_format:$date_format}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="menutd"><b>{t}Last Active{/t}</b></td>
+                                            <td class="menutd">{$expense_details.last_active|date_format:$date_format}</td>
+                                            <td class="menutd">&nbsp;</td>
+                                            <td class="menutd">&nbsp;</td>
+                                        </tr>
                                         <tr class="row2">
                                             <td class="menutd" colspan="4"></td>
                                         </tr>                                        

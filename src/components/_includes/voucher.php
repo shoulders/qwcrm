@@ -416,6 +416,7 @@ function update_voucher($voucher_id, $expiry_date, $unit_net, $note) {
             unit_net        =". $unit_net                                                .",
             unit_tax        =". $unit_tax                                                .",
             unit_gross      =". ($unit_net + $unit_tax)                                  .",
+            last_active     =". $db->qstr( mysql_datetime()                             ).",  
             note            =". $db->qstr( $note                                        )."
             WHERE voucher_id =". $db->qstr($voucher_id);
 
@@ -458,34 +459,44 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
     // Get voucher details
     $voucher_details = get_voucher_details($voucher_id);
     
+    // Unify Dates and Times
+    $datetime = mysql_datetime();
+    
     // if the new status is the same as the current one, exit
     if($new_status == $voucher_details['status']) {        
         if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
-    }    
+    }  
     
-    // Set the close date base on the new status
-    $closed_on = $voucher_details['closed_on'];
-    $closed_on = ($new_status == 'unused') ? '0000-00-00 00:00:00' : $closed_on;
-    $closed_on = ($new_status == 'redeemed') ? $voucher_details['redeemed_on'] : $closed_on;
-    $closed_on = ($new_status == 'expired') ? $voucher_details['expiry_date'].' 23:59:59' : $closed_on;    
+    // Set appropriate redeemed_on datetime for the new status
+    $redeemed_on = ($new_status == 'redeemed') ? $datetime : '0000-00-00 00:00:00';
+        
+    // Update voucher 'closed_on' boolean for the new status
+    if($new_status == 'redeemed' ||  $new_status == 'expired' || $new_status == 'refunded' || $new_status == 'cancelled') {
+        $closed_on = $datetime;
+    } else {
+        $closed_on = '0000-00-00 00:00:00';
+    }
+    
+    // Update voucher 'blocked' boolean for the new status
+    if($new_status == 'redeemed' || $new_status == 'suspended' || $new_status == 'expired' || $new_status == 'refunded' || $new_status == 'cancelled' || $new_status == 'deleted') {
+        $blocked = 1;
+    } else {
+        $blocked = 0;
+    }
     
     $sql = "UPDATE ".PRFX."voucher_records SET
-            status              =". $db->qstr( $new_status  ).",
-            closed_on          =". $db->qstr( $closed_on  )."                       
-            WHERE voucher_id    =". $db->qstr( $voucher_id );
+            status             =". $db->qstr( $new_status   ).",
+            redeemed_on        =". $db->qstr( $redeemed_on  ).",   
+            closed_on          =". $db->qstr( $closed_on    ).",
+            last_active        =". $db->qstr( $datetime     ).",
+            blocked            =". $db->qstr( $blocked      )."
+            WHERE voucher_id   =". $db->qstr( $voucher_id   ); 
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Voucher Status."));
         
     } else {    
-        
-        // Update voucher 'blocked' boolean for the new status
-        if($new_status == 'redeemed' || $new_status == 'suspended' || $new_status == 'expired' || $new_status == 'refunded' || $new_status == 'cancelled' || $new_status == 'deleted') {
-            update_voucher_blocked_status($voucher_id, 'blocked');
-        } else {
-            update_voucher_blocked_status($voucher_id, 'active');
-        }
         
         // Status updated message
         if (!$silent) { postEmulationWrite('information_msg', _gettext("Voucher status updated.")); }
@@ -511,36 +522,6 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
     
 }
 
-####################################
-#  Update Voucher blocked Status   #
-####################################
-
-function update_voucher_blocked_status($voucher_id, $new_blocked_status) {
-    
-    $db = QFactory::getDbo();
-    
-    if($new_blocked_status == 'active') {
-        
-        $sql = "UPDATE ".PRFX."voucher_records SET
-                blocked           =". $db->qstr( 0              )."
-                WHERE voucher_id =". $db->qstr( $voucher_id     );     
-        
-    }
-    
-    if($new_blocked_status == 'blocked') {        
-        
-        $sql = "UPDATE ".PRFX."voucher_records SET
-                blocked           =". $db->qstr( 1              )."
-                WHERE voucher_id =". $db->qstr( $voucher_id     );
-        
-    }    
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a voucher blocked status."));
-    }
-    
-}
-
 ######################################################
 #   Redeem the voucher against an invoice            #
 ######################################################
@@ -551,24 +532,20 @@ function update_voucher_as_redeemed($voucher_id, $invoice_id, $payment_id) {
     
     $voucher_details = get_invoice_details($invoice_id);
     
-    // Make sure redeemed_on and closed_on are the same
-    $datetime = mysql_datetime();
-    
     // some information has already been applied (as below) using update_voucher_status() earlier in the process
     $sql = "UPDATE ".PRFX."voucher_records SET
             employee_id         =". $db->qstr( QFactory::getUser()->login_user_id       ).",
             payment_id          =". $db->qstr( $payment_id                              ).",
             redeemed_client_id  =". $db->qstr( $voucher_details['client_id']            ).",   
-            redeemed_invoice_id =". $db->qstr( $invoice_id                              ).",            
-            status              =". $db->qstr( 'redeemed'                               ).",
-            redeemed_on         =". $db->qstr( $datetime                                ).", 
-            closed_on           =". $db->qstr( $datetime                                ).",
-            blocked             =". $db->qstr( 1                                        )."
+            redeemed_invoice_id =". $db->qstr( $invoice_id                              )."            
             WHERE voucher_id    =". $db->qstr( $voucher_id                              );
     
     if(!$rs = $db->execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Voucher as redeemed."));
     } else {       
+        
+        // Change the voucher status to refunded (I do this here to maintain consistency)
+        update_voucher_status($voucher_id, 'redeemed', true);
         
         // Log activity        
         $record = _gettext("Voucher").' '.$voucher_id.' '._gettext("was redeemed by").' '.get_client_details($voucher_details['client_id'], 'display_name').'.';
@@ -851,7 +828,7 @@ function delete_voucher($voucher_id) {
             status              =   'deleted',
             opened_on           =   '0000-00-00 00:00:00',
             redeemed_on         =   '0000-00-00 00:00:00',
-            closed_on          =   '0000-00-00 00:00:00',            
+            closed_on           =   '0000-00-00 00:00:00',            
             blocked             =   1,
             tax_system          =   '',
             type                =   '',

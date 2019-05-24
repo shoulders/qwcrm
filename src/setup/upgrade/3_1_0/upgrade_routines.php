@@ -14,11 +14,15 @@ class Upgrade3_1_0 extends QSetup {
     private $upgrade_step = null;
     private $company_tax_system = null;
     private $default_vat_tax_code = null;
+    private $setup_time = null;
     
     public function __construct(&$VAR) {
         
         // Call parent's constructor
         parent::__construct($VAR);
+        
+        // Some operations need to have a unified point in time
+        $this->smarty = time();
         
         // Get the upgrade step name
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
@@ -142,9 +146,6 @@ class Upgrade3_1_0 extends QSetup {
         $this->invoice_correct_parts_totals();        
         
         // Parse Voucher records and correct records        
-        //$this->voucher_correct_workorder_id();
-        //$this->voucher_correct_expiry_date(); not needed
-        //$this->voucher_correct_status();
         $this->voucher_correct_records();
         $this->update_column_values(PRFX.'voucher_records', 'type', '*', 'multi_purpose');
         $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
@@ -180,6 +181,15 @@ class Upgrade3_1_0 extends QSetup {
                 
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
+        
+        // Update Records to allow for openen_on, closed_on and last_active        
+        $this->copy_columnA_to_columnB('expense_records', 'date', 'opened_on');
+        $this->copy_columnA_to_columnB('expense_records', 'date', 'closed_on');
+        $this->copy_columnA_to_columnB('expense_records', 'date', 'last_active');
+        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'opened_on');
+        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'closed_on');
+        $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');
+        $this->update_column_values(PRFX.'supplier_records', 'opened_on', '*', mysql_datetime($this->setup_time));
         
         // Log message to setup log
         $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;
@@ -798,10 +808,10 @@ class Upgrade3_1_0 extends QSetup {
     
     }*/  
     
-    #################################################################
-    #  Parse Voucher records and populate with appropriate status   #  // This is after conversion to mysql DATE
-    #################################################################  / call this voucher_correct_records / correct_voucher_records
-                                                                        // add in the other fixes to the vouceher records here and deleete the others
+    #################################################################  // This is after conversion to mysql DATE
+    #  Parse Voucher records and populate with appropriate status   #  // call this voucher_correct_records / correct_voucher_records  
+    #################################################################  // add in the other fixes to the vouceher records here and deleete the others
+                                                                        
 
     function voucher_correct_records() {
         
@@ -836,31 +846,35 @@ class Upgrade3_1_0 extends QSetup {
             // Loop through all records, decide and set each Voucher's status
             while(!$rs->EOF) { 
                 
-                /* Redeemed Client ID */
+                /* Get variables */
                 
                 $redeemed_client_id = $rs->fields['redeemed_invoice_id'] ? get_invoice_details($rs->fields['redeemed_invoice_id'], 'client_id') : '';
+                $opened_on = mysql_datetime($this->setup_time);
                 
-                /* Close Date / Status / Blocked */
+                /* Time and Status */
                 
                 // Set qualifying Vouchers to redeemed status
                 if($rs->fields['redeemed_on'] != '0000-00-00 00:00:00') {
                     
+                    $status = 'redeemed';
                     $closed_on = $rs->fields['redeemed_on'];
-                    $status = 'redeemed';                    
+                    $last_active = $rs->fields['redeemed_on'];
                     $blocked = 1;
                 
                 // Set qualifying Vouchers to expired status
                 } elseif (time() > strtotime($rs->fields['expiry_date'].' 23:59:59')) {
-                    
+                                        
+                    $status = 'expired'; 
                     $closed_on = $rs->fields['expiry_date'].' 23:59:59';
-                    $status = 'expired';                    
+                    $last_active = $rs->fields['expiry_date'].' 23:59:59';
                     $blocked = 1;
                 
                 // If not redeemed or expired it must be unused
                 } else {
                     
-                    $closed_on = '0000-00-00 00:00:00';
-                    $status = 'unused';                    
+                    $status = 'unused';  
+                    $closed_on = '0000-00-00 00:00:00'; 
+                    $last_active = '0000-00-00 00:00:00'; 
                     $blocked = 0;
                     
                 }
@@ -872,8 +886,10 @@ class Upgrade3_1_0 extends QSetup {
                 $sql = "UPDATE `".PRFX."voucher_records` SET
                         `invoice_id` = '0', 
                         `redeemed_client_id` = ".$db->qstr($redeemed_client_id).",                        
+                        `status` = ".$db->qstr($status).",
+                        `opened_on` = ".$db->qstr($opened_on).",
                         `closed_on` = ".$db->qstr($closed_on).",
-                        `status` = ".$db->qstr($status).",                        
+                        `last_active` = ".$db->qstr($last_active).",
                         `blocked` = ".$blocked."
                         WHERE `voucher_id` = ".$rs->fields['voucher_id'];
                 

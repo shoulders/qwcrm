@@ -128,32 +128,32 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
     // Common
     if($record_set) {
     
-        $stats['count_open'] = count_workorders($start_date, $end_date, 'open', $employee_id, $client_id);
+        $stats['count_open'] = count_workorders($start_date, $end_date, 'opened', 'open', $employee_id, $client_id);
     
     }
     
     // Current
     if($record_set == 'current' || $record_set == 'all') {        
 
-        $stats['count_unassigned'] = count_workorders($start_date, $end_date, 'unassigned', $employee_id, $client_id);
-        $stats['count_assigned'] = count_workorders($start_date, $end_date, 'assigned', $employee_id, $client_id);
-        $stats['count_waiting_for_parts'] = count_workorders($start_date, $end_date, 'waiting_for_parts',$employee_id, $client_id);
-        $stats['count_scheduled'] = count_workorders($start_date, $end_date, 'scheduled', $employee_id, $client_id);
-        $stats['count_with_client'] = count_workorders($start_date, $end_date, 'with_client', $employee_id, $client_id);
-        $stats['count_on_hold'] = count_workorders($start_date, $end_date, 'on_hold', $employee_id, $client_id);
-        $stats['count_management'] = count_workorders($start_date, $end_date, 'management', $employee_id, $client_id);
-        $stats['count_closed_without_invoice'] = count_workorders($start_date, $end_date, 'closed_without_invoice', $employee_id, $client_id);
-        $stats['count_closed_with_invoice'] = count_workorders($start_date, $end_date, 'closed_with_invoice', $employee_id, $client_id);
+        $stats['count_unassigned'] = count_workorders($start_date, $end_date, 'opened','unassigned', $employee_id, $client_id);
+        $stats['count_assigned'] = count_workorders($start_date, $end_date, 'opened', 'assigned', $employee_id, $client_id);
+        $stats['count_waiting_for_parts'] = count_workorders($start_date, $end_date, 'opened', 'waiting_for_parts',$employee_id, $client_id);
+        $stats['count_scheduled'] = count_workorders($start_date, $end_date, 'opened', 'scheduled', $employee_id, $client_id);
+        $stats['count_with_client'] = count_workorders($start_date, $end_date, 'opened', 'with_client', $employee_id, $client_id);
+        $stats['count_on_hold'] = count_workorders($start_date, $end_date, 'opened', 'on_hold', $employee_id, $client_id);
+        $stats['count_management'] = count_workorders($start_date, $end_date, 'opened', 'management', $employee_id, $client_id);
+        $stats['count_closed_without_invoice'] = count_workorders($start_date, $end_date, 'opened', 'closed_without_invoice', $employee_id, $client_id);
+        $stats['count_closed_with_invoice'] = count_workorders($start_date, $end_date, 'opened', 'closed_with_invoice', $employee_id, $client_id);
     
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {        
          
-        $stats['count_open'] = count_workorders($start_date, $end_date, 'open', $employee_id, $client_id);
-        $stats['count_opened'] = count_workorders($start_date, $end_date, 'opened', $employee_id, $client_id);         
-        $stats['count_closed'] = count_workorders($start_date, $end_date, 'closed', $employee_id, $client_id);
-        $stats['count_deleted'] = count_workorders($start_date, $end_date, 'deleted', $employee_id, $client_id);   // Only used on basic stats
+        $stats['count_open'] = count_workorders($start_date, $end_date, 'opened', 'open', $employee_id, $client_id);
+        $stats['count_opened'] = count_workorders($start_date, $end_date, 'opened', 'opened', $employee_id, $client_id);         
+        $stats['count_closed'] = count_workorders($start_date, $end_date, 'opened', 'closed', $employee_id, $client_id);
+        $stats['count_deleted'] = count_workorders($start_date, $end_date, 'opened', 'deleted', $employee_id, $client_id);   // Only used on basic stats
     
     }    
     
@@ -165,7 +165,7 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
 #     Count Work Orders                 #
 #########################################
 
-function count_workorders($start_date = null, $end_date = null, $status = null, $employee_id = null, $client_id = null) {
+function count_workorders($start_date = null, $end_date = null, $date_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -173,28 +173,10 @@ function count_workorders($start_date = null, $end_date = null, $status = null, 
     $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";  
     
     // Filter by Date
-    if($start_date && $end_date) {
-        if($status == 'closed') {       
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } else {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        }
-    }
+    $whereTheseRecords .= workorder_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Restrict by Status
-    if($status) {        
-        
-        if($status == 'open') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on = '0000-00-00 00:00:00'"; 
-        } elseif($status == 'opened') {
-            // Do nothing         
-        } elseif($status == 'closed') {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on != '0000-00-00 00:00:00'";  
-        } else {
-            $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$db->qstr($status);                       
-        }
-        
-    }       
+    $whereTheseRecords .= workorder_build_filter_by_status($status);      
     
     // Filter by Employee
     if($employee_id) {
@@ -218,6 +200,56 @@ function count_workorders($start_date = null, $end_date = null, $status = null, 
         return  $rs->fields['count'];
         
     }
+    
+}
+
+######################################
+#   Build workorder Date filter SQL  #
+######################################
+
+function workorder_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($start_date && $end_date && $date_type) {
+        if($date_type == 'opened') {
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'closed') {       
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'active') {       
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+#######################################
+#  Build workorder Status filter SQL  #
+#######################################
+
+function workorder_build_filter_by_status($status = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($status) {   
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on = '0000-00-00 00:00:00'";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on != '0000-00-00 00:00:00'"; 
+        } else {            
+            $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$db->qstr($status);            
+        }
+    }
+        
+    return $whereTheseRecords;
     
 }
 
@@ -334,8 +366,7 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_balance'] -= sum_invoices('balance', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
         
     }
-    
-    
+       
     // Labour
     if($record_set == 'labour' || $record_set == 'all') {        
                
@@ -1042,36 +1073,36 @@ function get_refunds_stats($record_set, $start_date = null, $end_date = null, $t
     // Current
     if($record_set == 'current' || $record_set == 'all') {
     
-        $stats['count_unpaid'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id, $client_id);
-        $stats['count_partially_paid'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id, $client_id);
-        $stats['count_paid'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id, $client_id);          
-        $stats['count_cancelled'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);       
+        $stats['count_unpaid'] = count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'unpaid', $employee_id, $client_id);
+        $stats['count_partially_paid'] = count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id, $client_id);
+        $stats['count_paid'] = count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id, $client_id);          
+        $stats['count_cancelled'] = count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);       
              
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {          
                   
-        $stats['count_opened'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'opened', $employee_id, $client_id);
-        $stats['count_closed'] = count_refunds($start_date, $end_date, $tax_system, null, null, 'closed', $employee_id, $client_id); 
+        $stats['count_opened'] = count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'opened', $employee_id, $client_id);
+        $stats['count_closed'] = count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id, $client_id); 
     
     }  
     
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {       
         
-        $stats['count_items'] = count_refunds($start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
-        $stats['sum_unit_net'] = sum_refunds('unit_net', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
-        $stats['sum_unit_tax'] = sum_refunds('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);           
-        $stats['sum_unit_gross'] = sum_refunds('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);                   
+        $stats['count_items'] = count_refunds($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
+        $stats['sum_unit_net'] = sum_refunds('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
+        $stats['sum_unit_tax'] = sum_refunds('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);           
+        $stats['sum_unit_gross'] = sum_refunds('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);                   
         $stats['sum_balance'] = sum_refunds('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
     
         // Adjust for Cancelled records  
-        $stats['count_items'] -= count_refunds($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_net'] -= sum_refunds('unit_net', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_tax'] -= sum_refunds('unit_tax', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);           
-        $stats['sum_unit_gross'] -= sum_refunds('unit_gross', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_balance'] -= sum_refunds('balance', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id, $client_id);        
+        $stats['count_items'] -= count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_net'] -= sum_refunds('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_tax'] -= sum_refunds('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);           
+        $stats['sum_unit_gross'] -= sum_refunds('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_balance'] -= sum_refunds('balance', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);        
         
     }     
        
@@ -1083,7 +1114,7 @@ function get_refunds_stats($record_set, $start_date = null, $end_date = null, $t
 #     Count Refunds                     #
 #########################################
 
-function count_refunds($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+function count_refunds($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1091,9 +1122,7 @@ function count_refunds($start_date = null, $end_date = null, $tax_system = null,
     $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
                 
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= refund_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -1111,9 +1140,7 @@ function count_refunds($start_date = null, $end_date = null, $tax_system = null,
     }
     
     // Restrict by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.status = ".$db->qstr($status);                       
-    }
+    $whereTheseRecords .= refund_build_filter_by_status($status);
 
     // Filter by Employee
     if($employee_id) {
@@ -1145,7 +1172,7 @@ function count_refunds($start_date = null, $end_date = null, $tax_system = null,
 #  Sum selected value of refunds          #
 ###########################################
 
-function sum_refunds($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
+function sum_refunds($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1153,9 +1180,7 @@ function sum_refunds($value_name, $start_date = null, $end_date = null, $tax_sys
     $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";  
                     
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= refund_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -1173,13 +1198,11 @@ function sum_refunds($value_name, $start_date = null, $end_date = null, $tax_sys
     }
     
     // Restrict by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.status = ".$db->qstr($status);                       
-    }
+    $whereTheseRecords .= refund_build_filter_by_status($status);
     
     // Filter by Employee
     if($employee_id) {
-        $whereTheseRecords .= " AND ".PRFX."refund_records.refund_records.employee_id=".$db->qstr($employee_id);
+        $whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$db->qstr($employee_id);
     }
     
     // Filter by Client
@@ -1201,6 +1224,58 @@ function sum_refunds($value_name, $start_date = null, $end_date = null, $tax_sys
     
 }
 
+######################################
+#   Build refund Date filter SQL     #
+######################################
+
+function refund_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($start_date && $end_date && $date_type) {
+        if($date_type == 'opened') {
+            $whereTheseRecords .= " AND ".PRFX."refund_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'closed') {       
+            $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'active') {       
+            $whereTheseRecords .= " AND ".PRFX."refund_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'date') {       
+            $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+#######################################
+#  Build refund Status filter SQL     #
+#######################################
+
+function refund_build_filter_by_status($status = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($status) {   
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on = '0000-00-00 00:00:00'";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on != '0000-00-00 00:00:00'"; 
+        } else {            
+            $whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$db->qstr($status);            
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
 /** Expenses **/
 
 #####################################
@@ -1214,28 +1289,28 @@ function get_expenses_stats($record_set, $start_date = null, $end_date = null, $
     // Current
     if($record_set == 'current' || $record_set == 'all') {    
     
-        $stats['count_unpaid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id);
-        $stats['count_partially_paid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id);
-        $stats['count_paid'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id);            
-        $stats['count_cancelled'] = count_expenses($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id); 
+        $stats['count_unpaid'] = count_expenses($start_date, $end_date, 'date', $tax_system, null, null, 'unpaid', $employee_id);
+        $stats['count_partially_paid'] = count_expenses($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id);
+        $stats['count_paid'] = count_expenses($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id);            
+        $stats['count_cancelled'] = count_expenses($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id); 
     
     }
     
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {            
                    
-        $stats['count_items'] = count_expenses($start_date, $end_date, $tax_system, null, null, null, $employee_id);
-        $stats['sum_unit_net'] = sum_expenses('unit_net', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
-        $stats['sum_unit_tax'] = sum_expenses('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id);       
-        $stats['sum_unit_gross'] = sum_expenses('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
-        $stats['sum_balance'] = sum_expenses('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
+        $stats['count_items'] = count_expenses($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_net'] = sum_expenses('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_tax'] = sum_expenses('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);       
+        $stats['sum_unit_gross'] = sum_expenses('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);                   
+        $stats['sum_balance'] = sum_expenses('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
         
         // Adjust for Cancelled records  
-        $stats['count_items'] -= count_expenses($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_net'] -= sum_expenses('unit_net', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_tax'] -= sum_expenses('unit_tax', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);       
-        $stats['sum_unit_gross'] -= sum_expenses('unit_gross', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_balance'] -= sum_expenses('balance', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);   
+        $stats['count_items'] -= count_expenses($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_net'] -= sum_expenses('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_tax'] -= sum_expenses('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);       
+        $stats['sum_unit_gross'] -= sum_expenses('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_balance'] -= sum_expenses('balance', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);   
         
     }        
        
@@ -1248,7 +1323,7 @@ function get_expenses_stats($record_set, $start_date = null, $end_date = null, $
 #     Count Expenses                    #
 #########################################
 
-function count_expenses($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $invoice_id = null) {
+function count_expenses($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null, $invoice_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1256,9 +1331,7 @@ function count_expenses($start_date = null, $end_date = null, $tax_system = null
     $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
         
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= expense_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -1275,10 +1348,8 @@ function count_expenses($start_date = null, $end_date = null, $tax_system = null
         $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$db->qstr($item_type);
     }
     
-    // Filter by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."expense_records.status = ".$db->qstr($status);                       
-    }
+    // Restrict by Status
+    $whereTheseRecords .= expense_build_filter_by_status($status);
     
     // Filter by Employee
     if($employee_id) {
@@ -1310,7 +1381,7 @@ function count_expenses($start_date = null, $end_date = null, $tax_system = null
 #  Sum selected value of expenses #
 ###################################
 
-function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
+function sum_expenses($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1318,9 +1389,7 @@ function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_sy
     $whereTheseRecords = "WHERE ".PRFX."expense_records.expense_id\n";  
         
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= expense_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -1337,10 +1406,8 @@ function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_sy
         $whereTheseRecords .= " AND ".PRFX."expense_records.item_type=".$db->qstr($item_type);
     }
     
-    // Filter by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."expense_records.status = ".$db->qstr($status);                       
-    }
+    // Restrict by Status
+    $whereTheseRecords .= expense_build_filter_by_status($status);
 
     // Filter by Employee
     if($employee_id) {
@@ -1361,6 +1428,58 @@ function sum_expenses($value_name, $start_date = null, $end_date = null, $tax_sy
     
 }
 
+######################################
+#   Build expense Date filter SQL    #
+######################################
+
+function expense_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($start_date && $end_date && $date_type) {
+        if($date_type == 'opened') {
+            $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'closed') {       
+            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'active') {       
+            $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'date') {       
+            $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.date <= ".$db->qstr($end_date);
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+#######################################
+#  Build expense Status filter SQL    #
+#######################################
+
+function expense_build_filter_by_status($status = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($status) {   
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on = '0000-00-00 00:00:00'";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on != '0000-00-00 00:00:00'"; 
+        } else {            
+            $whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$db->qstr($status);            
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
 /** Other Incomes **/
 
 #####################################
@@ -1374,36 +1493,36 @@ function get_otherincomes_stats($record_set, $start_date = null, $end_date = nul
     // Current
     if($record_set == 'current' || $record_set == 'all') {    
     
-        $stats['count_unpaid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'unpaid', $employee_id);
-        $stats['count_partially_paid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'partially_paid', $employee_id);
-        $stats['count_paid'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'paid', $employee_id);            
-        $stats['count_cancelled'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['count_unpaid'] = count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'unpaid', $employee_id);
+        $stats['count_partially_paid'] = count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'partially_paid', $employee_id);
+        $stats['count_paid'] = count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'paid', $employee_id);            
+        $stats['count_cancelled'] = count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
     
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {            
                     
-        $stats['count_opened'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'opened', $employee_id);
-        $stats['count_closed'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, 'closed', $employee_id);
+        $stats['count_opened'] = count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'opened', $employee_id);
+        $stats['count_closed'] = count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id);
             
     }  
     
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {            
                    
-        $stats['count_items'] = count_otherincomes($start_date, $end_date, $tax_system, null, null, null, $employee_id);
-        $stats['sum_unit_net'] = sum_otherincomes('unit_net', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
-        $stats['sum_unit_tax'] = sum_otherincomes('unit_tax', $start_date, $end_date, $tax_system, null, null, null, $employee_id);       
-        $stats['sum_unit_gross'] = sum_otherincomes('unit_gross', $start_date, $end_date, $tax_system, null, null, null, $employee_id);                   
-        $stats['sum_balance'] = sum_otherincomes('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id);
+        $stats['count_items'] = count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_net'] = sum_otherincomes('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
+        $stats['sum_unit_tax'] = sum_otherincomes('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);       
+        $stats['sum_unit_gross'] = sum_otherincomes('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);                   
+        $stats['sum_balance'] = sum_otherincomes('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
 
         // Adjust for Cancelled records  
-        $stats['count_items'] -= count_otherincomes($start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_net'] -= sum_otherincomes('unit_net', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_tax'] -= sum_otherincomes('unit_tax', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);       
-        $stats['sum_unit_gross'] -= sum_otherincomes('unit_gross', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_balance'] -= sum_otherincomes('balance', $start_date, $end_date, $tax_system, null, null, 'cancelled', $employee_id);        
+        $stats['count_items'] -= count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_net'] -= sum_otherincomes('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_tax'] -= sum_otherincomes('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);       
+        $stats['sum_unit_gross'] -= sum_otherincomes('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_balance'] -= sum_otherincomes('balance', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);        
         
     }     
        
@@ -1415,7 +1534,7 @@ function get_otherincomes_stats($record_set, $start_date = null, $end_date = nul
 #     Count Other Incomes               #
 #########################################
 
-function count_otherincomes($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
+function count_otherincomes($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1423,9 +1542,7 @@ function count_otherincomes($start_date = null, $end_date = null, $tax_system = 
     $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
         
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= otherincome_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -1442,10 +1559,8 @@ function count_otherincomes($start_date = null, $end_date = null, $tax_system = 
         $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$db->qstr($item_type);
     }
     
-    // Filter by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."otherincome_records.status = ".$db->qstr($status);                       
-    }
+    // Restrict by Status
+    $whereTheseRecords .= otherincome_build_filter_by_status($status);
 
     // Filter by Employee
     if($employee_id) {
@@ -1472,7 +1587,7 @@ function count_otherincomes($start_date = null, $end_date = null, $tax_system = 
 #  Sum selected value of Other Incomes  #
 #########################################
 
-function sum_otherincomes($value_name, $start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
+function sum_otherincomes($value_name, $start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $item_type = null, $status = null, $employee_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1480,9 +1595,7 @@ function sum_otherincomes($value_name, $start_date = null, $end_date = null, $ta
     $whereTheseRecords = "WHERE ".PRFX."otherincome_records.otherincome_id\n";  
         
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= otherincome_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -1499,10 +1612,8 @@ function sum_otherincomes($value_name, $start_date = null, $end_date = null, $ta
         $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type=".$db->qstr($item_type);
     }
     
-    // Filter by Status
-    if($status) {
-        $whereTheseRecords .= " AND ".PRFX."otherincome_records.status = ".$db->qstr($status);                       
-    }
+    // Restrict by Status
+    $whereTheseRecords .= otherincome_build_filter_by_status($status);
 
     // Filter by Employee
     if($employee_id) {
@@ -1520,6 +1631,58 @@ function sum_otherincomes($value_name, $start_date = null, $end_date = null, $ta
         return $rs->fields['sum'];
         
     }   
+    
+}
+
+########################################
+#   Build otherincome Date filter SQL  #
+########################################
+
+function otherincome_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($start_date && $end_date && $date_type) {
+        if($date_type == 'opened') {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'closed') {       
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'active') {       
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif($date_type == 'date') {       
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.date <= ".$db->qstr($end_date);
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
+#########################################
+#  Build otherincome Status filter SQL  #
+#########################################
+
+function otherincome_build_filter_by_status($status = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($status) {   
+        if($status == 'open') {            
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on = '0000-00-00 00:00:00'";                  
+        } elseif($status == 'opened') {            
+            // Do nothing                 
+        } elseif($status == 'closed') {            
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on != '0000-00-00 00:00:00'"; 
+        } else {            
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$db->qstr($status);            
+        }
+    }
+        
+    return $whereTheseRecords;
     
 }
 

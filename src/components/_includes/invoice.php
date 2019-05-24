@@ -228,7 +228,7 @@ function insert_invoice($client_id, $workorder_id, $unit_discount_rate) {
     
     $db = QFactory::getDbo();
     
-    // Get current timestamp
+    // Unify Dates and Times
     $timestamp = time();
     
     // Get invoice tax type
@@ -893,12 +893,17 @@ function update_invoice_status($invoice_id, $new_status) {
         return false;
     }    
     
-    $sql = "UPDATE ".PRFX."invoice_records SET \n";
+    // Set the appropriate employee_id
+    $employee_id = ($new_status == 'unassigned') ? '' : $invoice_details['employee_id'];
     
-    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }  // when unassigned there should be no employee the '\n' makes sql look neater
+    // Set the appropriate closed_on date
+    $closed_on = ($new_status == 'closed') ? mysql_datetime() : '0000-00-00 00:00:00';
     
-    $sql .="status              =". $db->qstr( $new_status  )."            
-            WHERE invoice_id    =". $db->qstr( $invoice_id  );
+    $sql = "UPDATE ".PRFX."invoice_records SET   
+            employee_id         =". $db->qstr( $employee_id     ).",
+            status              =". $db->qstr( $new_status      ).",
+            closed_on           =". $db->qstr( $closed_on       )."  
+            WHERE invoice_id    =". $db->qstr( $invoice_id      );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an Invoice Status."));

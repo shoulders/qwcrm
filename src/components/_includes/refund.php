@@ -172,8 +172,8 @@ function insert_refund($VAR) {
             unit_tax         =". $db->qstr( $VAR['unit_tax']                ).",
             unit_gross       =". $db->qstr( $VAR['unit_gross']              ).",
             balance          =". $db->qstr( $VAR['unit_gross']              ).",
-            last_active      =". $db->qstr( mysql_datetime()                ).",   
-            status           =". $db->qstr( 'unpaid'                        ).",
+            status           =". $db->qstr( 'unpaid'                        ).",   
+            opened_on        =". $db->qstr( mysql_datetime()                ).",                        
             note             =". $db->qstr( $VAR['note']                    );
 
     if(!$rs = $db->Execute($sql)) {
@@ -356,9 +356,17 @@ function update_refund_status($refund_id, $new_status, $silent = false) {
         return false;
     }    
     
+    // Unify Dates and Times
+    $datetime = mysql_datetime();
+    
+    // Set the appropriate closed_on date
+    $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
+    
     $sql = "UPDATE ".PRFX."refund_records SET
-            status             =". $db->qstr( $new_status  )."            
-            WHERE refund_id    =". $db->qstr( $refund_id );
+            status             =". $db->qstr( $new_status   ).",
+            closed_on          =". $db->qstr( $closed_on    ).",
+            last_active        =". $db->qstr( $datetime     )." 
+            WHERE refund_id    =". $db->qstr( $refund_id    );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an refund Status."));
@@ -483,8 +491,10 @@ function delete_refund($refund_id) {
             unit_tax            = '0.00',
             unit_gross          = '0.00',
             balance             = '0.00',
+            status              = 'deleted', 
             last_active         = '0000-00-00 00:00:00',
-            status              = 'deleted',             
+            opened_on           = '0000-00-00 00:00:00',
+            closed_on           = '0000-00-00 00:00:00',
             note                = ''
             WHERE refund_id    =". $db->qstr($refund_details['refund_id']);
     

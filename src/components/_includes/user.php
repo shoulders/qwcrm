@@ -207,11 +207,8 @@ function insert_user($VAR) {
         // Get user_id
         $user_id = $db->Insert_ID();
         
-        // Update last active record
-        // - update_user_last_active($user_id);
-        if($VAR['client_id']) {
-            update_client_last_active($VAR['client_id']);
-        }
+        // Update last active record        
+        update_client_last_active($VAR['client_id']);        
         
         // Log activity
         if($VAR['client_id']) {
@@ -449,18 +446,16 @@ function update_user($VAR) {
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
-    } else{
+    } else {
         
         // Reset user password if required
-        if($VAR['password'] != '') {
+        if($VAR['password']) {
             reset_user_password($VAR['user_id'], $VAR['password']);
         }
         
         // Update last active record
-        // - update_user_last_active($user_id);
-        if(get_user_details($VAR['user_id'], 'client_id')) {
-            update_client_last_active($VAR['client_id']);
-        }
+        update_user_last_active($VAR['user_id']);
+        update_client_last_active(get_user_details($VAR['user_id'], 'client_id'));        
         
         // Log activity        
         $record = _gettext("User Account").' '.$VAR['user_id'].' ('.get_user_details($VAR['user_id'], 'display_name').') '._gettext("updated.");
@@ -560,9 +555,7 @@ function delete_user($user_id) {
     write_record_to_activity_log($record, $user_id);
 
     // Update last active record
-    if($user_details['client_id']) {
-        update_client_last_active($user_details['client_id']);
-    }
+    update_client_last_active($user_details['client_id']);    
         
     return true;
     
@@ -745,11 +738,9 @@ function reset_user_password($user_id, $password = null) {
         write_record_to_activity_log($record, $user_id);
         
         // Update last active record
-        // - update_user_last_active($user_id);
-        if(get_user_details($user_id, 'client_id')) {
-            update_client_last_active(get_user_details($user_id, 'client_id'));
-        }
-        
+        update_user_last_active($user_id);
+        update_client_last_active(get_user_details($user_id, 'client_id'));
+                
         return;
         
     }      
@@ -842,16 +833,10 @@ function login($VAR, $credentials, $options = array())
 
         // Log activity       
         $record = _gettext("Login successful for").' '.$user->login_username.'.';
-        write_record_to_activity_log($record, $user->login_user_id);
+        write_record_to_activity_log($record, $user->login_user_id);        
         
-        
-        // Update last active record
-        /*if($user->login_user_id) {            
-            update_user_last_active($user->login_user_id);
-        }*/   
-        if($user->login_client_id) {            
-            update_client_last_active($user->login_client_id);
-        }
+        // Update last active record        
+        update_client_last_active($user->login_client_id);        
 
         // set success message to survice the login event
         postEmulationWrite('information_msg', _gettext("Login successful."));
@@ -890,12 +875,9 @@ function logout($silent = null)
     write_record_to_activity_log($record, $user->login_user_id);
     
     // Update last active record 
-    /*if($user->login_user_id) {            
-        update_user_last_active($user->login_user_id);
-    }*/
-    if($user->login_client_id) {            
-        update_client_last_active($user->login_client_id);
-    }
+    //update_user_last_active($user->login_user_id);
+    update_client_last_active($user->login_client_id);
+    
 
     // Action after logout
     if($silent) {

@@ -148,8 +148,8 @@ function insert_otherincome($VAR) {
             unit_tax_rate    =". $db->qstr( $VAR['unit_tax_rate']           ).",
             unit_tax         =". $db->qstr( $VAR['unit_tax']                ).",
             unit_gross       =". $db->qstr( $VAR['unit_gross']              ).",
-            last_active      =". $db->qstr( mysql_datetime()                ).",
-            status           =". $db->qstr( 'unpaid'                        ).",
+            status           =". $db->qstr( 'unpaid'                        ).",            
+            opened_on        =". $db->qstr( mysql_datetime()                ).",            
             items            =". $db->qstr( $VAR['items']                   ).",
             note             =". $db->qstr( $VAR['note']                    );
 
@@ -318,9 +318,17 @@ function update_otherincome_status($otherincome_id, $new_status, $silent = false
         return false;
     }    
     
+    // Unify Dates and Times
+    $datetime = mysql_datetime();
+    
+    // Set the appropriate closed_on date
+    $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
+    
     $sql = "UPDATE ".PRFX."otherincome_records SET
-            status               =". $db->qstr( $new_status  )."            
-            WHERE otherincome_id    =". $db->qstr( $otherincome_id );
+            status             =". $db->qstr( $new_status   ).",
+            closed_on          =". $db->qstr( $closed_on    ).",
+            last_active        =". $db->qstr( $datetime     )." 
+            WHERE otherincome_id =". $db->qstr( $otherincome_id );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an otherincome Status."));
@@ -392,8 +400,10 @@ function delete_otherincome($otherincome_id) {
         unit_tax            = '0.00',
         unit_gross          = '0.00',
         balance             = '0.00',
-        last_active         = '0000-00-00 00:00:00',
         status              = 'deleted', 
+        opened_on           = '0000-00-00 00:00:00',
+        closed_on           = '0000-00-00 00:00:00',
+        last_active         = '0000-00-00 00:00:00',
         items               = '',
         note                = ''
         WHERE otherincome_id =". $db->qstr($otherincome_id);

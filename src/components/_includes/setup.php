@@ -34,7 +34,7 @@ class QSetup {
     public function __construct(&$VAR) {
         
         $this->smarty = QFactory::getSmarty();
-                
+        
         // Prevent undefined variable errors && Get 'stage' from the submit button
         $VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
         $this->smarty->assign('stage', $VAR['stage']);

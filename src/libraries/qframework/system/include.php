@@ -1264,7 +1264,7 @@ function date_to_mysql_date($date_to_convert, $date_format = null) {
 }
 
 ##################################################
-#   Get current date in MySQL DATE Format        #  // Is this used
+#   Get current date in MySQL DATE Format        #  // gives current datetime unless a timstamp is used then that is converted
 ##################################################
 
 function mysql_date($timestamp = null) {       
@@ -1273,12 +1273,12 @@ function mysql_date($timestamp = null) {
     //(new DateTime('now'))->format('Y-m-d H:i:s');    
     //date('Y-m-d', time());  // The time() argument is redundant for current time
     
-    return date('Y-m-d', $timestamp);
-      
+    return is_null($timestamp) ? date('Y-m-d') : date('Y-m-d', $timestamp);
+ 
 }
 
 ##################################################
-#   Get current time in MySQL DATETIME Format    #
+#   Get current time in MySQL DATETIME Format    #  // gives current datetime unless a timstamp is used then that is converted
 ##################################################
 
 function mysql_datetime($timestamp = null) {       
@@ -1286,8 +1286,8 @@ function mysql_datetime($timestamp = null) {
     // These do the same job and are for reference
     //(new DateTime('now'))->format('Y-m-d H:i:s');    
     //date('Y-m-d H:i:s', time());  // the time() argument is redundant for current time
-    
-    return date('Y-m-d H:i:s', $timestamp);
+        
+    return is_null($timestamp) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s', $timestamp);
       
 }
 

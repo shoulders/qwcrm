@@ -166,6 +166,7 @@ function insert_supplier($VAR) {
             zip            =". $db->qstr( $VAR['zip']           ).",
             country        =". $db->qstr( $VAR['country']       ).",
             status         =". $db->qstr( 'valid'               ).",
+            opened_on      =". $db->qstr( mysql_datetime()      ).", 
             description    =". $db->qstr( $VAR['description']   ).", 
             note           =". $db->qstr( $VAR['note']          );            
 
@@ -322,6 +323,7 @@ function update_supplier($VAR) {
             state          =". $db->qstr( $VAR['state']         ).",
             zip            =". $db->qstr( $VAR['zip']           ).",
             country        =". $db->qstr( $VAR['country']       ).",
+            last_active    =". $db->qstr( mysql_datetime()      ).",
             description    =". $db->qstr( $VAR['description']   ).", 
             note           =". $db->qstr( $VAR['note']          )."
             WHERE supplier_id = ". $db->qstr( $VAR['supplier_id'] );                        
@@ -357,9 +359,17 @@ function update_supplier_status($supplier_id, $new_status, $silent = false) {
         return false;
     }    
     
+    // Unify Dates and Times
+    $datetime = mysql_datetime();
+    
+    // Set the appropriate closed_on date
+    $closed_on = ($new_status == 'closed') ? $datetime : '0000-00-00 00:00:00';
+    
     $sql = "UPDATE ".PRFX."supplier_records SET
-            status               =". $db->qstr( $new_status  )."            
-            WHERE supplier_id    =". $db->qstr( $supplier_id );
+            status             =". $db->qstr( $new_status   )."
+            closed_on          =". $db->qstr( $closed_on    )." 
+            last_active        =". $db->qstr( $datetime     )." 
+            WHERE supplier_id  =". $db->qstr( $supplier_id  );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
@@ -460,13 +470,13 @@ function last_supplier_id_lookup() {
 }
 
 ###########################################################
-#  Check if the supplier status is allowed to be changed  #  // this is mainly a placeholder and not really used
+#  Check if the supplier status is allowed to be changed  #  // not currently used
 ###########################################################
 
  function check_supplier_status_can_be_changed($supplier_id) {
      
     // Get the supplier details
-    $supplier_details = get_supplier_details($supplier_id); 
+    //$supplier_details = get_supplier_details($supplier_id); 
     
     /* Is cancelled
     if($supplier_details['status'] == 'cancelled') {
@@ -521,7 +531,7 @@ function check_supplier_can_be_deleted($supplier_id) {
 }
 
 ##########################################################
-#  Check if the supplier status allows editing           #  // This is really just a placeholder for now 
+#  Check if the supplier status allows editing           #  // not currently used
 ##########################################################
 
  function check_supplier_can_be_edited($supplier_id) {

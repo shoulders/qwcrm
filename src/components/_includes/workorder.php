@@ -512,7 +512,7 @@ function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
     // if the string is not long enough so dont bother with a DB lookup
     if(strlen($scope_string) < $return_count) { return; }
     
-    // These SQL statements werre derived from https://stackoverflow.com/questions/19462919/mysql-select-distinct-should-be-case-sensitive
+    // These SQL statements were derived from https://stackoverflow.com/questions/19462919/mysql-select-distinct-should-be-case-sensitive
     
     /* This search removes case insensitive duplicates from the results i.e. 'chicken', 'CHICKEN' would return only 'chicken'
     $sql = "SELECT
@@ -699,12 +699,16 @@ function update_workorder_status($workorder_id, $new_status) {
         return false;
     }
     
-    $sql = "UPDATE ".PRFX."workorder_records SET \n";
+    // Set the appropriate employee_id
+    $employee_id = ($new_status == 'unassigned') ? '' : $workorder_details['employee_id'];
     
-    // when unassigned there should be no employee the '\n' makes sql look neater
-    if ($new_status == 'unassigned') { $sql .= "employee_id = '',\n"; }
+    // Set the appropriate closed_on date
+    $closed_on = ($new_status == 'closed') ? mysql_datetime() : '0000-00-00 00:00:00';
     
-    $sql .="status              =". $db->qstr( $new_status      )."            
+    $sql = "UPDATE ".PRFX."workorder_records SET   
+            employee_id         =". $db->qstr( $employee_id     ).",
+            status              =". $db->qstr( $new_status      ).",
+            closed_on           =". $db->qstr( $closed_on       )."  
             WHERE workorder_id  =". $db->qstr( $workorder_id    );
 
     if(!$rs = $db->Execute($sql)) {
@@ -748,7 +752,7 @@ function update_workorder_status($workorder_id, $new_status) {
 }
 
 ###################################
-# Update Workorder Closed Status  #
+# Update Workorder Closed Status  #  // This should be moved to update_workorder_status()
 ###################################
 
 function update_workorder_closed_status($workorder_id, $new_closed_status) {

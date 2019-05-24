@@ -152,8 +152,8 @@ function insert_expense($VAR) {
             unit_tax_rate   =". $db->qstr( $VAR['unit_tax_rate']           ).",
             unit_tax        =". $db->qstr( $VAR['unit_tax']                ).",
             unit_gross      =". $db->qstr( $VAR['unit_gross'  ]            ).",
-            last_active     =". $db->qstr( mysql_datetime()                ).",   
-            status          =". $db->qstr( 'unpaid'                        ).",    
+            status          =". $db->qstr( 'unpaid'                        ).",            
+            opened_on       =". $db->qstr( mysql_datetime()                ).",              
             items           =". $db->qstr( $VAR['items']                   ).",
             note            =". $db->qstr( $VAR['note']                    );            
 
@@ -344,9 +344,17 @@ function update_expense_status($expense_id, $new_status, $silent = false) {
         return false;
     }    
     
+    // Unify Dates and Times
+    $datetime = mysql_datetime();
+    
+    // Set the appropriate closed_on date
+    $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
+    
     $sql = "UPDATE ".PRFX."expense_records SET
-            status               =". $db->qstr( $new_status  )."            
-            WHERE expense_id     =". $db->qstr( $expense_id );
+            status             =". $db->qstr( $new_status   ).",
+            closed_on          =". $db->qstr( $closed_on    ).",
+            last_active        =". $db->qstr( $datetime     )."
+            WHERE expense_id   =". $db->qstr( $expense_id   );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an Expense Status."));
@@ -402,10 +410,14 @@ function cancel_expense($expense_id) {
     // Change the expense status to cancelled (I do this here to maintain consistency)
     update_expense_status($expense_id, 'cancelled');      
         
-    /* Create a Workorder History Note  
-    insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
+    /*Create a Workorder History Note  
+    insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');*/
 
     // Log activity        
+    $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
+    write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+        
+    /* Log activity        
     $record = _gettext("Expense").' '.$expense_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
     write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $expense_details['invoice_id']);
     
@@ -449,8 +461,10 @@ function delete_expense($expense_id) {
             unit_tax            = '0.00',
             unit_gross          = '0.00',
             balance             = '0.00',
-            last_active         = '0000-00-00 00:00:00',
             status              = 'deleted', 
+            opened_on           = '0000-00-00 00:00:00',
+            closed_on           = '0000-00-00 00:00:00',
+            last_active         = '0000-00-00 00:00:00',
             items               = '',
             note                = ''
             WHERE expense_id    =". $db->qstr($expense_id);
@@ -460,9 +474,13 @@ function delete_expense($expense_id) {
     } else {
         
         /* Create a Workorder History Note  
-        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
+        insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');*/
 
         // Log activity        
+        $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
+                
+        /* Log activity        
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("deleted.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_id);
         
@@ -499,13 +517,16 @@ function last_expense_id_lookup() {
     
 }
 
+#####################################
+#   Recalculate Expense Totals      #
+#####################################
+
 function recalculate_expense_totals($expense_id) {
     
     $db = QFactory::getDbo();
     
     $expense_details            = get_expense_details($expense_id);    
-    
-    $unit_gross               = $expense_details['unit_gross'];   
+    $unit_gross                 = $expense_details['unit_gross'];   
     $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'expense', null, null, null, null, null, $expense_id);
     $balance                    = $unit_gross - $payments_sub_total;
 

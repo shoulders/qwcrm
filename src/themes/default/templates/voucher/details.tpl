@@ -103,16 +103,24 @@
                                             <td>{$currency_sym}{$voucher_details.unit_gross|string_format:"%.2f"}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Created on{/t}</b></td>
+                                            <td><b>{t}Opened On{/t}</b></td>
                                             <td>{$voucher_details.opened_on|date_format:$date_format}</td>
                                         </tr>                                        
                                         <tr>
-                                            <td><b>{t}Expires{/t}</b></td>
+                                            <td><b>{t}Expires On{/t}</b></td>
                                             <td>{$voucher_details.expiry_date|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
-                                            <td><b>{t}Redeemed on{/t}</b></td>
+                                            <td><b>{t}Redeemed On{/t}</b></td>
                                             <td>{$voucher_details.redeemed_on|date_format:$date_format}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{t}Closed On{/t}</b></td>
+                                            <td>{$voucher_details.redeemed_on|date_format:$date_format}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>{t}Last Active{/t}</b></td>
+                                            <td>{$voucher_details.last_active|date_format:$date_format}</td>
                                         </tr>
                                         <tr>
                                             <td><b>{t}Status{/t}</b></td>
