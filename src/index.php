@@ -10,14 +10,15 @@
 #   PHP Configuration                           #
 #################################################
 
-// Define the application's minimum AND MAXIMUM supported PHP version as a constant so it can be referenced within the application.
+// Define QWcrm Minimum and Maximum PHP versions
 define('QWCRM_MINIMUM_PHP', '5.6.21');
 define('QWCRM_MAXIMUM_PHP', '7.1.29');
 
-// Check the PHP version is within compatable range
+// Check the PHP version is within the compatible range
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run. Your current version is '.PHP_VERSION);
-} elseif (version_compare(PHP_VERSION, QWCRM_MAXIMUM_PHP, '>')) {
+}
+if (version_compare(PHP_VERSION, QWCRM_MAXIMUM_PHP, '>')) {
     die('QWcrm requires a PHP version lower than '.QWCRM_MAXIMUM_PHP.' to run. Your current version is '.PHP_VERSION);
 }
 
@@ -91,7 +92,7 @@ $BuildPage = get_page_content($page_controller, $startTime, $VAR);
 
 // Update the Logged in User's Last Active Times
 if(!defined('QWCRM_SETUP')) {    
-    update_user_last_active(QFactory::getUser()->get('login_user_id'));    
+    update_user_last_active(QFactory::getUser()->login_user_id);    
 }
 
 // Access Logging

@@ -875,7 +875,7 @@ function logout($silent = null)
     write_record_to_activity_log($record, $user->login_user_id);
     
     // Update last active record 
-    //update_user_last_active($user->login_user_id);
+    update_user_last_active($user->login_user_id);
     update_client_last_active($user->login_client_id);
     
 
