@@ -908,21 +908,16 @@ ALTER TABLE `#__client_records` CHANGE `create_date` `opened_on` DATETIME NOT NU
 ALTER TABLE `#__client_records` CHANGE `last_active` `last_active` DATETIME NOT NULL AFTER `opened_on`;
 ALTER TABLE `#__client_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
 
--- above changes, below will be adding new fields
-
-ALTER TABLE `qw_refund_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
-ALTER TABLE `qw_refund_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
-ALTER TABLE `qw_refund_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
-
-ALTER TABLE `qw_expense_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
-ALTER TABLE `qw_expense_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
-ALTER TABLE `qw_expense_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
-
-ALTER TABLE `qw_otherincome_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
-ALTER TABLE `qw_otherincome_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
-ALTER TABLE `qw_otherincome_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
-
-ALTER TABLE `qw_supplier_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
-ALTER TABLE `qw_supplier_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
-ALTER TABLE `qw_supplier_records` ADD `last_active` DATETIME NOT NULL AFTER `closed_on`;
+ALTER TABLE `#__refund_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
+ALTER TABLE `#__refund_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
+ALTER TABLE `#__refund_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
+ALTER TABLE `#__expense_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
+ALTER TABLE `#__expense_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
+ALTER TABLE `#__expense_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
+ALTER TABLE `#__otherincome_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
+ALTER TABLE `#__otherincome_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
+ALTER TABLE `#__otherincome_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
+ALTER TABLE `#__supplier_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
+ALTER TABLE `#__supplier_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
+ALTER TABLE `#__supplier_records` ADD `last_active` DATETIME NOT NULL AFTER `closed_on`;
 
