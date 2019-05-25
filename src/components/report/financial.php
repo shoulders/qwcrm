@@ -21,7 +21,7 @@ require(INCLUDES_DIR.'workorder.php');
 
 if(isset($VAR['submit'])) {
 
-    // Get the company VAT FLAT RATE
+    // Get the company VAT Flat Rate
     $vat_flat_rate = get_company_details('vat_flat_rate');
         
     // Update all Voucher expiry statuses
