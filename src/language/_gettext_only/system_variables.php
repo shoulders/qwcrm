@@ -53,7 +53,8 @@ _gettext("Deleted");
 /* Expense Types */
 _gettext("Bank Charges");
 _gettext("Credit");
-_gettext("Client Refund");
+_gettext("Commission");
+_gettext("Consumables");
 _gettext("Equipment");
 _gettext("Fuel");
 _gettext("Marketing");
