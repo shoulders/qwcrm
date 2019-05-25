@@ -152,8 +152,8 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
          
         $stats['count_open'] = count_workorders($start_date, $end_date, 'opened_on', 'open', $employee_id, $client_id);
         $stats['count_opened'] = count_workorders($start_date, $end_date, 'opened_on', 'opened', $employee_id, $client_id);         
-        $stats['count_closed'] = count_workorders($start_date, $end_date, 'opened_on', 'closed', $employee_id, $client_id);
-        $stats['count_deleted'] = count_workorders($start_date, $end_date, 'opened_on', 'deleted', $employee_id, $client_id);   // Only used on basic stats
+        $stats['count_closed'] = count_workorders($start_date, $end_date, 'closed_on', 'closed', $employee_id, $client_id);
+        $stats['count_deleted'] = count_workorders(null, null, null, 'deleted', $employee_id, $client_id);   // Only used on basic stats
     
     }    
     
@@ -304,12 +304,12 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['count_pending'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'pending', $employee_id, $client_id);  
         $stats['count_unpaid'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'unpaid', $employee_id, $client_id); 
         $stats['count_partially_paid'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'partially_paid', $employee_id, $client_id);  
-        $stats['count_paid'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'paid', $employee_id, $client_id);   
+        $stats['count_paid'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'paid', $employee_id, $client_id);   
         $stats['count_in_dispute'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'in_dispute', $employee_id, $client_id);  
         $stats['count_overdue'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'overdue', $employee_id, $client_id);
         $stats['count_collections'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'collections', $employee_id, $client_id);  
-        $stats['count_refunded'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'refunded', $employee_id, $client_id);
-        $stats['count_cancelled'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['count_refunded'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'refunded', $employee_id, $client_id);
+        $stats['count_cancelled'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
     
     }
        
@@ -349,8 +349,8 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_in_dispute_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'in_dipute', $employee_id, $client_id);
         $stats['sum_overdue_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'overdue', $employee_id, $client_id);
         $stats['sum_collections_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'collections', $employee_id, $client_id);
-        $stats['sum_refunded_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'refunded', $employee_id, $client_id);
-        $stats['sum_cancelled_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);        
+        $stats['sum_refunded_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'refunded', $employee_id, $client_id);
+        $stats['sum_cancelled_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);        
         $stats['sum_open_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'open', $employee_id, $client_id);
         $stats['sum_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
         $stats['sum_opened_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'opened_on', $tax_system, null, 'opened', $employee_id, $client_id);
@@ -358,12 +358,12 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_closed_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
         
         // Adjust for Cancelled records    
-        $stats['sum_unit_discount'] -= sum_invoices('unit_discount', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id); 
-        $stats['sum_unit_net'] -= sum_invoices('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_tax'] -= sum_invoices('unit_tax', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);        
-        $stats['sum_unit_gross'] -= sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_paid'] -= sum_invoices('unit_paid', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_balance'] -= sum_invoices('balance', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_discount'] -= sum_invoices('unit_discount', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id); 
+        $stats['sum_unit_net'] -= sum_invoices('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_tax'] -= sum_invoices('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);        
+        $stats['sum_unit_gross'] -= sum_invoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_paid'] -= sum_invoices('unit_paid', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_balance'] -= sum_invoices('balance', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
         
     }
        
@@ -377,11 +377,11 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['labour_sum_sub_total_gross'] = sum_labour_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
         
         // Adjust for Cancelled records  
-        $stats['labour_count_items'] -= count_labour_items($start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['labour_sum_items'] -= sum_labour_items('unit_qty', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['labour_sum_sub_total_net'] -= sum_labour_items('sub_total_net', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['labour_sum_sub_total_tax'] -= sum_labour_items('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['labour_sum_sub_total_gross'] -= sum_labour_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);        
+        $stats['labour_count_items'] -= count_labour_items($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_items'] -= sum_labour_items('unit_qty', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_sub_total_net'] -= sum_labour_items('sub_total_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_sub_total_tax'] -= sum_labour_items('sub_total_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['labour_sum_sub_total_gross'] -= sum_labour_items('sub_total_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);        
        
     }
     
@@ -395,11 +395,11 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['parts_sum_sub_total_gross'] = sum_parts_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
     
         // Adjust for Cancelled records  
-        $stats['parts_count_items'] -= count_parts_items($start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['parts_sum_items'] -= sum_parts_items('unit_qty', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['parts_sum_sub_total_net'] -= sum_parts_items('sub_total_net', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['parts_sum_sub_total_tax'] -= sum_parts_items('sub_total_tax', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
-        $stats['parts_sum_sub_total_gross'] -= sum_parts_items('sub_total_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_count_items'] -= count_parts_items($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_items'] -= sum_parts_items('unit_qty', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_sub_total_net'] -= sum_parts_items('sub_total_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_sub_total_tax'] -= sum_parts_items('sub_total_tax', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['parts_sum_sub_total_gross'] -= sum_parts_items('sub_total_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
         
     }   
     
@@ -522,16 +522,16 @@ function invoice_build_filter_by_date($start_date = null, $end_date = null, $dat
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened_on') {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed_on') {       
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'last_active') {       
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'date') {       
+        if ($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
-        } elseif($date_type == 'due_date') {       
+        } elseif ($date_type == 'due_date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$db->qstr($end_date);
+        } elseif ($date_type == 'opened_on') {
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'closed_on') {       
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'last_active') {       
+            $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         }
     }
         
@@ -808,22 +808,22 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
     // Current
     if($record_set == 'current' || $record_set == 'all') {
     
-        $stats['count_open'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'open', $employee_id, $client_id);
-        $stats['count_unused'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'unused', $employee_id, $client_id);
-        $stats['count_redeemed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-        $stats['count_suspended'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'suspended', $employee_id, $client_id);           
-        $stats['count_expired'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'expired', $employee_id, $client_id);
-        $stats['count_refunded'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'refunded', $employee_id, $client_id);
-        $stats['count_cancelled'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'cancelled', $employee_id, $client_id);                                
+        $stats['count_open'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'open', $employee_id, $client_id);
+        $stats['count_unused'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'unused', $employee_id, $client_id);
+        $stats['count_redeemed'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+        $stats['count_suspended'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'suspended', $employee_id, $client_id);           
+        $stats['count_expired'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['count_refunded'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'refunded', $employee_id, $client_id);
+        $stats['count_cancelled'] = count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);                                
 
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {       
                              
-        $stats['count_opened'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'opened', $employee_id, $client_id);
-        $stats['count_closed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'closed', $employee_id, $client_id);            
-        $stats['count_claimed'] = count_vouchers($start_date, $end_date, null, $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else  
+        $stats['count_opened'] = count_vouchers($start_date, $end_date, 'opened_on', $tax_system, null, null, 'opened', $employee_id, $client_id);
+        $stats['count_closed'] = count_vouchers($start_date, $end_date, 'closed_on', $tax_system, null, null, 'closed', $employee_id, $client_id);            
+        $stats['count_claimed'] = count_vouchers($start_date, $end_date, 'closed_on', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else  
     
     }  
        
@@ -834,12 +834,12 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_unit_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
         $stats['sum_unit_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
         $stats['sum_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);        
-        $stats['sum_redeemed_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-        $stats['sum_redeemed_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
-        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);         
-        $stats['sum_expired_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
-        $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
-        $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['sum_redeemed_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+        $stats['sum_redeemed_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
+        $stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'redeemed', $employee_id, $client_id);         
+        $stats['sum_expired_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'expired', $employee_id, $client_id);
+        $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'expired', $employee_id, $client_id);
         
         // Only used for VAT flat rate calculations - i needed to exclude MPV vouchers from profit calculations
         $stats['sum_voucher_mpv_unit_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', null, $employee_id, $client_id);
@@ -849,19 +849,19 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         //$stats['sum_redeemed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'redeemed', $employee_id, $client_id);
         $stats['sum_suspended_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'suspended', $employee_id, $client_id);         
         //$stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'expired', $employee_id, $client_id);
-        $stats['sum_refunded_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'refunded', $employee_id, $client_id);
-        $stats['sum_cancelled_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
+        $stats['sum_refunded_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'refunded', $employee_id, $client_id);
+        $stats['sum_cancelled_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id); 
         $stats['sum_open_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'open', $employee_id, $client_id);
         $stats['sum_opened_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'opened', $employee_id, $client_id);
-        $stats['sum_closed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'closed', $employee_id, $client_id);
-        $stats['sum_claimed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
+        $stats['sum_closed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'closed', $employee_id, $client_id);
+        $stats['sum_claimed_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'claimed', $employee_id, $client_id);  // This is where the client has used a Voucher from someone else
                      
         // Adjust for Cancelled records  
-        $stats['count_items'] -= count_vouchers($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);    
-        $stats['sum_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_tax'] -= sum_vouchers('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);            
-        $stats['sum_voucher_mpv_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', 'cancelled', $employee_id, $client_id);        
+        $stats['count_items'] -= count_vouchers($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);    
+        $stats['sum_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_tax'] -= sum_vouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);            
+        $stats['sum_voucher_mpv_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'multi_purpose', 'cancelled', $employee_id, $client_id);        
         
     }
        
@@ -1038,18 +1038,18 @@ function voucher_build_filter_by_date($start_date = null, $end_date = null, $dat
         
     if($start_date && $end_date) {
         
-        if($date_type == 'opened_on') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type== 'expiry') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'redeemed_on') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.redeemed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed_on') {
-            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'date') {       
+        if($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
-        } elseif($date_type == 'due_date') {       
+        } elseif ($date_type == 'due_date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$db->qstr($end_date);
+        } elseif ($date_type == 'opened_on') {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type== 'expiry') {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'redeemed_on') {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.redeemed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'closed_on') {
+            $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
         }
         
     }
@@ -1093,14 +1093,14 @@ function get_refunds_stats($record_set, $start_date = null, $end_date = null, $t
         $stats['sum_unit_net'] = sum_refunds('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
         $stats['sum_unit_tax'] = sum_refunds('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);           
         $stats['sum_unit_gross'] = sum_refunds('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);                   
-        $stats['sum_balance'] = sum_refunds('balance', $start_date, $end_date, $tax_system, null, null, null, $employee_id, $client_id);
+        $stats['sum_balance'] = sum_refunds('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id, $client_id);
     
         // Adjust for Cancelled records  
-        $stats['count_items'] -= count_refunds($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_net'] -= sum_refunds('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_unit_tax'] -= sum_refunds('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);           
-        $stats['sum_unit_gross'] -= sum_refunds('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
-        $stats['sum_balance'] -= sum_refunds('balance', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id, $client_id);        
+        $stats['count_items'] -= count_refunds($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_net'] -= sum_refunds('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_unit_tax'] -= sum_refunds('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);           
+        $stats['sum_unit_gross'] -= sum_refunds('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
+        $stats['sum_balance'] -= sum_refunds('balance', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);        
         
     }     
        
@@ -1233,14 +1233,14 @@ function refund_build_filter_by_date($start_date = null, $end_date = null, $date
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened_on') {
-            $whereTheseRecords .= " AND ".PRFX."refund_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed_on') {       
-            $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'last_active') {       
-            $whereTheseRecords .= " AND ".PRFX."refund_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'date') {       
+        if ($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
+        } elseif ($date_type == 'opened_on') {
+            $whereTheseRecords .= " AND ".PRFX."refund_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'closed_on') {       
+            $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'last_active') {       
+            $whereTheseRecords .= " AND ".PRFX."refund_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         }
     }
         
@@ -1304,11 +1304,11 @@ function get_expenses_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_balance'] = sum_expenses('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
         
         // Adjust for Cancelled records  
-        $stats['count_items'] -= count_expenses($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_net'] -= sum_expenses('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_tax'] -= sum_expenses('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);       
-        $stats['sum_unit_gross'] -= sum_expenses('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_balance'] -= sum_expenses('balance', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);   
+        $stats['count_items'] -= count_expenses($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_net'] -= sum_expenses('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_tax'] -= sum_expenses('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);       
+        $stats['sum_unit_gross'] -= sum_expenses('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_balance'] -= sum_expenses('balance', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);   
         
     }        
        
@@ -1437,14 +1437,15 @@ function expense_build_filter_by_date($start_date = null, $end_date = null, $dat
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened_on') {
-            $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed_on') {       
-            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'last_active') {       
-            $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'date') {       
+        
+        if ($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.date <= ".$db->qstr($end_date);
+        } elseif ($date_type == 'opened_on') {
+            $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'closed_on') {       
+            $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'last_active') {       
+            $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         }
     }
         
@@ -1516,11 +1517,11 @@ function get_otherincomes_stats($record_set, $start_date = null, $end_date = nul
         $stats['sum_balance'] = sum_otherincomes('balance', $start_date, $end_date, 'date', $tax_system, null, null, null, $employee_id);
 
         // Adjust for Cancelled records  
-        $stats['count_items'] -= count_otherincomes($start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_net'] -= sum_otherincomes('unit_net', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_unit_tax'] -= sum_otherincomes('unit_tax', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);       
-        $stats['sum_unit_gross'] -= sum_otherincomes('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);
-        $stats['sum_balance'] -= sum_otherincomes('balance', $start_date, $end_date, 'date', $tax_system, null, null, 'cancelled', $employee_id);        
+        $stats['count_items'] -= count_otherincomes($start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_net'] -= sum_otherincomes('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_unit_tax'] -= sum_otherincomes('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);       
+        $stats['sum_unit_gross'] -= sum_otherincomes('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);
+        $stats['sum_balance'] -= sum_otherincomes('balance', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id);        
         
     }     
        
@@ -1643,14 +1644,14 @@ function otherincome_build_filter_by_date($start_date = null, $end_date = null, 
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened_on') {
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed_on') {       
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'last_active') {       
-            $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'date') {       
+        if ($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.date <= ".$db->qstr($end_date);
+        } elseif ($date_type == 'opened_on') {
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'closed_on') {       
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
+        } elseif ($date_type == 'last_active') {       
+            $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         }
     }
         
@@ -1724,12 +1725,12 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_received'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             
         // Adjust for Cancelled records  
-        $stats['sum_invoice'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_refund'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_expense'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_otherincome'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_sent'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_received'] = sum_payments($start_date, $end_date, $tax_system, null, 'cancelled', 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_invoice'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_refund'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_expense'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_otherincome'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_sent'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_received'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
                
     } 
     
