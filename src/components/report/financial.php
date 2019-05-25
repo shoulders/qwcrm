@@ -77,7 +77,7 @@ if(isset($VAR['submit'])) {
     // Run Prorata the records if appropriate
     if(QW_TAX_SYSTEM == 'no_tax') {        
         // Do nothing       
-    } elseif (QW_TAX_SYSTEM == 'sales_tax_cash' || QW_TAX_SYSTEM == 'vat_standard' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_standard' || QW_TAX_SYSTEM == 'vat_flat_cash') {
+    } elseif (QW_TAX_SYSTEM == 'sales_tax_cash' || QW_TAX_SYSTEM == 'vat_standard' || QW_TAX_SYSTEM == 'vat_cash' || QW_TAX_SYSTEM == 'vat_flat_basic' || QW_TAX_SYSTEM == 'vat_flat_cash') {
         $prorata_totals = array_merge($prorata_totals, prorata_payments_against_records($start_date, $end_date, QW_TAX_SYSTEM));        
     }     
         
@@ -98,33 +98,33 @@ if(isset($VAR['submit'])) {
         $profit_totals['profit'] = ($profit_totals['invoice']['gross'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['gross']);
     }
             
-    // Sales Tax - Prorated Profit
+    // Sales Tax (Cash Basis) - Prorated Profit
     if (QW_TAX_SYSTEM == 'sales_tax_cash') {
         $profit_totals['turnover'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['gross']) - $profit_totals['refund']['net'];
         $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['gross']) - ($profit_totals['expense']['gross'] + $profit_totals['refund']['net']);        
     }
        
-    // VAT Standard - Prorated Profit
+    // VAT Standard Accounting (UK) - Prorated Profit
     if(QW_TAX_SYSTEM == 'vat_standard') {
         //$profit_totals['turnover'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - $profit_totals['refund']['net'];
         $profit_totals['turnover'] = ($invoice_stats['sum_unit_net'] + $otherincome_stats['sum_unit_net']) - $refund_stats['sum_unit_net'];  // Record based turnover 
         $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);        
     }
     
-    // VAT Cash - Prorated Profit
+    // VAT Cash Accounting (UK) - Prorated Profit
     if(QW_TAX_SYSTEM == 'vat_cash') {
         $profit_totals['turnover'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - $profit_totals['refund']['net'];  
         $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);        
     }
     
-    // Flat VAT Standard - Prorated Profit
-    if(QW_TAX_SYSTEM == 'vat_flat_standard') {
+    // VAT Flat Rate (Basic turnover) (UK) - Prorated Profit
+    if(QW_TAX_SYSTEM == 'vat_flat_basic') {
         //$profit_totals['turnover'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - $profit_totals['refund']['net'];  
         $profit_totals['turnover'] = ($invoice_stats['sum_unit_net'] + $otherincome_stats['sum_unit_net']) - $refund_stats['sum_unit_net'];  // Record based turnover
         $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);        
     }
     
-    // Flat VAT Cash - Prorated Profit
+    // VAT Flat Rate (Cash based turnover) (UK) - Prorated Profit
     if(QW_TAX_SYSTEM == 'vat_flat_cash') {
         $profit_totals['turnover'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - $profit_totals['refund']['net'];  
         $profit_totals['profit'] = ($profit_totals['invoice']['net'] + $profit_totals['otherincome']['net']) - ($profit_totals['expense']['net'] + $profit_totals['refund']['net']);        
@@ -152,7 +152,7 @@ if(isset($VAR['submit'])) {
         // Do Nothing        
     }
         
-    // Sales Tax - Prorated TAX
+    // Sales Tax (Cash Basis)- Prorated TAX
     if (QW_TAX_SYSTEM == 'sales_tax_cash') {
         
         $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];
@@ -164,7 +164,7 @@ if(isset($VAR['submit'])) {
         
     }  
     
-    // VAT Standard - Date based TAX
+    // VAT Standard Accounting (UK) - Date based TAX
     if(QW_TAX_SYSTEM == 'vat_standard') {
         
         $tax_totals['invoice']['tax'] = $invoice_stats['sum_unit_tax'];        
@@ -178,7 +178,7 @@ if(isset($VAR['submit'])) {
         
     }
     
-    // VAT Cash - Prorated TAX
+    // VAT Cash Accounting (UK) - Prorated TAX
     if (QW_TAX_SYSTEM == 'vat_cash') {
          
         $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];
@@ -192,8 +192,8 @@ if(isset($VAR['submit'])) {
         
     }    
     
-    // VAT Flat Standard - Date based NET x flat rate
-    if(QW_TAX_SYSTEM == 'vat_flat_standard') {
+    // VAT Flat Rate (Basic turnover) (UK) - Date based NET x flat rate
+    if(QW_TAX_SYSTEM == 'vat_flat_basic') {
         
         $tax_totals['invoice']['tax'] = $invoice_stats['sum_unit_tax']; 
         $tax_totals['refund']['tax'] = $refund_stats['sum_unit_tax'];        
@@ -210,7 +210,7 @@ if(isset($VAR['submit'])) {
 
     }
     
-    // VAT Flat Cash - Prorated NET x flat rate
+    // VAT Flat Rate (Cash based turnover) (UK) - Prorated NET x flat rate
     if(QW_TAX_SYSTEM == 'vat_flat_cash') {
         
         $tax_totals['invoice']['tax'] = $prorata_totals['invoice']['tax'];

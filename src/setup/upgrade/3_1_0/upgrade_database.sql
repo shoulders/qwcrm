@@ -63,7 +63,7 @@ ALTER TABLE `#__client_types` ADD PRIMARY KEY (`id`);
 CREATE TABLE `#__company_tax_systems` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+  `display_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
@@ -71,8 +71,8 @@ INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
 (2, 'sales_tax_cash', 'Sales Tax (Cash Basis)'),
 (3, 'vat_standard', 'VAT Standard Accounting (UK)'),
 (4, 'vat_cash', 'VAT Cash Accounting (UK)'),
-(5, 'vat_flat_standard', 'VAT Flat Rate (Standard) (UK)'),
-(6, 'vat_flat_cash', 'VAT Flat Rate (Cash) (UK)');
+(5, 'vat_flat_basic', 'VAT Flat Rate (Basic Turnover) (UK)'),
+(6, 'vat_flat_cash', 'VAT Flat Rate (Cash based turnover) (UK)');
 
 ALTER TABLE `#__company_tax_systems` ADD PRIMARY KEY (`id`);
 

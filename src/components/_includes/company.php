@@ -147,7 +147,7 @@ function get_default_vat_tax_code($tax_system = null) {
     if($tax_system == 'sales_tax_cash') { return 'TNA'; }     
     if($tax_system == 'vat_standard') { return 'T1'; }    
     if($tax_system == 'vat_cash') { return 'T1'; }
-    if($tax_system == 'vat_flat_standard') { return 'T1'; }
+    if($tax_system == 'vat_flat_basic') { return 'T1'; }
     if($tax_system == 'vat_flat_cash') { return 'T1'; }       
     
 }
@@ -165,7 +165,7 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
         if($tax_system == 'sales_tax_cash') { return 'TNA'; } 
         if($tax_system == 'vat_standard') { return 'T9'; }        
         if($tax_system == 'vat_cash') { return 'T9'; }
-        if($tax_system == 'vat_flat_standard') { return 'T9'; }
+        if($tax_system == 'vat_flat_basic') { return 'T9'; }
         if($tax_system == 'vat_flat_cash') { return 'T9'; }       
     }
     
@@ -174,7 +174,7 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
         if($tax_system == 'sales_tax_cash') { return 'TNA'; }
         if($tax_system == 'vat_standard') { return 'T1'; }
         if($tax_system == 'vat_cash') { return 'T1'; }
-        if($tax_system == 'vat_flat_standard') { return 'T1'; }
+        if($tax_system == 'vat_flat_basic') { return 'T1'; }
         if($tax_system == 'vat_flat_cash') { return 'T1'; }         
     }    
     

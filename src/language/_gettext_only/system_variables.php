@@ -23,8 +23,8 @@ _gettext("No Tax");
 _gettext("Sales Tax (Cash Basis)");
 _gettext("VAT Standard Accounting (UK)");
 _gettext("VAT Cash Accounting (UK)");
-_gettext("VAT Flat Rate (Standard) (UK)");
-_gettext("VAT Flat Rate (Cash) (UK)");
+_gettext("VAT Flat Rate (Basic Turnover) (UK)");
+_gettext("VAT Flat Rate (Cash based turnover) (UK)");
 
 /* Company VAT Tax Codes */
 _gettext("Zero Rate");

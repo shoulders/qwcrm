@@ -59,7 +59,7 @@
             $('.vat_tax_codes').show();
         }
         
-        if(tax_system === 'vat_flat_standard') {
+        if(tax_system === 'vat_flat_basic') {
             $('.sales_tax_rate').hide();
             $('.vat_number').show();
             $('.vat_flat_rate').show();

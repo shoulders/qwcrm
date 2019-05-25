@@ -746,7 +746,7 @@
                                                                         <tr>
                                                                             <td colspan="2">
                                                                                 <hr style="border-top: dotted 1px;" />
-                                                                                {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_flat_standard'}
+                                                                                {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_flat_basic'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding tax amounts to calculate your tax liability.{/t}
                                                                                 {elseif $qw_tax_system == 'sales_tax_cash' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_cash'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding tax amounts and then are used to calculate your tax liability.{/t}
@@ -808,7 +808,7 @@
                                                                     {/if} 
                                                                     
                                                                     <!-- All VAT Based systems -->
-                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_standard' || $qw_tax_system == 'vat_flat_cash'}
+                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                        
                                                                                 <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[N]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
@@ -872,7 +872,7 @@
                                                                     {/if} 
                                                                     
                                                                     <!-- All VAT Based systems -->
-                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_standard' || $qw_tax_system == 'vat_flat_cash'}
+                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                        
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[N]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[N]{/t})</p>
