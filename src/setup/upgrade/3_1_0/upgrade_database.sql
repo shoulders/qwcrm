@@ -920,4 +920,3 @@ ALTER TABLE `#__otherincome_records` ADD `closed_on` DATETIME NOT NULL AFTER `op
 ALTER TABLE `#__supplier_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
 ALTER TABLE `#__supplier_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
 ALTER TABLE `#__supplier_records` ADD `last_active` DATETIME NOT NULL AFTER `closed_on`;
-
