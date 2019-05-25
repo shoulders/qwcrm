@@ -128,32 +128,32 @@ function get_workorders_stats($record_set, $start_date = null, $end_date = null,
     // Common
     if($record_set) {
     
-        $stats['count_open'] = count_workorders($start_date, $end_date, 'opened', 'open', $employee_id, $client_id);
+        $stats['count_open'] = count_workorders($start_date, $end_date, 'opened_on', 'open', $employee_id, $client_id);
     
     }
     
     // Current
     if($record_set == 'current' || $record_set == 'all') {        
 
-        $stats['count_unassigned'] = count_workorders($start_date, $end_date, 'opened','unassigned', $employee_id, $client_id);
-        $stats['count_assigned'] = count_workorders($start_date, $end_date, 'opened', 'assigned', $employee_id, $client_id);
-        $stats['count_waiting_for_parts'] = count_workorders($start_date, $end_date, 'opened', 'waiting_for_parts',$employee_id, $client_id);
-        $stats['count_scheduled'] = count_workorders($start_date, $end_date, 'opened', 'scheduled', $employee_id, $client_id);
-        $stats['count_with_client'] = count_workorders($start_date, $end_date, 'opened', 'with_client', $employee_id, $client_id);
-        $stats['count_on_hold'] = count_workorders($start_date, $end_date, 'opened', 'on_hold', $employee_id, $client_id);
-        $stats['count_management'] = count_workorders($start_date, $end_date, 'opened', 'management', $employee_id, $client_id);
-        $stats['count_closed_without_invoice'] = count_workorders($start_date, $end_date, 'opened', 'closed_without_invoice', $employee_id, $client_id);
-        $stats['count_closed_with_invoice'] = count_workorders($start_date, $end_date, 'opened', 'closed_with_invoice', $employee_id, $client_id);
+        $stats['count_unassigned'] = count_workorders($start_date, $end_date, 'opened_on','unassigned', $employee_id, $client_id);
+        $stats['count_assigned'] = count_workorders($start_date, $end_date, 'opened_on', 'assigned', $employee_id, $client_id);
+        $stats['count_waiting_for_parts'] = count_workorders($start_date, $end_date, 'opened_on', 'waiting_for_parts',$employee_id, $client_id);
+        $stats['count_scheduled'] = count_workorders($start_date, $end_date, 'opened_on', 'scheduled', $employee_id, $client_id);
+        $stats['count_with_client'] = count_workorders($start_date, $end_date, 'opened_on', 'with_client', $employee_id, $client_id);
+        $stats['count_on_hold'] = count_workorders($start_date, $end_date, 'opened_on', 'on_hold', $employee_id, $client_id);
+        $stats['count_management'] = count_workorders($start_date, $end_date, 'opened_on', 'management', $employee_id, $client_id);
+        $stats['count_closed_without_invoice'] = count_workorders($start_date, $end_date, 'opened_on', 'closed_without_invoice', $employee_id, $client_id);
+        $stats['count_closed_with_invoice'] = count_workorders($start_date, $end_date, 'opened_on', 'closed_with_invoice', $employee_id, $client_id);
     
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {        
          
-        $stats['count_open'] = count_workorders($start_date, $end_date, 'opened', 'open', $employee_id, $client_id);
-        $stats['count_opened'] = count_workorders($start_date, $end_date, 'opened', 'opened', $employee_id, $client_id);         
-        $stats['count_closed'] = count_workorders($start_date, $end_date, 'opened', 'closed', $employee_id, $client_id);
-        $stats['count_deleted'] = count_workorders($start_date, $end_date, 'opened', 'deleted', $employee_id, $client_id);   // Only used on basic stats
+        $stats['count_open'] = count_workorders($start_date, $end_date, 'opened_on', 'open', $employee_id, $client_id);
+        $stats['count_opened'] = count_workorders($start_date, $end_date, 'opened_on', 'opened', $employee_id, $client_id);         
+        $stats['count_closed'] = count_workorders($start_date, $end_date, 'opened_on', 'closed', $employee_id, $client_id);
+        $stats['count_deleted'] = count_workorders($start_date, $end_date, 'opened_on', 'deleted', $employee_id, $client_id);   // Only used on basic stats
     
     }    
     
@@ -214,11 +214,11 @@ function workorder_build_filter_by_date($start_date = null, $end_date = null, $d
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened') {
+        if($date_type == 'opened_on') {
             $whereTheseRecords .= " AND ".PRFX."workorder_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed') {       
+        } elseif($date_type == 'closed_on') {       
             $whereTheseRecords .= " AND ".PRFX."workorder_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'active') {       
+        } elseif($date_type == 'last_active') {       
             $whereTheseRecords .= " AND ".PRFX."workorder_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."workorder_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         }
     }
@@ -304,30 +304,30 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['count_pending'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'pending', $employee_id, $client_id);  
         $stats['count_unpaid'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'unpaid', $employee_id, $client_id); 
         $stats['count_partially_paid'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'partially_paid', $employee_id, $client_id);  
-        $stats['count_paid'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'paid', $employee_id, $client_id);   
+        $stats['count_paid'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'paid', $employee_id, $client_id);   
         $stats['count_in_dispute'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'in_dispute', $employee_id, $client_id);  
         $stats['count_overdue'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'overdue', $employee_id, $client_id);
         $stats['count_collections'] = count_invoices($start_date, $end_date, 'date', $tax_system, null, 'collections', $employee_id, $client_id);  
-        $stats['count_refunded'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'refunded', $employee_id, $client_id);
-        $stats['count_cancelled'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['count_refunded'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'refunded', $employee_id, $client_id);
+        $stats['count_cancelled'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
     
     }
        
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {              
                            
-        $stats['count_opened'] = count_invoices($start_date, $end_date, 'opened', $tax_system, null, 'opened', $employee_id, $client_id);
-        $stats['count_closed'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'closed', $employee_id, $client_id);
-        $stats['count_closed_discounted'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'discounted', $employee_id, $client_id);
-        $stats['count_closed_paid'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'paid', $employee_id, $client_id);
-        $stats['count_closed_refunded'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'refunded', $employee_id, $client_id);
-        $stats['count_closed_cancelled'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'cancelled', $employee_id, $client_id);
+        $stats['count_opened'] = count_invoices($start_date, $end_date, 'opened_on', $tax_system, null, 'opened', $employee_id, $client_id);
+        $stats['count_closed'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'closed', $employee_id, $client_id);
+        $stats['count_closed_discounted'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'discounted', $employee_id, $client_id);
+        $stats['count_closed_paid'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'paid', $employee_id, $client_id);
+        $stats['count_closed_refunded'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'refunded', $employee_id, $client_id);
+        $stats['count_closed_cancelled'] = count_invoices($start_date, $end_date, 'closed_on', $tax_system, null, 'cancelled', $employee_id, $client_id);
         
         // Only used on basic stats
-        $stats['count_closed_deleted'] = count_invoices($start_date, $end_date, 'closed', $tax_system, null, 'deleted', $employee_id, $client_id);
+        $stats['count_closed_deleted'] = count_invoices($start_date, $end_date, null, $tax_system, null, 'deleted', $employee_id, $client_id);
         $stats['invoiced_total'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
         $stats['received_monies'] = sum_invoices('unit_paid', $start_date, $end_date, 'date', $tax_system, null, null, $employee_id, $client_id);
-        $stats['balance'] = sum_invoices('balance', $start_date, $end_date, 'date', $tax_system, null, 'active', $employee_id, $client_id);
+        $stats['balance'] = sum_invoices('balance', $start_date, $end_date, 'date', $tax_system, null, 'open', $employee_id, $client_id);
     
     }       
     
@@ -353,9 +353,9 @@ function get_invoices_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_cancelled_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id);        
         $stats['sum_open_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'open', $employee_id, $client_id);
         $stats['sum_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
-        $stats['sum_opened_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'opened', $tax_system, null, 'opened', $employee_id, $client_id);
-        $stats['sum_closed_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed', $tax_system, null, 'closed', $employee_id, $client_id);
-        $stats['sum_closed_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed', $tax_system, null, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
+        $stats['sum_opened_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'opened_on', $tax_system, null, 'opened', $employee_id, $client_id);
+        $stats['sum_closed_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'closed', $employee_id, $client_id);
+        $stats['sum_closed_discounted_gross'] = sum_invoices('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'discounted', $employee_id, $client_id);  // Cannot remove cancelled with discount
         
         // Adjust for Cancelled records    
         $stats['sum_unit_discount'] -= sum_invoices('unit_discount', $start_date, $end_date, 'date', $tax_system, null, 'cancelled', $employee_id, $client_id); 
@@ -522,11 +522,11 @@ function invoice_build_filter_by_date($start_date = null, $end_date = null, $dat
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened') {
+        if($date_type == 'opened_on') {
             $whereTheseRecords .= " AND ".PRFX."invoice_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed') {       
+        } elseif($date_type == 'closed_on') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'active') {       
+        } elseif($date_type == 'last_active') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
@@ -1038,20 +1038,18 @@ function voucher_build_filter_by_date($start_date = null, $end_date = null, $dat
         
     if($start_date && $end_date) {
         
-        if($date_type == 'opened') {
+        if($date_type == 'opened_on') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type== 'expired') {
+        } elseif($date_type== 'expiry') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.expiry_date >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.expiry_date <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'redeemed') {
+        } elseif($date_type == 'redeemed_on') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.redeemed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.redeemed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed') {
+        } elseif($date_type == 'closed_on') {
             $whereTheseRecords .= " AND ".PRFX."voucher_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."voucher_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
         } elseif($date_type == 'due_date') {       
             $whereTheseRecords .= " AND ".PRFX."invoice_records.due_date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.due_date <= ".$db->qstr($end_date);
-        } else {
-            $whereTheseRecords .= " AND ".PRFX."invoice_records.date >= ".$db->qstr($start_date)." AND ".PRFX."invoice_records.date <= ".$db->qstr($end_date);
         }
         
     }
@@ -1235,11 +1233,11 @@ function refund_build_filter_by_date($start_date = null, $end_date = null, $date
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened') {
+        if($date_type == 'opened_on') {
             $whereTheseRecords .= " AND ".PRFX."refund_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed') {       
+        } elseif($date_type == 'closed_on') {       
             $whereTheseRecords .= " AND ".PRFX."refund_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'active') {       
+        } elseif($date_type == 'last_active') {       
             $whereTheseRecords .= " AND ".PRFX."refund_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."refund_records.date >= ".$db->qstr($start_date)." AND ".PRFX."refund_records.date <= ".$db->qstr($end_date);
@@ -1439,11 +1437,11 @@ function expense_build_filter_by_date($start_date = null, $end_date = null, $dat
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened') {
+        if($date_type == 'opened_on') {
             $whereTheseRecords .= " AND ".PRFX."expense_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed') {       
+        } elseif($date_type == 'closed_on') {       
             $whereTheseRecords .= " AND ".PRFX."expense_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'active') {       
+        } elseif($date_type == 'last_active') {       
             $whereTheseRecords .= " AND ".PRFX."expense_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."expense_records.date >= ".$db->qstr($start_date)." AND ".PRFX."expense_records.date <= ".$db->qstr($end_date);
@@ -1645,11 +1643,11 @@ function otherincome_build_filter_by_date($start_date = null, $end_date = null, 
     $whereTheseRecords = '';
     
     if($start_date && $end_date && $date_type) {
-        if($date_type == 'opened') {
+        if($date_type == 'opened_on') {
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.opened_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.opened_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'closed') {       
+        } elseif($date_type == 'closed_on') {       
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.closed_on >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.closed_on <= ".$db->qstr($end_date.' 23:59:59');
-        } elseif($date_type == 'active') {       
+        } elseif($date_type == 'last_active') {       
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
         } elseif($date_type == 'date') {       
             $whereTheseRecords .= " AND ".PRFX."otherincome_records.date >= ".$db->qstr($start_date)." AND ".PRFX."otherincome_records.date <= ".$db->qstr($end_date);
