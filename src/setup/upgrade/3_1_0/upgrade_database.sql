@@ -893,22 +893,21 @@ ALTER TABLE `#__payment_records` MODIFY COLUMN `otherincome_id` varchar(10) CHAR
 -- Unify date columns on records
 --
 
-ALTER TABLE `#__invoice_records` CHANGE `open_date` `opened_on` DATETIME NOT NULL;
-ALTER TABLE `#__invoice_records` CHANGE `close_date` `closed_on` DATETIME NOT NULL;
-ALTER TABLE `#__invoice_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
+ALTER TABLE `#__client_records` CHANGE `create_date` `opened_on` INT(20) NOT NULL AFTER `client_id`;
+ALTER TABLE `#__client_records` CHANGE `last_active` `last_active` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `opened_on`;
+ALTER TABLE `#__client_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
 ALTER TABLE `#__workorder_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `closed_by`;
-ALTER TABLE `#__workorder_records` CHANGE `open_date` `opened_on` DATETIME NOT NULL;
-ALTER TABLE `#__workorder_records` CHANGE `close_date` `closed_on` DATETIME NOT NULL;
+ALTER TABLE `#__workorder_records` CHANGE `open_date` `opened_on` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__workorder_records` CHANGE `close_date` `closed_on` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `open_date` `opened_on` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `close_date` `closed_on` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__invoice_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
 ALTER TABLE `#__voucher_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `redeemed_invoice_id`;
-ALTER TABLE `#__voucher_records` CHANGE `open_date` `opened_on` DATETIME NOT NULL;
-ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATE NOT NULL AFTER `redeemed_invoice_id`;
-ALTER TABLE `#__voucher_records` CHANGE `redeem_date` `redeemed_on` DATETIME NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `open_date` `opened_on` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci AFTER `redeemed_invoice_id`;
+ALTER TABLE `#__voucher_records` CHANGE `redeem_date` `redeemed_on` VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
 ALTER TABLE `#__voucher_records` CHANGE `close_date` `closed_on` DATETIME NOT NULL;
 ALTER TABLE `#__voucher_records` ADD `last_active` DATETIME NOT NULL AFTER `closed_on`;
-ALTER TABLE `#__client_records` CHANGE `create_date` `opened_on` DATETIME NOT NULL AFTER `client_id`;
-ALTER TABLE `#__client_records` CHANGE `last_active` `last_active` DATETIME NOT NULL AFTER `opened_on`;
-ALTER TABLE `#__client_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;
-
 ALTER TABLE `#__refund_records` CHANGE `status` `status` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL AFTER `balance`;
 ALTER TABLE `#__refund_records` ADD `opened_on` DATETIME NOT NULL AFTER `status`;
 ALTER TABLE `#__refund_records` ADD `closed_on` DATETIME NOT NULL AFTER `opened_on`;

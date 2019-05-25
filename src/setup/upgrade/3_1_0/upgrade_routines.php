@@ -99,24 +99,24 @@ class Upgrade3_1_0 extends QSetup {
         $this->column_timestamp_to_mysql_date(PRFX.'otherincome_records', 'date', 'otherincome_id');
                 
         // Convert timestamps to MySQL DATETIME
+        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_active', 'user_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'register_date', 'user_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_reset_time', 'user_id');     
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_notes', 'date', 'client_note_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'opened_on', 'client_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'client_records', 'last_active', 'client_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'opened_on', 'voucher_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'redeemed_on', 'voucher_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'opened_on', 'invoice_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'closed_on', 'invoice_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'start_time', 'schedule_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'end_time', 'schedule_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_active', 'user_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'register_date', 'user_id');
-        $this->column_timestamp_to_mysql_datetime(PRFX.'user_records', 'last_reset_time', 'user_id');        
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_history', 'date', 'history_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_notes', 'date', 'workorder_note_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'opened_on', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'closed_on', 'workorder_id');
         $this->column_timestamp_to_mysql_datetime(PRFX.'workorder_records', 'last_active', 'workorder_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'start_time', 'schedule_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'schedule_records', 'end_time', 'schedule_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'opened_on', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'closed_on', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'invoice_records', 'last_active', 'invoice_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'opened_on', 'voucher_id');
+        $this->column_timestamp_to_mysql_datetime(PRFX.'voucher_records', 'redeemed_on', 'voucher_id');
         
         // Populate the last_active columns with record date for the following becasue they have only just received last_Active
         $this->copy_columnA_to_columnB('expense_records', 'date', 'last_active');
@@ -190,6 +190,9 @@ class Upgrade3_1_0 extends QSetup {
         $this->copy_columnA_to_columnB('otherincome_records', 'date', 'closed_on');
         $this->copy_columnA_to_columnB('otherincome_records', 'date', 'last_active');
         $this->update_column_values(PRFX.'supplier_records', 'opened_on', '*', mysql_datetime($this->setup_time));
+        
+        // correct users with 00:00:00 registered dates
+        $this->update_column_values(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', mysql_datetime($this->setup_time));
         
         // Log message to setup log
         $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;

@@ -43,6 +43,7 @@ CREATE TABLE `#__client_notes` (
 CREATE TABLE `#__client_records` (
   `client_id` int(10) NOT NULL,
   `opened_on` datetime NOT NULL,
+  `closed_on` datetime NOT NULL,
   `last_active` datetime NOT NULL,
   `company_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `first_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
