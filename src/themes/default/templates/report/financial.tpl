@@ -513,7 +513,7 @@
                                                             <td class="olohead">{t}Payments{/t}</td>  
                                                             <td class="olohead">{t}Vouchers{/t}</td>
                                                             {if $qw_tax_system == 'sales_tax_cash'}<td class="olohead">{t}Sales Tax{/t}</td>{/if}
-                                                            {if '/^vat_/'|preg_match:$qw_tax_system}<td class="olohead">{t}VAT{/t} {t}Liability{/t}{if '/^vat_flat/'|preg_match:$qw_tax_system} - {t}Flat Rate{/t} @ {$vat_flat_rate}%{/if}</td>{/if}                                                                                                                                                                            
+                                                            {if '/^vat_/'|preg_match:$qw_tax_system}<td class="olohead">{t}VAT{/t} {t}Liability{/t}{if '/^vat_flat/'|preg_match:$qw_tax_system} - {t}Flat Rate{/t} @ {$vat_flat_rate|string_format:"%.2f"}%{/if}</td>{/if}                                                                                                                                                                            
                                                         </tr>                                                    
 
                                                         <tr>
@@ -667,46 +667,37 @@
                                                             {if '/^vat_/'|preg_match:$qw_tax_system}
                                                                 <td class="olotd4" valign="top">
                                                                     <table>
-                                                                        <tr>
-                                                                            <td colspan="2">{t}In{/t} ({t}Output VAT{/t})</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><b>{t}Invoiced{/t}:</b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$tax_totals.invoice.tax|string_format:"%.2f"}</b></font></td>
-                                                                        </tr> 
-                                                                        <tr>
-                                                                            <td><b>{t}Other Income{/t}:</b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$tax_totals.otherincome.tax|string_format:"%.2f"}</b></font></td>
-                                                                        </tr>                                                                    
-                                                                        <tr>
-                                                                            <td colspan="2"></td>
-                                                                        </tr>
-                                                                        <!-- Flat Rate -->
                                                                         {if '/^vat_flat/'|preg_match:$qw_tax_system}
                                                                             <tr>
-                                                                                <td colspan="2">{t}Net figures used for calculation{/t}</td>
-                                                                            </tr>                                                                        
-                                                                            <tr>
-                                                                                <td><b>{t}Invoice{/t} {t}[N]{/t}</b></td>
-                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.invoice.net|string_format:"%.2f"}</b></font></td>
-                                                                            </tr>                                                                            
-                                                                            <tr>
-                                                                                <td><b>{t}Otherincome{/t} {t}[N]{/t}</b></td>
-                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.otherincome.net|string_format:"%.2f"}</b></font></td>
+                                                                                <td colspan="2"></td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <td><b>{t}Refund{/t} {t}[N]{/t}</b></td>
-                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.refund.net|string_format:"%.2f"}</b></font></td>
+                                                                                <td>&nbsp;</td>
+                                                                                <td>{t}Turnover{/t}{t}[G]{/t} x {t}Flat Rate{/t}</td>
+                                                                            </tr>   
+                                                                            <tr>
+                                                                                <td>&nbsp;</td>
+                                                                                <td>{$currency_sym}{$profit_totals.turnover.gross|string_format:"%.2f"}&nbsp;&nbsp;x&nbsp;&nbsp;{$vat_flat_rate|string_format:"%.2f"}%</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><b>{t}Balance{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.balance|string_format:"%.2f"}</b></font>&nbsp;&nbsp;&nbsp;({$tax_totals.message})</td>
+                                                                            </tr>
+                                                                        {else}                                                                        
+                                                                            <tr>
+                                                                                <td colspan="2">{t}In{/t} ({t}Output VAT{/t})</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><b>{t}Invoiced{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.invoice.tax|string_format:"%.2f"}</b></font></td>
                                                                             </tr> 
                                                                             <tr>
-                                                                                <td><b>{t}MPV Voucher{/t} {t}[N]{/t}</b></td>
-                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.voucher_mpv.net|string_format:"%.2f"}</b></font></td>
-                                                                            </tr>                                                                            
+                                                                                <td><b>{t}Other Income{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.otherincome.tax|string_format:"%.2f"}</b></font></td>
+                                                                            </tr>                                                                    
                                                                             <tr>
-                                                                                <td colspan="2">{t}Total Out{/t} = <br>( ({t}Invoice{/t} {t}[N]{/t} + {t}Otherincome{/t} {t}[N]{/t}) - ({t}Refund{/t} {t}[N]{/t} + {t}MPV Voucher{/t} {t}[N]{/t}) ) x {t}Flat Rate{/t} @ {$vat_flat_rate}%</td>                                                                                
-                                                                            </tr>  
-                                                                        <!-- Normal -->
-                                                                        {else}
+                                                                                <td colspan="2"></td>
+                                                                            </tr>                                                                        
                                                                             <tr>
                                                                                 <td colspan="2">{t}Out{/t} ({t}Input VAT{/t})</td>
                                                                             </tr> 
@@ -717,29 +708,29 @@
                                                                             <tr>
                                                                                 <td><b>{t}Refunds{/t}:</b></td>
                                                                                 <td><font color="red"><b>{$currency_sym}{$tax_totals.refund.tax|string_format:"%.2f"}</b></font></td>
-                                                                            </tr>                                                                            
+                                                                            </tr>                                                                        
+                                                                            <tr>
+                                                                                <td colspan="2"></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td colspan="2">{t}Calculations{/t}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><b>{t}Total In{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.total_in|string_format:"%.2f"}</b></font></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><b>{t}Total Out{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.total_out|string_format:"%.2f"}</b></font></td>
+                                                                            </tr>    
+                                                                            <tr>
+                                                                                <td><hr></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td><b>{t}Balance{/t}:</b></td>
+                                                                                <td><font color="red"><b>{$currency_sym}{$tax_totals.balance|string_format:"%.2f"}</b></font>&nbsp;&nbsp;&nbsp;({$tax_totals.message})</td>
+                                                                            </tr>
                                                                         {/if}
-                                                                        <tr>
-                                                                            <td colspan="2"></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td colspan="2">{t}Calculations{/t}</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><b>{t}Total In{/t}:</b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$tax_totals.total_in|string_format:"%.2f"}</b></font></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><b>{t}Total Out{/t}:</b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$tax_totals.total_out|string_format:"%.2f"}</b></font></td>
-                                                                        </tr>    
-                                                                        <tr>
-                                                                            <td><hr></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td><b>{t}Balance{/t}:</b></td>
-                                                                            <td><font color="red"><b>{$currency_sym}{$tax_totals.balance|string_format:"%.2f"}</b></font>&nbsp;&nbsp;&nbsp;({$tax_totals.message})</td>
-                                                                        </tr>
                                                                         <tr>
                                                                             <td colspan="2"></td>
                                                                         </tr>

@@ -294,6 +294,7 @@ function update_company_details($VAR) {
             tax_system              =". $db->qstr( $VAR['tax_system']                       ).",
             sales_tax_rate          =". $db->qstr( $VAR['sales_tax_rate']                   ).",
             vat_number              =". $db->qstr( $VAR['vat_number']                       ).",
+            vat_flat_rate           =". $db->qstr( $VAR['vat_flat_rate']                    ).",   
             year_start              =". $db->qstr( date_to_mysql_date($VAR['year_start'])   ).",
             year_end                =". $db->qstr( date_to_mysql_date($VAR['year_end'])     ).",
             welcome_msg             =". $db->qstr( $VAR['welcome_msg']                      ).",
