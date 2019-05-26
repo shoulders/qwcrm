@@ -841,8 +841,9 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'expired', $employee_id, $client_id);
         $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'expired', $employee_id, $client_id);
         
-        // Only used for VAT flat rate calculations - i needed to exclude MPV vouchers from profit calculations
-        $stats['sum_voucher_mpv_unit_net'] = sum_vouchers('unit_net', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', null, $employee_id, $client_id);
+        // Used for VAT Flate Rate calculations
+        $stats['sum_voucher_spv_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'single_purpose', null, $employee_id, $client_id);
+        $stats['sum_voucher_mpv_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', null, $employee_id, $client_id);
         
         // Only used on Client Tab        
         $stats['sum_unused_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'unused', $employee_id, $client_id);
@@ -861,7 +862,8 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
         $stats['sum_unit_tax'] -= sum_vouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
         $stats['sum_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);            
-        $stats['sum_voucher_mpv_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, 'multi_purpose', 'cancelled', $employee_id, $client_id);        
+        $stats['sum_voucher_spv_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'single_purpose', 'cancelled', $employee_id, $client_id);        
+        $stats['sum_voucher_mpv_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'multi_purpose', 'cancelled', $employee_id, $client_id);        
         
     }
        
@@ -1698,40 +1700,47 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
     // Current
     if($record_set == 'current' || $record_set == 'all') {
         
-        $stats['count_valid'] = count_payments($start_date, $end_date, $tax_system, null, 'valid', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_valid'] = count_payments($start_date, $end_date, 'date', $tax_system, null, 'valid', null, null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
           
     }
     
     // Historic
     if($record_set == 'historic' || $record_set == 'all') {       
         
-        $stats['count_invoice'] = count_payments($start_date, $end_date, $tax_system, null, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['count_refund'] = count_payments($start_date, $end_date, $tax_system, null, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['count_expense'] = count_payments($start_date, $end_date, $tax_system, null, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['count_otherincome'] = count_payments($start_date, $end_date, $tax_system, null, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['count_sent'] = count_payments($start_date, $end_date, $tax_system, null, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['count_received'] = count_payments($start_date, $end_date, $tax_system, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_invoice'] = count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_refund'] = count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_expense'] = count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_otherincome'] = count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_sent'] = count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_received'] = count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        
+        // Remove vouchers from payments
+        $stats['count_invoice'] -= count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['count_received'] -= count_payments($start_date, $end_date, 'date', $tax_system, null, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
         
     }  
     
     // Revenue
     if($record_set == 'revenue' || $record_set == 'all') {       
-                
-        $stats['sum_invoice'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_refund'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_expense'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_otherincome'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_sent'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_received'] = sum_payments($start_date, $end_date, $tax_system, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_invoice'] = sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_refund'] = sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_expense'] = sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_otherincome'] = sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_sent'] = sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_received'] = sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
             
+        // Remove vouchers from payments
+        $stats['sum_invoice'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_received'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, null, 'invoice', 'voucher', $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        
         // Adjust for Cancelled records  
-        $stats['sum_invoice'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_refund'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_expense'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_otherincome'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_sent'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-        $stats['sum_received'] = sum_payments($start_date, $end_date, $tax_system, null, 'closed_on', 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
-               
+        $stats['sum_invoice'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, 'cancelled', 'invoice', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_refund'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, 'cancelled', 'refund', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_expense'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, 'cancelled', 'expense', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_otherincome'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, 'cancelled', 'otherincome', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_sent'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, 'cancelled', 'sent', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        $stats['sum_received'] -= sum_payments($start_date, $end_date, 'date', $tax_system, null, 'cancelled', 'received', null, $employee_id, $client_id, $invoice_id, $refund_id, $expense_id, $otherincome_id);
+        
     } 
     
     return $stats;
@@ -1742,7 +1751,7 @@ function get_payments_stats($record_set, $start_date = null, $end_date = null, $
 #     Count Payments                               #
 ####################################################
 
-function count_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {   
+function count_payments($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {   
     
     $db = QFactory::getDbo();
     
@@ -1750,9 +1759,7 @@ function count_payments($start_date = null, $end_date = null, $tax_system = null
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";  
     
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= payment_build_filter_by_date($start_date, $end_date, $date_type);
     
     // Filter by Tax System
     if($tax_system) {
@@ -1826,7 +1833,7 @@ function count_payments($start_date = null, $end_date = null, $tax_system = null
 #  Sum selected value of payments       #
 #########################################
 
-function sum_payments($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+function sum_payments($start_date = null, $end_date = null, $date_type = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
     
     $db = QFactory::getDbo();
     
@@ -1834,9 +1841,7 @@ function sum_payments($start_date = null, $end_date = null, $tax_system = null, 
     $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n"; 
     
     // Filter by Date
-    if($start_date && $end_date) {
-        $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$db->qstr($end_date);
-    }
+    $whereTheseRecords .= payment_build_filter_by_date($start_date, $end_date, $date_type);
         
     // Filter by Tax System
     if($tax_system) {
@@ -1906,6 +1911,28 @@ function sum_payments($start_date = null, $end_date = null, $tax_system = null, 
     
 }
 
+########################################
+#   Build payment Date filter SQL      #
+########################################
+
+function payment_build_filter_by_date($start_date = null, $end_date = null, $date_type = null) {
+    
+    $db = QFactory::getDbo();
+     
+    $whereTheseRecords = '';
+    
+    if($start_date && $end_date && $date_type) {
+        if ($date_type == 'date') {       
+            $whereTheseRecords .= " AND ".PRFX."payment_records.date >= ".$db->qstr($start_date)." AND ".PRFX."payment_records.date <= ".$db->qstr($end_date);
+        } elseif ($date_type == 'last_active') {       
+            $whereTheseRecords .= " AND ".PRFX."payment_records.last_active >= ".$db->qstr($start_date)." AND ".PRFX."payment_records.last_active <= ".$db->qstr($end_date.' 23:59:59');
+        }
+    }
+        
+    return $whereTheseRecords;
+    
+}
+
 #####################################
 #  Build payment type filter SQL    #
 #####################################
@@ -1938,18 +1965,25 @@ function payment_build_filter_by_type($type = null) {
     
 }
 
-##############################################################################################  // cancelled records are ignored
-#  Calulate the revenue and tax liability for a ALL payments against their parent record     #  // I don not use most of these filters at the minute (only start_date, end_date and tax_system)
-##############################################################################################  // this delivers the correct ratio of the individual compoenents on an invoice depeneding on the percentage of invoice paid
+##############################################################################################  // cancelled payment records are ignored
+#  Calulate the revenue and tax liability for a ALL payments against their parent record     #  // I dont use most of these filters at the minute (only start_date, end_date and tax_system)
+##############################################################################################
+                                                                                                
+// This is for calculating real 'NET, TAX and GROSS'.
+// By taking each payment and breaking them down into 'NET, TAX and GROSS' by prorata'ing them against their parent transaction.
+// Vouchers are not real money and should therefore not contribute anything to the the NET and GROSS totals, however:
+// MPV vouchers have their TAX liability accounted for at the point of redemption, so does add TAX to the totals,
+// SPV has already had the TAX taken at the point of sale so does not suffer this fate.
+// 'voucher' allows me to pass up the tree how much of vouchers SPV/MPV (in their NET/TAX/GROSS) have actually been paid (it is prorated aswell). This is separate to revenue totals and used upstream.
 
-function prorata_payments_against_records($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
+function revenue_payments_prorated_against_records($start_date = null, $end_date = null, $tax_system = null, $vat_tax_code = null, $status = null, $type = null, $method = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
     
     $db = QFactory::getDbo();  
     
     // Holding array for prorata totals // I could use a blank array here??? but it is a good reference
     $prorata_totals = array(
                         "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
-                        "voucher_mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),                        
+                        "voucher" => array("spv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), "mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)),                        
                         "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)                        
@@ -2031,14 +2065,14 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
 
             $prorata_record = null;
             
-            // Adjust for Cancelled records - By ignoring them
+            // Adjust for Cancelled payment records - By ignoring them
             if($rs->fields['status'] == 'cancelled') { 
                 $rs->MoveNext(); 
                 continue;                
             }
                         
             if($rs->fields['type'] == 'invoice') {
-                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'invoice');
+                $prorata_record = revenue_payment_prorated_against_record($rs->fields['payment_id'], 'invoice');
                 
                 // Vouchers must be compensated for profit purposes
                 if($rs->fields['method'] == 'voucher') {
@@ -2049,7 +2083,13 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
                     if($voucher_type == 'multi_purpose') {
                         $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
-                        $prorata_totals['invoice']['gross'] += 0.00;        
+                        $prorata_totals['invoice']['gross'] += 0.00;  
+                        
+                        /* Voucher amounts that have been paid for (Used upstream for VAT Flat Rate)
+                        $prorata_totals['voucher']['mpv']['net'] += $prorata_record['net'];
+                        $prorata_totals['voucher']['mpv']['tax'] += $prorata_record['tax'];
+                        $prorata_totals['voucher']['mpv']['gross'] += $prorata_record['gross'];*/                    
+                        
                     }
                     
                     // Single Use
@@ -2057,41 +2097,41 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
                         $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += 0.00; 
                         $prorata_totals['invoice']['gross'] += 0.00;
+                        
+                        /* Voucher amounts that have been paid for (Used upstream for VAT Flat Rate)
+                        $prorata_totals['voucher']['spv']['net'] += $prorata_record['voucher']['mpv']['net'];
+                        $prorata_totals['voucher']['spv']['tax'] += $prorata_record['voucher']['mpv']['tax']; 
+                        $prorata_totals['voucher']['spv']['gross'] += $prorata_record['voucher']['mpv']['gross'];*/
                     }
-                   
+                                       
                 // Normal Payments    
                 } else {   
                     
-                    // How much of MPV vouchers have been paid (prorated)
-                    $prorata_totals['voucher_mpv']['net'] += $prorata_record['voucher_mpv']['net'];
-                    $prorata_totals['voucher_mpv']['tax'] += $prorata_record['voucher_mpv']['tax']; 
-                    $prorata_totals['voucher_mpv']['gross'] += $prorata_record['voucher_mpv']['gross'];
-                
                     // Record main totals prorated)
                     $prorata_totals['invoice']['net'] += $prorata_record['net'];
                     $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
                     $prorata_totals['invoice']['gross'] += $prorata_record['gross'];
                 
                 }
-                
+                                
             }
             
             if($rs->fields['type'] == 'refund') {
-                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'refund');
+                $prorata_record = revenue_payment_prorated_against_record($rs->fields['payment_id'], 'refund');
                 $prorata_totals['refund']['net'] += $prorata_record['net'];
                 $prorata_totals['refund']['tax'] += $prorata_record['tax']; 
                 $prorata_totals['refund']['gross'] += $prorata_record['gross'];                
             }   
             
             if($rs->fields['type'] == 'expense') {
-                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'expense');
+                $prorata_record = revenue_payment_prorated_against_record($rs->fields['payment_id'], 'expense');
                 $prorata_totals['expense']['net'] += $prorata_record['net'];
                 $prorata_totals['expense']['tax'] += $prorata_record['tax']; 
                 $prorata_totals['expense']['gross'] += $prorata_record['gross'];                
             }      
             
             if($rs->fields['type'] == 'otherincome') {
-                $prorata_record = prorata_payment_against_record($rs->fields['payment_id'], 'otherincome');
+                $prorata_record = revenue_payment_prorated_against_record($rs->fields['payment_id'], 'otherincome');
                 $prorata_totals['otherincome']['net'] += $prorata_record['net'];
                 $prorata_totals['otherincome']['tax'] += $prorata_record['tax']; 
                 $prorata_totals['otherincome']['gross'] += $prorata_record['gross'];                
@@ -2109,19 +2149,19 @@ function prorata_payments_against_records($start_date = null, $end_date = null, 
 }
 
 ##############################################################################################
-#  Calulate the revenue and tax liability for a single payments against their parent record  #
+#  Calulate the revenue and tax liability for a single payments against their parent record  #  // This returns what has been paid in NET/TAX/GROSS for a single payment against record
 ##############################################################################################
 
-function prorata_payment_against_record($payment_id, $record_type) {
+function revenue_payment_prorated_against_record($payment_id, $record_type) {
     
     $payment_details = get_payment_details($payment_id);
     
     // Holding array
-    $prorata_totals = array(
+    $record_prorata_totals = array(
                         "net" => 0.00,
                         "tax" => 0.00,
                         "gross" => 0.00,                       
-                        "voucher_mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)                     
+                        "voucher" => array("spv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), "mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)),                                      
                         );    
     
     // Get the correct record details to process
@@ -2132,22 +2172,21 @@ function prorata_payment_against_record($payment_id, $record_type) {
     
     // Calcualte the proata values
     $percentage = $payment_details['amount'] / $record_details['unit_gross'];
-    $net = $record_details['unit_net'] * $percentage;
-    $tax = $record_details['unit_tax'] * $percentage;
-    $gross = $record_details['unit_gross'] * $percentage;
+    $record_prorata_totals['net'] = $record_details['unit_net'] * $percentage;
+    $record_prorata_totals['tax'] = $record_details['unit_tax'] * $percentage;
+    $record_prorata_totals['gross'] = $record_details['unit_gross'] * $percentage;
     
-    // I need to prorata invoice MPV vouchers to exclude them (further up the tree so i can display these numbers; could be done here though)
-    if($record_type == 'invoice') {        
-        $prorata_totals['voucher_mpv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
-        $prorata_totals['voucher_mpv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
-        $prorata_totals['voucher_mpv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;     
-    }
-    
-    $prorata_totals['net'] = $net; 
-    $prorata_totals['tax'] = $tax;
-    $prorata_totals['gross'] = $gross;
-    
-    return $prorata_totals;
+    /* I need to prorata invoice SPV/MPV for use up stream --------- (not needed, delete when everything is working)
+    if($record_type == 'invoice') {  
+        $record_prorata_totals['voucher']['spv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['spv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['spv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['mpv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['mpv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['mpv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;     
+    }*/
+        
+    return $record_prorata_totals;
     
 }
 

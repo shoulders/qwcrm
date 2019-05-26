@@ -522,7 +522,7 @@
                                                             <td class="olotd4" valign="top">                                                                
                                                                 <table>
                                                                     <tr>
-                                                                        <td colspan="3">{t}Sent Monies{/t}</td>
+                                                                        <td colspan="3">{t}Monies Sent{/t}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Refunds{/t}:</b></td>
@@ -538,7 +538,7 @@
                                                                         <td><hr></td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td colspan="3">{t}Received Monies{/t}</td>
+                                                                        <td colspan="3">{t}Monies Received{/t}</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td><b>{t}Invoices{/t}:</b></td>
@@ -565,6 +565,12 @@
                                                                         <td><b>{t}Received{/t}:</b></td>
                                                                         <td><font color="red"><b>{$currency_sym}{$payment_stats.sum_received|string_format:"%.2f"}</b></font></td>
                                                                         <td>({$payment_stats.count_received})</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="2">
+                                                                            <hr style="border-top: dotted 1px;" />
+                                                                            <b>{t}NB{/t}:</b> {t}These figures do not include Vouchers.{/t}
+                                                                        </td>                                                                        
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -633,7 +639,7 @@
                                                                             <td colspan="2"></td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td colspan="2">{t}Calculations{/t}</td>
+                                                                            <td colspan="2">{t}Combined{/t}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td><b>{t}Total In{/t}:</b></td>
@@ -645,6 +651,14 @@
                                                                         </tr>    
                                                                         <tr>
                                                                             <td><hr></td>
+                                                                        </tr>                                                                        
+                                                                        <tr>
+                                                                            <td>&nbsp;</td>
+                                                                            <td>{t}Total In{/t} - {t}Total Out{/t}</td>
+                                                                        </tr>   
+                                                                        <tr>
+                                                                            <td>&nbsp;</td>
+                                                                            <td>{$currency_sym}{$tax_totals.total_in|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$tax_totals.total_out|string_format:"%.2f"}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td><b>{t}Balance{/t}:</b></td>
@@ -671,9 +685,17 @@
                                                                             <tr>
                                                                                 <td colspan="2"></td>
                                                                             </tr>
+                                                                            {*<tr>
+                                                                                <td>&nbsp;</td>
+                                                                                <td>({t}Turnover{/t}{t}[G]{/t} - {t}MPV Vouchers{/t}{t}[G]{/t})&nbsp;&nbsp;x&nbsp;&nbsp;{t}Flat Rate{/t}</td>
+                                                                            </tr>   
                                                                             <tr>
                                                                                 <td>&nbsp;</td>
-                                                                                <td>{t}Turnover{/t}{t}[G]{/t} x {t}Flat Rate{/t}</td>
+                                                                                <td>({$currency_sym}{$profit_totals.turnover.gross|string_format:"%.2f"} - {$currency_sym}{$profit_totals.voucher.mpv.gross|string_format:"%.2f"})&nbsp;&nbsp;x&nbsp;&nbsp;{$vat_flat_rate|string_format:"%.2f"}%</td>
+                                                                            </tr>*}
+                                                                            <tr>
+                                                                                <td>&nbsp;</td>
+                                                                                <td>{t}Turnover{/t}{t}[G]{/t}&nbsp;&nbsp;x&nbsp;&nbsp;{t}Flat Rate{/t}</td>
                                                                             </tr>   
                                                                             <tr>
                                                                                 <td>&nbsp;</td>
@@ -713,7 +735,7 @@
                                                                                 <td colspan="2"></td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <td colspan="2">{t}Calculations{/t}</td>
+                                                                                <td colspan="2">{t}Combined{/t}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <td><b>{t}Total In{/t}:</b></td>
@@ -727,6 +749,15 @@
                                                                                 <td><hr></td>
                                                                             </tr>
                                                                             <tr>
+                                                                                <td>&nbsp;</td>
+                                                                                <td>{t}Total In{/t} - {t}Total Out{/t}</td>
+                                                                            </tr>   
+                                                                            <tr>
+                                                                                <td>&nbsp;</td>
+                                                                                <td>{$currency_sym}{$tax_totals.total_in|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$tax_totals.total_out|string_format:"%.2f"}</td>
+                                                                            </tr>
+                                                                            
+                                                                            <tr>
                                                                                 <td><b>{t}Balance{/t}:</b></td>
                                                                                 <td><font color="red"><b>{$currency_sym}{$tax_totals.balance|string_format:"%.2f"}</b></font>&nbsp;&nbsp;&nbsp;({$tax_totals.message})</td>
                                                                             </tr>
@@ -738,9 +769,12 @@
                                                                             <td colspan="2">
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_flat_basic'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding tax amounts to calculate your tax liability.{/t}
-                                                                                {elseif $qw_tax_system == 'sales_tax_cash' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding tax amounts and then are used to calculate your tax liability.{/t}
+                                                                                    <p><b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding tax amounts to calculate your tax liability.{/t}</p>
+                                                                                {elseif $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_cash'}
+                                                                                    <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding tax amounts and then are used to calculate your tax liability.{/t}</p>
+                                                                                {/if}
+                                                                                {if $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
+                                                                                    <p><b>{t}NB{/t}:</b> {t}Vouchers are accounted for VAT Flat Rate when they are purchased. Vouchers used for purchasing are not included in turnover. MPV vouchers also have their normal VAT liability accounted for at the point of redemption.{/t}</p>
                                                                                 {/if}
                                                                             </td>                                                                        
                                                                         </tr>
@@ -771,7 +805,7 @@
                                                                     <!-- Legend -->
                                                                     <tr>
                                                                         <td style="text-align: center;">                                                                        
-                                                                            <p>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[P]{/t} = {t}Payment{/t}</p>
+                                                                            <p><b>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[P]{/t} = {t}Payment{/t}</b></p>
                                                                         </td>
                                                                     </tr>
                                                                     
@@ -779,8 +813,8 @@
                                                                     {if $qw_tax_system == 'no_tax'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                                
-                                                                                <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[P]{/t}</p>                                                                       
-                                                                                <p>{$currency_sym}{$profit_totals.turnover|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.gross|string_format:"%.2f"})</p>                                                                        
+                                                                                <p>{t}Turnover{/t}{t}[P]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[P]{/t}</p>                                                                       
+                                                                                <p>{$currency_sym}{$profit_totals.turnover.gross|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.gross|string_format:"%.2f"})</p>                                                                        
                                                                                 <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t}<p>
                                                                             </td>
                                                                         </tr>
@@ -790,25 +824,59 @@
                                                                     {if $qw_tax_system == 'sales_tax_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                                
-                                                                                <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
-                                                                                <p>{$currency_sym}{$profit_totals.turnover|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"}</p>
+                                                                                <p>{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"}</p>
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if} 
                                                                     
-                                                                    <!-- All VAT Based systems -->
-                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
+                                                                    <!-- VAT Standard and Cash -->
+                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                        
-                                                                                <p>{t}Turnover{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[N]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
-                                                                                <p>{$currency_sym}{$profit_totals.turnover|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.net|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"}</p>
-                                                                                <hr style="border-top: dotted 1px;" />
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
+                                                                                <p>{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[N]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.net|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"}</p>
                                                                             </td>
                                                                         </tr>
-                                                                    {/if}                                                                  
+                                                                        <tr>
+                                                                            <td>
+                                                                                <hr style="border-top: dotted 1px;" />
+                                                                                {if $qw_tax_system == 'vat_standard'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t}
+                                                                                {elseif $qw_tax_system == 'vat_cash'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your turnover.{/t}
+                                                                                {/if}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if}   
+                                                                    
+                                                                    <!-- VAT Flat Rate -->
+                                                                    {if $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">                                                                        
+                                                                                <p>{t}Turnover{/t}{t}[G]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[G]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[G]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.turnover.gross|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.gross|string_format:"%.2f"}</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td style="text-align: center;">                                                                        
+                                                                                <p>{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[G]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}VAT Liability{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_sym}{$profit_totals.turnover.gross|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$tax_totals.balance|string_format:"%.2f"}</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <hr style="border-top: dotted 1px;" />
+                                                                                {if $qw_tax_system == 'vat_flat_basic'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t}
+                                                                                {elseif $qw_tax_system == 'vat_flat_cash'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your turnover.{/t}
+                                                                                {/if}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if}                                                                     
                                                                     
                                                                 </table>
                                                             </td>
@@ -835,7 +903,7 @@
                                                                     <!-- Legend -->
                                                                     <tr>
                                                                         <td style="text-align: center;">                                                                        
-                                                                            <p>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[P]{/t} = {t}Payment{/t}</p>
+                                                                            <p><b>{t}[G]{/t} = {t}Gross{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[N]{/t} = {t}Net{/t}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{t}[P]{/t} = {t}Payment{/t}</b></p>
                                                                         </td>
                                                                     </tr>
                                                                     
@@ -843,8 +911,8 @@
                                                                     {if $qw_tax_system == 'no_tax'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                                
-                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[P]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[P]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[P]{/t})</p>                                                                       
-                                                                                <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;({$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.refund.gross|string_format:"%.2f"})</p>                                                                        
+                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[P]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}Expenses{/t}{t}[P]{/t}</p>                                                                       
+                                                                                <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_sym}{$profit_totals.turnover.gross|string_format:"%.2f"}&nbsp;-&nbsp;{$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}</p>                                                                        
                                                                                 <p><b>{t}NB{/t}:</b> {t}These calculations use the monies you have sent and received, rather than the transactions themselves.{/t}<p>
                                                                             </td>
                                                                         </tr>
@@ -854,25 +922,53 @@
                                                                     {if $qw_tax_system == 'sales_tax_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                                
-                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[G]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[N]{/t})</p>
-                                                                                <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;({$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"})</p>
+                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}Expenses{/t}{t}[G]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}</p>
                                                                                 <hr style="border-top: dotted 1px;" />
                                                                                 <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if} 
                                                                     
-                                                                    <!-- All VAT Based systems -->
-                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
+                                                                    <!-- VAT Standard and Cash -->
+                                                                    {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_cash'}
                                                                         <tr>
                                                                             <td style="text-align: center;">                                                                        
-                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[N]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;({t}Expenses{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Refunds{/t}{t}[N]{/t})</p>
-                                                                                <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.net|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;({$currency_sym}{$profit_totals.expense.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"})</p>
-                                                                                <hr style="border-top: dotted 1px;" />
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
+                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}Expenses{/t}{t}[N]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.expense.net|string_format:"%.2f"}</p>
                                                                             </td>
                                                                         </tr>
-                                                                    {/if}                                                                  
+                                                                        <tr>
+                                                                            <td>
+                                                                                <hr style="border-top: dotted 1px;" />
+                                                                                {if $qw_tax_system == 'vat_standard'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t}
+                                                                                {elseif $qw_tax_system == 'vat_cash'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}
+                                                                                {/if}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if}  
+                                                                    
+                                                                    <!-- VAT Flat Rate -->
+                                                                    {if $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
+                                                                        <tr>
+                                                                            <td style="text-align: center;">                                                                        
+                                                                                <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}Expenses{/t}{t}[G]{/t}</p>
+                                                                                <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}</p>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <hr style="border-top: dotted 1px;" />
+                                                                                {if $qw_tax_system == 'vat_flat_basic'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t}
+                                                                                {elseif $qw_tax_system == 'vat_flat_cash'}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}
+                                                                                {/if}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {/if} 
                                                                     
                                                                 </table>
                                                             </td>

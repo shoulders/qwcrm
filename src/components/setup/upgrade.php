@@ -41,7 +41,7 @@ if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_pag
 
 // Temp for testing - This allows skips straight to database processing
 //$VAR['stage'] = 'database_upgrade';
-//$VAR['submit'] = 'database_upgrade_q';
+//$VAR['submit'] = 'database_upgrade';
 
 ##################################################
 

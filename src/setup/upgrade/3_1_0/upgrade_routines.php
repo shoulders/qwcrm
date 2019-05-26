@@ -125,10 +125,10 @@ class Upgrade3_1_0 extends QSetup {
         
         // Update Invoice Tax Types
         $this->update_column_values(PRFX.'company_record', 'tax_system', 'none', 'no_tax');
-        $this->update_column_values(PRFX.'company_record', 'tax_system', 'vat', 'vat_cash');
+        $this->update_column_values(PRFX.'company_record', 'tax_system', 'vat', 'vat_standard');
         $this->update_column_values(PRFX.'company_record', 'tax_system', 'sales', 'sales_tax_cash');        
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'none', 'no_tax');
-        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_cash');
+        $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'vat', 'vat_standard');
         $this->update_column_values(PRFX.'invoice_records', 'tax_system', 'sales', 'sales_tax_cash');
         
         // Set the Company Tax system and VAT tax code now the Company Record has been updated

@@ -1368,7 +1368,7 @@ function recalculate_invoice_totals($invoice_id) {
     $unit_net                   = ($labour_items_sub_totals['sub_total_net'] + $parts_items_sub_totals['sub_total_net'] + $voucher_sub_totals['sub_total_net']) - $unit_discount;
     $unit_tax                   = $labour_items_sub_totals['sub_total_tax'] + $parts_items_sub_totals['sub_total_tax'] + $voucher_sub_totals['sub_total_tax'];
     $unit_gross                 = $unit_net + $unit_tax;    
-    $payments_sub_total         = sum_payments(null, null, null, null, 'valid', 'invoice', null, null, null, $invoice_id);
+    $payments_sub_total         = sum_payments(null, null, 'date', null, null, 'valid', 'invoice', null, null, null, $invoice_id);
     $balance                    = $unit_gross - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."invoice_records SET            
@@ -1671,7 +1671,7 @@ function assign_invoice_to_employee($invoice_id, $target_employee_id) {
     }
         
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) {       
+    if(count_payments(null, null, 'date', null, null, null, 'invoice', null, null, null, $invoice_id)) {       
         //postEmulationWrite('warning_msg', _gettext("The invoice status cannot be changed because the invoice has payments."));
         return false;        
     }
@@ -1727,7 +1727,7 @@ function check_invoice_can_be_refunded($invoice_id) {
     }    
     
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(!count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
+    if(!count_payments(null, null, 'date', null, null, null, 'invoice', null, null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }
@@ -1796,7 +1796,7 @@ function check_invoice_can_be_cancelled($invoice_id) {
     }    
     
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
+    if(count_payments(null, null, 'date', null, null, null, 'invoice', null, null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be cancelled because the invoice has payments."));
         return false;        
     }
@@ -1870,7 +1870,7 @@ function check_invoice_can_be_deleted($invoice_id) {
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
+    if(count_payments(null, null, 'date', null, null, null, 'invoice', null, null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be deleted because it has payments."));
         return false;        
     }
@@ -1940,7 +1940,7 @@ function check_invoice_can_have_refund_deleted($invoice_id) {
     }
 
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(!count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
+    if(!count_payments(null, null, 'date', null, null, null, 'invoice', null, null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot be refunded because the invoice has no payments."));
         return false;        
     }
@@ -1990,7 +1990,7 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
     }
 
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(!count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) { 
+    if(!count_payments(null, null, 'date', null, null, null, 'invoice', null, null, null, $invoice_id)) { 
         //postEmulationWrite('warning_msg', _gettext("This invoice cannot have its refunded cancelled because the invoice has no payments."));
         return false;        
     }
@@ -2058,7 +2058,7 @@ function check_invoice_can_have_refund_cancelled($invoice_id) {
     }
         
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, null, null, null, 'invoice', null, null, null, $invoice_id)) {       
+    if(count_payments(null, null, 'date', null, null, null, 'invoice', null, null, null, $invoice_id)) {       
         //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because the invoice has payments."));
         return false;        
     }
