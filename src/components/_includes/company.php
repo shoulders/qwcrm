@@ -435,11 +435,16 @@ function delete_logo() {
     // Only delete a logo if there is one set
     if(get_company_details('logo')) {
         
-        // Build the full logo file path
+        // Build the full logo file path (new)
         $logo_file = parse_url(MEDIA_DIR . get_company_details('logo'), PHP_URL_PATH);
         
-        // Perform the deletion
-        unlink($logo_file);
+        // Check the file exists
+        if(file_exists($logo_file)) {
+            
+            // Perform the deletion
+            unlink($logo_file);        
+            
+        }
         
     }
     
