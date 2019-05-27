@@ -314,8 +314,11 @@ function get_client_notes($client_id) {
     
     $db = QFactory::getDbo();
     
-    $sql = "SELECT *,
-        
+    $sql = "SELECT 
+            ".PRFX."client_notes.*,
+            ".PRFX."user_records.first_name,
+            ".PRFX."user_records.last_name,
+                
             CONCAT(".PRFX."user_records.first_name, ' ', ".PRFX."user_records.last_name) AS employee_display_name
             
             FROM ".PRFX."client_notes

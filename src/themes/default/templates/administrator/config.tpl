@@ -127,7 +127,7 @@
                     <tr>
                         <td align="right"><b>{t}Google Server{/t}</b> <span style="color: #ff0000">*</span></td>                                                          
                         <td>
-                            <input name="qwcrm_config[google_server]" class="olotd5" value="{$qwcrm_config.google_server}" size="50" type="url" maxlength="50" placeholder="https://www.google.com/" pattern="^https://.+" required onkeydown="return onlyURL(event);"/>
+                            <input name="qwcrm_config[google_server]" class="olotd5" value="{$qwcrm_config.google_server}" size="50" type="text" maxlength="50" placeholder="https://www.google.com/" pattern="^https://.+" required onkeydown="return onlyURL(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Google Server{/t}</strong></div><hr><div>{t escape=tooltip}This is your regionally prefered Google website. It is currently used for Google Maps to generate directions.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr> 

@@ -14,6 +14,9 @@ require(INCLUDES_DIR.'schedule.php');
 require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
 
+// Prevent undefined variable errors
+$VAR['note'] = isset($VAR['note']) ? $VAR['note'] : null; 
+
 // Check if we have an employee_id
 if(!isset($VAR['employee_id']) || !$VAR['employee_id']) {
     force_page('user', 'search', 'warning_msg='._gettext("No Employee ID supplied."));
@@ -23,6 +26,7 @@ if(!isset($VAR['employee_id']) || !$VAR['employee_id']) {
 if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
 }
+
 
 // Get client_id
 $VAR['client_id'] =  get_workorder_details($VAR['workorder_id'], 'client_id');
@@ -54,10 +58,10 @@ if(isset($VAR['submit'])) {
 } else {
     
     $smarty->assign('start_date',          convert_year_month_day_to_date($VAR['start_year'], $VAR['start_month'], $VAR['start_day'])    );
-    $smarty->assign('start_time',          $VAR['start_time']   );  
-    
+    $smarty->assign('start_time',          $VAR['start_time']   );    
     $smarty->assign('end_date',            convert_year_month_day_to_date($VAR['start_year'], $VAR['start_month'], $VAR['start_day'])    );      
     $smarty->assign('end_time',            $VAR['start_time']   ); 
+    $smarty->assign('note',                $VAR['note']);  
     
 }
 

@@ -932,8 +932,12 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
 
 function validate_schedule_times($start_date, $start_time, $end_time, $employee_id, $schedule_id = null) {    
     
-    $db = QFactory::getDbo();
+    $db = QFactory::getDbo();    
     $smarty = QFactory::getSmarty();    
+    
+    // convert the submitted $start_date to the correct format
+    $start_date = date_to_timestamp($start_date);
+    $start_date = timestamp_to_date($start_date, '%Y-%m-%d');
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only
     $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_date);

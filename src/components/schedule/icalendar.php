@@ -59,7 +59,7 @@ if(isset($VAR['ics_type']) && $VAR['ics_type'] == 'day') {
     $schedule_details = get_schedule_details($VAR['schedule_id']);
     
     // Get Client Display Name
-    $client_display_name = get_client_details($schedule_details['workorder_id'], 'display_name');
+    $client_display_name = get_client_details($schedule_details['client_id'], 'display_name');
     
     // Set filename
     $ics_filename   = _gettext("Schedule").'-'.$VAR['schedule_id'].'_'._gettext("WorkOrder").'-'.$schedule_details['workorder_id'].'_'.str_replace(' ', '-', $client_display_name).'.ics';

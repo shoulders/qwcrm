@@ -55,7 +55,7 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Website{/t}</b></td>
-                                                                            <td><input name="website" class="olotd5" size="50" type="text" maxlength="50" pattern="{literal}^(https?:\/\/)?([a-z0-9]+\.)*([a-z0-9]+\.[a-z]+)(\/[a-zA-Z0-9#]+\/?)*${/literal}" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
+                                                                            <td><input name="website" class="olotd5" size="50" type="text" maxlength="50" pattern="{literal}^(https?:\/\/)?([a-z0-9_\-]+\.?)+(\/([a-zA-Z0-9_\-~#]+)*\/?)?{/literal}" placeholder="https://quantumwarp.com/" onkeydown="return onlyURL(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Email{/t}</b></td>
