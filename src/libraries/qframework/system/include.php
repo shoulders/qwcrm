@@ -1168,9 +1168,9 @@ function timestamp_to_calendar_format($timestamp) {
 #     Timestamp to date                  #  // not used anywhere at the minute
 ##########################################
 
-function timestamp_to_date($timestamp) {    
+function timestamp_to_date($timestamp, $date_format = null) {    
 
-    switch(DATE_FORMAT) {
+    switch(!is_null($date_format) ? $date_format : DATE_FORMAT) {
         
         case '%d/%m/%Y':
         return date('d/m/Y', $timestamp);        
