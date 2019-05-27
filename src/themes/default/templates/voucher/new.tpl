@@ -45,9 +45,9 @@
                                                 <td><b>{t}Type{/t}</b></td>                                               
                                                 <td>
                                                     {section name=s loop=$voucher_types}    
-                                                        {if 'multi_purpose' == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
+                                                        {if 'MPV' == $voucher_types[s].type_key}{t}{$voucher_types[s].display_name}{/t}{/if}        
                                                     {/section} 
-                                                    <input name="type" value="multi_purpose" type="hidden" />            
+                                                    <input name="type" value="MPV" type="hidden" />            
                                                 </td>                                               
                                             </tr>
                                             <tr>

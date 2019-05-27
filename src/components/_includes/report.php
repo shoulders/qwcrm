@@ -841,9 +841,9 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_expired_tax'] = sum_vouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'expired', $employee_id, $client_id);
         $stats['sum_expired_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'expired', $employee_id, $client_id);
         
-        // Used for VAT Flate Rate calculations
-        $stats['sum_voucher_spv_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'single_purpose', null, $employee_id, $client_id);
-        $stats['sum_voucher_mpv_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'multi_purpose', null, $employee_id, $client_id);
+        // Used for VAT Flate Rate calculations (not currently used)
+        //$stats['sum_voucher_spv_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'SPV', null, $employee_id, $client_id);
+        //$stats['sum_voucher_mpv_unit_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, 'MPV', null, $employee_id, $client_id);
         
         // Only used on Client Tab        
         $stats['sum_unused_gross'] = sum_vouchers('unit_gross', $start_date, $end_date, 'date', $tax_system, null, null, 'unused', $employee_id, $client_id);
@@ -862,8 +862,8 @@ function get_vouchers_stats($record_set, $start_date = null, $end_date = null, $
         $stats['sum_unit_net'] -= sum_vouchers('unit_net', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
         $stats['sum_unit_tax'] -= sum_vouchers('unit_tax', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);
         $stats['sum_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, null, 'cancelled', $employee_id, $client_id);            
-        $stats['sum_voucher_spv_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'single_purpose', 'cancelled', $employee_id, $client_id);        
-        $stats['sum_voucher_mpv_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'multi_purpose', 'cancelled', $employee_id, $client_id);        
+        //$stats['sum_voucher_spv_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'SPV', 'cancelled', $employee_id, $client_id);        
+        //$stats['sum_voucher_mpv_unit_gross'] -= sum_vouchers('unit_gross', $start_date, $end_date, 'closed_on', $tax_system, null, 'MPV', 'cancelled', $employee_id, $client_id);        
         
     }
        
@@ -2080,7 +2080,7 @@ function revenue_payments_prorated_against_records($start_date = null, $end_date
                     $voucher_type = get_voucher_details($rs->fields['voucher_id'], 'type');
                 
                     // Multi Purpose
-                    if($voucher_type == 'multi_purpose') {
+                    if($voucher_type == 'MPV') {
                         $prorata_totals['invoice']['net'] += 0.00;
                         $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
                         $prorata_totals['invoice']['gross'] += 0.00;  
@@ -2178,12 +2178,12 @@ function revenue_payment_prorated_against_record($payment_id, $record_type) {
     
     /* This gets the exact amounts of vouchers paid for, used upstream (not currently used)
     if($record_type == 'invoice') {  
-        $record_prorata_totals['voucher']['spv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
-        $record_prorata_totals['voucher']['spv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
-        $record_prorata_totals['voucher']['spv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
-        $record_prorata_totals['voucher']['mpv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
-        $record_prorata_totals['voucher']['mpv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
-        $record_prorata_totals['voucher']['mpv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'multi_purpose', null, null, null, $record_details['invoice_id']) * $percentage;     
+        $record_prorata_totals['voucher']['spv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'SPV', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['spv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'SPV', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['spv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'SPV', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['mpv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'MPV', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['mpv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'MPV', null, null, null, $record_details['invoice_id']) * $percentage;
+        $record_prorata_totals['voucher']['mpv']['gross'] = sum_vouchers('unit_gross', null, null, null, null, null, 'MPV', null, null, null, $record_details['invoice_id']) * $percentage;     
     }*/
         
     return $record_prorata_totals;

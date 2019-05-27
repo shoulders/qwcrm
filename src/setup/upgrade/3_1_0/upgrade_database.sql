@@ -429,8 +429,8 @@ CREATE TABLE `#__voucher_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `#__voucher_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'multi_purpose', 'Multi Purpose (MPV)'),
-(2, 'single_purpose', 'Single Purpose (SPV)');
+(1, 'MPV', 'Multi Purpose (MPV)'),
+(2, 'SPV', 'Single Purpose (SPV)');
 
 ALTER TABLE `#__voucher_types` ADD PRIMARY KEY (`id`);
 

@@ -1240,8 +1240,8 @@ CREATE TABLE `#__voucher_types` (
 --
 
 INSERT INTO `#__voucher_types` (`id`, `type_key`, `display_name`) VALUES
-(1, 'multi_purpose', 'Multi Purpose (MPV)'),
-(2, 'single_purpose', 'Single Purpose (SPV)');
+(1, 'MPV', 'Multi Purpose (MPV)'),
+(2, 'SPV', 'Single Purpose (SPV)');
 
 -- --------------------------------------------------------
 

@@ -160,7 +160,7 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
     
     if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
     
-    if($type == 'multi_purpose') {
+    if($type == 'MPV') {
         if($tax_system == 'no_tax') { return 'TNA'; }
         if($tax_system == 'sales_tax_cash') { return 'TNA'; } 
         if($tax_system == 'vat_standard') { return 'T9'; }        
@@ -169,7 +169,7 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
         if($tax_system == 'vat_flat_cash') { return 'T9'; }       
     }
     
-    if($type == 'single_purpose') {
+    if($type == 'SPV') {
         if($tax_system == 'no_tax') { return 'TNA'; }
         if($tax_system == 'sales_tax_cash') { return 'TNA'; }
         if($tax_system == 'vat_standard') { return 'T1'; }

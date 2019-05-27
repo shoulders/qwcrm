@@ -147,9 +147,9 @@ class Upgrade3_1_0 extends QSetup {
         
         // Parse Voucher records and correct records        
         $this->voucher_correct_records();
-        $this->update_column_values(PRFX.'voucher_records', 'type', '*', 'multi_purpose');
+        $this->update_column_values(PRFX.'voucher_records', 'type', '*', 'MPV');
         $this->update_column_values(PRFX.'voucher_records', 'tax_system', '*', $this->company_tax_system);
-        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('multi_purpose', $this->company_tax_system)); 
+        $this->update_column_values(PRFX.'voucher_records', 'vat_tax_code', '*', get_voucher_vat_tax_code('MPV', $this->company_tax_system)); 
         
         // Sales Tax Rate should be zero except for all invoices of 'sales_tax_cash' type
         $this->update_record_value(PRFX.'invoice_records', 'sales_tax_rate', 0.00, 'tax_system', 'sales_tax_cash', '!');
