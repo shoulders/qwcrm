@@ -771,7 +771,7 @@
                                                                                 {if $qw_tax_system == 'vat_standard' || $qw_tax_system == 'vat_flat_basic'}
                                                                                     <p><b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding tax amounts to calculate your tax liability.{/t}</p>
                                                                                 {elseif $qw_tax_system == 'vat_cash' || $qw_tax_system == 'vat_flat_cash'}
-                                                                                    <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding tax amounts and then are used to calculate your tax liability.{/t}</p>
+                                                                                    <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your tax liability.{/t}</p>
                                                                                 {/if}
                                                                                 {if $qw_tax_system == 'vat_flat_basic' || $qw_tax_system == 'vat_flat_cash'}
                                                                                     <p><b>{t}NB{/t}:</b> {t}Vouchers are accounted for VAT Flat Rate when they are purchased. Vouchers used for purchasing are not included in turnover. MPV vouchers also have their normal VAT liability accounted for at the point of redemption.{/t}</p>
@@ -827,7 +827,7 @@
                                                                                 <p>{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;=&nbsp;&nbsp;({t}Invoiced{/t}{t}[N]{/t}&nbsp;+&nbsp;{t}Other Incomes{/t}{t}[G]{/t})&nbsp;&nbsp;-&nbsp;&nbsp;{t}Refunds{/t}{t}[N]{/t}</p>
                                                                                 <p>{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;({$currency_sym}{$profit_totals.invoice.net|string_format:"%.2f"}&nbsp;+&nbsp;{$currency_sym}{$profit_totals.otherincome.gross|string_format:"%.2f"})&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.refund.net|string_format:"%.2f"}</p>
                                                                                 <hr style="border-top: dotted 1px;" />
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if} 
@@ -846,7 +846,7 @@
                                                                                 {if $qw_tax_system == 'vat_standard'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t}
                                                                                 {elseif $qw_tax_system == 'vat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your turnover.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your turnover.{/t}
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>
@@ -872,7 +872,7 @@
                                                                                 {if $qw_tax_system == 'vat_flat_basic'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your turnover.{/t}
                                                                                 {elseif $qw_tax_system == 'vat_flat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your turnover.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your turnover.{/t}
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>
@@ -925,7 +925,7 @@
                                                                                 <p>{t}Profit{/t}&nbsp;&nbsp;=&nbsp;&nbsp;{t}Turnover{/t}{t}[N]{/t}&nbsp;&nbsp;-&nbsp;&nbsp;{t}Expenses{/t}{t}[G]{/t}</p>
                                                                                 <p>{$currency_sym}{$profit_totals.profit|string_format:"%.2f"}&nbsp;&nbsp;=&nbsp;&nbsp;{$currency_sym}{$profit_totals.turnover.net|string_format:"%.2f"}&nbsp;&nbsp;-&nbsp;&nbsp;{$currency_sym}{$profit_totals.expense.gross|string_format:"%.2f"}</p>
                                                                                 <hr style="border-top: dotted 1px;" />
-                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}<p>
+                                                                                <p><b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}<p>
                                                                             </td>
                                                                         </tr>
                                                                     {/if} 
@@ -944,7 +944,7 @@
                                                                                 {if $qw_tax_system == 'vat_standard'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t}
                                                                                 {elseif $qw_tax_system == 'vat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>
@@ -964,7 +964,7 @@
                                                                                 {if $qw_tax_system == 'vat_flat_basic'}
                                                                                     <b>{t}NB{/t}:</b> {t}These calculations use the transaction dates and their corresponding amounts to calculate your profit.{/t}
                                                                                 {elseif $qw_tax_system == 'vat_flat_cash'}
-                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate the corresponding amounts and then are used to calculate your profit.{/t}
+                                                                                    <b>{t}NB{/t}:</b> {t}These calculations use payments by their dates, prorated against their parent transaction to calculate their corresponding amounts which are then are used to calculate your profit.{/t}
                                                                                 {/if}
                                                                             </td>
                                                                         </tr>

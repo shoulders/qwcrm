@@ -1983,10 +1983,10 @@ function revenue_payments_prorated_against_records($start_date = null, $end_date
     // Holding array for prorata totals // I could use a blank array here??? but it is a good reference
     $prorata_totals = array(
                         "invoice" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
-                        "voucher" => array("spv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), "mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)),                        
+                        //"voucher" => array("spv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), "mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)),  (not currently used)                       
                         "refund" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
                         "expense" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),
-                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)                        
+                        "otherincome" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00),                      
                         );
     
     // Default Action
@@ -2085,7 +2085,7 @@ function revenue_payments_prorated_against_records($start_date = null, $end_date
                         $prorata_totals['invoice']['tax'] += $prorata_record['tax']; 
                         $prorata_totals['invoice']['gross'] += 0.00;  
                         
-                        /* Voucher amounts that have been paid for (Used upstream for VAT Flat Rate)
+                        /* Total the transaction amounts that have been paid for with MPV voucher (not currently used)
                         $prorata_totals['voucher']['mpv']['net'] += $prorata_record['net'];
                         $prorata_totals['voucher']['mpv']['tax'] += $prorata_record['tax'];
                         $prorata_totals['voucher']['mpv']['gross'] += $prorata_record['gross'];*/                    
@@ -2098,7 +2098,7 @@ function revenue_payments_prorated_against_records($start_date = null, $end_date
                         $prorata_totals['invoice']['tax'] += 0.00; 
                         $prorata_totals['invoice']['gross'] += 0.00;
                         
-                        /* Voucher amounts that have been paid for (Used upstream for VAT Flat Rate)
+                        /* Total the transaction amounts that have been paid for with MPV voucher (not currently used)
                         $prorata_totals['voucher']['spv']['net'] += $prorata_record['voucher']['mpv']['net'];
                         $prorata_totals['voucher']['spv']['tax'] += $prorata_record['voucher']['mpv']['tax']; 
                         $prorata_totals['voucher']['spv']['gross'] += $prorata_record['voucher']['mpv']['gross'];*/
@@ -2161,7 +2161,7 @@ function revenue_payment_prorated_against_record($payment_id, $record_type) {
                         "net" => 0.00,
                         "tax" => 0.00,
                         "gross" => 0.00,                       
-                        "voucher" => array("spv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), "mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)),                                      
+                        //"voucher" => array("spv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00), "mpv" => array("net" => 0.00, "tax" => 0.00, "gross" => 0.00)),                                      
                         );    
     
     // Get the correct record details to process
@@ -2176,7 +2176,7 @@ function revenue_payment_prorated_against_record($payment_id, $record_type) {
     $record_prorata_totals['tax'] = $record_details['unit_tax'] * $percentage;
     $record_prorata_totals['gross'] = $record_details['unit_gross'] * $percentage;
     
-    /* I need to prorata invoice SPV/MPV for use up stream --------- (not needed, delete when everything is working)
+    /* This gets the exact amounts of vouchers paid for, used upstream (not currently used)
     if($record_type == 'invoice') {  
         $record_prorata_totals['voucher']['spv']['net'] = sum_vouchers('unit_net', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
         $record_prorata_totals['voucher']['spv']['tax'] = sum_vouchers('unit_tax', null, null, null, null, null, 'single_purpose', null, null, null, $record_details['invoice_id']) * $percentage;
