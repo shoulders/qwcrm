@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.0.0\n"
-"POT-Creation-Date: 2019-05-16 19:06+0100\n"
-"PO-Revision-Date: 2019-05-16 19:06+0100\n"
+"POT-Creation-Date: 2019-05-27 12:09+0100\n"
+"PO-Revision-Date: 2019-05-27 12:09+0100\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -234,17 +234,17 @@ msgstr ""
 #: themes/default/templates/administrator/acl.tpl:31
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:113
 #: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:118
-#: language/_gettext_only/system_variables.php:171
+#: language/_gettext_only/system_variables.php:172
 msgid "Administrator"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:32
-#: language/_gettext_only/system_variables.php:172
+#: language/_gettext_only/system_variables.php:173
 msgid "Manager"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:33
-#: language/_gettext_only/system_variables.php:173
+#: language/_gettext_only/system_variables.php:174
 msgid "Supervisor"
 msgstr ""
 
@@ -252,17 +252,17 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:182
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:214
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:289
-#: language/_gettext_only/system_variables.php:174
+#: language/_gettext_only/system_variables.php:175
 msgid "Technician"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:35
-#: language/_gettext_only/system_variables.php:175
+#: language/_gettext_only/system_variables.php:176
 msgid "Clerical"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:36
-#: language/_gettext_only/system_variables.php:176
+#: language/_gettext_only/system_variables.php:177
 msgid "Counter"
 msgstr ""
 
@@ -301,18 +301,18 @@ msgstr ""
 #: themes/default/templates/workorder/new.tpl:38
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:52
 #: themes/default/templates/workorder/search.tpl:39
-#: components/_includes/user.php:218
-#: language/_gettext_only/system_variables.php:177
+#: components/_includes/user.php:215
+#: language/_gettext_only/system_variables.php:178
 msgid "Client"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:38
-#: language/_gettext_only/system_variables.php:178
+#: language/_gettext_only/system_variables.php:179
 msgid "Guest"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:39
-#: language/_gettext_only/system_variables.php:179
+#: language/_gettext_only/system_variables.php:180
 msgid "Public"
 msgstr ""
 
@@ -554,6 +554,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_install_results_qwcrm_block.tpl:12
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_block.tpl:12
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_results_block.tpl:12
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:12
 #: language/_gettext_only/pages.php:29
 msgid "ADMINISTRATOR_CONFIG_HELP_TITLE"
 msgstr "Help"
@@ -572,6 +573,7 @@ msgstr "Help"
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_install_results_qwcrm_block.tpl:12
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_block.tpl:12
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_results_block.tpl:12
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:12
 #: language/_gettext_only/pages.php:30
 msgid "ADMINISTRATOR_CONFIG_HELP_CONTENT"
 msgstr ""
@@ -593,6 +595,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:28
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:25
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:28
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:21
 msgid "Host"
 msgstr ""
 
@@ -611,6 +614,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:35
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:32
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:35
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:25
 msgid "Database Name"
 msgstr ""
 
@@ -629,6 +633,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:42
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:39
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:42
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:29
 msgid "Database Username"
 msgstr ""
 
@@ -679,11 +684,11 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:67
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:338
-#: language/_gettext_only/system_variables.php:62
-#: language/_gettext_only/system_variables.php:98
-#: language/_gettext_only/system_variables.php:114
-#: language/_gettext_only/system_variables.php:122
-#: language/_gettext_only/system_variables.php:161
+#: language/_gettext_only/system_variables.php:63
+#: language/_gettext_only/system_variables.php:99
+#: language/_gettext_only/system_variables.php:115
+#: language/_gettext_only/system_variables.php:123
+#: language/_gettext_only/system_variables.php:162
 msgid "Other"
 msgstr ""
 
@@ -900,7 +905,7 @@ msgstr ""
 #: themes/default/templates/payment/search.tpl:87
 #: themes/default/templates/refund/search.tpl:65
 #: themes/default/templates/refund/search.tpl:77
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:147
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:148
 #: themes/default/templates/supplier/search.tpl:60
 #: themes/default/templates/user/search.tpl:47
 #: themes/default/templates/user/search.tpl:57
@@ -1459,9 +1464,9 @@ msgstr ""
 
 #: themes/default/templates/administrator/config.tpl:672
 #: themes/default/templates/company/edit.tpl:446
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:314
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:315
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:59
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:252
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:253
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:59
 msgid "Mandatory"
 msgstr ""
@@ -1585,47 +1590,47 @@ msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:32
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:13
-#: language/_gettext_only/system_variables.php:196
+#: language/_gettext_only/system_variables.php:197
 msgid "Assigned"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:36
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:14
-#: language/_gettext_only/system_variables.php:197
+#: language/_gettext_only/system_variables.php:198
 msgid "Waiting for Parts"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:40
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:15
-#: language/_gettext_only/system_variables.php:198
+#: language/_gettext_only/system_variables.php:199
 msgid "Scheduled"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:44
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:16
-#: language/_gettext_only/system_variables.php:199
+#: language/_gettext_only/system_variables.php:200
 msgid "With Client"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:48
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:17
-#: language/_gettext_only/system_variables.php:200
+#: language/_gettext_only/system_variables.php:201
 msgid "On Hold"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:52
 #: themes/default/templates/workorder/blocks/display_workorder_current_stats_block.tpl:18
-#: language/_gettext_only/system_variables.php:201
+#: language/_gettext_only/system_variables.php:202
 msgid "Management"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:56
-#: language/_gettext_only/system_variables.php:202
+#: language/_gettext_only/system_variables.php:203
 msgid "Closed without Invoice"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:60
-#: language/_gettext_only/system_variables.php:203
+#: language/_gettext_only/system_variables.php:204
 msgid "Closed with Invoice"
 msgstr ""
 
@@ -1675,10 +1680,14 @@ msgstr ""
 #: themes/default/templates/client/blocks/details_account_block.tpl:82
 #: themes/default/templates/client/blocks/details_account_block.tpl:171
 #: themes/default/templates/client/blocks/details_account_block.tpl:279
-#: themes/default/templates/report/financial.tpl:783
-#: themes/default/templates/report/financial.tpl:802
-#: themes/default/templates/report/financial.tpl:847
-#: themes/default/templates/report/financial.tpl:866
+#: themes/default/templates/report/financial.tpl:690
+#: themes/default/templates/report/financial.tpl:800
+#: themes/default/templates/report/financial.tpl:819
+#: themes/default/templates/report/financial.tpl:851
+#: themes/default/templates/report/financial.tpl:857
+#: themes/default/templates/report/financial.tpl:898
+#: themes/default/templates/report/financial.tpl:917
+#: themes/default/templates/report/financial.tpl:949
 msgid "[G]"
 msgstr ""
 
@@ -1689,25 +1698,25 @@ msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:98
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:13
-#: language/_gettext_only/system_variables.php:75
+#: language/_gettext_only/system_variables.php:76
 msgid "Pending"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:103
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:14
 #: language/_gettext_only/system_variables.php:47
-#: language/_gettext_only/system_variables.php:76
-#: language/_gettext_only/system_variables.php:87
-#: language/_gettext_only/system_variables.php:136
+#: language/_gettext_only/system_variables.php:77
+#: language/_gettext_only/system_variables.php:88
+#: language/_gettext_only/system_variables.php:137
 msgid "Unpaid"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:108
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:15
 #: language/_gettext_only/system_variables.php:48
-#: language/_gettext_only/system_variables.php:77
-#: language/_gettext_only/system_variables.php:88
-#: language/_gettext_only/system_variables.php:137
+#: language/_gettext_only/system_variables.php:78
+#: language/_gettext_only/system_variables.php:89
+#: language/_gettext_only/system_variables.php:138
 msgid "Partially Paid"
 msgstr ""
 
@@ -1716,27 +1725,27 @@ msgstr ""
 #: themes/default/templates/invoice/details.tpl:45
 #: themes/default/templates/report/financial.tpl:150
 #: language/_gettext_only/system_variables.php:49
-#: language/_gettext_only/system_variables.php:78
-#: language/_gettext_only/system_variables.php:89
-#: language/_gettext_only/system_variables.php:138
+#: language/_gettext_only/system_variables.php:79
+#: language/_gettext_only/system_variables.php:90
+#: language/_gettext_only/system_variables.php:139
 msgid "Paid"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:118
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:17
-#: language/_gettext_only/system_variables.php:79
+#: language/_gettext_only/system_variables.php:80
 msgid "In Dispute"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:123
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:18
-#: language/_gettext_only/system_variables.php:80
+#: language/_gettext_only/system_variables.php:81
 msgid "Overdue"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:128
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:21
-#: language/_gettext_only/system_variables.php:81
+#: language/_gettext_only/system_variables.php:82
 msgid "Collections"
 msgstr ""
 
@@ -1745,8 +1754,8 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoice_current_stats_block.tpl:20
 #: themes/default/templates/report/financial.tpl:154
 #: themes/default/templates/report/financial.tpl:187
-#: language/_gettext_only/system_variables.php:82
-#: language/_gettext_only/system_variables.php:190
+#: language/_gettext_only/system_variables.php:83
+#: language/_gettext_only/system_variables.php:191
 msgid "Refunded"
 msgstr ""
 
@@ -1756,12 +1765,12 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:158
 #: themes/default/templates/report/financial.tpl:191
 #: language/_gettext_only/system_variables.php:50
-#: language/_gettext_only/system_variables.php:83
-#: language/_gettext_only/system_variables.php:90
-#: language/_gettext_only/system_variables.php:128
-#: language/_gettext_only/system_variables.php:139
-#: language/_gettext_only/system_variables.php:147
-#: language/_gettext_only/system_variables.php:191
+#: language/_gettext_only/system_variables.php:84
+#: language/_gettext_only/system_variables.php:91
+#: language/_gettext_only/system_variables.php:129
+#: language/_gettext_only/system_variables.php:140
+#: language/_gettext_only/system_variables.php:148
+#: language/_gettext_only/system_variables.php:192
 msgid "Cancelled"
 msgstr ""
 
@@ -1786,24 +1795,24 @@ msgid "Purchased"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:182
-#: language/_gettext_only/system_variables.php:186
+#: language/_gettext_only/system_variables.php:187
 msgid "Unused"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:187
 #: themes/default/templates/report/financial.tpl:179
-#: language/_gettext_only/system_variables.php:187
+#: language/_gettext_only/system_variables.php:188
 msgid "Redeemed"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:192
-#: language/_gettext_only/system_variables.php:188
+#: language/_gettext_only/system_variables.php:189
 msgid "Suspended"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:197
 #: themes/default/templates/report/financial.tpl:183
-#: language/_gettext_only/system_variables.php:189
+#: language/_gettext_only/system_variables.php:190
 msgid "Expired"
 msgstr ""
 
@@ -1829,6 +1838,12 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:69
 #: themes/default/templates/report/financial.tpl:101
 #: themes/default/templates/report/financial.tpl:544
+#: themes/default/templates/report/financial.tpl:625
+#: themes/default/templates/report/financial.tpl:705
+#: themes/default/templates/report/financial.tpl:808
+#: themes/default/templates/report/financial.tpl:819
+#: themes/default/templates/report/financial.tpl:831
+#: themes/default/templates/report/financial.tpl:851
 msgid "Invoices"
 msgstr ""
 
@@ -1837,14 +1852,12 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:135
 #: themes/default/templates/report/financial.tpl:381
 #: themes/default/templates/report/financial.tpl:528
-#: themes/default/templates/report/financial.tpl:629
-#: themes/default/templates/report/financial.tpl:718
-#: themes/default/templates/report/financial.tpl:791
-#: themes/default/templates/report/financial.tpl:802
-#: themes/default/templates/report/financial.tpl:814
-#: themes/default/templates/report/financial.tpl:855
-#: themes/default/templates/report/financial.tpl:866
-#: themes/default/templates/report/financial.tpl:878
+#: themes/default/templates/report/financial.tpl:635
+#: themes/default/templates/report/financial.tpl:723
+#: themes/default/templates/report/financial.tpl:808
+#: themes/default/templates/report/financial.tpl:819
+#: themes/default/templates/report/financial.tpl:831
+#: themes/default/templates/report/financial.tpl:851
 msgid "Refunds"
 msgstr ""
 
@@ -1852,14 +1865,6 @@ msgstr ""
 #: themes/default/templates/client/blocks/details_account_block.tpl:274
 #: themes/default/templates/client/blocks/details_account_block.tpl:279
 #: themes/default/templates/report/financial.tpl:213
-#: themes/default/templates/report/financial.tpl:619
-#: themes/default/templates/report/financial.tpl:674
-#: themes/default/templates/report/financial.tpl:791
-#: themes/default/templates/report/financial.tpl:802
-#: themes/default/templates/report/financial.tpl:814
-#: themes/default/templates/report/financial.tpl:855
-#: themes/default/templates/report/financial.tpl:866
-#: themes/default/templates/report/financial.tpl:878
 msgid "Invoiced"
 msgstr ""
 
@@ -1929,7 +1934,7 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:437
 #: themes/default/templates/report/financial.tpl:471
 #: themes/default/templates/report/financial.tpl:516
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:149
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:150
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:26
 #: themes/default/templates/voucher/details.tpl:97
 msgid "VAT"
@@ -1986,17 +1991,14 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:313
 #: themes/default/templates/report/financial.tpl:317
 #: themes/default/templates/report/financial.tpl:321
-#: themes/default/templates/report/financial.tpl:690
-#: themes/default/templates/report/financial.tpl:694
-#: themes/default/templates/report/financial.tpl:698
-#: themes/default/templates/report/financial.tpl:702
-#: themes/default/templates/report/financial.tpl:706
-#: themes/default/templates/report/financial.tpl:783
-#: themes/default/templates/report/financial.tpl:802
-#: themes/default/templates/report/financial.tpl:814
-#: themes/default/templates/report/financial.tpl:847
-#: themes/default/templates/report/financial.tpl:866
-#: themes/default/templates/report/financial.tpl:878
+#: themes/default/templates/report/financial.tpl:800
+#: themes/default/templates/report/financial.tpl:819
+#: themes/default/templates/report/financial.tpl:831
+#: themes/default/templates/report/financial.tpl:857
+#: themes/default/templates/report/financial.tpl:898
+#: themes/default/templates/report/financial.tpl:917
+#: themes/default/templates/report/financial.tpl:929
+#: themes/default/templates/report/financial.tpl:949
 msgid "[N]"
 msgstr ""
 
@@ -2019,8 +2021,9 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:415
 #: themes/default/templates/report/financial.tpl:449
 #: themes/default/templates/report/financial.tpl:483
-#: themes/default/templates/report/financial.tpl:650
-#: themes/default/templates/report/financial.tpl:740
+#: themes/default/templates/report/financial.tpl:664
+#: themes/default/templates/report/financial.tpl:697
+#: themes/default/templates/report/financial.tpl:753
 msgid "Balance"
 msgstr ""
 
@@ -2089,7 +2092,7 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:158
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:190
 #: themes/default/templates/workorder/search.tpl:40
-#: components/_includes/user.php:220
+#: components/_includes/user.php:217
 msgid "Employee"
 msgstr ""
 
@@ -2396,7 +2399,7 @@ msgstr ""
 #: themes/default/templates/user/new.tpl:134
 #: themes/default/templates/user/search.tpl:49
 #: themes/default/templates/voucher/search.tpl:63
-#: components/_includes/invoice.php:1518
+#: components/_includes/invoice.php:1531
 msgid "Active"
 msgstr ""
 
@@ -2417,11 +2420,21 @@ msgid "Blocked"
 msgstr ""
 
 #: themes/default/templates/client/blocks/display_client_details_block.tpl:90
-msgid "Account Created"
+#: themes/default/templates/expense/details.tpl:103
+#: themes/default/templates/otherincome/details.tpl:105
+#: themes/default/templates/refund/details.tpl:111
+#: themes/default/templates/supplier/details.tpl:103
+#: themes/default/templates/voucher/details.tpl:106
+msgid "Opened On"
 msgstr ""
 
 #: themes/default/templates/client/blocks/display_client_details_block.tpl:92
+#: themes/default/templates/expense/details.tpl:109
+#: themes/default/templates/otherincome/details.tpl:111
+#: themes/default/templates/refund/details.tpl:117
+#: themes/default/templates/supplier/details.tpl:109
 #: themes/default/templates/user/blocks/details_details_block.tpl:83
+#: themes/default/templates/voucher/details.tpl:122
 msgid "Last Active"
 msgstr ""
 
@@ -2434,13 +2447,13 @@ msgstr ""
 #: themes/default/templates/client/search.tpl:42
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:23
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:52
-#: themes/default/templates/expense/details.tpl:117
+#: themes/default/templates/expense/details.tpl:129
 #: themes/default/templates/expense/edit.tpl:166
 #: themes/default/templates/expense/new.tpl:178
 #: themes/default/templates/expense/search.tpl:48
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:23
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:50
-#: themes/default/templates/otherincome/details.tpl:119
+#: themes/default/templates/otherincome/details.tpl:131
 #: themes/default/templates/otherincome/edit.tpl:172
 #: themes/default/templates/otherincome/new.tpl:179
 #: themes/default/templates/otherincome/search.tpl:47
@@ -2459,7 +2472,7 @@ msgstr ""
 #: themes/default/templates/payment/search.tpl:44
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:24
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:51
-#: themes/default/templates/refund/details.tpl:114
+#: themes/default/templates/refund/details.tpl:126
 #: themes/default/templates/refund/edit.tpl:102
 #: themes/default/templates/refund/new.tpl:136
 #: themes/default/templates/refund/search.tpl:48
@@ -2474,7 +2487,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:222
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:16
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:37
-#: themes/default/templates/supplier/details.tpl:117
+#: themes/default/templates/supplier/details.tpl:129
 #: themes/default/templates/supplier/edit.tpl:128
 #: themes/default/templates/supplier/new.tpl:120
 #: themes/default/templates/supplier/search.tpl:43
@@ -2486,7 +2499,7 @@ msgstr ""
 #: themes/default/templates/user/new.tpl:232
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:32
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:73
-#: themes/default/templates/voucher/details.tpl:145
+#: themes/default/templates/voucher/details.tpl:153
 #: themes/default/templates/voucher/edit.tpl:80
 #: themes/default/templates/voucher/new.tpl:72
 #: themes/default/templates/voucher/search.tpl:42
@@ -2530,7 +2543,7 @@ msgstr ""
 #: themes/default/templates/voucher/new.tpl:45
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:72
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:73
-#: components/_includes/invoice.php:1518
+#: components/_includes/invoice.php:1531
 msgid "Type"
 msgstr ""
 
@@ -3082,14 +3095,14 @@ msgid "Edit your Companies Finance Settings"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:217
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:220
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:162
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:221
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:163
 msgid "Financial Year Start"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:231
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:234
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:176
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:235
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:177
 msgid "Financial Year End"
 msgstr ""
 
@@ -3099,24 +3112,24 @@ msgid "Tax System"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:255
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:196
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:197
 msgid "Sales Tax Rate"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:259
 #: themes/default/templates/invoice/printing/print_invoice.tpl:416
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:200
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:158
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:201
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:159
 msgid "VAT Number"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:263
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:204
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:205
 msgid "VAT Flat Rate"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:267
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:208
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:209
 msgid "VAT Tax Codes"
 msgstr ""
 
@@ -3125,28 +3138,28 @@ msgid "Edit your Companies Currency Settings"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:297
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:280
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:217
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:281
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:218
 msgid "Currency Symbol"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:301
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:284
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:221
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:285
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:222
 msgid "Currency Code"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:302
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:285
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:222
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:286
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:223
 msgid ""
 "eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = "
 "AUD"
 msgstr ""
 
 #: themes/default/templates/company/edit.tpl:305
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:288
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:225
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:289
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:226
 msgid "Date Format"
 msgstr ""
 
@@ -3236,6 +3249,7 @@ msgstr ""
 #: themes/default/templates/core/403.tpl:19
 #: themes/default/templates/core/blocks/home_login_block.tpl:28
 #: themes/default/templates/setup/blocks/install_delete_setup_folder_block.tpl:57
+#: themes/default/templates/setup/blocks/upgrade_delete_setup_folder_block.tpl:57
 #: themes/default/templates/user/login.tpl:21
 #: themes/default/templates/user/login.tpl:33
 #: themes/default/templates/user/login.tpl:47
@@ -3428,7 +3442,7 @@ msgstr ""
 #: themes/default/templates/user/edit.tpl:129
 #: themes/default/templates/user/new.tpl:131
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:22
-#: themes/default/templates/voucher/details.tpl:118
+#: themes/default/templates/voucher/details.tpl:126
 #: themes/default/templates/voucher/edit.tpl:54
 #: themes/default/templates/voucher/status.tpl:13
 #: themes/default/templates/voucher/status.tpl:24
@@ -3489,10 +3503,11 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:115
 #: themes/default/templates/report/financial.tpl:382
 #: themes/default/templates/report/financial.tpl:533
-#: themes/default/templates/report/financial.tpl:714
-#: themes/default/templates/report/financial.tpl:855
-#: themes/default/templates/report/financial.tpl:866
-#: themes/default/templates/report/financial.tpl:878
+#: themes/default/templates/report/financial.tpl:719
+#: themes/default/templates/report/financial.tpl:906
+#: themes/default/templates/report/financial.tpl:917
+#: themes/default/templates/report/financial.tpl:929
+#: themes/default/templates/report/financial.tpl:949
 msgid "Expenses"
 msgstr ""
 
@@ -3507,8 +3522,6 @@ msgstr ""
 
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:153
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:8
-#: themes/default/templates/report/financial.tpl:549
-#: themes/default/templates/report/financial.tpl:678
 msgid "Other Income"
 msgstr ""
 
@@ -3653,8 +3666,8 @@ msgstr ""
 
 #: themes/default/templates/expense/blocks/display_expense_balance_block.tpl:8
 #: themes/default/templates/expense/status.tpl:13
-#: components/_includes/payment.php:669 components/_includes/payment.php:702
-#: components/_includes/refund.php:499
+#: components/_includes/expense.php:417 components/_includes/payment.php:669
+#: components/_includes/payment.php:702 components/_includes/refund.php:509
 msgid "Expense"
 msgstr ""
 
@@ -3663,8 +3676,8 @@ msgstr ""
 #: themes/default/templates/otherincome/blocks/display_otherincome_balance_block.tpl:8
 #: themes/default/templates/payment/status.tpl:13
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:8
-#: themes/default/templates/report/financial.tpl:783
-#: themes/default/templates/report/financial.tpl:847
+#: themes/default/templates/report/financial.tpl:800
+#: themes/default/templates/report/financial.tpl:898
 #: components/_includes/payment.php:222 components/_includes/payment.php:225
 #: components/_includes/payment.php:546 components/_includes/payment.php:549
 #: components/_includes/payment.php:699 components/_includes/payment.php:752
@@ -3730,10 +3743,10 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:399
 #: themes/default/templates/report/financial.tpl:433
 #: themes/default/templates/report/financial.tpl:467
-#: themes/default/templates/report/financial.tpl:579
-#: themes/default/templates/report/financial.tpl:597
-#: themes/default/templates/report/financial.tpl:783
-#: themes/default/templates/report/financial.tpl:847
+#: themes/default/templates/report/financial.tpl:585
+#: themes/default/templates/report/financial.tpl:603
+#: themes/default/templates/report/financial.tpl:800
+#: themes/default/templates/report/financial.tpl:898
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:25
 #: themes/default/templates/voucher/details.tpl:93
 #: themes/default/templates/voucher/edit.tpl:76
@@ -3792,10 +3805,10 @@ msgstr ""
 #: themes/default/templates/report/financial.tpl:408
 #: themes/default/templates/report/financial.tpl:442
 #: themes/default/templates/report/financial.tpl:476
-#: themes/default/templates/report/financial.tpl:587
-#: themes/default/templates/report/financial.tpl:605
-#: themes/default/templates/report/financial.tpl:783
-#: themes/default/templates/report/financial.tpl:847
+#: themes/default/templates/report/financial.tpl:593
+#: themes/default/templates/report/financial.tpl:611
+#: themes/default/templates/report/financial.tpl:800
+#: themes/default/templates/report/financial.tpl:898
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:28
 #: themes/default/templates/voucher/details.tpl:102
 #: themes/default/templates/voucher/edit.tpl:76
@@ -3859,7 +3872,7 @@ msgstr ""
 
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:24
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:55
-#: themes/default/templates/expense/details.tpl:106
+#: themes/default/templates/expense/details.tpl:118
 #: themes/default/templates/expense/edit.tpl:162
 #: themes/default/templates/expense/new.tpl:174
 #: themes/default/templates/expense/search.tpl:47
@@ -3867,7 +3880,7 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:46
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:24
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:51
-#: themes/default/templates/otherincome/details.tpl:108
+#: themes/default/templates/otherincome/details.tpl:120
 #: themes/default/templates/otherincome/edit.tpl:168
 #: themes/default/templates/otherincome/new.tpl:175
 #: themes/default/templates/otherincome/search.tpl:46
@@ -3937,9 +3950,17 @@ msgstr ""
 msgid "VAT Tax Code"
 msgstr ""
 
-#: themes/default/templates/expense/details.tpl:133
-#: themes/default/templates/otherincome/details.tpl:135
-#: themes/default/templates/refund/details.tpl:130
+#: themes/default/templates/expense/details.tpl:105
+#: themes/default/templates/otherincome/details.tpl:107
+#: themes/default/templates/refund/details.tpl:113
+#: themes/default/templates/supplier/details.tpl:105
+#: themes/default/templates/voucher/details.tpl:118
+msgid "Closed On"
+msgstr ""
+
+#: themes/default/templates/expense/details.tpl:145
+#: themes/default/templates/otherincome/details.tpl:147
+#: themes/default/templates/refund/details.tpl:142
 #: components/payment/types/expense.php:95
 #: components/payment/types/invoice.php:96
 #: components/payment/types/otherincome.php:95
@@ -4114,22 +4135,20 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:8
 #: themes/default/templates/invoice/printing/print_invoice.tpl:125
 #: themes/default/templates/invoice/status.tpl:13
-#: themes/default/templates/report/financial.tpl:690
-#: themes/default/templates/report/financial.tpl:706
 #: themes/default/templates/voucher/new.tpl:38
-#: components/_includes/invoice.php:258 components/_includes/invoice.php:262
-#: components/_includes/invoice.php:264 components/_includes/invoice.php:769
-#: components/_includes/invoice.php:772 components/_includes/invoice.php:823
-#: components/_includes/invoice.php:826 components/_includes/invoice.php:915
-#: components/_includes/invoice.php:1028 components/_includes/invoice.php:1031
-#: components/_includes/invoice.php:1064 components/_includes/invoice.php:1067
-#: components/_includes/invoice.php:1140 components/_includes/invoice.php:1143
-#: components/_includes/invoice.php:1596 components/_includes/invoice.php:1599
+#: components/_includes/invoice.php:261 components/_includes/invoice.php:265
+#: components/_includes/invoice.php:267 components/_includes/invoice.php:779
+#: components/_includes/invoice.php:782 components/_includes/invoice.php:833
+#: components/_includes/invoice.php:836 components/_includes/invoice.php:930
+#: components/_includes/invoice.php:1043 components/_includes/invoice.php:1046
+#: components/_includes/invoice.php:1079 components/_includes/invoice.php:1082
+#: components/_includes/invoice.php:1153 components/_includes/invoice.php:1156
+#: components/_includes/invoice.php:1609 components/_includes/invoice.php:1612
 #: components/invoice/print.php:78 components/invoice/print.php:84
 #: components/invoice/print.php:98 components/invoice/print.php:124
 #: components/invoice/print.php:128 components/refund/new.php:61
-#: language/_gettext_only/system_variables.php:132
-#: language/_gettext_only/system_variables.php:143
+#: language/_gettext_only/system_variables.php:133
+#: language/_gettext_only/system_variables.php:144
 msgid "Invoice"
 msgstr ""
 
@@ -4145,12 +4164,12 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoice_historic_stats_block.tpl:14
 #: themes/default/templates/workorder/blocks/display_workorder_historic_stats_block.tpl:14
 #: language/_gettext_only/system_variables.php:51
-#: language/_gettext_only/system_variables.php:84
-#: language/_gettext_only/system_variables.php:91
-#: language/_gettext_only/system_variables.php:129
-#: language/_gettext_only/system_variables.php:140
-#: language/_gettext_only/system_variables.php:192
-#: language/_gettext_only/system_variables.php:204
+#: language/_gettext_only/system_variables.php:85
+#: language/_gettext_only/system_variables.php:92
+#: language/_gettext_only/system_variables.php:130
+#: language/_gettext_only/system_variables.php:141
+#: language/_gettext_only/system_variables.php:193
+#: language/_gettext_only/system_variables.php:205
 msgid "Deleted"
 msgstr ""
 
@@ -4159,7 +4178,6 @@ msgid "Invoiced Total"
 msgstr ""
 
 #: themes/default/templates/invoice/blocks/display_invoice_historic_stats_block.tpl:16
-#: themes/default/templates/report/financial.tpl:541
 msgid "Received Monies"
 msgstr ""
 
@@ -4207,8 +4225,8 @@ msgstr ""
 #: themes/default/templates/invoice/search.tpl:44
 #: themes/default/templates/report/financial.tpl:220
 #: themes/default/templates/report/financial.tpl:317
-#: language/_gettext_only/system_variables.php:63
-#: language/_gettext_only/system_variables.php:162
+#: language/_gettext_only/system_variables.php:64
+#: language/_gettext_only/system_variables.php:163
 msgid "Parts"
 msgstr ""
 
@@ -4271,12 +4289,12 @@ msgstr ""
 #: components/_includes/workorder.php:600
 #: components/_includes/workorder.php:636
 #: components/_includes/workorder.php:672
-#: components/_includes/workorder.php:737
-#: components/_includes/workorder.php:893
-#: components/_includes/workorder.php:937
-#: components/_includes/workorder.php:1029
-#: components/_includes/workorder.php:1169
-#: components/_includes/workorder.php:1172 components/workorder/print.php:91
+#: components/_includes/workorder.php:741
+#: components/_includes/workorder.php:897
+#: components/_includes/workorder.php:941
+#: components/_includes/workorder.php:1033
+#: components/_includes/workorder.php:1173
+#: components/_includes/workorder.php:1176 components/workorder/print.php:91
 #: components/workorder/print.php:150 components/workorder/print.php:209
 msgid "Work Order"
 msgstr ""
@@ -4390,7 +4408,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:206
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:17
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:39
-#: themes/default/templates/supplier/details.tpl:106
+#: themes/default/templates/supplier/details.tpl:118
 #: themes/default/templates/supplier/edit.tpl:121
 #: themes/default/templates/supplier/new.tpl:113
 #: themes/default/templates/supplier/search.tpl:42
@@ -4406,7 +4424,7 @@ msgstr ""
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:115
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:136
 #: themes/default/templates/workorder/search.tpl:42
-#: components/_includes/invoice.php:1518 components/_includes/schedule.php:541
+#: components/_includes/invoice.php:1531 components/_includes/schedule.php:541
 #: components/_includes/schedule.php:574
 msgid "Description"
 msgstr ""
@@ -4483,18 +4501,18 @@ msgstr ""
 #: themes/default/templates/voucher/details.tpl:23
 #: themes/default/templates/voucher/search.tpl:13
 #: themes/default/templates/voucher/status.tpl:13
-#: components/_includes/voucher.php:244 components/_includes/voucher.php:436
-#: components/_includes/voucher.php:493 components/_includes/voucher.php:567
-#: components/_includes/voucher.php:609 components/_includes/voucher.php:623
-#: components/_includes/voucher.php:626 components/_includes/voucher.php:662
-#: components/_includes/voucher.php:665 components/_includes/voucher.php:688
-#: components/_includes/voucher.php:696 components/_includes/voucher.php:826
-#: components/_includes/voucher.php:870 components/voucher/new.php:42
+#: components/_includes/voucher.php:244 components/_includes/voucher.php:437
+#: components/_includes/voucher.php:511 components/_includes/voucher.php:551
+#: components/_includes/voucher.php:593 components/_includes/voucher.php:607
+#: components/_includes/voucher.php:610 components/_includes/voucher.php:646
+#: components/_includes/voucher.php:649 components/_includes/voucher.php:672
+#: components/_includes/voucher.php:680 components/_includes/voucher.php:810
+#: components/_includes/voucher.php:854 components/voucher/new.php:42
 #: components/voucher/print.php:42 components/voucher/print.php:48
 #: components/voucher/print.php:61 components/voucher/print.php:85
 #: components/voucher/print.php:89
-#: language/_gettext_only/system_variables.php:71
-#: language/_gettext_only/system_variables.php:124
+#: language/_gettext_only/system_variables.php:72
+#: language/_gettext_only/system_variables.php:125
 msgid "Voucher"
 msgstr ""
 
@@ -4732,7 +4750,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:313
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:87
 #: themes/default/templates/payment/options.tpl:105
-#: language/_gettext_only/system_variables.php:117
+#: language/_gettext_only/system_variables.php:118
 msgid "Bank Transfer"
 msgstr ""
 
@@ -4763,7 +4781,7 @@ msgid "Cheques"
 msgstr ""
 
 #: themes/default/templates/invoice/printing/print_invoice.tpl:348
-#: language/_gettext_only/system_variables.php:123
+#: language/_gettext_only/system_variables.php:124
 msgid "PayPal"
 msgstr ""
 
@@ -4828,12 +4846,10 @@ msgstr ""
 #: themes/default/templates/invoice/status.tpl:85
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:8
 #: themes/default/templates/refund/status.tpl:13
-#: themes/default/templates/report/financial.tpl:698
-#: themes/default/templates/report/financial.tpl:706
 #: components/_includes/refund.php:186 components/_includes/refund.php:325
-#: components/_includes/refund.php:381 components/_includes/refund.php:427
-#: components/_includes/refund.php:430
-#: language/_gettext_only/system_variables.php:133
+#: components/_includes/refund.php:389 components/_includes/refund.php:435
+#: components/_includes/refund.php:438
+#: language/_gettext_only/system_variables.php:134
 msgid "Refund"
 msgstr ""
 
@@ -5012,10 +5028,8 @@ msgid "Other Income Search"
 msgstr ""
 
 #: themes/default/templates/otherincome/status.tpl:13
-#: themes/default/templates/report/financial.tpl:694
-#: themes/default/templates/report/financial.tpl:706
-#: components/_includes/otherincome.php:337
-#: components/_includes/otherincome.php:363
+#: components/_includes/otherincome.php:345
+#: components/_includes/otherincome.php:371
 msgid "Otherincome"
 msgstr ""
 
@@ -5080,28 +5094,28 @@ msgstr ""
 #: themes/default/templates/payment/details.tpl:91
 #: themes/default/templates/payment/edit.tpl:135
 #: themes/default/templates/payment/search.tpl:42
-#: components/_includes/invoice.php:1518
+#: components/_includes/invoice.php:1531
 msgid "Amount"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:128
-#: language/_gettext_only/system_variables.php:119
+#: language/_gettext_only/system_variables.php:120
 msgid "Cash"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:167
 #: themes/default/templates/payment/options.tpl:109
-#: language/_gettext_only/system_variables.php:120
+#: language/_gettext_only/system_variables.php:121
 msgid "Cheque"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:175
-#: language/_gettext_only/system_variables.php:105
+#: language/_gettext_only/system_variables.php:106
 msgid "Cheque Number"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:208
-#: language/_gettext_only/system_variables.php:118
+#: language/_gettext_only/system_variables.php:119
 msgid "Card"
 msgstr ""
 
@@ -5110,12 +5124,12 @@ msgid "type"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:217
-#: language/_gettext_only/system_variables.php:104
+#: language/_gettext_only/system_variables.php:105
 msgid "Name on Card"
 msgstr ""
 
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:258
-#: language/_gettext_only/system_variables.php:121
+#: language/_gettext_only/system_variables.php:122
 msgid "Direct Debit"
 msgstr ""
 
@@ -5437,8 +5451,8 @@ msgid "Refund Search"
 msgstr ""
 
 #: themes/default/templates/refund/search.tpl:45
-#: themes/default/templates/report/financial.tpl:583
-#: themes/default/templates/report/financial.tpl:601
+#: themes/default/templates/report/financial.tpl:589
+#: themes/default/templates/report/financial.tpl:607
 msgid "Tax"
 msgstr ""
 
@@ -5540,12 +5554,12 @@ msgid "Other Transactions"
 msgstr ""
 
 #: themes/default/templates/report/financial.tpl:383
-#: themes/default/templates/report/financial.tpl:791
-#: themes/default/templates/report/financial.tpl:802
-#: themes/default/templates/report/financial.tpl:814
-#: themes/default/templates/report/financial.tpl:855
-#: themes/default/templates/report/financial.tpl:866
-#: themes/default/templates/report/financial.tpl:878
+#: themes/default/templates/report/financial.tpl:549
+#: themes/default/templates/report/financial.tpl:709
+#: themes/default/templates/report/financial.tpl:808
+#: themes/default/templates/report/financial.tpl:819
+#: themes/default/templates/report/financial.tpl:831
+#: themes/default/templates/report/financial.tpl:851
 msgid "Other Incomes"
 msgstr ""
 
@@ -5567,150 +5581,201 @@ msgid "Liability"
 msgstr ""
 
 #: themes/default/templates/report/financial.tpl:516
-#: themes/default/templates/report/financial.tpl:706
+#: themes/default/templates/report/financial.tpl:690
 msgid "Flat Rate"
 msgstr ""
 
 #: themes/default/templates/report/financial.tpl:525
-msgid "Sent Monies"
+msgid "Monies Sent"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:576
-msgid "Redeemed Vouchers"
+#: themes/default/templates/report/financial.tpl:541
+msgid "Monies Received"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:594
-msgid "Expired Vouchers"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:616
-#: themes/default/templates/report/financial.tpl:671
-msgid "In"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:626
-#: themes/default/templates/report/financial.tpl:711
-msgid "Out"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:636
-#: themes/default/templates/report/financial.tpl:726
-msgid "Calculations"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:639
-#: themes/default/templates/report/financial.tpl:729
-msgid "Total In"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:643
-#: themes/default/templates/report/financial.tpl:706
-#: themes/default/templates/report/financial.tpl:733
-msgid "Total Out"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:659
-#: themes/default/templates/report/financial.tpl:750
-#: themes/default/templates/report/financial.tpl:752
-#: themes/default/templates/report/financial.tpl:793
-#: themes/default/templates/report/financial.tpl:805
-#: themes/default/templates/report/financial.tpl:817
-#: themes/default/templates/report/financial.tpl:857
-#: themes/default/templates/report/financial.tpl:869
-#: themes/default/templates/report/financial.tpl:881
-#: themes/default/templates/report/financial.tpl:912
+#: themes/default/templates/report/financial.tpl:572
+#: themes/default/templates/report/financial.tpl:673
+#: themes/default/templates/report/financial.tpl:764
+#: themes/default/templates/report/financial.tpl:766
+#: themes/default/templates/report/financial.tpl:769
+#: themes/default/templates/report/financial.tpl:810
+#: themes/default/templates/report/financial.tpl:822
+#: themes/default/templates/report/financial.tpl:839
+#: themes/default/templates/report/financial.tpl:841
+#: themes/default/templates/report/financial.tpl:865
+#: themes/default/templates/report/financial.tpl:867
+#: themes/default/templates/report/financial.tpl:908
+#: themes/default/templates/report/financial.tpl:920
+#: themes/default/templates/report/financial.tpl:937
+#: themes/default/templates/report/financial.tpl:939
+#: themes/default/templates/report/financial.tpl:957
+#: themes/default/templates/report/financial.tpl:959
+#: themes/default/templates/report/financial.tpl:991
 msgid "NB"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:659
+#: themes/default/templates/report/financial.tpl:572
+msgid "These figures do not include Vouchers."
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:582
+msgid "Redeemed Vouchers"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:600
+msgid "Expired Vouchers"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:622
+#: themes/default/templates/report/financial.tpl:702
+msgid "In"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:632
+#: themes/default/templates/report/financial.tpl:716
+msgid "Out"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:642
+#: themes/default/templates/report/financial.tpl:730
+msgid "Combined"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:645
+#: themes/default/templates/report/financial.tpl:657
+#: themes/default/templates/report/financial.tpl:733
+#: themes/default/templates/report/financial.tpl:745
+msgid "Total In"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:649
+#: themes/default/templates/report/financial.tpl:657
+#: themes/default/templates/report/financial.tpl:737
+#: themes/default/templates/report/financial.tpl:745
+msgid "Total Out"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:673
 msgid ""
 "These are calculated from the relevant records and their dates, NOT by "
 "payments as per Sales Tax rules."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:671
-msgid "Output VAT"
-msgstr ""
-
-#: themes/default/templates/report/financial.tpl:687
-msgid "Net figures used for calculation"
+#: themes/default/templates/report/financial.tpl:690
+#: themes/default/templates/report/financial.tpl:791
+#: themes/default/templates/report/financial.tpl:808
+#: themes/default/templates/report/financial.tpl:819
+#: themes/default/templates/report/financial.tpl:831
+#: themes/default/templates/report/financial.tpl:851
+#: themes/default/templates/report/financial.tpl:857
+#: themes/default/templates/report/financial.tpl:906
+#: themes/default/templates/report/financial.tpl:917
+#: themes/default/templates/report/financial.tpl:929
+#: themes/default/templates/report/financial.tpl:949
+msgid "Turnover"
 msgstr ""
 
 #: themes/default/templates/report/financial.tpl:702
-#: themes/default/templates/report/financial.tpl:706
-msgid "MPV Voucher"
+msgid "Output VAT"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:711
+#: themes/default/templates/report/financial.tpl:716
 msgid "Input VAT"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:750
+#: themes/default/templates/report/financial.tpl:764
 msgid ""
 "These calculations use the transaction dates and their corresponding tax "
 "amounts to calculate your tax liability."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:752
+#: themes/default/templates/report/financial.tpl:766
 msgid ""
 "These calculations use payments by their dates, prorated against their "
-"parent transaction to calculate their corresponding tax amounts and then are "
-"used to calculate your tax liability."
+"parent transaction to calculate their corresponding amounts which are then "
+"are used to calculate your tax liability."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:774
-#: themes/default/templates/report/financial.tpl:791
-#: themes/default/templates/report/financial.tpl:802
-#: themes/default/templates/report/financial.tpl:814
-msgid "Turnover"
+#: themes/default/templates/report/financial.tpl:769
+msgid ""
+"Vouchers are accounted for VAT Flat Rate when they are purchased. Vouchers "
+"used for purchasing are not included in turnover. MPV vouchers also have "
+"their normal VAT liability accounted for at the point of redemption."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:783
-#: themes/default/templates/report/financial.tpl:791
-#: themes/default/templates/report/financial.tpl:847
-#: themes/default/templates/report/financial.tpl:855
+#: themes/default/templates/report/financial.tpl:800
+#: themes/default/templates/report/financial.tpl:808
+#: themes/default/templates/report/financial.tpl:898
+#: themes/default/templates/report/financial.tpl:906
 msgid "[P]"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:793
-#: themes/default/templates/report/financial.tpl:857
+#: themes/default/templates/report/financial.tpl:810
+#: themes/default/templates/report/financial.tpl:908
 msgid ""
 "These calculations use the monies you have sent and received, rather than "
 "the transactions themselves."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:805
-#: themes/default/templates/report/financial.tpl:817
-#: themes/default/templates/report/financial.tpl:869
-#: themes/default/templates/report/financial.tpl:881
+#: themes/default/templates/report/financial.tpl:822
+#: themes/default/templates/report/financial.tpl:920
+#: themes/default/templates/report/financial.tpl:939
+#: themes/default/templates/report/financial.tpl:959
 msgid ""
 "These calculations use payments by their dates, prorated against their "
-"parent transaction to calculate the corresponding amounts and then are used "
-"to calculate your profit."
+"parent transaction to calculate their corresponding amounts which are then "
+"are used to calculate your profit."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:838
-#: themes/default/templates/report/financial.tpl:855
-#: themes/default/templates/report/financial.tpl:866
-#: themes/default/templates/report/financial.tpl:878
+#: themes/default/templates/report/financial.tpl:839
+#: themes/default/templates/report/financial.tpl:865
+msgid ""
+"These calculations use the transaction dates and their corresponding amounts "
+"to calculate your turnover."
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:841
+#: themes/default/templates/report/financial.tpl:867
+msgid ""
+"These calculations use payments by their dates, prorated against their "
+"parent transaction to calculate their corresponding amounts which are then "
+"are used to calculate your turnover."
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:857
+msgid "VAT Liability"
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:889
+#: themes/default/templates/report/financial.tpl:906
+#: themes/default/templates/report/financial.tpl:917
+#: themes/default/templates/report/financial.tpl:929
+#: themes/default/templates/report/financial.tpl:949
 msgid "Profit"
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:900
+#: themes/default/templates/report/financial.tpl:937
+#: themes/default/templates/report/financial.tpl:957
+msgid ""
+"These calculations use the transaction dates and their corresponding amounts "
+"to calculate your profit."
+msgstr ""
+
+#: themes/default/templates/report/financial.tpl:979
 msgid "To generate a report, submit a date range above."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:914
+#: themes/default/templates/report/financial.tpl:993
 msgid "Cancelled transactions (Records) are ignored in calculations."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:915
+#: themes/default/templates/report/financial.tpl:994
 msgid ""
 "Vouchers are handled differently depending on what Tax System you use and "
 "what sort of voucher they are."
 msgstr ""
 
-#: themes/default/templates/report/financial.tpl:916
+#: themes/default/templates/report/financial.tpl:995
 msgid "This report does not replace the need for having an accountant."
 msgstr ""
 
@@ -5917,14 +5982,14 @@ msgstr ""
 
 #: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:98
 #: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:234
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:320
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:321
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:66
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:68
 #: themes/default/templates/setup/blocks/install_database_install_block.tpl:24
 #: themes/default/templates/setup/blocks/install_database_install_results_block.tpl:25
 #: themes/default/templates/setup/blocks/install_start_numbers_block.tpl:52
 #: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:239
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:258
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:259
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:66
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_myitcrm_block.tpl:44
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:68
@@ -5932,6 +5997,9 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_install_results_qwcrm_block.tpl:25
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_block.tpl:24
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_migrate_results_block.tpl:30
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:37
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_block.tpl:29
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_results_block.tpl:24
 #: themes/default/templates/setup/choice.tpl:216
 #: themes/default/templates/setup/choice.tpl:224
 #: themes/default/templates/setup/choice.tpl:232
@@ -6112,8 +6180,8 @@ msgstr ""
 msgid "Home Email"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:266
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:203
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:267
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:204
 msgid "Localisation"
 msgstr ""
 
@@ -6128,6 +6196,7 @@ msgid "Only change if needed"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:11
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:11
 msgid "Database Connection"
 msgstr ""
 
@@ -6168,14 +6237,18 @@ msgstr ""
 
 #: themes/default/templates/setup/blocks/install_delete_setup_folder_block.tpl:14
 #: themes/default/templates/setup/blocks/install_delete_setup_folder_block.tpl:45
+#: themes/default/templates/setup/blocks/upgrade_delete_setup_folder_block.tpl:14
+#: themes/default/templates/setup/blocks/upgrade_delete_setup_folder_block.tpl:45
 msgid "Delete Setup Folder"
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_delete_setup_folder_block.tpl:39
-msgid "PLEASE REMEMBER TO COMPLETELY REMOVE THE INSTALLATION FOLDER."
+#: themes/default/templates/setup/blocks/upgrade_delete_setup_folder_block.tpl:39
+msgid "PLEASE REMEMBER TO COMPLETELY REMOVE THE SETUP FOLDER."
 msgstr ""
 
 #: themes/default/templates/setup/blocks/install_delete_setup_folder_block.tpl:41
+#: themes/default/templates/setup/blocks/upgrade_delete_setup_folder_block.tpl:41
 msgid ""
 "You will not be able to use QWcrm until the Setup folder has been removed. "
 "This is a security feature of QWcrm!"
@@ -6236,11 +6309,11 @@ msgstr ""
 msgid "Tax Type"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:148
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:149
 msgid "Sales"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:154
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:155
 msgid "Tax Rate"
 msgstr ""
 
@@ -6311,9 +6384,43 @@ msgstr ""
 msgid "Start Upgrade"
 msgstr ""
 
+#: themes/default/templates/setup/blocks/upgrade_database_connection_block.tpl:18
+msgid "Database Connection Details"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_block.tpl:11
+msgid "Upgrade the QWcrm Database"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_block.tpl:17
+msgid "Click next to start the database upgrade."
+msgstr ""
+
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_block.tpl:20
+msgid "From"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_block.tpl:21
+msgid "To"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_results_block.tpl:11
+msgid "Database Upgrade Results"
+msgstr ""
+
+#: themes/default/templates/setup/blocks/upgrade_database_upgrade_results_block.tpl:30
+msgid ""
+"You cannot continue because there was a fault with the database upgrade."
+msgstr ""
+
+#: themes/default/templates/setup/blocks/upgrade_delete_setup_folder_block.tpl:53
+msgid "Please login with your credentials."
+msgstr ""
+
 #: themes/default/templates/setup/choice.tpl:108
 #: themes/default/templates/setup/install.tpl:12
 #: themes/default/templates/setup/migrate.tpl:12
+#: themes/default/templates/setup/upgrade.tpl:12
 msgid "The Back Button has been disabled."
 msgstr ""
 
@@ -6496,17 +6603,20 @@ msgstr ""
 
 #: themes/default/templates/setup/install.tpl:22
 #: themes/default/templates/setup/migrate.tpl:21
+#: themes/default/templates/setup/upgrade.tpl:22
 msgid "QWcrm Installation"
 msgstr ""
 
 #: themes/default/templates/setup/install.tpl:25
 #: themes/default/templates/setup/migrate.tpl:24
+#: themes/default/templates/setup/upgrade.tpl:25
 #: language/_gettext_only/pages.php:530
 msgid "SETUP_INSTALL_HELP_TITLE"
 msgstr "Help"
 
 #: themes/default/templates/setup/install.tpl:25
 #: themes/default/templates/setup/migrate.tpl:24
+#: themes/default/templates/setup/upgrade.tpl:25
 #: language/_gettext_only/pages.php:531
 msgid "SETUP_INSTALL_HELP_CONTENT"
 msgstr "Follow these easy steps to install QWcrm."
@@ -6636,7 +6746,7 @@ msgid "reset"
 msgstr ""
 
 #: themes/default/templates/supplier/status.tpl:13
-#: components/_includes/supplier.php:376 components/_includes/supplier.php:405
+#: components/_includes/supplier.php:386 components/_includes/supplier.php:415
 msgid "Supplier"
 msgstr ""
 
@@ -6825,7 +6935,6 @@ msgid "Filter By Usergroup"
 msgstr ""
 
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:19
-#: themes/default/templates/voucher/details.tpl:110
 #: themes/default/templates/voucher/edit.tpl:62
 #: themes/default/templates/voucher/new.tpl:54
 msgid "Expires"
@@ -6870,19 +6979,19 @@ msgstr "View details about the voucher"
 msgid "Last Employee"
 msgstr ""
 
-#: themes/default/templates/voucher/details.tpl:106
-msgid "Created on"
+#: themes/default/templates/voucher/details.tpl:110
+msgid "Expires On"
 msgstr ""
 
 #: themes/default/templates/voucher/details.tpl:114
-msgid "Redeemed on"
+msgid "Redeemed On"
 msgstr ""
 
-#: themes/default/templates/voucher/details.tpl:132
+#: themes/default/templates/voucher/details.tpl:140
 msgid "Redeemed by"
 msgstr ""
 
-#: themes/default/templates/voucher/details.tpl:136
+#: themes/default/templates/voucher/details.tpl:144
 #: themes/default/templates/voucher/search.tpl:44
 msgid "Redeemed on Invoice"
 msgstr ""
@@ -7480,7 +7589,7 @@ msgstr ""
 
 #: components/_includes/administrator.php:57
 #: components/_includes/administrator.php:136
-#: components/_includes/administrator.php:285
+#: components/_includes/administrator.php:296
 msgid "The QWcrm config setting"
 msgstr ""
 
@@ -7496,61 +7605,61 @@ msgstr ""
 msgid "was updated to"
 msgstr ""
 
-#: components/_includes/administrator.php:171
+#: components/_includes/administrator.php:182
 msgid "Failed to update the Submitted ACL permissions."
 msgstr ""
 
-#: components/_includes/administrator.php:218
+#: components/_includes/administrator.php:229
 msgid "Failed to update the Mandatory ACL permissions."
 msgstr ""
 
-#: components/_includes/administrator.php:224
+#: components/_includes/administrator.php:235
 msgid "ACL permissions updated."
 msgstr ""
 
-#: components/_includes/administrator.php:255
+#: components/_includes/administrator.php:266
 msgid "QWcrm config settings updated."
 msgstr ""
 
-#: components/_includes/administrator.php:285
+#: components/_includes/administrator.php:296
 msgid "was deleted."
 msgstr ""
 
-#: components/_includes/administrator.php:341
+#: components/_includes/administrator.php:352
 msgid "Connection Error - cURL Error Number"
 msgstr ""
 
-#: components/_includes/administrator.php:347
-#: components/_includes/administrator.php:357
+#: components/_includes/administrator.php:358
+#: components/_includes/administrator.php:368
 msgid "No response from the QWcrm update server."
 msgstr ""
 
-#: components/_includes/administrator.php:380
+#: components/_includes/administrator.php:391
 msgid "QWcrm checked for updates."
 msgstr ""
 
-#: components/_includes/administrator.php:470
+#: components/_includes/administrator.php:481
 msgid "Failed to empty the database session table."
 msgstr ""
 
-#: components/_includes/administrator.php:510
+#: components/_includes/administrator.php:521
 msgid "Test mail from QWcrm"
 msgstr ""
 
-#: components/_includes/administrator.php:513
+#: components/_includes/administrator.php:524
 msgid "Test email initiated."
 msgstr ""
 
-#: components/_includes/administrator.php:529
-#: components/_includes/administrator.php:649
+#: components/_includes/administrator.php:540
+#: components/_includes/administrator.php:660
 msgid "Failed reset default permissions."
 msgstr ""
 
-#: components/_includes/administrator.php:656
+#: components/_includes/administrator.php:667
 msgid "ACL permissions reset to default settings."
 msgstr ""
 
-#: components/_includes/administrator.php:675
+#: components/_includes/administrator.php:686
 msgid "The QWcrm live config registry has been refreshed from the config file."
 msgstr ""
 
@@ -7582,21 +7691,21 @@ msgstr ""
 msgid "A new client note was added to the client"
 msgstr ""
 
-#: components/_includes/client.php:215 components/_includes/invoice.php:258
-#: components/_includes/invoice.php:912 components/_includes/invoice.php:915
-#: components/_includes/invoice.php:1596 components/_includes/invoice.php:1599
-#: components/_includes/otherincome.php:337
+#: components/_includes/client.php:215 components/_includes/invoice.php:261
+#: components/_includes/invoice.php:927 components/_includes/invoice.php:930
+#: components/_includes/invoice.php:1609 components/_includes/invoice.php:1612
+#: components/_includes/otherincome.php:345
 #: components/_includes/payment.php:666 components/_includes/payment.php:669
 #: components/_includes/refund.php:186 components/_includes/refund.php:325
-#: components/_includes/refund.php:378 components/_includes/refund.php:381
-#: components/_includes/schedule.php:232 components/_includes/setup.php:561
-#: components/_includes/setup.php:579 components/_includes/supplier.php:376
-#: components/_includes/voucher.php:490 components/_includes/voucher.php:493
+#: components/_includes/refund.php:386 components/_includes/refund.php:389
+#: components/_includes/schedule.php:232 components/_includes/setup.php:568
+#: components/_includes/setup.php:586 components/_includes/supplier.php:386
+#: components/_includes/voucher.php:508 components/_includes/voucher.php:511
 #: components/_includes/workorder.php:352
-#: components/_includes/workorder.php:734
-#: components/_includes/workorder.php:737
-#: components/_includes/workorder.php:1169
-#: components/_includes/workorder.php:1172
+#: components/_includes/workorder.php:738
+#: components/_includes/workorder.php:741
+#: components/_includes/workorder.php:1173
+#: components/_includes/workorder.php:1176
 msgid "by"
 msgstr ""
 
@@ -7625,11 +7734,11 @@ msgid "The client"
 msgstr ""
 
 #: components/_includes/client.php:391 components/_includes/client.php:425
-#: components/_includes/invoice.php:769 components/_includes/invoice.php:772
-#: components/_includes/invoice.php:823 components/_includes/invoice.php:826
-#: components/_includes/invoice.php:863 components/_includes/schedule.php:344
-#: components/_includes/schedule.php:347 components/_includes/voucher.php:436
-#: components/_includes/workorder.php:849
+#: components/_includes/invoice.php:779 components/_includes/invoice.php:782
+#: components/_includes/invoice.php:833 components/_includes/invoice.php:836
+#: components/_includes/invoice.php:873 components/_includes/schedule.php:344
+#: components/_includes/schedule.php:347 components/_includes/voucher.php:437
+#: components/_includes/workorder.php:853
 msgid "was updated by"
 msgstr ""
 
@@ -7670,8 +7779,8 @@ msgid "Failed to delete the client from the database."
 msgstr ""
 
 #: components/_includes/client.php:526 components/_includes/payment.php:752
-#: components/_includes/workorder.php:1029
-#: components/_includes/workorder.php:1066
+#: components/_includes/workorder.php:1033
+#: components/_includes/workorder.php:1070
 msgid "has been deleted by"
 msgstr ""
 
@@ -7683,12 +7792,12 @@ msgstr ""
 msgid "for Client"
 msgstr ""
 
-#: components/_includes/client.php:555 components/_includes/invoice.php:1140
-#: components/_includes/invoice.php:1143 components/_includes/invoice.php:1183
-#: components/_includes/invoice.php:1241 components/_includes/invoice.php:1291
-#: components/_includes/refund.php:499 components/_includes/schedule.php:393
-#: components/_includes/schedule.php:396 components/_includes/voucher.php:870
-#: components/_includes/workorder.php:1069
+#: components/_includes/client.php:555 components/_includes/invoice.php:1153
+#: components/_includes/invoice.php:1156 components/_includes/invoice.php:1196
+#: components/_includes/invoice.php:1254 components/_includes/invoice.php:1304
+#: components/_includes/refund.php:509 components/_includes/schedule.php:393
+#: components/_includes/schedule.php:396 components/_includes/voucher.php:854
+#: components/_includes/workorder.php:1073
 msgid "was deleted by"
 msgstr ""
 
@@ -7713,44 +7822,44 @@ msgstr ""
 msgid "Failed to get VAT Tax Code status."
 msgstr ""
 
-#: components/_includes/company.php:310
+#: components/_includes/company.php:311
 #: setup/migrate/myitcrm/migrate_routines.php:310
 msgid "Failed to update the company details."
 msgstr ""
 
-#: components/_includes/company.php:317 components/_includes/company.php:320
+#: components/_includes/company.php:318 components/_includes/company.php:321
 #: components/company/edit.php:23
 #: setup/migrate/myitcrm/migrate_routines.php:314
 #: setup/migrate/myitcrm/migrate_routines.php:318
 msgid "Company details updated."
 msgstr ""
 
-#: components/_includes/company.php:344
+#: components/_includes/company.php:345
 msgid "Failed to update the company hours."
 msgstr ""
 
-#: components/_includes/company.php:348 components/_includes/company.php:351
+#: components/_includes/company.php:349 components/_includes/company.php:352
 msgid "Business hours have been updated."
 msgstr ""
 
-#: components/_includes/company.php:382
+#: components/_includes/company.php:383
 msgid "Failed to update the VAT rates."
 msgstr ""
 
-#: components/_includes/company.php:414
+#: components/_includes/company.php:415
 msgid "Start Time is after End Time."
 msgstr ""
 
-#: components/_includes/company.php:420
+#: components/_includes/company.php:421
 msgid "Start Time is the same as End Time."
 msgstr ""
 
-#: components/_includes/company.php:480 components/_includes/invoice.php:1427
+#: components/_includes/company.php:481 components/_includes/invoice.php:1440
 #: setup/migrate/myitcrm/migrate_routines.php:1446
 msgid "Return Code"
 msgstr ""
 
-#: components/_includes/company.php:501
+#: components/_includes/company.php:502
 #: setup/migrate/myitcrm/migrate_routines.php:1467
 msgid "Failed to update logo because the submitted file was invalid."
 msgstr ""
@@ -7814,27 +7923,46 @@ msgstr ""
 #: components/_includes/expense.php:343
 #: components/_includes/otherincome.php:317
 #: components/_includes/payment.php:644 components/_includes/refund.php:355
-#: components/_includes/supplier.php:356 components/_includes/voucher.php:463
+#: components/_includes/supplier.php:358 components/_includes/voucher.php:467
 msgid "Nothing done. The new status is the same as the current status."
 msgstr ""
 
-#: components/_includes/expense.php:352
+#: components/_includes/expense.php:360
 msgid "Failed to update an Expense Status."
 msgstr ""
 
-#: components/_includes/expense.php:357
+#: components/_includes/expense.php:365
 msgid "Expense status updated."
 msgstr ""
 
-#: components/_includes/expense.php:459
+#: components/_includes/expense.php:417 components/_includes/invoice.php:1079
+#: components/_includes/invoice.php:1082
+#: components/_includes/otherincome.php:371
+#: components/_includes/payment.php:699 components/_includes/payment.php:702
+#: components/_includes/refund.php:435 components/_includes/refund.php:438
+#: components/_includes/supplier.php:415 components/_includes/voucher.php:680
+msgid "was cancelled by"
+msgstr ""
+
+#: components/_includes/expense.php:473
 msgid "Failed to delete the expense record."
 msgstr ""
 
-#: components/_includes/expense.php:493
+#: components/_includes/expense.php:480
+msgid "Expense Record"
+msgstr ""
+
+#: components/_includes/expense.php:480
+#: components/_includes/otherincome.php:416 components/_includes/refund.php:512
+#: components/_includes/supplier.php:441 components/_includes/user.php:554
+msgid "deleted."
+msgstr ""
+
+#: components/_includes/expense.php:511
 msgid "Failed to lookup the last expense record ID."
 msgstr ""
 
-#: components/_includes/expense.php:517
+#: components/_includes/expense.php:538
 msgid "Failed to recalculate the expense totals."
 msgstr ""
 
@@ -7846,246 +7974,238 @@ msgstr ""
 msgid "Failed to return the matching Invoice records."
 msgstr ""
 
-#: components/_includes/invoice.php:251
+#: components/_includes/invoice.php:254
 msgid "Failed to insert the invoice record into the database."
 msgstr ""
 
-#: components/_includes/invoice.php:258
+#: components/_includes/invoice.php:261
 msgid "was created for this Work Order"
 msgstr ""
 
-#: components/_includes/invoice.php:262 components/_includes/invoice.php:1031
-#: components/_includes/invoice.php:1067 components/_includes/invoice.php:1143
-#: components/_includes/schedule.php:396 components/_includes/workorder.php:849
-#: components/_includes/workorder.php:1069
+#: components/_includes/invoice.php:265 components/_includes/invoice.php:1046
+#: components/_includes/invoice.php:1082 components/_includes/invoice.php:1156
+#: components/_includes/schedule.php:396 components/_includes/workorder.php:853
+#: components/_includes/workorder.php:1073
 msgid "for Work Order"
 msgstr ""
 
-#: components/_includes/invoice.php:262 components/_includes/schedule.php:229
+#: components/_includes/invoice.php:265 components/_includes/schedule.php:229
 #: components/_includes/voucher.php:244
 msgid "was created by"
 msgstr ""
 
-#: components/_includes/invoice.php:264
+#: components/_includes/invoice.php:267
 msgid "Created with no Work Order"
 msgstr ""
 
-#: components/_includes/invoice.php:333
+#: components/_includes/invoice.php:336
 msgid "Failed to insert Labour item into the database."
 msgstr ""
 
-#: components/_includes/invoice.php:397
+#: components/_includes/invoice.php:400
 msgid "Failed to insert parts item into the database."
 msgstr ""
 
-#: components/_includes/invoice.php:466
+#: components/_includes/invoice.php:469
 msgid "Failed to insert an invoice prefill item into the database."
 msgstr ""
 
-#: components/_includes/invoice.php:471 components/_includes/invoice.php:863
-#: components/_includes/invoice.php:1291
+#: components/_includes/invoice.php:474 components/_includes/invoice.php:873
+#: components/_includes/invoice.php:1304
 msgid "The Invoice Prefill Item"
 msgstr ""
 
-#: components/_includes/invoice.php:471
+#: components/_includes/invoice.php:474
 msgid "was added by"
 msgstr ""
 
-#: components/_includes/invoice.php:490
+#: components/_includes/invoice.php:493
 msgid "Failed to get invoice details."
 msgstr ""
 
-#: components/_includes/invoice.php:518
+#: components/_includes/invoice.php:528
 msgid "Failed to get invoice labour items."
 msgstr ""
 
-#: components/_includes/invoice.php:542
+#: components/_includes/invoice.php:552
 msgid "Failed to get invoice labour item details."
 msgstr ""
 
-#: components/_includes/invoice.php:570
+#: components/_includes/invoice.php:580
 msgid "Failed to get invoice parts items."
 msgstr ""
 
-#: components/_includes/invoice.php:594
+#: components/_includes/invoice.php:604
 msgid "Failed to get invoice parts item details."
 msgstr ""
 
-#: components/_includes/invoice.php:631
+#: components/_includes/invoice.php:641
 msgid "Failed to get the invoice prefill items for the selected status."
 msgstr ""
 
-#: components/_includes/invoice.php:660
+#: components/_includes/invoice.php:670
 msgid "Failed to get invoice statuses."
 msgstr ""
 
-#: components/_includes/invoice.php:680
+#: components/_includes/invoice.php:690
 msgid "Failed to get the invoice status display name."
 msgstr ""
 
-#: components/_includes/invoice.php:708
+#: components/_includes/invoice.php:718
 msgid "Failed to get the invoice labour sub total."
 msgstr ""
 
-#: components/_includes/invoice.php:736
+#: components/_includes/invoice.php:746
 msgid "Failed to get the invoice parts sub total."
 msgstr ""
 
-#: components/_includes/invoice.php:762
+#: components/_includes/invoice.php:772
 msgid "Failed to update the invoice dates and discount rate."
 msgstr ""
 
-#: components/_includes/invoice.php:816
+#: components/_includes/invoice.php:826
 msgid "Failed to update the invoice."
 msgstr ""
 
-#: components/_includes/invoice.php:858
+#: components/_includes/invoice.php:868
 msgid "Failed to update an invoice labour rates item."
 msgstr ""
 
-#: components/_includes/invoice.php:882
+#: components/_includes/invoice.php:892
 msgid ""
 "Nothing done. The new invoice status is the same as the current invoice "
 "status."
 msgstr ""
 
-#: components/_includes/invoice.php:894
+#: components/_includes/invoice.php:909
 msgid "Failed to update an Invoice Status."
 msgstr ""
 
-#: components/_includes/invoice.php:906
+#: components/_includes/invoice.php:921
 msgid "Invoice status updated."
 msgstr ""
 
-#: components/_includes/invoice.php:912
+#: components/_includes/invoice.php:927
 msgid "Invoice Status updated to"
 msgstr ""
 
-#: components/_includes/invoice.php:915
-#: components/_includes/otherincome.php:337
-#: components/_includes/payment.php:669 components/_includes/refund.php:381
-#: components/_includes/supplier.php:376 components/_includes/voucher.php:493
-#: components/_includes/workorder.php:734
-#: components/_includes/workorder.php:737
+#: components/_includes/invoice.php:930
+#: components/_includes/otherincome.php:345
+#: components/_includes/payment.php:669 components/_includes/refund.php:389
+#: components/_includes/supplier.php:386 components/_includes/voucher.php:511
+#: components/_includes/workorder.php:738
+#: components/_includes/workorder.php:741
 msgid "Status updated to"
 msgstr ""
 
-#: components/_includes/invoice.php:955
+#: components/_includes/invoice.php:970
 msgid "Failed to update an invoice Closed status."
 msgstr ""
 
-#: components/_includes/invoice.php:976
+#: components/_includes/invoice.php:991
 msgid "Failed to update an invoice last active time."
 msgstr ""
 
-#: components/_includes/invoice.php:994
+#: components/_includes/invoice.php:1009
 msgid "Failed to add a Refund ID to the invoice."
 msgstr ""
 
-#: components/_includes/invoice.php:1028 components/_includes/invoice.php:1031
-#: components/_includes/voucher.php:623 components/_includes/voucher.php:626
+#: components/_includes/invoice.php:1043 components/_includes/invoice.php:1046
+#: components/_includes/voucher.php:607 components/_includes/voucher.php:610
 msgid "was refunded by"
 msgstr ""
 
-#: components/_includes/invoice.php:1064 components/_includes/invoice.php:1067
-#: components/_includes/otherincome.php:363
-#: components/_includes/payment.php:699 components/_includes/payment.php:702
-#: components/_includes/refund.php:427 components/_includes/refund.php:430
-#: components/_includes/supplier.php:405 components/_includes/voucher.php:696
-msgid "was cancelled by"
-msgstr ""
-
-#: components/_includes/invoice.php:1133
+#: components/_includes/invoice.php:1146
 msgid "Failed to delete the invoice."
 msgstr ""
 
-#: components/_includes/invoice.php:1173
+#: components/_includes/invoice.php:1186
 msgid "Failed to delete an invoice labour item."
 msgstr ""
 
-#: components/_includes/invoice.php:1183
+#: components/_includes/invoice.php:1196
 msgid "The Invoice Labour Item"
 msgstr ""
 
-#: components/_includes/invoice.php:1208
+#: components/_includes/invoice.php:1221
 msgid "Failed to delete all of an invoice's labour items."
 msgstr ""
 
-#: components/_includes/invoice.php:1230
+#: components/_includes/invoice.php:1243
 msgid "Failed to delete an invoice parts item."
 msgstr ""
 
-#: components/_includes/invoice.php:1241
+#: components/_includes/invoice.php:1254
 msgid "The Invoice Parts Item"
 msgstr ""
 
-#: components/_includes/invoice.php:1266
+#: components/_includes/invoice.php:1279
 msgid "Failed to delete all of an invoice's parts items."
 msgstr ""
 
-#: components/_includes/invoice.php:1286
+#: components/_includes/invoice.php:1299
 msgid "Failed to delete an invoice prefill item."
 msgstr ""
 
-#: components/_includes/invoice.php:1371
+#: components/_includes/invoice.php:1384
 msgid "Failed to recalculate the invoice totals."
 msgstr ""
 
-#: components/_includes/invoice.php:1438
+#: components/_includes/invoice.php:1451
 msgid "Failed to empty the prefill items table."
 msgstr ""
 
-#: components/_includes/invoice.php:1460
+#: components/_includes/invoice.php:1473
 msgid "Failed to insert the new prefill items into the database."
 msgstr ""
 
-#: components/_includes/invoice.php:1474
+#: components/_includes/invoice.php:1487
 msgid "Invoice Prefill Items were uploaded via csv by"
 msgstr ""
 
-#: components/_includes/invoice.php:1488
+#: components/_includes/invoice.php:1501
 msgid ""
 "Failed to update the invoice labour rates because the submitted file was "
 "invalid."
 msgstr ""
 
-#: components/_includes/invoice.php:1505
+#: components/_includes/invoice.php:1518
 msgid "Failed to get invoice prefill items from the database."
 msgstr ""
 
-#: components/_includes/invoice.php:1530
+#: components/_includes/invoice.php:1543
 msgid "Invoice Prefill Items were exported by"
 msgstr ""
 
-#: components/_includes/invoice.php:1550
-#: components/_includes/workorder.php:1123
+#: components/_includes/invoice.php:1563
+#: components/_includes/workorder.php:1127
 msgid "Nothing done. The new employee is the same as the current employee."
 msgstr ""
 
-#: components/_includes/invoice.php:1572
+#: components/_includes/invoice.php:1585
 msgid "Failed to assign a Work Order to an employee."
 msgstr ""
 
-#: components/_includes/invoice.php:1577
-#: components/_includes/workorder.php:1150
+#: components/_includes/invoice.php:1590
+#: components/_includes/workorder.php:1154
 msgid "Assigned employee updated."
 msgstr ""
 
-#: components/_includes/invoice.php:1587
-#: components/_includes/workorder.php:1160
-#: language/_gettext_only/system_variables.php:195
+#: components/_includes/invoice.php:1600
+#: components/_includes/workorder.php:1164
+#: language/_gettext_only/system_variables.php:196
 msgid "Unassigned"
 msgstr ""
 
-#: components/_includes/invoice.php:1596 components/_includes/invoice.php:1599
-#: components/_includes/workorder.php:1169
-#: components/_includes/workorder.php:1172
+#: components/_includes/invoice.php:1609 components/_includes/invoice.php:1612
+#: components/_includes/workorder.php:1173
+#: components/_includes/workorder.php:1176
 msgid "has been assigned to"
 msgstr ""
 
-#: components/_includes/invoice.php:1596 components/_includes/invoice.php:1599
-#: components/_includes/workorder.php:1169
-#: components/_includes/workorder.php:1172
+#: components/_includes/invoice.php:1609 components/_includes/invoice.php:1612
+#: components/_includes/workorder.php:1173
+#: components/_includes/workorder.php:1176
 msgid "from"
 msgstr ""
 
@@ -8103,13 +8223,13 @@ msgstr ""
 
 #: components/_includes/otherincome.php:161
 #: components/_includes/otherincome.php:295
-#: components/_includes/otherincome.php:406
+#: components/_includes/otherincome.php:416
 msgid "Otherincome Record"
 msgstr ""
 
 #: components/_includes/otherincome.php:161
 #: components/_includes/payment.php:225 components/_includes/refund.php:189
-#: components/_includes/supplier.php:177
+#: components/_includes/supplier.php:178
 msgid "created."
 msgstr ""
 
@@ -8135,32 +8255,27 @@ msgstr ""
 
 #: components/_includes/otherincome.php:295
 #: components/_includes/payment.php:549 components/_includes/refund.php:328
-#: components/_includes/supplier.php:334 components/_includes/user.php:466
+#: components/_includes/supplier.php:336 components/_includes/user.php:461
 msgid "updated."
 msgstr ""
 
-#: components/_includes/otherincome.php:326
+#: components/_includes/otherincome.php:334
 msgid "Failed to update an otherincome Status."
 msgstr ""
 
-#: components/_includes/otherincome.php:331
+#: components/_includes/otherincome.php:339
 msgid "otherincome status updated."
 msgstr ""
 
-#: components/_includes/otherincome.php:402
+#: components/_includes/otherincome.php:412
 msgid "Failed to delete the otherincome records."
 msgstr ""
 
-#: components/_includes/otherincome.php:406 components/_includes/refund.php:502
-#: components/_includes/supplier.php:431 components/_includes/user.php:559
-msgid "deleted."
-msgstr ""
-
-#: components/_includes/otherincome.php:428
+#: components/_includes/otherincome.php:438
 msgid "Failed to lookup the last otherincome record ID."
 msgstr ""
 
-#: components/_includes/otherincome.php:452
+#: components/_includes/otherincome.php:462
 msgid "Failed to recalculate the otherincome totals."
 msgstr ""
 
@@ -8168,7 +8283,7 @@ msgstr ""
 msgid "Failed to count the matching payments."
 msgstr ""
 
-#: components/_includes/payment.php:165 components/_includes/report.php:1864
+#: components/_includes/payment.php:165 components/_includes/report.php:2060
 msgid "Failed to return the matching payments."
 msgstr ""
 
@@ -8224,7 +8339,7 @@ msgstr ""
 msgid "Failed to update the payment details."
 msgstr ""
 
-#: components/_includes/payment.php:546 components/_includes/workorder.php:846
+#: components/_includes/payment.php:546 components/_includes/workorder.php:850
 msgid "updated by"
 msgstr ""
 
@@ -8291,7 +8406,7 @@ msgid "added"
 msgstr ""
 
 #: components/_includes/refund.php:189 components/_includes/refund.php:328
-#: components/_includes/refund.php:502
+#: components/_includes/refund.php:512
 msgid "Refund Record"
 msgstr ""
 
@@ -8319,27 +8434,27 @@ msgstr ""
 msgid "updated"
 msgstr ""
 
-#: components/_includes/refund.php:364
+#: components/_includes/refund.php:372
 msgid "Failed to update an refund Status."
 msgstr ""
 
-#: components/_includes/refund.php:372
+#: components/_includes/refund.php:380
 msgid "Refund status updated."
 msgstr ""
 
-#: components/_includes/refund.php:378
+#: components/_includes/refund.php:386
 msgid "Refund Status updated to"
 msgstr ""
 
-#: components/_includes/refund.php:492
+#: components/_includes/refund.php:502
 msgid "Failed to delete the refund records."
 msgstr ""
 
-#: components/_includes/refund.php:529
+#: components/_includes/refund.php:539
 msgid "Failed to lookup the last refund record ID."
 msgstr ""
 
-#: components/_includes/refund.php:557
+#: components/_includes/refund.php:567
 msgid "Failed to recalculate the refund totals."
 msgstr ""
 
@@ -8347,75 +8462,75 @@ msgstr ""
 msgid "Could not count the number of clients."
 msgstr ""
 
-#: components/_includes/report.php:214
+#: components/_includes/report.php:196
 msgid "Could not count Work Orders for the defined status."
 msgstr ""
 
-#: components/_includes/report.php:247
+#: components/_includes/report.php:279
 msgid "Could not count schedule items for the specified Work Order."
 msgstr ""
 
-#: components/_includes/report.php:422
+#: components/_includes/report.php:453
 msgid "Could not count the number of Invoices."
 msgstr ""
 
-#: components/_includes/report.php:474
+#: components/_includes/report.php:505
 msgid "Could not sum the invoice values."
 msgstr ""
 
-#: components/_includes/report.php:584
+#: components/_includes/report.php:615
 msgid "Failed to count the total number of selected labour items."
 msgstr ""
 
-#: components/_includes/report.php:644 components/_includes/report.php:758
+#: components/_includes/report.php:675 components/_includes/report.php:789
 msgid "Failed to return the sum of labour items selected."
 msgstr ""
 
-#: components/_includes/report.php:703
+#: components/_includes/report.php:734
 msgid "Failed to count the total number of selected parts items."
 msgstr ""
 
-#: components/_includes/report.php:895
+#: components/_includes/report.php:928
 msgid "Could not count Vouchers."
 msgstr ""
 
-#: components/_includes/report.php:958
+#: components/_includes/report.php:991
 msgid "Failed to return the sum value for the selected Vouchers."
 msgstr ""
 
-#: components/_includes/report.php:1134
+#: components/_includes/report.php:1161
 msgid "Could not count Refunds."
 msgstr ""
 
-#: components/_includes/report.php:1195
+#: components/_includes/report.php:1218
 msgid "Failed to return the sum value for the selected Refunds."
 msgstr ""
 
-#: components/_includes/report.php:1299
+#: components/_includes/report.php:1370
 msgid "Could not count Expenses."
 msgstr ""
 
-#: components/_includes/report.php:1355
+#: components/_includes/report.php:1422
 msgid "Failed to return the sum value for the selected expenses."
 msgstr ""
 
-#: components/_includes/report.php:1461
+#: components/_includes/report.php:1577
 msgid "Could not count other incomes."
 msgstr ""
 
-#: components/_includes/report.php:1517
+#: components/_includes/report.php:1629
 msgid "Failed to return the sum value for the selected other incomes."
 msgstr ""
 
-#: components/_includes/report.php:1654
+#: components/_includes/report.php:1823
 msgid "Could not count the number of payments."
 msgstr ""
 
-#: components/_includes/report.php:1738
+#: components/_includes/report.php:1905
 msgid "Could not sum the payment values."
 msgstr ""
 
-#: components/_includes/report.php:2006
+#: components/_includes/report.php:2207
 msgid "Could not count the number of suppliers."
 msgstr ""
 
@@ -8516,267 +8631,283 @@ msgstr ""
 msgid "Do not delete the root folder and files!!!"
 msgstr ""
 
-#: components/_includes/setup.php:281
+#: components/_includes/setup.php:281 components/_includes/setup.php:288
 msgid "PHP Version"
 msgstr ""
 
-#: components/_includes/setup.php:288
+#: components/_includes/setup.php:295
 msgid "Magic Quotes GPC Off"
 msgstr ""
 
-#: components/_includes/setup.php:295
+#: components/_includes/setup.php:302
 msgid "Register Globals Off"
 msgstr ""
 
-#: components/_includes/setup.php:309
+#: components/_includes/setup.php:316
 msgid "XML Support"
 msgstr ""
 
-#: components/_includes/setup.php:329
+#: components/_includes/setup.php:336
 msgid "MB Language is Default"
 msgstr ""
 
-#: components/_includes/setup.php:331
+#: components/_includes/setup.php:338
 msgid ""
 "PHP mbstring language is not set to neutral. This can be set locally by "
 "entering <strong>php_value mbstring.language neutral</strong> in your <code>."
 "htaccess</code> file."
 msgstr ""
 
-#: components/_includes/setup.php:336
+#: components/_includes/setup.php:343
 msgid "MB String Overload Off"
 msgstr ""
 
-#: components/_includes/setup.php:338
+#: components/_includes/setup.php:345
 msgid ""
 "PHP mbstring function overload is set. This can be turned off locally by "
 "entering <strong>php_value mbstring.func_overload 0</strong> in your <code>."
 "htaccess</code> file."
 msgstr ""
 
-#: components/_includes/setup.php:351
+#: components/_includes/setup.php:358
 msgid "JSON Support"
 msgstr ""
 
-#: components/_includes/setup.php:370
+#: components/_includes/setup.php:377
 msgid "OpenSSL Support"
 msgstr ""
 
-#: components/_includes/setup.php:372
+#: components/_includes/setup.php:379
 msgid ""
 "The PHP Extension 'openssl' needs to be enabled. OpenSSL is required for "
 "https:// protocol. "
 msgstr ""
 
-#: components/_includes/setup.php:377
+#: components/_includes/setup.php:384
 msgid "cURL Support"
 msgstr ""
 
-#: components/_includes/setup.php:379
+#: components/_includes/setup.php:386
 msgid "The PHP Extension 'curl' needs to be enabled."
 msgstr ""
 
-#: components/_includes/setup.php:386
+#: components/_includes/setup.php:393
 msgid "allow_url_fopen On"
 msgstr ""
 
-#: components/_includes/setup.php:388
+#: components/_includes/setup.php:395
 msgid "The PHP Setting 'allow_url_fopen' needs to be enabled."
 msgstr ""
 
-#: components/_includes/setup.php:411
+#: components/_includes/setup.php:418
 msgid "file_get_contents() Enabled"
 msgstr ""
 
-#: components/_includes/setup.php:413
+#: components/_includes/setup.php:420
 msgid "The PHP Function 'file_get_contents()' needs to be enabled."
 msgstr ""
 
-#: components/_includes/setup.php:457
+#: components/_includes/setup.php:464
 msgid "Safe Mode"
 msgstr ""
 
-#: components/_includes/setup.php:465
+#: components/_includes/setup.php:472
 msgid "Display Errors"
 msgstr ""
 
-#: components/_includes/setup.php:473
+#: components/_includes/setup.php:480
 msgid "File Uploads"
 msgstr ""
 
-#: components/_includes/setup.php:481
+#: components/_includes/setup.php:488
 msgid "Magic Quotes Runtime"
 msgstr ""
 
-#: components/_includes/setup.php:489
+#: components/_includes/setup.php:496
 msgid "Output Buffering"
 msgstr ""
 
-#: components/_includes/setup.php:497
+#: components/_includes/setup.php:504
 msgid "Session Auto Start"
 msgstr ""
 
-#: components/_includes/setup.php:505
+#: components/_includes/setup.php:512
 msgid "Zlib Compression Support"
 msgstr ""
 
-#: components/_includes/setup.php:515
+#: components/_includes/setup.php:522
 msgid "Internationalization Support"
 msgstr ""
 
-#: components/_includes/setup.php:518
+#: components/_includes/setup.php:525
 msgid ""
 "Internationalization support is required for automatic language detection. "
 msgstr ""
 
-#: components/_includes/setup.php:527
+#: components/_includes/setup.php:534
 msgid "locale_accept_from_http()"
 msgstr ""
 
-#: components/_includes/setup.php:530
+#: components/_includes/setup.php:537
 msgid ""
 "The PHP Function 'locale_accept_from_http()' is required for automatic "
 "language detection. "
 msgstr ""
 
-#: components/_includes/setup.php:561
+#: components/_includes/setup.php:568
 msgid "Failed to update the record value"
 msgstr ""
 
-#: components/_includes/setup.php:561 components/_includes/setup.php:579
+#: components/_includes/setup.php:568 components/_includes/setup.php:586
 msgid "where the records were matched in the columm"
 msgstr ""
 
-#: components/_includes/setup.php:561 components/_includes/setup.php:579
-#: components/_includes/setup.php:624
+#: components/_includes/setup.php:568 components/_includes/setup.php:586
+#: components/_includes/setup.php:631
 msgid "from the table"
 msgstr ""
 
-#: components/_includes/setup.php:563
+#: components/_includes/setup.php:570
 msgid "Failed to update the value for the record"
 msgstr ""
 
-#: components/_includes/setup.php:563 components/_includes/setup.php:581
-#: components/_includes/setup.php:624 components/_includes/setup.php:641
-#: setup/upgrade/3_1_0/upgrade_routines.php:316
-#: setup/upgrade/3_1_0/upgrade_routines.php:495
+#: components/_includes/setup.php:570 components/_includes/setup.php:588
+#: components/_includes/setup.php:631 components/_includes/setup.php:648
+#: setup/upgrade/3_1_0/upgrade_routines.php:341
+#: setup/upgrade/3_1_0/upgrade_routines.php:520
 msgid "to"
 msgstr ""
 
-#: components/_includes/setup.php:563 components/_includes/setup.php:581
-#: setup/upgrade/3_1_0/upgrade_routines.php:208
-#: setup/upgrade/3_1_0/upgrade_routines.php:232
-#: setup/upgrade/3_1_0/upgrade_routines.php:263
-#: setup/upgrade/3_1_0/upgrade_routines.php:292
-#: setup/upgrade/3_1_0/upgrade_routines.php:316
-#: setup/upgrade/3_1_0/upgrade_routines.php:337
-#: setup/upgrade/3_1_0/upgrade_routines.php:351
-#: setup/upgrade/3_1_0/upgrade_routines.php:394
-#: setup/upgrade/3_1_0/upgrade_routines.php:445
-#: setup/upgrade/3_1_0/upgrade_routines.php:471
-#: setup/upgrade/3_1_0/upgrade_routines.php:495
-#: setup/upgrade/3_1_0/upgrade_routines.php:516
-#: setup/upgrade/3_1_0/upgrade_routines.php:530
+#: components/_includes/setup.php:570 components/_includes/setup.php:588
+#: setup/upgrade/3_1_0/upgrade_routines.php:233
+#: setup/upgrade/3_1_0/upgrade_routines.php:257
+#: setup/upgrade/3_1_0/upgrade_routines.php:288
+#: setup/upgrade/3_1_0/upgrade_routines.php:317
+#: setup/upgrade/3_1_0/upgrade_routines.php:341
+#: setup/upgrade/3_1_0/upgrade_routines.php:362
+#: setup/upgrade/3_1_0/upgrade_routines.php:376
+#: setup/upgrade/3_1_0/upgrade_routines.php:419
+#: setup/upgrade/3_1_0/upgrade_routines.php:470
+#: setup/upgrade/3_1_0/upgrade_routines.php:496
+#: setup/upgrade/3_1_0/upgrade_routines.php:520
+#: setup/upgrade/3_1_0/upgrade_routines.php:541
+#: setup/upgrade/3_1_0/upgrade_routines.php:555
 msgid "in the table"
 msgstr ""
 
-#: components/_includes/setup.php:579
+#: components/_includes/setup.php:586
 msgid "Successfully updated the record value"
 msgstr ""
 
-#: components/_includes/setup.php:581
+#: components/_includes/setup.php:588
 msgid "Successfully updated the value for the record"
 msgstr ""
 
-#: components/_includes/setup.php:624
+#: components/_includes/setup.php:631
 msgid "Failed to update the values"
 msgstr ""
 
-#: components/_includes/setup.php:624 components/_includes/setup.php:641
+#: components/_includes/setup.php:631 components/_includes/setup.php:648
 msgid "in the columm"
 msgstr ""
 
-#: components/_includes/setup.php:641
+#: components/_includes/setup.php:648
 msgid "Successfully updated the values"
 msgstr ""
 
-#: components/_includes/setup.php:641
+#: components/_includes/setup.php:648
 msgid "from the the table"
 msgstr ""
 
-#: components/_includes/setup.php:641
+#: components/_includes/setup.php:648
 msgid "Records Processed"
 msgstr ""
 
-#: components/_includes/setup.php:698 components/_includes/setup.php:880
+#: components/_includes/setup.php:705 components/_includes/setup.php:887
 msgid "Error performing SQL query"
 msgstr ""
 
-#: components/_includes/setup.php:710 components/_includes/setup.php:891
+#: components/_includes/setup.php:717 components/_includes/setup.php:898
 msgid "Performed SQL query successfully"
 msgstr ""
 
-#: components/_includes/setup.php:726 components/_includes/setup.php:917
+#: components/_includes/setup.php:733 components/_includes/setup.php:924
 msgid "One or more SQL rule has failed. Check the logs."
 msgstr ""
 
-#: components/_includes/setup.php:739 components/_includes/setup.php:930
+#: components/_includes/setup.php:746 components/_includes/setup.php:937
 msgid "All SQL rules have run successfully."
 msgstr ""
 
-#: components/_includes/setup.php:813
+#: components/_includes/setup.php:820
 msgid "Unrecognised SQL Command"
 msgstr ""
 
-#: components/_includes/setup.php:984
+#: components/_includes/setup.php:991
 msgid "QWcrm requires MySQL"
 msgstr ""
 
-#: components/_includes/setup.php:984
+#: components/_includes/setup.php:991
 msgid "Your current version is"
 msgstr ""
 
-#: components/_includes/setup.php:1038
+#: components/_includes/setup.php:1045
 msgid "The database installation process failed, check the logs."
 msgstr ""
 
-#: components/_includes/setup.php:1050
+#: components/_includes/setup.php:1057
 msgid "The database installation process was successful."
 msgstr ""
 
-#: components/_includes/setup.php:1129
+#: components/_includes/setup.php:1135
 msgid "Beginning the migration of MyITCRM data into the QWcrm table"
 msgstr ""
 
-#: components/_includes/setup.php:1147
+#: components/_includes/setup.php:1153
 msgid "Error reading the MyITCRM table"
 msgstr ""
 
-#: components/_includes/setup.php:1230
+#: components/_includes/setup.php:1236
 msgid "Error migrating a MyITCRM record into QWcrm"
 msgstr ""
 
-#: components/_includes/setup.php:1271 components/_includes/setup.php:1283
-#: components/_includes/setup.php:1301
+#: components/_includes/setup.php:1277 components/_includes/setup.php:1289
+#: components/_includes/setup.php:1307
 msgid "MyITCRM Records Processed"
 msgstr ""
 
-#: components/_includes/setup.php:1272 components/_includes/setup.php:1283
-#: components/_includes/setup.php:1301
+#: components/_includes/setup.php:1278 components/_includes/setup.php:1289
+#: components/_includes/setup.php:1307
 msgid "Records Failed To Migrate"
 msgstr ""
 
-#: components/_includes/setup.php:1273 components/_includes/setup.php:1283
-#: components/_includes/setup.php:1301
+#: components/_includes/setup.php:1279 components/_includes/setup.php:1289
+#: components/_includes/setup.php:1307
 msgid "Records Successfuly Migrated"
 msgstr ""
 
-#: components/_includes/setup.php:1282
+#: components/_includes/setup.php:1288
 msgid "Error migrating some records into QWcrm table"
 msgstr ""
 
-#: components/_includes/setup.php:1300
+#: components/_includes/setup.php:1306
 msgid "Successfully migrated all records into QWcrm table"
+msgstr ""
+
+#: components/_includes/setup.php:1397
+msgid "The database upgrade process failed, check the logs."
+msgstr ""
+
+#: components/_includes/setup.php:1409
+msgid "The database upgrade process was successful."
+msgstr ""
+
+#: components/_includes/setup.php:1457
+msgid "Failed to copy ColumnA to ColumnB in the table"
+msgstr ""
+
+#: components/_includes/setup.php:1471
+msgid "Successfully copied ColumnA to ColumnB in the table"
 msgstr ""
 
 #: components/_includes/supplier.php:84
@@ -8787,48 +8918,48 @@ msgstr ""
 msgid "Failed to return the matching supplier records."
 msgstr ""
 
-#: components/_includes/supplier.php:173
+#: components/_includes/supplier.php:174
 msgid "Failed to insert the supplier record into the database."
 msgstr ""
 
-#: components/_includes/supplier.php:177 components/_includes/supplier.php:334
-#: components/_includes/supplier.php:431
+#: components/_includes/supplier.php:178 components/_includes/supplier.php:336
+#: components/_includes/supplier.php:441
 msgid "Supplier Record"
 msgstr ""
 
-#: components/_includes/supplier.php:199
+#: components/_includes/supplier.php:200
 msgid "Failed to get the supplier details."
 msgstr ""
 
-#: components/_includes/supplier.php:250
+#: components/_includes/supplier.php:251
 msgid "Failed to get Supplier statuses."
 msgstr ""
 
-#: components/_includes/supplier.php:270
+#: components/_includes/supplier.php:271
 msgid "Failed to get the supplier status display name."
 msgstr ""
 
-#: components/_includes/supplier.php:290
+#: components/_includes/supplier.php:291
 msgid "Failed to get supplier types."
 msgstr ""
 
-#: components/_includes/supplier.php:330
+#: components/_includes/supplier.php:332
 msgid "Failed to update the supplier details."
 msgstr ""
 
-#: components/_includes/supplier.php:365
+#: components/_includes/supplier.php:375
 msgid "Failed to update an supplier Status."
 msgstr ""
 
-#: components/_includes/supplier.php:370
+#: components/_includes/supplier.php:380
 msgid "supplier status updated."
 msgstr ""
 
-#: components/_includes/supplier.php:427
+#: components/_includes/supplier.php:437
 msgid "Failed to delete the supplier record."
 msgstr ""
 
-#: components/_includes/supplier.php:453
+#: components/_includes/supplier.php:463
 msgid "Failed to lookup the last supplier record ID."
 msgstr ""
 
@@ -8845,272 +8976,272 @@ msgstr ""
 msgid "Failed to insert the user record into the database."
 msgstr ""
 
-#: components/_includes/user.php:222 components/_includes/user.php:466
-#: components/_includes/user.php:559 components/_includes/user.php:744
-#: components/_includes/user.php:1076
+#: components/_includes/user.php:219 components/_includes/user.php:461
+#: components/_includes/user.php:554 components/_includes/user.php:737
+#: components/_includes/user.php:1058
 msgid "User Account"
 msgstr ""
 
-#: components/_includes/user.php:222
+#: components/_includes/user.php:219
 #: setup/migrate/myitcrm/migrate_routines.php:74
 msgid "created"
 msgstr ""
 
-#: components/_includes/user.php:249
+#: components/_includes/user.php:246
 #: setup/migrate/myitcrm/migrate_routines.php:219
 msgid "Failed to get the user details."
 msgstr ""
 
-#: components/_includes/user.php:304
+#: components/_includes/user.php:301
 msgid "Failed to get the User ID by their username."
 msgstr ""
 
-#: components/_includes/user.php:324
+#: components/_includes/user.php:321
 msgid "Failed to get the User ID by their email."
 msgstr ""
 
-#: components/_includes/user.php:359
+#: components/_includes/user.php:356
 msgid "Failed to get the usergroups."
 msgstr ""
 
-#: components/_includes/user.php:388
+#: components/_includes/user.php:385
 msgid "Failed to get the active users."
 msgstr ""
 
-#: components/_includes/user.php:408
+#: components/_includes/user.php:405
 msgid "Failed to get the user locations."
 msgstr ""
 
-#: components/_includes/user.php:451
+#: components/_includes/user.php:448
 msgid "Failed to update the user record."
 msgstr ""
 
-#: components/_includes/user.php:492
+#: components/_includes/user.php:487
 msgid "You can not delete your own account."
 msgstr ""
 
-#: components/_includes/user.php:501
+#: components/_includes/user.php:496
 msgid "Failed to count the users in the administrator usergroup."
 msgstr ""
 
-#: components/_includes/user.php:504
+#: components/_includes/user.php:499
 msgid "You can not delete the last administrator user account."
 msgstr ""
 
-#: components/_includes/user.php:513 components/_includes/user.php:523
+#: components/_includes/user.php:508 components/_includes/user.php:518
 msgid "Failed to count the user's Workorders in the database."
 msgstr ""
 
-#: components/_includes/user.php:516
+#: components/_includes/user.php:511
 msgid "You can not delete a user who has created work orders."
 msgstr ""
 
-#: components/_includes/user.php:526
+#: components/_includes/user.php:521
 msgid "You can not delete a user who has assigned work orders."
 msgstr ""
 
-#: components/_includes/user.php:533
+#: components/_includes/user.php:528
 msgid "Failed to count the user's Invoices in the database."
 msgstr ""
 
-#: components/_includes/user.php:536
+#: components/_includes/user.php:531
 msgid "You can not delete a user who has invoices."
 msgstr ""
 
-#: components/_includes/user.php:543
+#: components/_includes/user.php:538
 msgid "Failed to count the user's Vouchers in the database."
 msgstr ""
 
-#: components/_includes/user.php:546
+#: components/_includes/user.php:541
 msgid "You can not delete a user who has Vouchers."
 msgstr ""
 
-#: components/_includes/user.php:555
+#: components/_includes/user.php:550
 msgid "Failed to delete the user from the database."
 msgstr ""
 
-#: components/_includes/user.php:603
+#: components/_includes/user.php:596
 msgid "Failed build and return and User list."
 msgstr ""
 
-#: components/_includes/user.php:628
+#: components/_includes/user.php:621
 #: setup/migrate/myitcrm/migrate_routines.php:1336
 msgid "Failed to check if the username exists."
 msgstr ""
 
-#: components/_includes/user.php:635
+#: components/_includes/user.php:628
 #: setup/migrate/myitcrm/migrate_routines.php:1343
 msgid "The Username"
 msgstr ""
 
-#: components/_includes/user.php:635
+#: components/_includes/user.php:628
 #: setup/migrate/myitcrm/migrate_routines.php:1343
 msgid "already exists! Please use a different one."
 msgstr ""
 
-#: components/_includes/user.php:665
+#: components/_includes/user.php:658
 #: setup/migrate/myitcrm/migrate_routines.php:1372
 msgid "Failed to check if the email address has been used."
 msgstr ""
 
-#: components/_includes/user.php:673
+#: components/_includes/user.php:666
 #: setup/migrate/myitcrm/migrate_routines.php:1380
 msgid "The email address has already been used. Please use a different one."
 msgstr ""
 
-#: components/_includes/user.php:699
+#: components/_includes/user.php:692
 msgid "Failed to check if the client already has a login."
 msgstr ""
 
-#: components/_includes/user.php:706 components/user/new.php:26
+#: components/_includes/user.php:699 components/user/new.php:26
 msgid "The client already has a login."
 msgstr ""
 
-#: components/_includes/user.php:739 components/_includes/user.php:1101
-#: components/_includes/user.php:1298
+#: components/_includes/user.php:732 components/_includes/user.php:1083
+#: components/_includes/user.php:1280
 #: setup/migrate/myitcrm/migrate_routines.php:1309
 msgid "Failed to add password reset authorization."
 msgstr ""
 
-#: components/_includes/user.php:744
+#: components/_includes/user.php:737
 msgid "password has been reset."
 msgstr ""
 
-#: components/_includes/user.php:770
+#: components/_includes/user.php:761
 #: setup/migrate/myitcrm/migrate_routines.php:1266
 msgid "Failed to read all users from the database."
 msgstr ""
 
-#: components/_includes/user.php:786
+#: components/_includes/user.php:777
 #: setup/migrate/myitcrm/migrate_routines.php:1282
 msgid "All User Account passwords have been reset."
 msgstr ""
 
-#: components/_includes/user.php:808
+#: components/_includes/user.php:799
 msgid "Username or Password Missing."
 msgstr ""
 
-#: components/_includes/user.php:818
+#: components/_includes/user.php:809
 msgid "You must reset your password before you are allowed to login."
 msgstr ""
 
-#: components/_includes/user.php:828
+#: components/_includes/user.php:819
 msgid ""
 "Login denied! Your account has either been blocked or you have not activated "
 "it yet."
 msgstr ""
 
-#: components/_includes/user.php:831
+#: components/_includes/user.php:822
 msgid "Login denied for"
 msgstr ""
 
-#: components/_includes/user.php:844
+#: components/_includes/user.php:835
 msgid "Login successful for"
 msgstr ""
 
-#: components/_includes/user.php:857
+#: components/_includes/user.php:842
 msgid "Login successful."
 msgstr ""
 
-#: components/_includes/user.php:866
+#: components/_includes/user.php:851
 msgid "Login unsuccessful for"
 msgstr ""
 
-#: components/_includes/user.php:868
+#: components/_includes/user.php:853
 msgid "Login Failed. Check you username and password."
 msgstr ""
 
-#: components/_includes/user.php:884
+#: components/_includes/user.php:869
 msgid "Logout successful for"
 msgstr ""
 
-#: components/_includes/user.php:912
+#: components/_includes/user.php:894
 msgid "Logout successful."
 msgstr ""
 
-#: components/_includes/user.php:934 components/_includes/user.php:948
+#: components/_includes/user.php:916 components/_includes/user.php:930
 msgid "Failed to empty the Session table."
 msgstr ""
 
-#: components/_includes/user.php:940 components/_includes/user.php:953
+#: components/_includes/user.php:922 components/_includes/user.php:935
 msgid "Failed to empty the Remember Me table."
 msgstr ""
 
-#: components/_includes/user.php:997
+#: components/_includes/user.php:979
 msgid "Google reCAPTCHA Verification Failed."
 msgstr ""
 
-#: components/_includes/user.php:1034
+#: components/_includes/user.php:1016
 msgid "Your QWcrm password reset request"
 msgstr ""
 
-#: components/_includes/user.php:1059
+#: components/_includes/user.php:1041
 msgid "Hello"
 msgstr ""
 
-#: components/_includes/user.php:1061
+#: components/_includes/user.php:1043
 msgid "A request has been made to reset your QWcrm account password."
 msgstr ""
 
-#: components/_includes/user.php:1062
+#: components/_includes/user.php:1044
 msgid ""
 "To reset your password, you will need to submit this verification code in "
 "order to verify that the request was legitimate."
 msgstr ""
 
-#: components/_includes/user.php:1064
+#: components/_includes/user.php:1046
 msgid "The verification code is"
 msgstr ""
 
-#: components/_includes/user.php:1066
+#: components/_includes/user.php:1048
 msgid "Select the URL below and proceed with resetting your password."
 msgstr ""
 
-#: components/_includes/user.php:1070
+#: components/_includes/user.php:1052
 msgid "Thank you."
 msgstr ""
 
-#: components/_includes/user.php:1076
+#: components/_includes/user.php:1058
 msgid "reset email has been sent."
 msgstr ""
 
-#: components/_includes/user.php:1122 components/_includes/user.php:1185
+#: components/_includes/user.php:1104 components/_includes/user.php:1167
 msgid "Failed to check for existing tokens for the submitted user."
 msgstr ""
 
-#: components/_includes/user.php:1144
+#: components/_includes/user.php:1126
 msgid "Failed to insert the user reset token into the database."
 msgstr ""
 
-#: components/_includes/user.php:1163
+#: components/_includes/user.php:1145
 msgid "Failed to get the User ID by secret code."
 msgstr ""
 
-#: components/_includes/user.php:1190
+#: components/_includes/user.php:1172
 msgid "The reset token does not exist."
 msgstr ""
 
-#: components/_includes/user.php:1196
+#: components/_includes/user.php:1178
 msgid "The user is blocked."
 msgstr ""
 
-#: components/_includes/user.php:1202
+#: components/_includes/user.php:1184
 msgid "The reset token has expired."
 msgstr ""
 
-#: components/_includes/user.php:1207
+#: components/_includes/user.php:1189
 msgid "Token accepted."
 msgstr ""
 
-#: components/_includes/user.php:1228
+#: components/_includes/user.php:1210
 msgid "Failed to check for the submitted reset code."
 msgstr ""
 
-#: components/_includes/user.php:1244
+#: components/_includes/user.php:1226
 msgid "Reset code accepted."
 msgstr ""
 
-#: components/_includes/user.php:1263 components/_includes/user.php:1279
+#: components/_includes/user.php:1245 components/_includes/user.php:1261
 msgid "Failed to delete existing tokens for the submitted user."
 msgstr ""
 
@@ -9150,72 +9281,68 @@ msgstr ""
 msgid "Failed to get the invoice vouchers totals."
 msgstr ""
 
-#: components/_includes/voucher.php:423
+#: components/_includes/voucher.php:424
 msgid "Failed to update the Voucher record in the database."
 msgstr ""
 
-#: components/_includes/voucher.php:472
+#: components/_includes/voucher.php:497
 msgid "Failed to update a Voucher Status."
 msgstr ""
 
-#: components/_includes/voucher.php:484
+#: components/_includes/voucher.php:502
 msgid "Voucher status updated."
 msgstr ""
 
-#: components/_includes/voucher.php:490
+#: components/_includes/voucher.php:508
 msgid "Voucher Status updated to"
 msgstr ""
 
-#: components/_includes/voucher.php:532
-msgid "Failed to update a voucher blocked status."
-msgstr ""
-
-#: components/_includes/voucher.php:563
+#: components/_includes/voucher.php:544
 msgid "Failed to update the Voucher as redeemed."
 msgstr ""
 
-#: components/_includes/voucher.php:567
+#: components/_includes/voucher.php:551
 msgid "was redeemed by"
 msgstr ""
 
-#: components/_includes/voucher.php:592
+#: components/_includes/voucher.php:576
 msgid "Failed to update an Invoice ID on the voucher."
 msgstr ""
 
-#: components/_includes/voucher.php:609 components/refund/new.php:61
+#: components/_includes/voucher.php:593 components/refund/new.php:61
 msgid "cannot be refunded."
 msgstr ""
 
-#: components/_includes/voucher.php:626 components/_includes/voucher.php:665
+#: components/_includes/voucher.php:610 components/_includes/voucher.php:649
 msgid "for Invoice"
 msgstr ""
 
-#: components/_includes/voucher.php:662
+#: components/_includes/voucher.php:646
 msgid "was refund was reverted by"
 msgstr ""
 
-#: components/_includes/voucher.php:665
+#: components/_includes/voucher.php:649
 msgid "refund was reverted by"
 msgstr ""
 
-#: components/_includes/voucher.php:688
+#: components/_includes/voucher.php:672
 msgid "cannot be cancelled."
 msgstr ""
 
-#: components/_includes/voucher.php:724 components/_includes/voucher.php:758
-#: components/_includes/voucher.php:792 components/_includes/voucher.php:900
-#: components/_includes/voucher.php:953 components/_includes/voucher.php:1191
-#: components/_includes/voucher.php:1306 components/_includes/voucher.php:1420
-#: components/_includes/voucher.php:1541 components/_includes/voucher.php:1604
-#: components/_includes/voucher.php:1700
+#: components/_includes/voucher.php:708 components/_includes/voucher.php:742
+#: components/_includes/voucher.php:776 components/_includes/voucher.php:884
+#: components/_includes/voucher.php:937 components/_includes/voucher.php:1175
+#: components/_includes/voucher.php:1290 components/_includes/voucher.php:1404
+#: components/_includes/voucher.php:1525 components/_includes/voucher.php:1588
+#: components/_includes/voucher.php:1684
 msgid "Failed to return the matching Vouchers."
 msgstr ""
 
-#: components/_includes/voucher.php:826
+#: components/_includes/voucher.php:810
 msgid "cannot be deleted."
 msgstr ""
 
-#: components/_includes/voucher.php:862
+#: components/_includes/voucher.php:846
 msgid "Failed to delete the Voucher."
 msgstr ""
 
@@ -9254,10 +9381,10 @@ msgstr ""
 
 #: components/_includes/workorder.php:349
 #: components/_includes/workorder.php:352
-#: components/_includes/workorder.php:846
-#: components/_includes/workorder.php:849
-#: components/_includes/workorder.php:1066
-#: components/_includes/workorder.php:1069
+#: components/_includes/workorder.php:850
+#: components/_includes/workorder.php:853
+#: components/_includes/workorder.php:1070
+#: components/_includes/workorder.php:1073
 msgid "Work Order Note"
 msgstr ""
 
@@ -9318,93 +9445,93 @@ msgid ""
 "order status."
 msgstr ""
 
-#: components/_includes/workorder.php:711
+#: components/_includes/workorder.php:715
 msgid "Failed to update a work order Status."
 msgstr ""
 
-#: components/_includes/workorder.php:728
+#: components/_includes/workorder.php:732
 msgid "Work order status updated."
 msgstr ""
 
-#: components/_includes/workorder.php:778
+#: components/_includes/workorder.php:782
 msgid "Failed to update a work order's Closed status."
 msgstr ""
 
-#: components/_includes/workorder.php:799
+#: components/_includes/workorder.php:803
 msgid "Failed to update a work order last active time."
 msgstr ""
 
-#: components/_includes/workorder.php:820
+#: components/_includes/workorder.php:824
 msgid "Failed to update a work order Invoice ID."
 msgstr ""
 
-#: components/_includes/workorder.php:839
+#: components/_includes/workorder.php:843
 msgid "Failed to update a work order note."
 msgstr ""
 
-#: components/_includes/workorder.php:880
+#: components/_includes/workorder.php:884
 msgid "Failed to close a work order without an invoice."
 msgstr ""
 
-#: components/_includes/workorder.php:890
+#: components/_includes/workorder.php:894
 msgid "Closed without invoice by"
 msgstr ""
 
-#: components/_includes/workorder.php:893
+#: components/_includes/workorder.php:897
 msgid "has been closed without invoice by"
 msgstr ""
 
-#: components/_includes/workorder.php:924
+#: components/_includes/workorder.php:928
 msgid "Failed to close a work order with an invoice."
 msgstr ""
 
-#: components/_includes/workorder.php:934
+#: components/_includes/workorder.php:938
 msgid "Closed with invoice by"
 msgstr ""
 
-#: components/_includes/workorder.php:937
+#: components/_includes/workorder.php:941
 msgid "has been closed with invoice by"
 msgstr ""
 
-#: components/_includes/workorder.php:962
+#: components/_includes/workorder.php:966
 msgid "This workorder cannot be deleted because it has an invoice."
 msgstr ""
 
-#: components/_includes/workorder.php:968
+#: components/_includes/workorder.php:972
 msgid "This workorder cannot be deleted because its status does not allow it."
 msgstr ""
 
-#: components/_includes/workorder.php:998
+#: components/_includes/workorder.php:1002
 msgid "Failed to delete the Work Order"
 msgstr ""
 
-#: components/_includes/workorder.php:1006
+#: components/_includes/workorder.php:1010
 msgid "Failed to delete the history notes for Work Order"
 msgstr ""
 
-#: components/_includes/workorder.php:1014
+#: components/_includes/workorder.php:1018
 msgid "Failed to delete the notes for Work Order"
 msgstr ""
 
-#: components/_includes/workorder.php:1023
+#: components/_includes/workorder.php:1027
 msgid "Failed to delete the schedules for Work Order"
 msgstr ""
 
-#: components/_includes/workorder.php:1061
+#: components/_includes/workorder.php:1065
 msgid "Failed to delete a work order note."
 msgstr ""
 
-#: components/_includes/workorder.php:1094
+#: components/_includes/workorder.php:1098
 msgid "Cannot edit the resolution because the work order is already closed."
 msgstr ""
 
-#: components/_includes/workorder.php:1101
+#: components/_includes/workorder.php:1105
 msgid ""
 "Can not close a work order if it is Waiting for Parts. Please Adjust the "
 "status."
 msgstr ""
 
-#: components/_includes/workorder.php:1145
+#: components/_includes/workorder.php:1149
 msgid "Failed to assign a work order to an employee."
 msgstr ""
 
@@ -9434,8 +9561,8 @@ msgstr ""
 #: components/payment/delete.php:24 components/payment/new.php:70
 #: components/refund/cancel.php:21 components/refund/delete.php:21
 #: components/refund/new.php:25 components/schedule/delete.php:19
-#: components/setup/choice.php:16 components/setup/install.php:19
-#: components/setup/migrate.php:20 components/setup/upgrade.php:18
+#: components/setup/choice.php:16 components/setup/install.php:20
+#: components/setup/migrate.php:20 components/setup/upgrade.php:21
 #: components/supplier/cancel.php:16 components/supplier/delete.php:16
 #: components/user/delete.php:17 components/user/reset.php:38
 #: components/user/reset.php:95 components/user/reset.php:130
@@ -9876,19 +10003,19 @@ msgstr ""
 msgid "A search of refunds has been performed with the search term"
 msgstr ""
 
-#: components/report/financial.php:231
+#: components/report/financial.php:222
 msgid "The Tax Man owes you this amount."
 msgstr ""
 
-#: components/report/financial.php:232
+#: components/report/financial.php:223
 msgid "There is nothing to pay."
 msgstr ""
 
-#: components/report/financial.php:233
+#: components/report/financial.php:224
 msgid "You owe the Tax Man this amount."
 msgstr ""
 
-#: components/report/financial.php:249
+#: components/report/financial.php:243
 msgid "Financial report run for the date range"
 msgstr ""
 
@@ -9898,6 +10025,10 @@ msgstr ""
 
 #: components/schedule/delete.php:24 components/schedule/edit.php:19
 msgid "No Schedule ID supplied."
+msgstr ""
+
+#: components/schedule/delete.php:34
+msgid "Schedule record has been deleted."
 msgstr ""
 
 #: components/schedule/icalendar.php:24
@@ -9946,61 +10077,61 @@ msgstr ""
 msgid "A search of schedules has been performed with the search term"
 msgstr ""
 
-#: components/setup/install.php:38
+#: components/setup/install.php:39
 msgid "QWcrm installation has begun."
 msgstr ""
 
-#: components/setup/install.php:48 components/setup/migrate.php:43
+#: components/setup/install.php:49 components/setup/migrate.php:43
 msgid "Database connection successful."
 msgstr ""
 
-#: components/setup/install.php:51 components/setup/migrate.php:55
+#: components/setup/install.php:52 components/setup/migrate.php:55
 msgid ""
 "Connected successfully to the database with the supplied credentials and "
 "added them to the config file."
 msgstr ""
 
-#: components/setup/install.php:59 components/setup/migrate.php:63
+#: components/setup/install.php:60 components/setup/migrate.php:63
 msgid "Failed to connect to the database with the supplied credentials."
 msgstr ""
 
-#: components/setup/install.php:95 components/setup/migrate.php:142
+#: components/setup/install.php:96 components/setup/migrate.php:142
 msgid "Config settings have been added to the config file."
 msgstr ""
 
-#: components/setup/install.php:116 components/setup/migrate.php:163
+#: components/setup/install.php:117 components/setup/migrate.php:163
 msgid "Starting Database installation."
 msgstr ""
 
-#: components/setup/install.php:121 components/setup/migrate.php:168
+#: components/setup/install.php:122 components/setup/migrate.php:168
 msgid "The database installed successfully."
 msgstr ""
 
-#: components/setup/install.php:129 components/setup/migrate.php:176
+#: components/setup/install.php:130 components/setup/migrate.php:176
 msgid "The database failed to install."
 msgstr ""
 
-#: components/setup/install.php:186 components/setup/migrate.php:229
+#: components/setup/install.php:187 components/setup/migrate.php:229
 msgid "Company options inserted."
 msgstr ""
 
-#: components/setup/install.php:215
+#: components/setup/install.php:216
 msgid "Starting Work Order number has been set to"
 msgstr ""
 
-#: components/setup/install.php:220
+#: components/setup/install.php:221
 msgid "Starting Invoice number has been set to"
 msgstr ""
 
-#: components/setup/install.php:240 components/setup/migrate.php:334
+#: components/setup/install.php:241 components/setup/migrate.php:334
 msgid "The administrator account has been created."
 msgstr ""
 
-#: components/setup/install.php:241 components/setup/install.php:242
+#: components/setup/install.php:242 components/setup/install.php:243
 msgid "The QWcrm installation process has completed successfully."
 msgstr ""
 
-#: components/setup/install.php:298
+#: components/setup/install.php:299
 msgid "QWcrm installation has finished."
 msgstr ""
 
@@ -10047,15 +10178,35 @@ msgstr ""
 msgid "MyITCRM to QWcrm migration has finished."
 msgstr ""
 
-#: components/setup/upgrade.php:74
-msgid "QWcrm upgrade has begun"
+#: components/setup/upgrade.php:65
+msgid ""
+"Connected successfully to the database with the supplied credentials from "
+"the config file."
 msgstr ""
 
-#: components/setup/upgrade.php:89
+#: components/setup/upgrade.php:70
+msgid ""
+"Failed to connect to the database with the supplied credentials. Check your "
+"config file."
+msgstr ""
+
+#: components/setup/upgrade.php:88
 msgid "Starting Database upgrade."
 msgstr ""
 
-#: components/setup/upgrade.php:138
+#: components/setup/upgrade.php:97
+msgid "The database upgraded successfully."
+msgstr ""
+
+#: components/setup/upgrade.php:104
+msgid "The database failed to upgrade."
+msgstr ""
+
+#: components/setup/upgrade.php:124
+msgid "The QWcrm upgrade process has completed successfully."
+msgstr ""
+
+#: components/setup/upgrade.php:151
 msgid "QWcrm upgrade has finished."
 msgstr ""
 
@@ -10092,6 +10243,18 @@ msgstr ""
 #: components/user/delete.php:22 components/user/details.php:20
 #: components/user/edit.php:16
 msgid "No User ID supplied."
+msgstr ""
+
+#: components/user/delete.php:34
+msgid "User record deleted."
+msgstr ""
+
+#: components/user/edit.php:37
+msgid "User details updated."
+msgstr ""
+
+#: components/user/new.php:53
+msgid "New user has been created."
 msgstr ""
 
 #: components/user/reset.php:50
@@ -10187,7 +10350,7 @@ msgstr ""
 msgid "The note has been deleted."
 msgstr ""
 
-#: components/workorder/note_edit.php:26
+#: components/workorder/note_edit.php:29
 msgid "The note has been updated."
 msgstr ""
 
@@ -11506,11 +11669,11 @@ msgid "VAT Cash Accounting (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:26
-msgid "VAT Flat Rate (Standard) (UK)"
+msgid "VAT Flat Rate (Basic Turnover) (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:27
-msgid "VAT Flat Rate (Cash) (UK)"
+msgid "VAT Flat Rate (Cash based turnover) (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:30
@@ -11578,161 +11741,165 @@ msgid "Credit"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:56
-msgid "Client Refund"
+msgid "Commission"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:57
-#: language/_gettext_only/system_variables.php:152
-msgid "Equipment"
+msgid "Consumables"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:58
-#: language/_gettext_only/system_variables.php:154
-msgid "Fuel"
+#: language/_gettext_only/system_variables.php:153
+msgid "Equipment"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:59
-#: language/_gettext_only/system_variables.php:158
-msgid "Marketing"
+#: language/_gettext_only/system_variables.php:155
+msgid "Fuel"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:60
 #: language/_gettext_only/system_variables.php:159
-msgid "Office Supplies"
+msgid "Marketing"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:61
 #: language/_gettext_only/system_variables.php:160
+msgid "Office Supplies"
+msgstr ""
+
+#: language/_gettext_only/system_variables.php:62
+#: language/_gettext_only/system_variables.php:161
 msgid "Online"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:64
+#: language/_gettext_only/system_variables.php:65
 msgid "Postage"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:65
-msgid "Rent"
-msgstr ""
-
 #: language/_gettext_only/system_variables.php:66
-#: language/_gettext_only/system_variables.php:163
-msgid "Services"
+msgid "Rent"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:67
 #: language/_gettext_only/system_variables.php:164
-msgid "Software"
+msgid "Services"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:68
 #: language/_gettext_only/system_variables.php:165
-msgid "TelCo"
+msgid "Software"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:69
 #: language/_gettext_only/system_variables.php:166
-msgid "Transport"
+msgid "TelCo"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:70
 #: language/_gettext_only/system_variables.php:167
+msgid "Transport"
+msgstr ""
+
+#: language/_gettext_only/system_variables.php:71
+#: language/_gettext_only/system_variables.php:168
 msgid "Utilities"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:72
+#: language/_gettext_only/system_variables.php:73
 msgid "Wages"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:94
+#: language/_gettext_only/system_variables.php:95
 msgid "Cancelled Services"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:95
+#: language/_gettext_only/system_variables.php:96
 msgid "Commision"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:96
+#: language/_gettext_only/system_variables.php:97
 msgid "Credit Note"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:97
+#: language/_gettext_only/system_variables.php:98
 msgid "Interest"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:99
+#: language/_gettext_only/system_variables.php:100
 msgid "Returned Goods"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:102
+#: language/_gettext_only/system_variables.php:103
 msgid "Bank Transfer Reference"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:103
+#: language/_gettext_only/system_variables.php:104
 msgid "Card Type"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:106
+#: language/_gettext_only/system_variables.php:107
 msgid "Direct Debit Reference"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:107
+#: language/_gettext_only/system_variables.php:108
 msgid "PayPal Transaction ID"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:110
+#: language/_gettext_only/system_variables.php:111
 msgid "Visa"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:111
+#: language/_gettext_only/system_variables.php:112
 msgid "MasterCard"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:112
+#: language/_gettext_only/system_variables.php:113
 msgid "American Express"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:113
+#: language/_gettext_only/system_variables.php:114
 msgid "Debit Card"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:127
-#: language/_gettext_only/system_variables.php:146
+#: language/_gettext_only/system_variables.php:128
+#: language/_gettext_only/system_variables.php:147
 msgid "Valid"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:150
+#: language/_gettext_only/system_variables.php:151
 msgid "Courier"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:151
+#: language/_gettext_only/system_variables.php:152
 msgid "Drop Shipping"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:153
+#: language/_gettext_only/system_variables.php:154
 msgid "Financial"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:155
+#: language/_gettext_only/system_variables.php:156
 msgid "General"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:156
+#: language/_gettext_only/system_variables.php:157
 msgid "Human Resources"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:157
+#: language/_gettext_only/system_variables.php:158
 msgid "Landlord"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:168
+#: language/_gettext_only/system_variables.php:169
 msgid "Wholesale"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:182
+#: language/_gettext_only/system_variables.php:183
 msgid "Multi Purpose (MPV)"
 msgstr ""
 
-#: language/_gettext_only/system_variables.php:183
+#: language/_gettext_only/system_variables.php:184
 msgid "Single Purpose (SPV)"
 msgstr ""
 
@@ -11838,205 +12005,162 @@ msgstr ""
 msgid "Finished the correction of the migrated `user` data in QWcrm."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:173
+#: setup/upgrade/3_1_0/upgrade_routines.php:198
 msgid "Database has now been upgraded to"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:208
-#: setup/upgrade/3_1_0/upgrade_routines.php:394
+#: setup/upgrade/3_1_0/upgrade_routines.php:233
+#: setup/upgrade/3_1_0/upgrade_routines.php:419
 msgid "Failed to create a temporary column called"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:232
+#: setup/upgrade/3_1_0/upgrade_routines.php:257
 msgid "Failed to select the records from the column"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:263
-#: setup/upgrade/3_1_0/upgrade_routines.php:445
+#: setup/upgrade/3_1_0/upgrade_routines.php:288
+#: setup/upgrade/3_1_0/upgrade_routines.php:470
 msgid "Failed to update the record"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:263
-#: setup/upgrade/3_1_0/upgrade_routines.php:445
+#: setup/upgrade/3_1_0/upgrade_routines.php:288
+#: setup/upgrade/3_1_0/upgrade_routines.php:470
 msgid "in the column"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:292
-#: setup/upgrade/3_1_0/upgrade_routines.php:471
+#: setup/upgrade/3_1_0/upgrade_routines.php:317
+#: setup/upgrade/3_1_0/upgrade_routines.php:496
 msgid "Failed to remove the original column"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:316
-#: setup/upgrade/3_1_0/upgrade_routines.php:495
+#: setup/upgrade/3_1_0/upgrade_routines.php:341
+#: setup/upgrade/3_1_0/upgrade_routines.php:520
 msgid "Failed to rename the temporary column"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:337
-#: setup/upgrade/3_1_0/upgrade_routines.php:516
+#: setup/upgrade/3_1_0/upgrade_routines.php:362
+#: setup/upgrade/3_1_0/upgrade_routines.php:541
 msgid "Failed to covert the column"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:337
-#: setup/upgrade/3_1_0/upgrade_routines.php:351
+#: setup/upgrade/3_1_0/upgrade_routines.php:362
+#: setup/upgrade/3_1_0/upgrade_routines.php:376
 msgid "from `timestamp` to MySQL `DATE`"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:337
-#: setup/upgrade/3_1_0/upgrade_routines.php:516
+#: setup/upgrade/3_1_0/upgrade_routines.php:362
+#: setup/upgrade/3_1_0/upgrade_routines.php:541
 msgid "Check the previous error for the cause."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:351
-#: setup/upgrade/3_1_0/upgrade_routines.php:530
+#: setup/upgrade/3_1_0/upgrade_routines.php:376
+#: setup/upgrade/3_1_0/upgrade_routines.php:555
 msgid "Successfully converted the column"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:418
-#: setup/upgrade/3_1_0/upgrade_routines.php:614
-#: setup/upgrade/3_1_0/upgrade_routines.php:725
-#: setup/upgrade/3_1_0/upgrade_routines.php:810
-#: setup/upgrade/3_1_0/upgrade_routines.php:944
-#: setup/upgrade/3_1_0/upgrade_routines.php:1079
-#: setup/upgrade/3_1_0/upgrade_routines.php:1212
-#: setup/upgrade/3_1_0/upgrade_routines.php:1381
-#: setup/upgrade/3_1_0/upgrade_routines.php:1533
-#: setup/upgrade/3_1_0/upgrade_routines.php:1685
+#: setup/upgrade/3_1_0/upgrade_routines.php:443
+#: setup/upgrade/3_1_0/upgrade_routines.php:640
+#: setup/upgrade/3_1_0/upgrade_routines.php:792
+#: setup/upgrade/3_1_0/upgrade_routines.php:930
+#: setup/upgrade/3_1_0/upgrade_routines.php:1066
+#: setup/upgrade/3_1_0/upgrade_routines.php:1235
+#: setup/upgrade/3_1_0/upgrade_routines.php:1387
 msgid "Failed to select all the records from the table"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:516
-#: setup/upgrade/3_1_0/upgrade_routines.php:530
+#: setup/upgrade/3_1_0/upgrade_routines.php:541
+#: setup/upgrade/3_1_0/upgrade_routines.php:555
 msgid "from `timestamp` to MySQL `DATETIME`"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:643
-msgid "Failed to update the `workorder_id` for the Voucher record"
+#: setup/upgrade/3_1_0/upgrade_routines.php:714
+msgid "Failed to correct the the Voucher record"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:674
-msgid "Failed to complete assigning `workorder_id` to all Voucher records."
+#: setup/upgrade/3_1_0/upgrade_routines.php:740
+msgid "Failed to complete correcting all Voucher records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:688
-msgid "Successfully completed assigning `workorder_id` to all Voucher records."
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:760
-msgid "Failed to complete converting MySQL `date` column to `datetime`"
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:774
-msgid "Successfully completed converting MySQL `date` column to `datetime`"
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:866
-msgid "Failed to update the `status` for the Voucher record"
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:892
-msgid "Failed to complete assigning `status` to all Voucher records."
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:906
+#: setup/upgrade/3_1_0/upgrade_routines.php:754
 msgid "Successfully completed assigning `status` to all Voucher records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1001
+#: setup/upgrade/3_1_0/upgrade_routines.php:852
 msgid "Failed to update the `totals` for the labour record"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1027
+#: setup/upgrade/3_1_0/upgrade_routines.php:878
 msgid "Failed to complete updating `totals` for all labour records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1041
+#: setup/upgrade/3_1_0/upgrade_routines.php:892
 msgid "Successfully completed updating `totals` for all labour records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1136
+#: setup/upgrade/3_1_0/upgrade_routines.php:990
 msgid "Failed to update the `totals` for the parts record"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1162
+#: setup/upgrade/3_1_0/upgrade_routines.php:1016
 msgid "Failed to complete updating `totals` for all parts records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1176
+#: setup/upgrade/3_1_0/upgrade_routines.php:1030
 msgid "Successfully completed updating `totals` for all parts records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1303
+#: setup/upgrade/3_1_0/upgrade_routines.php:1157
 msgid "Failed to import the `additional info` for the Payment record"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1329
+#: setup/upgrade/3_1_0/upgrade_routines.php:1183
 msgid "Failed to import `additional info` for all Payment records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1343
+#: setup/upgrade/3_1_0/upgrade_routines.php:1197
 msgid ""
 "Successfully completed importing `additional info` for all Payment records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1414
+#: setup/upgrade/3_1_0/upgrade_routines.php:1268
 msgid "Created from an expense record during an upgrade of QWcrm."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1426
+#: setup/upgrade/3_1_0/upgrade_routines.php:1280
 msgid "Failed to insert the corresponding payment record for expense reocrd"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1460
+#: setup/upgrade/3_1_0/upgrade_routines.php:1314
 msgid "Failed to delete the `expense_record` table `payment_method` column."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1481
+#: setup/upgrade/3_1_0/upgrade_routines.php:1335
 msgid "Failed to complete converting expense records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1495
+#: setup/upgrade/3_1_0/upgrade_routines.php:1349
 msgid "Successfully completed converting expense records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1566
-msgid "Created from a refund record during an upgrade of QWcrm."
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:1578
-msgid "Failed to insert the corresponding payment record for refund record"
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:1612
-msgid "Failed to delete the `refund_record` table `payment_method` column."
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:1633
-msgid "Failed to complete converting refund records."
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:1647
-msgid "Successfully completed converting refund records."
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:1718
+#: setup/upgrade/3_1_0/upgrade_routines.php:1420
 msgid "Created from a otherincome record during an upgrade of QWcrm."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1730
+#: setup/upgrade/3_1_0/upgrade_routines.php:1432
 msgid ""
 "Failed to insert the corresponding payment record for otherincome record"
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1764
+#: setup/upgrade/3_1_0/upgrade_routines.php:1466
 msgid ""
 "Failed to delete the `otherincome_record` table `payment_method` column."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1785
+#: setup/upgrade/3_1_0/upgrade_routines.php:1487
 msgid "Failed to complete converting otherincome records."
 msgstr ""
 
-#: setup/upgrade/3_1_0/upgrade_routines.php:1799
+#: setup/upgrade/3_1_0/upgrade_routines.php:1501
 msgid "Successfully completed converting otherincome records."
 msgstr ""
 
