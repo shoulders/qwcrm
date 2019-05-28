@@ -194,6 +194,9 @@ class Upgrade3_1_0 extends QSetup {
         // correct users with 00:00:00 registered dates
         $this->update_column_values(PRFX.'user_records', 'register_date', '0000-00-00 00:00:00', mysql_datetime($this->setup_time));
         
+        // Correct logo filepath
+        $this->update_record_value(PRFX.'company_record', 'logo', str_replace('media/', '', get_company_details('logo')) );
+        
         // Log message to setup log
         $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;
         $this->write_record_to_setup_log('upgrade', $record);
