@@ -5,6 +5,18 @@
 # @license    GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 ##
 
+## Password Protect All Sub Folders and Files
+
+#AuthName "Please enter the Bat Code"
+#AuthUserFile "/home/{username}/public_html/.htpasswd"
+#AuthType Basic
+## require valid-user
+#require user qwrcm
+#ErrorDocument 401 "Authorisation Required"
+
+#RewriteEngine On
+#RewriteRule \.htpasswd$ - [F,L]
+
 ##
 # READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
 #
