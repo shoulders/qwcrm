@@ -72,7 +72,7 @@ INSERT INTO `#__company_tax_systems` (`id`, `type_key`, `display_name`) VALUES
 (3, 'vat_standard', 'VAT Standard Accounting (UK)'),
 (4, 'vat_cash', 'VAT Cash Accounting (UK)'),
 (5, 'vat_flat_basic', 'VAT Flat Rate (Basic Turnover) (UK)'),
-(6, 'vat_flat_cash', 'VAT Flat Rate (Cash based turnover) (UK)');
+(6, 'vat_flat_cash', 'VAT Flat Rate (Cash Based Turnover) (UK)');
 
 ALTER TABLE `#__company_tax_systems` ADD PRIMARY KEY (`id`);
 

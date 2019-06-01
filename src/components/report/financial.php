@@ -139,7 +139,7 @@ if(isset($VAR['submit'])) {
         $profit_totals['profit'] = $profit_totals['turnover']['net'] - $expense_stats['sum_unit_gross'];
     }
         
-    // VAT Flat Rate (Cash based turnover) (UK) - Prorated Turnover / Prorated Profit - Vouchers (Redeemed vouchers do not appear in turnover/prorata totals so there is no double taxation issue)
+    // VAT Flat Rate (Cash Based Turnover) (UK) - Prorated Turnover / Prorated Profit - Vouchers (Redeemed vouchers do not appear in turnover/prorata totals so there is no double taxation issue)
     // This makes you pay Flat Rate VAT for a voucher when you pay the invoice, not when the voucher is redeemed (I suppose that fits with turnover x Flat Rate)
     if(QW_TAX_SYSTEM == 'vat_flat_cash') {     
         $profit_totals['invoice']['gross'] = $prorata_totals['invoice']['gross'];        
@@ -213,7 +213,7 @@ if(isset($VAR['submit'])) {
         $tax_totals['balance'] = $vat_liability;  // Calculated above in 'Profit and Turnover Calculations' section
     }
     
-    // VAT Flat Rate (Cash based turnover) (UK) - Gross Turnover x Flat Rate
+    // VAT Flat Rate (Cash Based Turnover) (UK) - Gross Turnover x Flat Rate
     if(QW_TAX_SYSTEM == 'vat_flat_cash') {
         $tax_totals['balance'] = $vat_liability;  // Calculated above in 'Profit and Turnover Calculations' section
     }

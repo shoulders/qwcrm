@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.0.0\n"
-"POT-Creation-Date: 2019-06-01 13:20+0100\n"
-"PO-Revision-Date: 2019-06-01 13:20+0100\n"
+"POT-Creation-Date: 2019-06-01 16:02+0100\n"
+"PO-Revision-Date: 2019-06-01 16:02+0100\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -11682,7 +11682,7 @@ msgid "VAT Flat Rate (Basic Turnover) (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:27
-msgid "VAT Flat Rate (Cash based turnover) (UK)"
+msgid "VAT Flat Rate (Cash Based Turnover) (UK)"
 msgstr ""
 
 #: language/_gettext_only/system_variables.php:30
