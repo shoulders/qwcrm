@@ -15,12 +15,12 @@ require(INCLUDES_DIR.'invoice.php');
 $smarty->assign('overview_invoices_pending',            display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'pending')           );
 $smarty->assign('overview_invoices_unpaid',             display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'unpaid')            );
 $smarty->assign('overview_invoices_partially_paid',     display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'partially_paid')    );
-$smarty->assign('overview_invoices_paid',               display_invoices('invoice_id', 'DESC', true, '15', '1', null, null, 'paid')                );
+//$smarty->assign('overview_invoices_paid',               display_invoices('invoice_id', 'DESC', true, '15', '1', null, null, 'paid')                );
 $smarty->assign('overview_invoices_in_dispute',         display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'in_dispute')        );
 $smarty->assign('overview_invoices_overdue',            display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'overdue')           );
 $smarty->assign('overview_invoices_collections',        display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'collections')       );
-$smarty->assign('overview_invoices_refunded',           display_invoices('invoice_id', 'DESC', true, '15', '1', null, null, 'refunded')            );
-$smarty->assign('overview_invoices_cancelled',          display_invoices('invoice_id', 'DESC', true, '15', '1', null, null, 'cancelled')           );
+//$smarty->assign('overview_invoices_refunded',           display_invoices('invoice_id', 'DESC', true, '15', '1', null, null, 'refunded')            );
+//$smarty->assign('overview_invoices_cancelled',          display_invoices('invoice_id', 'DESC', true, '15', '1', null, null, 'cancelled')           );
 $smarty->assign('overview_invoice_stats',               get_invoices_stats('current'));
 $smarty->assign('invoice_statuses',                     get_invoice_statuses());
 

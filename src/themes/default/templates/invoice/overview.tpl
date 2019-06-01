@@ -47,12 +47,12 @@
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_partially_paid block_title=_gettext("Partially Paid")}
                                             </td>
                                         </tr>
-                                        <tr>
+                                        {*<tr>
                                             <td>
                                                 <a name="paid"></a>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_paid block_title=_gettext("Paid")}
                                             </td>
-                                        </tr>
+                                        </tr>*}
                                         <tr>
                                             <td>
                                                 <a name="in_dispute"></a>
@@ -71,18 +71,18 @@
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_collections block_title=_gettext("Collections")}
                                             </td>
                                         </tr> 
-                                        <tr>
+                                        {*<tr>
                                             <td>
                                                 <a name="refunded"></a>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_refunded block_title=_gettext("Refunded")}
                                             </td>
-                                        </tr>
-                                        <tr>
+                                        </tr>*}
+                                        {*<tr>
                                             <td>
                                                 <a name="cancelled"></a>
                                                 {include file='invoice/blocks/display_invoices_block.tpl' display_invoices=$overview_invoices_cancelled block_title=_gettext("Cancelled")}
                                             </td>
-                                        </tr>                                                                               
+                                        </tr> *}                                                                             
                                     </table>
                                 </td>
                             </tr>
