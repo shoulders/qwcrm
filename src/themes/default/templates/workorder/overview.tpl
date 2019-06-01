@@ -23,6 +23,14 @@
                             <tr>
                                 <td class="menutd">
                                     <table width="100%" border="0" cellpadding="10" cellspacing="0">
+                                        
+                                        <!-- Search Bar -->
+                                        <tr>
+                                            <td>
+                                                {include file='core/blocks/theme_searchbar_block.tpl'}
+                                            </td>
+                                        </tr> 
+                                        
                                         <tr>
                                             <td>
                                                 <a name="workorder_stats"></a>                                                
