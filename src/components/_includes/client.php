@@ -44,10 +44,10 @@ function display_clients($order_by, $direction, $use_pages = false, $records_per
     // Default Action    
     $whereTheseRecords = " WHERE ".PRFX."client_records.client_id\n";    
     
-    // Search category (display_name / company || contact) and search term
+    // Search category (display_name) and search term
     if($search_category == 'display_name') { $havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%'); }
     
-    // Search category (full_name / contact) and search term
+    // Search category (full_name) and search term
     elseif($search_category == 'full_name') { $havingTheseRecords .= " HAVING full_name LIKE ".$db->qstr('%'.$search_term.'%'); }
     
     // Search category with search term
