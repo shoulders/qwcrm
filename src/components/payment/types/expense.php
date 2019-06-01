@@ -25,7 +25,7 @@ class PType {
         if(class_exists('UpdatePayment')) {UpdatePayment::$record_balance = $this->expense_details['balance'];}
         
         // Assign Type specific template variables  
-        $this->smarty->assign('payment_active_methods', get_payment_methods('receive', 'enabled'));
+        $this->smarty->assign('payment_active_methods', get_payment_methods('send', 'enabled'));
         $this->smarty->assign('expense_details', $this->expense_details);
         $this->smarty->assign('expense_statuses', get_expense_statuses());        
         
