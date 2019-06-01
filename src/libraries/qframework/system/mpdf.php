@@ -31,6 +31,9 @@ function mpdf_output_in_browser($pdf_filename, $pdf_template) {
     // Debugging
     //$mpdf->showImageErrors = true;
     //$mpdf->debug = true;
+    
+    // mPDF now supports setting curlAllowUnsafeSslRequests (prevents red crosses where images should be, when using https with old ROOT CA Store)
+    //$mpdf->curlAllowUnsafeSslRequests = true;
 
     // Build the PDF
     $mpdf->WriteHTML($pdf_template);
