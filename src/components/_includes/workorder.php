@@ -45,7 +45,7 @@ function display_workorders($order_by, $direction, $use_pages = false, $records_
     $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";    
     
     // Restrict results by search category (client) and search term
-    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_namee LIKE ".$db->qstr('%'.$search_term.'%');}
+    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
     
    // Restrict results by search category (employee) and search term
     elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
