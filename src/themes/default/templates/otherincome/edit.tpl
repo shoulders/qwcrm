@@ -138,6 +138,9 @@
                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
                                                             <td>
                                                                 <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
+                                                                    {if !'/^vat_/'|preg_match:$qw_tax_system}
+                                                                        <option value="TNA" data-rate="0.00"{if $default_vat_tax_code == 'TNA'} selected{/if}>{t}TNA{/t}</option>
+                                                                    {/if}
                                                                     {section name=s loop=$vat_tax_codes}    
                                                                         <option value="{$vat_tax_codes[s].tax_key}" data-rate="{$vat_tax_codes[s].rate}"{if $otherincome_details.vat_tax_code == $vat_tax_codes[s].tax_key} selected{/if}>{$vat_tax_codes[s].tax_key} - {t}{$vat_tax_codes[s].display_name}{/t} @ {$vat_tax_codes[s].rate|string_format:"%.2f"}%</option>
                                                                     {/section} 
