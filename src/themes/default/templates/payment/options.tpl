@@ -91,10 +91,10 @@
 
                                             <!-- PayPal -->
                                             <tr>
-                                                <td colspan="2"><b><font color="red">{t}Paypal Information{/t}</font></b></td>                                                    
+                                                <td colspan="2"><b><font color="red">{t}PayPal{/t} {t}Information{/t}</font></b></td>                                                    
                                             </tr>
                                             <tr>
-                                                <td><b>{t}Paypal Email{/t}</b></td>
+                                                <td><b>{t}PayPal{/t} {t}Email{/t}</b></td>
                                                 <td><input name="paypal_email" class="olotd5" value="{$payment_options.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                             </tr>
                                             <!-- Invoice Messages -->
