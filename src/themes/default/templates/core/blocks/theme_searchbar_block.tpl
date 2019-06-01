@@ -9,7 +9,7 @@
     
     <!-- eBay Search Box -->
     <div style="display: inline-block; width: 45%;">
-        <img src="{$theme_images_dir}searchbar-eBay-logo.png" alt="">
+        <img src="{$theme_images_dir}searchbar-eBay-logo.png" alt=""><br />
         <input id="searchbar_ebay_search_term" name="searchbar_ebay_search_term" class="" size="" alt="" type="text" required onkeydown="return onlyAlphaNumeric(event);" onkeypress="checkForEnterKeyPress(event) && searchbarEbaySearch();">
         <button id="searchbar_ebay_search_button" type="button" onclick="return searchbarEbaySearch();">{t}Search{/t}</button>        
     </div>
