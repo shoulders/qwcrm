@@ -9,13 +9,13 @@
 <table class="olotable" width="100%" border="0" cellpadding="4" cellspacing="0">
     <tr>
         <td class="olohead"><b>{t}Payment ID{/t}</b></td>
+        <td class="olohead"><b>{t}Employee{/t}</b></td>
         <td class="olohead"><b>{t}WO ID{/t}</b></td>
         <td class="olohead"><b>{t}INV ID{/t}</b></td>  
         <td class="olohead"><b>{t}Voucher ID{/t}</b></td> 
         <td class="olohead"><b>{t}Refund ID{/t}</b></td> 
         <td class="olohead"><b>{t}Expense ID{/t}</b></td> 
-        <td class="olohead"><b>{t}Otherincome ID{/t}</b></td> 
-        <td class="olohead"><b>{t}Employee{/t}</b></td>
+        <td class="olohead"><b>{t}Otherincome ID{/t}</b></td>        
         <td class="olohead"><b>{t}Client{/t}</b></td>
         <td class="olohead"><b>{t}Date{/t}</b></td>
         <td class="olohead"><b>{t}Type{/t}</b></td>
@@ -30,15 +30,15 @@
         <tr class="row1" onmouseover="this.className='row2';" onmouseout="this.className='row1';"{if $display_payments[p].status != 'deleted'} onDblClick="window.location='index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}';"{/if}>
 
             <td class="olotd4"><a href="index.php?component=payment&page_tpl=details&payment_id={$display_payments[p].payment_id}">{$display_payments[p].payment_id}</a></td>
+            <td class="olotd4" nowrap>                
+                <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_payments[p].employee_id}">{$display_payments[p].employee_display_name}</a>
+            </td>
             <td class="olotd4"><a href="index.php?component=workorder&page_tpl=details&workorder_id={$display_payments[p].workorder_id}">{$display_payments[p].workorder_id}</a></td>
             <td class="olotd4"><a href="index.php?component=invoice&page_tpl=details&invoice_id={$display_payments[p].invoice_id}">{$display_payments[p].invoice_id}</a></td>
             <td class="olotd4"><a href="index.php?component=voucher&page_tpl=details&voucher_id={$display_payments[p].voucher_id}">{$display_payments[p].voucher_id}</a></td>
             <td class="olotd4"><a href="index.php?component=refund&page_tpl=details&refund_id={$display_payments[p].refund_id}">{$display_payments[p].refund_id}</a></td>
             <td class="olotd4"><a href="index.php?component=expense&page_tpl=details&expense_id={$display_payments[p].expense_id}">{$display_payments[p].expense_id}</a></td>
             <td class="olotd4"><a href="index.php?component=otherincome&page_tpl=details&otherincome_id={$display_payments[p].otherincome_id}">{$display_payments[p].otherincome_id}</a></td>            
-            <td class="olotd4" nowrap>                
-                <a class="link1" href="index.php?component=user&page_tpl=details&user_id={$display_payments[p].employee_id}">{$display_payments[p].employee_display_name}</a>
-            </td>
             <td class="olotd4" nowrap>                
                 <a class="link1" href="index.php?component=client&page_tpl=details&client_id={$display_payments[p].client_id}">{$display_payments[p].client_display_name}</a>
             </td>            
