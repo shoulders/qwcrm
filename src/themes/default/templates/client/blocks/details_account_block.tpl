@@ -244,17 +244,23 @@
                     <td colspan="3"><h2>{t}{t}Payments{/t}{/t}</h2></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Invoices{/t}:</b></td>
-                    <td><span style="color: green;"><b>{$currency_sym}{$payment_stats.sum_invoice|string_format:"%.2f"}</b></span></td>
+                    <td><b>{t}Sent{/t}:</b></td>
+                    <td><span style="color: green;"><b>{$currency_sym}{$payment_stats.sum_sent|string_format:"%.2f"}</b></span></td>
                     <td><span style="color: green;"><b>({$payment_stats.count_sent})</b></span></td>
                 </tr>
                 <tr>
-                    <td><b>{t}Refunds{/t}:</b></td>
-                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_refund|string_format:"%.2f"}</b></span></td>
+                    <td><b>{t}Received{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_sym}{$payment_stats.sum_received|string_format:"%.2f"}</b></span></td>
                     <td><span style="color: red;"><b>({$payment_stats.count_received})</b></span></td>                    
-                </tr>               
-            </table>
-            <table>                
+                </tr>  
+                <tr>
+                    <td colspan="3"><h2>{t}{t}Refunds{/t}{/t}</h2></td>
+                </tr>
+                <tr>
+                    <td><b>{t}Refunds{/t}&nbsp;{t}[G]{/t}:</b></td>
+                    <td><span style="color: red;"><b>{$currency_sym}{$refund_stats.sum_unit_gross|string_format:"%.2f"}</b></span></td>
+                    <td><span style="color: red;"><b>({$refund_stats.count_items})</b></span></td>                    
+                </tr> 
                 <tr>
                     <td colspan="3"><h2>{t}{t}Invoiced{/t}{/t}</h2></td>
                 </tr>
