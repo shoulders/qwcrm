@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: QWcrm v3.0.0\n"
-"POT-Creation-Date: 2019-06-01 16:02+0100\n"
-"PO-Revision-Date: 2019-06-01 16:02+0100\n"
+"Project-Id-Version: QWcrm v3.1.0\n"
+"POT-Creation-Date: 2019-06-09 10:56+0100\n"
+"PO-Revision-Date: 2019-06-09 10:56+0100\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -458,11 +458,11 @@ msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:141
 #: themes/default/templates/client/search.tpl:49
-#: themes/default/templates/expense/search.tpl:55
+#: themes/default/templates/expense/search.tpl:53
 #: themes/default/templates/invoice/search.tpl:51
-#: themes/default/templates/otherincome/search.tpl:54
+#: themes/default/templates/otherincome/search.tpl:53
 #: themes/default/templates/payment/search.tpl:51
-#: themes/default/templates/refund/search.tpl:55
+#: themes/default/templates/refund/search.tpl:53
 #: themes/default/templates/schedule/search.tpl:48
 #: themes/default/templates/user/search.tpl:37
 #: themes/default/templates/voucher/search.tpl:51
@@ -897,16 +897,16 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:627
 #: themes/default/templates/client/search.tpl:59
 #: themes/default/templates/client/search.tpl:70
-#: themes/default/templates/expense/search.tpl:65
+#: themes/default/templates/expense/search.tpl:63
 #: themes/default/templates/invoice/search.tpl:61
-#: themes/default/templates/otherincome/search.tpl:64
+#: themes/default/templates/otherincome/search.tpl:63
 #: themes/default/templates/payment/search.tpl:61
-#: themes/default/templates/payment/search.tpl:76
+#: themes/default/templates/payment/search.tpl:72
 #: themes/default/templates/payment/search.tpl:87
-#: themes/default/templates/refund/search.tpl:65
-#: themes/default/templates/refund/search.tpl:77
+#: themes/default/templates/refund/search.tpl:63
+#: themes/default/templates/refund/search.tpl:75
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:148
-#: themes/default/templates/supplier/search.tpl:60
+#: themes/default/templates/supplier/search.tpl:59
 #: themes/default/templates/user/search.tpl:47
 #: themes/default/templates/user/search.tpl:57
 #: themes/default/templates/user/search.tpl:66
@@ -1835,13 +1835,13 @@ msgid "Payments"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:247
-#: themes/default/templates/payment/search.tpl:64
+#: themes/default/templates/payment/search.tpl:75
 #: themes/default/templates/report/financial.tpl:560
 msgid "Sent"
 msgstr ""
 
 #: themes/default/templates/client/blocks/details_account_block.tpl:252
-#: themes/default/templates/payment/search.tpl:63
+#: themes/default/templates/payment/search.tpl:74
 #: themes/default/templates/report/financial.tpl:565
 msgid "Received"
 msgstr ""
@@ -1878,8 +1878,8 @@ msgstr ""
 #: themes/default/templates/expense/edit.tpl:149
 #: themes/default/templates/expense/new.tpl:155
 #: themes/default/templates/expense/new.tpl:159
+#: themes/default/templates/expense/search.tpl:41
 #: themes/default/templates/expense/search.tpl:42
-#: themes/default/templates/expense/search.tpl:43
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:16
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:21
 #: themes/default/templates/invoice/details.tpl:204
@@ -1915,8 +1915,8 @@ msgstr ""
 #: themes/default/templates/otherincome/edit.tpl:155
 #: themes/default/templates/otherincome/new.tpl:155
 #: themes/default/templates/otherincome/new.tpl:159
+#: themes/default/templates/otherincome/search.tpl:41
 #: themes/default/templates/otherincome/search.tpl:42
-#: themes/default/templates/otherincome/search.tpl:43
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:17
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:18
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:19
@@ -2006,7 +2006,6 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expense_balance_block.tpl:18
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:21
 #: themes/default/templates/expense/details.tpl:93
-#: themes/default/templates/expense/search.tpl:46
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:19
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:24
 #: themes/default/templates/invoice/details.tpl:44
@@ -2161,18 +2160,18 @@ msgstr ""
 
 #: themes/default/templates/client/blocks/display_client_details_block.tpl:13
 #: themes/default/templates/client/search.tpl:45
-#: themes/default/templates/expense/search.tpl:51
+#: themes/default/templates/expense/search.tpl:49
 #: themes/default/templates/expense/status.tpl:13
 #: themes/default/templates/invoice/search.tpl:47
 #: themes/default/templates/invoice/status.tpl:13
-#: themes/default/templates/otherincome/search.tpl:50
+#: themes/default/templates/otherincome/search.tpl:49
 #: themes/default/templates/otherincome/status.tpl:13
 #: themes/default/templates/payment/search.tpl:47
 #: themes/default/templates/payment/status.tpl:13
-#: themes/default/templates/refund/search.tpl:51
+#: themes/default/templates/refund/search.tpl:49
 #: themes/default/templates/refund/status.tpl:13
 #: themes/default/templates/schedule/search.tpl:44
-#: themes/default/templates/supplier/search.tpl:46
+#: themes/default/templates/supplier/search.tpl:45
 #: themes/default/templates/supplier/status.tpl:13
 #: themes/default/templates/voucher/search.tpl:47
 #: themes/default/templates/voucher/status.tpl:13
@@ -2213,7 +2212,7 @@ msgstr ""
 #: themes/default/templates/client/search.tpl:38
 #: themes/default/templates/company/edit.tpl:125
 #: themes/default/templates/payment/options.tpl:35
-#: themes/default/templates/refund/search.tpl:39
+#: themes/default/templates/refund/search.tpl:38
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:12
 #: themes/default/templates/supplier/details.tpl:37
 #: themes/default/templates/supplier/search.tpl:36
@@ -2451,13 +2450,13 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:129
 #: themes/default/templates/expense/edit.tpl:169
 #: themes/default/templates/expense/new.tpl:181
-#: themes/default/templates/expense/search.tpl:48
+#: themes/default/templates/expense/search.tpl:46
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:23
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:50
 #: themes/default/templates/otherincome/details.tpl:131
 #: themes/default/templates/otherincome/edit.tpl:175
 #: themes/default/templates/otherincome/new.tpl:182
-#: themes/default/templates/otherincome/search.tpl:47
+#: themes/default/templates/otherincome/search.tpl:46
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:115
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:154
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:195
@@ -2476,7 +2475,7 @@ msgstr ""
 #: themes/default/templates/refund/details.tpl:126
 #: themes/default/templates/refund/edit.tpl:102
 #: themes/default/templates/refund/new.tpl:136
-#: themes/default/templates/refund/search.tpl:48
+#: themes/default/templates/refund/search.tpl:46
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:18
 #: themes/default/templates/schedule/blocks/display_schedules_block.tpl:52
 #: themes/default/templates/schedule/details.tpl:33
@@ -2491,7 +2490,7 @@ msgstr ""
 #: themes/default/templates/supplier/details.tpl:129
 #: themes/default/templates/supplier/edit.tpl:128
 #: themes/default/templates/supplier/new.tpl:120
-#: themes/default/templates/supplier/search.tpl:43
+#: themes/default/templates/supplier/search.tpl:42
 #: themes/default/templates/user/blocks/details_details_block.tpl:158
 #: themes/default/templates/user/blocks/display_users_block.tpl:48
 #: themes/default/templates/user/edit.tpl:226
@@ -2519,9 +2518,9 @@ msgid "New This Year"
 msgstr ""
 
 #: themes/default/templates/client/blocks/display_client_historic_stats_block.tpl:15
-#: themes/default/templates/expense/search.tpl:45
-#: themes/default/templates/otherincome/search.tpl:45
-#: themes/default/templates/refund/search.tpl:47
+#: themes/default/templates/expense/search.tpl:44
+#: themes/default/templates/otherincome/search.tpl:44
+#: themes/default/templates/refund/search.tpl:45
 msgid "Total"
 msgstr ""
 
@@ -2537,7 +2536,6 @@ msgstr ""
 #: themes/default/templates/supplier/details.tpl:49
 #: themes/default/templates/supplier/edit.tpl:65
 #: themes/default/templates/supplier/new.tpl:65
-#: themes/default/templates/supplier/search.tpl:39
 #: themes/default/templates/user/blocks/display_users_block.tpl:13
 #: themes/default/templates/voucher/details.tpl:73
 #: themes/default/templates/voucher/edit.tpl:42
@@ -2748,7 +2746,7 @@ msgstr ""
 #: themes/default/templates/supplier/details.tpl:83
 #: themes/default/templates/supplier/edit.tpl:105
 #: themes/default/templates/supplier/new.tpl:105
-#: themes/default/templates/supplier/search.tpl:40
+#: themes/default/templates/supplier/search.tpl:39
 #: themes/default/templates/user/edit.tpl:212
 #: themes/default/templates/user/new.tpl:212
 msgid "Zip"
@@ -2764,7 +2762,7 @@ msgstr ""
 #: themes/default/templates/supplier/details.tpl:88
 #: themes/default/templates/supplier/edit.tpl:109
 #: themes/default/templates/supplier/new.tpl:109
-#: themes/default/templates/supplier/search.tpl:41
+#: themes/default/templates/supplier/search.tpl:40
 #: themes/default/templates/user/edit.tpl:216
 #: themes/default/templates/user/new.tpl:216
 msgid "Country"
@@ -2841,7 +2839,6 @@ msgstr ""
 "listed. You can browse the results using the navigation arrows."
 
 #: themes/default/templates/client/search.tpl:37
-#: themes/default/templates/refund/search.tpl:38
 msgid "Client ID"
 msgstr ""
 
@@ -2864,16 +2861,16 @@ msgstr ""
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:181
 #: themes/default/templates/core/blocks/theme_searchbar_block.tpl:14
 #: themes/default/templates/expense/search.tpl:34
-#: themes/default/templates/expense/search.tpl:54
+#: themes/default/templates/expense/search.tpl:52
 #: themes/default/templates/invoice/search.tpl:34
 #: themes/default/templates/invoice/search.tpl:50
-#: themes/default/templates/otherincome/search.tpl:53
+#: themes/default/templates/otherincome/search.tpl:52
 #: themes/default/templates/payment/search.tpl:34
 #: themes/default/templates/payment/search.tpl:50
-#: themes/default/templates/refund/search.tpl:54
+#: themes/default/templates/refund/search.tpl:52
 #: themes/default/templates/schedule/search.tpl:34
 #: themes/default/templates/schedule/search.tpl:47
-#: themes/default/templates/supplier/search.tpl:49
+#: themes/default/templates/supplier/search.tpl:48
 #: themes/default/templates/user/search.tpl:36
 #: themes/default/templates/voucher/search.tpl:13
 #: themes/default/templates/voucher/search.tpl:33
@@ -2884,13 +2881,13 @@ msgid "Search"
 msgstr ""
 
 #: themes/default/templates/client/search.tpl:53
-#: themes/default/templates/expense/search.tpl:59
+#: themes/default/templates/expense/search.tpl:57
 #: themes/default/templates/invoice/search.tpl:55
-#: themes/default/templates/otherincome/search.tpl:58
+#: themes/default/templates/otherincome/search.tpl:57
 #: themes/default/templates/payment/search.tpl:55
-#: themes/default/templates/refund/search.tpl:59
+#: themes/default/templates/refund/search.tpl:57
 #: themes/default/templates/schedule/search.tpl:52
-#: themes/default/templates/supplier/search.tpl:54
+#: themes/default/templates/supplier/search.tpl:53
 #: themes/default/templates/user/search.tpl:41
 #: themes/default/templates/voucher/search.tpl:55
 #: themes/default/templates/workorder/search.tpl:55
@@ -2899,8 +2896,8 @@ msgstr ""
 
 #: themes/default/templates/client/search.tpl:57
 #: themes/default/templates/invoice/search.tpl:59
-#: themes/default/templates/payment/search.tpl:85
-#: themes/default/templates/refund/search.tpl:75
+#: themes/default/templates/payment/search.tpl:59
+#: themes/default/templates/refund/search.tpl:61
 #: themes/default/templates/user/search.tpl:45
 #: themes/default/templates/voucher/search.tpl:59
 #: themes/default/templates/workorder/search.tpl:59
@@ -2908,31 +2905,31 @@ msgid "Filter By Status"
 msgstr ""
 
 #: themes/default/templates/client/search.tpl:68
-#: themes/default/templates/expense/search.tpl:63
-#: themes/default/templates/otherincome/search.tpl:62
-#: themes/default/templates/payment/search.tpl:59
-#: themes/default/templates/refund/search.tpl:63
-#: themes/default/templates/supplier/search.tpl:58
+#: themes/default/templates/expense/search.tpl:61
+#: themes/default/templates/otherincome/search.tpl:61
+#: themes/default/templates/payment/search.tpl:70
+#: themes/default/templates/refund/search.tpl:73
+#: themes/default/templates/supplier/search.tpl:57
 msgid "Filter By Type"
 msgstr ""
 
 #: themes/default/templates/client/search.tpl:102
 #: themes/default/templates/client/search.tpl:106
 #: themes/default/templates/core/blocks/theme_debug_block.tpl:36
-#: themes/default/templates/expense/search.tpl:97
-#: themes/default/templates/expense/search.tpl:101
+#: themes/default/templates/expense/search.tpl:95
+#: themes/default/templates/expense/search.tpl:99
 #: themes/default/templates/invoice/search.tpl:96
 #: themes/default/templates/invoice/search.tpl:100
-#: themes/default/templates/otherincome/search.tpl:96
-#: themes/default/templates/otherincome/search.tpl:100
+#: themes/default/templates/otherincome/search.tpl:95
+#: themes/default/templates/otherincome/search.tpl:99
 #: themes/default/templates/payment/search.tpl:118
 #: themes/default/templates/payment/search.tpl:122
-#: themes/default/templates/refund/search.tpl:109
-#: themes/default/templates/refund/search.tpl:113
+#: themes/default/templates/refund/search.tpl:107
+#: themes/default/templates/refund/search.tpl:111
 #: themes/default/templates/schedule/search.tpl:78
 #: themes/default/templates/schedule/search.tpl:82
-#: themes/default/templates/supplier/search.tpl:91
-#: themes/default/templates/supplier/search.tpl:95
+#: themes/default/templates/supplier/search.tpl:90
+#: themes/default/templates/supplier/search.tpl:94
 #: themes/default/templates/user/search.tpl:98
 #: themes/default/templates/user/search.tpl:102
 #: themes/default/templates/voucher/search.tpl:96
@@ -2944,20 +2941,20 @@ msgstr ""
 
 #: themes/default/templates/client/search.tpl:102
 #: themes/default/templates/client/search.tpl:106
-#: themes/default/templates/expense/search.tpl:97
-#: themes/default/templates/expense/search.tpl:101
+#: themes/default/templates/expense/search.tpl:95
+#: themes/default/templates/expense/search.tpl:99
 #: themes/default/templates/invoice/search.tpl:96
 #: themes/default/templates/invoice/search.tpl:100
-#: themes/default/templates/otherincome/search.tpl:96
-#: themes/default/templates/otherincome/search.tpl:100
+#: themes/default/templates/otherincome/search.tpl:95
+#: themes/default/templates/otherincome/search.tpl:99
 #: themes/default/templates/payment/search.tpl:118
 #: themes/default/templates/payment/search.tpl:122
-#: themes/default/templates/refund/search.tpl:109
-#: themes/default/templates/refund/search.tpl:113
+#: themes/default/templates/refund/search.tpl:107
+#: themes/default/templates/refund/search.tpl:111
 #: themes/default/templates/schedule/search.tpl:78
 #: themes/default/templates/schedule/search.tpl:82
-#: themes/default/templates/supplier/search.tpl:91
-#: themes/default/templates/supplier/search.tpl:95
+#: themes/default/templates/supplier/search.tpl:90
+#: themes/default/templates/supplier/search.tpl:94
 #: themes/default/templates/user/search.tpl:98
 #: themes/default/templates/user/search.tpl:102
 #: themes/default/templates/voucher/search.tpl:96
@@ -2968,13 +2965,13 @@ msgid "of"
 msgstr ""
 
 #: themes/default/templates/client/search.tpl:125
-#: themes/default/templates/expense/search.tpl:120
+#: themes/default/templates/expense/search.tpl:118
 #: themes/default/templates/invoice/search.tpl:119
-#: themes/default/templates/otherincome/search.tpl:119
+#: themes/default/templates/otherincome/search.tpl:118
 #: themes/default/templates/payment/search.tpl:141
-#: themes/default/templates/refund/search.tpl:132
+#: themes/default/templates/refund/search.tpl:130
 #: themes/default/templates/schedule/search.tpl:101
-#: themes/default/templates/supplier/search.tpl:114
+#: themes/default/templates/supplier/search.tpl:113
 #: themes/default/templates/user/search.tpl:121
 #: themes/default/templates/voucher/search.tpl:119
 #: themes/default/templates/workorder/search.tpl:119
@@ -3715,7 +3712,7 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:38
 #: themes/default/templates/expense/edit.tpl:128
 #: themes/default/templates/expense/new.tpl:138
-#: themes/default/templates/expense/search.tpl:41
+#: themes/default/templates/expense/search.tpl:40
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:15
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:20
 #: themes/default/templates/invoice/details.tpl:202
@@ -3743,13 +3740,13 @@ msgstr ""
 #: themes/default/templates/otherincome/details.tpl:40
 #: themes/default/templates/otherincome/edit.tpl:134
 #: themes/default/templates/otherincome/new.tpl:138
-#: themes/default/templates/otherincome/search.tpl:41
+#: themes/default/templates/otherincome/search.tpl:40
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:16
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:17
 #: themes/default/templates/refund/details.tpl:40
 #: themes/default/templates/refund/edit.tpl:78
 #: themes/default/templates/refund/new.tpl:88
-#: themes/default/templates/refund/search.tpl:44
+#: themes/default/templates/refund/search.tpl:42
 #: themes/default/templates/report/financial.tpl:239
 #: themes/default/templates/report/financial.tpl:267
 #: themes/default/templates/report/financial.tpl:294
@@ -3773,7 +3770,7 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:89
 #: themes/default/templates/expense/edit.tpl:153
 #: themes/default/templates/expense/new.tpl:163
-#: themes/default/templates/expense/search.tpl:45
+#: themes/default/templates/expense/search.tpl:44
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:18
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:23
 #: themes/default/templates/invoice/details.tpl:43
@@ -3805,13 +3802,13 @@ msgstr ""
 #: themes/default/templates/otherincome/details.tpl:91
 #: themes/default/templates/otherincome/edit.tpl:159
 #: themes/default/templates/otherincome/new.tpl:163
-#: themes/default/templates/otherincome/search.tpl:45
+#: themes/default/templates/otherincome/search.tpl:44
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:19
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:21
 #: themes/default/templates/refund/details.tpl:91
 #: themes/default/templates/refund/edit.tpl:90
 #: themes/default/templates/refund/new.tpl:118
-#: themes/default/templates/refund/search.tpl:47
+#: themes/default/templates/refund/search.tpl:45
 #: themes/default/templates/report/financial.tpl:248
 #: themes/default/templates/report/financial.tpl:276
 #: themes/default/templates/report/financial.tpl:303
@@ -3847,17 +3844,15 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:72
 #: themes/default/templates/expense/edit.tpl:118
 #: themes/default/templates/expense/new.tpl:128
-#: themes/default/templates/expense/search.tpl:39
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:14
 #: themes/default/templates/otherincome/details.tpl:74
 #: themes/default/templates/otherincome/edit.tpl:120
 #: themes/default/templates/otherincome/new.tpl:128
-#: themes/default/templates/otherincome/search.tpl:39
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:15
 #: themes/default/templates/refund/details.tpl:74
 #: themes/default/templates/refund/edit.tpl:66
 #: themes/default/templates/refund/new.tpl:75
-#: themes/default/templates/refund/search.tpl:42
+#: themes/default/templates/refund/search.tpl:40
 msgid "Item Type"
 msgstr ""
 
@@ -3865,7 +3860,7 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:64
 #: themes/default/templates/expense/edit.tpl:145
 #: themes/default/templates/expense/new.tpl:155
-#: themes/default/templates/expense/search.tpl:42
+#: themes/default/templates/expense/search.tpl:41
 #: themes/default/templates/invoice/details.tpl:204
 #: themes/default/templates/invoice/details.tpl:282
 #: themes/default/templates/invoice/edit.tpl:676
@@ -3876,7 +3871,7 @@ msgstr ""
 #: themes/default/templates/otherincome/details.tpl:66
 #: themes/default/templates/otherincome/edit.tpl:151
 #: themes/default/templates/otherincome/new.tpl:155
-#: themes/default/templates/otherincome/search.tpl:42
+#: themes/default/templates/otherincome/search.tpl:41
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:18
 #: themes/default/templates/refund/details.tpl:66
 #: themes/default/templates/refund/edit.tpl:82
@@ -3889,7 +3884,7 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:118
 #: themes/default/templates/expense/edit.tpl:165
 #: themes/default/templates/expense/new.tpl:177
-#: themes/default/templates/expense/search.tpl:47
+#: themes/default/templates/expense/search.tpl:45
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:41
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:46
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:24
@@ -3897,7 +3892,7 @@ msgstr ""
 #: themes/default/templates/otherincome/details.tpl:120
 #: themes/default/templates/otherincome/edit.tpl:171
 #: themes/default/templates/otherincome/new.tpl:178
-#: themes/default/templates/otherincome/search.tpl:46
+#: themes/default/templates/otherincome/search.tpl:45
 #: themes/default/templates/report/financial.tpl:230
 #: themes/default/templates/report/financial.tpl:258
 #: themes/default/templates/report/financial.tpl:394
@@ -4279,7 +4274,7 @@ msgstr ""
 #: themes/default/templates/refund/details.tpl:101
 #: themes/default/templates/refund/edit.tpl:62
 #: themes/default/templates/refund/new.tpl:68
-#: themes/default/templates/refund/search.tpl:40
+#: themes/default/templates/refund/search.tpl:39
 #: themes/default/templates/voucher/details.tpl:61
 #: themes/default/templates/voucher/search.tpl:41
 #: themes/default/templates/workorder/search.tpl:38
@@ -4432,7 +4427,7 @@ msgstr ""
 #: themes/default/templates/supplier/details.tpl:118
 #: themes/default/templates/supplier/edit.tpl:121
 #: themes/default/templates/supplier/new.tpl:113
-#: themes/default/templates/supplier/search.tpl:42
+#: themes/default/templates/supplier/search.tpl:41
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:62
 #: themes/default/templates/workorder/details_edit_description.tpl:41
 #: themes/default/templates/workorder/new.tpl:62
@@ -4654,10 +4649,11 @@ msgstr ""
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:11
 #: themes/default/templates/user/blocks/display_users_block.tpl:11
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:11
-#: components/expense/new.php:26 components/expense/new.php:36
-#: components/otherincome/new.php:26 components/otherincome/new.php:36
-#: components/refund/new.php:53 components/supplier/new.php:22
-#: components/supplier/new.php:27
+#: components/expense/new.php:26 components/expense/new.php:31
+#: components/expense/new.php:36 components/otherincome/new.php:26
+#: components/otherincome/new.php:31 components/otherincome/new.php:36
+#: components/refund/new.php:48 components/refund/new.php:53
+#: components/supplier/new.php:22 components/supplier/new.php:27
 msgid "ID"
 msgstr ""
 
@@ -5187,7 +5183,6 @@ msgstr ""
 #: themes/default/templates/payment/blocks/display_payments_block.tpl:15
 #: themes/default/templates/payment/details.tpl:55
 #: themes/default/templates/payment/edit.tpl:68
-#: themes/default/templates/refund/search.tpl:41
 #: themes/default/templates/voucher/details.tpl:47
 #: themes/default/templates/voucher/edit.tpl:34
 #: themes/default/templates/voucher/search.tpl:36
@@ -5373,7 +5368,7 @@ msgstr "Help"
 msgid "PAYMENT_SEARCH_HELP_CONTENT"
 msgstr "Search through all of the payments that has been registered on QWcrm."
 
-#: themes/default/templates/payment/search.tpl:74
+#: themes/default/templates/payment/search.tpl:85
 msgid "Filter By Method"
 msgstr ""
 
@@ -5459,7 +5454,7 @@ msgstr ""
 msgid "Refund Search"
 msgstr ""
 
-#: themes/default/templates/refund/search.tpl:45
+#: themes/default/templates/refund/search.tpl:43
 #: themes/default/templates/report/financial.tpl:589
 #: themes/default/templates/report/financial.tpl:607
 msgid "Tax"
@@ -6750,7 +6745,7 @@ msgstr ""
 "><br />On the right of each Record Row there are icons for viewing, editing "
 "and deleting the record."
 
-#: themes/default/templates/supplier/search.tpl:50
+#: themes/default/templates/supplier/search.tpl:49
 msgid "reset"
 msgstr ""
 
@@ -7001,7 +6996,6 @@ msgid "Redeemed by"
 msgstr ""
 
 #: themes/default/templates/voucher/details.tpl:144
-#: themes/default/templates/voucher/search.tpl:44
 msgid "Redeemed on Invoice"
 msgstr ""
 
@@ -7058,6 +7052,10 @@ msgstr ""
 
 #: themes/default/templates/voucher/printing/print_voucher.tpl:70
 msgid "Valid Until"
+msgstr ""
+
+#: themes/default/templates/voucher/search.tpl:44
+msgid "Redeemed on Invoice ID"
 msgstr ""
 
 #: themes/default/templates/voucher/status.tpl:16
@@ -9657,7 +9655,8 @@ msgstr ""
 msgid "You cannot edit this expense because its status does not allow it."
 msgstr ""
 
-#: components/expense/new.php:26 components/expense/new.php:36
+#: components/expense/new.php:26 components/expense/new.php:31
+#: components/expense/new.php:36
 msgid "Expense added successfully."
 msgstr ""
 
@@ -9765,7 +9764,8 @@ msgstr ""
 msgid "You cannot edit this otherincome because its status does not allow it."
 msgstr ""
 
-#: components/otherincome/new.php:26 components/otherincome/new.php:36
+#: components/otherincome/new.php:26 components/otherincome/new.php:31
+#: components/otherincome/new.php:36
 msgid "Other Income added successfully."
 msgstr ""
 
@@ -10004,7 +10004,7 @@ msgstr ""
 msgid "No Refund Type."
 msgstr ""
 
-#: components/refund/new.php:53
+#: components/refund/new.php:48 components/refund/new.php:53
 msgid "Refund added successfully."
 msgstr ""
 
