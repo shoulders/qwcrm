@@ -10,7 +10,7 @@
 <table width="900" border="0" cellspacing="0" cellpadding="2">
     <tr>
         <td align="center">
-            <img src="{$company_logo}" alt="" style="max-width: 250px;">
+            <img src="{$company_logo}" alt="" style="max-height: 150px; max-width: 250px;">
         </td>
     </tr>    
     {if !$login_token}

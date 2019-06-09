@@ -65,11 +65,11 @@
                 </table>     
             </td>
 
-            <!-- LOGO and Company Name-->
+            <!-- Logo and Company Name -->
             <td valign="top" align="center" width="300">
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
                     <tr>
-                        <td width="100%" align="center"><img src="{$company_logo}" height="100" alt="" border="0"></td>                        
+                        <td width="100%" align="center"><img src="{$company_logo}" height="100" alt="" style="max-height: 150px; max-width: 250px;"></td>                        
                     </tr>
                     <tr><td style="text-align:center"><b>{$company_details.company_name}</b></td></tr>
                 </table>

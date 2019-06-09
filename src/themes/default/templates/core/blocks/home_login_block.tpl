@@ -14,7 +14,7 @@
             <table class="olotable" width="100%" align="center" border ="0">
                 <tr>
                     <td align="center">
-                        <img src="{$company_logo}" alt="" style="max-width: 250px;">
+                        <img src="{$company_logo}" alt="" style="max-height: 150px; max-width: 250px;">
                     </td>
                 </tr>
                 <tr>
