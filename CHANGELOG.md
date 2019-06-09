@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
-## [3.1.0] 2019-06-01
+## [3.1.0] 2019-06-09
 ### Added
 - SEF Router
 - New Tax Systems VAT Cash Accounting, VAT Flat Rate (Basic Turnover), VAT Flat Rate (Cash Based Turnover)
