@@ -28,7 +28,7 @@ if(isset($VAR['submit'])) {
     } elseif ($VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for expense
-         force_page('payment', 'new&type=expense&expense_id='.$expense_id );
+         force_page('payment', 'new&type=expense&expense_id='.$expense_id, 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
          
     } else {
 

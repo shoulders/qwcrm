@@ -45,12 +45,12 @@ if (isset($VAR['submit'])) {
         if ($VAR['submit'] == 'submitandpayment') {
 
             // Load the new payment page for expense
-             force_page('payment', 'new&type=refund&refund_id='.$refund_id );
+             force_page('payment', 'new&type=refund&refund_id='.$refund_id, 'information_msg='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
 
         } else {
 
             // load refund details page
-            force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);            
+            force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
         }    
 
  // Load refund page with the invoice refund details
