@@ -35,15 +35,13 @@
                                                                    <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
                                                                         <option value="expense_id"{if $search_category == 'expense_id'} selected{/if}>{t}Expense ID{/t}</option>                                                                        
-                                                                        <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
-                                                                        <option value="item_type"{if $search_category == 'item_type'} selected{/if}>{t}Item Type{/t}</option>                                                                        
+                                                                        <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>                                                                        
                                                                         {if '/^vat_/'|preg_match:$qw_tax_system}
                                                                             <option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net{/t}</option>
                                                                             <option value="unit_tax_rate"{if $search_category == 'unit_tax_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
                                                                             <option value="unit_tax"{if $search_category == 'unit_tax'} selected{/if}>{t}VAT{/t}</option>
                                                                         {/if}
-                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>
-                                                                        <option value="balance"{if $search_category == 'balance'} selected{/if}>{t}Balance{/t}</option>
+                                                                        <option value="unit_gross"{if $search_category == 'unit_gross'} selected{/if}>{t}Gross{/t} ({t}Total{/t})</option>                                                                        
                                                                         <option value="items"{if $search_category == 'items'} selected{/if}>{t}Items{/t}</option>
                                                                         <option value="note"{if $search_category == 'note'} selected{/if}>{t}Note{/t}</option>                                                                        
                                                                     </select>
@@ -84,8 +82,8 @@
                                                             <!-- Left Side Buttons -->
                                                             <td>
                                                                 {if $previous_page_no && $display_expenses}
-                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
-                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
+                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no=1{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}rewnd_24.gif" border="0" alt=""></a>&nbsp;                                                    
+                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$previous_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}back_24.gif" border="0" alt=""></a>&nbsp;
                                                                 {/if}
                                                             </td>                                                   
                                                     
@@ -106,8 +104,8 @@
                                                             <!-- Right Side Buttons --> 
                                                             <td>
                                                                 {if $next_page_no && $display_expenses}
-                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
-                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
+                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$next_page_no}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}forwd_24.gif" border="0" alt=""></a>                                                   
+                                                                    <a href="index.php?component=expense&page_tpl=search&search_category={$search_category}&search_term={$search_term}&page_no={$total_pages}{if $filter_type}&filter_type={$filter_type}{/if}"><img src="{$theme_images_dir}fastf_24.gif" border="0" alt=""></a>
                                                                 {/if}
                                                             </td>                                                                                             
                                                     

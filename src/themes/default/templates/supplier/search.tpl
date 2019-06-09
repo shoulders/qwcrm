@@ -35,8 +35,7 @@
                                                                     <option value="supplier_id"{if $search_category == 'supplier_id'} selected{/if}>{t}Supplier ID{/t}</option>
                                                                     <option value="display_name"{if $search_category == 'display_name'} selected{/if}>{t}Name{/t}</option>
                                                                     <option value="company_name"{if $search_category == 'company_name'} selected{/if}>{t}Company{/t}</option>
-                                                                    <option value="full_name"{if $search_category == 'full_name'} selected{/if}>{t}Contact{/t}</option> 
-                                                                    <option value="type"{if $search_category == 'type'} selected{/if}>{t}Type{/t}</option>
+                                                                    <option value="full_name"{if $search_category == 'full_name'} selected{/if}>{t}Contact{/t}</option>                                                                     
                                                                     <option value="zip"{if $search_category == 'zip'} selected{/if}>{t}Zip{/t}</option>
                                                                     <option value="country"{if $search_category == 'country'} selected{/if}>{t}Country{/t}</option>                                                                    
                                                                     <option value="description"{if $search_category == 'description'} selected{/if}>{t}Description{/t}</option>

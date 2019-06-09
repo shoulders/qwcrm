@@ -41,7 +41,7 @@
                                                                         <option value="invoice_id"{if $search_category == 'invoice_id'} selected{/if}>{t}Invoice ID{/t}</option>
                                                                         <option value="note"{if $search_category == 'invoice_id'} selected{/if}>{t}Note{/t}</option>
                                                                         <option value="redeemed_client_display_name"{if $search_category == 'redeemed_client_display_name'} selected{/if}>{t}Redeemed By{/t}</option>
-                                                                        <option value="redeemed_invoice_id"{if $search_category == 'redeemed_invoice_id'} selected{/if}>{t}Redeemed on Invoice{/t}</option>
+                                                                        <option value="redeemed_invoice_id"{if $search_category == 'redeemed_invoice_id'} selected{/if}>{t}Redeemed on Invoice ID{/t}</option>
                                                                     </select>                                                                    
                                                                     <br />
                                                                     <b>{t}for{/t}</b>
