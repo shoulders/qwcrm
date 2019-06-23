@@ -28,7 +28,7 @@ require QFRAMEWORK_DIR . 'general/Cookie.php';                      // Cookie Ob
 
 // Input
 require QFRAMEWORK_DIR . 'input/StringHelper.php';                  // Filtering of strings
-require QFRAMEWORK_DIR . 'input/JFilterInput.php';                  // Filtering of strings - a class for filtering input from any data source - used for QCookie and authenticatin
+require QFRAMEWORK_DIR . 'input/InputFilter.php';                   // Filtering of strings - a class for filtering input from any data source - used for QCookie and authenticatin
 require QFRAMEWORK_DIR . 'input/core.php';                          // Used just for function utf8_strpos() from JFilterInput
 require QFRAMEWORK_DIR . 'input/input.php';                         // This is an abstracted input class used to manage retrieving data from the application environment. (i.e. cookie.php)
 require QFRAMEWORK_DIR . 'input/cookie.php';                        // Extends input.php with cookie get and set functions to allow manipulation of cookie data via input.php class
@@ -43,8 +43,8 @@ require QFRAMEWORK_DIR . 'session/handler/native.php';              // Interface
 require QFRAMEWORK_DIR . 'session/handler/joomla.php';              // Interface for managing HTTP sessions - extends native.php
 
 // Authentication
-require QFRAMEWORK_DIR . 'authentication/authentication.php';       // Authentication class, provides an interface for the Joomla authentication system
-require QFRAMEWORK_DIR . 'authentication/response.php';             // Authentication response class, provides an object for storing user and error details - this is used to store the responses from the qwcrm.php and remember.php authorisation plugins
+require QFRAMEWORK_DIR . 'authentication/Authentication.php';       // Authentication class, provides an interface for the Joomla authentication system
+require QFRAMEWORK_DIR . 'authentication/AuthenticationResponse.php';             // Authentication response class, provides an object for storing user and error details - this is used to store the responses from the qwcrm.php and remember.php authorisation plugins
 require QFRAMEWORK_DIR . 'authentication/methods/qwcrm.php';        // Facilitates standard username and password authorisation
 require QFRAMEWORK_DIR . 'authentication/methods/remember.php';     // Facilitates 'Remember me' cookie authorisation
 

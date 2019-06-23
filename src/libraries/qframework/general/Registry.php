@@ -1,5 +1,5 @@
 <?php
-// joomla\libraries\vendor\joomla\registry\src\Registry.php
+// joomla/libraries/vendor/joomla/registry/src/Registry.php
 /**
  * Part of the Joomla Framework Registry Package
  *
@@ -7,9 +7,9 @@
  * @license    GNU General Public License version 2 or later; see LICENSE
  */
 
-//namespace Joomla\Registry;
+namespace Joomla\Registry;
 
-//use Joomla\Utilities\ArrayHelper;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Registry class

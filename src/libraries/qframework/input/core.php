@@ -1,5 +1,5 @@
 <?php
-// joomla\libraries\vendor\joomla\string\src\phputf8\native\core.php
+// joomla/libraries/vendor/joomla/string/src/phputf8/native/core.php
 /**
 * @package utf8
 */

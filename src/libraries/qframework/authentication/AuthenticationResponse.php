@@ -1,5 +1,5 @@
 <?php
-// joomla\libraries\joomla\authentication\response.php
+// joomla/libraries/src/Authentication/AuthenticationResponse.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Authentication
