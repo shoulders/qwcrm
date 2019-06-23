@@ -24,367 +24,367 @@ use Joomla\String\StringHelper;
  */
 class InputFilter extends BaseInputFilter
 {
-	/**
-	 * A flag for Unicode Supplementary Characters (4-byte Unicode character) stripping.
-	 *
-	 * @var    integer
-	 *
-	 * @since  3.5
-	 */
-	public $stripUSC = 0;
+    /**
+     * A flag for Unicode Supplementary Characters (4-byte Unicode character) stripping.
+     *
+     * @var    integer
+     *
+     * @since  3.5
+     */
+    public $stripUSC = 0;
 
-	/**
-	 * Constructor for inputFilter class. Only first parameter is required.
-	 *
-	 * @param   array    $tagsArray   List of user-defined tags
-	 * @param   array    $attrArray   List of user-defined attributes
-	 * @param   integer  $tagsMethod  WhiteList method = 0, BlackList method = 1
-	 * @param   integer  $attrMethod  WhiteList method = 0, BlackList method = 1
-	 * @param   integer  $xssAuto     Only auto clean essentials = 0, Allow clean blacklisted tags/attr = 1
-	 * @param   integer  $stripUSC    Strip 4-byte unicode characters = 1, no strip = 0, ask the database driver = -1
-	 *
-	 * @since   1.7.0
-	 */
-	public function __construct($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1, $stripUSC = -1)
-	{
-		// Make sure user defined arrays are in lowercase
-		$tagsArray = array_map('strtolower', (array) $tagsArray);
-		$attrArray = array_map('strtolower', (array) $attrArray);
+    /**
+     * Constructor for inputFilter class. Only first parameter is required.
+     *
+     * @param   array    $tagsArray   List of user-defined tags
+     * @param   array    $attrArray   List of user-defined attributes
+     * @param   integer  $tagsMethod  WhiteList method = 0, BlackList method = 1
+     * @param   integer  $attrMethod  WhiteList method = 0, BlackList method = 1
+     * @param   integer  $xssAuto     Only auto clean essentials = 0, Allow clean blacklisted tags/attr = 1
+     * @param   integer  $stripUSC    Strip 4-byte unicode characters = 1, no strip = 0, ask the database driver = -1
+     *
+     * @since   1.7.0
+     */
+    public function __construct($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1, $stripUSC = -1)
+    {
+        // Make sure user defined arrays are in lowercase
+        $tagsArray = array_map('strtolower', (array) $tagsArray);
+        $attrArray = array_map('strtolower', (array) $attrArray);
 
-		// Assign member variables
-		$this->tagsArray = $tagsArray;
-		$this->attrArray = $attrArray;
-		$this->tagsMethod = $tagsMethod;
-		$this->attrMethod = $attrMethod;
-		$this->xssAuto = $xssAuto;
-		$this->stripUSC = $stripUSC;
-		/**
-		 * If Unicode Supplementary Characters stripping is not set we have to check with the database driver. If the
-		 * driver does not support USCs (i.e. there is no utf8mb4 support) we will enable USC stripping.
-		 */
-		if ($this->stripUSC === -1)
-		{
-			try
-			{
-				// Get the database driver
-				$db = \JFactory::getDbo();
+        // Assign member variables
+        $this->tagsArray = $tagsArray;
+        $this->attrArray = $attrArray;
+        $this->tagsMethod = $tagsMethod;
+        $this->attrMethod = $attrMethod;
+        $this->xssAuto = $xssAuto;
+        $this->stripUSC = $stripUSC;
+        /**
+         * If Unicode Supplementary Characters stripping is not set we have to check with the database driver. If the
+         * driver does not support USCs (i.e. there is no utf8mb4 support) we will enable USC stripping.
+         */
+        if ($this->stripUSC === -1)
+        {
+            try
+            {
+                // Get the database driver
+                $db = \JFactory::getDbo();
 
-				// This trick is required to let the driver determine the utf-8 multibyte support
-				$db->connect();
+                // This trick is required to let the driver determine the utf-8 multibyte support
+                $db->connect();
 
-				// And now we can decide if we should strip USCs
-				$this->stripUSC = $db->hasUTF8mb4Support() ? 0 : 1;
-			}
-			catch (\RuntimeException $e)
-			{
-				// Could not connect to MySQL. Strip USC to be on the safe side.
-				$this->stripUSC = 1;
-			}
-		}
-	}
+                // And now we can decide if we should strip USCs
+                $this->stripUSC = $db->hasUTF8mb4Support() ? 0 : 1;
+            }
+            catch (\RuntimeException $e)
+            {
+                // Could not connect to MySQL. Strip USC to be on the safe side.
+                $this->stripUSC = 1;
+            }
+        }
+    }
 
-	/**
-	 * Returns an input filter object, only creating it if it doesn't already exist.
-	 *
-	 * @param   array    $tagsArray   List of user-defined tags
-	 * @param   array    $attrArray   List of user-defined attributes
-	 * @param   integer  $tagsMethod  WhiteList method = 0, BlackList method = 1
-	 * @param   integer  $attrMethod  WhiteList method = 0, BlackList method = 1
-	 * @param   integer  $xssAuto     Only auto clean essentials = 0, Allow clean blacklisted tags/attr = 1
-	 * @param   integer  $stripUSC    Strip 4-byte unicode characters = 1, no strip = 0, ask the database driver = -1
-	 *
-	 * @return  InputFilter  The InputFilter object.
-	 *
-	 * @since   1.7.0
-	 */
-	public static function &getInstance($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1, $stripUSC = -1)
-	{
-		$sig = md5(serialize(array($tagsArray, $attrArray, $tagsMethod, $attrMethod, $xssAuto)));
+    /**
+     * Returns an input filter object, only creating it if it doesn't already exist.
+     *
+     * @param   array    $tagsArray   List of user-defined tags
+     * @param   array    $attrArray   List of user-defined attributes
+     * @param   integer  $tagsMethod  WhiteList method = 0, BlackList method = 1
+     * @param   integer  $attrMethod  WhiteList method = 0, BlackList method = 1
+     * @param   integer  $xssAuto     Only auto clean essentials = 0, Allow clean blacklisted tags/attr = 1
+     * @param   integer  $stripUSC    Strip 4-byte unicode characters = 1, no strip = 0, ask the database driver = -1
+     *
+     * @return  InputFilter  The InputFilter object.
+     *
+     * @since   1.7.0
+     */
+    public static function &getInstance($tagsArray = array(), $attrArray = array(), $tagsMethod = 0, $attrMethod = 0, $xssAuto = 1, $stripUSC = -1)
+    {
+        $sig = md5(serialize(array($tagsArray, $attrArray, $tagsMethod, $attrMethod, $xssAuto)));
 
-		if (empty(self::$instances[$sig]))
-		{
-			self::$instances[$sig] = new InputFilter($tagsArray, $attrArray, $tagsMethod, $attrMethod, $xssAuto, $stripUSC);
-		}
+        if (empty(self::$instances[$sig]))
+        {
+            self::$instances[$sig] = new InputFilter($tagsArray, $attrArray, $tagsMethod, $attrMethod, $xssAuto, $stripUSC);
+        }
 
-		return self::$instances[$sig];
-	}
+        return self::$instances[$sig];
+    }
 
-	/**
-	 * Method to be called by another php script. Processes for XSS and
-	 * specified bad code.
-	 *
-	 * @param   mixed   $source  Input string/array-of-string to be 'cleaned'
-	 * @param   string  $type    The return type for the variable:
-	 *                           INT:       An integer, or an array of integers,
-	 *                           UINT:      An unsigned integer, or an array of unsigned integers,
-	 *                           FLOAT:     A floating point number, or an array of floating point numbers,
-	 *                           BOOLEAN:   A boolean value,
-	 *                           WORD:      A string containing A-Z or underscores only (not case sensitive),
-	 *                           ALNUM:     A string containing A-Z or 0-9 only (not case sensitive),
-	 *                           CMD:       A string containing A-Z, 0-9, underscores, periods or hyphens (not case sensitive),
-	 *                           BASE64:    A string containing A-Z, 0-9, forward slashes, plus or equals (not case sensitive),
-	 *                           STRING:    A fully decoded and sanitised string (default),
-	 *                           HTML:      A sanitised string,
-	 *                           ARRAY:     An array,
-	 *                           PATH:      A sanitised file path, or an array of sanitised file paths,
-	 *                           TRIM:      A string trimmed from normal, non-breaking and multibyte spaces
-	 *                           USERNAME:  Do not use (use an application specific filter),
-	 *                           RAW:       The raw string is returned with no filtering,
-	 *                           unknown:   An unknown filter will act like STRING. If the input is an array it will return an
-	 *                                      array of fully decoded and sanitised strings.
-	 *
-	 * @return  mixed  'Cleaned' version of input parameter
-	 *
-	 * @since   1.7.0
-	 */
-	public function clean($source, $type = 'string')
-	{
-		// Strip Unicode Supplementary Characters when requested to do so
-		if ($this->stripUSC)
-		{
-			// Alternatively: preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xE2\xAF\x91", $source) but it'd be slower.
-			$source = $this->stripUSC($source);
-		}
+    /**
+     * Method to be called by another php script. Processes for XSS and
+     * specified bad code.
+     *
+     * @param   mixed   $source  Input string/array-of-string to be 'cleaned'
+     * @param   string  $type    The return type for the variable:
+     *                           INT:       An integer, or an array of integers,
+     *                           UINT:      An unsigned integer, or an array of unsigned integers,
+     *                           FLOAT:     A floating point number, or an array of floating point numbers,
+     *                           BOOLEAN:   A boolean value,
+     *                           WORD:      A string containing A-Z or underscores only (not case sensitive),
+     *                           ALNUM:     A string containing A-Z or 0-9 only (not case sensitive),
+     *                           CMD:       A string containing A-Z, 0-9, underscores, periods or hyphens (not case sensitive),
+     *                           BASE64:    A string containing A-Z, 0-9, forward slashes, plus or equals (not case sensitive),
+     *                           STRING:    A fully decoded and sanitised string (default),
+     *                           HTML:      A sanitised string,
+     *                           ARRAY:     An array,
+     *                           PATH:      A sanitised file path, or an array of sanitised file paths,
+     *                           TRIM:      A string trimmed from normal, non-breaking and multibyte spaces
+     *                           USERNAME:  Do not use (use an application specific filter),
+     *                           RAW:       The raw string is returned with no filtering,
+     *                           unknown:   An unknown filter will act like STRING. If the input is an array it will return an
+     *                                      array of fully decoded and sanitised strings.
+     *
+     * @return  mixed  'Cleaned' version of input parameter
+     *
+     * @since   1.7.0
+     */
+    public function clean($source, $type = 'string')
+    {
+        // Strip Unicode Supplementary Characters when requested to do so
+        if ($this->stripUSC)
+        {
+            // Alternatively: preg_replace('/[\x{10000}-\x{10FFFF}]/u', "\xE2\xAF\x91", $source) but it'd be slower.
+            $source = $this->stripUSC($source);
+        }
 
-		// Handle the type constraint cases
-		switch (strtoupper($type))
-		{
-			case 'INT':
-			case 'INTEGER':
-				$pattern = '/[-+]?[0-9]+/';
+        // Handle the type constraint cases
+        switch (strtoupper($type))
+        {
+            case 'INT':
+            case 'INTEGER':
+                $pattern = '/[-+]?[0-9]+/';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						preg_match($pattern, (string) $eachString, $matches);
-						$result[] = isset($matches[0]) ? (int) $matches[0] : 0;
-					}
-				}
-				else
-				{
-					preg_match($pattern, (string) $source, $matches);
-					$result = isset($matches[0]) ? (int) $matches[0] : 0;
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        preg_match($pattern, (string) $eachString, $matches);
+                        $result[] = isset($matches[0]) ? (int) $matches[0] : 0;
+                    }
+                }
+                else
+                {
+                    preg_match($pattern, (string) $source, $matches);
+                    $result = isset($matches[0]) ? (int) $matches[0] : 0;
+                }
 
-				break;
-			case 'UINT':
-				$pattern = '/[-+]?[0-9]+/';
+                break;
+            case 'UINT':
+                $pattern = '/[-+]?[0-9]+/';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						preg_match($pattern, (string) $eachString, $matches);
-						$result[] = isset($matches[0]) ? abs((int) $matches[0]) : 0;
-					}
-				}
-				else
-				{
-					preg_match($pattern, (string) $source, $matches);
-					$result = isset($matches[0]) ? abs((int) $matches[0]) : 0;
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        preg_match($pattern, (string) $eachString, $matches);
+                        $result[] = isset($matches[0]) ? abs((int) $matches[0]) : 0;
+                    }
+                }
+                else
+                {
+                    preg_match($pattern, (string) $source, $matches);
+                    $result = isset($matches[0]) ? abs((int) $matches[0]) : 0;
+                }
 
-				break;
-			case 'FLOAT':
-			case 'DOUBLE':
-				$pattern = '/[-+]?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?/';
+                break;
+            case 'FLOAT':
+            case 'DOUBLE':
+                $pattern = '/[-+]?[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?/';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						preg_match($pattern, (string) $eachString, $matches);
-						$result[] = isset($matches[0]) ? (float) $matches[0] : 0;
-					}
-				}
-				else
-				{
-					preg_match($pattern, (string) $source, $matches);
-					$result = isset($matches[0]) ? (float) $matches[0] : 0;
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        preg_match($pattern, (string) $eachString, $matches);
+                        $result[] = isset($matches[0]) ? (float) $matches[0] : 0;
+                    }
+                }
+                else
+                {
+                    preg_match($pattern, (string) $source, $matches);
+                    $result = isset($matches[0]) ? (float) $matches[0] : 0;
+                }
 
-				break;
-			case 'BOOL':
-			case 'BOOLEAN':
+                break;
+            case 'BOOL':
+            case 'BOOLEAN':
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$result[] = (bool) $eachString;
-					}
-				}
-				else
-				{
-					$result = (bool) $source;
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $result[] = (bool) $eachString;
+                    }
+                }
+                else
+                {
+                    $result = (bool) $source;
+                }
 
-				break;
-			case 'WORD':
-				$pattern = '/[^A-Z_]/i';
+                break;
+            case 'WORD':
+                $pattern = '/[^A-Z_]/i';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$result[] = (string) preg_replace($pattern, '', $eachString);
-					}
-				}
-				else
-				{
-					$result = (string) preg_replace($pattern, '', $source);
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $result[] = (string) preg_replace($pattern, '', $eachString);
+                    }
+                }
+                else
+                {
+                    $result = (string) preg_replace($pattern, '', $source);
+                }
 
-				break;
-			case 'ALNUM':
-				$pattern = '/[^A-Z0-9]/i';
+                break;
+            case 'ALNUM':
+                $pattern = '/[^A-Z0-9]/i';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$result[] = (string) preg_replace($pattern, '', $eachString);
-					}
-				}
-				else
-				{
-					$result = (string) preg_replace($pattern, '', $source);
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $result[] = (string) preg_replace($pattern, '', $eachString);
+                    }
+                }
+                else
+                {
+                    $result = (string) preg_replace($pattern, '', $source);
+                }
 
-				break;
-			case 'CMD':
-				$pattern = '/[^A-Z0-9_\.-]/i';
+                break;
+            case 'CMD':
+                $pattern = '/[^A-Z0-9_\.-]/i';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$cleaned  = (string) preg_replace($pattern, '', $eachString);
-						$result[] = ltrim($cleaned, '.');
-					}
-				}
-				else
-				{
-					$result = (string) preg_replace($pattern, '', $source);
-					$result = ltrim($result, '.');
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $cleaned  = (string) preg_replace($pattern, '', $eachString);
+                        $result[] = ltrim($cleaned, '.');
+                    }
+                }
+                else
+                {
+                    $result = (string) preg_replace($pattern, '', $source);
+                    $result = ltrim($result, '.');
+                }
 
-				break;
-			case 'BASE64':
-				$pattern = '/[^A-Z0-9\/+=]/i';
+                break;
+            case 'BASE64':
+                $pattern = '/[^A-Z0-9\/+=]/i';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$result[] = (string) preg_replace($pattern, '', $eachString);
-					}
-				}
-				else
-				{
-					$result = (string) preg_replace($pattern, '', $source);
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $result[] = (string) preg_replace($pattern, '', $eachString);
+                    }
+                }
+                else
+                {
+                    $result = (string) preg_replace($pattern, '', $source);
+                }
 
-				break;
-			case 'STRING':
+                break;
+            case 'STRING':
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$result[] = (string) $this->remove($this->decode((string) $eachString));
-					}
-				}
-				else
-				{
-					$result = (string) $this->remove($this->decode((string) $source));
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $result[] = (string) $this->remove($this->decode((string) $eachString));
+                    }
+                }
+                else
+                {
+                    $result = (string) $this->remove($this->decode((string) $source));
+                }
 
-				break;
-			case 'HTML':
+                break;
+            case 'HTML':
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$result[] = (string) $this->remove((string) $eachString);
-					}
-				}
-				else
-				{
-					$result = (string) $this->remove((string) $source);
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $result[] = (string) $this->remove((string) $eachString);
+                    }
+                }
+                else
+                {
+                    $result = (string) $this->remove((string) $source);
+                }
 
-				break;
-			case 'ARRAY':
-				$result = (array) $source;
+                break;
+            case 'ARRAY':
+                $result = (array) $source;
 
-				break;
-			case 'PATH':
-				$pattern = '/^[A-Za-z0-9_\/-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
+                break;
+            case 'PATH':
+                $pattern = '/^[A-Za-z0-9_\/-]+[A-Za-z0-9_\.-]*([\\\\\/][A-Za-z0-9_-]+[A-Za-z0-9_\.-]*)*$/';
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						preg_match($pattern, (string) $eachString, $matches);
-						$result[] = isset($matches[0]) ? (string) $matches[0] : '';
-					}
-				}
-				else
-				{
-					preg_match($pattern, $source, $matches);
-					$result = isset($matches[0]) ? (string) $matches[0] : '';
-				}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        preg_match($pattern, (string) $eachString, $matches);
+                        $result[] = isset($matches[0]) ? (string) $matches[0] : '';
+                    }
+                }
+                else
+                {
+                    preg_match($pattern, $source, $matches);
+                    $result = isset($matches[0]) ? (string) $matches[0] : '';
+                }
 
-				break;
-			case 'TRIM':
+                break;
+            case 'TRIM':
 
-				if (is_array($source))
-				{
-					$result = array();
+                if (is_array($source))
+                {
+                    $result = array();
 
-					// Iterate through the array
-					foreach ($source as $eachString)
-					{
-						$cleaned  = (string) trim($eachString);
-						$cleaned  = StringHelper::trim($cleaned, chr(0xE3) . chr(0x80) . chr(0x80));
-						$result[] = StringHelper::trim($cleaned, chr(0xC2) . chr(0xA0));
-					}
+                    // Iterate through the array
+                    foreach ($source as $eachString)
+                    {
+                        $cleaned  = (string) trim($eachString);
+                        $cleaned  = StringHelper::trim($cleaned, chr(0xE3) . chr(0x80) . chr(0x80));
+                        $result[] = StringHelper::trim($cleaned, chr(0xC2) . chr(0xA0));
+                    }
 				}
 				else
 				{
