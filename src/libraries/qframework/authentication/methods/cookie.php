@@ -1,6 +1,5 @@
 <?php
 // joomla/plugins/authentication/cookie/cookie.php
-// joomla/plugins/system/remember/remember.php
 /**
  * @package     Joomla.Plugin
  * @subpackage  Authentication.cookie
@@ -47,40 +46,7 @@ class PlgAuthenticationCookie extends JPlugin
         $this->response     = new JAuthenticationResponse;  // does this need to be an object?
         $this->filter       = new JFilterInput;
     }
-    
-    /**
-     * Remember me method to run onAfterInitialise
-     * Only purpose is to initialise the login authentication process if a cookie is present - this allows a silent login with the remember_me cookie
-     *
-     * @return  void
-     *
-     * @since   1.5
-     * @throws  InvalidArgumentException
-     */    
-    public function onAfterInitialise()
-    {
         
-        // No remember me for admin.
-        if (QFactory::isClient('administrator'))
-        {
-            echo 'is admin';
-            return;
-        }
-        
-        // Check for a cookie if user is not logged in - (guests are not log in)
-        $user = QFactory::getUser();
-        if ($user->guest)
-        {
-            $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
-
-            // Check for the cookie - by seeing if there is any content            
-            if ($this->cookie->get($cookieName))
-            {
-                QFactory::getAuth()->login(array('username' => ''), array('silent' => true));
-            }
-        }
-    }
-    
     /**
      * Reports the privacy related capabilities for this plugin to site administrators.
      *
@@ -462,6 +428,45 @@ class PlgAuthenticationCookie extends JPlugin
 
         return true;
     }
+    
+    
+    /****************************Extra Functions Added**************************************/   
+    
+    // joomla/plugins/system/remember/remember.php
+    /**
+     * Remember me method to run onAfterInitialise
+     * Only purpose is to initialise the login authentication process if a cookie is present - this allows a silent login with the remember_me cookie
+     *
+     * @return  void
+     *
+     * @since   1.5
+     * @throws  InvalidArgumentException
+     */    
+    public function onAfterInitialise()
+    {
+        
+        // No remember me for admin.
+        if (QFactory::isClient('administrator'))
+        {
+            echo 'is admin';
+            return;
+        }
+        
+        // Check for a cookie if user is not logged in - (guests are not log in)
+        $user = QFactory::getUser();
+        if ($user->guest)
+        {
+            $cookieName = 'qwcrm_remember_me_' . JUserHelper::getShortHashedUserAgent();
+
+            // Check for the cookie - by seeing if there is any content            
+            if ($this->cookie->get($cookieName))
+            {
+                QFactory::getAuth()->login(array('username' => ''), array('silent' => true));
+            }
+        }
+    } 
+    
+    // joomla/plugins/system/remember/remember.php
     /**
      * Imports the authentication plugin on user logout to make sure that the cookie is destroyed.
      *
@@ -469,7 +474,7 @@ class PlgAuthenticationCookie extends JPlugin
      * @param   array  $options  Array holding options (remember, autoregister, group).
      *
      * @return  boolean
-     *
+     */
     public function onUserLogout($user, $options)
     {
         // No remember me for admin
@@ -491,11 +496,9 @@ class PlgAuthenticationCookie extends JPlugin
         }
 
         return true;
-    }*/
-    
-    /****************************Extra Functions Added**************************************/
+    }            
         
-        // joomla\libraries\joomla\application\web.php
+    // joomla/libraries/src/Application/WebApplication.php
     /**
      * Determine if we are using a secure (SSL) connection.
      *
