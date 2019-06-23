@@ -1,5 +1,5 @@
 <?php
-//joomla/libraries/src/Authentication/Authentication.phppp
+//joomla/libraries/src/Authentication/Authentication.php
 /**
  * @package     Joomla.Platform
  * @subpackage  Authentication
