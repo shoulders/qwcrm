@@ -722,7 +722,7 @@ function reset_user_password($user_id, $password = null) {
     if($password == null) { $password = JUserHelper::genRandomPassword(16); }
     
     $sql = "UPDATE ".PRFX."user_records SET
-            password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
+            password        =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
             require_reset   =". $db->qstr( 0                                    ).",   
             last_reset_time =". $db->qstr( mysql_datetime()                     ).",
             reset_count     =". $db->qstr( 0                                    )."
@@ -1070,8 +1070,8 @@ function authorise_password_reset($token) {
     
     $db = QFactory::getDbo();
           
-    $reset_code = JUserHelper::genRandomPassword(64);     // 64 character token
-    $reset_code_expiry_time = time() + (60 * 5);          // sets a 5 minute expiry time
+    $reset_code = \Joomla\CMS\User\UserHelper::genRandomPassword(64);   // 64 character token
+    $reset_code_expiry_time = time() + (60 * 5);                        // sets a 5 minute expiry time
     
     $sql = "UPDATE ".PRFX."user_reset
             SET
@@ -1115,7 +1115,7 @@ function create_reset_token($user_id) {
     
     // Insert a new token
     $expiry_time = time() + (60 * 15);              // 15 minute expiry time
-    $token = JUserHelper::genRandomPassword(64);    // 64 character token
+    $token = \Joomla\CMS\User\UserHelper::genRandomPassword(64);    // 64 character token
     
     $sql = "INSERT INTO ".PRFX."user_reset SET              
             user_id         =". $db->qstr( $user_id     ).", 

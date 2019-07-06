@@ -12,7 +12,7 @@
 
 // Define QWcrm Minimum and Maximum PHP versions
 define('QWCRM_MINIMUM_PHP', '5.6.21');
-define('QWCRM_MAXIMUM_PHP', '7.2.0');
+define('QWCRM_MAXIMUM_PHP', '8.0.0');
 
 // Check the PHP version is within the compatible range
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
@@ -27,6 +27,8 @@ ini_set('magic_quotes_runtime', 0);
 
 // Constant that is checked in included files to prevent direct access
 define('_QWEXEC', 1);
+define('_JEXEC', 1);
+define('JPATH_PLATFORM', 1);
 
 // Get Root Folder and Physical path info (moved from index.php)    
 define('QWCRM_PHYSICAL_PATH', __DIR__.DIRECTORY_SEPARATOR);                         // QWcrm Physical Path  - D:\websites\htdocs\develop\qwcrm\ || /home/myuser/public_html/develop/qwcrm/

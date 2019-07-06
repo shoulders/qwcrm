@@ -10,47 +10,57 @@
 
 defined('_QWEXEC') or die;
 
-// System
-require QFRAMEWORK_DIR . 'system/defines.php';                      // Load System Constants
-require QFRAMEWORK_DIR . 'system/error.php';                        // Configure PHP error reporting
-require QFRAMEWORK_DIR . 'system/include.php';                      // Load System Include
-require QFRAMEWORK_DIR . 'system/security.php';                     // Load QWcrm Security including mandatory security code
-require QFRAMEWORK_DIR . 'system/mpdf.php';                         // Load mPDF functions
-require QFRAMEWORK_DIR . 'system/email.php';                        // Load email transport
-require QFRAMEWORK_DIR . 'system/variables.php';                    // Configure variables to be used by QWcrm
-require QFRAMEWORK_DIR . 'system/router.php';                       // Route the page request
-require QFRAMEWORK_DIR . 'system/buildpage.php';                    // Build the page content payload
+// QWcrm
+require QFRAMEWORK_DIR . 'qwcrm/defines.php';                      // Load System Constants
+require QFRAMEWORK_DIR . 'qwcrm/error.php';                        // Configure PHP error reporting
+require QFRAMEWORK_DIR . 'qwcrm/include.php';                      // Load System Include
+require QFRAMEWORK_DIR . 'qwcrm/security.php';                     // Load QWcrm Security including mandatory security code
+require QFRAMEWORK_DIR . 'qwcrm/mpdf.php';                         // Load mPDF functions
+require QFRAMEWORK_DIR . 'qwcrm/email.php';                        // Load email transport
+require QFRAMEWORK_DIR . 'qwcrm/variables.php';                    // Configure variables to be used by QWcrm
+require QFRAMEWORK_DIR . 'qwcrm/router.php';                       // Route the page request
+require QFRAMEWORK_DIR . 'qwcrm/buildpage.php';                    // Build the page content payload
 
-// General Helpers
-require QFRAMEWORK_DIR . 'general/Registry.php';                    // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
-require QFRAMEWORK_DIR . 'general/WebClient.php';                   // Gets the browser details from the session (used in cookie creation)
-require QFRAMEWORK_DIR . 'general/Cookie.php';                      // Cookie Object with set and get
+// Redue the descriptions of these files
 
-// Input
-require QFRAMEWORK_DIR . 'input/StringHelper.php';                  // Filtering of strings
-require QFRAMEWORK_DIR . 'input/InputFilter.php';                   // Filtering of strings - a class for filtering input from any data source - used for QCookie and authenticatin
-require QFRAMEWORK_DIR . 'input/core.php';                          // Used just for function utf8_strpos() from JFilterInput
-require QFRAMEWORK_DIR . 'input/input.php';                         // This is an abstracted input class used to manage retrieving data from the application environment. (i.e. cookie.php)
-require QFRAMEWORK_DIR . 'input/cookie.php';                        // Extends input.php with cookie get and set functions to allow manipulation of cookie data via input.php class
+// Misc (Joomla)
+require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/registry/src/Registry.php';            // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
+require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/application/src/Web/WebClient.php';    // Gets the browser details from the session (used in cookie creation)
 
-// Session
-require QFRAMEWORK_DIR . 'session/session.php';                     // Primary Class for managing HTTP sessions
-require QFRAMEWORK_DIR . 'session/storage.php';                     // Custom session storage handler for PHP
-require QFRAMEWORK_DIR . 'session/storage/none.php';                // File session handler for PHP - Allows to set 'none' for session handler which defaults to standard session files
-require QFRAMEWORK_DIR . 'session/storage/database.php';            // Database session storage handler for PHP - can use databse for session controll
-require QFRAMEWORK_DIR . 'session/handler/interface.php';           // Interface for managing HTTP sessions - 'index file' no function shere
-require QFRAMEWORK_DIR . 'session/handler/native.php';              // Interface for managing HTTP sessions - extends interface.php
-require QFRAMEWORK_DIR . 'session/handler/joomla.php';              // Interface for managing HTTP sessions - extends native.php
+// Input (Joomla)
+require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/input/src/Input.php';                  // Joomla! Input Base Class                                         - Part of the Joomla Framework Input Package
+require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/string/src/phputf8/native/core.php';   // Used just for function utf8_strpos() from JFilterInput           - Part of the Joomla Framework String Package
+require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/string/src/StringHelper.php';          // Filtering of strings                                             - Part of the Joomla Framework String Package
+require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/filter/src/InputFilter.php';           // InputFilter is a class for filtering input from any data source  - Part of the Joomla Framework String Package
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Filter/InputFilter.php';                         // A class for filtering input from any data source - used for QCookie and authentication
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Input/Input.php';                                // Joomla! Input Base Class - This is an abstracted input class used to manage retrieving data from the application environment.
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Input/Cookie.php';                               // Cookie Object with set and get
+require QFRAMEWORK_DIR . 'joomla/libraries/fof/input/jinput/input.php';                         // This is an abstracted input class used to manage retrieving data from the application environment. (i.e. cookie.php)
+require QFRAMEWORK_DIR . 'joomla/libraries/fof/input/jinput/cookie.php';                        // Extends input.php with cookie get and set functions to allow manipulation of cookie data via input.php class
 
-// Authentication
-require QFRAMEWORK_DIR . 'authentication/Authentication.php';       // Authentication class, provides an interface for the Joomla authentication system
-require QFRAMEWORK_DIR . 'authentication/AuthenticationResponse.php';             // Authentication response class, provides an object for storing user and error details - this is used to store the responses from the qwcrm.php and remember.php authorisation plugins
-require QFRAMEWORK_DIR . 'authentication/methods/qwcrm.php';        // Facilitates standard username and password authorisation
-require QFRAMEWORK_DIR . 'authentication/methods/remember.php';     // Facilitates 'Remember me' cookie authorisation
+// Crypto (Joomla)
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Crypt/Crypt.php';
+class_alias('\Joomla\CMS\Crypt\Crypt', '\JCrypt');     // Joomla uses an alias of 'Crypt'
 
-// User
-require QFRAMEWORK_DIR . 'user/user.php';                           // User class - Handles all application interaction with a user
-require QFRAMEWORK_DIR . 'user/helper.php';                         // This contains password hassing functions etc.. associated with users but used elswhere
+// Session (Joomla)
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Session/Session.php';                            // Primary Class for managing HTTP sessions
+require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/handler/interface.php';               // Interface for managing HTTP sessions - 'index file' no function shere
+require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/handler/native.php';                  // Interface for managing HTTP sessions - extends interface.php
+require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/handler/joomla.php';                  // Interface for managing HTTP sessions - extends native.php
+require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/storage.php';                         // Custom session storage handler for PHP
+require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/storage/none.php';                    // File session handler for PHP - Allows to set 'none' for session handler which defaults to standard session files
+require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/storage/database.php';                // Database session storage handler for PHP - can use databse for session control
+
+// Authentication (Joomla)
+require QFRAMEWORK_DIR . 'joomla/plugins/authentication/cookie/cookie.php';                     // Facilitates 'Remember me' cookie authorisation
+require QFRAMEWORK_DIR . 'joomla/plugins/authentication/joomla/joomla.php';                     // Facilitates standard username and password authorisation
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Authentication/AuthenticationResponse.php';      // Authentication response class, provides an object for storing user and error details - this is used to store the responses from the qwcrm.php and remember.php authorisation plugins
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Authentication/Authentication.php';              // Authentication class, provides an interface for the Joomla authentication system
+
+// User (Joomla)
+require QFRAMEWORK_DIR . 'joomla/libraries/src/User/User.php';                                  // User class - Handles all application interaction with a user
+require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserHelper.php';                            // This contains password hassing functions etc.. associated with users but used elswhere
+require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserWrapper.php';                           // Wrapper class for UserHelper
 
 // Main Framework class
 class QFactory {
@@ -171,7 +181,7 @@ class QFactory {
         }
 
         // Create the registry with a default namespace of config
-        $registry = new Registry;
+        $registry = new Joomla\Registry\Registry;
 
         // Sanitize the namespace.
         $namespace = ucfirst((string) preg_replace('/[^A-Z_]/i', '', $namespace));
@@ -218,7 +228,7 @@ class QFactory {
         }
 
         // Generate a session name.        
-        $name = QFactory::getHash($this->conf->get('session_name', JUserHelper::genRandomPassword(16)));
+        $name = \QFactory::getHash($this->conf->get('session_name', \Joomla\CMS\User\UserHelper::genRandomPassword(16)));
 
         // Calculate the session lifetime.
         $lifetime = ($this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900);
@@ -256,16 +266,16 @@ class QFactory {
         //////$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart')); - dont think this is needed here
 
         /*
-         * Note: The below code CANNOT change from instantiating a session via QFactory until there is a proper dependency injection container supported
+         * Note: The below code CANNOT change from instantiating a session via \QFactory until there is a proper dependency injection container supported
          * by the application. The current default behaviours result in this method being called each time an application class is instantiated.
          * https://github.com/joomla/joomla-cms/issues/12108 explains why things will crash and burn if you ever attempt to make this change
          * without a proper dependency injection container.
          */
 
-        $session = QFactory::getSession($options);        
+        $session = \QFactory::getSession($options);        
 
         // TODO: At some point we need to get away from having session data always in the db.
-        //$db = QFactory::getDbo();
+        //$db = \QFactory::getDbo();
 
         // Remove expired sessions from the database.
         $time = time();
@@ -330,7 +340,7 @@ class QFactory {
         //$options['expire'] = ($conf->get('session_lifetime')) ? $conf->get('session_lifetime') * 60 : 900;  // this is already stated in load session
 
         $sessionHandler = new JSessionHandlerJoomla($options);
-        $session        = JSession::getInstance($handler, $options, $sessionHandler);
+        $session        = Joomla\CMS\Session\Session::getInstance($handler, $options, $sessionHandler);
 
         if ($session->getState() == 'expired')
         {
@@ -359,7 +369,7 @@ class QFactory {
     {        
         if(!self::$auth)
         {
-            self::$auth = new JAuthentication;
+            self::$auth = new \Joomla\CMS\Authentication\Authentication;
             
         }
         return self::$auth;
@@ -392,15 +402,15 @@ class QFactory {
 
         if (is_null($id))
         {
-            if (!($instance instanceof JUser))
+            if (!($instance instanceof \Joomla\CMS\User\User))
             {
-                $instance = JUser::getInstance();
+                $instance = \Joomla\CMS\User\User::getInstance();
             }
         }
         // Check if we have a string as the id or if the numeric id is the current instance
-        elseif (!($instance instanceof JUser) || is_string($id) || $instance->id !== $id)
+        elseif (!($instance instanceof \Joomla\CMS\User\User) || is_string($id) || $instance->id !== $id)
         {
-            $instance = JUser::getInstance($id);
+            $instance = \Joomla\CMS\User\User::getInstance($id);
         }
 
         return $instance;

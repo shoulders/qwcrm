@@ -16,8 +16,8 @@
         <li>System</li>        
         
         <li>smarty-gettext | (08-06-17) (modified for motranslator) | LGPL-2.1 | https://github.com/smarty-gettext/smarty-gettext | Gettext support for Smarty2/Smarty3</li>               
-        <li>Joomla Session, Authentication and User code (Adapted) | v3.7.0 | GPL v2 (or later) | https://www.joomla.org/ | QFramework session, authentication and user handler</li>
-        <li>Joomla Registry (has remove() function) | v3.8.12 | GPL v2 (or later) | https://www.joomla.org/ | QFramework Registry</li>
+        <li>Joomla Session, Authentication and User code (Adapted) | v3.9.8 | GPL v2 (or later) | https://www.joomla.org/ | QFramework session, authentication and user handler</li>
+        <li>Joomla Registry (has remove() function) | v3.9.8 | GPL v2 (or later) | https://www.joomla.org/ | QFramework Registry</li>
         
         <!-- Via Composer -->
         

@@ -17,6 +17,8 @@ require(INCLUDES_DIR.'workorder.php');
 delete_expired_reset_codes();
 
 // Prevent undefined variable errors (temp)
+$VAR['reset_code'] = isset($VAR['reset_code']) ? $VAR['reset_code'] : null;
+$smarty->assign('reset_code', $VAR['reset_code']);
 $VAR['token'] = isset($VAR['token']) ? $VAR['token'] : null;
 $smarty->assign('token', $VAR['token']);
 
