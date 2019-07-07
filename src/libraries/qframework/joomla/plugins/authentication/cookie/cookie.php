@@ -87,14 +87,14 @@ class PlgAuthenticationCookie //extends JPlugin
         $cookieName  = 'qwcrm_remember_me_' . \Joomla\CMS\User\UserHelper::getShortHashedUserAgent();
         $cookieValue = $this->cookie->get($cookieName);        
 
-        // Try with old cookieName (pre 3.6.0) if not found
         /*
+        // Try with old cookieName (pre 3.6.0) if not found        
         if (!$cookieValue)
         {
             $cookieName  = \Joomla\CMS\User\UserHelper::getShortHashedUserAgent();
             $cookieValue = $this->app->input->cookie->get($cookieName);
         }
-         */
+        */
 
         if (!$cookieValue)
         {
@@ -268,7 +268,7 @@ class PlgAuthenticationCookie //extends JPlugin
                 // Destroy the old cookie in the browser
                 $this->app->input->cookie->set($oldCookieName, '', 1, $this->app->get('cookie_path', '/'), $this->app->get('cookie_domain', ''));
             }
-             */
+            */
 
             $cookieArray = explode('.', $cookieValue);
 
@@ -293,8 +293,8 @@ class PlgAuthenticationCookie //extends JPlugin
 
                 try
                 {
-                            $rs = $this->db->Execute($sql);
-                            $results = $rs->RecordCount();             
+                    $rs = $this->db->Execute($sql);
+                    $results = $rs->RecordCount();             
 
                     if ($results === 0)
                     {
@@ -321,7 +321,7 @@ class PlgAuthenticationCookie //extends JPlugin
             return false;
         }
         
-        // create/overwrite cookie        
+        // Create/Overwrite the cookie        
 
         // Get the parameter values - this are settings from within the cookie plugin (now added to main config)        
         $lifetime = $this->config->get('cookie_lifetime', '60') * 24 * 60 * 60;
@@ -420,7 +420,7 @@ class PlgAuthenticationCookie //extends JPlugin
 
         // Filter series since we're going to use it in the query
         //$filter = new JFilterInput;
-	//$series = $filter->clean($cookieArray[1], 'ALNUM');
+        //$series = $filter->clean($cookieArray[1], 'ALNUM');
         $series = $this->filter->clean($cookieArray[1], 'ALNUM');
 
         // Remove the record from the database

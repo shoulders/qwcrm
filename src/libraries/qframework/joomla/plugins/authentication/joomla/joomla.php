@@ -69,14 +69,16 @@ class PlgAuthenticationJoomla //extends JPlugin
                 $response->email    = $user->email;
                 $response->fullname = $user->name;
 
-                /*if (JFactory::getApplication()->isClient('administrator'))
+                /*
+                if (JFactory::getApplication()->isClient('administrator'))
                 {
                     $response->language = $user->getParam('admin_language');
                 }
                 else
                 {
                     $response->language = $user->getParam('language');
-                }*/
+                }
+                */
 
                 $response->status        = \Joomla\CMS\Authentication\Authentication::STATUS_SUCCESS;
                 $response->error_message = '';
