@@ -338,7 +338,7 @@ class PlgAuthenticationCookie //extends JPlugin
             time() + $lifetime,
             $this->config->get('cookie_path', '/'),
             $this->config->get('cookie_domain'),
-            $this->isSSLConnection()
+            \QFactory::isSSLConnection()
         );
 
         // If the 'Remember me' box is ticked
@@ -440,87 +440,5 @@ class PlgAuthenticationCookie //extends JPlugin
 
         return true;
     }
-    
-    
-    /**************************** Extra Functions Added ****************************/
-       
-    /**
-     * From Joomla 3.7.0 joomla/plugins/system/remember/remember.php
-     * Remember me method to run onAfterInitialise
-     * Only purpose is to initialise the login authentication process if a cookie is present - this allows a silent login with the remember_me cookie
-     *
-     * @return  void
-     *
-     * @since   1.5
-     * @throws  InvalidArgumentException
-     */    
-    public function onAfterInitialise()
-    {
-        
-        // No remember me for admin.
-        if (QFactory::isClient('administrator'))
-        {
-            echo 'is admin';
-            return;
-        }
-        
-        // Check for a cookie if user is not logged in - (guests are not log in)
-        $user = \QFactory::getUser();
-        if ($user->guest)
-        {
-            $cookieName = 'qwcrm_remember_me_' . Joomla\CMS\User\UserHelper::getShortHashedUserAgent();
-
-            // Check for the cookie - by seeing if there is any content            
-            if ($this->cookie->get($cookieName))
-            {
-                \QFactory::getAuth()->login(array('username' => ''), array('silent' => true));
-            }
-        }
-    } 
-    
-    /**
-     * From Joomla 3.7.0 joomla/plugins/system/remember/remember.php
-     * Imports the authentication plugin on user logout to make sure that the cookie is destroyed.
-     *
-     * @param   array  $user     Holds the user data.
-     * @param   array  $options  Array holding options (remember, autoregister, group).
-     *
-     * @return  boolean
-     */
-    public function onUserLogout($user, $options)
-    {
-        // No remember me for admin
-        if (QFactory::isClient('administrator'))
-        {
-            return true;
-        }
-
-        $cookieName = 'qwcrm_remember_me_' . Joomla\CMS\User\UserHelper::getShortHashedUserAgent();
-
-        // Check for the cookie
-        $config = \QFactory::getConfig();
-        if ($config->get($cookieName))
-        {
-            // Make sure authentication group is loaded to process onUserAfterLogout event
-            //JPluginHelper::importPlugin('authentication');
-            
-            // this currently does nothing
-        }
-
-        return true;
-    }            
-        
-    /**
-     * From Joomla 3.7.0 joomla/libraries/src/Application/WebApplication.php
-     * Determine if we are using a secure (SSL) connection.
-     *
-     * @return  boolean  True if using SSL, false if not.
-     *
-     * @since   12.2
-     */
-    public function isSSLConnection()
-    {
-        return (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION');
-    } 
     
 }

@@ -52,6 +52,7 @@ require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/storage/none.php';    
 require QFRAMEWORK_DIR . 'joomla/libraries/joomla/session/storage/database.php';                // Database session storage handler for PHP - can use databse for session control
 
 // Authentication (Joomla)
+require QFRAMEWORK_DIR . 'joomla/plugins/system/remember/remember.php'; 
 require QFRAMEWORK_DIR . 'joomla/plugins/authentication/cookie/cookie.php';                     // Facilitates 'Remember me' cookie authorisation
 require QFRAMEWORK_DIR . 'joomla/plugins/authentication/joomla/joomla.php';                     // Facilitates standard username and password authorisation
 require QFRAMEWORK_DIR . 'joomla/libraries/src/Authentication/AuthenticationResponse.php';      // Authentication response class, provides an object for storing user and error details - this is used to store the responses from the qwcrm.php and remember.php authorisation plugins
@@ -61,6 +62,7 @@ require QFRAMEWORK_DIR . 'joomla/libraries/src/Authentication/Authentication.php
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/User.php';                                  // User class - Handles all application interaction with a user
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserHelper.php';                            // This contains password hassing functions etc.. associated with users but used elswhere
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserWrapper.php';                           // Wrapper class for UserHelper
+require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla.php';
 
 // Main Framework class
 class QFactory {
@@ -92,7 +94,7 @@ class QFactory {
         if (is_null($this->conf->get('session_name')))
         {
             //$this->conf->set('session_name', $this->getName());
-            $this->conf->set('session_name', JUserHelper::genRandomPassword(16));
+            $this->conf->set('session_name', \Joomla\CMS\Authentication\UserHelper::genRandomPassword(16));
         }
 
         // Create the session if a session name is passed.
@@ -102,9 +104,9 @@ class QFactory {
         }        
      
         // Try to automatically login - i,e, using the remember me cookie - instigates a silent login if a 'Remember me' cookie is found
-        $rememberMe = new PlgAuthenticationCookie;  // this allows silent login using remember me cookie after checking it exists - need to mnake sure it does not logon if already logged on
-        $rememberMe->onAfterInitialise();
-        unset($rememberMe);
+        $PlgSystemRemember = new PlgSystemRemember;  // this allows silent login using remember me cookie after checking it exists - need to mnake sure it does not logon if already logged on
+        $PlgSystemRemember->onAfterInitialise();
+        unset($PlgSystemRemember);
     
     }
 
@@ -738,6 +740,46 @@ class QFactory {
         return self::getSiteName() === $identifier;
     }
 
+    // joomla/libraries/src/Application/CMSApplication.php
+    /**
+     * Checks if HTTPS is forced in the client configuration.
+     *
+     * @param   integer  $clientId  An optional client id (defaults to current application client).
+     *
+     * @return  boolean  True if is forced for the client, false otherwise.
+     *
+     * @since   3.7.3
+     */
+    public static function isHttpsForced($clientId = null)
+    {
+        $clientId = (int) ($clientId !== null ? $clientId : self::getClientId());
+        $forceSsl = (int) self::$config->get('force_ssl');
+
+        if ($clientId === 0 && $forceSsl === 2)
+        {
+            return true;
+        }
+
+        if ($clientId === 1 && $forceSsl >= 1)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
+    /**
+     * From Joomla 3.7.0 joomla/libraries/src/Application/WebApplication.php
+     * Determine if we are using a secure (SSL) connection.
+     *
+     * @return  boolean  True if using SSL, false if not.
+     *
+     * @since   12.2
+     */
+    public static function isSSLConnection()
+    {
+        return (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION');
+    } 
     
 /****************** Misc ******************/
     

@@ -106,15 +106,17 @@ class Authentication //extends \JObject
      */
     
     // Authentication plugins that I added
-    protected $cookieAuthPlg = null;
-    protected $joomlaAuthPlg = null;
+    protected $PlgSystemRemember = null;
+    protected $PlgAuthenticationCookie = null;
+    protected $PlgUserJoomla = null;
     
     public function __construct()
     {
         
         // Authentication plugins that I added
-        $this->cookieAuthPlg  = new \PlgAuthenticationCookie;
-        $this->joomlaAuthPlg  = new \PlgAuthenticationJoomla;
+        $this->PlgSystemRemember  = new \PlgSystemRemember;
+        $this->PlgAuthenticationCookie = new \PlgAuthenticationCookie;
+        $this->PlgUserJoomla  = new \PlgUserJoomla;
         
         /*
         $isLoaded = JPluginHelper::importPlugin('authentication');
@@ -465,7 +467,7 @@ class Authentication //extends \JObject
             //$user['fullname'] = $response->fullname;
             //$user['password_clear'] = $response->password_clear; // Causes undefined variable error     
             //$user['email'] = $response->email;            
-            $results = array($this->joomlaAuthPlg->onUserLogin(get_object_vars($response), $options));            
+            $results = array($this->PlgUserJoomla->onUserLogin(get_object_vars($response), $options));            
             
             /*
              * If any of the user plugins did not successfully complete the login routine
@@ -481,7 +483,7 @@ class Authentication //extends \JObject
                 $user->set('cookieLogin', true);
             }
 
-            // if no failed authentication results (currently just joomlaAuthPlg) set cookie
+            // if no failed authentication results (currently just PlgUserJoomla) set cookie
             if (in_array(false, $results, true) == false)
             {
                 $options['user'] = $user;
@@ -489,7 +491,7 @@ class Authentication //extends \JObject
 
                 ////// The user is successfully logged in. Run the after login events  (stored qwcrm.php and remember.php methods)
                 //$this->triggerEvent('onUserAfterLogin', array($options));                              
-                $this->cookieAuthPlg->onUserAfterLogin($options);   // Trigger Cookie operations for onUserAfterLogin  
+                $this->PlgAuthenticationCookie->onUserAfterLogin($options);   // Trigger Cookie operations for onUserAfterLogin  
             }
 
             return true;
@@ -554,8 +556,8 @@ class Authentication //extends \JObject
         ////// OK, the credentials are built. Lets fire the onLogout event.
         //$results = $this->triggerEvent('onUserLogout', array($parameters, $options));   //(stored qwcrm.php and remember.php methods)
         $results = array(
-                        $this->cookieAuthPlg->onUserLogout($parameters, $options),
-                        $this->joomlaAuthPlg->onUserLogout($parameters, $options)       
+                        $this->PlgSystemRemember->onUserLogout($parameters, $options),
+                        $this->PlgUserJoomla->onUserLogout($parameters, $options)       
                         );        
 
         // Check if any of the plugins failed. If none did, success.
@@ -564,8 +566,8 @@ class Authentication //extends \JObject
             $options['username'] = $user->get('username');
             
             //////$this->triggerEvent('onUserAfterLogout', array($options));          // (stored qwcrm.php and remember.php methods)            
-            $this->joomlaAuthPlg->onUserLogout($parameters, $options);
-            $this->cookieAuthPlg->onUserAfterLogout($options);
+            $this->PlgUserJoomla->onUserLogout($parameters, $options);
+            $this->PlgAuthenticationCookie->onUserAfterLogout($options);
             
             return true;
         }
