@@ -26,7 +26,7 @@ if(isset($VAR['submit'])) {
     recalculate_otherincome_totals($VAR['otherincome_id']);
     
     // load details page
-    force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'information_msg='._gettext("Refund updated successfully.")); 
+    force_page('otherincome', 'details&otherincome_id='.$VAR['otherincome_id'], 'information_msg='._gettext("Otherincome updated successfully.")); 
 } else {  
 
     // Check if payment can be edited
