@@ -47,6 +47,11 @@ class Upgrade3_1_0 extends QSetup {
     // Execute post database scipts and tidy up the data
     public function post_database() {
         
+        // Correct user Based/Location database entries
+        $this->update_column_values(PRFX.'user_records', 'based', '1', 'office');
+        $this->update_column_values(PRFX.'user_records', 'based', '2', 'home');
+        $this->update_column_values(PRFX.'user_records', 'based', '3', 'onsite');
+        
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', $this->upgrade_step);
         
