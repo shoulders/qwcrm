@@ -179,9 +179,6 @@ class Upgrade3_1_0 extends QSetup {
         $this->payments_create_expense_records_payments();        
         $this->payments_create_otherincome_records_payments(); 
                 
-        // Update database version number
-        $this->update_record_value(PRFX.'version', 'database_version', '3.1.0');
-        
         // Update Records to allow for openen_on, closed_on and last_active        
         $this->copy_columnA_to_columnB('expense_records', 'date', 'opened_on');
         $this->copy_columnA_to_columnB('expense_records', 'date', 'closed_on');
@@ -196,6 +193,9 @@ class Upgrade3_1_0 extends QSetup {
         
         // Correct logo filepath
         $this->update_record_value(PRFX.'company_record', 'logo', str_replace('media/', '', get_company_details('logo')));
+        
+        // Update database version number
+        $this->update_record_value(PRFX.'version', 'database_version', $this->upgrade_step);
         
         // Log message to setup log
         $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;
