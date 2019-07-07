@@ -109,12 +109,12 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Password{/t}</strong></td>
-                                                                                        <td><input id="password" name="password" class="olotd5" type="password" minlength="8" maxlength="20" required onkeyup="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="return onlyPassword(event);"></td>
+                                                                                        <td><input id="password" name="password" class="olotd5" type="password" minlength="8" maxlength="20" required input="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="return onlyPassword(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Confirm Password{/t}</strong></td>
                                                                                         <td>
-                                                                                            <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" minlength="8" maxlength="20" required onkeyup="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="onlyPassword(event);">
+                                                                                            <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" minlength="8" maxlength="20" required input="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="onlyPassword(event);">
                                                                                             <div id="passwordMessage" style="min-height: 5px;"></div>
                                                                                         </td>
                                                                                     </tr>                                                                                    
