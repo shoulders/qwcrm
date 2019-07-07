@@ -27,7 +27,7 @@ class PType {
         // Assign Type specific template variables  
         $this->smarty->assign('payment_active_methods', get_payment_methods('send', 'enabled'));
         $this->smarty->assign('expense_details', $this->expense_details);
-        $this->smarty->assign('expense_statuses', get_expense_statuses());        
+        $this->smarty->assign('expense_statuses', get_expense_statuses());   
         
     }    
     

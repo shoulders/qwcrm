@@ -29,6 +29,7 @@ class PType {
         $this->smarty->assign('payment_active_methods', get_payment_methods('send', 'enabled'));
         $this->smarty->assign('refund_details', $this->refund_details);
         $this->smarty->assign('refund_statuses', get_refund_statuses());
+        $this->smarty->assign('name_on_card', get_company_details('company_name'));
         
     }
     

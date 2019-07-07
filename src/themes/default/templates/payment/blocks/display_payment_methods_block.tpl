@@ -238,7 +238,7 @@
                                                     {/section}
                                                 </select>
                                             </td>                        
-                                            <td><input name="qpayment[name_on_card]" class="paymentInput olotd5" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);" disabled></td>
+                                            <td><input name="qpayment[name_on_card]" class="paymentInput olotd5" value="{$name_on_card}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);" disabled></td>
                                             <td>{$currency_sym}<input name="qpayment[amount]" class="paymentInput olotd5" size="10" value="{$record_balance|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" disabled></td>
                                         </tr>
                                         <tr>

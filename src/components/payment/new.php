@@ -35,6 +35,7 @@ $VAR['qpayment']['expense_id'] = isset($VAR['qpayment']['expense_id']) ? $VAR['q
 $VAR['qpayment']['expense_id'] = isset($VAR['expense_id']) ? $VAR['expense_id'] : $VAR['qpayment']['expense_id'];
 $VAR['qpayment']['otherincome_id'] = isset($VAR['qpayment']['otherincome_id']) ? $VAR['qpayment']['otherincome_id'] : '';
 $VAR['qpayment']['otherincome_id'] = isset($VAR['otherincome_id']) ? $VAR['otherincome_id'] : $VAR['qpayment']['otherincome_id'];
+$VAR['qpayment']['name_on_card'] = isset($VAR['qpayment']['name_on_card']) ? $VAR['qpayment']['name_on_card'] : null;
 
 // Prevent direct access to this page, and validate requests
 if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_qwcrm('invoice', 'details')) {  
@@ -93,6 +94,12 @@ class NewPayment {
             'returnToRecord' => array('allowed' => false, 'url' => null, 'title' => null),
             'addNewRecord' => array('allowed' => false, 'url' => null, 'title' => null)
         );
+        
+        // Set name on card to company name (if appropriate)
+        if(!$this->VAR['qpayment']['name_on_card'] && ($this->VAR['qpayment']['type'] == 'refund' || $this->VAR['qpayment']['type'] == 'expense'))
+        {
+            $this->VAR['qpayment']['name_on_card'] = get_company_details('company_name');
+        }
                
         // Set the payment type class
         $this->set_payment_type();
@@ -218,13 +225,15 @@ $payment = new NewPayment($VAR);
 
 // Build the page
 $smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, $VAR['qpayment']['invoice_id'], $VAR['qpayment']['refund_id'], $VAR['qpayment']['expense_id'], $VAR['qpayment']['otherincome_id'])  );
-$smarty->assign('payment_method',                    $VAR['qpayment']['method']                                                             );
-$smarty->assign('payment_type',                      $VAR['qpayment']['type']                                                                               );
+$smarty->assign('payment_method',                    $VAR['qpayment']['method']                                                      );
+$smarty->assign('payment_type',                      $VAR['qpayment']['type']                                                        );
 $smarty->assign('payment_types',                     get_payment_types()                                                             );
-$smarty->assign('payment_methods',                   get_payment_methods()                                                             );
-$smarty->assign('payment_statuses',                  get_payment_statuses()                                                                          );
-$smarty->assign('payment_active_card_types',         get_payment_active_card_types()                                                                );
-$smarty->assign('record_balance',                    NewPayment::$record_balance                                                               );
-$smarty->assign('buttons',                           NewPayment::$buttons                                                                );
+$smarty->assign('payment_methods',                   get_payment_methods()                                                           );
+$smarty->assign('payment_statuses',                  get_payment_statuses()                                                          );
+$smarty->assign('payment_active_card_types',         get_payment_active_card_types()                                                 );
+$smarty->assign('name_on_card',                      $VAR['qpayment']['name_on_card']                                                );
+$smarty->assign('record_balance',                    NewPayment::$record_balance                                                     );
+$smarty->assign('buttons',                           NewPayment::$buttons                                                            );
+
 
 $BuildPage .= $smarty->fetch('payment/new.tpl');
