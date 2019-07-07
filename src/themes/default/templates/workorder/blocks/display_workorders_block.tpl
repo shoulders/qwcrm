@@ -38,7 +38,8 @@
             </td>
             <td class="olotd4" nowrap>
                 {if $display_workorders[w].workorder_scope}
-                     <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Scope{/t}</strong></div><hr><div>{$display_workorders[w].workorder_scope|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
+                    {$display_workorders[w].workorder_scope|truncate:20:"..."|htmlentities|regex_replace:"/[\t\r\n']/":" "};&nbsp;
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Scope{/t}</strong></div><hr><div>{$display_workorders[w].workorder_scope|htmlentities|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                  {/if}
             </td>
             <td class="olotd4" align="center">
