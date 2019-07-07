@@ -57,7 +57,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
-                                                                            <input id="start_date" name="start_date" size="10" value="{$start_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                            <input id="start_date" name="start_date" size="10" value="{$start_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                             <button type="button" id="start_date_button">+</button>
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {
@@ -69,7 +69,7 @@
                                                                             {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=StartTime time=$start_time}
                                                                         </td>
                                                                         <td>
-                                                                            <input id="end_date" name="end_date" size="10" value="{$end_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                                            <input id="end_date" name="end_date" size="10" value="{$end_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                             <button type="button" id="end_date_button">+</button>
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {

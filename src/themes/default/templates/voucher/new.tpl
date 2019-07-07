@@ -53,7 +53,7 @@
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
-                                                    <input id="expiry_date" name="expiry_date" class="olotd4" size="10" value="" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required onkeydown="return onlyDate(event);">
+                                                    <input id="expiry_date" name="expiry_date" class="olotd4" size="10" value="" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                     <button type="button" id="expiry_date_button">+</button>
                                                     <script>                                                       
                                                         Calendar.setup( {
