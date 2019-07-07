@@ -26,7 +26,7 @@
                             <tr>
                                 <td width="100%" valign="top">                                    
                                     <form action="index.php?component=workorder&page_tpl=details_edit_comment&workorder_id={$workorder_id}" method="post">
-                                        <b>{t}comment{/t}</b><br>
+                                        <b>{t}Comment{/t}</b><br>
                                         <textarea class="olotd4" rows="15" cols="70" name="comment">{$comment}</textarea>
                                         <br>
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
