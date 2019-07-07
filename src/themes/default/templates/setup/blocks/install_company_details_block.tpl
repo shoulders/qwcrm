@@ -288,7 +288,8 @@
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Date Format{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            <select name="date_format" class="olotd5"> 
+                                                                                            <select name="date_format" class="olotd5" required>
+                                                                                                <option selected hidden disabled></option>
                                                                                                 {section name=d loop=$date_formats}    
                                                                                                     <option value="{$date_formats[d].date_format_key}"{if $company_details.date_format == $date_formats[d].date_format_key} selected{/if}>{t}{$date_formats[d].display_name}{/t}</option>
                                                                                                 {/section}    

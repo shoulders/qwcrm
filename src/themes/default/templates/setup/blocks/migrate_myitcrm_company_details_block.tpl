@@ -225,7 +225,8 @@
                                                                                     <tr>
                                                                                         <td align="right"><b>{t}Date Format{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            <select name="date_format" class="olotd5">
+                                                                                            <select name="date_format" class="olotd5" required>
+                                                                                                <option selected hidden disabled></option>
                                                                                                 <option value="%d/%m/%Y"{if $company_details.date_format == '%d/%m/%Y'} selected{/if}>dd/mm/yyyy</option>                                                            
                                                                                                 <option value="%m/%d/%Y"{if $company_details.date_format == '%m/%d/%Y'} selected{/if}>mm/dd/yyyy</option>
                                                                                                 <option value="%d/%m/%y"{if $company_details.date_format == '%d/%m/%y'} selected{/if}>dd/mm/yy</option>

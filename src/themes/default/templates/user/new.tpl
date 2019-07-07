@@ -66,7 +66,8 @@
                                                                                         <tr>
                                                                                             <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                             <td>
-                                                                                                <select name="based" class="olotd5">
+                                                                                                <select name="based" class="olotd5" required>
+                                                                                                    <option selected hidden disabled></option>
                                                                                                     {section name=l loop=$user_locations}    
                                                                                                         <option value="{$user_locations[l].location_key}"{if $user_details.based == $user_locations[l].location_key} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
                                                                                                     {/section} 
@@ -118,9 +119,10 @@
                                                                                         </td>
                                                                                     </tr>                                                                                    
                                                                                     <tr>
-                                                                                        <td align="right"><strong>{t}Usergroup{/t}</strong></td>
+                                                                                        <td align="right"><strong>{t}Usergroup{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td>                                                                                                
-                                                                                            <select name="usergroup" class="olotd5">
+                                                                                            <select name="usergroup" class="olotd5" required>
+                                                                                                <option selected hidden disabled></option>
                                                                                                 {section name=b loop=$usergroups}
                                                                                                     <option value="{$usergroups[b].usergroup_id}" {if $user_details.usergroup == $usergroups[b].usergroup_id} selected{/if}>{$usergroups[b].display_name}</option>
                                                                                                 {/section}

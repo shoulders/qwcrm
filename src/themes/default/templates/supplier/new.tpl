@@ -64,7 +64,8 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select id="type" name="type" class="olotd5">               
+                                                                                <select id="type" name="type" class="olotd5" required>   
+                                                                                    <option selected hidden disabled></option>
                                                                                     {section name=s loop=$supplier_types}
                                                                                         <option value="{$supplier_types[s].type_key}">{t}{$supplier_types[s].display_name}{/t}</option>
                                                                                     {/section}

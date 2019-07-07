@@ -60,7 +60,8 @@
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Based{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                                         <td>
-                                                                                            <select name="based" class="olotd5">
+                                                                                            <select name="based" class="olotd5" required>
+                                                                                                <option selected hidden disabled></option>
                                                                                                 {section name=l loop=$user_locations}    
                                                                                                     <option value="{$user_locations[l].location_key}"{if $user_details.based == $user_locations[l].location_key} selected{/if}>{t}{$user_locations[l].display_name}{/t}</option>
                                                                                                 {/section} 
