@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
+## [3.1.0] 2019-07-08
+### Added
+- Language files can now be dropped in to /language/ folder and be automatically detect and used
+
+### Changed
+- upgraded session handler to Joomla 3.9.8
+
+### Fixed
+- PHP 7.1+ Compatabilty
+- Many Bugs
+- date inputs can no longer be broken, date picker must be used
+
 ## [3.1.0] 2019-06-09
 ### Added
 - SEF Router
