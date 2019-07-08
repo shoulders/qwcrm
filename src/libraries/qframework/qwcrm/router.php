@@ -282,7 +282,8 @@ function parse_sef_url($sef_url, $url_length = 'basic', $mode = null, &$VAR = nu
 function build_url_from_variables($component, $page_tpl, $url_length = 'basic', $url_sef = 'auto') {
     
     // Set URL Type to return
-    if($url_sef == 'sef') { $sef = true; }
+    if(defined('QWCRM_SETUP')) { $sef = false; }
+    elseif($url_sef == 'sef') { $sef = true; }
     elseif($url_sef == 'nonsef') { $sef = false; }
     else { $sef = \QFactory::getConfig()->get('sef'); }    
     //else { $sef = $config->sef; } 
