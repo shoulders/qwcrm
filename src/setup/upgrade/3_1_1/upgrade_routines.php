@@ -9,7 +9,7 @@
 
 defined('_QWEXEC') or die;
 
-class Upgrade3_1_0 extends QSetup {
+class Upgrade3_1_1 extends QSetup {
     
     private $upgrade_step = null;
     private $setup_time = null;
@@ -53,10 +53,10 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_column_values(PRFX.'user_records', 'based', '3', 'onsite');
         
         // Update database version number
-        $this->update_record_value(PRFX.'version', 'database_version', $this->upgrade_step);
+        $this->update_record_value(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
         
         // Log message to setup log
-        $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;
+        $record = _gettext("Database has now been upgraded to").' v'.str_replace('_', '.', $this->upgrade_step);
         $this->write_record_to_setup_log('upgrade', $record);
         
     }    

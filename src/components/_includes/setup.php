@@ -565,7 +565,7 @@ class QSetup {
 
             // Log message
             if($where_column) {
-                $record = _gettext("Failed to update the record value").' `'.$select_column.'` '._gettext("where the records were matched in the columm").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';
+                $record = _gettext("Failed to update the record value").' `'.$select_column.'` '._gettext("where the records were matched in the column").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';
             } else {            
                 $record = _gettext("Failed to update the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
             }
@@ -583,7 +583,7 @@ class QSetup {
 
             // Log message             
             if($where_column) {
-                $record = _gettext("Successfully updated the record value").' `'.$select_column.'` '._gettext("where the records were matched in the columm").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';            
+                $record = _gettext("Successfully updated the record value").' `'.$select_column.'` '._gettext("where the records were matched in the column").' `'.$where_column.'` '._gettext("by").' `'.$where_record.'` '.'` '._gettext("from the table").' `'.$select_table.'` ';            
             } else {            
                 $record = _gettext("Successfully updated the value for the record").' `'.$select_column.'` '._gettext("to").' `'.$record_new_value.'` '._gettext("in the table").' `'.$select_table.'` ';
             }
@@ -628,7 +628,7 @@ class QSetup {
             self::$setup_error_flag = true;
 
             // Log message
-            $record = _gettext("Failed to update the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the columm").' `'.$column.'` '._gettext("from the table").' `'.$table.'` ';
+            $record = _gettext("Failed to update the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the column").' `'.$column.'` '._gettext("from the table").' `'.$table.'` ';
 
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
@@ -645,7 +645,7 @@ class QSetup {
             if(!$affected_rows = $db->affected_rows()) { $affected_rows = '0'; }
 
             // Log message
-            $record = _gettext("Successfully updated the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the columm").' `'.$column.'` '._gettext("from the the table").' `'.$table.'` - '._gettext("Records Processed").': '.$affected_rows;
+            $record = _gettext("Successfully updated the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the column").' `'.$column.'` '._gettext("from the the table").' `'.$table.'` - '._gettext("Records Processed").': '.$affected_rows;
 
             // Output message via smarty
             self::$executed_sql_results .= '<div style="color: green">'.$record.'</div>';
@@ -1344,6 +1344,9 @@ class QSetup {
             // Remove path from directory and just leave the directory name (aka version number)
             $stepVersionNumber = basename($directory);
             
+            // Convert version numbers from xx_xx_xx format to xx.xx.xx (this is so the numbers can be used through QWcrm. Comparison works for both formats)
+            //$stepVersionNumber = str_replace('_', '.', $stepVersionNumber);
+            
              // Add only the required upgrade steps - Is the version number less than or equal to the Current DB Version
             if(version_compare($stepVersionNumber, $current_db_version, '>')) {
                 
@@ -1381,7 +1384,10 @@ class QSetup {
     public function process_upgrade_steps(&$VAR, $upgrade_steps = null) {
         
         // Cycle through each step
-        foreach ($upgrade_steps as $upgrade_step) {        
+        foreach ($upgrade_steps as $upgrade_step) { 
+            
+            // Convert version numbers from xx.xx.xx format to xx_xx_xx (to allow building the correct file path)
+            //$upgrade_step = str_replace('.', '_', $upgrade_step);
 
             // Include the upgrade.php
             require(SETUP_DIR.'upgrade/'.$upgrade_step.'/upgrade_routines.php');

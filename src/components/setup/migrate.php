@@ -135,8 +135,8 @@ if($VAR['stage'] == 'config_settings') {
     if(isset($VAR['submit']) && $VAR['submit'] == 'config_settings') {
                  
         // Correct missing secret varibles
-        $VAR['qwcrm_config']['session_name']        = JUserHelper::genRandomPassword(16);
-        $VAR['qwcrm_config']['secret_key']          = JUserHelper::genRandomPassword(32);
+        $VAR['qwcrm_config']['session_name']        = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
+        $VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
         
         update_qwcrm_config_settings_file($VAR['qwcrm_config']);
         $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Config settings have been added to the config file."));

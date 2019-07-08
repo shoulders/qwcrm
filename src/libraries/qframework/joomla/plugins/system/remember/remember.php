@@ -71,7 +71,7 @@ class PlgSystemRemember //extends JPlugin
             // Try with old cookieName (pre 3.6.0) if not found
             if (!$this->app->input->cookie->get($cookieName))
             {
-                $cookieName = JUserHelper::getShortHashedUserAgent();
+                $cookieName = \Joomla\CMS\User\UserHelper::getShortHashedUserAgent();
             }
             */
             

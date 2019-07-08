@@ -15,7 +15,7 @@ function load_defines() {
     //define('SEP',                       '/'                             );
 
     // Information and Configuration
-    define('QWCRM_VERSION' ,            '3.1.0'                                             );
+    define('QWCRM_VERSION' ,            '3.1.1'                                             );
     define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                                             );
     
     // This allows the use of the database ASAP in the setup process

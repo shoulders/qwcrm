@@ -39,7 +39,7 @@ class MigrateMyitcrm extends QSetup {
         $sql = "INSERT INTO ".PRFX."user SET
                 customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
                 username            =". $db->qstr( $VAR['username']                             ).",
-                password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
+                password            =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($VAR['password'])  ).",
                 email               =". $db->qstr( $VAR['email']                                ).",
                 usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
                 active              =". $db->qstr( $VAR['active']                               ).",
@@ -1296,10 +1296,10 @@ class MigrateMyitcrm extends QSetup {
         $db = QFactory::getDbo();
 
         // if no password supplied generate a random one
-        if($password == null) { $password = JUserHelper::genRandomPassword(16); }
+        if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
 
         $sql = "UPDATE ".PRFX."user SET
-                password        =". $db->qstr( JUserHelper::hashPassword($password) ).",
+                password        =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
                 require_reset   =". $db->qstr( 0                                    ).",   
                 last_reset_time =". $db->qstr( time()                               ).",
                 reset_count     =". $db->qstr( 0                                    )."
@@ -1451,7 +1451,7 @@ class MigrateMyitcrm extends QSetup {
                 }
 
                 // return the filename with a random query to allow for caching issues
-                return $new_logo_filename . '?' . strtolower(JUserHelper::genRandomPassword(3));
+                return $new_logo_filename . '?' . strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(3));
 
             // If file is invalid then load the error page  
             } else {
@@ -1464,7 +1464,7 @@ class MigrateMyitcrm extends QSetup {
                 echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
                  */   
 
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), '', _gettext("Failed to update logo because the submitted file was invalid."));
 
             }
 

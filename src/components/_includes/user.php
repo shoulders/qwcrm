@@ -177,7 +177,7 @@ function insert_user($VAR) {
     $sql = "INSERT INTO ".PRFX."user_records SET
             client_id           =". $db->qstr( $VAR['client_id']                            ).", 
             username            =". $db->qstr( $VAR['username']                             ).",
-            password            =". $db->qstr( JUserHelper::hashPassword($VAR['password'])  ).",
+            password            =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($VAR['password'])  ).",
             email               =". $db->qstr( $VAR['email']                                ).",
             usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
             active              =". $db->qstr( $VAR['active']                               ).",
@@ -719,7 +719,7 @@ function reset_user_password($user_id, $password = null) {
     $db = QFactory::getDbo();
     
     // if no password supplied generate a random one
-    if($password == null) { $password = JUserHelper::genRandomPassword(16); }
+    if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
     
     $sql = "UPDATE ".PRFX."user_records SET
             password        =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",

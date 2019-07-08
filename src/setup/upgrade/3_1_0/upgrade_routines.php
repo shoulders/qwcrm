@@ -26,7 +26,7 @@ class Upgrade3_1_0 extends QSetup {
         
         // Get the upgrade step name
         $this->upgrade_step = str_replace('Upgrade', '', static::class);  // `__CLASS__` ? - `static::class` currently will not work for classes with name spaces
-        
+                
         // Perform the upgrade
         $this->pre_database();
         $this->process_database();
@@ -195,10 +195,10 @@ class Upgrade3_1_0 extends QSetup {
         $this->update_record_value(PRFX.'company_record', 'logo', str_replace('media/', '', get_company_details('logo')));
         
         // Update database version number
-        $this->update_record_value(PRFX.'version', 'database_version', $this->upgrade_step);
+        $this->update_record_value(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
         
         // Log message to setup log
-        $record = _gettext("Database has now been upgraded to").' v'.$this->upgrade_step;
+        $record = _gettext("Database has now been upgraded to").' v'.str_replace('_', '.', $this->upgrade_step);
         $this->write_record_to_setup_log('upgrade', $record);
         
     }    

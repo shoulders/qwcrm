@@ -494,7 +494,7 @@ function process_config_data($new_config) {
         if ($new_config['shared_session'] == 1 && $currentShared == 0)
         {
             // Generate a random shared session name
-            $new_config['session_name'] = JUserHelper::genRandomPassword(16);
+            $new_config['session_name'] = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
         }
 
         // Has the user disabled shared sessions?

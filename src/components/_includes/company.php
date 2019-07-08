@@ -491,7 +491,7 @@ function upload_logo() {
             }
             
             // return the filename with a random query to allow for caching issues
-            return $new_logo_filename . '?' . strtolower(JUserHelper::genRandomPassword(3));
+            return $new_logo_filename . '?' . strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(3));
             
         // If file is invalid then load the error page  
         } else {
