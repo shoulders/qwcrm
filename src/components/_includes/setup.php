@@ -388,12 +388,12 @@ class QSetup {
                
         // MY Settings
         
-        // Check for allow_url_fopen support        
+        /* Check for allow_url_fopen support        
         $option = new stdClass;
         $option->label  = _gettext("allow_url_fopen On");
         $option->state  = (bool) ini_get('allow_url_fopen');
         $option->notice = $option->state ? null : _gettext("The PHP Setting 'allow_url_fopen' needs to be enabled.");
-        $options[] = $option;
+        $options[] = $option;*/
         
         /* Check for max_execution_time support (seconds)
         $minimum_max_execution_time = 300;
