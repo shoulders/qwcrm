@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: QWcrm v3.1.0\n"
-"POT-Creation-Date: 2019-06-09 10:56+0100\n"
-"PO-Revision-Date: 2019-06-09 10:56+0100\n"
+"Project-Id-Version: QWcrm v3.1.1\n"
+"POT-Creation-Date: 2019-07-08 15:39+0100\n"
+"PO-Revision-Date: 2019-07-08 15:51+0100\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -232,8 +232,8 @@ msgid "Module:Page"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:31
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:113
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:118
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:114
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:119
 #: language/_gettext_only/system_variables.php:172
 msgid "Administrator"
 msgstr ""
@@ -288,7 +288,7 @@ msgstr ""
 #: themes/default/templates/user/edit.tpl:59
 #: themes/default/templates/user/edit.tpl:77
 #: themes/default/templates/user/new.tpl:56
-#: themes/default/templates/user/new.tpl:79
+#: themes/default/templates/user/new.tpl:80
 #: themes/default/templates/user/search.tpl:59
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:17
 #: themes/default/templates/voucher/details.tpl:32
@@ -327,9 +327,59 @@ msgstr ""
 #: themes/default/templates/administrator/acl.tpl:61
 #: themes/default/templates/administrator/acl.tpl:66
 #: themes/default/templates/administrator/acl.tpl:80
-#: themes/default/templates/administrator/config.tpl:80
-#: themes/default/templates/administrator/config.tpl:90
-#: themes/default/templates/administrator/config.tpl:100
+#: themes/default/templates/administrator/config.tpl:79
+#: themes/default/templates/administrator/config.tpl:89
+#: themes/default/templates/administrator/config.tpl:99
+#: themes/default/templates/administrator/config.tpl:128
+#: themes/default/templates/administrator/config.tpl:305
+#: themes/default/templates/administrator/config.tpl:354
+#: themes/default/templates/administrator/config.tpl:371
+#: themes/default/templates/administrator/config.tpl:423
+#: themes/default/templates/administrator/config.tpl:433
+#: themes/default/templates/administrator/config.tpl:443
+#: themes/default/templates/administrator/config.tpl:453
+#: themes/default/templates/administrator/config.tpl:463
+#: themes/default/templates/administrator/config.tpl:473
+#: themes/default/templates/administrator/config.tpl:483
+#: themes/default/templates/administrator/config.tpl:514
+#: themes/default/templates/administrator/config.tpl:524
+#: themes/default/templates/administrator/config.tpl:541
+#: themes/default/templates/administrator/config.tpl:551
+#: themes/default/templates/administrator/config.tpl:561
+#: themes/default/templates/administrator/config.tpl:571
+#: themes/default/templates/administrator/config.tpl:599
+#: themes/default/templates/administrator/config.tpl:619
+#: themes/default/templates/administrator/config.tpl:647
+#: themes/default/templates/administrator/config.tpl:657
+#: themes/default/templates/client/edit.tpl:86
+#: themes/default/templates/client/new.tpl:88
+#: themes/default/templates/company/edit.tpl:357
+#: themes/default/templates/company/edit.tpl:390
+#: themes/default/templates/company/edit.tpl:422
+#: themes/default/templates/invoice/prefill_items.tpl:55
+#: themes/default/templates/invoice/prefill_items.tpl:94
+#: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:35
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:135
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:140
+#: themes/default/templates/user/blocks/details_details_block.tpl:92
+#: themes/default/templates/user/edit.tpl:142
+#: themes/default/templates/user/new.tpl:146
+#: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:61
+#: themes/default/templates/voucher/details.tpl:88
+msgid "Yes"
+msgstr ""
+
+#: themes/default/templates/administrator/acl.tpl:67
+#: themes/default/templates/administrator/acl.tpl:68
+#: themes/default/templates/administrator/acl.tpl:69
+#: themes/default/templates/administrator/acl.tpl:70
+#: themes/default/templates/administrator/acl.tpl:71
+#: themes/default/templates/administrator/acl.tpl:72
+#: themes/default/templates/administrator/acl.tpl:73
+#: themes/default/templates/administrator/acl.tpl:74
+#: themes/default/templates/administrator/config.tpl:78
+#: themes/default/templates/administrator/config.tpl:88
+#: themes/default/templates/administrator/config.tpl:98
 #: themes/default/templates/administrator/config.tpl:127
 #: themes/default/templates/administrator/config.tpl:304
 #: themes/default/templates/administrator/config.tpl:353
@@ -351,56 +401,6 @@ msgstr ""
 #: themes/default/templates/administrator/config.tpl:618
 #: themes/default/templates/administrator/config.tpl:646
 #: themes/default/templates/administrator/config.tpl:656
-#: themes/default/templates/client/edit.tpl:86
-#: themes/default/templates/client/new.tpl:88
-#: themes/default/templates/company/edit.tpl:357
-#: themes/default/templates/company/edit.tpl:390
-#: themes/default/templates/company/edit.tpl:422
-#: themes/default/templates/invoice/prefill_items.tpl:55
-#: themes/default/templates/invoice/prefill_items.tpl:94
-#: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:35
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:134
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:139
-#: themes/default/templates/user/blocks/details_details_block.tpl:92
-#: themes/default/templates/user/edit.tpl:142
-#: themes/default/templates/user/new.tpl:144
-#: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:61
-#: themes/default/templates/voucher/details.tpl:88
-msgid "Yes"
-msgstr ""
-
-#: themes/default/templates/administrator/acl.tpl:67
-#: themes/default/templates/administrator/acl.tpl:68
-#: themes/default/templates/administrator/acl.tpl:69
-#: themes/default/templates/administrator/acl.tpl:70
-#: themes/default/templates/administrator/acl.tpl:71
-#: themes/default/templates/administrator/acl.tpl:72
-#: themes/default/templates/administrator/acl.tpl:73
-#: themes/default/templates/administrator/acl.tpl:74
-#: themes/default/templates/administrator/config.tpl:79
-#: themes/default/templates/administrator/config.tpl:89
-#: themes/default/templates/administrator/config.tpl:99
-#: themes/default/templates/administrator/config.tpl:126
-#: themes/default/templates/administrator/config.tpl:303
-#: themes/default/templates/administrator/config.tpl:352
-#: themes/default/templates/administrator/config.tpl:369
-#: themes/default/templates/administrator/config.tpl:421
-#: themes/default/templates/administrator/config.tpl:431
-#: themes/default/templates/administrator/config.tpl:441
-#: themes/default/templates/administrator/config.tpl:451
-#: themes/default/templates/administrator/config.tpl:461
-#: themes/default/templates/administrator/config.tpl:471
-#: themes/default/templates/administrator/config.tpl:481
-#: themes/default/templates/administrator/config.tpl:512
-#: themes/default/templates/administrator/config.tpl:522
-#: themes/default/templates/administrator/config.tpl:539
-#: themes/default/templates/administrator/config.tpl:549
-#: themes/default/templates/administrator/config.tpl:559
-#: themes/default/templates/administrator/config.tpl:569
-#: themes/default/templates/administrator/config.tpl:597
-#: themes/default/templates/administrator/config.tpl:617
-#: themes/default/templates/administrator/config.tpl:645
-#: themes/default/templates/administrator/config.tpl:655
 #: themes/default/templates/client/edit.tpl:85
 #: themes/default/templates/client/new.tpl:89
 #: themes/default/templates/company/edit.tpl:358
@@ -415,13 +415,13 @@ msgstr ""
 #: themes/default/templates/invoice/prefill_items.tpl:56
 #: themes/default/templates/invoice/prefill_items.tpl:95
 #: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:37
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:133
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:136
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:138
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:141
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:134
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:137
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:139
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:142
 #: themes/default/templates/user/blocks/details_details_block.tpl:91
 #: themes/default/templates/user/edit.tpl:141
-#: themes/default/templates/user/new.tpl:143
+#: themes/default/templates/user/new.tpl:145
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:60
 #: themes/default/templates/voucher/details.tpl:87
 msgid "No"
@@ -432,20 +432,20 @@ msgstr ""
 #: themes/default/templates/client/note_edit.tpl:50
 #: themes/default/templates/client/note_new.tpl:36
 #: themes/default/templates/company/business_hours.tpl:39
-#: themes/default/templates/expense/new.tpl:186
+#: themes/default/templates/expense/new.tpl:187
 #: themes/default/templates/invoice/edit.tpl:958
-#: themes/default/templates/otherincome/new.tpl:188
+#: themes/default/templates/otherincome/new.tpl:189
 #: themes/default/templates/payment/options.tpl:118
 #: themes/default/templates/refund/new.tpl:144
 #: themes/default/templates/report/financial.tpl:78
 #: themes/default/templates/schedule/edit.tpl:96
 #: themes/default/templates/schedule/new.tpl:83
-#: themes/default/templates/supplier/new.tpl:129
+#: themes/default/templates/supplier/new.tpl:130
 #: themes/default/templates/user/blocks/reset_enter_email_block.tpl:34
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:40
 #: themes/default/templates/user/blocks/reset_enter_token_block.tpl:34
 #: themes/default/templates/user/edit.tpl:244
-#: themes/default/templates/user/new.tpl:243
+#: themes/default/templates/user/new.tpl:245
 #: themes/default/templates/voucher/edit.tpl:87
 #: themes/default/templates/voucher/new.tpl:79
 #: themes/default/templates/workorder/details_edit_comment.tpl:32
@@ -471,7 +471,7 @@ msgid "Reset"
 msgstr ""
 
 #: themes/default/templates/administrator/acl.tpl:142
-#: themes/default/templates/administrator/config.tpl:685
+#: themes/default/templates/administrator/config.tpl:686
 #: themes/default/templates/client/edit.tpl:154
 #: themes/default/templates/client/new.tpl:155
 #: themes/default/templates/client/note_edit.tpl:51
@@ -479,14 +479,14 @@ msgstr ""
 #: themes/default/templates/company/business_hours.tpl:40
 #: themes/default/templates/company/edit.tpl:453
 #: themes/default/templates/expense/edit.tpl:175
-#: themes/default/templates/expense/new.tpl:189
+#: themes/default/templates/expense/new.tpl:190
 #: themes/default/templates/expense/status.tpl:25
 #: themes/default/templates/expense/status.tpl:62
 #: themes/default/templates/invoice/edit.tpl:959
 #: themes/default/templates/invoice/status.tpl:76
 #: themes/default/templates/invoice/status.tpl:95
 #: themes/default/templates/otherincome/edit.tpl:181
-#: themes/default/templates/otherincome/new.tpl:191
+#: themes/default/templates/otherincome/new.tpl:192
 #: themes/default/templates/otherincome/status.tpl:25
 #: themes/default/templates/otherincome/status.tpl:62
 #: themes/default/templates/payment/edit.tpl:149
@@ -501,13 +501,13 @@ msgstr ""
 #: themes/default/templates/schedule/edit.tpl:97
 #: themes/default/templates/schedule/new.tpl:84
 #: themes/default/templates/supplier/edit.tpl:137
-#: themes/default/templates/supplier/new.tpl:131
+#: themes/default/templates/supplier/new.tpl:132
 #: themes/default/templates/supplier/status.tpl:25
 #: themes/default/templates/supplier/status.tpl:62
 #: themes/default/templates/user/blocks/reset_enter_email_block.tpl:35
 #: themes/default/templates/user/blocks/reset_enter_token_block.tpl:35
 #: themes/default/templates/user/edit.tpl:245
-#: themes/default/templates/user/new.tpl:244
+#: themes/default/templates/user/new.tpl:246
 #: themes/default/templates/voucher/edit.tpl:88
 #: themes/default/templates/voucher/new.tpl:80
 #: themes/default/templates/workorder/details_edit_comment.tpl:33
@@ -520,7 +520,7 @@ msgstr ""
 #: components/payment/types/invoice.php:105
 #: components/payment/types/invoice.php:110
 #: components/payment/types/otherincome.php:103
-#: components/payment/types/refund.php:104
+#: components/payment/types/refund.php:105
 msgid "Cancel"
 msgstr ""
 
@@ -536,11 +536,11 @@ msgstr ""
 msgid "Mandatory Settings, you cannot change these."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:15
+#: themes/default/templates/administrator/config.tpl:14
 msgid "QWcrm Config Settings"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:16
+#: themes/default/templates/administrator/config.tpl:15
 #: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:12
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:15
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:12
@@ -559,7 +559,7 @@ msgstr ""
 msgid "ADMINISTRATOR_CONFIG_HELP_TITLE"
 msgstr "Help"
 
-#: themes/default/templates/administrator/config.tpl:16
+#: themes/default/templates/administrator/config.tpl:15
 #: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:12
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:15
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:12
@@ -582,15 +582,15 @@ msgstr ""
 "has a description about what it does and this can be accessed by hovering "
 "over the help icon next each setting."
 
-#: themes/default/templates/administrator/config.tpl:25
-#: themes/default/templates/administrator/config.tpl:336
+#: themes/default/templates/administrator/config.tpl:24
+#: themes/default/templates/administrator/config.tpl:337
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:24
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:24
 msgid "Database"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:29
-#: themes/default/templates/administrator/config.tpl:33
+#: themes/default/templates/administrator/config.tpl:28
+#: themes/default/templates/administrator/config.tpl:32
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:25
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:28
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:25
@@ -599,7 +599,7 @@ msgstr ""
 msgid "Host"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:33
+#: themes/default/templates/administrator/config.tpl:32
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:28
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:28
 msgid ""
@@ -608,8 +608,8 @@ msgid ""
 "database to a new hosting provider)."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:37
-#: themes/default/templates/administrator/config.tpl:41
+#: themes/default/templates/administrator/config.tpl:36
+#: themes/default/templates/administrator/config.tpl:40
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:32
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:35
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:32
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Database Name"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:41
+#: themes/default/templates/administrator/config.tpl:40
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:35
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:35
 msgid ""
@@ -627,8 +627,8 @@ msgid ""
 "to a new hosting provider)."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:45
-#: themes/default/templates/administrator/config.tpl:49
+#: themes/default/templates/administrator/config.tpl:44
+#: themes/default/templates/administrator/config.tpl:48
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:39
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:42
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:39
@@ -637,7 +637,7 @@ msgstr ""
 msgid "Database Username"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:49
+#: themes/default/templates/administrator/config.tpl:48
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:42
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:42
 msgid ""
@@ -646,8 +646,8 @@ msgid ""
 "of the database to a new hosting provider)."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:53
-#: themes/default/templates/administrator/config.tpl:57
+#: themes/default/templates/administrator/config.tpl:52
+#: themes/default/templates/administrator/config.tpl:56
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:46
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:49
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:46
@@ -655,7 +655,7 @@ msgstr ""
 msgid "Database Password"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:57
+#: themes/default/templates/administrator/config.tpl:56
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:49
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:49
 msgid ""
@@ -664,8 +664,8 @@ msgid ""
 "of the database to a new hosting provider)."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:61
-#: themes/default/templates/administrator/config.tpl:65
+#: themes/default/templates/administrator/config.tpl:60
+#: themes/default/templates/administrator/config.tpl:64
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:28
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:31
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:28
@@ -673,7 +673,7 @@ msgstr ""
 msgid "Database Tables Prefix"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:65
+#: themes/default/templates/administrator/config.tpl:64
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:31
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:31
 msgid ""
@@ -682,7 +682,7 @@ msgid ""
 "of the database to a new hosting provider)."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:72
+#: themes/default/templates/administrator/config.tpl:71
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:338
 #: language/_gettext_only/system_variables.php:63
 #: language/_gettext_only/system_variables.php:99
@@ -692,56 +692,52 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:76
+#: themes/default/templates/administrator/config.tpl:75
 msgid "Search Engine Friendly URLs"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:82
-#: themes/default/templates/administrator/config.tpl:86
-#: themes/default/templates/administrator/config.tpl:92
+#: themes/default/templates/administrator/config.tpl:81
+#: themes/default/templates/administrator/config.tpl:85
+#: themes/default/templates/administrator/config.tpl:91
 msgid "Gzip Page Compression"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:82
+#: themes/default/templates/administrator/config.tpl:81
 msgid "Select if the URLs are optimised for Search Engines."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:92
+#: themes/default/templates/administrator/config.tpl:91
 msgid "Compress buffered output if supported."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:96
-#: themes/default/templates/administrator/config.tpl:102
+#: themes/default/templates/administrator/config.tpl:95
+#: themes/default/templates/administrator/config.tpl:101
 msgid "Site Maintenance"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:102
+#: themes/default/templates/administrator/config.tpl:101
 msgid ""
 "Select if access to the Site Frontend is available. If Yes, the Frontend "
 "will display a message via the maintenance page."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:106
-#: themes/default/templates/administrator/config.tpl:110
+#: themes/default/templates/administrator/config.tpl:105
+#: themes/default/templates/administrator/config.tpl:109
 msgid "Theme Name"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:110
+#: themes/default/templates/administrator/config.tpl:109
 msgid ""
 "This is the theme QWcrm is using. The ability to change the theme is not "
 "currently available, although the templating code is all present."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:114
-#: themes/default/templates/administrator/config.tpl:119
+#: themes/default/templates/administrator/config.tpl:113
+#: themes/default/templates/administrator/config.tpl:120
 msgid "Default Language"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:117
-msgid "English"
-msgstr ""
-
-#: themes/default/templates/administrator/config.tpl:119
+#: themes/default/templates/administrator/config.tpl:120
 msgid ""
 "This is the default language QWcrm uses. If 'Autodetect Language' is "
 "disabled or the user's language is not availabe then this language will be "
@@ -750,63 +746,63 @@ msgid ""
 "Internationalization."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:123
-#: themes/default/templates/administrator/config.tpl:129
+#: themes/default/templates/administrator/config.tpl:124
+#: themes/default/templates/administrator/config.tpl:130
 msgid "Autodetect Language"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:129
+#: themes/default/templates/administrator/config.tpl:130
 msgid ""
 "If enabled QWcrm will try to set the language based on your browser. If your "
 "language is not available then the default language will be used."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:133
-#: themes/default/templates/administrator/config.tpl:136
+#: themes/default/templates/administrator/config.tpl:134
+#: themes/default/templates/administrator/config.tpl:137
 msgid "Google Server"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:136
+#: themes/default/templates/administrator/config.tpl:137
 msgid ""
 "This is your regionally prefered Google website. It is currently used for "
 "Google Maps to generate directions."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:143
+#: themes/default/templates/administrator/config.tpl:144
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:38
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:38
 msgid "Mail Settings"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:149
-#: themes/default/templates/administrator/config.tpl:155
+#: themes/default/templates/administrator/config.tpl:150
+#: themes/default/templates/administrator/config.tpl:156
 msgid "Send Mail"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:155
+#: themes/default/templates/administrator/config.tpl:156
 msgid ""
 "Select Yes to turn on mail sending, select No to turn off mail sending. "
 "Warning: It is advised to put the site offline when disabling the mail "
 "function!"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:159
-#: themes/default/templates/administrator/config.tpl:166
+#: themes/default/templates/administrator/config.tpl:160
+#: themes/default/templates/administrator/config.tpl:167
 msgid "Mailer"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:162
+#: themes/default/templates/administrator/config.tpl:163
 msgid "PHP Mail"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:166
+#: themes/default/templates/administrator/config.tpl:167
 msgid ""
 "Select which mailer for the delivery of site email. Sendmail only works on "
 "Linux/UNIX."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:170
-#: themes/default/templates/administrator/config.tpl:173
+#: themes/default/templates/administrator/config.tpl:171
+#: themes/default/templates/administrator/config.tpl:174
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:44
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:47
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:44
@@ -814,69 +810,69 @@ msgstr ""
 msgid "From Email"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:173
+#: themes/default/templates/administrator/config.tpl:174
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:47
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:47
 msgid "The email address that will be used to send site email."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:177
-#: themes/default/templates/administrator/config.tpl:180
+#: themes/default/templates/administrator/config.tpl:178
+#: themes/default/templates/administrator/config.tpl:181
 msgid "From Name"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:180
+#: themes/default/templates/administrator/config.tpl:181
 msgid ""
 "Text displayed in the header &quot;From:&quot; field when sending a site "
 "email. Usually the site name."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:184
-#: themes/default/templates/administrator/config.tpl:187
+#: themes/default/templates/administrator/config.tpl:185
+#: themes/default/templates/administrator/config.tpl:188
 msgid "Reply To Email"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:187
+#: themes/default/templates/administrator/config.tpl:188
 msgid "The email address that will be used to receive end user(s) reply."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:191
-#: themes/default/templates/administrator/config.tpl:194
+#: themes/default/templates/administrator/config.tpl:192
+#: themes/default/templates/administrator/config.tpl:195
 msgid "Reply To Name"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:194
+#: themes/default/templates/administrator/config.tpl:195
 msgid ""
 "Text displayed in the header &quot;To:&quot; field when end user(s) replying "
 "to received email."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:205
-#: themes/default/templates/administrator/config.tpl:208
+#: themes/default/templates/administrator/config.tpl:206
+#: themes/default/templates/administrator/config.tpl:209
 msgid "Sendmail Path"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:208
+#: themes/default/templates/administrator/config.tpl:209
 msgid ""
 "Enter the path to the sendmail program folder on the host server.<br/>This "
 "is only needed when using sendmail and usually does not need to be changed."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:219
-#: themes/default/templates/administrator/config.tpl:222
+#: themes/default/templates/administrator/config.tpl:220
+#: themes/default/templates/administrator/config.tpl:223
 msgid "SMTP Host"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:222
+#: themes/default/templates/administrator/config.tpl:223
 msgid "Enter the name of the SMTP host."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:226
-#: themes/default/templates/administrator/config.tpl:229
+#: themes/default/templates/administrator/config.tpl:227
+#: themes/default/templates/administrator/config.tpl:230
 msgid "SMTP Port"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:229
+#: themes/default/templates/administrator/config.tpl:230
 msgid ""
 "Enter the port number of the SMTP server QWcrm will use to send emails. "
 "Usually:<br />- 25 when using an unsecure mail server<br />- 465 when using "
@@ -884,17 +880,17 @@ msgid ""
 "SMTP with STARTTLS extension."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:233
-#: themes/default/templates/administrator/config.tpl:240
+#: themes/default/templates/administrator/config.tpl:234
+#: themes/default/templates/administrator/config.tpl:241
 msgid "SMTP Security"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:236
-#: themes/default/templates/administrator/config.tpl:292
-#: themes/default/templates/administrator/config.tpl:335
-#: themes/default/templates/administrator/config.tpl:499
-#: themes/default/templates/administrator/config.tpl:579
-#: themes/default/templates/administrator/config.tpl:627
+#: themes/default/templates/administrator/config.tpl:237
+#: themes/default/templates/administrator/config.tpl:293
+#: themes/default/templates/administrator/config.tpl:336
+#: themes/default/templates/administrator/config.tpl:500
+#: themes/default/templates/administrator/config.tpl:580
+#: themes/default/templates/administrator/config.tpl:628
 #: themes/default/templates/client/search.tpl:59
 #: themes/default/templates/client/search.tpl:70
 #: themes/default/templates/expense/search.tpl:63
@@ -915,7 +911,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:240
+#: themes/default/templates/administrator/config.tpl:241
 msgid ""
 "Select the security model of the SMTP server Joomla will use to send emails."
 "<br />- None for no encryption<br />- SSL/TLS for SMTPS (usually on port "
@@ -923,63 +919,63 @@ msgid ""
 "port 587)"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:244
-#: themes/default/templates/administrator/config.tpl:250
+#: themes/default/templates/administrator/config.tpl:245
+#: themes/default/templates/administrator/config.tpl:251
 msgid "SMTP Authentication"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:250
+#: themes/default/templates/administrator/config.tpl:251
 msgid "Select Yes if your SMTP Host requires SMTP Authentication."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:254
-#: themes/default/templates/administrator/config.tpl:257
+#: themes/default/templates/administrator/config.tpl:255
+#: themes/default/templates/administrator/config.tpl:258
 msgid "SMTP Username"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:257
+#: themes/default/templates/administrator/config.tpl:258
 msgid "Enter the username for access to the SMTP host."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:261
-#: themes/default/templates/administrator/config.tpl:264
+#: themes/default/templates/administrator/config.tpl:262
+#: themes/default/templates/administrator/config.tpl:265
 msgid "SMTP Password"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:264
+#: themes/default/templates/administrator/config.tpl:265
 msgid "Enter the password for the SMTP host."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:277
 #: themes/default/templates/administrator/config.tpl:278
+#: themes/default/templates/administrator/config.tpl:279
 msgid "Send Test Mail"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:278
+#: themes/default/templates/administrator/config.tpl:279
 msgid ""
 "You must save your changes before using this as the test uses the saved "
 "settings not those on the page.<br><br>The email will be sent to the logged "
 "in user's email address"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:285
+#: themes/default/templates/administrator/config.tpl:286
 msgid "Security"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:289
-#: themes/default/templates/administrator/config.tpl:296
+#: themes/default/templates/administrator/config.tpl:290
+#: themes/default/templates/administrator/config.tpl:297
 msgid "Force SSL/HTTPS"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:293
+#: themes/default/templates/administrator/config.tpl:294
 msgid "Administrator Only"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:294
+#: themes/default/templates/administrator/config.tpl:295
 msgid "Entire Site"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:296
+#: themes/default/templates/administrator/config.tpl:297
 msgid ""
 "Force site access in the selected areas to occur only with HTTPS (encrypted "
 "HTTP connections with the https:// protocol prefix) and also force the use "
@@ -987,12 +983,12 @@ msgid ""
 "utilise this option."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:300
-#: themes/default/templates/administrator/config.tpl:306
+#: themes/default/templates/administrator/config.tpl:301
+#: themes/default/templates/administrator/config.tpl:307
 msgid "reCAPTCHA"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:306
+#: themes/default/templates/administrator/config.tpl:307
 msgid ""
 "Protect the login procedure with Google reCAPTCHA. reCAPTCHA is a free "
 "service that protects your website from spam and abuse. reCAPTCHA uses an "
@@ -1001,43 +997,43 @@ msgid ""
 "while letting your valid users pass through with ease."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:307
+#: themes/default/templates/administrator/config.tpl:308
 msgid "Get Keys"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:311
-#: themes/default/templates/administrator/config.tpl:314
+#: themes/default/templates/administrator/config.tpl:312
+#: themes/default/templates/administrator/config.tpl:315
 msgid "reCAPTCHA Site Key"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:314
+#: themes/default/templates/administrator/config.tpl:315
 msgid ""
 " The site key is used to invoke reCAPTCHA service on your site or mobile "
 "application."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:318
-#: themes/default/templates/administrator/config.tpl:321
+#: themes/default/templates/administrator/config.tpl:319
+#: themes/default/templates/administrator/config.tpl:322
 msgid "reCAPTCHA Secret Key"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:321
+#: themes/default/templates/administrator/config.tpl:322
 msgid ""
 "The secret key authorizes communication between your application backend and "
 "the reCAPTCHA server to verify the user's response. The secret key needs to "
 "be kept safe for security purposes."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:328
+#: themes/default/templates/administrator/config.tpl:329
 msgid "Session"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:332
-#: themes/default/templates/administrator/config.tpl:338
+#: themes/default/templates/administrator/config.tpl:333
+#: themes/default/templates/administrator/config.tpl:339
 msgid "Session Handler"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:338
+#: themes/default/templates/administrator/config.tpl:339
 msgid ""
 "The mechanism by which QWcrm identifies a User once they are connected to "
 "the website using non-persistent cookies. None/PHP is susceptible to garbage "
@@ -1047,23 +1043,23 @@ msgid ""
 "'session.gc_maxlifetime = 1440'. "
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:342
-#: themes/default/templates/administrator/config.tpl:345
+#: themes/default/templates/administrator/config.tpl:343
+#: themes/default/templates/administrator/config.tpl:346
 msgid "Session Lifetime"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:345
+#: themes/default/templates/administrator/config.tpl:346
 msgid ""
 "Auto log out a User after they have been inactive for the entered number of "
 "minutes. Do not set too high."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:349
-#: themes/default/templates/administrator/config.tpl:355
+#: themes/default/templates/administrator/config.tpl:350
+#: themes/default/templates/administrator/config.tpl:356
 msgid "Shared Session"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:355
+#: themes/default/templates/administrator/config.tpl:356
 msgid ""
 "When enabled, a user's session is shared between the frontend and "
 "administrator sections of the site. Note that changing this value will "
@@ -1071,150 +1067,150 @@ msgid ""
 "'Force HTTPS' option is set to 'Administrator Only'."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:362
-#: themes/default/templates/administrator/config.tpl:366
-#: themes/default/templates/administrator/config.tpl:372
+#: themes/default/templates/administrator/config.tpl:363
+#: themes/default/templates/administrator/config.tpl:367
+#: themes/default/templates/administrator/config.tpl:373
 msgid "Remember Me"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:372
+#: themes/default/templates/administrator/config.tpl:373
 msgid ""
 "Provides remember me functionality so when a user logs in to QWcrm they can "
 "stay logged in even if they close the browser. This works by generatating an "
 "authentication cookie which has an Expiry Date set by the 'Cookie Lifetime'."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:376
-#: themes/default/templates/administrator/config.tpl:379
+#: themes/default/templates/administrator/config.tpl:377
+#: themes/default/templates/administrator/config.tpl:380
 msgid "Cookie Lifetime"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:379
+#: themes/default/templates/administrator/config.tpl:380
 msgid ""
 "The number of days until the authentication cookie will expire. Other "
 "factors may cause it to expire before this. Longer lengths are less secure."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:383
-#: themes/default/templates/administrator/config.tpl:386
+#: themes/default/templates/administrator/config.tpl:384
+#: themes/default/templates/administrator/config.tpl:387
 msgid "Cookie Token Length"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:386
+#: themes/default/templates/administrator/config.tpl:387
 msgid ""
 "The length of the key to use to encrypt the cookie. Longer lengths are more "
 "secure, but they will slow performance."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:393
+#: themes/default/templates/administrator/config.tpl:394
 msgid "Cookies"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:397
-#: themes/default/templates/administrator/config.tpl:400
+#: themes/default/templates/administrator/config.tpl:398
+#: themes/default/templates/administrator/config.tpl:401
 msgid "Cookie Domain"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:400
+#: themes/default/templates/administrator/config.tpl:401
 msgid ""
 "Domain to use when setting session cookies. Precede domain with '.' if "
 "cookie should be valid for all subdomains."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:404
-#: themes/default/templates/administrator/config.tpl:407
+#: themes/default/templates/administrator/config.tpl:405
+#: themes/default/templates/administrator/config.tpl:408
 msgid "Cookie Path"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:407
+#: themes/default/templates/administrator/config.tpl:408
 msgid "Path the cookie should be valid for."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:414
+#: themes/default/templates/administrator/config.tpl:415
 msgid "Logging"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:418
-#: themes/default/templates/administrator/config.tpl:424
+#: themes/default/templates/administrator/config.tpl:419
+#: themes/default/templates/administrator/config.tpl:425
 msgid "Work Order History Notes"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:424
+#: themes/default/templates/administrator/config.tpl:425
 msgid ""
 "Enable work order history notes. This will log all activity related to a "
 "work order and display them in the work order details. This feature is "
 "useful for tracking how jobs are progressing."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:428
+#: themes/default/templates/administrator/config.tpl:429
 msgid "Access Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:434
+#: themes/default/templates/administrator/config.tpl:435
 msgid "QWcrm Access Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:434
+#: themes/default/templates/administrator/config.tpl:435
 msgid ""
 "Enable access logging for QWcrm. This will log all page accesses and store "
 "the data in the Access Log. This log file is in apache log format and can be "
 "found in the logs folder."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:438
+#: themes/default/templates/administrator/config.tpl:439
 msgid "Activity Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:444
+#: themes/default/templates/administrator/config.tpl:445
 msgid "QWcrm Activity Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:444
+#: themes/default/templates/administrator/config.tpl:445
 msgid ""
 "Enable activity logging for QWcrm. This will log all user activity from "
 "within QWcrm and store the data in the Activity Log. This log file is in "
 "apache log format and can be found in the logs folder."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:448
+#: themes/default/templates/administrator/config.tpl:449
 msgid "Error Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:454
+#: themes/default/templates/administrator/config.tpl:455
 msgid "QWcrm Error Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:454
+#: themes/default/templates/administrator/config.tpl:455
 msgid ""
 "Enable error logging for QWcrm. This will log all errors and store the data "
 "in the Error Log. This log file is in apache log format and can be found in "
 "the logs folder."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:458
+#: themes/default/templates/administrator/config.tpl:459
 msgid "SQL Logging"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:464
+#: themes/default/templates/administrator/config.tpl:465
 msgid "QWcrm SQL Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:464
+#: themes/default/templates/administrator/config.tpl:465
 msgid ""
 "Enable SQL logging for QWcrm. This attach the SQL query when present to the "
 "standard QWcrm Error Log. This is disabled by default because it can cause "
 "your logs to get large quickly."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:468
+#: themes/default/templates/administrator/config.tpl:469
 msgid "Email Error Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:474
+#: themes/default/templates/administrator/config.tpl:475
 msgid "QWcrm Email Error Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:474
+#: themes/default/templates/administrator/config.tpl:475
 msgid ""
 "Enable email error logging for QWcrm. This will log all email system errors "
 "from within QWcrm and store the data in the Activity Log. This log file can "
@@ -1222,15 +1218,15 @@ msgid ""
 "problems because the log file will grow in size quicky."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:478
+#: themes/default/templates/administrator/config.tpl:479
 msgid "Email Transport Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:484
+#: themes/default/templates/administrator/config.tpl:485
 msgid "QWcrm Email Transport Log"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:484
+#: themes/default/templates/administrator/config.tpl:485
 msgid ""
 "Enable email transport logging for QWcrm. This will log all email transport "
 "transactions from within QWcrm and store the data in the Email Transport "
@@ -1239,44 +1235,44 @@ msgid ""
 "used for diagnosing problems because the log file will grow in size quicky."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:491
-#: themes/default/templates/administrator/config.tpl:495
-#: themes/default/templates/administrator/config.tpl:505
+#: themes/default/templates/administrator/config.tpl:492
+#: themes/default/templates/administrator/config.tpl:496
+#: themes/default/templates/administrator/config.tpl:506
 msgid "Error Reporting"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:498
+#: themes/default/templates/administrator/config.tpl:499
 msgid "System Default"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:500
+#: themes/default/templates/administrator/config.tpl:501
 msgid "Very Simple"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:501
+#: themes/default/templates/administrator/config.tpl:502
 msgid "Simple"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:502
+#: themes/default/templates/administrator/config.tpl:503
 msgid "Maximum"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:503
+#: themes/default/templates/administrator/config.tpl:504
 msgid "Development"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:505
+#: themes/default/templates/administrator/config.tpl:506
 msgid ""
 "Select the level of PHP reporting for your needs. Do not leave error "
 "reporting on for live sites as this can be a security risk."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:509
-#: themes/default/templates/administrator/config.tpl:515
+#: themes/default/templates/administrator/config.tpl:510
+#: themes/default/templates/administrator/config.tpl:516
 msgid "Error Page Raw Output"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:515
+#: themes/default/templates/administrator/config.tpl:516
 msgid ""
 "Normally when an error occurs the error page is display with the relevant "
 "information, however sometimes looping or white screens can occur and this "
@@ -1285,71 +1281,71 @@ msgid ""
 "otherwise instructed. QWcrm Debug does not need to be enabled."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:519
-#: themes/default/templates/administrator/config.tpl:525
+#: themes/default/templates/administrator/config.tpl:520
+#: themes/default/templates/administrator/config.tpl:526
 msgid "Whoops Error Handler"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:525
+#: themes/default/templates/administrator/config.tpl:526
 msgid ""
 "Whoops will replace all of the custom QWcrm and PHP error handling systems. "
 "It provides a pretty error interface that helps you debug your web projects, "
 "but at heart its a simple yet powerful stacked error handling system."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:532
+#: themes/default/templates/administrator/config.tpl:533
 msgid "Debugging"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:536
-#: themes/default/templates/administrator/config.tpl:542
+#: themes/default/templates/administrator/config.tpl:537
+#: themes/default/templates/administrator/config.tpl:543
 msgid "QWcrm Debug"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:542
+#: themes/default/templates/administrator/config.tpl:543
 msgid ""
 "This on it's own gives basic infomration such as the page and module names "
 "aswell as their load time. QWcrm Debug needs to be enabled to access the "
 "rest of the debugging options."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:546
-#: themes/default/templates/administrator/config.tpl:552
+#: themes/default/templates/administrator/config.tpl:547
+#: themes/default/templates/administrator/config.tpl:553
 msgid "QWcrm Advanced Debug"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:552
+#: themes/default/templates/administrator/config.tpl:553
 msgid ""
 "This does a full varible and class dump from PHP. This is a security risk "
 "and should only be used for QWcrm development."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:556
-#: themes/default/templates/administrator/config.tpl:562
+#: themes/default/templates/administrator/config.tpl:557
+#: themes/default/templates/administrator/config.tpl:563
 msgid "Smarty Debugging (QWcrm)"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:562
+#: themes/default/templates/administrator/config.tpl:563
 msgid ""
 "Because of the way QWcrm is structured I needed to implement a custom method "
 "to call the Smarty Debugging template."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:566
-#: themes/default/templates/administrator/config.tpl:572
+#: themes/default/templates/administrator/config.tpl:567
+#: themes/default/templates/administrator/config.tpl:573
 msgid "Smarty Debugging"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:576
-#: themes/default/templates/administrator/config.tpl:582
+#: themes/default/templates/administrator/config.tpl:577
+#: themes/default/templates/administrator/config.tpl:583
 msgid "Smarty Debugging Control"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:580
+#: themes/default/templates/administrator/config.tpl:581
 msgid "URL"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:582
+#: themes/default/templates/administrator/config.tpl:583
 msgid ""
 "This allows alternate ways to enable debugging. NONE means no alternate "
 "methods are allowed. URL means when the keyword SMARTY_DEBUG is found in the "
@@ -1357,16 +1353,16 @@ msgid ""
 "$debugging is TRUE, this value is ignored."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:589
+#: themes/default/templates/administrator/config.tpl:590
 msgid "Smarty"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:594
-#: themes/default/templates/administrator/config.tpl:600
+#: themes/default/templates/administrator/config.tpl:595
+#: themes/default/templates/administrator/config.tpl:601
 msgid "Force Compile"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:600
+#: themes/default/templates/administrator/config.tpl:601
 msgid ""
 "This forces Smarty to (re)compile templates on every invocation. This "
 "setting overrides 'compile_check'. By default this is FALSE. This is handy "
@@ -1376,44 +1372,44 @@ msgid ""
 "Smarty templates into pure PHP code."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:606
 #: themes/default/templates/administrator/config.tpl:607
+#: themes/default/templates/administrator/config.tpl:608
 msgid "Clear Smarty Compile"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:607
+#: themes/default/templates/administrator/config.tpl:608
 msgid "This clears all of the Smarty compiled template files."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:614
-#: themes/default/templates/administrator/config.tpl:620
+#: themes/default/templates/administrator/config.tpl:615
+#: themes/default/templates/administrator/config.tpl:621
 msgid "Force Cache"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:620
+#: themes/default/templates/administrator/config.tpl:621
 msgid ""
 "This forces Smarty to (re)cache templates on every invocation. It does not "
 "override the $caching level, but merely pretends the template has never been "
 "cached before. "
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:624
-#: themes/default/templates/administrator/config.tpl:631
+#: themes/default/templates/administrator/config.tpl:625
+#: themes/default/templates/administrator/config.tpl:632
 msgid "Caching"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:628
+#: themes/default/templates/administrator/config.tpl:629
 #: themes/default/templates/client/blocks/details_account_block.tpl:22
 #: themes/default/templates/client/blocks/details_account_block.tpl:81
 #: themes/default/templates/client/blocks/details_account_block.tpl:170
 msgid "Current"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:629
+#: themes/default/templates/administrator/config.tpl:630
 msgid "Saved"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:631
+#: themes/default/templates/administrator/config.tpl:632
 msgid ""
 "This tells Smarty whether or not to cache the output of the templates to the "
 "Cache Directory. This is untested with QWcrm.<hr>A value of Smarty::"
@@ -1425,57 +1421,57 @@ msgid ""
 "particular cache expires."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:635
-#: themes/default/templates/administrator/config.tpl:638
+#: themes/default/templates/administrator/config.tpl:636
+#: themes/default/templates/administrator/config.tpl:639
 msgid "Cache Lifetime"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:638
+#: themes/default/templates/administrator/config.tpl:639
 msgid ""
 "This is the length of time in seconds that a template cache is valid. Once "
 "this time has expired, the cache will be regenerated."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:642
-#: themes/default/templates/administrator/config.tpl:648
+#: themes/default/templates/administrator/config.tpl:643
+#: themes/default/templates/administrator/config.tpl:649
 msgid "Cache Modified Check"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:652
-#: themes/default/templates/administrator/config.tpl:658
+#: themes/default/templates/administrator/config.tpl:653
+#: themes/default/templates/administrator/config.tpl:659
 msgid "Cache Locking"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:658
+#: themes/default/templates/administrator/config.tpl:659
 msgid ""
 "Cache locking avoids concurrent cache generation. This means resource "
 "intensive pages can be generated only once, even if they've been requested "
 "multiple times in the same moment."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:664
 #: themes/default/templates/administrator/config.tpl:665
+#: themes/default/templates/administrator/config.tpl:666
 msgid "Clear Smarty Cache"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:665
+#: themes/default/templates/administrator/config.tpl:666
 msgid "This clears the Smarty cache."
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:677
+#: themes/default/templates/administrator/config.tpl:678
 #: themes/default/templates/company/edit.tpl:446
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:315
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:316
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:59
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:253
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:254
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:59
 msgid "Mandatory"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:678
+#: themes/default/templates/administrator/config.tpl:679
 msgid "Cannot Change"
 msgstr ""
 
-#: themes/default/templates/administrator/config.tpl:684
+#: themes/default/templates/administrator/config.tpl:685
 #: themes/default/templates/client/edit.tpl:153
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:210
 #: themes/default/templates/expense/edit.tpl:174
@@ -1876,8 +1872,8 @@ msgstr ""
 #: themes/default/templates/expense/details.tpl:79
 #: themes/default/templates/expense/edit.tpl:145
 #: themes/default/templates/expense/edit.tpl:149
-#: themes/default/templates/expense/new.tpl:155
-#: themes/default/templates/expense/new.tpl:159
+#: themes/default/templates/expense/new.tpl:156
+#: themes/default/templates/expense/new.tpl:160
 #: themes/default/templates/expense/search.tpl:41
 #: themes/default/templates/expense/search.tpl:42
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:16
@@ -1913,8 +1909,8 @@ msgstr ""
 #: themes/default/templates/otherincome/details.tpl:81
 #: themes/default/templates/otherincome/edit.tpl:151
 #: themes/default/templates/otherincome/edit.tpl:155
-#: themes/default/templates/otherincome/new.tpl:155
-#: themes/default/templates/otherincome/new.tpl:159
+#: themes/default/templates/otherincome/new.tpl:156
+#: themes/default/templates/otherincome/new.tpl:160
 #: themes/default/templates/otherincome/search.tpl:41
 #: themes/default/templates/otherincome/search.tpl:42
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:17
@@ -2029,7 +2025,7 @@ msgstr ""
 #: themes/default/templates/client/blocks/details_notes_block.tpl:13
 #: themes/default/templates/client/blocks/details_notes_block.tpl:56
 #: themes/default/templates/client/details.tpl:34
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:228
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:229
 #: themes/default/templates/user/blocks/display_users_block.tpl:19
 #: themes/default/templates/workorder/blocks/details_notes_block.tpl:13
 #: themes/default/templates/workorder/blocks/details_notes_block.tpl:56
@@ -2086,7 +2082,7 @@ msgstr ""
 #: themes/default/templates/workorder/blocks/details_history_block.tpl:24
 #: themes/default/templates/workorder/blocks/details_notes_block.tpl:53
 #: themes/default/templates/workorder/blocks/display_workorders_block.tpl:18
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:50
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:51
 #: themes/default/templates/workorder/new.tpl:40
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:158
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:190
@@ -2209,13 +2205,13 @@ msgstr ""
 
 #: themes/default/templates/client/blocks/display_client_details_block.tpl:32
 #: themes/default/templates/client/blocks/display_clients_block.tpl:12
-#: themes/default/templates/client/search.tpl:38
+#: themes/default/templates/client/search.tpl:37
 #: themes/default/templates/company/edit.tpl:125
 #: themes/default/templates/payment/options.tpl:35
 #: themes/default/templates/refund/search.tpl:38
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:12
 #: themes/default/templates/supplier/details.tpl:37
-#: themes/default/templates/supplier/search.tpl:36
+#: themes/default/templates/supplier/search.tpl:35
 #: themes/default/templates/user/blocks/details_details_block.tpl:21
 #: themes/default/templates/user/blocks/display_users_block.tpl:12
 #: themes/default/templates/user/search.tpl:33
@@ -2247,9 +2243,9 @@ msgstr ""
 #: themes/default/templates/company/edit.tpl:178
 #: themes/default/templates/invoice/printing/print_invoice.tpl:58
 #: themes/default/templates/payment/options.tpl:97
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:86
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:87
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:174
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:91
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:92
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:132
 #: themes/default/templates/supplier/details.tpl:61
 #: themes/default/templates/supplier/edit.tpl:61
@@ -2257,8 +2253,8 @@ msgstr ""
 #: themes/default/templates/user/blocks/details_details_block.tpl:41
 #: themes/default/templates/user/blocks/display_users_block.tpl:18
 #: themes/default/templates/user/edit.tpl:100
-#: themes/default/templates/user/new.tpl:102
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:50
+#: themes/default/templates/user/new.tpl:103
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:51
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:69
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:101
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:58
@@ -2300,18 +2296,18 @@ msgstr ""
 #: themes/default/templates/client/new.tpl:126
 #: themes/default/templates/company/edit.tpl:146
 #: themes/default/templates/invoice/printing/print_invoice.tpl:40
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:191
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:192
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:142
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:196
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:197
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:100
 #: themes/default/templates/supplier/details.tpl:68
 #: themes/default/templates/supplier/edit.tpl:90
 #: themes/default/templates/supplier/edit.tpl:93
-#: themes/default/templates/supplier/new.tpl:90
-#: themes/default/templates/supplier/new.tpl:93
+#: themes/default/templates/supplier/new.tpl:91
+#: themes/default/templates/supplier/new.tpl:94
 #: themes/default/templates/user/blocks/details_details_block.tpl:141
 #: themes/default/templates/user/edit.tpl:200
-#: themes/default/templates/user/new.tpl:200
+#: themes/default/templates/user/new.tpl:202
 #: themes/default/templates/voucher/details.tpl:33
 #: themes/default/templates/workorder/blocks/display_workorders_block.tpl:35
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:58
@@ -2337,8 +2333,8 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:50
 #: themes/default/templates/supplier/details.tpl:39
 #: themes/default/templates/supplier/edit.tpl:75
-#: themes/default/templates/supplier/new.tpl:75
-#: themes/default/templates/supplier/new.tpl:78
+#: themes/default/templates/supplier/new.tpl:76
+#: themes/default/templates/supplier/new.tpl:79
 #: themes/default/templates/workorder/blocks/display_workorders_block.tpl:35
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:67
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:97
@@ -2366,7 +2362,7 @@ msgstr ""
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:128
 #: themes/default/templates/supplier/details.tpl:55
 #: themes/default/templates/supplier/edit.tpl:86
-#: themes/default/templates/supplier/new.tpl:86
+#: themes/default/templates/supplier/new.tpl:87
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:44
 #: themes/default/templates/workorder/blocks/display_workorders_block.tpl:35
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:99
@@ -2389,14 +2385,14 @@ msgstr ""
 #: themes/default/templates/client/search.tpl:61
 #: themes/default/templates/invoice/prefill_items.tpl:37
 #: themes/default/templates/invoice/prefill_items.tpl:80
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:121
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:125
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:126
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:130
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:122
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:126
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:127
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:131
 #: themes/default/templates/user/blocks/details_details_block.tpl:79
 #: themes/default/templates/user/blocks/display_users_block.tpl:38
 #: themes/default/templates/user/edit.tpl:133
-#: themes/default/templates/user/new.tpl:134
+#: themes/default/templates/user/new.tpl:136
 #: themes/default/templates/user/search.tpl:49
 #: themes/default/templates/voucher/search.tpl:63
 #: components/_includes/invoice.php:1531
@@ -2406,12 +2402,12 @@ msgstr ""
 #: themes/default/templates/client/blocks/display_client_details_block.tpl:87
 #: themes/default/templates/client/blocks/display_clients_block.tpl:31
 #: themes/default/templates/client/search.tpl:62
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:122
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:127
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:123
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:128
 #: themes/default/templates/user/blocks/details_details_block.tpl:78
 #: themes/default/templates/user/blocks/display_users_block.tpl:37
 #: themes/default/templates/user/edit.tpl:132
-#: themes/default/templates/user/new.tpl:135
+#: themes/default/templates/user/new.tpl:137
 #: themes/default/templates/user/search.tpl:48
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:23
 #: themes/default/templates/voucher/details.tpl:85
@@ -2449,13 +2445,13 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:52
 #: themes/default/templates/expense/details.tpl:129
 #: themes/default/templates/expense/edit.tpl:169
-#: themes/default/templates/expense/new.tpl:181
+#: themes/default/templates/expense/new.tpl:182
 #: themes/default/templates/expense/search.tpl:46
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:23
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:50
 #: themes/default/templates/otherincome/details.tpl:131
 #: themes/default/templates/otherincome/edit.tpl:175
-#: themes/default/templates/otherincome/new.tpl:182
+#: themes/default/templates/otherincome/new.tpl:183
 #: themes/default/templates/otherincome/search.tpl:46
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:115
 #: themes/default/templates/payment/blocks/display_payment_methods_block.tpl:154
@@ -2482,21 +2478,21 @@ msgstr ""
 #: themes/default/templates/schedule/edit.tpl:87
 #: themes/default/templates/schedule/new.tpl:74
 #: themes/default/templates/schedule/search.tpl:41
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:217
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:223
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:222
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:218
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:224
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:223
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:16
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:37
 #: themes/default/templates/supplier/details.tpl:129
 #: themes/default/templates/supplier/edit.tpl:128
-#: themes/default/templates/supplier/new.tpl:120
+#: themes/default/templates/supplier/new.tpl:121
 #: themes/default/templates/supplier/search.tpl:42
 #: themes/default/templates/user/blocks/details_details_block.tpl:158
 #: themes/default/templates/user/blocks/display_users_block.tpl:48
 #: themes/default/templates/user/edit.tpl:226
 #: themes/default/templates/user/edit.tpl:233
-#: themes/default/templates/user/new.tpl:226
-#: themes/default/templates/user/new.tpl:232
+#: themes/default/templates/user/new.tpl:228
+#: themes/default/templates/user/new.tpl:234
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:32
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:73
 #: themes/default/templates/voucher/details.tpl:153
@@ -2568,10 +2564,10 @@ msgstr ""
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:38
 #: themes/default/templates/supplier/details.tpl:45
 #: themes/default/templates/supplier/edit.tpl:82
-#: themes/default/templates/supplier/new.tpl:82
+#: themes/default/templates/supplier/new.tpl:83
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:44
 #: themes/default/templates/workorder/blocks/display_workorders_block.tpl:35
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:50
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:51
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:68
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:98
 #: themes/default/templates/workorder/printing/print_technician_job_sheet.tpl:57
@@ -2659,10 +2655,10 @@ msgstr ""
 #: themes/default/templates/client/details.tpl:33
 #: themes/default/templates/client/edit.tpl:66
 #: themes/default/templates/client/new.tpl:69
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:79
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:84
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:80
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:85
 #: themes/default/templates/user/edit.tpl:92
-#: themes/default/templates/user/new.tpl:95
+#: themes/default/templates/user/new.tpl:96
 msgid "Account"
 msgstr ""
 
@@ -2708,63 +2704,63 @@ msgstr ""
 #: themes/default/templates/client/edit.tpl:126
 #: themes/default/templates/client/new.tpl:130
 #: themes/default/templates/company/edit.tpl:150
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:195
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:196
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:146
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:200
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:201
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:104
 #: themes/default/templates/supplier/details.tpl:73
 #: themes/default/templates/supplier/edit.tpl:97
-#: themes/default/templates/supplier/new.tpl:97
+#: themes/default/templates/supplier/new.tpl:98
 #: themes/default/templates/user/edit.tpl:204
-#: themes/default/templates/user/new.tpl:204
+#: themes/default/templates/user/new.tpl:206
 msgid "City"
 msgstr ""
 
 #: themes/default/templates/client/edit.tpl:130
 #: themes/default/templates/client/new.tpl:134
 #: themes/default/templates/company/edit.tpl:154
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:199
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:200
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:150
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:204
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:205
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:108
 #: themes/default/templates/supplier/details.tpl:78
 #: themes/default/templates/supplier/edit.tpl:101
-#: themes/default/templates/supplier/new.tpl:101
+#: themes/default/templates/supplier/new.tpl:102
 #: themes/default/templates/user/edit.tpl:208
-#: themes/default/templates/user/new.tpl:208
+#: themes/default/templates/user/new.tpl:210
 msgid "State"
 msgstr ""
 
 #: themes/default/templates/client/edit.tpl:134
 #: themes/default/templates/client/new.tpl:138
 #: themes/default/templates/company/edit.tpl:158
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:203
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:204
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:154
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:208
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:209
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:112
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:14
 #: themes/default/templates/supplier/details.tpl:83
 #: themes/default/templates/supplier/edit.tpl:105
-#: themes/default/templates/supplier/new.tpl:105
+#: themes/default/templates/supplier/new.tpl:106
 #: themes/default/templates/supplier/search.tpl:39
 #: themes/default/templates/user/edit.tpl:212
-#: themes/default/templates/user/new.tpl:212
+#: themes/default/templates/user/new.tpl:214
 msgid "Zip"
 msgstr ""
 
 #: themes/default/templates/client/edit.tpl:138
 #: themes/default/templates/client/new.tpl:142
 #: themes/default/templates/company/edit.tpl:162
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:207
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:208
 #: themes/default/templates/setup/blocks/install_company_details_block.tpl:158
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:212
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:213
 #: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:116
 #: themes/default/templates/supplier/details.tpl:88
 #: themes/default/templates/supplier/edit.tpl:109
-#: themes/default/templates/supplier/new.tpl:109
+#: themes/default/templates/supplier/new.tpl:110
 #: themes/default/templates/supplier/search.tpl:40
 #: themes/default/templates/user/edit.tpl:216
-#: themes/default/templates/user/new.tpl:216
+#: themes/default/templates/user/new.tpl:218
 msgid "Country"
 msgstr ""
 
@@ -2838,7 +2834,7 @@ msgstr ""
 "You can search by the clients's name only. By default all clients are "
 "listed. You can browse the results using the navigation arrows."
 
-#: themes/default/templates/client/search.tpl:37
+#: themes/default/templates/client/search.tpl:38
 msgid "Client ID"
 msgstr ""
 
@@ -3246,13 +3242,13 @@ msgstr ""
 #: themes/default/templates/core/403.tpl:16
 #: themes/default/templates/core/404.tpl:16
 #: themes/default/templates/core/blocks/theme_menu_block.tpl:16
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:172
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:70
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:177
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:173
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:71
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:178
 #: themes/default/templates/user/edit.tpl:180
-#: themes/default/templates/user/new.tpl:181
+#: themes/default/templates/user/new.tpl:183
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:44
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:50
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:51
 #: themes/default/templates/workorder/status.tpl:67
 msgid "Home"
 msgstr ""
@@ -3441,8 +3437,8 @@ msgstr ""
 #: themes/default/templates/refund/edit.tpl:94
 #: themes/default/templates/refund/status.tpl:13
 #: themes/default/templates/refund/status.tpl:24
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:118
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:123
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:119
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:124
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:15
 #: themes/default/templates/supplier/details.tpl:95
 #: themes/default/templates/supplier/edit.tpl:113
@@ -3451,7 +3447,7 @@ msgstr ""
 #: themes/default/templates/user/blocks/details_details_block.tpl:76
 #: themes/default/templates/user/blocks/display_users_block.tpl:16
 #: themes/default/templates/user/edit.tpl:129
-#: themes/default/templates/user/new.tpl:131
+#: themes/default/templates/user/new.tpl:133
 #: themes/default/templates/voucher/blocks/display_vouchers_block.tpl:22
 #: themes/default/templates/voucher/details.tpl:126
 #: themes/default/templates/voucher/edit.tpl:54
@@ -3711,7 +3707,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:16
 #: themes/default/templates/expense/details.tpl:38
 #: themes/default/templates/expense/edit.tpl:128
-#: themes/default/templates/expense/new.tpl:138
+#: themes/default/templates/expense/new.tpl:139
 #: themes/default/templates/expense/search.tpl:40
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:15
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:20
@@ -3739,7 +3735,7 @@ msgstr ""
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:16
 #: themes/default/templates/otherincome/details.tpl:40
 #: themes/default/templates/otherincome/edit.tpl:134
-#: themes/default/templates/otherincome/new.tpl:138
+#: themes/default/templates/otherincome/new.tpl:139
 #: themes/default/templates/otherincome/search.tpl:40
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:16
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:17
@@ -3769,7 +3765,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:20
 #: themes/default/templates/expense/details.tpl:89
 #: themes/default/templates/expense/edit.tpl:153
-#: themes/default/templates/expense/new.tpl:163
+#: themes/default/templates/expense/new.tpl:164
 #: themes/default/templates/expense/search.tpl:44
 #: themes/default/templates/invoice/blocks/display_invoice_balance_block.tpl:18
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:23
@@ -3801,7 +3797,7 @@ msgstr ""
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:20
 #: themes/default/templates/otherincome/details.tpl:91
 #: themes/default/templates/otherincome/edit.tpl:159
-#: themes/default/templates/otherincome/new.tpl:163
+#: themes/default/templates/otherincome/new.tpl:164
 #: themes/default/templates/otherincome/search.tpl:44
 #: themes/default/templates/refund/blocks/display_refund_balance_block.tpl:19
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:21
@@ -3859,7 +3855,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:17
 #: themes/default/templates/expense/details.tpl:64
 #: themes/default/templates/expense/edit.tpl:145
-#: themes/default/templates/expense/new.tpl:155
+#: themes/default/templates/expense/new.tpl:156
 #: themes/default/templates/expense/search.tpl:41
 #: themes/default/templates/invoice/details.tpl:204
 #: themes/default/templates/invoice/details.tpl:282
@@ -3870,7 +3866,7 @@ msgstr ""
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:17
 #: themes/default/templates/otherincome/details.tpl:66
 #: themes/default/templates/otherincome/edit.tpl:151
-#: themes/default/templates/otherincome/new.tpl:155
+#: themes/default/templates/otherincome/new.tpl:156
 #: themes/default/templates/otherincome/search.tpl:41
 #: themes/default/templates/refund/blocks/display_refunds_block.tpl:18
 #: themes/default/templates/refund/details.tpl:66
@@ -3883,7 +3879,7 @@ msgstr ""
 #: themes/default/templates/expense/blocks/display_expenses_block.tpl:55
 #: themes/default/templates/expense/details.tpl:118
 #: themes/default/templates/expense/edit.tpl:165
-#: themes/default/templates/expense/new.tpl:177
+#: themes/default/templates/expense/new.tpl:178
 #: themes/default/templates/expense/search.tpl:45
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:41
 #: themes/default/templates/invoice/blocks/display_invoices_block.tpl:46
@@ -3891,7 +3887,7 @@ msgstr ""
 #: themes/default/templates/otherincome/blocks/display_otherincomes_block.tpl:51
 #: themes/default/templates/otherincome/details.tpl:120
 #: themes/default/templates/otherincome/edit.tpl:171
-#: themes/default/templates/otherincome/new.tpl:178
+#: themes/default/templates/otherincome/new.tpl:179
 #: themes/default/templates/otherincome/search.tpl:45
 #: themes/default/templates/report/financial.tpl:230
 #: themes/default/templates/report/financial.tpl:258
@@ -3942,7 +3938,7 @@ msgstr ""
 
 #: themes/default/templates/expense/details.tpl:49
 #: themes/default/templates/expense/edit.tpl:132
-#: themes/default/templates/expense/new.tpl:142
+#: themes/default/templates/expense/new.tpl:143
 #: themes/default/templates/invoice/details.tpl:203
 #: themes/default/templates/invoice/details.tpl:281
 #: themes/default/templates/invoice/edit.tpl:675
@@ -3953,7 +3949,7 @@ msgstr ""
 #: themes/default/templates/invoice/printing/print_invoice.tpl:215
 #: themes/default/templates/otherincome/details.tpl:51
 #: themes/default/templates/otherincome/edit.tpl:138
-#: themes/default/templates/otherincome/new.tpl:142
+#: themes/default/templates/otherincome/new.tpl:143
 #: themes/default/templates/refund/details.tpl:51
 #: themes/default/templates/refund/new.tpl:95
 msgid "VAT Tax Code"
@@ -3973,7 +3969,7 @@ msgstr ""
 #: components/payment/types/expense.php:95
 #: components/payment/types/invoice.php:96
 #: components/payment/types/otherincome.php:95
-#: components/payment/types/refund.php:96
+#: components/payment/types/refund.php:97
 msgid "Submit Payment"
 msgstr ""
 
@@ -3997,9 +3993,9 @@ msgstr ""
 "For VATable expenses all values should be filled in appropriately."
 
 #: themes/default/templates/expense/edit.tpl:136
-#: themes/default/templates/expense/new.tpl:146
+#: themes/default/templates/expense/new.tpl:147
 #: themes/default/templates/otherincome/edit.tpl:142
-#: themes/default/templates/otherincome/new.tpl:146
+#: themes/default/templates/otherincome/new.tpl:147
 msgid "TNA"
 msgstr ""
 
@@ -4041,28 +4037,28 @@ msgstr ""
 msgid "First Group"
 msgstr ""
 
-#: themes/default/templates/expense/new.tpl:171
-#: themes/default/templates/otherincome/new.tpl:171
+#: themes/default/templates/expense/new.tpl:172
+#: themes/default/templates/otherincome/new.tpl:172
 #: themes/default/templates/refund/new.tpl:129
 msgid "Additional Group"
 msgstr ""
 
-#: themes/default/templates/expense/new.tpl:186
 #: themes/default/templates/expense/new.tpl:187
-#: themes/default/templates/otherincome/new.tpl:188
+#: themes/default/templates/expense/new.tpl:188
 #: themes/default/templates/otherincome/new.tpl:189
+#: themes/default/templates/otherincome/new.tpl:190
 #: themes/default/templates/refund/new.tpl:144
 msgid "Are You sure you want to continue without payment?"
 msgstr ""
 
-#: themes/default/templates/expense/new.tpl:187
-#: themes/default/templates/otherincome/new.tpl:189
-#: themes/default/templates/supplier/new.tpl:130
+#: themes/default/templates/expense/new.tpl:188
+#: themes/default/templates/otherincome/new.tpl:190
+#: themes/default/templates/supplier/new.tpl:131
 msgid "Submit and New"
 msgstr ""
 
-#: themes/default/templates/expense/new.tpl:188
-#: themes/default/templates/otherincome/new.tpl:190
+#: themes/default/templates/expense/new.tpl:189
+#: themes/default/templates/otherincome/new.tpl:191
 #: themes/default/templates/refund/new.tpl:145
 msgid "Submit and Payment"
 msgstr ""
@@ -4426,7 +4422,7 @@ msgstr ""
 #: themes/default/templates/supplier/blocks/display_suppliers_block.tpl:39
 #: themes/default/templates/supplier/details.tpl:118
 #: themes/default/templates/supplier/edit.tpl:121
-#: themes/default/templates/supplier/new.tpl:113
+#: themes/default/templates/supplier/new.tpl:114
 #: themes/default/templates/supplier/search.tpl:41
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:62
 #: themes/default/templates/workorder/details_edit_description.tpl:41
@@ -5840,9 +5836,9 @@ msgid "Setting schedule for work order"
 msgstr ""
 
 #: themes/default/templates/schedule/day.tpl:63
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:55
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:58
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:61
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:56
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:59
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:62
 #: themes/default/templates/workorder/details.tpl:20
 #: themes/default/templates/workorder/details.tpl:23
 #: themes/default/templates/workorder/details.tpl:26
@@ -5985,15 +5981,15 @@ msgid "You need to fix your Server Enviroment before you can install QWcrm."
 msgstr ""
 
 #: themes/default/templates/setup/blocks/choice_compatibility_test_block.tpl:98
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:234
-#: themes/default/templates/setup/blocks/install_company_details_block.tpl:321
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:235
+#: themes/default/templates/setup/blocks/install_company_details_block.tpl:322
 #: themes/default/templates/setup/blocks/install_config_settings_block.tpl:66
 #: themes/default/templates/setup/blocks/install_database_connection_block.tpl:68
 #: themes/default/templates/setup/blocks/install_database_install_block.tpl:24
 #: themes/default/templates/setup/blocks/install_database_install_results_block.tpl:25
 #: themes/default/templates/setup/blocks/install_start_numbers_block.tpl:52
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:239
-#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:259
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:240
+#: themes/default/templates/setup/blocks/migrate_myitcrm_company_details_block.tpl:260
 #: themes/default/templates/setup/blocks/migrate_myitcrm_config_settings_block.tpl:66
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_myitcrm_block.tpl:44
 #: themes/default/templates/setup/blocks/migrate_myitcrm_database_connection_qwcrm_block.tpl:68
@@ -6060,127 +6056,127 @@ msgstr ""
 msgid "Based"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:90
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:95
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:91
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:96
 #: themes/default/templates/user/blocks/details_details_block.tpl:39
 #: themes/default/templates/user/blocks/display_users_block.tpl:14
 #: themes/default/templates/user/edit.tpl:104
-#: themes/default/templates/user/new.tpl:106
+#: themes/default/templates/user/new.tpl:107
 msgid "Username"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:94
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:99
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:95
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:100
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:27
 #: themes/default/templates/user/edit.tpl:108
 #: themes/default/templates/user/login.tpl:37
-#: themes/default/templates/user/new.tpl:110
+#: themes/default/templates/user/new.tpl:111
 msgid "Password"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:95
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:100
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:100
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:105
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:96
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:101
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:101
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:106
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:28
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:33
 #: themes/default/templates/user/edit.tpl:109
 #: themes/default/templates/user/edit.tpl:114
-#: themes/default/templates/user/new.tpl:111
-#: themes/default/templates/user/new.tpl:116
+#: themes/default/templates/user/new.tpl:112
+#: themes/default/templates/user/new.tpl:117
 msgid "Passwords Match!"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:95
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:100
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:100
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:105
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:96
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:101
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:101
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:106
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:28
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:33
 #: themes/default/templates/user/edit.tpl:109
 #: themes/default/templates/user/edit.tpl:114
-#: themes/default/templates/user/new.tpl:111
-#: themes/default/templates/user/new.tpl:116
+#: themes/default/templates/user/new.tpl:112
+#: themes/default/templates/user/new.tpl:117
 msgid "Passwords Do Not Match!"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:98
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:103
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:99
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:104
 #: themes/default/templates/user/blocks/reset_enter_password_block.tpl:31
 #: themes/default/templates/user/edit.tpl:112
-#: themes/default/templates/user/new.tpl:114
+#: themes/default/templates/user/new.tpl:115
 msgid "Confirm Password"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:105
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:110
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:106
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:111
 #: themes/default/templates/user/blocks/details_details_block.tpl:70
 #: themes/default/templates/user/blocks/display_users_block.tpl:15
 #: themes/default/templates/user/edit.tpl:119
-#: themes/default/templates/user/new.tpl:121
+#: themes/default/templates/user/new.tpl:122
 msgid "Usergroup"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:130
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:135
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:131
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:136
 #: themes/default/templates/user/blocks/details_details_block.tpl:89
 #: themes/default/templates/user/edit.tpl:138
-#: themes/default/templates/user/new.tpl:140
+#: themes/default/templates/user/new.tpl:142
 msgid "Require Reset"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:148
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:153
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:149
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:154
 #: themes/default/templates/user/edit.tpl:155
-#: themes/default/templates/user/new.tpl:157
+#: themes/default/templates/user/new.tpl:159
 msgid "Work"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:154
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:159
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:155
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:160
 #: themes/default/templates/user/blocks/details_details_block.tpl:112
 #: themes/default/templates/user/edit.tpl:162
-#: themes/default/templates/user/new.tpl:163
+#: themes/default/templates/user/new.tpl:165
 msgid "Work Phone"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:158
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:163
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:159
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:164
 #: themes/default/templates/user/blocks/details_details_block.tpl:114
 #: themes/default/templates/user/edit.tpl:166
-#: themes/default/templates/user/new.tpl:167
+#: themes/default/templates/user/new.tpl:169
 msgid "Work Mobile Phone"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:162
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:167
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:163
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:168
 #: themes/default/templates/user/blocks/details_details_block.tpl:118
 #: themes/default/templates/user/edit.tpl:170
-#: themes/default/templates/user/new.tpl:171
+#: themes/default/templates/user/new.tpl:173
 msgid "Work Fax"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:178
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:183
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:179
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:184
 #: themes/default/templates/user/blocks/details_details_block.tpl:130
 #: themes/default/templates/user/edit.tpl:187
-#: themes/default/templates/user/new.tpl:187
+#: themes/default/templates/user/new.tpl:189
 msgid "Home Phone"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:182
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:187
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:183
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:188
 #: themes/default/templates/user/blocks/details_details_block.tpl:132
 #: themes/default/templates/user/edit.tpl:191
-#: themes/default/templates/user/new.tpl:191
+#: themes/default/templates/user/new.tpl:193
 msgid "Home Mobile Phone"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:186
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:191
+#: themes/default/templates/setup/blocks/install_administrator_account_block.tpl:187
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:192
 #: themes/default/templates/user/blocks/details_details_block.tpl:136
 #: themes/default/templates/user/edit.tpl:195
-#: themes/default/templates/user/new.tpl:195
+#: themes/default/templates/user/new.tpl:197
 msgid "Home Email"
 msgstr ""
 
@@ -6297,11 +6293,11 @@ msgstr ""
 msgid "Display Name"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:69
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:70
 msgid "Office"
 msgstr ""
 
-#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:71
+#: themes/default/templates/setup/blocks/migrate_myitcrm_administrator_account_block.tpl:72
 msgid "OnSite"
 msgstr ""
 
@@ -6666,7 +6662,7 @@ msgstr ""
 
 #: themes/default/templates/supplier/details.tpl:31
 #: themes/default/templates/supplier/edit.tpl:42
-#: themes/default/templates/supplier/search.tpl:35
+#: themes/default/templates/supplier/search.tpl:36
 msgid "Supplier ID"
 msgstr ""
 
@@ -7140,7 +7136,7 @@ msgstr ""
 
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:16
 #: themes/default/templates/workorder/blocks/display_workorders_block.tpl:16
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:41
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:42
 #: themes/default/templates/workorder/details_edit_description.tpl:30
 #: themes/default/templates/workorder/new.tpl:39
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:123
@@ -7165,9 +7161,8 @@ msgstr ""
 
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:99
 #: themes/default/templates/workorder/details_edit_comment.tpl:29
-#: themes/default/templates/workorder/new.tpl:75
-#: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:147
-msgid "comment"
+#: themes/default/templates/workorder/search.tpl:43
+msgid "Comment"
 msgstr ""
 
 #: themes/default/templates/workorder/blocks/details_workorder_block.tpl:106
@@ -7187,32 +7182,32 @@ msgstr ""
 msgid "Client Info"
 msgstr ""
 
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:50
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:51
 msgid "Employee Info"
 msgstr ""
 
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:55
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:56
 #: themes/default/templates/workorder/details.tpl:20
 #: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:36
 msgid "Technician Work Order Slip"
 msgstr ""
 
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:58
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:59
 #: themes/default/templates/workorder/details.tpl:23
 msgid "Technician Work Order Job Sheet"
 msgstr ""
 
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:61
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:62
 #: themes/default/templates/workorder/details.tpl:26
 #: themes/default/templates/workorder/printing/print_client_workorder_slip.tpl:36
 msgid "Client Work Order Slip"
 msgstr ""
 
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:64
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:65
 msgid "View The Work Order"
 msgstr ""
 
-#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:70
+#: themes/default/templates/workorder/blocks/display_workorders_block.tpl:71
 msgid "There are no work orders."
 msgstr ""
 
@@ -7304,6 +7299,11 @@ msgstr "Help"
 #: language/_gettext_only/pages.php:749
 msgid "WORKORDER_NEW_HELP_CONTENT"
 msgstr "Create new Work Orders here."
+
+#: themes/default/templates/workorder/new.tpl:75
+#: themes/default/templates/workorder/printing/print_technician_workorder_slip.tpl:147
+msgid "comment"
+msgstr ""
 
 #: themes/default/templates/workorder/new.tpl:87
 msgid "Assign to the current employee"
@@ -7548,10 +7548,6 @@ msgstr ""
 
 #: themes/default/templates/workorder/search.tpl:13
 msgid "Workorder Search"
-msgstr ""
-
-#: themes/default/templates/workorder/search.tpl:43
-msgid "Comment"
 msgstr ""
 
 #: themes/default/templates/workorder/status.tpl:13
@@ -8638,7 +8634,7 @@ msgstr ""
 msgid "Do not delete the root folder and files!!!"
 msgstr ""
 
-#: components/_includes/setup.php:281 components/_includes/setup.php:288
+#: components/_includes/setup.php:281
 msgid "PHP Version"
 msgstr ""
 
@@ -8696,14 +8692,6 @@ msgstr ""
 
 #: components/_includes/setup.php:386
 msgid "The PHP Extension 'curl' needs to be enabled."
-msgstr ""
-
-#: components/_includes/setup.php:393
-msgid "allow_url_fopen On"
-msgstr ""
-
-#: components/_includes/setup.php:395
-msgid "The PHP Setting 'allow_url_fopen' needs to be enabled."
 msgstr ""
 
 #: components/_includes/setup.php:418
@@ -8901,19 +8889,33 @@ msgstr ""
 msgid "Successfully migrated all records into QWcrm table"
 msgstr ""
 
-#: components/_includes/setup.php:1397
+#: components/_includes/setup.php:1360
+msgid "The upgrade process has been split to prevent server timeouts."
+msgstr ""
+
+#: components/_includes/setup.php:1361
+msgid "This stage will upgrade QWcrm to version"
+msgstr ""
+
+#: components/_includes/setup.php:1362
+msgid ""
+"If there are more upgrade stages to perform, they will start immediately "
+"after this one."
+msgstr ""
+
+#: components/_includes/setup.php:1406
 msgid "The database upgrade process failed, check the logs."
 msgstr ""
 
-#: components/_includes/setup.php:1409
+#: components/_includes/setup.php:1418
 msgid "The database upgrade process was successful."
 msgstr ""
 
-#: components/_includes/setup.php:1457
+#: components/_includes/setup.php:1466
 msgid "Failed to copy ColumnA to ColumnB in the table"
 msgstr ""
 
-#: components/_includes/setup.php:1471
+#: components/_includes/setup.php:1480
 msgid "Successfully copied ColumnA to ColumnB in the table"
 msgstr ""
 
@@ -9565,14 +9567,14 @@ msgstr ""
 #: components/invoice/delete_labour.php:21
 #: components/invoice/delete_parts.php:21 components/otherincome/cancel.php:17
 #: components/otherincome/delete.php:17 components/payment/cancel.php:24
-#: components/payment/delete.php:24 components/payment/new.php:70
+#: components/payment/delete.php:24 components/payment/new.php:71
 #: components/refund/cancel.php:21 components/refund/delete.php:21
 #: components/refund/new.php:25 components/schedule/delete.php:19
 #: components/setup/choice.php:16 components/setup/install.php:20
 #: components/setup/migrate.php:20 components/setup/upgrade.php:21
 #: components/supplier/cancel.php:16 components/supplier/delete.php:16
-#: components/user/delete.php:17 components/user/reset.php:38
-#: components/user/reset.php:95 components/user/reset.php:130
+#: components/user/delete.php:17 components/user/reset.php:40
+#: components/user/reset.php:97 components/user/reset.php:132
 #: components/voucher/delete.php:21 components/voucher/new.php:22
 #: components/workorder/delete.php:18 components/workorder/note_delete.php:17
 msgid "No Direct Access Allowed."
@@ -9635,7 +9637,7 @@ msgstr ""
 
 #: components/expense/cancel.php:25 components/expense/delete.php:25
 #: components/expense/details.php:17 components/expense/edit.php:21
-#: components/expense/status.php:16 components/payment/new.php:58
+#: components/expense/status.php:16 components/payment/new.php:59
 msgid "No Expense ID supplied."
 msgstr ""
 
@@ -9667,7 +9669,7 @@ msgstr ""
 #: components/invoice/cancel.php:26 components/invoice/delete.php:28
 #: components/invoice/details.php:22 components/invoice/edit.php:26
 #: components/invoice/print.php:21 components/invoice/status.php:22
-#: components/payment/new.php:44 components/refund/new.php:35
+#: components/payment/new.php:45 components/refund/new.php:35
 #: components/voucher/new.php:27
 msgid "No Invoice ID supplied."
 msgstr ""
@@ -9737,7 +9739,7 @@ msgid "A search of invoices has been performed with the search term"
 msgstr ""
 
 #: components/otherincome/cancel.php:22 components/otherincome/delete.php:22
-#: components/payment/new.php:65
+#: components/payment/new.php:66
 msgid "No Otherincome ID supplied."
 msgstr ""
 
@@ -9750,14 +9752,14 @@ msgid "Otherincome deleted successfully."
 msgstr ""
 
 #: components/otherincome/details.php:17 components/otherincome/edit.php:18
-#: components/payment/new.php:51 components/refund/cancel.php:26
+#: components/payment/new.php:52 components/refund/cancel.php:26
 #: components/refund/delete.php:26 components/refund/details.php:18
 #: components/refund/edit.php:22
 msgid "No Refund ID supplied."
 msgstr ""
 
-#: components/otherincome/edit.php:29 components/refund/edit.php:33
-msgid "Refund updated successfully."
+#: components/otherincome/edit.php:29
+msgid "Otherincome updated successfully."
 msgstr ""
 
 #: components/otherincome/edit.php:34
@@ -9787,7 +9789,7 @@ msgid "No Payment ID supplied."
 msgstr ""
 
 #: components/payment/cancel.php:86 components/payment/delete.php:86
-#: components/payment/edit.php:99 components/payment/new.php:157
+#: components/payment/edit.php:99 components/payment/new.php:164
 msgid "Invalid Payment Type."
 msgstr ""
 
@@ -9871,7 +9873,7 @@ msgstr ""
 msgid "No Payment Type supplied."
 msgstr ""
 
-#: components/payment/new.php:205
+#: components/payment/new.php:212
 msgid "Invalid Payment Method."
 msgstr ""
 
@@ -9886,7 +9888,7 @@ msgstr ""
 #: components/payment/types/expense.php:111
 #: components/payment/types/invoice.php:119
 #: components/payment/types/otherincome.php:111
-#: components/payment/types/refund.php:112
+#: components/payment/types/refund.php:113
 msgid "Return to Record"
 msgstr ""
 
@@ -9907,9 +9909,9 @@ msgstr ""
 #: components/payment/types/otherincome.php:134
 #: components/payment/types/otherincome.php:153
 #: components/payment/types/otherincome.php:172
-#: components/payment/types/refund.php:135
-#: components/payment/types/refund.php:154
-#: components/payment/types/refund.php:173
+#: components/payment/types/refund.php:136
+#: components/payment/types/refund.php:155
+#: components/payment/types/refund.php:174
 msgid "has been updated to reflect this change."
 msgstr ""
 
@@ -9928,7 +9930,7 @@ msgstr ""
 
 #: components/payment/types/invoice.php:82
 #: components/payment/types/otherincome.php:81
-#: components/payment/types/refund.php:82
+#: components/payment/types/refund.php:83
 msgid "The balance has been cleared."
 msgstr ""
 
@@ -9971,19 +9973,19 @@ msgid ""
 "system."
 msgstr ""
 
-#: components/payment/types/refund.php:135
+#: components/payment/types/refund.php:136
 msgid "Payment updated successfully and Refund"
 msgstr ""
 
-#: components/payment/types/refund.php:154
+#: components/payment/types/refund.php:155
 msgid "Payment cancelled successfully and Refund"
 msgstr ""
 
-#: components/payment/types/refund.php:173
+#: components/payment/types/refund.php:174
 msgid "Payment deleted successfully and Refund"
 msgstr ""
 
-#: components/payment/types/refund.php:186
+#: components/payment/types/refund.php:187
 msgid ""
 "The refund cannot receive a payment because it is on a different tax system."
 msgstr ""
@@ -9994,6 +9996,10 @@ msgstr ""
 
 #: components/refund/delete.php:33
 msgid "Refund deleted successfully."
+msgstr ""
+
+#: components/refund/edit.php:33
+msgid "Refund updated successfully."
 msgstr ""
 
 #: components/refund/edit.php:38
@@ -10266,17 +10272,17 @@ msgstr ""
 msgid "New user has been created."
 msgstr ""
 
-#: components/user/reset.php:50
+#: components/user/reset.php:52
 msgid ""
 "You cannot reset the password on this account. It either does not exist or "
 "is blocked."
 msgstr ""
 
-#: components/user/reset.php:137
+#: components/user/reset.php:139
 msgid "The submitted reset code was invalid."
 msgstr ""
 
-#: components/user/reset.php:154
+#: components/user/reset.php:156
 msgid "Password reset successfully."
 msgstr ""
 
@@ -10319,7 +10325,7 @@ msgid "Cannot edit the comment of a closed Work Order."
 msgstr ""
 
 #: components/workorder/details_edit_comment.php:31
-msgid "comment have been updated."
+msgid "Comment has been updated."
 msgstr ""
 
 #: components/workorder/details_edit_description.php:21
@@ -12015,6 +12021,7 @@ msgid "Finished the correction of the migrated `user` data in QWcrm."
 msgstr ""
 
 #: setup/upgrade/3_1_0/upgrade_routines.php:201
+#: setup/upgrade/3_1_1/upgrade_routines.php:59
 msgid "Database has now been upgraded to"
 msgstr ""
 
