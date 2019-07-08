@@ -24,21 +24,21 @@
                     <tr>
                         <td align="right"><b>{t}Host{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="qwcrm_config[db_host]" class="olotd5" size="25" value="{$qwcrm_config.db_host}" type="text" maxlength="20" placeholder="localhost" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwcrm_config[db_host]" class="olotd5" size="25" value="{$qwcrm_config.db_host}" type="text" maxlength="50" placeholder="localhost" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Host{/t}</strong></div><hr><div>{t escape=tooltip}The hostname for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}Database Name{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="qwcrm_config[db_name]" class="olotd5" size="25" value="{$qwcrm_config.db_name}" type="text" maxlength="20" required onkeydown="return onlyMysqlDatabaseName(event);"/>
+                            <input name="qwcrm_config[db_name]" class="olotd5" size="25" value="{$qwcrm_config.db_name}" type="text" maxlength="50" required onkeydown="return onlyMysqlDatabaseName(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Name{/t}</strong></div><hr><div>{t escape=tooltip}The name for your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
                     <tr>
                         <td align="right"><b>{t}Database Username{/t}</b> <span style="color: #ff0000">*</span></td>
                         <td>
-                            <input name="qwcrm_config[db_user]" class="olotd5" size="25" value="{$qwcrm_config.db_user}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"/>
+                            <input name="qwcrm_config[db_user]" class="olotd5" size="25" value="{$qwcrm_config.db_user}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumeric(event);"/>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Database Username{/t}</strong></div><hr><div>{t escape=tooltip}The username for access to your database entered during the installation process. Do not edit this field unless absolutely necessary (eg the transfer of the database to a new hosting provider).{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>                    
