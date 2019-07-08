@@ -1333,6 +1333,7 @@ class QSetup {
         
         $upgrade_steps = array();
         $current_db_version = get_qwcrm_database_version_number();
+        $targetVersion = null;
 
         // This pattern scans within the folder for objects (files and directories)
         $directories = glob(SETUP_DIR.'upgrade/' . '*', GLOB_ONLYDIR);
@@ -1349,10 +1350,18 @@ class QSetup {
                 // Add to the new array
                 $upgrade_steps[] = $stepVersionNumber;
                 
+                // Set the target version
+                $targetVersion = $stepVersionNumber;
+                
             }           
             
            // If break.txt exists stop adding further stages (to prevent timeouts on large upgrades)
            if(file_exists($directory.'/break.txt')) {
+               $record  = _gettext("The upgrade process has been split to prevent server timeouts.").'<br>';
+               $record .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
+               $record .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
+               $this->write_record_to_setup_log('upgrade', $record);
+               $this->smarty->assign('information_msg', $record);
                break;
            }
             
