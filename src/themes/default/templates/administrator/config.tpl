@@ -5,7 +5,6 @@
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
 *}
-
 <script src="{$theme_js_dir}tinymce/tinymce.min.js"></script>
 <script>{include file="`$theme_js_dir_finc`editor-config.js"}</script>
 
@@ -113,8 +112,10 @@
                     <tr>
                         <td align="right"><b>{t}Default Language{/t}</b></td>
                         <td>
-                            <select class="olotd5" id="default_language" name="qwcrm_config[default_language]">                                                       
-                                <option value="en_GB"{if $qwcrm_config.default_language == 'en_GB'} selected{/if}>{t}English{/t}</option>                                
+                            <select class="olotd5" id="default_language" name="qwcrm_config[default_language]">
+                                {section name=l loop=$available_languages}  
+                                    <option value="{$available_languages[l]}"{if $available_languages[l] == $qwcrm_config.default_language} selected{/if}>{t}{$available_languages[l]}{/t}</option>
+                                {/section} 
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Default Language{/t}</strong></div><hr><div>{t escape=tooltip}This is the default language QWcrm uses. If \'Autodetect Language\' is disabled or the user\'s language is not availabe then this language will be used to display translations. If for some reason this fails, the language will default to english. This only works if your PHP enviroment supports Internationalization.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>

@@ -1497,7 +1497,37 @@ function clear_smarty_compile() {
 }
 
 ################################################
-#         Load Language                        #
+#         Load Languages                       #  List the available languages and return as an array
+################################################
+
+function load_languages() {
+
+    // Get the array of directories
+    $languages = glob(LANGUAGE_DIR . '*', GLOB_ONLYDIR);
+    
+    // Remove path from directory and just leave the directory name (i.e. en_GB)
+    $languages = array_map('basename', $languages);
+        
+    // Make sure that en_GB is always first in the list (find it by value, delete and then re-add)
+    if (($key = array_search('en_GB', $languages)) !== false) {
+        unset($languages[$key]);
+        array_unshift($languages, 'en_GB');
+    }
+        
+    // Remove '_gettext_only' directory    
+    if (($key = array_search('_gettext_only', $languages)) !== false) {
+        unset($languages[$key]);
+    }
+    
+    // Re-index the array - This is not needed but keeps things neat
+    $languages = array_values($languages);
+    
+    return $languages;
+    
+}
+    
+################################################
+#         Load Language                        #  // Most people use $locale instead of $language
 ################################################
 
 function load_language() {
@@ -1508,7 +1538,7 @@ function load_language() {
     // Autodetect Language - I18N support information here
     if(function_exists('locale_accept_from_http') && (QFactory::getConfig()->get('autodetect_language') == '1' || \QFactory::getConfig()->get('autodetect_language') == null)) {
 
-        // Use the locale language if detected or default language or british english
+        // Use the locale language if detected or default language or british english (format = en_GB)
         if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
             // Set default language as the chosen language or fallback to british english
@@ -1532,13 +1562,19 @@ function load_language() {
 
     }
 
-    // Here we define the global system locale given the found language
+    // Here we define the global system locale given the found language (apparently can also use putenv("LANGUAGE=$language");)
     putenv("LANG=$language");
 
-    // This might be useful for date functions (LC_TIME) or money formatting (LC_MONETARY), for instance
+    // https://www.php.net/manual/en/function.setlocale.php
+    
+    // This sets local for all these settings - LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME, LC_MESSAGES
+    // This might be useful for date or money formatting etc...
     _setlocale(LC_ALL, $language);
-
-    // Set the text domain
+    
+    // Set the LC_MESSAGES store - This sets the folder name which stores the LC_MESSAGES folder - This does not work
+    //_setlocale(LC_MESSAGES, $language);
+    
+    // Set the text domain - This sets the name of the .mo file
     $textdomain = 'site';
 
     // This will make _gettext look for ../language/<lang>/LC_MESSAGES/site.mo
@@ -1547,7 +1583,7 @@ function load_language() {
     // Indicates in what encoding the file should be read
     _bind_textdomain_codeset($textdomain, 'UTF-8');
 
-    // Here we indicate the default domain the _gettext() calls will respond to
+    // Here we indicate the default domain the _gettext() calls will respond to - The default .mo file
     _textdomain($textdomain);
 
 }
