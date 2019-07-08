@@ -10,17 +10,17 @@
 #   PHP Configuration                           #
 #################################################
 
-// Define QWcrm Minimum and Maximum PHP versions
+// Define and check QWcrm Minimum PHP version
 define('QWCRM_MINIMUM_PHP', '5.6.21');
-define('QWCRM_MAXIMUM_PHP', '8.0.0');
-
-// Check the PHP version is within the compatible range
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run. Your current version is '.PHP_VERSION);
 }
+
+/* Define and check QWcrm Maximum PHP version
+define('QWCRM_MAXIMUM_PHP', 'x.x.x');
 if (version_compare(PHP_VERSION, QWCRM_MAXIMUM_PHP, '>=')) {
     die('QWcrm requires a PHP version lower than '.QWCRM_MAXIMUM_PHP.' to run. Your current version is '.PHP_VERSION);
-}
+}*/
 
 // Disable magic quotes
 ini_set('magic_quotes_runtime', 0);
