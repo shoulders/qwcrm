@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QWcrm v3.1.1\n"
-"POT-Creation-Date: 2019-07-08 15:39+0100\n"
-"PO-Revision-Date: 2019-07-08 15:51+0100\n"
+"POT-Creation-Date: 2019-07-08 17:45+0100\n"
+"PO-Revision-Date: 2019-07-08 17:46+0100\n"
 "Last-Translator: \n"
 "Language-Team: https://quantumwarp.com/\n"
 "Language: en_GB\n"
@@ -8754,7 +8754,7 @@ msgid "Failed to update the record value"
 msgstr ""
 
 #: components/_includes/setup.php:568 components/_includes/setup.php:586
-msgid "where the records were matched in the columm"
+msgid "where the records were matched in the column"
 msgstr ""
 
 #: components/_includes/setup.php:568 components/_includes/setup.php:586
@@ -8803,7 +8803,9 @@ msgid "Failed to update the values"
 msgstr ""
 
 #: components/_includes/setup.php:631 components/_includes/setup.php:648
-msgid "in the columm"
+#: setup/upgrade/3_1_0/upgrade_routines.php:291
+#: setup/upgrade/3_1_0/upgrade_routines.php:473
+msgid "in the column"
 msgstr ""
 
 #: components/_includes/setup.php:648
@@ -8889,33 +8891,33 @@ msgstr ""
 msgid "Successfully migrated all records into QWcrm table"
 msgstr ""
 
-#: components/_includes/setup.php:1360
+#: components/_includes/setup.php:1363
 msgid "The upgrade process has been split to prevent server timeouts."
 msgstr ""
 
-#: components/_includes/setup.php:1361
+#: components/_includes/setup.php:1364
 msgid "This stage will upgrade QWcrm to version"
 msgstr ""
 
-#: components/_includes/setup.php:1362
+#: components/_includes/setup.php:1365
 msgid ""
 "If there are more upgrade stages to perform, they will start immediately "
 "after this one."
 msgstr ""
 
-#: components/_includes/setup.php:1406
+#: components/_includes/setup.php:1412
 msgid "The database upgrade process failed, check the logs."
 msgstr ""
 
-#: components/_includes/setup.php:1418
+#: components/_includes/setup.php:1424
 msgid "The database upgrade process was successful."
 msgstr ""
 
-#: components/_includes/setup.php:1466
+#: components/_includes/setup.php:1472
 msgid "Failed to copy ColumnA to ColumnB in the table"
 msgstr ""
 
-#: components/_includes/setup.php:1480
+#: components/_includes/setup.php:1486
 msgid "Successfully copied ColumnA to ColumnB in the table"
 msgstr ""
 
@@ -12037,11 +12039,6 @@ msgstr ""
 #: setup/upgrade/3_1_0/upgrade_routines.php:291
 #: setup/upgrade/3_1_0/upgrade_routines.php:473
 msgid "Failed to update the record"
-msgstr ""
-
-#: setup/upgrade/3_1_0/upgrade_routines.php:291
-#: setup/upgrade/3_1_0/upgrade_routines.php:473
-msgid "in the column"
 msgstr ""
 
 #: setup/upgrade/3_1_0/upgrade_routines.php:320
