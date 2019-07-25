@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Please report any bugs or features that you find so that they can be fixed.
 To get more details visit https://quantumwarp.com/
 
-## [3.1.0] 2019-07-08
+## [3.1.1] 2019-07-25
 ### Added
 - Language files can now be dropped in to /language/ folder and be automatically detect and used
 
