@@ -9,7 +9,7 @@ To get more details visit https://quantumwarp.com/
 
 ## [3.1.1] 2019-07-25
 ### Added
-- Language files can now be dropped in to /language/ folder and be automatically detect and used
+- Language files can now be dropped in to the /language/ folder which are automatically detected and can then be used
 
 ### Changed
 - upgraded session handler to Joomla 3.9.8
