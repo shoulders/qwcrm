@@ -56,7 +56,7 @@
                                                             <td>
                                                                 <b>{t}Filter By Type{/t}</b><br>
                                                                 <select class="olotd5" id="filter_type" name="filter_type">
-                                                                    <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
+                                                                    <option value=""{if !$filter_type} selected{/if}>{t}None{/t}</option>
                                                                     <option disabled>----------</option>                                                                        
                                                                     {section name=t loop=$supplier_types}    
                                                                         <option value="{$supplier_types[t].type_key}"{if $filter_type == $supplier_types[t].type_key} selected{/if}>{t}{$supplier_types[t].display_name}{/t}</option>        

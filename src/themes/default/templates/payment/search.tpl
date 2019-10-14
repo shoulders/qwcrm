@@ -69,7 +69,7 @@
                                                                 <td>
                                                                     <b>{t}Filter By Type{/t}</b><br>
                                                                     <select class="olotd5" id="filter_type" name="filter_type">
-                                                                        <option value=""{if $filter_type == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option value=""{if !$filter_type} selected{/if}>{t}None{/t}</option>
                                                                         <option disabled>----------</option>
                                                                         <option value="received"{if $filter_type == 'received'} selected{/if}>{t}Received{/t}</option> 
                                                                         <option value="sent"{if $filter_type == 'sent'} selected{/if}>{t}Sent{/t}</option>
