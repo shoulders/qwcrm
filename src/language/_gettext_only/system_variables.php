@@ -64,6 +64,7 @@ _gettext("Other");
 _gettext("Parts");
 _gettext("Postage");
 _gettext("Rent");
+_gettext("Royalties");
 _gettext("Services");
 _gettext("Software");
 _gettext("TelCo");
