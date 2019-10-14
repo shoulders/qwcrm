@@ -28,7 +28,7 @@ if(isset($VAR['submit'])) {
     update_workorder_scope_and_description($VAR['workorder_id'], $VAR['scope'], $VAR['description']);
     
     // load the workorder details page
-    force_page('workorder', 'details', 'workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Description has been updated."));
+    force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("Description has been updated."));
 
 }
 
