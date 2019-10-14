@@ -31,7 +31,7 @@ INSERT INTO `qw_expense_types` (`id`, `type_key`, `display_name`) VALUES
 (11, 'parts', 'Parts'),
 (12, 'postage', 'Postage'),
 (13, 'rent', 'Rent'),
-(14, 'Royalties', 'royalties'),
+(14, 'royalty', 'Royalty'),
 (15, 'services', 'Services'),
 (16, 'software', 'Software'),
 (17, 'telco', 'TelCo'),
