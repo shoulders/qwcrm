@@ -10,14 +10,14 @@
 -- Upgrade Expense Types Table
 --
 
-DROP TABLE IF EXISTS `qw_expense_types`;
-CREATE TABLE `qw_expense_types` (
+DROP TABLE IF EXISTS `#__expense_types`;
+CREATE TABLE `#__expense_types` (
   `id` int(10) NOT NULL COMMENT 'only for display order',
   `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `qw_expense_types` (`id`, `type_key`, `display_name`) VALUES
+INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (1, 'bank_charges', 'Bank Charges'),
 (2, 'credit', 'Credit'),
 (3, 'commission', 'Commission'),
@@ -40,4 +40,4 @@ INSERT INTO `qw_expense_types` (`id`, `type_key`, `display_name`) VALUES
 (20, 'voucher', 'Voucher'),
 (21, 'wages', 'Wages');
 
-ALTER TABLE `qw_expense_types` ADD PRIMARY KEY (`id`);
+ALTER TABLE `#__expense_types` ADD PRIMARY KEY (`id`);
