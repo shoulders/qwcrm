@@ -64,7 +64,7 @@ _gettext("Other");
 _gettext("Parts");
 _gettext("Postage");
 _gettext("Rent");
-_gettext("Royalties");
+_gettext("Royalty");
 _gettext("Services");
 _gettext("Software");
 _gettext("TelCo");
@@ -99,6 +99,7 @@ _gettext("Credit Note");
 _gettext("Interest");
 _gettext("Other");
 _gettext("Returned Goods");
+_gettext("Tip");
 
 /* Payment Additional Info Types */
 _gettext("Bank Transfer Reference");

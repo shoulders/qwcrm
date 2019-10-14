@@ -41,3 +41,25 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (21, 'wages', 'Wages');
 
 ALTER TABLE `#__expense_types` ADD PRIMARY KEY (`id`);
+
+--
+-- Upgrade Otherincome Types Table
+--
+
+DROP TABLE IF EXISTS `#__otherincome_types`;
+CREATE TABLE `#__otherincome_types` (
+  `id` int(10) NOT NULL COMMENT 'only for display order',
+  `type_key` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `display_name` varchar(30) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
+(1, 'cancelled_services', 'Cancelled Services'),
+(2, 'commission', 'Commission'),
+(3, 'credit_note', 'Credit Note'),
+(4, 'interest', 'Interest'),
+(5, 'other', 'Other'),
+(6, 'returned_goods', 'Returned Goods'),
+(7, 'tip', 'Tip');
+
+ALTER TABLE `#__otherincome_types` ADD PRIMARY KEY (`id`);
