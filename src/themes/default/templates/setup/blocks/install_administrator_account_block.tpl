@@ -232,17 +232,10 @@
                                                                     
                                                                     <tr>                                                                        
                                                                         <td colspan="2">
-                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="administrator_account">{t}Next{/t}</button>
+                                                                            <button id="submit_button" class="olotd5" type="submit" name="submit" value="administrator_account" disabled>{t}Next{/t}</button>
                                                                         </td>
                                                                     </tr>
-                                                                    
-                                                                    <script>
-                                                
-                                                                        // Disable the submit button
-                                                                        disableSubmitButton();                                               
-                                                
-                                                                    </script>
-                                                                    
+                                                                                                                                        
                                                                 </table>                                                                
                                                             </td>
                                                     </table>

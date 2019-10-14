@@ -109,12 +109,12 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Password{/t}</strong></td>
-                                                                                        <td><input id="password" name="password" class="olotd5" type="password" minlength="8" maxlength="20" required input="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="return onlyPassword(event);"></td>
+                                                                                        <td><input id="password" name="password" class="olotd5" type="password" minlength="8" maxlength="20" required oninput="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="return onlyPassword(event);"></td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td align="right"><strong>{t}Confirm Password{/t}</strong></td>
                                                                                         <td>
-                                                                                            <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" minlength="8" maxlength="20" required input="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="onlyPassword(event);">
+                                                                                            <input id="confirmPassword" name="confirmPassword" class="olotd5" type="password" minlength="8" maxlength="20" required oninput="checkPasswordsMatch('{t}Passwords Match!{/t}', '{t}Passwords Do Not Match!{/t}', true);" onkeydown="onlyPassword(event);">
                                                                                             <div id="passwordMessage" style="min-height: 5px;"></div>
                                                                                         </td>
                                                                                     </tr>                                                                                    
@@ -242,18 +242,11 @@
                                                                     
                                                                     <tr>
                                                                         <td colspan="2">                                                                            
-                                                                            <button id="submit_button" type="submit" name="submit" value="submit">{t}Submit{/t}</button>
+                                                                            <button id="submit_button" type="submit" name="submit" value="submit" disabled>{t}Submit{/t}</button>
                                                                             <button type="button" class="olotd4" onclick="window.location.href='index.php?component=user&page_tpl=search';">{t}Cancel{/t}</button>
                                                                         </td>
                                                                     </tr>
-                                                                    
-                                                                    <script>
-                                                
-                                                                        // Disable the submit button
-                                                                        disableSubmitButton();                                               
-                                                
-                                                                    </script>
-                                                                    
+                                                                                                                                        
                                                                 </table>                                                                
                                                             </td>
                                                     </table>

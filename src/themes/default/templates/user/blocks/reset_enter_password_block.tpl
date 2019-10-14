@@ -37,18 +37,11 @@
                                             <tr align="center">                                                
                                                 <td colspan="2">
                                                     <input type="hidden" name="reset_code" value="{$reset_code}">
-                                                    <button id="submit_button" type="submit" name="submit" value="submit"><img src="{$theme_images_dir}tick.png" alt=""> {t}Submit{/t}</button>
+                                                    <button id="submit_button" type="submit" name="submit" value="submit"><img src="{$theme_images_dir}tick.png" alt="" disabled> {t}Submit{/t}</button>
                                                 </td>
                                             </tr>
                                         </table>
                                         
-                                        <script>
-                                                
-                                            // Disable the submit button
-                                            disableSubmitButton();                                               
-                                                
-                                        </script>
-
                                     </form>
                                 </td>
                             </tr>
