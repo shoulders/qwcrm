@@ -38,7 +38,7 @@
                                             <td></td>
                                             <td></td>
                                             <td class="menutd"><b>{t}Email{/t}</b></td>
-                                            <td class="menutd">{$client_details.email}</td>                                                                    
+                                            <td class="menutd"><a href="mailto:{$client_details.email}">{$client_details.email}</a></td>                                                                    
                                         </tr>
                                         <tr>
                                             <td class="menutd"><b>{t}Credit Terms{/t}</b></td>
