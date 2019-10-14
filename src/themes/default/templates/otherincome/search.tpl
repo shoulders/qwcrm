@@ -34,8 +34,8 @@
                                                                 <td align="left" valign="top"><b>{t}Other Income Search{/t}</b>
                                                                     <br />
                                                                     <select class="olotd5" id="search_category" name="search_category">
+                                                                        <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>
                                                                         <option value="otherincome_id"{if $search_category == 'otherincome_id'} selected{/if}>{t}Other Income ID{/t}</option>                                                                        
-                                                                        <option value="payee"{if $search_category == 'payee'} selected{/if}>{t}Payee{/t}</option>                                                                        
                                                                         {if '/^vat_/'|preg_match:$qw_tax_system}
                                                                             <option value="unit_net"{if $search_category == 'unit_net'} selected{/if}>{t}Net{/t}</option>
                                                                             <option value="unit_tax_rate"{if $search_category == 'unit_tax_rate'} selected{/if}>{t}VAT{/t} {t}Rate{/t}</option>
