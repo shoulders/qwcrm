@@ -39,7 +39,7 @@ class QConfig {
     public $cookie_token_length = '16';
     public $cookie_domain = '';
     public $cookie_path = '';
-    public $workorder_history_notes = '1';
+    public $workorder_history_notes = '0';
     public $qwcrm_access_log = '0';
     public $qwcrm_activity_log = '0';
     public $qwcrm_error_log = '0';
