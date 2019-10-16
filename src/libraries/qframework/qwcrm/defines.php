@@ -18,7 +18,7 @@ function load_defines() {
     define('QWCRM_VERSION' ,            '3.1.1'                                             );
     define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                                             );
     
-    // This allows the use of the database ASAP in the setup process
+    // This allows the use of the database ASAP in the setup process - This is the where the config is first created from configuration.php
     if($db_prefix = \QFactory::getConfig()->get('db_prefix')) {
         define('PRFX',                  $db_prefix                                          );
     }

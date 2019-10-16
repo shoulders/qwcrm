@@ -318,18 +318,18 @@ class PlgUserJoomla //extends JPlugin
             $session->destroy();
         }
 
-        // Enable / Disable Forcing logout all users with same userid
+        // Enable / Disable Forcing logout all users with same userid - this setting is in the 'User - Joomla!' plugin, by default this is on.
         //$forceLogout = $this->params->get('forceLogout', 1);
-        $forceLogout = 1;
+        $forceLogout = 1;        
 
         if ($forceLogout)
         {
-            $sql = "DELETE FROM ".PRFX."session WHERE userid = " . $this->db->qstr((int) $user['id']);
+            $sql = "DELETE FROM ".PRFX."session WHERE userid = " . (int) $user['id'];
 
             if (!$sharedSessions)
             {
                 //$query->where($this->db->quoteName('client_id') . ' = ' . (int) $options['clientid']);
-                $sql .= "WHERE " . $this->db->qstr('clientid') . " = " . (int) $options['clientid'];
+                $sql .= "\nAND " . $this->db->qstr('clientid') . " = " . (int) $options['clientid'];
             }
 
             try

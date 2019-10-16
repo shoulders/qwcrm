@@ -47,6 +47,10 @@ class Upgrade3_1_2 extends QSetup {
     // Execute post database scipts and tidy up the data
     public function post_database() {
                 
+        // Config File
+        delete_qwcrm_config_setting('session_name');
+        delete_qwcrm_config_setting('session');
+        
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
         

@@ -67,14 +67,20 @@ if(!defined('QWCRM_SETUP')) {
     // Start the QFramework 
     $app = new QFactory;
     
+    // Merge in the Post Emulation Store (here or in QFramework::__constructor - Until $VAR is present in QFramework, leave it here)
+    $VAR = array_merge($VAR, postEmulationReturnStore());
+    
 }
-
-// Set the Smarty User variables (This seems the best place for this function to run)
-set_user_smarty_variables();
 
 ################################################
 #         Build Page and Content               #
 ################################################
+
+// Build and set the system Messages
+smarty_set_system_messages($VAR);
+
+// Set the Smarty User variables (This seems the best place for this function to run)
+smarty_set_user_variables();
 
 // Get the page controller
 $page_controller = get_page_controller($VAR);

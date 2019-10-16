@@ -110,7 +110,6 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
          */
         if (isset($_COOKIE[$sessionName]))
         {
-
         
             $cookie = session_get_cookie_params();
 

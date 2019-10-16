@@ -62,7 +62,7 @@ require QFRAMEWORK_DIR . 'joomla/libraries/src/Authentication/Authentication.php
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/User.php';                                  // User class - Handles all application interaction with a user
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserHelper.php';                            // This contains password hassing functions etc.. associated with users but used elswhere
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserWrapper.php';                           // Wrapper class for UserHelper
-require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla.php';
+require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla/joomla.php';                               // Basic User Objects interactions (login/logout) - class PlgUserJoomla extends JPlugin
 
 // Main Framework class
 class QFactory {
@@ -82,35 +82,20 @@ class QFactory {
 
     public function __construct()
     {
-        $this->conf     = self::getConfig();       
+               
+        $this->conf     = self::getConfig();        
         
-        // Enable sessions by default.
-        if (is_null($this->conf->get('session')))
-        {
-            $this->conf->set('session', true);
-        }
-
-        // Set the session default name from the config file            - i need to make a random/hashed name here
-        if (is_null($this->conf->get('session_name')))
-        {
-            //$this->conf->set('session_name', $this->getName());
-            $this->conf->set('session_name', \Joomla\CMS\Authentication\UserHelper::genRandomPassword(16));
-        }
-
-        // Create the session if a session name is passed.
-        if ($this->conf->get('session') !== false)
-        {
-            $this->loadSession();
-        }        
+        // Load/Start/Create the session
+        $this->loadSession();                
      
-        // Try to automatically login - i,e, using the remember me cookie - instigates a silent login if a 'Remember me' cookie is found
-        $PlgSystemRemember = new PlgSystemRemember;  // this allows silent login using remember me cookie after checking it exists - need to mnake sure it does not logon if already logged on
+        // Try to automatically login - i.e. using the 'Remember me' feature, a silent login is instigated if a 'Remember me' cookie is found
+        $PlgSystemRemember = new PlgSystemRemember;  // This allows silent login using 'Remember me' cookie after checking it exists - need to make sure it does not re-logon if already logged on
         $PlgSystemRemember->onAfterInitialise();
-        unset($PlgSystemRemember);
+        unset($PlgSystemRemember);        
     
     }
 
-/****************** Load QWcrm ******************/
+/****************** Load QWcrm enviroment, files, variables and dependencies ******************/
     
     /**
      * Load all of the includes, settings and variables for QWcrm
@@ -119,10 +104,10 @@ class QFactory {
     public static function loadQwcrm(&$VAR)
     {                
         load_defines();                                                     // Load System Constants
-        force_ssl(QFactory::getConfig()->get('force_ssl'));                 // Redirect to SSL (if enabled)
+        force_ssl(self::getConfig()->get('force_ssl'));                     // Redirect to SSL (if enabled)
         configure_php_error_reporting();                                    // Configure PHP error reporting
         require(VENDOR_DIR.'autoload.php');                                 // Load dependencies via composer
-        load_whoops(QFactory::getConfig()->get('error_handler_whoops'));    // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)        
+        load_whoops(self::getConfig()->get('error_handler_whoops'));        // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)        
         load_language();                                                    // Load Language  (now in include)
         verify_qwcrm_install_state($VAR);                                   // Verify Installation state (install/migrate/upgrade/complete)
         load_system_variables($VAR);                                        // Load the system variables
@@ -156,7 +141,7 @@ class QFactory {
                 $file = 'configuration.php';
             }
 
-            self::$config = self::createConfig($file, $type, $namespace);            
+        self::$config = self::createConfig($file, $type, $namespace);            
             
         }
 
@@ -214,91 +199,71 @@ class QFactory {
      * but for many applications it will make sense to override this method and create a session,
      * if required, based on more specific needs.
      *
-     * @param   JSession  $session  An optional session object. If omitted, the session is created.
+     * @param   \JSession  $session  An optional session object. If omitted, the session is created.
      *
-     * @return  JApplicationCms  This method is chainable.
+     * @return  CMSApplication  This method is chainable.
      *
      * @since   3.2
+     *
+     * From Joomla 3.9.8 libraries/src/Application/CMSApplication.php
+     * This loads/starts a session with defined options
+     * This 'Wrapper' can be changed to use any options you wish for the session
      */
-    public function loadSession(JSession $session = null)
+    public function loadSession(\JSession $session = null)
     {
         if ($session !== null)
         {
-            self::$session = $session;
+            $this->session = $session;
 
             return $this;
         }
 
-        // Generate a session name.        
-        $name = \QFactory::getHash($this->conf->get('session_name', \Joomla\CMS\User\UserHelper::genRandomPassword(16)));
-
-        // Calculate the session lifetime.
-        $lifetime = ($this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900);
-        
-        // another possible option to declare the client(site/administrator)
-        //$options['clientid'] 
-
-        // Initialize the options for JSession.
-        $options = array(
-            'name'   => $name,
-            'expire' => $lifetime,
-        );
-        
-        switch (QFactory::getClientId())
-        {
-            // site
-            case 0:
-                if ($this->conf->get('force_ssl') == 2)
-                {
-                    $options['force_ssl'] = true;
-                }
-
-                break;
-
-            // administrator
-            case 1:
-                if ($this->conf->get('force_ssl') >= 1)
-                {
-                    $options['force_ssl'] = true;
-                }
-
-                break;
-        }
-
-        //////$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart')); - dont think this is needed here
+        /////$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart')); - dont think this is needed here for QWcrm
 
         /*
-         * Note: The below code CANNOT change from instantiating a session via \QFactory until there is a proper dependency injection container supported
+         * Note: The below code CANNOT change from instantiating a session via \JFactory until there is a proper dependency injection container supported
          * by the application. The current default behaviours result in this method being called each time an application class is instantiated.
          * https://github.com/joomla/joomla-cms/issues/12108 explains why things will crash and burn if you ever attempt to make this change
          * without a proper dependency injection container.
          */
+         
+        // Generate a session name. - $name = self::getHash($this->conf->get('session_name', \Joomla\CMS\User\UserHelper::genRandomPassword(16)));
+        // Calculate the session lifetime. - $lifetime = $this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900;        
+        //$options['clientid'] - another possible option to declare the client(site/administrator)
+         
+        // This actually starts the session with the options defined in the array
+        $session = self::getSession(
+            array(
+                'name'      => self::getHash($this->conf->get('session_name', get_class($this))),
+                'expire'    => $this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900,
+                'force_ssl' => self::isHttpsForced(),
+            )
+        );
 
-        $session = \QFactory::getSession($options);        
-
-        // TODO: At some point we need to get away from having session data always in the db.
-        //$db = \QFactory::getDbo();
-
-        // Remove expired sessions from the database.
-        $time = time();
-
-        // Check the session table for stale entries
-        $session->removeExpiredSessions();
-
+        /////$session->initialise($this->input, $this->dispatcher);
+        
         // Get the session handler from the configuration.
         $handler = $this->conf->get('session_handler', 'none');
 
-        // Check the session is in the database, if not create it else load it
-        if (($handler != 'database' && ($time % 2 || $session->isNew())) || ($handler == 'database' && $session->isNew()))
+        /*
+         * Check for extra session metadata when:
+         *
+         * 1) The database handler is in use and the session is new
+         * 2) The database handler is not in use and the time is an even numbered second or the session is new
+         */
+        if (($handler !== 'database' && (time() % 2 || $session->isNew())) || ($handler === 'database' && $session->isNew()))
         {
             $session->checkSession();
         }
 
-        // Set the session object.        
+        // Set the session object.
         self::$session = $session;
+        
+        // Check the session table for stale entries (replaces above)
+        $this->removeExpiredSessions();
 
         return $this;
-    }   
+    } 
 
     
    /**
@@ -317,7 +282,7 @@ class QFactory {
     {
         if (!self::$session)
         {
-            self::$session = self::createSession($options);
+        self::$session = self::createSession($options);
         }
 
         return self::$session;
@@ -371,7 +336,7 @@ class QFactory {
     {        
         if(!self::$auth)
         {
-            self::$auth = new \Joomla\CMS\Authentication\Authentication;
+        self::$auth = new \Joomla\CMS\Authentication\Authentication;
             
         }
         return self::$auth;
@@ -381,7 +346,7 @@ class QFactory {
 /****************** User Object ******************/
     
     // Check for data in the session.
-    // $temp = JFactory::getApplication()->getUserState('com_config.config.global.data');  - administrator/components/com_config/model/application.php
+    // $temp = Jself::getApplication()->getUserState('com_config.config.global.data');  - administrator/components/com_config/model/application.php
 
     // this handles user data stored in the user section of the session data blob
 
@@ -509,7 +474,7 @@ class QFactory {
     {
         if (!self::$database)
         {
-            self::$database = self::createDbo();
+        self::$database = self::createDbo();
         }
 
         return self::$database;
@@ -640,10 +605,10 @@ class QFactory {
     public static function getSmarty($newInstance = null)
     {
         if(!is_null($newInstance)) {
-            self::$smarty = $newInstance;    
+        self::$smarty = $newInstance;    
         }
         if(is_null(self::$smarty)) {
-            self::$smarty = self::createSmarty();      
+        self::$smarty = self::createSmarty();      
         }
         return self::$smarty;
     }         
@@ -740,7 +705,7 @@ class QFactory {
         return self::getSiteName() === $identifier;
     }
 
-    // joomla/libraries/src/Application/CMSApplication.php
+    // Joomla 3.9.8 - joomla/libraries/src/Application/CMSApplication.php
     /**
      * Checks if HTTPS is forced in the client configuration.
      *
@@ -799,4 +764,26 @@ class QFactory {
         return md5(self::getConfig()->get('secret_key') . $seed);
     }      
       
+    
+    /** 
+     * From Joomla 3.7.0 libraries/legacy/application/application.php - no longer used, merged into QFramework::loadSession()
+     * I wrote this one myself but based on code from line 999 -> 1012
+     */
+    public function removeExpiredSessions()
+    {
+       $db = self::getDbo();
+
+        // Get the current Time
+       $time = time();
+
+       // Remove expired sessions from the database.
+       if ($time % 2)
+       {
+           // The modulus '% 2' introduces a little entropy, making the flushing less accurate
+           // by firing the query less than half the time.
+           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - self::$session->getExpire());            
+           $db->Execute($sql);
+       }  
+    }  
+    
 }

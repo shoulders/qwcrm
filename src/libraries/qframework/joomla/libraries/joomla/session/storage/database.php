@@ -93,7 +93,7 @@ class JSessionStorageDatabase extends JSessionStorage
             
             $sql = "UPDATE ".PRFX."session SET
                     data = ". $db->qstr( $data  ).",
-                    time = ". $db->qstr( time() )."
+                    time = ". time()."
                     WHERE session_id = ".$db->qstr($id);
             $db->Execute($sql);
 

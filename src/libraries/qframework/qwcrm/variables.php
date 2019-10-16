@@ -20,11 +20,11 @@ function load_system_variables(&$VAR) {
         $company_details = get_company_details();
     }
 
-    // Acquire variables from classes examples
+    /* Acquire variables from classes examples */
     // $user->login_user_id;                                    // This is a public variable defined in the class
     // \QFactory::getUser()->login_user_id;                      // Static method to get variable
     // \QFactory::getConfig()->get('sef')                        // This is a variable stored in the registry
-    // $config = \QFactory::getConfig();  | $config->get('sef')  // Get teh config into a variable and then you can call the config settings
+    // $config = \QFactory::getConfig();  | $config->get('sef')  // Get the config into a variable and then you can call the config settings
     // $QConfig->sef                                            // Only works for the QConfig class I made in the root
 
     ##########################################################
@@ -32,11 +32,7 @@ function load_system_variables(&$VAR) {
     ##########################################################
 
     // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
-    if(!defined('QWCRM_SETUP')) {
-        $VAR = array_merge($_POST, $_GET, $VAR, postEmulationReturnStore());    
-    } else {
-        $VAR = array_merge($_POST, $_GET, $VAR);
-    }
+    $VAR = array_merge($_POST, $_GET, $VAR);
 
     // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
     if(!defined('QWCRM_SETUP')) {
@@ -82,18 +78,6 @@ function load_system_variables(&$VAR) {
         $smarty->assign('qw_tax_system', QW_TAX_SYSTEM                           ); 
         $smarty->assign('date_format',   DATE_FORMAT                             );
     }
-
-    #############################
-    #        Messages           #
-    #############################
-
-    // Information Message (Green)
-    $VAR['information_msg'] = isset($VAR['information_msg']) ? $VAR['information_msg'] : null;
-    $smarty->assign('information_msg', $VAR['information_msg']);
-            
-    // Warning Message (Red)
-    $VAR['warning_msg'] = isset($VAR['warning_msg']) ? $VAR['warning_msg'] : null;
-    $smarty->assign('warning_msg', $VAR['warning_msg']);
     
     #############################
     #        Exit Function      #
@@ -103,11 +87,31 @@ function load_system_variables(&$VAR) {
     
 }
 
+######################################
+#  Set the Message Smarty Variables  #
+######################################
+
+function smarty_set_system_messages(&$VAR) {
+    
+    $smarty = \QFactory::getSmarty();
+    
+    // Build Information Message (Green)
+    $VAR['information_msg'] = isset($VAR['information_msg']) ? $VAR['information_msg'] : null;
+    $smarty->assign('information_msg', $VAR['information_msg']);
+
+    // Build Warning Message (Red)
+    $VAR['warning_msg'] = isset($VAR['warning_msg']) ? $VAR['warning_msg'] : null;
+    $smarty->assign('warning_msg', $VAR['warning_msg']);
+    
+    return;
+    
+}
+
 #####################################
 #  Set the User's Smarty Variables  #  // Empty if not logged in or installing (except for usergroup)
 #####################################
 
-function set_user_smarty_variables() {
+function smarty_set_user_variables() {
     
     $smarty = \QFactory::getSmarty();
     

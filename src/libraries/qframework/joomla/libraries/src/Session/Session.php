@@ -641,16 +641,24 @@ class Session implements \IteratorAggregate
             }
         }
 
+        ////// onAfterSessionStart event   
+        
         /*
         if ($this->_dispatcher instanceof \JEventDispatcher)
         {
             $this->_dispatcher->trigger('onAfterSessionStart');
         }
-        */
+        */                
+        /**          
+         * I wrote this myself to replace the event dispatcher 'onAfterSessionStart'
+         * From Joomla 3.7.0 libraries/legacy/application/application.php:989
+         */    
+        if ($this->isNew())
+        {
+            $this->set('registry', new \Joomla\Registry\Registry);
+            $this->set('user', new \Joomla\CMS\User\User);            
+        }
         
-        ////// onAfterSessionStart event
-           
-        $this->onAfterSessionStart();
     }
 
     /**
@@ -677,7 +685,7 @@ class Session implements \IteratorAggregate
             $this->data = unserialize($data);
         }
 
-                /*
+        /*
         // Temporary, PARTIAL, data migration of existing session data to avoid logout on update from J < 3.4.7
         if (isset($_SESSION['__default']) && !empty($_SESSION['__default']))
         {
@@ -712,7 +720,7 @@ class Session implements \IteratorAggregate
              *
             $_SESSION['__default'] = array();
         }
-                */
+        */
 
         return true;
     }
@@ -985,7 +993,7 @@ class Session implements \IteratorAggregate
             $this->set('session.token', null);
         }
 
-        // Check if session has expired
+        // Check if session has expired (this appears to always return with an integer)
         if ($this->getExpire())
         {
             $curTime = $this->get('session.timer.now', 0);
@@ -1029,61 +1037,107 @@ class Session implements \IteratorAggregate
         
     /**************************** Extra Functions Added ****************************/
     
-   /**
-    * From Joomla 3.7.0 libraries/legacy/application/application.php
-    * Checks the user session.
-    *
-    * If the session record doesn't exist, initialise it.
-    * If session is new, create session variables
-    *
-    * @return  void
-    *
-    * @since   3.2
-    * @throws  RuntimeException
-    */
+    
+    /**
+     * From Joomla 3.9.8 libraries/legacy/application/application.php
+     * 
+     * Checks the user session.
+     *
+     * If the session record doesn't exist, initialise it.
+     * If session is new, create session variables
+     *
+     * @return  void
+     *
+     * @since   1.6
+     * @deprecated  3.2
+     */
     public function checkSession()
-    {   
-        $user   = \QFactory::getUser();      // this gets the user from the session
+    {
         $db     = \QFactory::getDbo();
-        $config = \QFactory::getConfig();
-        
-        $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
-        $rs     = $db->Execute($sql);        
-        
-        // If the session record doesn't exist initialise it.
-        if($rs->RecordCount() != 1)
-        {
-            $time = $this->isNew() ? time() : $this->get('session.timer.start');            
+        //$session = JFactory::getSession(); using $this
+        $user   = \QFactory::getUser();      // this gets the user from the session
 
-            // Set up the record to insert            
-            $record['session_id']  = $this->getId()  ;
-            $record['guest']       = (int) $user->guest;
-            $record['time']        = (int) $time;
-            $record['userid']      = (int) $user->id;
-            $record['username']    = $user->username;                 
-           
-            // if login not shared between site and admin (joomla thing)
-            if (!$config->get('shared_session', '0'))
+        $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
+        $rs     = $db->Execute($sql);    
+
+        // If the session record doesn't exist initialise it.
+        if ($rs->RecordCount() != 1)
+        {
+            //$query->clear();
+
+            if ($this->isNew())
             {
-                $record['clientid'] = (int) \QFactory::getClientId();
-            }            
+                /*
+                $query->insert($db->quoteName('#__session'))
+                    ->columns($db->quoteName('session_id') . ', ' . $db->quoteName('client_id') . ', ' . $db->quoteName('time'))
+                    ->values($db->quote($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . time());
+                $db->setQuery($query);
+                 */
+                
+                /* Set up the record to insert            
+                $record['session_id']  = $this->getId()  ;
+                $record['guest']       = (int) $user->guest;
+                $record['time']        = (int) $time;
+                $record['userid']      = (int) $user->id;
+                $record['username']    = $user->username;*/                
+                                
+                $sql = "INSERT INTO ".PRFX."session SET     
+                        session_id      =". $db->qstr( $this->getId()       ).",
+                        clientid        =". (int) \QFactory::getClientId()  .",                        
+                        time            =". time()                          ; 
+                
+            }
+            else
+            {
+                /*
+                $query->insert($db->quoteName('#__session'))*
+                    ->columns(
+                        $db->quoteName('session_id') . ', ' . $db->quoteName('client_id') . ', ' . $db->quoteName('guest') . ', ' .
+                        $db->quoteName('time') . ', ' . $db->quoteName('userid') . ', ' . $db->quoteName('username')
+                    )
+                    ->values(
+                        $db->quote($session->getId()) . ', ' . (int) $this->getClientId() . ', ' . (int) $user->get('guest') . ', ' .
+                        (int) $session->get('session.timer.start') . ', ' . (int) $user->get('id') . ', ' . $db->quote($user->get('username'))
+                    );
+
+                $db->setQuery($query);
+                 */              
+                
+                $sql = "INSERT INTO ".PRFX."session SET  
+                        session_id      =". $db->qstr( $this->getId()                   ).",
+                        clientid        =". (int) \QFactory::getClientId()              .", 
+                        guest           =". (int) $user->guest                          .",
+                        time            =". (int) $this->get('session.timer.start')     .",
+                        userid          =". (int) $user->id                             .",
+                        username        =". $db->qstr( $user->username                  );
+                
+                /*$sql = "UPDATE ".PRFX."session SET                          
+                        clientid        =". (int) \QFactory::getClientId()              .", 
+                        guest           =". (int) $user->guest                          .",
+                        time            =". (int) $this->get('session.timer.start')     .",
+                        userid          =". (int) $user->id                             .",
+                        username        =". $db->qstr( $user->username                  )."
+                        WHERE session_id =". $db->qstr( $this->getId()                  );*/
+                 
+            }
 
             // If the insert failed, exit the application.
             try
             {
-                $db->AutoExecute(PRFX.'session', $record, 'INSERT');                
+                $db->execute($sql);
             }
             catch (RuntimeException $e)
             {
+                //jexit($e->getMessage());
                 throw new RuntimeException(_gettext("Error initialising the session."), $e->getCode(), $e);
             }
         }
-    } 
+    }    
 
     /** 
      * From Joomla 3.7.0 libraries/legacy/application/application.php:989
      * I wrote this one myself to replace the event dispatcher 'onAfterSessionStart'
-     */
+     
     public function onAfterSessionStart()
     {
         if ($this->isNew())
@@ -1091,27 +1145,6 @@ class Session implements \IteratorAggregate
             $this->set('registry', new \Joomla\Registry\Registry);
             $this->set('user', new \Joomla\CMS\User\User);            
         }
-    }
+    }*/
     
-    /** 
-     * From Joomla 3.7.0 libraries/legacy/application/application.php
-     * I wrote this one myself but based on code from line 999 -> 1012
-     */
-    public function removeExpiredSessions()
-    {
-       $db = \QFactory::getDbo();
-
-        // Get the current Time
-       $time = time();
-
-       // Remove expired sessions from the database.
-       if ($time % 2)
-       {
-           // The modulus '% 2' introduces a little entropy, making the flushing less accurate
-           // by firing the query less than half the time.
-           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - $this->getExpire());            
-           $db->Execute($sql);
-       }  
-    }    
-
 }

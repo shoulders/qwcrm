@@ -30,8 +30,7 @@ class QConfig {
     public $recaptcha = '0';
     public $recaptcha_site_key = '';
     public $recaptcha_secret_key = '';
-    public $session_handler = 'database';
-    public $session_name = '';
+    public $session_handler = 'database';    
     public $session_lifetime = '15';
     public $shared_session = '0';
     public $remember_me = '1';
