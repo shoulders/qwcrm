@@ -63,3 +63,10 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (7, 'tip', 'Tip');
 
 ALTER TABLE `#__otherincome_types` ADD PRIMARY KEY (`id`);
+
+
+--
+-- Fix session table
+--
+
+ALTER TABLE `#__session` CHANGE `clientid` `clientid` TINYINT(3) UNSIGNED NULL DEFAULT NULL;

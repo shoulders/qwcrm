@@ -88,8 +88,7 @@ if($VAR['stage'] == 'config_settings') {
     // submit the config settings and load the next page
     if(isset($VAR['submit']) && $VAR['submit'] == 'config_settings') {
                  
-        // Correct missing secret varibles
-        $VAR['qwcrm_config']['session_name']        = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
+        // Add other required varibles
         $VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
         
         update_qwcrm_config_settings_file($VAR['qwcrm_config']);

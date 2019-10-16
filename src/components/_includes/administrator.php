@@ -241,14 +241,14 @@ function update_acl($permissions) {
 ############################################
 
 function update_qwcrm_config_settings_file($new_config) {
+        
+    // Perform miscellaneous operations based on configuration settings/changes.
+    $new_config = process_submitted_config_data($new_config);
     
     // Get a fresh copy of the current settings as an array        
     $current_config = get_qwcrm_config_settings();
     
-    // Perform miscellaneous options based on configuration settings/changes.
-    $new_config = process_config_data($new_config);
-    
-    // Merge the new submitted config and the old one. We do this to preserve values that were not in the submitted form but are in the config.
+    // Merge the new_config and the current_config. We do this to preserve values that were not in the submitted form but are in the config.    
     $merged_config = array_merge($current_config, $new_config);
     
     // Walk through the merged_config array and escape all apostophes (anonymous function)
@@ -454,11 +454,11 @@ function write_config_file($content)
 }    
 
 
-############################################
-#   Process config data before saving      #  // joomla\administrator\components\com_config\model\application.php  -  public function save($data)
-############################################
+###########################################################
+#   Process form SUBMITTED config data before saving      #  // joomla/administrator/components/com_config/model/application.php  -  public function save($data)
+###########################################################
 
-function process_config_data($new_config) {    
+function process_submitted_config_data($new_config) {    
     
     // Get a fresh copy of the current settings as an array        
     $current_config = get_qwcrm_config_settings();
@@ -493,15 +493,21 @@ function process_config_data($new_config) {
         // Has the user enabled shared sessions?
         if ($new_config['shared_session'] == 1 && $currentShared == 0)
         {
-            // Generate a random shared session name
-            $new_config['session_name'] = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
+            // Generate a random shared session name (by doing this the old session becomes detached and the user is logged out)
+            $new_config['session_name'] = \Joomla\CMS\User\UserHelper::genRandomPassword(16);                       
         }
 
         // Has the user disabled shared sessions?
         if ($new_config['shared_session'] == 0 && $currentShared == 1)
         {
-            // Remove the session name value
-            unset($new_config['session_name']);
+            // Remove 'session_name' from $new_config - Does not exist in $new_config - so this not needed - remove when ready
+            //unset($new_config['session_name']);
+            
+            // Remove 'session_name' from the live config registry and configuration.php (prevents 'session_name' getting remerged from these sources)
+            delete_qwcrm_config_setting('session_name');
+            
+            // Logout the current user out silently (this should be for all users ie.e TRUNCATE #_session when on database handler, but this a work around for the current user)
+            logout(true);
         }
     }     
     

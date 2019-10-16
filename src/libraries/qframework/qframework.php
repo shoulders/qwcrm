@@ -227,16 +227,13 @@ class QFactory {
          * without a proper dependency injection container.
          */
          
-        // Generate a session name. - $name = self::getHash($this->conf->get('session_name', \Joomla\CMS\User\UserHelper::genRandomPassword(16)));
-        // Calculate the session lifetime. - $lifetime = $this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900;        
-        //$options['clientid'] - another possible option to declare the client(site/administrator)
-                 
         // This actually starts the session with the options defined in the array
         $session = self::getSession(
             array(
-                'name'      => self::getHash($this->conf->get('session_name', get_class($this))),
+                'name'      => self::getHash($this->conf->get('session_name', get_class($this))),                       // If i use a random string instead of get_class($this), i can never login
                 'expire'    => $this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900,
                 'force_ssl' => self::isHttpsForced(),
+                //'clientid' => 0, // Possible option to declare the client(site/administrator)
             )
         );
 

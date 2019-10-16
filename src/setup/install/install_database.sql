@@ -799,7 +799,7 @@ CREATE TABLE `#__schedule_records` (
 
 CREATE TABLE `#__session` (
   `session_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `clientid` tinyint(3) UNSIGNED NOT NULL DEFAULT '0',
+  `clientid` tinyint(3) UNSIGNED DEFAULT NULL,
   `guest` tinyint(4) UNSIGNED DEFAULT '1',
   `time` varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '',
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,

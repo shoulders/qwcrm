@@ -878,7 +878,6 @@ function logout($silent = null)
     update_user_last_active($user->login_user_id);
     update_client_last_active($user->login_client_id);
     
-
     // Action after logout
     if($silent) {
         
