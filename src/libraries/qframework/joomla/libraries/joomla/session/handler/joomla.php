@@ -79,7 +79,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
         {
             //$session_clean = $this->input->get($session_name, false, 'string'); 
             $cleaner = new Joomla\Input\Input;            
-        $session_clean = $cleaner->get($session_name, false, 'string');        
+            $session_clean = $cleaner->get($session_name, false, 'string');        
 
             if ($session_clean)
             {

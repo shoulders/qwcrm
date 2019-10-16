@@ -230,7 +230,7 @@ class QFactory {
         // Generate a session name. - $name = self::getHash($this->conf->get('session_name', \Joomla\CMS\User\UserHelper::genRandomPassword(16)));
         // Calculate the session lifetime. - $lifetime = $this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900;        
         //$options['clientid'] - another possible option to declare the client(site/administrator)
-         
+                 
         // This actually starts the session with the options defined in the array
         $session = self::getSession(
             array(
@@ -250,6 +250,8 @@ class QFactory {
          *
          * 1) The database handler is in use and the session is new
          * 2) The database handler is not in use and the time is an even numbered second or the session is new
+         * 
+         * This actually creates the session in the database
          */
         if (($handler !== 'database' && (time() % 2 || $session->isNew())) || ($handler === 'database' && $session->isNew()))
         {
