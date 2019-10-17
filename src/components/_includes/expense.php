@@ -29,7 +29,7 @@ defined('_QWEXEC') or die;
 #         Display expenses                          #
 #####################################################
 
-function display_expenses($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null) {
+function display_expenses($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -48,9 +48,12 @@ function display_expenses($order_by, $direction, $use_pages = false, $records_pe
     if($search_term) {$whereTheseRecords .= " AND ".PRFX."expense_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     
     
     /* Filter the Records */  
-    
+        
     // Restrict by Item Type
     if($item_type) { $whereTheseRecords .= " AND ".PRFX."expense_records.item_type= ".$db->qstr($item_type);}
+    
+    // Restrict by status
+    if($status) {$whereTheseRecords .= " AND ".PRFX."expense_records.status= ".$db->qstr($status);} 
         
     /* The SQL code */
     

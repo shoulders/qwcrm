@@ -58,7 +58,7 @@
                                                                 <td>
                                                                     <b>{t}Filter By Status{/t}</b><br>
                                                                     <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>                                                                        
                                                                         {section name=s loop=$payment_statuses}    
                                                                             <option value="{$payment_statuses[s].status_key}"{if $filter_status == $payment_statuses[s].status_key} selected{/if}>{t}{$payment_statuses[s].display_name}{/t}</option>        
                                                                         {/section} 

@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #  Display otherincomes       #
 ###############################
 
-function display_otherincomes($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null) {
+function display_otherincomes($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -50,6 +50,9 @@ function display_otherincomes($order_by, $direction, $use_pages = false, $record
     
     // Restrict by Type
     if($item_type) { $whereTheseRecords .= " AND ".PRFX."otherincome_records.item_type= ".$db->qstr($item_type);}
+    
+    // Restrict by status
+    if($status) {$whereTheseRecords .= " AND ".PRFX."otherincome_records.status= ".$db->qstr($status);} 
         
     /* The SQL code */
     
