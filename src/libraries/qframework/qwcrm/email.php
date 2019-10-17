@@ -410,7 +410,7 @@ function write_record_to_email_error_log($record) {
     if(QFactory::getConfig()->get('qwcrm_email_error_log') != true) { return; }    
     
     // Build log entry    
-    $log_entry .= $_SERVER['REMOTE_ADDR'] . ',' . \QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . \QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
     $log_entry .= $record . "\r\n\r\n";
     $log_entry .= '-----------------------------------------------------------------------------' . "\r\n\r\n";
     
@@ -436,7 +436,7 @@ function write_record_to_email_transport_log($record) {
     if(QFactory::getConfig()->get('qwcrm_email_transport_log') != true) { return; }
     
     // Build log entry
-    $log_entry .= $_SERVER['REMOTE_ADDR'] . ',' . \QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . \QFactory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
     $log_entry .= $record . "\r\n\r\n";
     $log_entry .= '-----------------------------------------------------------------------------' . "\r\n\r\n";
     
