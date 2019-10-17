@@ -102,7 +102,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         // Create SMTP Object 
         $transport = new Swift_SmtpTransport($config->get('email_smtp_host'), $config->get('email_smtp_port'));        
 
-        // Enable encryption SSL/TLS if set
+        // Enable encryption - The options are: None (Null), SSL/TLS ('ssl') - STARTTLS('tls') - The protocols are mislabelled in the code.
         if($config->get('email_smtp_security')) {
             $transport->setEncryption($config->get('email_smtp_security'));
         }

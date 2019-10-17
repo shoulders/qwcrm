@@ -227,18 +227,18 @@
                         <td align="right"><b>{t}SMTP Port{/t}:</b></td>
                         <td>
                             <input name="qwcrm_config[email_smtp_port]" class="olotd5" size="5" value="{$qwcrm_config.email_smtp_port}" type="text" maxlength="50" onkeydown="return onlyNumber(event);">
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Port{/t}</strong></div><hr><div>{t escape=tooltip}Enter the port number of the SMTP server QWcrm will use to send emails. Usually:<br />- 25 when using an unsecure mail server<br />- 465 when using a secure server with SMTPS<br />- 25 or 587 when using a secure server with SMTP with STARTTLS extension.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Port{/t}</strong></div><hr><div>{t escape=tooltip}Enter the port number of the SMTP server QWcrm will use to send emails. Usually:<br /><br />- 25 or 26 when using an unsecure mail server.<br /><br />- 465 or 587 when using a secure server with SMTPS.<br /><br />- 25, 26 or 587 when using a secure server with SMTP with STARTTLS extension.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
                         <td align="right"><b>{t}SMTP Security{/t}:</b></td>
                         <td>
                             <select class="olotd5" name="qwcrm_config[email_smtp_security]">
-                                <option value="" {if $qwcrm_config.email_smtp_security != '' } selected{/if}>{t}None{/t}</option>
-                                <option value="ssl" {if $qwcrm_config.email_smtp_security == 'ssl' } selected{/if}>SSL</option>
-                                <option value="tls" {if $qwcrm_config.email_smtp_security == 'tls' } selected{/if}>TLS</option>                                                                    
+                                <option value="" {if !$qwcrm_config.email_smtp_security} selected{/if}>{t}None{/t}</option>
+                                <option value="ssl" {if $qwcrm_config.email_smtp_security == 'ssl' } selected{/if}>SSL/TLS</option>
+                                <option value="tls" {if $qwcrm_config.email_smtp_security == 'tls' } selected{/if}>STARTTLS</option>                                                                    
                             </select>
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Security{/t}</strong></div><hr><div>{t escape=tooltip}Select the security model of the SMTP server Joomla will use to send emails.<br />- None for no encryption<br />- SSL/TLS for SMTPS (usually on port 465)<br />- STARTTLS for SMTP with STARTTLS extension (usually on port 25 or port 587){/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Security{/t}</strong></div><hr><div>{t escape=tooltip}Select the security model of the SMTP server QWcrm will use to send emails.<br /><br />- <strong>None</strong>: No encryption<br /><br />- <strong>SSL/TLS</strong> for SMTPS: This specifies that encryption should be explicitly used. The strongest available cipher will be used (SSL/TLS/TLSv1.2).<br /><br />- <strong>STARTTLS</strong> for SMTP with STARTTLS extension: This allows an encrypted connection be brought up over a normally unencrypted email port.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
