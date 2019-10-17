@@ -227,7 +227,14 @@ class QFactory {
          * without a proper dependency injection container.
          */
          
-        // This actually starts the session with the options defined in the array
+        /* 
+         * This actually starts the session with the options defined in the array
+         * get_class($this) always returns this class's name which then gets hashed to the same hash
+         * so if i replace this with another fixed hash or string this causes everyone to be logged out as their session seems dependent on this hash
+         * session_name is only used when shared sessions is enabled.
+         * session_name is a randomly created hash that is created when shared session is enabled and deleted when disabled.
+         * Both these hashes need to be fixed
+         */        
         $session = self::getSession(
             array(
                 'name'      => self::getHash($this->conf->get('session_name', get_class($this))),                       // If i use a random string instead of get_class($this), i can never login
