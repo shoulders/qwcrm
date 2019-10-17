@@ -227,7 +227,7 @@
                         <td align="right"><b>{t}SMTP Port{/t}:</b></td>
                         <td>
                             <input name="qwcrm_config[email_smtp_port]" class="olotd5" size="5" value="{$qwcrm_config.email_smtp_port}" type="text" maxlength="50" onkeydown="return onlyNumber(event);">
-                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Port{/t}</strong></div><hr><div>{t escape=tooltip}Enter the port number of the SMTP server QWcrm will use to send emails. Usually:<br /><br />- 25 or 26 when using an unsecure mail server.<br /><br />- 465 or 587 when using a secure server with SMTPS.<br /><br />- 25, 26 or 587 when using a secure server with SMTP with STARTTLS extension.{/t}</div>');" onMouseOut="hideddrivetip();">
+                            <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}SMTP Port{/t}</strong></div><hr><div>{t escape=tooltip}Enter the port number of the SMTP server QWcrm will use to send emails. Usually:<br /><br />- 25 or 26 when using an unsecure mail server.<br /><br />- 465 when using a secure server with SMTPS.<br /><br />- 25, 26 or 587 when using a secure server with SMTP with STARTTLS extension.{/t}</div>');" onMouseOut="hideddrivetip();">
                         </td>
                     </tr>
                     <tr>
