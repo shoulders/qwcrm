@@ -127,7 +127,7 @@ function onlyCurrencySymbol(e) {
 
 // Usernames
 function onlyUsername(e) {
-    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._", false);
+    return keyRestriction(e, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@", false);
 }
 
 // Passwords
