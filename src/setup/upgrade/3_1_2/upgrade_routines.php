@@ -51,6 +51,10 @@ class Upgrade3_1_2 extends QSetup {
         delete_qwcrm_config_setting('session_name');
         delete_qwcrm_config_setting('session');
         
+        // Correct records that did not have their status updated properly to 'paid'
+        $this->update_column_values(PRFX.'expense_records', 'status', 'valid', 'paid');
+        $this->update_column_values(PRFX.'otherincome_records', 'status', 'valid', 'paid');
+        
         // Update database version number
         $this->update_record_value(PRFX.'version', 'database_version', str_replace('_', '.', $this->upgrade_step));
         
