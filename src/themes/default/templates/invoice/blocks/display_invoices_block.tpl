@@ -38,12 +38,12 @@
             <td class="olotd4" nowrap>{if $display_invoices[i].status !== 'deleted'}<img src="{$theme_images_dir}icons/16x16/view.gif" border="0" onMouseOver="ddrivetip('<center><b>{t}Contact{/t}</b></center><hr><b>{t}Phone{/t}: </b>{$display_invoices[i].employee_work_primary_phone}<br><b>{t}Mobile{/t}: </b>{$display_invoices[i].employee_work_mobile_phone}<br><b>{t}Personal{/t}: </b>{$display_invoices[i].employee_home_mobile_phone}');" onMouseOut="hideddrivetip();"><a  href="index.php?component=user&page_tpl=details&user_id={$display_invoices[i].employee_id}"> {$display_invoices[i].employee_display_name}{else}&nbsp;{/if}</td>
             <td class="olotd4" nowrap>
                 {if $display_invoices[i].labour_items}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices[i].labour_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"}</div>');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices[i].labour_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4" nowrap>
                 {if $display_invoices[i].parts_items}
-                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices[i].parts_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"}</div>');" onMouseOut="hideddrivetip();">
+                    <img src="{$theme_images_dir}icons/16x16/view.gif" border="0" alt="" onMouseOver="ddrivetip('<div><strong>{t}Items{/t}</strong></div><hr><div>{$display_invoices[i].parts_items|htmlentities|regex_replace:"/\|\|\|/":"<br>"|regex_replace:"/[\t\r\n']/":" "}</div>');" onMouseOut="hideddrivetip();">
                 {/if}
             </td>
             <td class="olotd4" nowrap>
