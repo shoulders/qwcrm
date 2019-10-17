@@ -66,7 +66,11 @@ ALTER TABLE `#__otherincome_types` ADD PRIMARY KEY (`id`);
 
 
 --
--- Fix session table
+-- Misc
 --
 
+-- Fix session table
 ALTER TABLE `#__session` CHANGE `clientid` `clientid` TINYINT(3) UNSIGNED NULL DEFAULT NULL;
+
+-- Enable on/off for Other payment
+UPDATE `#__payment_methods` SET `send_protected` = '0' WHERE `#__payment_methods`.`id` = 6;
