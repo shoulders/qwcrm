@@ -58,18 +58,6 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Filter By Status{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>
-                                                                        <option disabled>----------</option>                                                                        
-                                                                        {section name=t loop=$refund_statuses}    
-                                                                            <option value="{$refund_statuses[t].status_key}"{if $filter_status == $refund_statuses[t].status_key} selected{/if}>{t}{$refund_statuses[t].display_name}{/t}</option>        
-                                                                        {/section}
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
                                                                     <b>{t}Filter By Type{/t}</b><br>
                                                                     <select class="olotd5" id="filter_type" name="filter_type">
                                                                         <option value=""{if !$filter_type} selected{/if}>{t}None{/t}</option>
@@ -79,7 +67,19 @@
                                                                         {/section}
                                                                     </select>
                                                                 </td>
-                                                            </tr>                                                              
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Status{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_status" name="filter_status">
+                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>                                                                        
+                                                                        {section name=t loop=$refund_statuses}    
+                                                                            <option value="{$refund_statuses[t].status_key}"{if $filter_status == $refund_statuses[t].status_key} selected{/if}>{t}{$refund_statuses[t].display_name}{/t}</option>        
+                                                                        {/section}
+                                                                    </select>
+                                                                </td>
+                                                            </tr>                                                                                                                          
                                                         </table>
                                                     </div>
                                                 </form>

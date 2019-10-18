@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #   Display Clients                 #
 #####################################
 
-function display_clients($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null,  $status = null, $type = null) {
+function display_clients($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -53,13 +53,13 @@ function display_clients($order_by, $direction, $use_pages = false, $records_per
     // Search category with search term
     elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."client_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}     
     
-    /* Filter the Records */    
-    
-    // Restrict by Status
-    if($status) {$whereTheseRecords .= " AND ".PRFX."client_records.active=".$db->qstr($status);}
+    /* Filter the Records */     
     
     // Restrict by Type
     if($type) {$whereTheseRecords .= " AND ".PRFX."client_records.type= ".$db->qstr($type);}    
+    
+    // Restrict by Status (is null because using boolean/integer)
+    if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."client_records.active=".$db->qstr($status);}
 
     /* The SQL code */    
     

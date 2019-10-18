@@ -30,7 +30,7 @@ defined('_QWEXEC') or die;
 #    Display Users                  #  // 'display_name' and 'full_name' are the same. This is usability issues.
 #####################################
 
-function display_users($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $usertype = null, $usergroup = null) {
+function display_users($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $usergroup = null, $usertype = null, $status = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -40,7 +40,7 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     $page_no = $page_no ?: '1';
     $search_category = $search_category ?: 'user_id';
     $havingTheseRecords = '';
-
+       
     /* Records Search */
         
     // Default Action
@@ -54,8 +54,8 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
     
     /* Filter the Records */
         
-    // Restrict by Status
-    if($status) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$db->qstr($status);}  
+    // Restrict results by usergroup
+    if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr($usergroup);}
     
     // Restrict results by user type
     if($usertype && !$usergroup) {
@@ -75,9 +75,9 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
         }
         
     }
-         
-    // Restrict results by usergroup
-    if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr($usergroup);}
+    
+    // Restrict by Status (is null because using boolean/integer)
+    if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$db->qstr($status);}  
     
     /* The SQL code */    
     

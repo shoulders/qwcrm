@@ -42,25 +42,6 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Filter By Status{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option> 
-                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
-                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <b>{t}Filter By Usertype{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_usertype" name="filter_usertype">
-                                                                        <option value=""{if $filter_usertype == ''} selected{/if}>{t}None{/t}</option>                                                                        
-                                                                        <option value="employee"{if $filter_usertype == 'employee'} selected{/if}>{t}Employee{/t}</option>
-                                                                        <option value="client"{if $filter_usertype == 'client'} selected{/if}>{t}Client{/t}</option>
-                                                                    </select>
-                                                                </td>
-                                                            <tr>
-                                                                <td>
                                                                     <b>{t}Filter By Usergroup{/t}</b><br>
                                                                     <select class="olotd5" id="filter_usergroup" name="filter_usergroup">
                                                                         <option value=""{if $filter_usergroup == ''} selected{/if}>{t}None{/t}</option>
@@ -70,7 +51,27 @@
                                                                         {/section}
                                                                     </select>
                                                                 </td>                                                        
-                                                            </tr>                                                          
+                                                            </tr> 
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Usertype{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_usertype" name="filter_usertype">
+                                                                        <option value=""{if !$filter_usertype} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                        <option value="employee"{if $filter_usertype == 'employee'} selected{/if}>{t}Employee{/t}</option>
+                                                                        <option value="client"{if $filter_usertype == 'client'} selected{/if}>{t}Client{/t}</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Status{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_status" name="filter_status">
+                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option> 
+                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>
                                                         </table>
                                                     </div>
                                                 </form>

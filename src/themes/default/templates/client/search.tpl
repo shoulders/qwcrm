@@ -54,17 +54,6 @@
                                                             </tr>
                                                             <tr>
                                                                 <td>
-                                                                    <b>{t}Filter By Status{/t}</b><br>
-                                                                    <select class="olotd5" id="filter_status" name="filter_status">
-                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>
-                                                                        <option disabled>----------</option>
-                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
-                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
                                                                     <b>{t}Filter By Type{/t}</b><br>
                                                                     <select class="olotd5" id="filter_type" name="filter_type">
                                                                         <option value=""{if !$filter_type} selected{/if}>{t}None{/t}</option>
@@ -75,6 +64,17 @@
                                                                     </select>
                                                                 </td>
                                                             </tr> 
+                                                            <tr>
+                                                                <td>
+                                                                    <b>{t}Filter By Status{/t}</b><br>
+                                                                    <select class="olotd5" id="filter_status" name="filter_status">
+                                                                        <option value=""{if $filter_status == ''} selected{/if}>{t}None{/t}</option>
+                                                                        <option disabled>----------</option>
+                                                                        <option value="1"{if $filter_status == '1'} selected{/if}>{t}Active{/t}</option>
+                                                                        <option value="0"{if $filter_status == '0'} selected{/if}>{t}Blocked{/t}</option>
+                                                                    </select>
+                                                                </td>
+                                                            </tr>                                                            
                                                         </table>
                                                     </div>
                                                 </form>
