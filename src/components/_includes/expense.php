@@ -144,7 +144,6 @@ function insert_expense($VAR) {
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."expense_records SET
-            invoice_id      ='',
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id ).",
             payee           =". $db->qstr( $VAR['payee']                   ).",
             date            =". $db->qstr( date_to_mysql_date($VAR['date'])).",
@@ -164,7 +163,8 @@ function insert_expense($VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
     } else {
         
-        /* Get related invoice details
+        /* This code is not used because I removed 'invoice_id'
+         * Get related invoice details
         $invoice_details = get_invoice_details($VAR['invoice_id']);
         
         // Create a Workorder History Note
@@ -309,7 +309,8 @@ function update_expense($VAR) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
     } else {
         
-        /* Get related invoice details
+        /* This code is not used because I removed 'invoice_id'
+         * Get related invoice details
         $invoice_details = get_invoice_details($VAR['invoice_id']);
         
         // Create a Workorder History Note
@@ -370,7 +371,8 @@ function update_expense_status($expense_id, $new_status, $silent = false) {
         // For writing message to log file, get expense status display name
         /*$expense_status_display_name = _gettext(get_expense_status_display_name($new_status));
         
-        // Get related invoice details
+        /* This code is not used because I removed 'invoice_id'
+         * Get related invoice details
         $invoice_details = get_invoice_details($expense_details['invoice_id']);
         
         // Create a Workorder History Note (Not Used)      
