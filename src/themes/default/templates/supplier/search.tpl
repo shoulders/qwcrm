@@ -61,9 +61,20 @@
                                                                     {section name=t loop=$supplier_types}    
                                                                         <option value="{$supplier_types[t].type_key}"{if $filter_type == $supplier_types[t].type_key} selected{/if}>{t}{$supplier_types[t].display_name}{/t}</option>        
                                                                     {/section}
-                                                                /select>
+                                                                </select>
                                                             </td>
-                                                        </tr>                                                        
+                                                        </tr>    
+                                                        <tr>
+                                                            <td>
+                                                                <b>{t}Filter By Status{/t}</b><br>
+                                                                <select class="olotd5" id="filter_status" name="filter_status">
+                                                                    <option value=""{if !$filter_status} selected{/if}>{t}None{/t}</option>                                                                        
+                                                                    {section name=s loop=$supplier_statuses}    
+                                                                        <option value="{$supplier_statuses[s].status_key}"{if $filter_status == $supplier_statuses[s].status_key} selected{/if}>{t}{$supplier_statuses[s].display_name}{/t}</option>        
+                                                                    {/section} 
+                                                                </select>
+                                                            </td>
+                                                        </tr> 
                                                     </table>                                                        
                                                 </form>                                          
                                             </td>                                                   

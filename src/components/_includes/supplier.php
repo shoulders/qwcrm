@@ -28,7 +28,7 @@ defined('_QWEXEC') or die;
 #     Display Suppliers       #
 ###############################
 
-function display_suppliers($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null) {
+function display_suppliers($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
     
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();
@@ -57,6 +57,9 @@ function display_suppliers($order_by, $direction, $use_pages = false, $records_p
     
     // Restrict by Type
     if($type) { $whereTheseRecords .= " AND ".PRFX."supplier_records.type= ".$db->qstr($type);}
+    
+    // Restrict by status
+    if($status) {$whereTheseRecords .= " AND ".PRFX."supplier_records.status= ".$db->qstr($status);} 
     
     /* The SQL code */
     

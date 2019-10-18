@@ -15,6 +15,7 @@ $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
 $VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
 $VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
 $VAR['filter_type'] = isset($VAR['filter_type']) ? $VAR['filter_type'] : null;
+$VAR['filter_status'] = isset($VAR['filter_status']) ? $VAR['filter_status'] : null;
 
 // If a search is submitted
 if(isset($VAR['submit'])) {
@@ -33,6 +34,7 @@ if(isset($VAR['submit'])) {
 $smarty->assign('search_category',      $VAR['search_category']                                                                                             );
 $smarty->assign('search_term',          $VAR['search_term']                                                                                                 );
 $smarty->assign('filter_type',          $VAR['filter_type']                                                                                                 );
+$smarty->assign('filter_status',        $VAR['filter_status']                                                                                               );
 $smarty->assign('supplier_statuses',    get_supplier_statuses()   );
 $smarty->assign('supplier_types',       get_supplier_types()                                                                                                );
 $smarty->assign('display_suppliers',    display_suppliers('supplier_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'])   );
