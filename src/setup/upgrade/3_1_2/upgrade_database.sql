@@ -74,3 +74,6 @@ ALTER TABLE `#__session` CHANGE `clientid` `clientid` TINYINT(3) UNSIGNED NULL D
 
 -- Enable on/off for Other payment
 UPDATE `#__payment_methods` SET `send_protected` = '0' WHERE `#__payment_methods`.`id` = 6;
+
+-- Fix missing employee_id on closed Workorders
+UPDATE #__workorder_records SET employee_id = closed_by WHERE employee_id = '' AND closed_by != '' 
