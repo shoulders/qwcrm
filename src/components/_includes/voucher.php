@@ -970,7 +970,7 @@ function check_voucher_is_expired($voucher_id) {
     $voucher_details = get_voucher_details($voucher_id);
     
     // If the voucher is expired 
-    if (time() > strtotime($voucher_details['expiry_date'].' 23:59:59')) {
+    if (time() > strtotime($voucher_details['expiry_date'])) {
         
         // If the status is not 'expired', update the status silenty (only from unused)
         if ($voucher_details['status'] == 'unused' || $voucher_details['status'] == 'suspended') {
@@ -982,7 +982,7 @@ function check_voucher_is_expired($voucher_id) {
     }
     
     // If the voucher has status of 'expired' but the date has been changed to a valid one
-    if (time() <= strtotime($voucher_details['expiry_date'].' 23:59:59')) {
+    if (time() <= strtotime($voucher_details['expiry_date'])) {
         
         //  If the status has not been updated, update the status silenty (only from expired)
         if ($voucher_details['status'] == 'expired') {
