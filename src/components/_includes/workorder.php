@@ -664,7 +664,7 @@ function update_workorder_resolution($workorder_id, $resolution) {
         
         // Get Work Order Details
         $workorder_details = get_workorder_details($workorder_id);
-        
+                
         // Create a Workorder History Note       
         insert_workorder_history_note($workorder_id, _gettext("Resolution updated by").' '.QFactory::getUser()->login_display_name.'.');
         
@@ -888,17 +888,22 @@ function close_workorder_without_invoice($workorder_id, $resolution) {
         //update_workorder_status($workorder_id, 'closed_without_invoice');
         
         // Get client_id
-        $client_id = get_workorder_details($workorder_id, 'client_id');
+        $workorder_details = get_workorder_details($workorder_id);
+        
+        // If there is no employee assigned, set the current logged in user as the assigned employee
+        if(!$workorder_details['employee_id']) {
+            assign_workorder_to_employee($workorder_id, QFactory::getUser()->login_user_id);
+        }
         
         // Create a History record
         insert_workorder_history_note($workorder_id, _gettext("Closed without invoice by").' '.QFactory::getUser()->login_display_name.'.');
             
         // Log activity
         $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_id, $workorder_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $workorder_details['client_id'], $workorder_id);
         
         // Update last active record
-        update_client_last_active($client_id);
+        update_client_last_active($workorder_details['client_id']);
         update_workorder_last_active($workorder_id);        
         
         return true;
@@ -931,18 +936,23 @@ function close_workorder_with_invoice($workorder_id, $resolution) {
         // Update Work Order Status - not needed
         //update_workorder_status($workorder_id, 'closed_with_invoice');
         
-        // Get client_id
-        $client_id = get_workorder_details($workorder_id, 'client_id');
+        // Get workorder details
+        $workorder_details = get_workorder_details($workorder_id);
+        
+        // If there is no employee assigned, set the current logged in user as the assigned employee
+        if(!$workorder_details['employee_id']) {
+            assign_workorder_to_employee($workorder_id, QFactory::getUser()->login_user_id);
+        }
     
         // Create a Workorder History Note       
         insert_workorder_history_note($workorder_id, _gettext("Closed with invoice by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity
         $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $client_id, $workorder_id);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $workorder_details['client_id'], $workorder_id);
         
         // Update last active record
-        update_client_last_active($client_id);
+        update_client_last_active($workorder_details['client_id']);
         update_workorder_last_active($workorder_id);   
         
         return true;

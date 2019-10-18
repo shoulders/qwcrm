@@ -121,12 +121,6 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
     
     /* Process Options */
     
-    // Remove routing variables here to prevent 'Double Bubble'
-    if($variables) {
-        unset($variables['component']);
-        unset($variables['page_tpl']);
-    }
-
     // Set method to be used
     if($method == null || $method == 'auto') { $method = 'post'; }    
 
@@ -143,7 +137,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
     else { $protocol_domain_segment = QWCRM_PROTOCOL.QWCRM_DOMAIN; }    // This makes absolute links using define settings
     
     /* Standard URL Redirect */
-    
+      
     if($component != 'index.php' && $page_tpl == null) {       
 
         // Build the URL and perform the redirect
@@ -154,6 +148,12 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
     /* GET - Send Variables via $_GET / Return URL*/
     
     if($method == 'get' || $method == 'url') {
+        
+        // Remove routing variables here to prevent 'Double Bubble'
+        if($variables) {
+            unset($variables['component']);
+            unset($variables['page_tpl']);
+        }
         
         // If variables exist and are in an array convert into an encoded string
         if($variables) { $variables = http_build_query($variables); }

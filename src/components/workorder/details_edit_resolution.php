@@ -9,6 +9,7 @@
 defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
+require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_id
