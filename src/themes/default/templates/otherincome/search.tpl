@@ -27,7 +27,7 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form method="post" action="index.php?component=otherincome&page_tpl=search" name="otherincome_search" id="otherincome_search" autocomplete="off">
+                                                <form method="post" action="index.php?component=otherincome&page_tpl=search" name="otherincome_search" id="otherincome_search" class="remove-empty-values">
                                                     <div>                                                       
                                                         <table border="0">
                                                             <tr>

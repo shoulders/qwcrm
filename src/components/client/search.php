@@ -14,8 +14,8 @@ require(INCLUDES_DIR.'client.php');
 $VAR['page_no'] = isset($VAR['page_no']) ? $VAR['page_no'] : null;
 $VAR['search_category'] = isset($VAR['search_category']) ? $VAR['search_category'] : null;
 $VAR['search_term'] = isset($VAR['search_term']) ? $VAR['search_term'] : null;
-$VAR['filter_status'] = isset($VAR['filter_status']) ? $VAR['filter_status'] : null;
 $VAR['filter_type'] = isset($VAR['filter_type']) ? $VAR['filter_type'] : null;
+$VAR['filter_status'] = isset($VAR['filter_status']) ? $VAR['filter_status'] : null;
 
 // If a search is submitted
 if(isset($VAR['submit'])) {

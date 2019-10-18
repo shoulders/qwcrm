@@ -26,7 +26,7 @@
                                         <tr>
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form method="post" action="index.php?component=supplier&page_tpl=search" name="supplier_search" id="supplier_search" autocomplete="off">                                                        
+                                                <form method="post" action="index.php?component=supplier&page_tpl=search" name="supplier_search" id="supplier_search" class="remove-empty-values">                                                        
                                                     <table border="0">
                                                         <tr>
                                                             <td align="left" valign="top"><b>{t}Supplier Search{/t}</b>

@@ -120,6 +120,12 @@ function update_user_last_active($user_id = null) {
 function force_page($component, $page_tpl = null, $variables = null, $method = 'auto', $url_sef = 'auto', $url_protocol = 'auto') {
     
     /* Process Options */
+    
+    // Remove routing variables here to prevent 'Double Bubble'
+    if($variables) {
+        unset($variables['component']);
+        unset($variables['page_tpl']);
+    }
 
     // Set method to be used
     if($method == null || $method == 'auto') { $method = 'post'; }    
@@ -150,12 +156,12 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
     if($method == 'get' || $method == 'url') {
         
         // If variables exist and are in an array convert into an encoded string
-        if($variables && is_array($variables)) { $variables = http_build_query($variables); }
+        if($variables) { $variables = http_build_query($variables); }
         
         // If home, dashboard or maintenance do not show module:page
         if($component == 'index.php') { 
             
-            // If there are variables, prepare them
+            // If there are variables, prepare them as a query string
             if($variables) { $variables = '?'.$variables; }
             
             // Build URL with/without variables
@@ -174,7 +180,7 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
         // Page Name and Variables (QWcrm Style Redirect)  
         } else {
             
-            // If there are variables, prepare them
+            // If there are variables, prepare them as additional GET variables
             if($variables) { $variables = '&'.$variables; }
             
             // Build URL with/without variables

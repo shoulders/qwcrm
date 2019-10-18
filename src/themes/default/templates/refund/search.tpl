@@ -27,7 +27,7 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form method="post" action="index.php?component=refund&page_tpl=search" name="refund_search" id="refund_search" autocomplete="off">
+                                                <form method="post" action="index.php?component=refund&page_tpl=search" name="refund_search" id="refund_search"  class="remove-empty-values">
                                                     <div>                                                       
                                                         <table border="0">
                                                             <tr>

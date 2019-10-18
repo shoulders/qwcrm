@@ -27,6 +27,14 @@ $(document).ready(function() {
     } );
 } );
 
+// Remove empty variables from form submissions (currently only used on search pages)
+$(document).ready(function() {
+  $('.remove-empty-values').submit(function() {
+    $(this).find(':input').filter(function() { return !this.value; }).attr('disabled', 'disabled');
+    return true; // make sure that the form is still submitted
+  });
+});
+
 /* - not used globally yet - use this to add later like below
  * 
 // Performs a redirect to the new Search Page Number - takes the inputted value and adds it to the end

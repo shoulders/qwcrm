@@ -27,7 +27,7 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">
-                                                <form method="post" action="index.php?component=workorder&page_tpl=search" name="workorder_search" id="workorder_search">
+                                                <form method="post" action="index.php?component=workorder&page_tpl=search" name="workorder_search" id="workorder_search" class="remove-empty-values">
                                                     <div>                                                        
                                                         <table border="0">
                                                             <tr>

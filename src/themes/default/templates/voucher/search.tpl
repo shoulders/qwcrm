@@ -25,7 +25,7 @@
                                             
                                             <!-- Category Search -->
                                             <td valign="top">                                                
-                                                <form action="index.php?component=voucher&page_tpl=search" method="post" name="user_search" id="user_search">
+                                                <form action="index.php?component=voucher&page_tpl=search" method="post" name="user_search" id="user_search" class="remove-empty-values">
                                                     <div>
                                                         <table border="0">
                                                             <tr>
