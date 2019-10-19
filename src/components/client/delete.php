@@ -25,7 +25,7 @@ if(!isset($VAR['client_id']) || !$VAR['client_id']) {
 if(!delete_client($VAR['client_id'])) {
     
     // Reload client details apge with error message
-    force_page('client', 'details&client_id='.$VAR['client_id']);
+    force_page('client', 'details&client_id='.$VAR['client_id'], 'warning_msg='._gettext("This client cannot be deleted."));
     
 } else {
     

@@ -468,46 +468,11 @@ function delete_client($client_id) {
     
     $db = QFactory::getDbo();
     
-    // Check if client has any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$db->qstr($client_id);    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Workorders in the database."));
-    }  
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a client who has work orders.');
+    // Make sure the client can be deleted 
+    if(!check_client_can_be_deleted($client_id)) {        
         return false;
     }
-    
-    // Check if client has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE client_id=".$db->qstr($client_id);    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Invoices in the database."));
-    }    
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a client who has invoices.');
-        return false;
-    }    
-    
-    // Check if client has any Vouchers
-    $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE client_id=".$db->qstr($client_id);
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Vouchers in the database."));
-    }  
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a client who has Vouchers.');
-        return false;
-    }
-    
-    // Check if client has any client notes
-    $sql = "SELECT count(*) as count FROM ".PRFX."client_notes WHERE client_id=".$db->qstr($client_id);
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Notes in the database."));
-    }    
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', 'You can not delete a client who has client notes.');
-        return false;
-    }
-    
+        
     /* We can now delete the client */
     
     // Get client details for logging before we delete anything
@@ -633,4 +598,57 @@ function build_googlemap_directions_string($client_id, $employee_id) {
     // return the built google map string
     return "$google_server/maps?f=d&source=s_d&hl=en&geocode=&saddr=$employee_address,$employee_city,$employee_zip&daddr=$client_address,$client_city,$client_zip";
    
+}
+
+###############################################################
+#   Check to see if the client can be deleted                 #
+###############################################################
+
+function check_client_can_be_deleted($client_id) {
+    
+    $db = QFactory::getDbo();
+    
+    // Check if client has any workorders
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$db->qstr($client_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Workorders in the database."));
+    }  
+    if($rs->fields['count'] > 0 ) {
+        //postEmulationWrite('warning_msg', 'You can not delete a client who has work orders.');
+        return false;
+    }
+    
+    // Check if client has any invoices
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE client_id=".$db->qstr($client_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Invoices in the database."));
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //postEmulationWrite('warning_msg', 'You can not delete a client who has invoices.');
+        return false;
+    }    
+    
+    // Check if client has any Vouchers
+    $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE client_id=".$db->qstr($client_id);
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Vouchers in the database."));
+    }  
+    if($rs->fields['count'] > 0 ) {
+        //postEmulationWrite('warning_msg', 'You can not delete a client who has Vouchers.');
+        return false;
+    }
+    
+    // Check if client has any client notes
+    $sql = "SELECT count(*) as count FROM ".PRFX."client_notes WHERE client_id=".$db->qstr($client_id);
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Notes in the database."));
+    }    
+    if($rs->fields['count'] > 0 ) {
+        //postEmulationWrite('warning_msg', 'You can not delete a client who has client notes.');
+        return false;
+    }
+
+    // All checks passed
+    return true;
+    
 }

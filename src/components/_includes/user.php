@@ -482,63 +482,8 @@ function delete_user($user_id) {
     // get user details before deleting
     $user_details = get_user_details($user_id);
     
-    // User cannot delete their own account
-    if($user_id == QFactory::getUser()->login_user_id) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete your own account."));        
-        return false;
-    }
-    
-    // Cannot delete this account if it is the last administrator account
-    if($user_details['usergroup'] == '1') {
-        
-        $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";    
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
-        }  
-        if($rs->fields['count'] <= 1 ) {
-            postEmulationWrite('warning_msg', _gettext("You can not delete the last administrator user account."));        
-            return false;
-        }
-        
-    }
-
-    // Check if user has created any workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$db->qstr($user_id);    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
-    }  
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has created work orders."));        
-        return false;
-    }
-    
-    // Check if user has any assigned workorders
-    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$db->qstr($user_id);    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
-    }  
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has assigned work orders."));
-        return false;
-    }
-    
-    // Check if user has any invoices
-    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$db->qstr($user_id);    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
-    }    
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has invoices."));
-        return false;
-    }    
-    
-    // Check if user is assigned to any Vouchers
-    $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$db->qstr($user_id);
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
-    }  
-    if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has Vouchers."));
+    // Make sure the client can be deleted 
+    if(!check_user_can_be_deleted($user_id)) {        
         return false;
     }
     
@@ -1285,3 +1230,78 @@ function delete_expired_reset_codes() {
     }
      
  }
+ 
+###############################################################
+#   Check to see if the user can be deleted                   #
+###############################################################
+
+function check_user_can_be_deleted($user_id) {
+    
+    $db = QFactory::getDbo();
+    
+    // Get the user details
+    $user_details = get_user_details($user_id);
+    
+    // User cannot delete their own account
+    if($user_id == QFactory::getUser()->login_user_id) {
+        postEmulationWrite('warning_msg', _gettext("You can not delete your own account."));        
+        return false;
+    }
+    
+    // Cannot delete this account if it is the last administrator account
+    if($user_details['usergroup'] == '1') {
+        
+        $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";    
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
+        }  
+        if($rs->fields['count'] <= 1 ) {
+            postEmulationWrite('warning_msg', _gettext("You can not delete the last administrator user account."));        
+            return false;
+        }        
+    }
+
+    // Check if user has created any workorders
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$db->qstr($user_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
+    }  
+    if($rs->fields['count'] > 0 ) {
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has created work orders."));        
+        return false;
+    }
+    
+    // Check if user has any assigned workorders
+    $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$db->qstr($user_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
+    }  
+    if($rs->fields['count'] > 0 ) {
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has assigned work orders."));
+        return false;
+    }
+    
+    // Check if user has any invoices
+    $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$db->qstr($user_id);    
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
+    }    
+    if($rs->fields['count'] > 0 ) {
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has invoices."));
+        return false;
+    }    
+    
+    // Check if user is assigned to any Vouchers
+    $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$db->qstr($user_id);
+    if(!$rs = $db->Execute($sql)) {
+        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
+    }  
+    if($rs->fields['count'] > 0 ) {
+        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has Vouchers."));
+        return false;
+    }
+     
+    // All checks passed
+    return true;
+    
+}
