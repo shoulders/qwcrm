@@ -1180,7 +1180,7 @@ CREATE TABLE `#__voucher_records` (
   `refund_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `redeemed_client_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `redeemed_invoice_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `expiry_date` datetime NOT NULL,
+  `expiry_date` date NOT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   `opened_on` datetime NOT NULL,
   `redeemed_on` datetime NOT NULL,
