@@ -454,7 +454,7 @@ function recalculate_otherincome_totals($otherincome_id) {
     $otherincome_details            = get_otherincome_details($otherincome_id);    
     
     $unit_gross                   = $otherincome_details['unit_gross'];   
-    $payments_sub_total             = sum_payments(null, null, 'date', null, null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
+    $payments_sub_total             = sum_payments(null, null, 'date', null, 'valid', 'otherincome', null, null, null, null, null, null, $otherincome_id);
     $balance                        = $unit_gross - $payments_sub_total;
 
     $sql = "UPDATE ".PRFX."otherincome_records SET
@@ -516,7 +516,7 @@ function recalculate_otherincome_totals($otherincome_id) {
     }
         
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+    if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
         //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
         return false;        
     }
@@ -560,7 +560,7 @@ function check_otherincome_can_be_refunded($otherincome_id) {
     }    
 
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(!count_payments(null, null, 'date', null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+    if(!count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
         return false;        
     }
@@ -604,7 +604,7 @@ function check_otherincome_can_be_cancelled($otherincome_id) {
     }    
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+    if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
         return false;        
     }
@@ -648,7 +648,7 @@ function check_otherincome_can_be_deleted($otherincome_id) {
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+    if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments."));
         return false;        
     }
@@ -698,7 +698,7 @@ function check_otherincome_can_be_deleted($otherincome_id) {
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
+    if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
         //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments."));
         return false;        
     }
