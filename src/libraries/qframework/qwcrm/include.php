@@ -149,14 +149,20 @@ function force_page($component, $page_tpl = null, $variables = null, $method = '
     
     if($method == 'get' || $method == 'url') {
         
-        // Remove routing variables here to prevent 'Double Bubble'
+        // If variables exist 
         if($variables) {
-            unset($variables['component']);
-            unset($variables['page_tpl']);
+              
+            // If variables are in an array convert into an encoded string
+            if($variables && is_array($variables)) {
+
+                // Remove routing variables here to prevent 'Double Bubble' (might not be needed)
+                unset($variables['component']);
+                unset($variables['page_tpl']); 
+
+                $variables = http_build_query($variables);            
+            }
+            
         }
-        
-        // If variables exist and are in an array convert into an encoded string
-        if($variables) { $variables = http_build_query($variables); }
         
         // If home, dashboard or maintenance do not show module:page
         if($component == 'index.php') { 
