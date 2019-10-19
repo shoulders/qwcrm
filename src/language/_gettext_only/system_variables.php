@@ -64,7 +64,7 @@ _gettext("Other");
 _gettext("Parts");
 _gettext("Postage");
 _gettext("Rent");
-_gettext("Royalty");
+_gettext("Royalties");
 _gettext("Services");
 _gettext("Software");
 _gettext("TelCo");
@@ -85,21 +85,22 @@ _gettext("Refunded");
 _gettext("Cancelled");
 _gettext("Deleted");
 
-/* Other Income Statuses */
+/* Otherincome Statuses */
 _gettext("Unpaid");
 _gettext("Partially Paid");
 _gettext("Paid");
 _gettext("Cancelled");
 _gettext("Deleted");
 
-/* Other Income Types */
+/* Otherincome Types */
 _gettext("Cancelled Services");
 _gettext("Commision");
 _gettext("Credit Note");
 _gettext("Interest");
 _gettext("Other");
 _gettext("Returned Goods");
-_gettext("Tip");
+_gettext("Royalties");
+_gettext("Tips");
 
 /* Payment Additional Info Types */
 _gettext("Bank Transfer Reference");

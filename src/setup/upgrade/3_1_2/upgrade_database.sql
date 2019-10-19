@@ -31,7 +31,7 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (11, 'parts', 'Parts'),
 (12, 'postage', 'Postage'),
 (13, 'rent', 'Rent'),
-(14, 'royalty', 'Royalty'),
+(14, 'royalties', 'Royalties'),
 (15, 'services', 'Services'),
 (16, 'software', 'Software'),
 (17, 'telco', 'TelCo'),
@@ -60,10 +60,10 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (4, 'interest', 'Interest'),
 (5, 'other', 'Other'),
 (6, 'returned_goods', 'Returned Goods'),
-(7, 'tip', 'Tip');
+(7, 'royalties', 'Royalties'),
+(8, 'tips', 'Tips');
 
 ALTER TABLE `#__otherincome_types` ADD PRIMARY KEY (`id`);
-
 
 --
 -- Misc

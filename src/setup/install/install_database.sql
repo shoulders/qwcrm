@@ -315,13 +315,14 @@ INSERT INTO `#__expense_types` (`id`, `type_key`, `display_name`) VALUES
 (11, 'parts', 'Parts'),
 (12, 'postage', 'Postage'),
 (13, 'rent', 'Rent'),
-(14, 'services', 'Services'),
-(15, 'software', 'Software'),
-(16, 'telco', 'TelCo'),
-(17, 'transport', 'Transport'),
-(18, 'utilities', 'Utilities'),
-(19, 'voucher', 'Voucher'),
-(20, 'wages', 'Wages');
+(14, 'royalties', 'Royalties'),
+(15, 'services', 'Services'),
+(16, 'software', 'Software'),
+(17, 'telco', 'TelCo'),
+(18, 'transport', 'Transport'),
+(19, 'utilities', 'Utilities'),
+(20, 'voucher', 'Voucher'),
+(21, 'wages', 'Wages');
 
 -- --------------------------------------------------------
 
@@ -530,7 +531,9 @@ INSERT INTO `#__otherincome_types` (`id`, `type_key`, `display_name`) VALUES
 (3, 'credit_note', 'Credit Note'),
 (4, 'interest', 'Interest'),
 (5, 'other', 'Other'),
-(6, 'returned_goods', 'Returned Goods');
+(6, 'returned_goods', 'Returned Goods'),
+(7, 'royalties', 'Royalties'),
+(8, 'tips', 'Tips');
 
 --
 -- Table structure for table `#__payment_additional_info_types`
