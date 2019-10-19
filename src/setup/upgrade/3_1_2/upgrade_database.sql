@@ -80,11 +80,3 @@ UPDATE #__workorder_records SET employee_id = closed_by WHERE employee_id = '' A
 
 -- Remove expense_records.invoice_id column becasue it is not used
 ALTER TABLE `#__expense_records` DROP `invoice_id`;
-
--- Change Voucher expiry date from DATE to DATETIME (not used keep for reference)
--- ALTER TABLE `#__voucher_records` CHANGE `expiry_date` `expiry_date` DATETIME NOT NULL;
-
--- Update Voucher expiry_date to the proper minutes and seconds, (WHERE line is optional)(not used keep for reference)
--- UPDATE `#__voucher_records`
--- SET expiry_date = REPLACE(expiry_date, '00:00:00', '23:59:59');
--- WHERE expiry_date LIKE '%00:00:00%';
