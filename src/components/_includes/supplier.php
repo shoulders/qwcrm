@@ -434,6 +434,11 @@ function delete_supplier($supplier_id) {
     
     $display_name = get_supplier_details($supplier_id, 'display_name');
     
+    // Make sure the supplier can be deleted 
+    if(!check_supplier_can_be_deleted($supplier_id)) {        
+        return false;
+    }
+    
     $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
     
     if(!$rs = $db->Execute($sql)) {
@@ -514,19 +519,19 @@ function check_supplier_can_be_cancelled($supplier_id) {
 }
 
 ###############################################################
-#   Check to see if the supplier can be deleted               #  // not currently used
+#   Check to see if the supplier can be deleted               #
 ###############################################################
 
 function check_supplier_can_be_deleted($supplier_id) {
     
     // Get the supplier details
-    $supplier_details = get_supplier_details($supplier_id);
+    //$supplier_details = get_supplier_details($supplier_id);
     
-    // Is cancelled
+    /* Is cancelled
     if($supplier_details['status'] == 'cancelled') {
         //postEmulationWrite('warning_msg', _gettext("This supplier cannot be deleted because it has been cancelled."));
         return false;        
-    }
+    }*/
      
     // All checks passed
     return true;
