@@ -21,7 +21,7 @@
                     {if !$setup_error_flag}
                         <tr>
                             <td colspan="2" style="text-align: center;">
-                                <button class="olotd5" type="submit" name="submit" value="database_upgrade_results">{t}Next{/t}</button>
+                                <button class="olotd5" type="submit" name="submit" value="{$next_button_value}">{t}Next{/t}</button>
                             </td>
                         </tr>
                     {else}

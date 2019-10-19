@@ -28,7 +28,8 @@ if (!is_dir(SETUP_DIR)) {
 class QSetup {
 
     public static $setup_error_flag = null;
-    public static $executed_sql_results = null;    
+    public static $executed_sql_results = null;
+    public static $split_database_upgrade = null; 
     protected $smarty = null;    
     
     public function __construct(&$VAR) {
@@ -1347,8 +1348,8 @@ class QSetup {
             // Convert version numbers from xx_xx_xx format to xx.xx.xx (this is so the numbers can be used through QWcrm. Comparison works for both formats)
             //$stepVersionNumber = str_replace('_', '.', $stepVersionNumber);
             
-             // Add only the required upgrade steps - Is the version number less than or equal to the Current DB Version
-            if(version_compare($stepVersionNumber, $current_db_version, '>')) {
+            // Add only the required upgrade steps - Is the version number less than or equal to the Current DB Version
+            if(version_compare($current_db_version, $stepVersionNumber, '<')) {
                 
                 // Add to the new array
                 $upgrade_steps[] = $stepVersionNumber;
@@ -1356,17 +1357,18 @@ class QSetup {
                 // Set the target version
                 $targetVersion = $stepVersionNumber;
                 
-            }           
-            
-           // If break.txt exists stop adding further stages (to prevent timeouts on large upgrades)
-           if(file_exists($directory.'/break.txt')) {
-               $record  = _gettext("The upgrade process has been split to prevent server timeouts.").'<br>';
-               $record .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
-               $record .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
-               $this->write_record_to_setup_log('upgrade', $record);
-               $this->smarty->assign('information_msg', $record);
-               break;
-           }
+                // If break.txt exists stop adding further stages (to prevent timeouts on large upgrades)
+                if(file_exists($directory.'/break.txt')) {
+                    QSetup::$split_database_upgrade = true;
+                    $record  = _gettext("The upgrade process has been split to prevent server timeouts.").'<br>';
+                    $record .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
+                    $record .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
+                    $this->write_record_to_setup_log('upgrade', $record);
+                    $this->smarty->assign('information_msg', $record);
+                    break;
+                }
+           
+            }
             
         }
         
