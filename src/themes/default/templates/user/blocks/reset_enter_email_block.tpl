@@ -31,7 +31,7 @@
                                             </tr>                                            
                                             <tr align="center">
                                                 <td colspan="2">
-                                                    <button id="submit_button" type="submit" name="submit" value="submit" disabled><img src="{$theme_images_dir}tick.png" alt=""> {t}Submit{/t}</button>
+                                                    <button id="submit_button" type="submit" name="submit" value="submit"><img src="{$theme_images_dir}tick.png" alt=""> {t}Submit{/t}</button>
                                                     <button type="submit" onclick="window.location.href='index.php';">{t}Cancel{/t}</button>
                                                 </td>
                                             </tr>                            
