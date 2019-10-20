@@ -31,7 +31,7 @@
     
         var tax_system = document.getElementById('tax_system').value;
         
-        if(tax_system === 'no_tax') {        
+        if(tax_system === 'no_tax' || tax_system === '') {        
             $('.sales_tax_rate').hide();
             $('.vat_number').hide();
             $('.vat_flat_rate').hide();
