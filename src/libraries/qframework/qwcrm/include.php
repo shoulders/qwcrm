@@ -283,7 +283,7 @@ function perform_redirect($url, $type = 'header') {
             $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
             
             // Log errors to log if enabled
-            if(QFactory::getConfig()->get('qwcrm_error_log')) {    
+            if(\QFactory::getConfig()->get('qwcrm_error_log')) {    
                 write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
             }
             
@@ -331,10 +331,10 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
     $VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
         
     // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
-    if(QFactory::getConfig()->get('error_page_raw_output')) {
+    if(\QFactory::getConfig()->get('error_page_raw_output')) {
         
         // Create and empty page object
-        $BuildPage = '';
+        \QFactory::$BuildPage = '';
         
         // Allow error page to display RAW Output
         $output_raw_error_page = true;
@@ -343,7 +343,7 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
         require(COMPONENTS_DIR.'core/error.php');
 
         // Output the error page and finish
-        die($BuildPage);
+        die(\QFactory::$BuildPage);
     
     // This will show errors within the template as normal - but occassionaly can cause boot loops during development
     } else {  
@@ -588,7 +588,7 @@ function prepare_error_data($type, $data = null) {
 #  Verify QWcrm install state and set routing as needed  #
 ##########################################################
 
-function verify_qwcrm_install_state(&$VAR) {
+function verify_qwcrm_install_state() {
     
     // Temporary Development Override - Keep
     return;
@@ -600,47 +600,44 @@ function verify_qwcrm_install_state(&$VAR) {
         return;        
     }
     
-    // Merge the variables
-    $VAR = array_merge($_POST, $_GET, $VAR);
-    
     // Prevent undefined variable errors
-    $VAR['component'] = isset($VAR['component']) ? $VAR['component'] : null;
-    $VAR['page_tpl']  = isset($VAR['page_tpl'])  ? $VAR['page_tpl']  : null;
+    QFramework::$VAR['component'] = isset(QFramework::$VAR['component']) ? QFramework::$VAR['component'] : null;
+    QFramework::$VAR['page_tpl']  = isset(QFramework::$VAR['page_tpl'])  ? QFramework::$VAR['page_tpl']  : null;
     
     // Installation is in progress
-    if (check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
+    if (check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
         
-        $VAR['component'] = 'setup';
-        $VAR['page_tpl']  = 'install';
-        $VAR['theme']     = 'menu_off';        
+        QFramework::$VAR['component'] = 'setup';
+        QFramework::$VAR['page_tpl']  = 'install';
+        QFramework::$VAR['theme']     = 'menu_off';        
         define('QWCRM_SETUP', 'install');  
         
         return;        
     
         
     // Migration is in progress (but if migration is passing to upgrade, ignore)
-    } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
+    } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
         
-        $VAR['component'] = 'setup';
-        $VAR['page_tpl']  = 'migrate';
-        $VAR['theme']     = 'menu_off';
+        QFramework::$VAR['component'] = 'setup';
+        QFramework::$VAR['page_tpl']  = 'migrate';
+        QFramework::$VAR['theme']     = 'menu_off';
         define('QWCRM_SETUP', 'install'); 
         
         return;        
     
         
     // Upgrade is in progress
-    } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', $VAR['component'], $VAR['page_tpl'])) {
+    } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
         
-        $VAR['component'] = 'setup';
-        $VAR['page_tpl']  = 'upgrade';
-        $VAR['theme']     = 'menu_off';        
+        QFramework::$VAR['component'] = 'setup';
+        QFramework::$VAR['page_tpl']  = 'upgrade';
+        QFramework::$VAR['theme']     = 'menu_off';        
         define('QWCRM_SETUP', 'install');
         
         return;
         
     /* Redirect to choice page (optional)
-    elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !check_page_accessed_via_qwcrm() && !isset($VAR['component'], $VAR['page_tpl'])) {        
+    elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !check_page_accessed_via_qwcrm() && !isset(QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {        
         
         force_page('setup', 'choice');
              
@@ -650,7 +647,7 @@ function verify_qwcrm_install_state(&$VAR) {
     } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !check_page_accessed_via_qwcrm()) {
         
         // Prevent direct access to this page
-        if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', $VAR['component'], $VAR['page_tpl'])) {
+        if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
             header('HTTP/1.1 403 Forbidden');
             die(_gettext("No Direct Access Allowed."));
         }
@@ -662,9 +659,9 @@ function verify_qwcrm_install_state(&$VAR) {
         }        
         
         // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
-        $VAR['component'] = 'setup';
-        $VAR['page_tpl']  = 'choice';
-        $VAR['theme']     = 'menu_off';        
+        \QFramework::$VAR['component'] = 'setup';
+        \QFramework::$VAR['page_tpl']  = 'choice';
+        \QFramework::$VAR['theme']     = 'menu_off';        
         
         /* This allows the use of the database ASAP in the setup process
         if (defined('PRFX') && \QFactory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
@@ -680,7 +677,7 @@ function verify_qwcrm_install_state(&$VAR) {
     } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
         
         // Prevent direct access to this page
-        if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', $VAR['component'], $VAR['page_tpl'])) {
+        if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
             header('HTTP/1.1 403 Forbidden');
             die(_gettext("No Direct Access Allowed."));
         }        
@@ -692,7 +689,7 @@ function verify_qwcrm_install_state(&$VAR) {
         }               
         
         // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
-        compare_qwcrm_filesystem_and_database($VAR);    
+        compare_qwcrm_filesystem_and_database(QFramework::$VAR);    
       
     // Fallback option for those situations I have not thought about
     } else {
@@ -714,7 +711,7 @@ function verify_qwcrm_install_state(&$VAR) {
 #  Compare the QWcrm file system and database versions  #  // This is only run if the /setup/ dir exists
 #########################################################
 
-function compare_qwcrm_filesystem_and_database(&$VAR) {
+function compare_qwcrm_filesystem_and_database() {
     
     // Get the QWcrm database version number (assumes database connection is good)
     $qwcrm_database_version = get_qwcrm_database_version_number();
@@ -734,19 +731,19 @@ function compare_qwcrm_filesystem_and_database(&$VAR) {
     
     /* If the file system is newer than the database - run upgrade (this loads setup:upgrade directly)
     if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-        $VAR['component']     = 'setup';
-        $VAR['page_tpl']      = 'upgrade';
-        $VAR['theme']         = 'menu_off';
+        QFramework::$VAR['component']     = 'setup';
+        QFramework::$VAR['page_tpl']      = 'upgrade';
+        QFramework::$VAR['theme']         = 'menu_off';
         define('QWCRM_SETUP', 'install'); 
         return;
     }*/
     
     // If the file system is newer than the database - run upgrade (this loads setup:choice but flags it as an upgrade directly)
     if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-        $VAR['component']     = 'setup';
-        $VAR['page_tpl']      = 'choice';
-        $VAR['theme']         = 'menu_off';
-        $VAR['setup_type']    = 'upgrade';
+        QFramework::$VAR['component']     = 'setup';
+        QFramework::$VAR['page_tpl']      = 'choice';
+        QFramework::$VAR['theme']         = 'menu_off';
+        QFramework::$VAR['setup_type']    = 'upgrade';
         define('QWCRM_SETUP', 'install'); 
         return;
     }
@@ -923,7 +920,7 @@ function write_record_to_access_log() {
     $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
     
     // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
-    if(!QFactory::getUser()->login_username) {
+    if(!\QFactory::getUser()->login_username) {
         $username = '-';
     } else {
         $username = \QFactory::getUser()->login_username;
@@ -974,7 +971,7 @@ function write_record_to_access_log() {
 function write_record_to_activity_log($record, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null) {
     
     // if activity logging not enabled exit
-    if(QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
+    if(\QFactory::getConfig()->get('qwcrm_activity_log') != true) { return; }
     
     /* Use any supplied IDs instead of $GLOBALS[] counterpart
     if(!$employee_id)   { $employee_id  = $GLOBALS['employee_id'];  }
@@ -983,14 +980,14 @@ function write_record_to_activity_log($record, $employee_id = null, $client_id =
     if(!$invoice_id)    { $invoice_id   = $GLOBALS['invoice_id'];   }*/   
     
     // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
-    if(!QFactory::getUser()->login_username) {
+    if(!\QFactory::getUser()->login_username) {
         $username = '-';
     } else {
         $username = \QFactory::getUser()->login_username;
     } 
     
     // Build log entry
-    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.QFactory::getUser()->login_user_id.','.$employee_id.','.$client_id.','.$workorder_id.','.$invoice_id.','.'"'.$record.'"'."\r\n";
+    $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.\QFactory::getUser()->login_user_id.','.$employee_id.','.$client_id.','.$workorder_id.','.$invoice_id.','.'"'.$record.'"'."\r\n";
     
     // Write log entry  
     if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
@@ -1013,7 +1010,7 @@ function write_record_to_error_log($error_page, $error_type, $error_location, $p
     // it is not - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
     
     // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
-    if(!QFactory::getUser()->login_username) {
+    if(!\QFactory::getUser()->login_username) {
         $username = '-';
     } else {
         $username = \QFactory::getUser()->login_username;
@@ -1548,7 +1545,7 @@ function load_language() {
     PhpMyAdmin\MoTranslator\Loader::loadFunctions();
 
     // Autodetect Language - I18N support information here
-    if(function_exists('locale_accept_from_http') && (QFactory::getConfig()->get('autodetect_language') == '1' || \QFactory::getConfig()->get('autodetect_language') == null)) {
+    if(function_exists('locale_accept_from_http') && (\QFactory::getConfig()->get('autodetect_language') == '1' || \QFactory::getConfig()->get('autodetect_language') == null)) {
 
         // Use the locale language if detected or default language or british english (format = en_GB)
         if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {

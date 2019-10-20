@@ -236,4 +236,4 @@ $smarty->assign('record_balance',                    NewPayment::$record_balance
 $smarty->assign('buttons',                           NewPayment::$buttons                                                            );
 
 
-$BuildPage .= $smarty->fetch('payment/new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('payment/new.tpl');

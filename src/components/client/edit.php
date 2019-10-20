@@ -28,6 +28,6 @@ if(isset($VAR['submit'])) {
     // Build the page
     $smarty->assign('client_types',   get_client_types());
     $smarty->assign('client_details', get_client_details($VAR['client_id']));
-    $BuildPage .= $smarty->fetch('client/edit.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('client/edit.tpl');
     
 }

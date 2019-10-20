@@ -31,4 +31,4 @@ $smarty->assign('workorder_notes',      display_workorder_notes($VAR['workorder_
 $smarty->assign('workorder_history',    display_workorder_history($VAR['workorder_id'])                                          );
 $smarty->assign('selected_date',        timestamp_to_calendar_format( time() )                                                   );
 $smarty->assign('GoogleMapString',      build_googlemap_directions_string($workorder_details['client_id'], $user->login_user_id) );
-$BuildPage .= $smarty->fetch('workorder/details.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('workorder/details.tpl');

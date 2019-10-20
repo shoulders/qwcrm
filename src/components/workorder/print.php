@@ -51,7 +51,7 @@ if($VAR['print_content'] == 'technician_workorder_slip') {
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Build the page
-        $BuildPage .= $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
+        \QFactory::$BuildPage .= $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
     
     // Print PDF
     } elseif ($VAR['print_type'] == 'print_pdf') {        
@@ -110,7 +110,7 @@ if($VAR['print_content'] == 'client_workorder_slip') {
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Build the page
-        $BuildPage .= $smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
+        \QFactory::$BuildPage .= $smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
     
     // Print PDF
     } elseif ($VAR['print_type'] == 'print_pdf') {        
@@ -169,7 +169,7 @@ if($VAR['print_content'] == 'technician_job_sheet') {
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
                 
         // Build the page
-        $BuildPage .= $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
+        \QFactory::$BuildPage .= $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
         
     // Print PDF
     } elseif ($VAR['print_type'] == 'print_pdf') {

@@ -32,4 +32,4 @@ if(isset($VAR['submit']) || isset($VAR['submitandnew'])) {
 
 // Build the page
 $smarty->assign('supplier_types', get_supplier_types());
-$BuildPage .= $smarty->fetch('supplier/new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('supplier/new.tpl');

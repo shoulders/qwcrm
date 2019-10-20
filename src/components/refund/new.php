@@ -91,4 +91,4 @@ $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes()); 
 $smarty->assign('client_display_name', $client_display_name);
-$BuildPage .= $smarty->fetch('refund/new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('refund/new.tpl');

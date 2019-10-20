@@ -32,11 +32,11 @@ if($user->login_is_employee) {
     $smarty->assign('workorder_statuses', get_workorder_statuses());
 
     // Build the page
-    $BuildPage .= $smarty->fetch('core/dashboard_employee.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('core/dashboard_employee.tpl');
 
 } else {
     
     // Build the page
-    $BuildPage .= $smarty->fetch('core/dashboard_client.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('core/dashboard_client.tpl');
     
 }

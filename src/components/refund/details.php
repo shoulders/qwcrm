@@ -32,4 +32,4 @@ $smarty->assign('refund_details', $refund_details);
 $smarty->assign('vat_tax_codes', get_vat_tax_codes() );
 $smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));
 
-$BuildPage .= $smarty->fetch('refund/details.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('refund/details.tpl');

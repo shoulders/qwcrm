@@ -190,4 +190,4 @@ if($VAR['stage'] == 'delete_setup_folder') {
 }
 
 // Build the page
-$BuildPage .= $smarty->fetch('setup/upgrade.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('setup/upgrade.tpl');

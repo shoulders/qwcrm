@@ -44,4 +44,4 @@ $smarty->assign('usergroups',        get_usergroups()                           
 $smarty->assign('user_locations',    get_user_locations());
 $smarty->assign('display_users',     display_users('user_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_usergroup'], $VAR['filter_usertype'], $VAR['filter_status'])    );
 
-$BuildPage .= $smarty->fetch('user/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('user/search.tpl');

@@ -46,4 +46,4 @@ if(isset($VAR['submit'])) {
 
 // Build Page
 $smarty->assign('invoice_prefill_items', get_invoice_prefill_items());
-$BuildPage .= $smarty->fetch('invoice/prefill_items.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('invoice/prefill_items.tpl');

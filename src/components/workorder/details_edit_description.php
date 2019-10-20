@@ -35,4 +35,4 @@ if(isset($VAR['submit'])) {
 // Build the page 
 $smarty->assign('scope',          get_workorder_details($VAR['workorder_id'], 'scope')        );
 $smarty->assign('description',    get_workorder_details($VAR['workorder_id'], 'description')  );    
-$BuildPage .= $smarty->fetch('workorder/details_edit_description.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('workorder/details_edit_description.tpl');

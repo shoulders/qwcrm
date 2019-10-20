@@ -38,6 +38,6 @@ if(isset($VAR['submit'])) {
     $smarty->assign('expense_types', get_expense_types());
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
     $smarty->assign('expense_details', get_expense_details($VAR['expense_id']));
-    $BuildPage .= $smarty->fetch('expense/edit.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('expense/edit.tpl');
     
 }

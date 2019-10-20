@@ -28,4 +28,4 @@ $smarty->assign('otherincome_statuses', get_otherincome_statuses());
 $smarty->assign('otherincome_types', get_otherincome_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes() );
 $smarty->assign('otherincome_details', get_otherincome_details($VAR['otherincome_id']));
-$BuildPage .= $smarty->fetch('otherincome/details.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('otherincome/details.tpl');

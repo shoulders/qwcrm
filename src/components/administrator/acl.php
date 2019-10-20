@@ -24,4 +24,4 @@ if(isset($VAR['submit']) && $VAR['submit'] == 'update') {
     
 // Build the page with the permissions from the database 
 $smarty->assign('acl', get_acl_permissions());
-$BuildPage .= $smarty->fetch('administrator/acl.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('administrator/acl.tpl');

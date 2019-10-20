@@ -34,4 +34,4 @@ if(isset($VAR['submit'])) {
 
 // Build the page
 $smarty->assign('comment', get_workorder_details($VAR['workorder_id'], 'comment'));
-$BuildPage .= $smarty->fetch('workorder/details_edit_comment.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('workorder/details_edit_comment.tpl');

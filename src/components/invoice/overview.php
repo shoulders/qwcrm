@@ -24,4 +24,4 @@ $smarty->assign('overview_invoices_collections',        display_invoices('invoic
 $smarty->assign('overview_invoice_stats',               get_invoices_stats('current'));
 $smarty->assign('invoice_statuses',                     get_invoice_statuses());
 
-$BuildPage .= $smarty->fetch('invoice/overview.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('invoice/overview.tpl');

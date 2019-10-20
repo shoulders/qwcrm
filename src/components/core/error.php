@@ -43,7 +43,7 @@ if($config->get('qwcrm_error_log')) {
 // View RAW error output if allowed and set
 if($user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
 
-    $BuildPage = '
+    \QFactory::$BuildPage = '
         <div>    
             <strong>'._gettext("Error Page").': </strong>'.$VAR['error_component'].':'.$VAR['error_page_tpl'].'<br />
             <strong>'._gettext("Error Type").': </strong>'.$VAR['error_type'].'<br /><br />
@@ -71,14 +71,14 @@ if($user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
     $smarty->assign('error_sql_query',      $VAR['error_sql_query']        );
     $smarty->assign('error_msg',            $VAR['error_msg']              );
 
-    $BuildPage .= $smarty->fetch('core/error.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('core/error.tpl');
 
 // No permission to see errors
 } else {
 
-    $BuildPage .= _gettext("An error has occured but you are not allowed to see it.").'<br>';
-    $BuildPage .= _gettext("Timestamp").': '.time().'<br>';
-    $BuildPage .= _gettext("Give this information to an admin and they can have a look at it for you.");
+    \QFactory::$BuildPage .= _gettext("An error has occured but you are not allowed to see it.").'<br>';
+    \QFactory::$BuildPage .= _gettext("Timestamp").': '.time().'<br>';
+    \QFactory::$BuildPage .= _gettext("Give this information to an admin and they can have a look at it for you.");
 
 }
 

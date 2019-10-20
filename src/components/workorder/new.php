@@ -38,4 +38,4 @@ if(isset($VAR['submit'])){
 
 // Build the page
 $smarty->assign('client_display_name', get_client_details($VAR['client_id'], 'display_name'));
-$BuildPage .= $smarty->fetch('workorder/new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('workorder/new.tpl');

@@ -66,4 +66,4 @@ if(isset($VAR['submit'])) {
 }
 
 // Build the page
-$BuildPage .= $smarty->fetch('schedule/new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('schedule/new.tpl');

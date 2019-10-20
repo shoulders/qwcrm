@@ -12,7 +12,7 @@ defined('_QWEXEC') or die;
 #  Load and set the System's global variables  #
 ################################################
 
-function load_system_variables(&$VAR) {
+function load_system_variables() {
     
     $smarty = \QFactory::getSmarty();
     
@@ -30,10 +30,7 @@ function load_system_variables(&$VAR) {
     ##########################################################
     #   Assign Global PHP Variables                          #
     ##########################################################
-
-    // Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.
-    $VAR = array_merge($_POST, $_GET, $VAR);
-
+   
     // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
     if(!defined('QWCRM_SETUP')) {
         define('DATE_FORMAT',   $company_details['date_format']);
@@ -58,18 +55,18 @@ function load_system_variables(&$VAR) {
     $smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
     
     // This assigns framework globals to smarty and also prevents undefined variable errors (mainly for the menu)
-    isset($VAR['user_id'])          ? $smarty->assign('user_id', $VAR['user_id'])               : $smarty->assign('user_id', null);
-    isset($VAR['employee_id'])      ? $smarty->assign('employee_id', $VAR['employee_id'])       : $smarty->assign('employee_id', null);
-    isset($VAR['client_id'])        ? $smarty->assign('client_id', $VAR['client_id'])           : $smarty->assign('client_id', null);
-    isset($VAR['workorder_id'])     ? $smarty->assign('workorder_id', $VAR['workorder_id'])     : $smarty->assign('workorder_id', null);
-    isset($VAR['schedule_id'])      ? $smarty->assign('schedule_id', $VAR['schedule_id'])       : $smarty->assign('schedule_id', null);
-    isset($VAR['invoice_id'])       ? $smarty->assign('invoice_id', $VAR['invoice_id'])         : $smarty->assign('invoice_id', null);
-    isset($VAR['voucher_id'])       ? $smarty->assign('voucher_id', $VAR['voucher_id'])         : $smarty->assign('voucher_id', null); 
-    isset($VAR['payment_id'])       ? $smarty->assign('payment_id', $VAR['payment_id'])         : $smarty->assign('payment_id', null);
-    isset($VAR['refund_id'])        ? $smarty->assign('refund_id', $VAR['refund_id'])           : $smarty->assign('refund_id', null);
-    isset($VAR['expense_id'])       ? $smarty->assign('expense_id', $VAR['expense_id'])         : $smarty->assign('expense_id', null);    
-    isset($VAR['otherincome_id'])   ? $smarty->assign('otherincome_id', $VAR['otherincome_id']) : $smarty->assign('otherincome_id', null);      
-    isset($VAR['supplier_id'])      ? $smarty->assign('supplier_id', $VAR['supplier_id'])       : $smarty->assign('supplier_id', null);    
+    isset(\QFactory::$VAR['user_id'])          ? $smarty->assign('user_id', \QFactory::$VAR['user_id'])               : $smarty->assign('user_id', null);
+    isset(\QFactory::$VAR['employee_id'])      ? $smarty->assign('employee_id', \QFactory::$VAR['employee_id'])       : $smarty->assign('employee_id', null);
+    isset(\QFactory::$VAR['client_id'])        ? $smarty->assign('client_id', \QFactory::$VAR['client_id'])           : $smarty->assign('client_id', null);
+    isset(\QFactory::$VAR['workorder_id'])     ? $smarty->assign('workorder_id', \QFactory::$VAR['workorder_id'])     : $smarty->assign('workorder_id', null);
+    isset(\QFactory::$VAR['schedule_id'])      ? $smarty->assign('schedule_id', \QFactory::$VAR['schedule_id'])       : $smarty->assign('schedule_id', null);
+    isset(\QFactory::$VAR['invoice_id'])       ? $smarty->assign('invoice_id', \QFactory::$VAR['invoice_id'])         : $smarty->assign('invoice_id', null);
+    isset(\QFactory::$VAR['voucher_id'])       ? $smarty->assign('voucher_id', \QFactory::$VAR['voucher_id'])         : $smarty->assign('voucher_id', null); 
+    isset(\QFactory::$VAR['payment_id'])       ? $smarty->assign('payment_id', \QFactory::$VAR['payment_id'])         : $smarty->assign('payment_id', null);
+    isset(\QFactory::$VAR['refund_id'])        ? $smarty->assign('refund_id', \QFactory::$VAR['refund_id'])           : $smarty->assign('refund_id', null);
+    isset(\QFactory::$VAR['expense_id'])       ? $smarty->assign('expense_id', \QFactory::$VAR['expense_id'])         : $smarty->assign('expense_id', null);    
+    isset(\QFactory::$VAR['otherincome_id'])   ? $smarty->assign('otherincome_id', \QFactory::$VAR['otherincome_id']) : $smarty->assign('otherincome_id', null);      
+    isset(\QFactory::$VAR['supplier_id'])      ? $smarty->assign('supplier_id', \QFactory::$VAR['supplier_id'])       : $smarty->assign('supplier_id', null);    
    
     // Used throughout the site
     if(!defined('QWCRM_SETUP')) {
@@ -91,17 +88,17 @@ function load_system_variables(&$VAR) {
 #  Set the Message Smarty Variables  #
 ######################################
 
-function smarty_set_system_messages(&$VAR) {
+function smarty_set_system_messages() {
     
     $smarty = \QFactory::getSmarty();
     
     // Build Information Message (Green)
-    $VAR['information_msg'] = isset($VAR['information_msg']) ? $VAR['information_msg'] : null;
-    $smarty->assign('information_msg', $VAR['information_msg']);
+    \QFactory::$VAR['information_msg'] = isset(\QFactory::$VAR['information_msg']) ? \QFactory::$VAR['information_msg'] : null;
+    $smarty->assign('information_msg', \QFactory::$VAR['information_msg']);
 
     // Build Warning Message (Red)
-    $VAR['warning_msg'] = isset($VAR['warning_msg']) ? $VAR['warning_msg'] : null;
-    $smarty->assign('warning_msg', $VAR['warning_msg']);
+    \QFactory::$VAR['warning_msg'] = isset(\QFactory::$VAR['warning_msg']) ? \QFactory::$VAR['warning_msg'] : null;
+    $smarty->assign('warning_msg', \QFactory::$VAR['warning_msg']);
     
     return;
     

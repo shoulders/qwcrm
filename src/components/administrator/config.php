@@ -80,4 +80,4 @@ if(isset($VAR['submit'])) {
 
 // Build the page
 $smarty->assign('available_languages', load_languages() );
-$BuildPage .= $smarty->fetch('administrator/config.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('administrator/config.tpl');

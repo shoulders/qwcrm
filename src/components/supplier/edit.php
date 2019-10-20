@@ -35,6 +35,6 @@ if(isset($VAR['submit'])) {
     $smarty->assign('supplier_statuses',   get_supplier_statuses()   );
     $smarty->assign('supplier_types', get_supplier_types());
     $smarty->assign('supplier_details', get_supplier_details($VAR['supplier_id']));
-    $BuildPage .= $smarty->fetch('supplier/edit.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('supplier/edit.tpl');
 
 }

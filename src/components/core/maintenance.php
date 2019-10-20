@@ -8,4 +8,4 @@
 
 defined('_QWEXEC') or die;
 
-$BuildPage .= $smarty->fetch('core/maintenance.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('core/maintenance.tpl');

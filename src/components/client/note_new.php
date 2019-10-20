@@ -25,7 +25,7 @@ if(isset($VAR['submit'])) {
 // Build the page  
 } else {  
 
-    $BuildPage .= $smarty->fetch('client/note_new.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('client/note_new.tpl');
 
 }
 

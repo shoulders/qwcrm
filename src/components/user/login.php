@@ -68,4 +68,3 @@ $smarty->assign('remember_me', $config->get('remember_me'));
 $smarty->assign('recaptcha', $config->get('recaptcha'));
 $smarty->assign('recaptcha_site_key', $config->get('recaptcha_site_key'));
 
-$BuildPage .= $smarty->fetch('user/login.tpl');

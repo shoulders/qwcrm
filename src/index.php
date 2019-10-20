@@ -44,19 +44,24 @@ define('QWCRM_FULL_URL', QWCRM_PROTOCOL.QWCRM_DOMAIN.QWCRM_BASE_PATH);          
 
 // Save the start time and memory usage.
 $startTime = microtime(1);
-$startMem  = memory_get_usage();
+$startMem = memory_get_usage();
 
 ################################################
 #         Load QWCRM                           #
 ################################################
 
-// Intialise QWcrm Global variable $VAR
-$VAR = array();
-
 // Load the framework (session/user/database/template engine/system includes)
 define('QFRAMEWORK_DIR', 'libraries/qframework/'); 
-require(QFRAMEWORK_DIR.'qframework.php');
-QFactory::loadQwcrm($VAR);
+require(QFRAMEWORK_DIR.'qwcrm/loader.php');
+\QFactory::loadQwcrm();
+
+###################################################
+# Debugging Information Start Variable Acqusition #
+###################################################
+
+// Save the start time and memory usage. (to system)
+\QFactory::$VAR['system']['startTime'] = $startTime;
+\QFactory::$VAR['system']['startMem'] = $startMem;
 
 ################################################
 #         Initialise QWCRM                     #
@@ -65,11 +70,8 @@ QFactory::loadQwcrm($VAR);
 if(!defined('QWCRM_SETUP')) {
     
     // Start the QFramework 
-    $app = new QFactory;
-    
-    // Merge in the Post Emulation Store (here or in QFramework::__constructor - Until $VAR is present in QFramework, leave it here)
-    $VAR = array_merge($VAR, postEmulationReturnStore());
-    
+    $app = new \QFactory;
+       
 }
 
 ################################################
@@ -77,16 +79,13 @@ if(!defined('QWCRM_SETUP')) {
 ################################################
 
 // Build and set the system Messages
-smarty_set_system_messages($VAR);
+smarty_set_system_messages(\QFactory::$VAR);
 
 // Set the Smarty User variables (This seems the best place for this function to run)
 smarty_set_user_variables();
 
-// Get the page controller
-$page_controller = get_page_controller($VAR);
-
-// Build the page
-$BuildPage = get_page_content($page_controller, $startTime, $VAR);
+// Build and Load the page into memmory
+load_page();
 
 ################################################
 #         Content Plugins                      #
@@ -100,14 +99,14 @@ $BuildPage = get_page_content($page_controller, $startTime, $VAR);
 
 // Update the Logged in User's Last Active Times
 if(!defined('QWCRM_SETUP')) {    
-    update_user_last_active(QFactory::getUser()->login_user_id);    
+    update_user_last_active(\QFactory::getUser()->login_user_id);    
 }
 
 // Access Logging
 if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP'))) {
     
     // This logs QWcrm page load details to the access log
-    if(QFactory::getConfig()->get('qwcrm_access_log')){
+    if(\QFactory::getConfig()->get('qwcrm_access_log')){
         write_record_to_access_log();
     }
     
@@ -121,8 +120,8 @@ if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP'))) {
 if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
 
     // Compress page payload and send compression headers
-    if (QFactory::getConfig()->get('gzip')) {
-        compress_page_output($BuildPage);    
+    if (\QFactory::getConfig()->get('gzip')) {
+        \QFactory::$BuildPage = compress_page_output(\QFactory::$BuildPage);
     }
         
 }
@@ -131,4 +130,4 @@ if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') {
 #         Display the Built Page               #
 ################################################
 
-echo $BuildPage;
+echo \QFactory::$BuildPage;

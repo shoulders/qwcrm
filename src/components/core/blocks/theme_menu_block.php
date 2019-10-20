@@ -14,6 +14,3 @@ require_once(INCLUDES_DIR.'core_menu.php');
 if($VAR['workorder_id'] != '') {
     $smarty->assign('menu_workorder_is_closed', menu_get_single_workorder_is_closed($VAR['workorder_id']));
 }*/
-
-// Display menu block
-$BuildPage .= $smarty->fetch('core/blocks/theme_menu_block.tpl');

@@ -37,4 +37,4 @@ $smarty->assign('filter_status',        $VAR['filter_status']                   
 $smarty->assign('filter_redeemed',      $VAR['filter_redeemed']                                                                                                                                     );
 $smarty->assign('voucher_statuses',    get_voucher_statuses()                                                                                                                                  );
 $smarty->assign('display_vouchers',    display_vouchers('voucher_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status']));
-$BuildPage .= $smarty->fetch('voucher/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('voucher/search.tpl');

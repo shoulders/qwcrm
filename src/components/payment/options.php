@@ -66,4 +66,4 @@ if(isset($VAR['submit'])) {
 // Build the page
 $smarty->assign('payment_methods',          get_payment_methods() );
 $smarty->assign('payment_options',          get_payment_options() );
-$BuildPage .= $smarty->fetch('payment/options.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('payment/options.tpl');

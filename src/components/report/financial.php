@@ -257,4 +257,4 @@ if(isset($VAR['submit'])) {
 $smarty->assign('start_date', $start_date);
 $smarty->assign('end_date', $end_date);
 $smarty->assign('tax_systems', get_tax_systems() );
-$BuildPage .= $smarty->fetch('report/financial.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('report/financial.tpl');

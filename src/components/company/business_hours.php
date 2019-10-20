@@ -36,4 +36,4 @@ if(isset($VAR['submit'])) {
 }
 
 // Fetch the hours page
-$BuildPage .= $smarty->fetch('company/business_hours.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('company/business_hours.tpl');

@@ -9,74 +9,123 @@
 defined('_QWEXEC') or die;
 
 ############################
-#  Build the page content  #    // All variables should be passed by $VAR because it is its own scope
+#  Load the page           #
 ############################
 
-function get_page_content($page_controller, $startTime, $VAR = null) {    
+function load_page($mode = null, $component = null, $page_tpl = null, $themeVar = null) {
+    
+    // get_page_controller($component = null, $page_tpl = null, $mode = null, $themeVar = null)
+    // get_page_content($page_controller, $component = null, $page_tpl = null, $mode = null, $themeVar = null)
+        
+    // Just return the page as a variable and dont change the system page (not currently using this feature but might for AJAX)    
+    if($mode == 'payload') { 
+        
+        $pageController = get_page_controller($mode, $component, $page_tpl, $themeVar);
+        return get_page_content($pageController, $mode, $component, $page_tpl, $themeVar);
+    }
+    
+    // Normal Behaviour, set the routing, get the page, load the page into the system
+    if($mode != 'payload') { 
+        
+        // Get and set the page controller
+        \QFactory::$VAR['page_controller'] = get_page_controller();
+        
+        // Build the page
+        \QFactory::$BuildPage = get_page_content(\QFactory::$VAR['page_controller']);
+        
+        return;
+        
+    }   
+    
+}
+
+############################
+#  Build the page content  #    // All variables should be passed by \QFactory::$VAR because it is its own scope
+############################
+
+function get_page_content($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
     
     $config = \QFactory::getConfig();
-    $smarty = \QFactory::getSmarty();  // This is required for the required files/templates grabbed here    
+    $smarty = \QFactory::getSmarty();  // This is required for the required files/templates grabbed here 
+    $pagePayload = '';                   // Local store for page content
     if(!defined('QWCRM_SETUP')) { $user = \QFactory::getUser(); }
+        
+    // Set the correct theme spcification, either manually supplied or from the system
+    $component = isset($component) ? $component : ( isset(\QFactory::$VAR['component']) ? \QFactory::$VAR['component'] : null);
+    $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\QFactory::$VAR['page_tpl']) ? \QFactory::$VAR['page_tpl'] : null);
+    $themeVar = isset($themeVar) ? $themeVar : ( isset(\QFactory::$VAR['theme']) ? \QFactory::$VAR['theme'] : null);
     
-    // This varible holds the page as it is built
-    $BuildPage = '';
-
     // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
-    if (isset($VAR['theme']) && $VAR['theme'] === 'print') {        
+    if (isset($themeVar) && $themeVar === 'print') {        
         require($page_controller);
         goto page_build_end;
     }
     
     // Set Page Header and Meta Data
-    set_page_header_and_meta_data($VAR['component'], $VAR['page_tpl']);
+    set_page_header_and_meta_data($component, $page_tpl);
 
     // Fetch Header Block
-    if(!isset($VAR['theme']) || $VAR['theme'] != 'off') {     
+    if(!isset($themeVar) || $themeVar != 'off') {     
         require(COMPONENTS_DIR.'core/blocks/theme_header_block.php');
+        $pagePayload .= $smarty->fetch('core/blocks/theme_header_block.tpl');
     } else {
         //echo '<!DOCTYPE html><head></head><body>';
         require(COMPONENTS_DIR.'core/blocks/theme_header_theme_off_block.php');
+        $pagePayload .= $smarty->fetch('core/blocks/theme_header_theme_off_block.tpl');
     }
 
     // Fetch Header Legacy Template Code and Menu Block - Clients, Guests and Public users will not see the menu
-    if((!isset($VAR['theme']) || $VAR['theme'] != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {       
-        $BuildPage .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
+    if((!isset($themeVar) || $themeVar != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {       
+        $pagePayload .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
 
         // is the menu disabled
-        if(!isset($VAR['theme']) || $VAR['theme'] != 'menu_off') {
-            require(COMPONENTS_DIR.'core/blocks/theme_menu_block.php'); 
+        if(!isset($themeVar) || $themeVar != 'menu_off') {
+            require(COMPONENTS_DIR.'core/blocks/theme_menu_block.php');
+            $pagePayload .= $smarty->fetch('core/blocks/theme_menu_block.tpl');
         }
 
     }    
+    
+    
+    
+    
 
-    // Fetch the Page Content
-    require($page_controller);    
+    // Fetch the specified Page Controller
+    require_once($page_controller);
+    $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');   /////// should this be in its own function and should i rename get_controller to set_controller then set_page_tpl()
+    
+    
+    
+    
+    
 
     // Fetch Footer Legacy Template code Block (closes content table)
-    if((!isset($VAR['theme']) || $VAR['theme'] != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {
-        $BuildPage .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
+    if((!isset($themeVar) || $themeVar != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {
+        $pagePayload .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
     }
 
     // Fetch the Footer Block
-    if(!isset($VAR['theme']) || $VAR['theme'] != 'off'){        
-        require(COMPONENTS_DIR.'core/blocks/theme_footer_block.php');        
+    if(!isset($themeVar) || $themeVar != 'off'){        
+        require(COMPONENTS_DIR.'core/blocks/theme_footer_block.php'); 
+        $pagePayload .= $smarty->fetch('core/blocks/theme_footer_block.tpl');
     }    
 
     // Fetch the Debug Block
     if(!defined('QWCRM_SETUP') && $config->get('qwcrm_debug')){
-        require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');        
-        $BuildPage .= "\r\n</body>\r\n</html>";
+        require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');
+        $pagePayload .= $smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl'); /////////////////// This TPL needs sorting  
+        $pagePayload .= "\r\n</body>\r\n</html>";
     } else {
-        $BuildPage .= "\r\n</body>\r\n</html>";
+        $pagePayload .= "\r\n</body>\r\n</html>";
     }
 
     page_build_end:
     
     // Process Page links
     if(!defined('QWCRM_SETUP')) {  
-        //page_links_acl_replace($BuildPage);
-        page_links_acl_removal($BuildPage);
-        page_links_sdmenu_cleanup($BuildPage);        
+        //page_links_acl_replace($pagePayload);
+        page_links_acl_removal($pagePayload);
+        page_links_sdmenu_cleanup($pagePayload);        
     }
     
     // Will error out if there are any issues with content replacement
@@ -86,10 +135,10 @@ function get_page_content($page_controller, $startTime, $VAR = null) {
 
     // Convert to SEF (if enabled and NOT running setup)
     if (!defined('QWCRM_SETUP') && $config->get('sef')) { 
-        page_links_to_sef($BuildPage);        
+        page_links_to_sef($pagePayload);        
     }    
         
-    return $BuildPage;
+    return $pagePayload;
     
 }
 
@@ -120,9 +169,9 @@ function check_page_link_permission($url) {
 #  Replace all unauthorised page links with href="#"  #
 #######################################################
 
-function page_links_acl_replace(&$BuildPage) {
+function page_links_acl_replace($pagePayload) {
     
-    $BuildPage = preg_replace_callback('/(["\'])(index\.php.*)(["\'])/U',
+    $pagePayload = preg_replace_callback('/(["\'])(index\.php.*)(["\'])/U',
         function($matches) {
         
              // Check to see if user is allowed to use the link
@@ -137,7 +186,7 @@ function page_links_acl_replace(&$BuildPage) {
                 return $matches[1].'#'.$matches[3];  
             }
 
-        }, $BuildPage);
+        }, $pagePayload);
 
 }
 
@@ -145,10 +194,10 @@ function page_links_acl_replace(&$BuildPage) {
 #  Remove all unauthorised page links #
 #######################################
 
-function page_links_acl_removal(&$BuildPage) {
+function page_links_acl_removal($pagePayload) {
     
     // This allows for <a>...</a> being split over several lines. The opening <a .....> must be on one line - This is also optimized with atomic groups
-    $BuildPage = preg_replace_callback('/<(?>a|button|input|form)[^\r\n]*["\'](index\.php[^\r\n]*)["\'][^\r\n]*>.*<\/(?>a|button|input|form)>/Us',
+    $pagePayload = preg_replace_callback('/<(?>a|button|input|form)[^\r\n]*["\'](index\.php[^\r\n]*)["\'][^\r\n]*>.*<\/(?>a|button|input|form)>/Us',
         function($matches) {
             
             // Check to see if user is allowed to use the link
@@ -163,7 +212,7 @@ function page_links_acl_removal(&$BuildPage) {
                 return '';
             }
 
-        }, $BuildPage);
+        }, $pagePayload);
        
 }
 
@@ -171,9 +220,9 @@ function page_links_acl_removal(&$BuildPage) {
 #  Remove unpopulated SD Menu groups    #
 #########################################
 
-function page_links_sdmenu_cleanup(&$BuildPage) {
+function page_links_sdmenu_cleanup($pagePayload) {
     
-    $BuildPage = preg_replace_callback('/<div class="menugroup">.*<\/div>/Us',
+    $pagePayload = preg_replace_callback('/<div class="menugroup">.*<\/div>/Us',
         function($matches) {
         
             if(preg_match('/<a.*<\/a>/Us', $matches[0])) {
@@ -188,7 +237,7 @@ function page_links_sdmenu_cleanup(&$BuildPage) {
                 
             }
 
-        }, $BuildPage);
+        }, $pagePayload);
     
 }
 
@@ -196,15 +245,15 @@ function page_links_sdmenu_cleanup(&$BuildPage) {
 #  Change all internal page links to SEF  #
 ###########################################
 
-function page_links_to_sef(&$BuildPage) {
+function page_links_to_sef($pagePayload) {
     
     // Replace nonsef links within "" and ''
-    $BuildPage = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
+    $pagePayload = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
         function($matches) {
             
             return $matches[1].build_sef_url($matches[2]).$matches[3];
 
-        }, $BuildPage);
+        }, $pagePayload);
     
 }
 
@@ -251,7 +300,7 @@ function set_page_header_and_meta_data($component, $page_tpl) {
  * @license     GNU General Public License version 2 or later; see LICENSE
  */
 
-function compress_page_output(&$BuildPage)
+function compress_page_output($pagePayload)
 {
     // Supported compression encodings.
     $supported = array(
@@ -287,10 +336,10 @@ function compress_page_output(&$BuildPage)
             }           
 
             // Attempt to gzip encode the page with an optimal level 4.            
-            $gzBuildPage = gzencode($BuildPage, 4, ($supported[$encoding] == 'gz') ? FORCE_GZIP : FORCE_DEFLATE);
+            $gzPagePayload = gzencode($pagePayload, 4, ($supported[$encoding] == 'gz') ? FORCE_GZIP : FORCE_DEFLATE);
 
             // If there was a problem encoding the data just try the next encoding scheme.            
-            if ($gzBuildPage === false)
+            if ($gzPagePayload === false)
             {
                 continue;
             }            
@@ -298,9 +347,8 @@ function compress_page_output(&$BuildPage)
             // Set the encoding headers.
             header("Content-Encoding: $encoding");
 
-            // Replace the output with the encoded data.            
-            $BuildPage = $gzBuildPage;
-            return;
+            // Return the compressed payload           
+            return $gzPagePayload;            
             
         }
     }

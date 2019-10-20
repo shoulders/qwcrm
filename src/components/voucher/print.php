@@ -49,7 +49,7 @@ if($VAR['print_content'] == 'voucher') {
         write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
         
         // Build the page
-        $BuildPage .= $smarty->fetch('voucher/printing/print_voucher.tpl');
+        \QFactory::$BuildPage .= $smarty->fetch('voucher/printing/print_voucher.tpl');
     
     // Print PDF
     } elseif ($VAR['print_type'] == 'print_pdf') {        

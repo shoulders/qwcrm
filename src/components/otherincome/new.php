@@ -43,4 +43,4 @@ if(isset($VAR['submit'])) {
 $smarty->assign('otherincome_types', get_otherincome_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
 $smarty->assign('default_vat_tax_code', get_default_vat_tax_code()); 
-$BuildPage .= $smarty->fetch('otherincome/new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('otherincome/new.tpl');

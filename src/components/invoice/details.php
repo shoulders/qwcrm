@@ -62,4 +62,4 @@ $smarty->assign('invoice_statuses',         get_invoice_statuses()              
 $smarty->assign('voucher_statuses',        get_voucher_statuses()                                                                   );
 
 // Build the page
-$BuildPage .= $smarty->fetch('invoice/details.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('invoice/details.tpl');

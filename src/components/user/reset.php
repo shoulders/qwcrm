@@ -171,4 +171,4 @@ $smarty->assign('recaptcha_site_key', $config->get('recaptcha_site_key'));
 $smarty->assign('stage', $stage);       
 
 // Build the page
-$BuildPage .= $smarty->fetch('user/reset.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('user/reset.tpl');

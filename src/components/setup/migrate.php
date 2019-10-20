@@ -405,4 +405,4 @@ if($VAR['stage'] == 'upgrade_confirmation') {
 
 
 // Build the page
-$BuildPage .= $smarty->fetch('setup/migrate.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('setup/migrate.tpl');

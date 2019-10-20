@@ -30,4 +30,4 @@ $smarty->assign('allowed_to_cancel',            check_otherincome_can_be_cancell
 $smarty->assign('allowed_to_delete',            check_otherincome_can_be_deleted($VAR['otherincome_id'])              );
 $smarty->assign('otherincome_selectable_statuses',     get_otherincome_statuses(true));
 
-$BuildPage .= $smarty->fetch('otherincome/status.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('otherincome/status.tpl');

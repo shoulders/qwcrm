@@ -37,4 +37,4 @@ $smarty->assign('filter_status',        $VAR['filter_status']                   
 $smarty->assign('filter_type',          $VAR['filter_type']                                                                                                                 );
 $smarty->assign('client_types',       get_client_types()                                                                                                                    );
 $smarty->assign('display_clients',    display_clients('client_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'], $VAR['filter_status'])   );
-$BuildPage .= $smarty->fetch('client/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('client/search.tpl');

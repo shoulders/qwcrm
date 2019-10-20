@@ -28,4 +28,4 @@ if(isset($VAR['submit'])){
 }
     
 // Build the page
-$BuildPage .= $smarty->fetch('workorder/note_new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('workorder/note_new.tpl');

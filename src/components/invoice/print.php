@@ -85,7 +85,7 @@ if($VAR['print_content'] == 'invoice') {
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Build the page
-        $BuildPage = $smarty->fetch('invoice/printing/print_invoice.tpl'); 
+        \QFactory::$BuildPage = $smarty->fetch('invoice/printing/print_invoice.tpl'); 
     }
     
     // Print PDF Invoice
@@ -145,7 +145,7 @@ if($VAR['print_content'] == 'client_envelope') {
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Build the page
-        $BuildPage = $smarty->fetch('invoice/printing/print_client_envelope.tpl');
+        \QFactory::$BuildPage = $smarty->fetch('invoice/printing/print_client_envelope.tpl');
         
     }
     

@@ -26,4 +26,4 @@ $smarty->assign('employee_workorder_current_stats', get_workorders_stats('curren
 $smarty->assign('employee_workorder_historic_stats', get_workorders_stats('historic', null, null, $user->login_user_id));
 
 // Build the page
-$BuildPage .= $smarty->fetch('report/basic_stats.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('report/basic_stats.tpl');

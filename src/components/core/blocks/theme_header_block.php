@@ -19,5 +19,3 @@ if(!defined('QWCRM_SETUP')) {
 } else {
     $smarty->assign('greeting_msg', greeting_message_based_on_time(null)); 
 }
-
-$BuildPage .= $smarty->fetch('core/blocks/theme_header_block.tpl');

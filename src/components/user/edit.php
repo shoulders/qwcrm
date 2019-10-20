@@ -56,4 +56,4 @@ if(get_user_details($VAR['user_id'], 'is_employee')) {
 
 // Build the page
 $smarty->assign('user_locations', get_user_locations());
-$BuildPage .= $smarty->fetch('user/edit.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('user/edit.tpl');

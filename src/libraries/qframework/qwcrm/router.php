@@ -14,17 +14,21 @@ defined('_QWEXEC') or die;
 #  Build path to relevant Page Controller  #
 ############################################
 
-function get_page_controller(&$VAR = null) {        
+function get_page_controller($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
     
     $config = \QFactory::getConfig();
     if(!defined('QWCRM_SETUP')) { $user = \QFactory::getUser(); }
     
+    // Set routing variables locally for analysis, either manually supplied or from the system
+    $component = isset($component) ? $component : ( isset(\QFactory::$VAR['component']) ? \QFactory::$VAR['component'] : null);
+    $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\QFactory::$VAR['page_tpl']) ? \QFactory::$VAR['page_tpl'] : null);
+    
     // Setup is in progress (install/migrate/upgrade), skip validations (because no database access etc..)
     if(
         defined('QWCRM_SETUP') &&
-        isset($VAR['component'], $VAR['page_tpl']) &&
-        $VAR['component'] == 'setup' &&
-        ($VAR['page_tpl'] == 'choice' || $VAR['page_tpl'] == 'install' || $VAR['page_tpl'] == 'migrate' || $VAR['page_tpl'] == 'upgrade')
+        isset($component, $page_tpl) &&
+        $component == 'setup' &&
+        ($page_tpl == 'choice' || $page_tpl == 'install' || $page_tpl == 'migrate' || $page_tpl == 'upgrade')
     )
     {
         goto page_controller_return;
@@ -34,11 +38,11 @@ function get_page_controller(&$VAR = null) {
     if($config->get('maintenance')) {
 
         // Set to the maintenance page    
-        $VAR['component']   = 'core';
-        $VAR['page_tpl']    = 'maintenance';        
-        $VAR['theme']       = 'off';   
+        $component   = 'core';
+        $page_tpl    = 'maintenance';        
+        $themVAR     = 'off';   
 
-        goto page_controller_check;
+        goto page_controller_acl_check;
         
     }    
     
@@ -46,73 +50,81 @@ function get_page_controller(&$VAR = null) {
     if(!check_link_is_valid($_SERVER['REQUEST_URI'])) {
 
         // Set the error page    
-        $VAR['component']   = 'core';
-        $VAR['page_tpl']    = '404';        
-        $VAR['theme']       = 'off'; 
+        $component   = 'core';
+        $page_tpl    = '404';        
+        $themVAR     = 'off'; 
 
-        goto page_controller_check;
+        goto page_controller_acl_check;
 
     }
 
-    // If SEF routing is enabled parse the link - This allows the use of Non-SEF URLS in the SEF enviroment
-    if ($config->get('sef') && check_link_is_sef($_SERVER['REQUEST_URI'])) {
+    // If SEF routing is enabled parse the link and set the controller (not if returning the content only)
+    // This allows the use of Non-SEF URLS in the SEF enviroment
+    if ($config->get('sef') && check_link_is_sef($_SERVER['REQUEST_URI']) && $mode != 'payload') {
 
-        // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF
-        parse_sef_url($_SERVER['REQUEST_URI'], 'basic', 'set_var', $VAR);
+        // Set 'component' and 'page_tpl' variables in \QFactory::$VAR for correct routing when using SEF
+        parse_sef_url($_SERVER['REQUEST_URI'], 'basic', 'set_var');
     
     }
     
     // Check to see if the page exists otherwise send to the 404 page
-    if (isset($VAR['component'], $VAR['page_tpl']) && !check_page_exists($VAR['component'], $VAR['page_tpl'])) {
+    if (isset($component, $page_tpl) && !check_page_exists($component, $page_tpl)) {
 
         // Set to the 404 error page       
-        $VAR['component']   = 'core';
-        $VAR['page_tpl']    = '404';            
-        $VAR['theme']       = 'off';
+        $component   = 'core';
+        $page_tpl    = '404';            
+        $themVAR     = 'off';
         
-        goto page_controller_check;
+        goto page_controller_acl_check;
 
     }  
 
     // If no page specified, set page based on login status
-    if(!isset($VAR['component']) && !isset($VAR['page_tpl']) ) {    
+    if(!isset($component) && !isset($page_tpl) ) {    
 
         if(isset($user->login_token)) {
 
             // If logged in
-            $VAR['component']           = 'core';
-            $VAR['page_tpl']            = 'dashboard';
+            $component           = 'core';
+            $page_tpl            = 'dashboard';
 
         } else {
 
             // If NOT logged in
-            $VAR['component']           = 'core';
-            $VAR['page_tpl']            = 'home';
+            $component           = 'core';
+            $page_tpl            = 'home';
 
         }
         
     }    
     
-    page_controller_check:    
+    page_controller_acl_check:    
     
     // Check the requested page with the current usergroup against the ACL for authorisation, if it fails set page 403
-    if(!check_page_acl($VAR['component'], $VAR['page_tpl'])) {
+    if(!check_page_acl($component, $page_tpl)) {
 
         // Log activity
-        $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$VAR['component'].':'.$VAR['page_tpl'].')';
-        write_record_to_activity_log($record, $VAR['employee_id'] = null, $VAR['client_id'] = null, $VAR['workorder_id'] = null, $VAR['invoice_id'] = null); 
+        $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
+        write_record_to_activity_log($record, \QFactory::$VAR['employee_id'], \QFactory::$VAR['client_id'], \QFactory::$VAR['workorder_id'], \QFactory::$VAR['invoice_id']); 
 
         // Set to the 403 error page 
-        $VAR['component']   = 'core';
-        $VAR['page_tpl']    = '403';        
-        $VAR['theme']       = 'off';
+        $component   = 'core';
+        $page_tpl    = '403';        
+        $themVAR     = 'off';
         
     }
     
     page_controller_return:
         
-    // Return the page display controller for the requested page        
-    return COMPONENTS_DIR.$VAR['component'].'/'.$VAR['page_tpl'].'.php';
+    // Set the routing variables to the system unless only payload to be returned
+    if($mode != 'payload') {
+        if(isset($component)) {\QFactory::$VAR['component'] = $component;}
+        if(isset($page_tpl)) {\QFactory::$VAR['page_tpl'] = $page_tpl;}
+        if(isset($themVAR)) {\QFactory::$VAR['theme'] = $themVAR;}
+    }
+
+    // Return the page display controller for the requested page
+    return COMPONENTS_DIR.$component.'/'.$page_tpl.'.php';
     
 }
 
@@ -185,7 +197,7 @@ function build_sef_url($non_sef_url, $url_length = 'relative') {
 #  Convert a SEF url into a standard URL and (optionally) inject routing varibles into $VAR or return routing variables #  makes nonsef from sef
 #########################################################################################################################
 
-function parse_sef_url($sef_url, $url_length = 'basic', $mode = null, &$VAR = null) {    
+function parse_sef_url($sef_url, $url_length = 'basic', $mode = null) {    
     
     $nonsef_url_path_variables = '';
     $nonsef_url_query = '';
@@ -211,16 +223,16 @@ function parse_sef_url($sef_url, $url_length = 'basic', $mode = null, &$VAR = nu
         $nonsef_url_path_variables .= 'component='.$url_segments['0'];
         $nonsef_url_path_variables .= '&page_tpl='.$url_segments['1'];       
         
-        // Sets the following routing values into $VAR for routing
+        // Sets the following routing values for return statement
         if ($mode == 'get_var') {
             if($url_segments['0']) { $onlyVar['component'] = $url_segments['0']; }
             if($url_segments['1']) { $onlyVar['page_tpl'] = $url_segments['1']; }
         }
         
-        // Sets the following routing values into $VAR for routing
+        // Sets the following routing values into \QFactory::$VAR for routing
         if ($mode == 'set_var') {
-            if($url_segments['0']) { $VAR['component'] = $url_segments['0']; }
-            if($url_segments['1']) { $VAR['page_tpl'] = $url_segments['1']; }
+            if($url_segments['0']) { \QFactory::$VAR['component'] = $url_segments['0']; }
+            if($url_segments['1']) { \QFactory::$VAR['page_tpl'] = $url_segments['1']; }
         }
     
     }
@@ -333,8 +345,8 @@ function get_routing_variables_from_url($url) {
         // Running parse_sef_url only when the link is a SEF allows the use of Non-SEF URLS aswell
         if (check_link_is_sef($url)) {
 
-            // Set 'component' and 'page_tpl' variables in $VAR for correct routing when using SEF           
-            $VAR = parse_sef_url($url, 'basic', 'get_var');
+            // Get 'component' and 'page_tpl' variables from SEF URL           
+            $routingVariables = parse_sef_url($url, 'basic', 'get_var');
 
         // non-sef url
         } else {
@@ -343,25 +355,25 @@ function get_routing_variables_from_url($url) {
             parse_str(parse_url($url, PHP_URL_QUERY), $parsed_url_query);            
             
             // Set only routing variables if they exist
-            if(isset($parsed_url_query['component'])) { $VAR['component'] = $parsed_url_query['component']; }
-            if(isset($parsed_url_query['page_tpl'])) { $VAR['page_tpl'] = $parsed_url_query['page_tpl']; }
+            if(isset($parsed_url_query['component'])) { $routingVariables['component'] = $parsed_url_query['component']; }
+            if(isset($parsed_url_query['page_tpl'])) { $routingVariables['page_tpl'] = $parsed_url_query['page_tpl']; }
             
         }
         
         // If $VAR is empty it is because page is index.php, set required
-        if(!isset($VAR['component']) && !isset($VAR['page_tpl'])) {
+        if(!isset($routingVariables['component']) && !isset($routingVariables['page_tpl'])) {
             
             if(isset($user->login_token)) {
 
                 // If logged in
-                $VAR['component']           = 'core';
-                $VAR['page_tpl']            = 'dashboard';
+                $routingVariables['component']           = 'core';
+                $routingVariables['page_tpl']            = 'dashboard';
 
             } else {
 
                 // If NOT logged in
-                $VAR['component']           = 'core';
-                $VAR['page_tpl']            = 'home';
+                $routingVariables['component']           = 'core';
+                $routingVariables['page_tpl']            = 'home';
 
             }
             
@@ -369,7 +381,7 @@ function get_routing_variables_from_url($url) {
 
     }
     
-    return $VAR;
+    return $routingVariables;
 
 }
 

@@ -25,7 +25,7 @@ if(isset($VAR['submit'])) {
     
     // Fetch and load the page
     $smarty->assign('client_note', get_client_note($VAR['client_note_id']));
-    $BuildPage .= $smarty->fetch('client/note_edit.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('client/note_edit.tpl');
     
 }
 

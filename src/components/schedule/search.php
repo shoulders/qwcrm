@@ -35,4 +35,4 @@ $smarty->assign('search_term',      $VAR['search_term']                         
 $smarty->assign('filter_status',    $VAR['filter_status']                                                                                                         );
 $smarty->assign('display_schedules', display_schedules('schedule_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term']), $VAR['filter_status']   );
 
-$BuildPage .= $smarty->fetch('schedule/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('schedule/search.tpl');

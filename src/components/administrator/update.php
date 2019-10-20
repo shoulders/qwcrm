@@ -23,5 +23,5 @@ if(isset($VAR['submit'])) {
 // Build the page
 
 $smarty->assign('current_version', QWCRM_VERSION); 
-$BuildPage .= $smarty->fetch('administrator/update.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('administrator/update.tpl');
 

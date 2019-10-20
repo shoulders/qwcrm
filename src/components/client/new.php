@@ -22,6 +22,6 @@ if(isset($VAR['submit'])) {
     
     // Build the page
     $smarty->assign('client_types', get_client_types());
-    $BuildPage .= $smarty->fetch('client/new.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('client/new.tpl');
 
 }

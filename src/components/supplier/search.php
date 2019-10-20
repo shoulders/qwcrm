@@ -38,4 +38,4 @@ $smarty->assign('filter_status',        $VAR['filter_status']                   
 $smarty->assign('supplier_statuses',    get_supplier_statuses()   );
 $smarty->assign('supplier_types',       get_supplier_types()                                                                                                );
 $smarty->assign('display_suppliers',    display_suppliers('supplier_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'])   );
-$BuildPage .= $smarty->fetch('supplier/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('supplier/search.tpl');

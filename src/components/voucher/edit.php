@@ -47,5 +47,5 @@ if(isset($VAR['submit'])) {
     $smarty->assign('voucher_statuses', get_voucher_statuses());
     $smarty->assign('voucher_types', get_voucher_types());
     $smarty->assign('voucher_details',  get_voucher_details($VAR['voucher_id']));
-    $BuildPage .= $smarty->fetch('voucher/edit.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('voucher/edit.tpl');
 }

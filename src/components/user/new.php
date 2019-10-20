@@ -63,4 +63,4 @@ if(isset($VAR['submit'])) {
 
 // Build the page
 $smarty->assign('user_locations', get_user_locations());
-$BuildPage .= $smarty->fetch('user/new.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('user/new.tpl');

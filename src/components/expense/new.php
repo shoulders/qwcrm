@@ -43,6 +43,6 @@ if(isset($VAR['submit'])) {
     $smarty->assign('expense_types', get_expense_types());    
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));   
     $smarty->assign('default_vat_tax_code', get_default_vat_tax_code());    
-    $BuildPage .= $smarty->fetch('expense/new.tpl');
+    \QFactory::$BuildPage .= $smarty->fetch('expense/new.tpl');
 
 }

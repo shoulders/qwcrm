@@ -36,4 +36,4 @@ $smarty->assign('filter_status',      $VAR['filter_status']                     
 $smarty->assign('workorder_statuses', get_workorder_statuses()                                                                          );
 $smarty->assign('display_workorders', display_workorders('workorder_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_status']));
 
-$BuildPage .= $smarty->fetch('workorder/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('workorder/search.tpl');

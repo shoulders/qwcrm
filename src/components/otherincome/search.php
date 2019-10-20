@@ -39,4 +39,4 @@ $smarty->assign('filter_status',            $VAR['filter_status']               
 $smarty->assign('otherincome_statuses',     get_otherincome_statuses()                                                                                      );
 $smarty->assign('otherincome_types',        get_otherincome_types()                                                                                         );
 $smarty->assign('display_otherincomes',     display_otherincomes('otherincome_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'], $VAR['filter_status']));
-$BuildPage .= $smarty->fetch('otherincome/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('otherincome/search.tpl');

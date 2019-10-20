@@ -39,4 +39,4 @@ $smarty->assign('filter_status',            $VAR['filter_status']               
 $smarty->assign('expense_statuses',         get_expense_statuses()                                                                                          );
 $smarty->assign('expense_types',            get_expense_types()                                                                                             );
 $smarty->assign('display_expenses',         display_expenses('expense_id', 'DESC', true, '25', $VAR['page_no'], $VAR['search_category'], $VAR['search_term'], $VAR['filter_type'], $VAR['filter_status']));
-$BuildPage .= $smarty->fetch('expense/search.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('expense/search.tpl');

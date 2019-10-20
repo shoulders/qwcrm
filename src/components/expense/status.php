@@ -30,4 +30,4 @@ $smarty->assign('allowed_to_cancel',               check_expense_can_be_cancelle
 $smarty->assign('allowed_to_delete',               check_expense_can_be_deleted($VAR['expense_id'])              );
 $smarty->assign('expense_selectable_statuses',     get_expense_statuses(true) );
 
-$BuildPage .= $smarty->fetch('expense/status.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('expense/status.tpl');

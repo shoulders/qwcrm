@@ -12,4 +12,4 @@ require(INCLUDES_DIR.'administrator.php');
 
 // Build the page with the phpinfo
 $smarty->assign('phpinfo', getPHPInfo());
-$BuildPage .= $smarty->fetch('administrator/phpinfo.tpl');
+\QFactory::$BuildPage .= $smarty->fetch('administrator/phpinfo.tpl');
