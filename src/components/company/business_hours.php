@@ -11,17 +11,17 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 
 // If new times submitted
-if(isset($VAR['submit'])) {
+if(isset(\QFactory::$VAR['submit'])) {
     
     // Build the start and end times for comparison
-    $opening_time = strtotime($VAR['openingTime']['Time_Hour'].':'.$VAR['openingTime']['Time_Minute'].':'.'00');
-    $closing_time = strtotime($VAR['closingTime']['Time_Hour'].':'.$VAR['closingTime']['Time_Minute'].':'.'00');
+    $opening_time = strtotime(\QFactory::$VAR['openingTime']['Time_Hour'].':'.\QFactory::$VAR['openingTime']['Time_Minute'].':'.'00');
+    $closing_time = strtotime(\QFactory::$VAR['closingTime']['Time_Hour'].':'.\QFactory::$VAR['closingTime']['Time_Minute'].':'.'00');
 
     // Validate the submitted times
     if (check_start_end_times($opening_time, $closing_time)) {
         
         // Update opening and closing Times into the database
-        update_company_hours($VAR['openingTime'], $VAR['closingTime']);
+        update_company_hours(\QFactory::$VAR['openingTime'], \QFactory::$VAR['closingTime']);
         
     }
     

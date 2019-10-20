@@ -17,21 +17,21 @@ require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a voucher_id
-if(!isset($VAR['voucher_id']) || !$VAR['voucher_id']) {
+if(!isset(\QFactory::$VAR['voucher_id']) || !\QFactory::$VAR['voucher_id']) {
     force_page('voucher', 'search', 'warning_msg='._gettext("No Voucher ID supplied."));
 }
 
 // Update Voucher Status
-if(isset($VAR['change_status'])){
-    update_voucher_status($VAR['voucher_id'], $VAR['assign_status']);    
-    force_page('voucher', 'status&voucher_id='.$VAR['voucher_id']);
+if(isset(\QFactory::$VAR['change_status'])){
+    update_voucher_status(\QFactory::$VAR['voucher_id'], \QFactory::$VAR['assign_status']);    
+    force_page('voucher', 'status&voucher_id='.\QFactory::$VAR['voucher_id']);
 }
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',     check_voucher_status_can_be_changed($VAR['voucher_id'])       );
-$smarty->assign('voucher_status',              get_voucher_details($VAR['voucher_id'], 'status')             );
+$smarty->assign('allowed_to_change_status',     check_voucher_status_can_be_changed(\QFactory::$VAR['voucher_id'])       );
+$smarty->assign('voucher_status',              get_voucher_details(\QFactory::$VAR['voucher_id'], 'status')             );
 $smarty->assign('voucher_statuses',            get_voucher_statuses() );
-$smarty->assign('allowed_to_delete',            check_voucher_can_be_deleted($VAR['voucher_id'])              );
+$smarty->assign('allowed_to_delete',            check_voucher_can_be_deleted(\QFactory::$VAR['voucher_id'])              );
 $smarty->assign('voucher_selectable_statuses',     get_voucher_statuses(true) );
 
 \QFactory::$BuildPage .= $smarty->fetch('voucher/status.tpl');

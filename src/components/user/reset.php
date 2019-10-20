@@ -17,10 +17,10 @@ require(INCLUDES_DIR.'workorder.php');
 delete_expired_reset_codes();
 
 // Prevent undefined variable errors (temp)
-$VAR['reset_code'] = isset($VAR['reset_code']) ? $VAR['reset_code'] : null;
-$smarty->assign('reset_code', $VAR['reset_code']);
-$VAR['token'] = isset($VAR['token']) ? $VAR['token'] : null;
-$smarty->assign('token', $VAR['token']);
+\QFactory::$VAR['reset_code'] = isset(\QFactory::$VAR['reset_code']) ? \QFactory::$VAR['reset_code'] : null;
+$smarty->assign('reset_code', \QFactory::$VAR['reset_code']);
+\QFactory::$VAR['token'] = isset(\QFactory::$VAR['token']) ? \QFactory::$VAR['token'] : null;
+$smarty->assign('token', \QFactory::$VAR['token']);
 
 ###########################################################
 # Stage 1 - Load Enter Email (Page Default Action)        #
@@ -32,7 +32,7 @@ $stage = 'enter_email';
 #  STAGE 2 - Email Submitted, Load Enter Token            #
 ###########################################################
 
-if (isset($VAR['submit']) && isset($VAR['email']) && $VAR['email']) {
+if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['email']) && \QFactory::$VAR['email']) {
     
     // Prevent direct access to this page (when submitting form)
     if(!check_page_accessed_via_qwcrm('user', 'reset')) {
@@ -41,12 +41,12 @@ if (isset($VAR['submit']) && isset($VAR['email']) && $VAR['email']) {
     }
 
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \QFactory::$VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */
 
         // Make sure user account exists and is not blocked
-        if(!isset($VAR['email']) || !$user_id = validate_reset_email($VAR['email'])) {
+        if(!isset(\QFactory::$VAR['email']) || !$user_id = validate_reset_email(\QFactory::$VAR['email'])) {
 
             // Display error message
             $smarty->assign('warning_msg', _gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
@@ -74,10 +74,10 @@ if (isset($VAR['submit']) && isset($VAR['email']) && $VAR['email']) {
 #  STAGE 2a - Token Submitted via Email, Load Enter Token #
 ###########################################################
 
-if(!isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {    
+if(!isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['token']) && \QFactory::$VAR['token']) {    
     
     // Load the 'Enter Token' form
-    $smarty->assign('token', $VAR['token']);
+    $smarty->assign('token', \QFactory::$VAR['token']);
     $stage = 'enter_token';
     
 }
@@ -86,7 +86,7 @@ if(!isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {
 #  STAGE 3 - Token Submitted, Load Enter Password         #
 ###########################################################
 
-if (isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {  
+if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['token']) && \QFactory::$VAR['token']) {  
     
     // Load the 'Enter Token' form (Default Action)       
     $stage = 'enter_token';
@@ -98,15 +98,15 @@ if (isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {
     }
 
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \QFactory::$VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */
 
         // Process the token and reset the password for the account - this function sets response messages
-        if(validate_reset_token($VAR['token'])) {
+        if(validate_reset_token(\QFactory::$VAR['token'])) {
 
             // Authorise the actual password change, return the secret code and assign reset code into Smarty
-            $smarty->assign('reset_code', authorise_password_reset($VAR['token']));
+            $smarty->assign('reset_code', authorise_password_reset(\QFactory::$VAR['token']));
 
             // Load the 'Enter Password' form
             $stage = 'enter_password';
@@ -121,7 +121,7 @@ if (isset($VAR['submit']) && isset($VAR['token']) && $VAR['token']) {
 #  STAGE 4 - Password Submitted, Complete Reset           #
 ###########################################################
 
-if (isset($VAR['submit']) && isset($VAR['reset_code']) && $VAR['reset_code'] && isset($VAR['password']) && $VAR['password']) {
+if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['reset_code']) && \QFactory::$VAR['reset_code'] && isset(\QFactory::$VAR['password']) && \QFactory::$VAR['password']) {
     
     // Load the 'Enter Password' form (Default Action)       
     $stage = 'enter_password';
@@ -133,7 +133,7 @@ if (isset($VAR['submit']) && isset($VAR['reset_code']) && $VAR['reset_code'] && 
     }       
     
     // Validate the reset code
-    if(!validate_reset_code($VAR['reset_code'])) {
+    if(!validate_reset_code(\QFactory::$VAR['reset_code'])) {
 
         // Display an error message
         $smarty->assign('warning_msg', _gettext("The submitted reset code was invalid."));
@@ -141,13 +141,13 @@ if (isset($VAR['submit']) && isset($VAR['reset_code']) && $VAR['reset_code'] && 
     } else {
 
         // Get the user_id by the reset_code
-        $user_id = get_user_id_by_reset_code($VAR['reset_code']);
+        $user_id = get_user_id_by_reset_code(\QFactory::$VAR['reset_code']);
 
         // Delete reset_code for this user
         delete_user_reset_code($user_id);
 
         // Reset the password
-        reset_user_password($user_id, $VAR['password']);
+        reset_user_password($user_id, \QFactory::$VAR['password']);
 
         // Logout the user out silently (if logged in)
         logout(true);

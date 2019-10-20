@@ -9,18 +9,18 @@
 defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
-$VAR['error_component'] = isset($VAR['error_component']) ? $VAR['error_component'] : null;
-$VAR['error_page_tpl'] = isset($VAR['error_page_tpl']) ? $VAR['error_page_tpl'] : null;
-$VAR['error_type'] = isset($VAR['error_type']) ? $VAR['error_type'] : null;
-$VAR['error_location'] = isset($VAR['error_location']) ? $VAR['error_location'] : null;
-$VAR['error_php_function'] = isset($VAR['error_php_function']) ? $VAR['error_php_function'] : null;
-$VAR['error_database'] = isset($VAR['error_database']) ? $VAR['error_database'] : null;
-$VAR['error_sql_query'] = isset($VAR['error_sql_query']) ? $VAR['error_sql_query'] : null;
-$VAR['error_msg'] = isset($VAR['error_msg']) ? $VAR['error_msg'] : null;
-$VAR['error_enable_override'] = isset($VAR['error_enable_override']) ? $VAR['error_enable_override'] : null;
+\QFactory::$VAR['error_component'] = isset(\QFactory::$VAR['error_component']) ? \QFactory::$VAR['error_component'] : null;
+\QFactory::$VAR['error_page_tpl'] = isset(\QFactory::$VAR['error_page_tpl']) ? \QFactory::$VAR['error_page_tpl'] : null;
+\QFactory::$VAR['error_type'] = isset(\QFactory::$VAR['error_type']) ? \QFactory::$VAR['error_type'] : null;
+\QFactory::$VAR['error_location'] = isset(\QFactory::$VAR['error_location']) ? \QFactory::$VAR['error_location'] : null;
+\QFactory::$VAR['error_php_function'] = isset(\QFactory::$VAR['error_php_function']) ? \QFactory::$VAR['error_php_function'] : null;
+\QFactory::$VAR['error_database'] = isset(\QFactory::$VAR['error_database']) ? \QFactory::$VAR['error_database'] : null;
+\QFactory::$VAR['error_sql_query'] = isset(\QFactory::$VAR['error_sql_query']) ? \QFactory::$VAR['error_sql_query'] : null;
+\QFactory::$VAR['error_msg'] = isset(\QFactory::$VAR['error_msg']) ? \QFactory::$VAR['error_msg'] : null;
+\QFactory::$VAR['error_enable_override'] = isset(\QFactory::$VAR['error_enable_override']) ? \QFactory::$VAR['error_enable_override'] : null;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm(null, null, $VAR['error_enable_override'])) {
+if(!check_page_accessed_via_qwcrm(null, null, \QFactory::$VAR['error_enable_override'])) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -29,7 +29,7 @@ if(!check_page_accessed_via_qwcrm(null, null, $VAR['error_enable_override'])) {
 if($config->get('qwcrm_sql_logging')) {
     
     // Prepare the SQL statement for the error log (already been prepared for output to screen)
-    $sql_query_for_log = str_replace('<br>', '\r\n', $VAR['error_sql_query']);
+    $sql_query_for_log = str_replace('<br>', '\r\n', \QFactory::$VAR['error_sql_query']);
     
 } else {    
     $sql_query_for_log = '';    
@@ -37,7 +37,7 @@ if($config->get('qwcrm_sql_logging')) {
 
 // Log errors to log if enabled
 if($config->get('qwcrm_error_log')) {    
-    write_record_to_error_log($VAR['error_component'].':'.$VAR['error_page_tpl'], $VAR['error_type'], $VAR['error_location'], $VAR['error_php_function'], $VAR['error_database'], $VAR['error_msg'], $sql_query_for_log);    
+    write_record_to_error_log(\QFactory::$VAR['error_component'].':'.\QFactory::$VAR['error_page_tpl'], \QFactory::$VAR['error_type'], \QFactory::$VAR['error_location'], \QFactory::$VAR['error_php_function'], \QFactory::$VAR['error_database'], \QFactory::$VAR['error_msg'], $sql_query_for_log);    
 }
     
 // View RAW error output if allowed and set
@@ -45,16 +45,16 @@ if($user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
 
     \QFactory::$BuildPage = '
         <div>    
-            <strong>'._gettext("Error Page").': </strong>'.$VAR['error_component'].':'.$VAR['error_page_tpl'].'<br />
-            <strong>'._gettext("Error Type").': </strong>'.$VAR['error_type'].'<br /><br />
+            <strong>'._gettext("Error Page").': </strong>'.\QFactory::$VAR['error_component'].':'.\QFactory::$VAR['error_page_tpl'].'<br />
+            <strong>'._gettext("Error Type").': </strong>'.\QFactory::$VAR['error_type'].'<br /><br />
 
-            <strong>'._gettext("Error Location").': </strong>'.$VAR['error_location'].'<br />    
-            <strong>'._gettext("PHP Function").': </strong>'.$VAR['error_php_function'].'<br /><br />      
+            <strong>'._gettext("Error Location").': </strong>'.\QFactory::$VAR['error_location'].'<br />    
+            <strong>'._gettext("PHP Function").': </strong>'.\QFactory::$VAR['error_php_function'].'<br /><br />      
 
-            <strong>'._gettext("Database Error").': </strong><br />'.$VAR['error_database'].'<br /><br />
-            <strong>'._gettext("SQL Query").': </strong><br />'.$VAR['error_sql_query'].'<br /><br />
+            <strong>'._gettext("Database Error").': </strong><br />'.\QFactory::$VAR['error_database'].'<br /><br />
+            <strong>'._gettext("SQL Query").': </strong><br />'.\QFactory::$VAR['error_sql_query'].'<br /><br />
 
-            <strong>'._gettext("Error Message").': </strong>'.$VAR['error_msg'].'<br /><br /> 
+            <strong>'._gettext("Error Message").': </strong>'.\QFactory::$VAR['error_msg'].'<br /><br /> 
         </div>
     ';
 
@@ -62,14 +62,14 @@ if($user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
 } elseif($user->login_usergroup_id <= 6){
 
     // Assign variables to display on the error page (core:error)
-    $smarty->assign('error_component',      $VAR['error_component']        );
-    $smarty->assign('error_page_tpl',       $VAR['error_page_tpl']         );
-    $smarty->assign('error_type',           $VAR['error_type']             );
-    $smarty->assign('error_location',       $VAR['error_location']         );
-    $smarty->assign('error_php_function',   $VAR['error_php_function']     );
-    $smarty->assign('error_database',       $VAR['error_database']         );
-    $smarty->assign('error_sql_query',      $VAR['error_sql_query']        );
-    $smarty->assign('error_msg',            $VAR['error_msg']              );
+    $smarty->assign('error_component',      \QFactory::$VAR['error_component']        );
+    $smarty->assign('error_page_tpl',       \QFactory::$VAR['error_page_tpl']         );
+    $smarty->assign('error_type',           \QFactory::$VAR['error_type']             );
+    $smarty->assign('error_location',       \QFactory::$VAR['error_location']         );
+    $smarty->assign('error_php_function',   \QFactory::$VAR['error_php_function']     );
+    $smarty->assign('error_database',       \QFactory::$VAR['error_database']         );
+    $smarty->assign('error_sql_query',      \QFactory::$VAR['error_sql_query']        );
+    $smarty->assign('error_msg',            \QFactory::$VAR['error_msg']              );
 
     \QFactory::$BuildPage .= $smarty->fetch('core/error.tpl');
 

@@ -17,15 +17,15 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have a client_id
-if(!isset($VAR['client_id']) || !$VAR['client_id']) {
+if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
     force_page('client', 'search', 'warning_msg='._gettext("No Client ID supplied."));
 }
 
 // Run the delete function and return the results
-if(!delete_client($VAR['client_id'])) {
+if(!delete_client(\QFactory::$VAR['client_id'])) {
     
     // Reload client details apge with error message
-    force_page('client', 'details&client_id='.$VAR['client_id'], 'warning_msg='._gettext("This client cannot be deleted."));
+    force_page('client', 'details&client_id='.\QFactory::$VAR['client_id'], 'warning_msg='._gettext("This client cannot be deleted."));
     
 } else {
     

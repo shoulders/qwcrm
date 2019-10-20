@@ -17,12 +17,12 @@ if(!check_page_accessed_via_qwcrm('supplier', 'status')) {
 }
 
 // Check if we have a supplier_id
-if(!isset($VAR['supplier_id']) || !$VAR['supplier_id']) {
+if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
     force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
 }  
 
 // Cancel the supplier function call
-cancel_supplier($VAR['supplier_id']);
+cancel_supplier(\QFactory::$VAR['supplier_id']);
 
 // Load the supplier search page
 force_page('supplier', 'search', 'information_msg='._gettext("Supplier cancelled successfully."));

@@ -13,30 +13,30 @@ require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Create an invoice for the supplied workorder
-if(isset($VAR['workorder_id']) && $VAR['workorder_id'] && !get_workorder_details($VAR['workorder_id'], 'invoice_id')) {
+if(isset(\QFactory::$VAR['workorder_id']) && \QFactory::$VAR['workorder_id'] && !get_workorder_details(\QFactory::$VAR['workorder_id'], 'invoice_id')) {
 
     // Get client_id from the workorder    
-    $VAR['client_id'] = get_workorder_details($VAR['workorder_id'], 'client_id');
+    \QFactory::$VAR['client_id'] = get_workorder_details(\QFactory::$VAR['workorder_id'], 'client_id');
     
     // Create the invoice and return the new invoice_id
-    $VAR['invoice_id'] = insert_invoice($VAR['client_id'], $VAR['workorder_id'], get_client_details($VAR['client_id'], 'unit_discount_rate'));
+    \QFactory::$VAR['invoice_id'] = insert_invoice(\QFactory::$VAR['client_id'], \QFactory::$VAR['workorder_id'], get_client_details(\QFactory::$VAR['client_id'], 'unit_discount_rate'));
     
     // Update the workorder with the new invoice_id
-    update_workorder_invoice_id($VAR['workorder_id'], $VAR['invoice_id']);
+    update_workorder_invoice_id(\QFactory::$VAR['workorder_id'], \QFactory::$VAR['invoice_id']);
 
     // Load the newly created invoice edit page
-    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
+    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['invoice_id']);
     
 } 
 
 // Invoice only
-if((isset($VAR['client_id'], $VAR['invoice_type']) && $VAR['client_id'] && $VAR['invoice_type'] == 'invoice-only')) {
+if((isset(\QFactory::$VAR['client_id'], \QFactory::$VAR['invoice_type']) && \QFactory::$VAR['client_id'] && \QFactory::$VAR['invoice_type'] == 'invoice-only')) {
     
     // Create the invoice and return the new invoice_id
-    $VAR['invoice_id'] = insert_invoice($VAR['client_id'], '', get_client_details($VAR['client_id'], 'unit_discount_rate'));
+    \QFactory::$VAR['invoice_id'] = insert_invoice(\QFactory::$VAR['client_id'], '', get_client_details(\QFactory::$VAR['client_id'], 'unit_discount_rate'));
 
     // Load the newly created invoice edit page
-    force_page('invoice', 'edit&invoice_id='.$VAR['invoice_id']);
+    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['invoice_id']);
 }    
   
 // Fallback Error Control 

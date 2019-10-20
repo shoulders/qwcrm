@@ -11,13 +11,13 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'company.php');
 
 // Prevent undefined variable errors
-$VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;
+\QFactory::$VAR['delete_logo'] = isset(\QFactory::$VAR['delete_logo']) ? \QFactory::$VAR['delete_logo'] : null;
 
 // Update Company details
-if(isset($VAR['submit'])) {
+if(isset(\QFactory::$VAR['submit'])) {
 
     // Submit data to the database
-    update_company_details($VAR);    
+    update_company_details(\QFactory::$VAR);    
     
     // Reload Company options and display a success message
     force_page('company', 'edit', 'information_msg='._gettext("Company details updated."));

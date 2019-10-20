@@ -22,16 +22,16 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have an invoice parts_id
-if(!isset($VAR['parts_id']) || !$VAR['parts_id']) {
+if(!isset(\QFactory::$VAR['parts_id']) || !\QFactory::$VAR['parts_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice Parts ID supplied."));
 }
 
 // Get Invoice ID before deletion
-$VAR['invoice_id'] = get_invoice_parts_item_details($VAR['parts_id'], 'invoice_id');
+\QFactory::$VAR['invoice_id'] = get_invoice_parts_item_details(\QFactory::$VAR['parts_id'], 'invoice_id');
 
 // Delete Invoice Labour item
-delete_invoice_parts_item($VAR['parts_id']);
+delete_invoice_parts_item(\QFactory::$VAR['parts_id']);
 
 // Load the edit invoice page
-force_page('invoice' , 'edit&invoice_id='.$VAR['invoice_id']);
+force_page('invoice' , 'edit&invoice_id='.\QFactory::$VAR['invoice_id']);
 exit;

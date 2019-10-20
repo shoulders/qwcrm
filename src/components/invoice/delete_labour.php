@@ -22,15 +22,15 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have an invoice labour_id
-if(!isset($VAR['labour_id']) || !$VAR['labour_id']) {
+if(!isset(\QFactory::$VAR['labour_id']) || !\QFactory::$VAR['labour_id']) {
     force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice Labour ID supplied."));
 }
 
 // Get invoice ID before deletion
-$VAR['invoice_id'] = get_invoice_labour_item_details($VAR['labour_id'], 'invoice_id');
+\QFactory::$VAR['invoice_id'] = get_invoice_labour_item_details(\QFactory::$VAR['labour_id'], 'invoice_id');
 
 // Delete Invoice Labour item
-delete_invoice_labour_item($VAR['labour_id']);
+delete_invoice_labour_item(\QFactory::$VAR['labour_id']);
 
 // Load the edit invoice page
-force_page('invoice' , 'edit&invoice_id='.$VAR['invoice_id']);
+force_page('invoice' , 'edit&invoice_id='.\QFactory::$VAR['invoice_id']);

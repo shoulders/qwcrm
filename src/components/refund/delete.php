@@ -22,12 +22,12 @@ if(!check_page_accessed_via_qwcrm('refund', 'status')) {
 }
 
 // Check if we have a refund_id
-if(!isset($VAR['refund_id']) || !$VAR['refund_id']) {
+if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
     force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
 } 
 
 // Delete the refund function call
-delete_refund($VAR['refund_id']);
+delete_refund(\QFactory::$VAR['refund_id']);
 
 // Load the refund search page
 force_page('refund', 'search', 'information_msg='._gettext("Refund deleted successfully."));

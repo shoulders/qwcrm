@@ -19,15 +19,15 @@ if(!check_page_accessed_via_qwcrm('workorder', 'status')) {
 }
 
 // Check if we have a workorder_id
-if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
+if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
 }
 
 // Delete the Workorder
-if(!delete_workorder($VAR['workorder_id'])) {
+if(!delete_workorder(\QFactory::$VAR['workorder_id'])) {
     
     // load the staus page
-    force_page('workorder', 'status', 'workorder_id='.$VAR['workorder_id']);
+    force_page('workorder', 'status', 'workorder_id='.\QFactory::$VAR['workorder_id']);
     
 } else {
     

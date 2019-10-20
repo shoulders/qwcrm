@@ -15,36 +15,36 @@ require(INCLUDES_DIR.'user.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a schedule_id
-if(!isset($VAR['schedule_id']) || !$VAR['schedule_id']) {
+if(!isset(\QFactory::$VAR['schedule_id']) || !\QFactory::$VAR['schedule_id']) {
     force_page('schedule', 'search', 'warning_msg='._gettext("No Schedule ID supplied."));
 }
 
 // If new schedule item submitted
-if(isset($VAR['submit'])) {    
+if(isset(\QFactory::$VAR['submit'])) {    
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!update_schedule($VAR)) {        
+    if (!update_schedule(\QFactory::$VAR)) {        
         
-        $smarty->assign('start_date',       $VAR['start_date']                                                  );       
-        $smarty->assign('start_time',       $VAR['StartTime']['Time_Hour'].":".$VAR['StartTime']['Time_Minute'] );                
-        $smarty->assign('end_date',         $VAR['end_date']                                                    );        
-        $smarty->assign('end_time',         $VAR['EndTime']['Time_Hour'].":".$VAR['EndTime']['Time_Minute']     );
-        $smarty->assign('note',             $VAR['note']                                                        );        
+        $smarty->assign('start_date',       \QFactory::$VAR['start_date']                                                  );       
+        $smarty->assign('start_time',       \QFactory::$VAR['StartTime']['Time_Hour'].":".\QFactory::$VAR['StartTime']['Time_Minute'] );                
+        $smarty->assign('end_date',         \QFactory::$VAR['end_date']                                                    );        
+        $smarty->assign('end_time',         \QFactory::$VAR['EndTime']['Time_Hour'].":".\QFactory::$VAR['EndTime']['Time_Minute']     );
+        $smarty->assign('note',             \QFactory::$VAR['note']                                                        );        
         $smarty->assign('active_employees', get_active_users('employees')                                       );                      
             
     } else {       
         
         /* Load the schedule day with the updated schedule item        
-        $VAR['start_year']            = date('Y', date_to_timestamp($VAR['start_date'])  );
-        $VAR['start_month']           = date('m', date_to_timestamp($VAR['start_date'])  );
-        $VAR['start_day']             = date('d', date_to_timestamp($VAR['start_date'])  );    
+        \QFactory::$VAR['start_year']            = date('Y', date_to_timestamp(\QFactory::$VAR['start_date'])  );
+        \QFactory::$VAR['start_month']           = date('m', date_to_timestamp(\QFactory::$VAR['start_date'])  );
+        \QFactory::$VAR['start_day']             = date('d', date_to_timestamp(\QFactory::$VAR['start_date'])  );    
     
         // Load the schedule day with the updated schedule item
-        force_page('schedule', 'day', 'start_year='.$VAR['start_year'].'&start_month='.$VAR['start_month'].'&start_day='.$VAR['start_day'].'&employee_id='.$VAR['employee_id'].'&workorder_id='.$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Updated"));
+        force_page('schedule', 'day', 'start_year='.\QFactory::$VAR['start_year'].'&start_month='.\QFactory::$VAR['start_month'].'&start_day='.\QFactory::$VAR['start_day'].'&employee_id='.\QFactory::$VAR['employee_id'].'&workorder_id='.\QFactory::$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Updated"));
         */
         
         // Load the workorder page
-        force_page('schedule', 'details&schedule_id='.$VAR['schedule_id']);
+        force_page('schedule', 'details&schedule_id='.\QFactory::$VAR['schedule_id']);
         
     }
 
@@ -52,7 +52,7 @@ if(isset($VAR['submit'])) {
 } else {
     
     // Get the Schedule Record
-    $schedule_details = get_schedule_details($VAR['schedule_id']);
+    $schedule_details = get_schedule_details(\QFactory::$VAR['schedule_id']);
     
     $smarty->assign('employee_id',      $schedule_details['employee_id']    );    
     $smarty->assign('client_id',        $schedule_details['client_id']      );

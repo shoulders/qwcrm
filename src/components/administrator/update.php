@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'administrator.php');
 
-if(isset($VAR['submit'])) {
+if(isset(\QFactory::$VAR['submit'])) {
     
     // Check for updates
     check_for_qwcrm_update();

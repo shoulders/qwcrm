@@ -12,18 +12,18 @@ require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_id
-if(!isset($VAR['workorder_id']) || !$VAR['workorder_id']) {
+if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
     force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
 }
 
 // If a note is submitted
-if(isset($VAR['submit'])){
+if(isset(\QFactory::$VAR['submit'])){
     
     // insert the note into the database
-    insert_workorder_note($VAR['workorder_id'], $VAR['workorder_note']);
+    insert_workorder_note(\QFactory::$VAR['workorder_id'], \QFactory::$VAR['workorder_note']);
     
     // load the workorder details page    
-    force_page('workorder', 'details&workorder_id='.$VAR['workorder_id'], 'information_msg='._gettext("The note has been inserted."));
+    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id'], 'information_msg='._gettext("The note has been inserted."));
     
 }
     

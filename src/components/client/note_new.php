@@ -11,16 +11,16 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'client.php');
 
 // Check if we have a client_id
-if(!isset($VAR['client_id']) || !$VAR['client_id']) {
+if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
     force_page('client', 'search', 'warning_msg='._gettext("No Client ID supplied."));
     exit;
 }
 
 // Insert the client note
-if(isset($VAR['submit'])) {   
+if(isset(\QFactory::$VAR['submit'])) {   
     
-    insert_client_note($VAR['client_id'], $VAR['note']);    
-    force_page('client', 'details&client_id='.$VAR['client_id']);    
+    insert_client_note(\QFactory::$VAR['client_id'], \QFactory::$VAR['note']);    
+    force_page('client', 'details&client_id='.\QFactory::$VAR['client_id']);    
 
 // Build the page  
 } else {  

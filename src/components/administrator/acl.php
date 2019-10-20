@@ -11,14 +11,14 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'administrator.php');
 
 // Update the ACL permissions if submitted
-if(isset($VAR['submit']) && $VAR['submit'] == 'reset_default') {
+if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'reset_default') {
     reset_acl_permissions();    
     $smarty->assign('information_msg', _gettext("Permissions reset to default."));    
 }
 
 // Update the ACL permissions if submitted
-if(isset($VAR['submit']) && $VAR['submit'] == 'update') {
-    update_acl($VAR['qwpermissions']);    
+if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'update') {
+    update_acl(\QFactory::$VAR['qwpermissions']);    
     $smarty->assign('information_msg', _gettext("Permissions Updated."));    
 }
     

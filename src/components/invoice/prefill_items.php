@@ -11,35 +11,35 @@ defined('_QWEXEC') or die;
 require(INCLUDES_DIR.'invoice.php');
 
 // Prevent undefined variable errors
-$VAR['empty_prefill_items_table'] = isset($VAR['empty_prefill_items_table']) ? $VAR['empty_prefill_items_table'] : null;
+\QFactory::$VAR['empty_prefill_items_table'] = isset(\QFactory::$VAR['empty_prefill_items_table']) ? \QFactory::$VAR['empty_prefill_items_table'] : null;
 
 // If the export of the invoice prefill items has been requested
-if(isset($VAR['export_invoice_prefill_items'])) {
+if(isset(\QFactory::$VAR['export_invoice_prefill_items'])) {
     export_invoice_prefill_items_csv();
     die();
 }
 
 // if something submitted
-if(isset($VAR['submit'])) {
+if(isset(\QFactory::$VAR['submit'])) {
 
     // New invoice labour rates item
-    if($VAR['submit'] == 'new') {
-        insert_invoice_prefill_item($VAR);
+    if(\QFactory::$VAR['submit'] == 'new') {
+        insert_invoice_prefill_item(\QFactory::$VAR);
     }    
     
     // Update invoice labour rates item
-    if($VAR['submit'] == 'update') {            
-        update_invoice_prefill_item($VAR);        
+    if(\QFactory::$VAR['submit'] == 'update') {            
+        update_invoice_prefill_item(\QFactory::$VAR);        
     }
     
     // Delete invoice labour rates item
-    if($VAR['submit'] == 'delete') {        
-        delete_invoice_prefill_item($VAR['invoice_prefill_id']);
+    if(\QFactory::$VAR['submit'] == 'delete') {        
+        delete_invoice_prefill_item(\QFactory::$VAR['invoice_prefill_id']);
     }
     
     // Upload CSV file of invoice labour rates items
-    if($VAR['submit'] == 'csv_upload') {
-        upload_invoice_prefill_items_csv($VAR);
+    if(\QFactory::$VAR['submit'] == 'csv_upload') {
+        upload_invoice_prefill_items_csv(\QFactory::$VAR);
     }
     
 }

@@ -19,7 +19,7 @@ require(INCLUDES_DIR.'report.php');
 require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
-if(isset($VAR['submit'])) {
+if(isset(\QFactory::$VAR['submit'])) {
 
     // Get the company VAT Flat Rate
     $vat_flat_rate = get_company_details('vat_flat_rate');
@@ -30,8 +30,8 @@ if(isset($VAR['submit'])) {
     /* Build Basic Data Set */
 
     // Change dates to proper timestamps
-    $start_date = date_to_mysql_date($VAR['start_date']);    
-    $end_date   = date_to_mysql_date($VAR['end_date']);    
+    $start_date = date_to_mysql_date(\QFactory::$VAR['start_date']);    
+    $end_date   = date_to_mysql_date(\QFactory::$VAR['end_date']);    
     
     // Clients
     $smarty->assign('client_stats', get_clients_stats('basic', $start_date, $end_date));      
@@ -240,7 +240,7 @@ if(isset($VAR['submit'])) {
     /* Logging */
     
     // Log activity
-    write_record_to_activity_log(_gettext("Financial report run for the date range").': '.$VAR['start_date'].' - '.$VAR['end_date']);
+    write_record_to_activity_log(_gettext("Financial report run for the date range").': '.\QFactory::$VAR['start_date'].' - '.\QFactory::$VAR['end_date']);
     
 } else {
     

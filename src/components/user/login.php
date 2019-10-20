@@ -12,29 +12,29 @@ require(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'user.php');
 
 // Prevent undefined variable errors
-$VAR['login_username'] = isset($VAR['login_username']) ? $VAR['login_username'] : null;
-$VAR['login_pwd'] = isset($VAR['login_pwd']) ? $VAR['login_pwd'] : null;
-$VAR['action'] = isset($VAR['action']) ? $VAR['action'] : null;
+\QFactory::$VAR['login_username'] = isset(\QFactory::$VAR['login_username']) ? \QFactory::$VAR['login_username'] : null;
+\QFactory::$VAR['login_pwd'] = isset(\QFactory::$VAR['login_pwd']) ? \QFactory::$VAR['login_pwd'] : null;
+\QFactory::$VAR['action'] = isset(\QFactory::$VAR['action']) ? \QFactory::$VAR['action'] : null;
 
 // Get variables in correct format for login()
-$credentials['username'] = $VAR['login_username'];
-$credentials['password'] = $VAR['login_pwd'];
-if ($config->get('remember_me') && isset($VAR['remember'])) {
-    $options['remember'] = $VAR['remember'];
+$credentials['username'] = \QFactory::$VAR['login_username'];
+$credentials['password'] = \QFactory::$VAR['login_pwd'];
+if ($config->get('remember_me') && isset(\QFactory::$VAR['remember'])) {
+    $options['remember'] = \QFactory::$VAR['remember'];
 } else {
     $options = array();
 }
 
 // If login submitted 
-if($VAR['action'] === 'login') {
+if(\QFactory::$VAR['action'] === 'login') {
     
     // recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), $VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \QFactory::$VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */        
 
         // Log the user in
-        if(login($VAR, $credentials, $options)) {
+        if(login(\QFactory::$VAR, $credentials, $options)) {
 
             force_page('index.php');
 
@@ -59,7 +59,7 @@ unset($credentials);
 unset($options);
 
 // If logout is set, then log the user off
-if ($VAR['action'] == 'logout') {    
+if (\QFactory::$VAR['action'] == 'logout') {    
     logout();
 }
 

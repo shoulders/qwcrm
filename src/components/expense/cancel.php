@@ -19,12 +19,12 @@ if(!check_page_accessed_via_qwcrm('expense', 'status')) {
 }
 
 // Check if we have an expense_id
-if(!isset($VAR['expense_id']) || !$VAR['expense_id']) {
+if(!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id']) {
     force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
 }   
 
 // Cancel the expense
-cancel_expense($VAR['expense_id']);
+cancel_expense(\QFactory::$VAR['expense_id']);
 
 // Load the expense search page
 force_page('expense', 'search', 'information_msg='._gettext("Expense cancelled successfully."));

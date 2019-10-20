@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'otherincome.php');
 require(INCLUDES_DIR.'payment.php');
 
 // Check if we have a otherincome_id
-if(!isset($VAR['otherincome_id']) || !$VAR['otherincome_id']) {
+if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id']) {
     force_page('otherincome', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
 } 
 
@@ -21,11 +21,11 @@ if(!isset($VAR['otherincome_id']) || !$VAR['otherincome_id']) {
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );
 $smarty->assign('payment_methods',          get_payment_methods()                                                             ); 
 $smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
-$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'otherincome', null, null, null, null, null, null, null, $VAR['otherincome_id']));
+$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'otherincome', null, null, null, null, null, null, null, \QFactory::$VAR['otherincome_id']));
 
 // Build the page
 $smarty->assign('otherincome_statuses', get_otherincome_statuses());
 $smarty->assign('otherincome_types', get_otherincome_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes() );
-$smarty->assign('otherincome_details', get_otherincome_details($VAR['otherincome_id']));
+$smarty->assign('otherincome_details', get_otherincome_details(\QFactory::$VAR['otherincome_id']));
 \QFactory::$BuildPage .= $smarty->fetch('otherincome/details.tpl');

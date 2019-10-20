@@ -10,13 +10,13 @@ defined('_QWEXEC') or die;
 
 require(INCLUDES_DIR.'client.php');
 
-if(isset($VAR['submit'])) {
+if(isset(\QFactory::$VAR['submit'])) {
 
     // Create the new Client
-    $VAR['client_id'] = insert_client($VAR);
+    \QFactory::$VAR['client_id'] = insert_client(\QFactory::$VAR);
     
     // Load the new Client's Details page
-    force_page('client', 'details&client_id='.$VAR['client_id']);
+    force_page('client', 'details&client_id='.\QFactory::$VAR['client_id']);
     
 } else {
     
