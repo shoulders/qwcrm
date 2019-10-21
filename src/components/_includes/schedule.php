@@ -178,7 +178,7 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
 #  Insert schedule                   #
 ######################################
 
-function insert_schedule($VAR) {
+function insert_schedule($qform) {
     
     $db = QFactory::getDbo();
 
@@ -187,54 +187,54 @@ function insert_schedule($VAR) {
     //$end_time   = smartytime_to_otherformat('datetime', $end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
     // Get times in MySQL DATETIME from Smartytime (24 Hour Clock Format) (date/hour/minute/second)
-    $start_time = smartytime_to_otherformat('datetime', $VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
-    $end_time   = smartytime_to_otherformat('datetime', $VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
+    $start_time = smartytime_to_otherformat('datetime', $qform['start_date'], $qform['StartTime']['Time_Hour'], $qform['StartTime']['Time_Minute'], '0', '24');
+    $end_time   = smartytime_to_otherformat('datetime', $qform['end_date'], $qform['EndTime']['Time_Hour'], $qform['EndTime']['Time_Minute'], '0', '24');
     
     // Corrects the extra time segment issue by removing a seconf
     //$end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
     
     // Validate the submitted dates
-    if(!validate_schedule_times($VAR['start_date'], $start_time, $end_time, $VAR['employee_id'])) { return false; }        
+    if(!validate_schedule_times($qform['start_date'], $start_time, $end_time, $qform['employee_id'])) { return false; }        
 
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."schedule_records SET
-            employee_id     =". $db->qstr( $VAR['employee_id']      ).",
-            client_id       =". $db->qstr( $VAR['client_id']        ).",   
-            workorder_id    =". $db->qstr( $VAR['workorder_id']     ).",
+            employee_id     =". $db->qstr( $qform['employee_id']      ).",
+            client_id       =". $db->qstr( $qform['client_id']        ).",   
+            workorder_id    =". $db->qstr( $qform['workorder_id']     ).",
             start_time      =". $db->qstr( $start_time              ).",
             end_time        =". $db->qstr( $end_time                ).",            
-            note            =". $db->qstr( $VAR['note']             );            
+            note            =". $db->qstr( $qform['note']             );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
     } else {
         
         // Get work order details
-        $workorder_details = get_workorder_details($VAR['workorder_id']);
+        $workorder_details = get_workorder_details($qform['workorder_id']);
         
         // Get the new Schedule ID
         $schedule_id = $db->Insert_ID();
         
         // Assign the work order to the scheduled employee (if not already)
-        if($VAR['employee_id'] != $workorder_details['employee_id']) {
-            assign_workorder_to_employee($VAR['workorder_id'], $VAR['employee_id']);
+        if($qform['employee_id'] != $workorder_details['employee_id']) {
+            assign_workorder_to_employee($qform['workorder_id'], $qform['employee_id']);
         }
     
         // Change the Workorders Status to scheduled (if not already)
         if($workorder_details['status'] != 'scheduled') {
-            update_workorder_status($VAR['workorder_id'], 'scheduled');
+            update_workorder_status($qform['workorder_id'], 'scheduled');
         }
         
         // Insert Work Order History Note
-        insert_workorder_history_note($VAR['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$VAR['workorder_id'].' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id']);
+        $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
         
         // Update last active record
-        update_workorder_last_active($VAR['workorder_id']);
-        update_client_last_active($VAR['client_id']);
+        update_workorder_last_active($qform['workorder_id']);
+        update_client_last_active($qform['client_id']);
     
         return true;
         
@@ -308,7 +308,7 @@ function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start
 #      Update Schedule               #
 ######################################
 
-function update_schedule($VAR) {
+function update_schedule($qform) {
     
     $db = QFactory::getDbo();
     
@@ -317,39 +317,39 @@ function update_schedule($VAR) {
     //$end_time   = smartytime_to_otherformat('datetime', $end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
     
     // Get Full DATETIME for the schedule item (date/hour/minute/second) - 24 Hour
-    $start_time = smartytime_to_otherformat('datetime', $VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
-    $end_time   = smartytime_to_otherformat('datetime', $VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
+    $start_time = smartytime_to_otherformat('datetime', $qform['start_date'], $qform['StartTime']['Time_Hour'], $qform['StartTime']['Time_Minute'], '0', '24');
+    $end_time   = smartytime_to_otherformat('datetime', $qform['end_date'], $qform['EndTime']['Time_Hour'], $qform['EndTime']['Time_Minute'], '0', '24');
     
     // Corrects the extra time segment issue
     //$end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
     
     // Validate the submitted dates
-    if(!validate_schedule_times($VAR['start_date'], $start_time, $end_time, $VAR['employee_id'], $VAR['schedule_id'])) { return false; }        
+    if(!validate_schedule_times($qform['start_date'], $start_time, $end_time, $qform['employee_id'], $qform['schedule_id'])) { return false; }        
     
     $sql = "UPDATE ".PRFX."schedule_records SET
-        schedule_id         =". $db->qstr( $VAR['schedule_id']      ).",
-        employee_id         =". $db->qstr( $VAR['employee_id']      ).",
-        client_id           =". $db->qstr( $VAR['client_id']        ).",
-        workorder_id        =". $db->qstr( $VAR['workorder_id']     ).",   
+        schedule_id         =". $db->qstr( $qform['schedule_id']      ).",
+        employee_id         =". $db->qstr( $qform['employee_id']      ).",
+        client_id           =". $db->qstr( $qform['client_id']        ).",
+        workorder_id        =". $db->qstr( $qform['workorder_id']     ).",   
         start_time          =". $db->qstr( $start_time              ).",
         end_time            =". $db->qstr( $end_time                ).",                
-        note                =". $db->qstr( $VAR['note']             )."
-        WHERE schedule_id   =". $db->qstr( $VAR['schedule_id']      );
+        note                =". $db->qstr( $qform['note']             )."
+        WHERE schedule_id   =". $db->qstr( $qform['schedule_id']      );
    
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
     } else {       
          
         // Insert Work Order History Note
-        insert_workorder_history_note($VAR['workorder_id'], _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
+        insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');             
         
         // Log activity 
-        $record = _gettext("Schedule").' '.$VAR['schedule_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id']);
+        $record = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
         
         // Update last active record
-        update_workorder_last_active($VAR['workorder_id']);
-        update_client_last_active($VAR['client_id']);        
+        update_workorder_last_active($qform['workorder_id']);
+        update_client_last_active($qform['client_id']);        
         
         return true;
         

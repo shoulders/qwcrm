@@ -151,30 +151,30 @@ function display_clients($order_by, $direction, $use_pages = false, $records_per
 #    Insert new client              #
 #####################################
 
-function insert_client($VAR) {
+function insert_client($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."client_records SET
             opened_on       =". $db->qstr( mysql_datetime()         ).",
-            company_name    =". $db->qstr( $VAR['company_name']     ).",
-            first_name      =". $db->qstr( $VAR['first_name']       ).",
-            last_name       =". $db->qstr( $VAR['last_name']        ).",
-            website         =". $db->qstr( process_inputted_url($VAR['website'])).",
-            email           =". $db->qstr( $VAR['email']            ).",     
-            credit_terms    =". $db->qstr( $VAR['credit_terms']     ).",
-            unit_discount_rate   =". $db->qstr( $VAR['unit_discount_rate']    ).",
-            type            =". $db->qstr( $VAR['type']             ).",
-            active          =". $db->qstr( $VAR['active']           ).",
-            primary_phone   =". $db->qstr( $VAR['primary_phone']    ).",    
-            mobile_phone    =". $db->qstr( $VAR['mobile_phone']     ).",
-            fax             =". $db->qstr( $VAR['fax']              ).",
-            address         =". $db->qstr( $VAR['address']          ).",
-            city            =". $db->qstr( $VAR['city']             ).", 
-            state           =". $db->qstr( $VAR['state']            ).", 
-            zip             =". $db->qstr( $VAR['zip']              ).",
-            country         =". $db->qstr( $VAR['country']          ).",
-            note            =". $db->qstr( $VAR['note']             );          
+            company_name    =". $db->qstr( $qform['company_name']     ).",
+            first_name      =". $db->qstr( $qform['first_name']       ).",
+            last_name       =". $db->qstr( $qform['last_name']        ).",
+            website         =". $db->qstr( process_inputted_url($qform['website'])).",
+            email           =". $db->qstr( $qform['email']            ).",     
+            credit_terms    =". $db->qstr( $qform['credit_terms']     ).",
+            unit_discount_rate   =". $db->qstr( $qform['unit_discount_rate']    ).",
+            type            =". $db->qstr( $qform['type']             ).",
+            active          =". $db->qstr( $qform['active']           ).",
+            primary_phone   =". $db->qstr( $qform['primary_phone']    ).",    
+            mobile_phone    =". $db->qstr( $qform['mobile_phone']     ).",
+            fax             =". $db->qstr( $qform['fax']              ).",
+            address         =". $db->qstr( $qform['address']          ).",
+            city            =". $db->qstr( $qform['city']             ).", 
+            state           =". $db->qstr( $qform['state']            ).", 
+            zip             =". $db->qstr( $qform['zip']              ).",
+            country         =". $db->qstr( $qform['country']          ).",
+            note            =". $db->qstr( $qform['note']             );          
                         
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the client record into the database."));
@@ -361,41 +361,41 @@ function get_client_types() {
 #    Update Client                  #
 #####################################
 
-function update_client($VAR) {
+function update_client($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."client_records SET
-            company_name    =". $db->qstr( $VAR['company_name']     ).",
-            first_name      =". $db->qstr( $VAR['first_name']       ).",
-            last_name       =". $db->qstr( $VAR['last_name']        ).",
-            website         =". $db->qstr( process_inputted_url($VAR['website'])).",
-            email           =". $db->qstr( $VAR['email']            ).",     
-            credit_terms    =". $db->qstr( $VAR['credit_terms']     ).",               
-            unit_discount_rate   =". $db->qstr( $VAR['unit_discount_rate']    ).",
-            type            =". $db->qstr( $VAR['type']             ).", 
-            active          =". $db->qstr( $VAR['active']           ).", 
-            primary_phone   =". $db->qstr( $VAR['primary_phone']    ).",    
-            mobile_phone    =". $db->qstr( $VAR['mobile_phone']     ).",
-            fax             =". $db->qstr( $VAR['fax']              ).",
-            address         =". $db->qstr( $VAR['address']          ).",
-            city            =". $db->qstr( $VAR['city']             ).", 
-            state           =". $db->qstr( $VAR['state']            ).", 
-            zip             =". $db->qstr( $VAR['zip']              ).",
-            country         =". $db->qstr( $VAR['country']          ).",
-            note            =". $db->qstr( $VAR['note']             )."
-            WHERE client_id  =". $db->qstr( $VAR['client_id']       );
+            company_name    =". $db->qstr( $qform['company_name']     ).",
+            first_name      =". $db->qstr( $qform['first_name']       ).",
+            last_name       =". $db->qstr( $qform['last_name']        ).",
+            website         =". $db->qstr( process_inputted_url($qform['website'])).",
+            email           =". $db->qstr( $qform['email']            ).",     
+            credit_terms    =". $db->qstr( $qform['credit_terms']     ).",               
+            unit_discount_rate   =". $db->qstr( $qform['unit_discount_rate']    ).",
+            type            =". $db->qstr( $qform['type']             ).", 
+            active          =". $db->qstr( $qform['active']           ).", 
+            primary_phone   =". $db->qstr( $qform['primary_phone']    ).",    
+            mobile_phone    =". $db->qstr( $qform['mobile_phone']     ).",
+            fax             =". $db->qstr( $qform['fax']              ).",
+            address         =". $db->qstr( $qform['address']          ).",
+            city            =". $db->qstr( $qform['city']             ).", 
+            state           =". $db->qstr( $qform['state']            ).", 
+            zip             =". $db->qstr( $qform['zip']              ).",
+            country         =". $db->qstr( $qform['country']          ).",
+            note            =". $db->qstr( $qform['note']             )."
+            WHERE client_id  =". $db->qstr( $qform['client_id']       );
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Client's details."));
     } else {
         
         // Log activity        
-        $record = _gettext("The client").' '.get_client_details($VAR['client_id'], 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, null, $VAR['client_id']);
+        $record = _gettext("The client").' '.get_client_details($qform['client_id'], 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, null, $qform['client_id']);
         
         // Update last active record      
-        update_client_last_active($VAR['client_id']);
+        update_client_last_active($qform['client_id']);
         
       return true;
       

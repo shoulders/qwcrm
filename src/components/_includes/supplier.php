@@ -148,37 +148,37 @@ function display_suppliers($order_by, $direction, $use_pages = false, $records_p
 #      Insert New Record                 #
 ##########################################
 
-function insert_supplier($VAR) {
+function insert_supplier($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."supplier_records SET       
             employee_id    =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            company_name   =". $db->qstr( $VAR['company_name']  ).",
-            first_name     =". $db->qstr( $VAR['first_name']    ).",
-            last_name      =". $db->qstr( $VAR['last_name']     ).",
-            website        =". $db->qstr( process_inputted_url($VAR['website'])).",
-            email          =". $db->qstr( $VAR['email']         ).",
-            type           =". $db->qstr( $VAR['type']          ).",
-            primary_phone  =". $db->qstr( $VAR['primary_phone'] ).",
-            mobile_phone   =". $db->qstr( $VAR['mobile_phone']  ).",
-            fax            =". $db->qstr( $VAR['fax']           ).",
-            address        =". $db->qstr( $VAR['address']       ).",
-            city           =". $db->qstr( $VAR['city']          ).",
-            state          =". $db->qstr( $VAR['state']         ).",
-            zip            =". $db->qstr( $VAR['zip']           ).",
-            country        =". $db->qstr( $VAR['country']       ).",
+            company_name   =". $db->qstr( $qform['company_name']  ).",
+            first_name     =". $db->qstr( $qform['first_name']    ).",
+            last_name      =". $db->qstr( $qform['last_name']     ).",
+            website        =". $db->qstr( process_inputted_url($qform['website'])).",
+            email          =". $db->qstr( $qform['email']         ).",
+            type           =". $db->qstr( $qform['type']          ).",
+            primary_phone  =". $db->qstr( $qform['primary_phone'] ).",
+            mobile_phone   =". $db->qstr( $qform['mobile_phone']  ).",
+            fax            =". $db->qstr( $qform['fax']           ).",
+            address        =". $db->qstr( $qform['address']       ).",
+            city           =". $db->qstr( $qform['city']          ).",
+            state          =". $db->qstr( $qform['state']         ).",
+            zip            =". $db->qstr( $qform['zip']           ).",
+            country        =". $db->qstr( $qform['country']       ).",
             status         =". $db->qstr( 'valid'               ).",
             opened_on      =". $db->qstr( mysql_datetime()      ).", 
-            description    =". $db->qstr( $VAR['description']   ).", 
-            note           =". $db->qstr( $VAR['note']          );            
+            description    =". $db->qstr( $qform['description']   ).", 
+            note           =". $db->qstr( $qform['note']          );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
     } else {
         
         // Log activity        
-        $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("created.");
+        $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
         
         return $db->Insert_ID();
@@ -306,37 +306,37 @@ function get_supplier_types() {
 #     Update Record                 #
 #####################################
 
-function update_supplier($VAR) {
+function update_supplier($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."supplier_records SET
             employee_id    =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            company_name   =". $db->qstr( $VAR['company_name']  ).",
-            first_name     =". $db->qstr( $VAR['first_name']    ).",
-            last_name      =". $db->qstr( $VAR['last_name']     ).",
-            website        =". $db->qstr( process_inputted_url($VAR['website'])).",
-            email          =". $db->qstr( $VAR['email']         ).",
-            type           =". $db->qstr( $VAR['type']          ).",
-            primary_phone  =". $db->qstr( $VAR['primary_phone'] ).",
-            mobile_phone   =". $db->qstr( $VAR['mobile_phone']  ).",
-            fax            =". $db->qstr( $VAR['fax']           ).",
-            address        =". $db->qstr( $VAR['address']       ).",
-            city           =". $db->qstr( $VAR['city']          ).",
-            state          =". $db->qstr( $VAR['state']         ).",
-            zip            =". $db->qstr( $VAR['zip']           ).",
-            country        =". $db->qstr( $VAR['country']       ).",
+            company_name   =". $db->qstr( $qform['company_name']  ).",
+            first_name     =". $db->qstr( $qform['first_name']    ).",
+            last_name      =". $db->qstr( $qform['last_name']     ).",
+            website        =". $db->qstr( process_inputted_url($qform['website'])).",
+            email          =". $db->qstr( $qform['email']         ).",
+            type           =". $db->qstr( $qform['type']          ).",
+            primary_phone  =". $db->qstr( $qform['primary_phone'] ).",
+            mobile_phone   =". $db->qstr( $qform['mobile_phone']  ).",
+            fax            =". $db->qstr( $qform['fax']           ).",
+            address        =". $db->qstr( $qform['address']       ).",
+            city           =". $db->qstr( $qform['city']          ).",
+            state          =". $db->qstr( $qform['state']         ).",
+            zip            =". $db->qstr( $qform['zip']           ).",
+            country        =". $db->qstr( $qform['country']       ).",
             last_active    =". $db->qstr( mysql_datetime()      ).",
-            description    =". $db->qstr( $VAR['description']   ).", 
-            note           =". $db->qstr( $VAR['note']          )."
-            WHERE supplier_id = ". $db->qstr( $VAR['supplier_id'] );                        
+            description    =". $db->qstr( $qform['description']   ).", 
+            note           =". $db->qstr( $qform['note']          )."
+            WHERE supplier_id = ". $db->qstr( $qform['supplier_id'] );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
     } else {
         
         // Log activity      
-        $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$VAR['company_name'].') '._gettext("updated.");
+        $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$qform['company_name'].') '._gettext("updated.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
 
         return true;

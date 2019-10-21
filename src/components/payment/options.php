@@ -12,48 +12,48 @@ require(INCLUDES_DIR.'payment.php');
 
 /* Prevent undefined variable errors (does the same as below)
  * 
-$VAR['bank_transfer']['send'] = isset($VAR['bank_transfer']['send']) ? $VAR['bank_transfer']['send'] : null;
-$VAR['bank_transfer']['receive'] = isset($VAR['bank_transfer']['receive']) ? $VAR['bank_transfer']['receive'] : null;
-$VAR['bank_transfer']['active'] = isset($VAR['bank_transfer']['active']) ? $VAR['bank_transfer']['active'] : null;
-$VAR['card']['send'] = isset($VAR['card']['send']) ? $VAR['card']['send'] : null;
-$VAR['card']['receive'] = isset($VAR['card']['receive']) ? $VAR['card']['receive'] : null;
-$VAR['card']['active'] = isset($VAR['card']['active']) ? $VAR['card']['active'] : null;
-$VAR['cash']['send'] = isset($VAR['cash']['send']) ? $VAR['cash']['send'] : null;
-$VAR['cash']['receive'] = isset($VAR['cash']['receive']) ? $VAR['cash']['receive'] : null;
-$VAR['cash']['active'] = isset($VAR['cash']['active']) ? $VAR['cash']['active'] : null;
-$VAR['cheque']['send'] = isset($VAR['cheque']['send']) ? $VAR['cheque']['send'] : null;
-$VAR['cheque']['receive'] = isset($VAR['cheque']['receive']) ? $VAR['cheque']['receive'] : null;
-$VAR['cheque']['active'] = isset($VAR['cheque']['active']) ? $VAR['cheque']['active'] : null;
-$VAR['direct_debit']['send'] = isset($VAR['direct_debit']['send']) ? $VAR['direct_debit']['send'] : null;
-$VAR['direct_debit']['receive'] = isset($VAR['direct_debit']['receive']) ? $VAR['direct_debit']['receive'] : null;
-$VAR['direct_debit']['active'] = isset($VAR['direct_debit']['active']) ? $VAR['direct_debit']['active'] : null;
-$VAR['voucher']['send'] = isset($VAR['voucher']['send']) ? $VAR['voucher']['send'] : null;
-$VAR['voucher']['receive'] = isset($VAR['voucher']['receive']) ? $VAR['voucher']['receive'] : null;
-$VAR['voucher']['active'] = isset($VAR['voucher']['active']) ? $VAR['voucher']['active'] : null;
-$VAR['other']['send'] = isset($VAR['other']['send']) ? $VAR['other']['send'] : null;
-$VAR['other']['receive'] = isset($VAR['other']['receive']) ? $VAR['other']['receive'] : null;
-$VAR['other']['active'] = isset($VAR['other']['active']) ? $VAR['other']['active'] : null;
-$VAR['paypal']['send'] = isset($VAR['paypal']['send']) ? $VAR['paypal']['send'] : null;
-$VAR['paypal']['receive'] = isset($VAR['paypal']['receive']) ? $VAR['paypal']['receive'] : null;
-$VAR['paypal']['active'] = isset($VAR['paypal']['active']) ? $VAR['paypal']['active'] : null;
+\QFactory::$VAR['bank_transfer']['send'] = isset(\QFactory::$VAR['bank_transfer']['send']) ? \QFactory::$VAR['bank_transfer']['send'] : null;
+\QFactory::$VAR['bank_transfer']['receive'] = isset(\QFactory::$VAR['bank_transfer']['receive']) ? \QFactory::$VAR['bank_transfer']['receive'] : null;
+\QFactory::$VAR['bank_transfer']['active'] = isset(\QFactory::$VAR['bank_transfer']['active']) ? \QFactory::$VAR['bank_transfer']['active'] : null;
+\QFactory::$VAR['card']['send'] = isset(\QFactory::$VAR['card']['send']) ? \QFactory::$VAR['card']['send'] : null;
+\QFactory::$VAR['card']['receive'] = isset(\QFactory::$VAR['card']['receive']) ? \QFactory::$VAR['card']['receive'] : null;
+\QFactory::$VAR['card']['active'] = isset(\QFactory::$VAR['card']['active']) ? \QFactory::$VAR['card']['active'] : null;
+\QFactory::$VAR['cash']['send'] = isset(\QFactory::$VAR['cash']['send']) ? \QFactory::$VAR['cash']['send'] : null;
+\QFactory::$VAR['cash']['receive'] = isset(\QFactory::$VAR['cash']['receive']) ? \QFactory::$VAR['cash']['receive'] : null;
+\QFactory::$VAR['cash']['active'] = isset(\QFactory::$VAR['cash']['active']) ? \QFactory::$VAR['cash']['active'] : null;
+\QFactory::$VAR['cheque']['send'] = isset(\QFactory::$VAR['cheque']['send']) ? \QFactory::$VAR['cheque']['send'] : null;
+\QFactory::$VAR['cheque']['receive'] = isset(\QFactory::$VAR['cheque']['receive']) ? \QFactory::$VAR['cheque']['receive'] : null;
+\QFactory::$VAR['cheque']['active'] = isset(\QFactory::$VAR['cheque']['active']) ? \QFactory::$VAR['cheque']['active'] : null;
+\QFactory::$VAR['direct_debit']['send'] = isset(\QFactory::$VAR['direct_debit']['send']) ? \QFactory::$VAR['direct_debit']['send'] : null;
+\QFactory::$VAR['direct_debit']['receive'] = isset(\QFactory::$VAR['direct_debit']['receive']) ? \QFactory::$VAR['direct_debit']['receive'] : null;
+\QFactory::$VAR['direct_debit']['active'] = isset(\QFactory::$VAR['direct_debit']['active']) ? \QFactory::$VAR['direct_debit']['active'] : null;
+\QFactory::$VAR['voucher']['send'] = isset(\QFactory::$VAR['voucher']['send']) ? \QFactory::$VAR['voucher']['send'] : null;
+\QFactory::$VAR['voucher']['receive'] = isset(\QFactory::$VAR['voucher']['receive']) ? \QFactory::$VAR['voucher']['receive'] : null;
+\QFactory::$VAR['voucher']['active'] = isset(\QFactory::$VAR['voucher']['active']) ? \QFactory::$VAR['voucher']['active'] : null;
+\QFactory::$VAR['other']['send'] = isset(\QFactory::$VAR['other']['send']) ? \QFactory::$VAR['other']['send'] : null;
+\QFactory::$VAR['other']['receive'] = isset(\QFactory::$VAR['other']['receive']) ? \QFactory::$VAR['other']['receive'] : null;
+\QFactory::$VAR['other']['active'] = isset(\QFactory::$VAR['other']['active']) ? \QFactory::$VAR['other']['active'] : null;
+\QFactory::$VAR['paypal']['send'] = isset(\QFactory::$VAR['paypal']['send']) ? \QFactory::$VAR['paypal']['send'] : null;
+\QFactory::$VAR['paypal']['receive'] = isset(\QFactory::$VAR['paypal']['receive']) ? \QFactory::$VAR['paypal']['receive'] : null;
+\QFactory::$VAR['paypal']['active'] = isset(\QFactory::$VAR['paypal']['active']) ? \QFactory::$VAR['paypal']['active'] : null;
 */
 
 // Prevent undefined variable errors (from checkboxes)
 $checkboxes = array('bank_transfer', 'card', 'cash', 'cheque', 'direct_debit', 'voucher', 'other', 'paypal');
 foreach($checkboxes as $checkbox) {     
-    $VAR[$checkbox]['send']     = isset($VAR[$checkbox]['send'])    ? $VAR[$checkbox]['send']    : '0';
-    $VAR[$checkbox]['receive']  = isset($VAR[$checkbox]['receive']) ? $VAR[$checkbox]['receive'] : '0';
-    $VAR[$checkbox]['enabled']  = isset($VAR[$checkbox]['enabled']) ? $VAR[$checkbox]['enabled'] : '0';     
+    \QFactory::$VAR[$checkbox]['send']     = isset(\QFactory::$VAR[$checkbox]['send'])    ? \QFactory::$VAR[$checkbox]['send']    : '0';
+    \QFactory::$VAR[$checkbox]['receive']  = isset(\QFactory::$VAR[$checkbox]['receive']) ? \QFactory::$VAR[$checkbox]['receive'] : '0';
+    \QFactory::$VAR[$checkbox]['enabled']  = isset(\QFactory::$VAR[$checkbox]['enabled']) ? \QFactory::$VAR[$checkbox]['enabled'] : '0';     
 }
 
 // If changes submited
-if(isset($VAR['submit'])) {
+if(isset(\QFactory::$VAR['submit'])) {
     
     // Update enabled payment methods (checkboxes)
-    update_payment_methods_statuses($VAR['payment_methods']);
+    update_payment_methods_statuses(\QFactory::$VAR['payment_methods']);
     
     // Update Payment details
-    update_payment_options($VAR);
+    update_payment_options(\QFactory::$VAR);
 
     // Assign success message    
     $smarty->assign('information_msg', _gettext("Payment Options Updated.") );

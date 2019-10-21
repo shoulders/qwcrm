@@ -13,11 +13,11 @@ require(INCLUDES_DIR.'payment.php');
 require(INCLUDES_DIR.'user.php');
 
 // Check if we have an payment_id
-if(!isset($VAR['payment_id']) || !$VAR['payment_id']) {
+if(!isset(\QFactory::$VAR['payment_id']) || !\QFactory::$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }
     
-$payment_details = get_payment_details($VAR['payment_id']);
+$payment_details = get_payment_details(\QFactory::$VAR['payment_id']);
 
 // Prevent undefined variable errors
 $client_display_name = $payment_details['client_id'] ? get_client_details($payment_details['client_id'], 'display_name') : null;

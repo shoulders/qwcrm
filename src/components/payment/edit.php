@@ -20,13 +20,13 @@ require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an payment_id
-if(!isset($VAR['payment_id']) || !$VAR['payment_id']) {
+if(!isset(\QFactory::$VAR['payment_id']) || !\QFactory::$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }   
 
 // Check if payment can be edited
-if(!check_payment_can_be_edited($VAR['payment_id'])) {
-    force_page('payment', 'details&payment_id='.$VAR['payment_id'], 'warning_msg='._gettext("You cannot edit this payment because its status does not allow it."));
+if(!check_payment_can_be_edited(\QFactory::$VAR['payment_id'])) {
+    force_page('payment', 'details&payment_id='.\QFactory::$VAR['payment_id'], 'warning_msg='._gettext("You cannot edit this payment because its status does not allow it."));
 }
     
 // This is a dirty hack because QWcrm is not fully OOP yet
@@ -109,7 +109,7 @@ class UpdatePayment {
 }
 
 // Instanciate Update Payment Class
-$payment = new UpdatePayment($VAR);
+$payment = new UpdatePayment(\QFactory::$VAR);
 
 // Build the page
 $smarty->assign('client_display_name',      get_client_details(UpdatePayment::$payment_details['client_id'], 'display_name'));

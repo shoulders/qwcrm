@@ -170,35 +170,35 @@ function display_users($order_by, $direction, $use_pages = false, $records_per_p
 #    Insert new user                #
 #####################################
 
-function insert_user($VAR) {
+function insert_user($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."user_records SET
-            client_id           =". $db->qstr( $VAR['client_id']                            ).", 
-            username            =". $db->qstr( $VAR['username']                             ).",
-            password            =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($VAR['password'])  ).",
-            email               =". $db->qstr( $VAR['email']                                ).",
-            usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-            active              =". $db->qstr( $VAR['active']                               ).",
+            client_id           =". $db->qstr( $qform['client_id']                            ).", 
+            username            =". $db->qstr( $qform['username']                             ).",
+            password            =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
+            email               =". $db->qstr( $qform['email']                                ).",
+            usergroup           =". $db->qstr( $qform['usergroup']                            ).",
+            active              =". $db->qstr( $qform['active']                               ).",
             register_date       =". $db->qstr( mysql_datetime()                             ).",   
-            require_reset       =". $db->qstr( $VAR['require_reset']                        ).",
-            is_employee         =". $db->qstr( $VAR['is_employee']                          ).", 
-            first_name          =". $db->qstr( $VAR['first_name']                           ).",
-            last_name           =". $db->qstr( $VAR['last_name']                            ).",
-            work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
-            work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
-            work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
-            home_primary_phone  =". $db->qstr( $VAR['home_primary_phone']                   ).",
-            home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
-            home_email          =". $db->qstr( $VAR['home_email']                           ).",
-            home_address        =". $db->qstr( $VAR['home_address']                         ).",
-            home_city           =". $db->qstr( $VAR['home_city']                            ).",  
-            home_state          =". $db->qstr( $VAR['home_state']                           ).",
-            home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
-            home_country        =". $db->qstr( $VAR['home_country']                         ).", 
-            based               =". $db->qstr( $VAR['based']                                ).",  
-            note                =". $db->qstr( $VAR['note']                                 );                     
+            require_reset       =". $db->qstr( $qform['require_reset']                        ).",
+            is_employee         =". $db->qstr( $qform['is_employee']                          ).", 
+            first_name          =". $db->qstr( $qform['first_name']                           ).",
+            last_name           =". $db->qstr( $qform['last_name']                            ).",
+            work_primary_phone  =". $db->qstr( $qform['work_primary_phone']                   ).",
+            work_mobile_phone   =". $db->qstr( $qform['work_mobile_phone']                    ).",
+            work_fax            =". $db->qstr( $qform['work_fax']                             ).",                    
+            home_primary_phone  =". $db->qstr( $qform['home_primary_phone']                   ).",
+            home_mobile_phone   =". $db->qstr( $qform['home_mobile_phone']                    ).",
+            home_email          =". $db->qstr( $qform['home_email']                           ).",
+            home_address        =". $db->qstr( $qform['home_address']                         ).",
+            home_city           =". $db->qstr( $qform['home_city']                            ).",  
+            home_state          =". $db->qstr( $qform['home_state']                           ).",
+            home_zip            =". $db->qstr( $qform['home_zip']                             ).",
+            home_country        =". $db->qstr( $qform['home_country']                         ).", 
+            based               =". $db->qstr( $qform['based']                                ).",  
+            note                =". $db->qstr( $qform['note']                                 );                     
           
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
@@ -208,10 +208,10 @@ function insert_user($VAR) {
         $user_id = $db->Insert_ID();
         
         // Update last active record        
-        update_client_last_active($VAR['client_id']);        
+        update_client_last_active($qform['client_id']);        
         
         // Log activity
-        if($VAR['client_id']) {
+        if($qform['client_id']) {
             $user_type = _gettext("Client");
         } else {
             $user_type = _gettext("Employee");
@@ -417,49 +417,49 @@ function get_user_locations() {
 #   Update Employee     #
 #########################
 
-function update_user($VAR) {
+function update_user($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."user_records SET        
-            username            =". $db->qstr( $VAR['username']                             ).",
-            email               =". $db->qstr( $VAR['email']                                ).",
-            usergroup           =". $db->qstr( $VAR['usergroup']                            ).",
-            active              =". $db->qstr( $VAR['active']                               ).",                    
-            require_reset       =". $db->qstr( $VAR['require_reset']                        ).",               
-            first_name          =". $db->qstr( $VAR['first_name']                           ).",
-            last_name           =". $db->qstr( $VAR['last_name']                            ).",
-            work_primary_phone  =". $db->qstr( $VAR['work_primary_phone']                   ).",
-            work_mobile_phone   =". $db->qstr( $VAR['work_mobile_phone']                    ).",
-            work_fax            =". $db->qstr( $VAR['work_fax']                             ).",                    
-            home_primary_phone  =". $db->qstr( $VAR['home_primary_phone']                   ).",
-            home_mobile_phone   =". $db->qstr( $VAR['home_mobile_phone']                    ).",
-            home_email          =". $db->qstr( $VAR['home_email']                           ).",
-            home_address        =". $db->qstr( $VAR['home_address']                         ).",
-            home_city           =". $db->qstr( $VAR['home_city']                            ).",  
-            home_state          =". $db->qstr( $VAR['home_state']                           ).",
-            home_zip            =". $db->qstr( $VAR['home_zip']                             ).",
-            home_country        =". $db->qstr( $VAR['home_country']                         ).",
-            based               =". $db->qstr( $VAR['based']                                ).",  
-            note                =". $db->qstr( $VAR['note']                                 )."
-            WHERE user_id= ".$db->qstr($VAR['user_id']);
+            username            =". $db->qstr( $qform['username']                             ).",
+            email               =". $db->qstr( $qform['email']                                ).",
+            usergroup           =". $db->qstr( $qform['usergroup']                            ).",
+            active              =". $db->qstr( $qform['active']                               ).",                    
+            require_reset       =". $db->qstr( $qform['require_reset']                        ).",               
+            first_name          =". $db->qstr( $qform['first_name']                           ).",
+            last_name           =". $db->qstr( $qform['last_name']                            ).",
+            work_primary_phone  =". $db->qstr( $qform['work_primary_phone']                   ).",
+            work_mobile_phone   =". $db->qstr( $qform['work_mobile_phone']                    ).",
+            work_fax            =". $db->qstr( $qform['work_fax']                             ).",                    
+            home_primary_phone  =". $db->qstr( $qform['home_primary_phone']                   ).",
+            home_mobile_phone   =". $db->qstr( $qform['home_mobile_phone']                    ).",
+            home_email          =". $db->qstr( $qform['home_email']                           ).",
+            home_address        =". $db->qstr( $qform['home_address']                         ).",
+            home_city           =". $db->qstr( $qform['home_city']                            ).",  
+            home_state          =". $db->qstr( $qform['home_state']                           ).",
+            home_zip            =". $db->qstr( $qform['home_zip']                             ).",
+            home_country        =". $db->qstr( $qform['home_country']                         ).",
+            based               =". $db->qstr( $qform['based']                                ).",  
+            note                =". $db->qstr( $qform['note']                                 )."
+            WHERE user_id= ".$db->qstr($qform['user_id']);
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
     } else {
         
         // Reset user password if required
-        if($VAR['password']) {
-            reset_user_password($VAR['user_id'], $VAR['password']);
+        if($qform['password']) {
+            reset_user_password($qform['user_id'], $qform['password']);
         }
         
         // Update last active record
-        update_user_last_active($VAR['user_id']);
-        update_client_last_active(get_user_details($VAR['user_id'], 'client_id'));        
+        update_user_last_active($qform['user_id']);
+        update_client_last_active(get_user_details($qform['user_id'], 'client_id'));        
         
         // Log activity        
-        $record = _gettext("User Account").' '.$VAR['user_id'].' ('.get_user_details($VAR['user_id'], 'display_name').') '._gettext("updated.");
-        write_record_to_activity_log($record, $VAR['user_id']);
+        $record = _gettext("User Account").' '.$qform['user_id'].' ('.get_user_details($qform['user_id'], 'display_name').') '._gettext("updated.");
+        write_record_to_activity_log($record, $qform['user_id']);
         
         return true;
         
@@ -733,7 +733,7 @@ function reset_all_user_passwords() {
 #  Login authentication function   #
 ####################################
 
-function login($VAR, $credentials, $options = array())
+function login($qform, $credentials, $options = array())
 {   
     $smarty = QFactory::getSmarty();   
     
@@ -748,7 +748,7 @@ function login($VAR, $credentials, $options = array())
     } 
     
     // Does the account require the password to be reset, if so force it
-    if(get_user_details(get_user_id_by_username($VAR['login_username']), 'require_reset')) {
+    if(get_user_details(get_user_id_by_username($qform['login_username']), 'require_reset')) {
         
         // Set error message
         $smarty->assign('warning_msg', _gettext("You must reset your password before you are allowed to login."));
@@ -758,13 +758,13 @@ function login($VAR, $credentials, $options = array())
     }
     
     // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
-    if(get_user_details(get_user_id_by_username($VAR['login_username']), 'active') === '0') {  
+    if(get_user_details(get_user_id_by_username($qform['login_username']), 'active') === '0') {  
 
         // Set error message
         $smarty->assign('warning_msg', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
 
         // Log activity       
-        write_record_to_activity_log(_gettext("Login denied for").' '.$VAR['login_username'].'.');
+        write_record_to_activity_log(_gettext("Login denied for").' '.$qform['login_username'].'.');
 
         return false;
 

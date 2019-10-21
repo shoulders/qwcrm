@@ -136,25 +136,25 @@ function display_otherincomes($order_by, $direction, $use_pages = false, $record
 #      Insert Otherincome                #
 ##########################################
 
-function insert_otherincome($VAR) {
+function insert_otherincome($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."otherincome_records SET
             employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            payee            =". $db->qstr( $VAR['payee']                   ).",
-            date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",
+            payee            =". $db->qstr( $qform['payee']                   ).",
+            date             =". $db->qstr( date_to_mysql_date($qform['date'])).",
             tax_system       =". $db->qstr( QW_TAX_SYSTEM                   ).",            
-            item_type        =". $db->qstr( $VAR['item_type']               ).",            
-            unit_net         =". $db->qstr( $VAR['unit_net']                ).",
-            vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
-            unit_tax_rate    =". $db->qstr( $VAR['unit_tax_rate']           ).",
-            unit_tax         =". $db->qstr( $VAR['unit_tax']                ).",
-            unit_gross       =". $db->qstr( $VAR['unit_gross']              ).",
+            item_type        =". $db->qstr( $qform['item_type']               ).",            
+            unit_net         =". $db->qstr( $qform['unit_net']                ).",
+            vat_tax_code     =". $db->qstr( $qform['vat_tax_code']            ).",
+            unit_tax_rate    =". $db->qstr( $qform['unit_tax_rate']           ).",
+            unit_tax         =". $db->qstr( $qform['unit_tax']                ).",
+            unit_gross       =". $db->qstr( $qform['unit_gross']              ).",
             status           =". $db->qstr( 'unpaid'                        ).",            
             opened_on        =". $db->qstr( mysql_datetime()                ).",            
-            items            =". $db->qstr( $VAR['items']                   ).",
-            note             =". $db->qstr( $VAR['note']                    );
+            items            =". $db->qstr( $qform['items']                   ).",
+            note             =". $db->qstr( $qform['note']                    );
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the otherincome record into the database."));
@@ -271,31 +271,31 @@ function get_otherincome_types() {
 #     Update otherincome            #
 #####################################
 
-function update_otherincome($VAR) {
+function update_otherincome($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."otherincome_records SET
             employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            payee            =". $db->qstr( $VAR['payee']                   ).",
-            date             =". $db->qstr( date_to_mysql_date($VAR['date'])).",            
-            item_type        =". $db->qstr( $VAR['item_type']               ).",            
-            unit_net         =". $db->qstr( $VAR['unit_net']                ).",
-            vat_tax_code     =". $db->qstr( $VAR['vat_tax_code']            ).",
-            unit_tax_rate    =". $db->qstr( $VAR['unit_tax_rate']           ).",
-            unit_tax         =". $db->qstr( $VAR['unit_tax']                ).",
-            unit_gross       =". $db->qstr( $VAR['unit_gross']              ).",
+            payee            =". $db->qstr( $qform['payee']                   ).",
+            date             =". $db->qstr( date_to_mysql_date($qform['date'])).",            
+            item_type        =". $db->qstr( $qform['item_type']               ).",            
+            unit_net         =". $db->qstr( $qform['unit_net']                ).",
+            vat_tax_code     =". $db->qstr( $qform['vat_tax_code']            ).",
+            unit_tax_rate    =". $db->qstr( $qform['unit_tax_rate']           ).",
+            unit_tax         =". $db->qstr( $qform['unit_tax']                ).",
+            unit_gross       =". $db->qstr( $qform['unit_gross']              ).",
             last_active      =". $db->qstr( mysql_datetime()                ).",
-            items            =". $db->qstr( $VAR['items']                   ).",
-            note             =". $db->qstr( $VAR['note']                    )."
-            WHERE otherincome_id  =". $db->qstr( $VAR['otherincome_id']     );                        
+            items            =". $db->qstr( $qform['items']                   ).",
+            note             =". $db->qstr( $qform['note']                    )."
+            WHERE otherincome_id  =". $db->qstr( $qform['otherincome_id']     );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the otherincome details."));
     } else {
         
         // Log activity        
-        $record = _gettext("Otherincome Record").' '.$VAR['otherincome_id'].' '._gettext("updated.");
+        $record = _gettext("Otherincome Record").' '.$qform['otherincome_id'].' '._gettext("updated.");
         write_record_to_activity_log($record, QFactory::getUser()->login_user_id);
         
         return true;

@@ -139,25 +139,25 @@ function display_expenses($order_by, $direction, $use_pages = false, $records_pe
 #      Insert Expense                    #
 ##########################################
 
-function insert_expense($VAR) {
+function insert_expense($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."expense_records SET
             employee_id     =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            payee           =". $db->qstr( $VAR['payee']                   ).",
-            date            =". $db->qstr( date_to_mysql_date($VAR['date'])).",
+            payee           =". $db->qstr( $qform['payee']                   ).",
+            date            =". $db->qstr( date_to_mysql_date($qform['date'])).",
             tax_system      =". $db->qstr( QW_TAX_SYSTEM                   ).",              
-            item_type       =". $db->qstr( $VAR['item_type']               ).",
-            unit_net        =". $db->qstr( $VAR['unit_net']                ).",
-            vat_tax_code    =". $db->qstr( $VAR['vat_tax_code']            ).",
-            unit_tax_rate   =". $db->qstr( $VAR['unit_tax_rate']           ).",
-            unit_tax        =". $db->qstr( $VAR['unit_tax']                ).",
-            unit_gross      =". $db->qstr( $VAR['unit_gross'  ]            ).",
+            item_type       =". $db->qstr( $qform['item_type']               ).",
+            unit_net        =". $db->qstr( $qform['unit_net']                ).",
+            vat_tax_code    =". $db->qstr( $qform['vat_tax_code']            ).",
+            unit_tax_rate   =". $db->qstr( $qform['unit_tax_rate']           ).",
+            unit_tax        =". $db->qstr( $qform['unit_tax']                ).",
+            unit_gross      =". $db->qstr( $qform['unit_gross'  ]            ).",
             status          =". $db->qstr( 'unpaid'                        ).",            
             opened_on       =". $db->qstr( mysql_datetime()                ).",              
-            items           =". $db->qstr( $VAR['items']                   ).",
-            note            =". $db->qstr( $VAR['note']                    );            
+            items           =". $db->qstr( $qform['items']                   ).",
+            note            =". $db->qstr( $qform['note']                    );            
 
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the expense record into the database."));
@@ -165,19 +165,19 @@ function insert_expense($VAR) {
         
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
-        $invoice_details = get_invoice_details($VAR['invoice_id']);
+        $invoice_details = get_invoice_details($qform['invoice_id']);
         
         // Create a Workorder History Note
         insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$db->Insert_ID().' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
                 
         // Log activity        
         $record = _gettext("Expense Record").' '.$db->Insert_ID().' '._gettext("created.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $qform['invoice_id']);
         
         // Update last active record
         update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
-        update_invoice_last_active($VAR['invoice_id']);*/
+        update_invoice_last_active($qform['invoice_id']);*/
     
         return $db->Insert_ID();
         
@@ -286,24 +286,24 @@ function get_expense_types() {
 #     Update Expense                #
 #####################################
 
-function update_expense($VAR) {
+function update_expense($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."expense_records SET
             employee_id         =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            payee               =". $db->qstr( $VAR['payee']                    ).",            
-            date                =". $db->qstr( date_to_mysql_date($VAR['date']) ).",            
-            item_type           =". $db->qstr( $VAR['item_type']                ).",
-            unit_net            =". $db->qstr( $VAR['unit_net']                 ).",
-            vat_tax_code        =". $db->qstr( $VAR['vat_tax_code']             ).",
-            unit_tax_rate       =". $db->qstr( $VAR['unit_tax_rate']            ).",
-            unit_tax            =". $db->qstr( $VAR['unit_tax']                 ).",
-            unit_gross          =". $db->qstr( $VAR['unit_gross']               ).",
+            payee               =". $db->qstr( $qform['payee']                    ).",            
+            date                =". $db->qstr( date_to_mysql_date($qform['date']) ).",            
+            item_type           =". $db->qstr( $qform['item_type']                ).",
+            unit_net            =". $db->qstr( $qform['unit_net']                 ).",
+            vat_tax_code        =". $db->qstr( $qform['vat_tax_code']             ).",
+            unit_tax_rate       =". $db->qstr( $qform['unit_tax_rate']            ).",
+            unit_tax            =". $db->qstr( $qform['unit_tax']                 ).",
+            unit_gross          =". $db->qstr( $qform['unit_gross']               ).",
             last_active         =". $db->qstr( mysql_datetime()                 ).",
-            items               =". $db->qstr( $VAR['items']                    ).",
-            note                =". $db->qstr( $VAR['note']                     )."
-            WHERE expense_id    =". $db->qstr( $VAR['expense_id']               );                        
+            items               =". $db->qstr( $qform['items']                    ).",
+            note                =". $db->qstr( $qform['note']                     )."
+            WHERE expense_id    =". $db->qstr( $qform['expense_id']               );                        
             
     if(!$rs = $db->Execute($sql)) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the expense details."));
@@ -311,19 +311,19 @@ function update_expense($VAR) {
         
         /* This code is not used because I removed 'invoice_id'
          * Get related invoice details
-        $invoice_details = get_invoice_details($VAR['invoice_id']);
+        $invoice_details = get_invoice_details($qform['invoice_id']);
         
         // Create a Workorder History Note
         insert_workorder_history_note($invoice_details['workorder_id'], _gettext("Expense").' '.$expense_id.' '._gettext("updated").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
         
         // Log activity
         $record = _gettext("Expense Record").' '.$expense_id.' '._gettext("updated.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $VAR['invoice_id']);
+        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $invoice_details['workorder_id'], $invoice_details['client_id'], $qform['invoice_id']);
         
         // Update last active record
         update_client_last_active($invoice_details['client_id']);
         update_workorder_last_active($invoice_details['workorder_id']);
-        update_invoice_last_active($VAR['invoice_id']);*/ 
+        update_invoice_last_active($qform['invoice_id']);*/ 
         
         return true;
         

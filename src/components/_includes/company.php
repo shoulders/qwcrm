@@ -246,20 +246,20 @@ function get_company_opening_hours($event, $type, $date = null) {
 #  Update Company details   #
 #############################
 
-function update_company_details($VAR) {
+function update_company_details($qform) {
 
     $db = QFactory::getDbo();
     $smarty = QFactory::getSmarty();    
     $sql = null;
     
     // Update VAT rates
-    update_vat_rates($VAR['vat_tax_codes']);
+    update_vat_rates($qform['vat_tax_codes']);
     
     // Prevent undefined variable errors
-    $VAR['delete_logo'] = isset($VAR['delete_logo']) ? $VAR['delete_logo'] : null;    
+    $qform['delete_logo'] = isset($qform['delete_logo']) ? $qform['delete_logo'] : null;    
            
     // Delete logo if selected and no new logo is presented
-    if($VAR['delete_logo'] && !$_FILES['logo']['name']) {
+    if($qform['delete_logo'] && !$_FILES['logo']['name']) {
         delete_logo();        
     }
     
@@ -270,9 +270,9 @@ function update_company_details($VAR) {
     }
     
     $sql .= "UPDATE ".PRFX."company_record SET
-            company_name            =". $db->qstr( $VAR['company_name']                     ).",";
+            company_name            =". $db->qstr( $qform['company_name']                     ).",";
     
-    if($VAR['delete_logo']) {
+    if($qform['delete_logo']) {
         $sql .="logo                =''                                                     ,";
     }
                 
@@ -280,31 +280,31 @@ function update_company_details($VAR) {
         $sql .="logo                =". $db->qstr( $new_logo_filepath                       ).",";
     }
     
-    $sql .="address                 =". $db->qstr( $VAR['address']                          ).",
-            city                    =". $db->qstr( $VAR['city']                             ).",
-            state                   =". $db->qstr( $VAR['state']                            ).",
-            zip                     =". $db->qstr( $VAR['zip']                              ).",
-            country                 =". $db->qstr( $VAR['country']                          ).",
-            primary_phone           =". $db->qstr( $VAR['primary_phone']                    ).",
-            mobile_phone            =". $db->qstr( $VAR['mobile_phone']                     ).",
-            fax                     =". $db->qstr( $VAR['fax']                              ).",
-            email                   =". $db->qstr( $VAR['email']                            ).",    
-            website                 =". $db->qstr( process_inputted_url($VAR['website'])    ).",
-            company_number          =". $db->qstr( $VAR['company_number']                   ).",                                        
-            tax_system              =". $db->qstr( $VAR['tax_system']                       ).",
-            sales_tax_rate          =". $db->qstr( $VAR['sales_tax_rate']                   ).",
-            vat_number              =". $db->qstr( $VAR['vat_number']                       ).",
-            vat_flat_rate           =". $db->qstr( $VAR['vat_flat_rate']                    ).",   
-            year_start              =". $db->qstr( date_to_mysql_date($VAR['year_start'])   ).",
-            year_end                =". $db->qstr( date_to_mysql_date($VAR['year_end'])     ).",
-            welcome_msg             =". $db->qstr( $VAR['welcome_msg']                      ).",
-            currency_symbol         =". $db->qstr( htmlentities($VAR['currency_symbol'])    ).",
-            currency_code           =". $db->qstr( $VAR['currency_code']                    ).",
-            date_format             =". $db->qstr( $VAR['date_format']                      ).",            
-            email_signature         =". $db->qstr( $VAR['email_signature']                  ).",
-            email_signature_active  =". $db->qstr( $VAR['email_signature_active']           ).",
-            email_msg_invoice       =". $db->qstr( $VAR['email_msg_invoice']                ).",
-            email_msg_workorder     =". $db->qstr( $VAR['email_msg_workorder']              );                          
+    $sql .="address                 =". $db->qstr( $qform['address']                          ).",
+            city                    =". $db->qstr( $qform['city']                             ).",
+            state                   =". $db->qstr( $qform['state']                            ).",
+            zip                     =". $db->qstr( $qform['zip']                              ).",
+            country                 =". $db->qstr( $qform['country']                          ).",
+            primary_phone           =". $db->qstr( $qform['primary_phone']                    ).",
+            mobile_phone            =". $db->qstr( $qform['mobile_phone']                     ).",
+            fax                     =". $db->qstr( $qform['fax']                              ).",
+            email                   =". $db->qstr( $qform['email']                            ).",    
+            website                 =". $db->qstr( process_inputted_url($qform['website'])    ).",
+            company_number          =". $db->qstr( $qform['company_number']                   ).",                                        
+            tax_system              =". $db->qstr( $qform['tax_system']                       ).",
+            sales_tax_rate          =". $db->qstr( $qform['sales_tax_rate']                   ).",
+            vat_number              =". $db->qstr( $qform['vat_number']                       ).",
+            vat_flat_rate           =". $db->qstr( $qform['vat_flat_rate']                    ).",   
+            year_start              =". $db->qstr( date_to_mysql_date($qform['year_start'])   ).",
+            year_end                =". $db->qstr( date_to_mysql_date($qform['year_end'])     ).",
+            welcome_msg             =". $db->qstr( $qform['welcome_msg']                      ).",
+            currency_symbol         =". $db->qstr( htmlentities($qform['currency_symbol'])    ).",
+            currency_code           =". $db->qstr( $qform['currency_code']                    ).",
+            date_format             =". $db->qstr( $qform['date_format']                      ).",            
+            email_signature         =". $db->qstr( $qform['email_signature']                  ).",
+            email_signature_active  =". $db->qstr( $qform['email_signature_active']           ).",
+            email_msg_invoice       =". $db->qstr( $qform['email_msg_invoice']                ).",
+            email_msg_workorder     =". $db->qstr( $qform['email_msg_workorder']              );                          
 
     
     if(!$rs = $db->Execute($sql)) {

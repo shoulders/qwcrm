@@ -455,15 +455,15 @@ function insert_labour_items($invoice_id, $descriptions, $amounts, $qtys) {
 #   insert invoice prefill item     #
 #####################################
 
-function insert_invoice_prefill_item($VAR) {
+function insert_invoice_prefill_item($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "INSERT INTO ".PRFX."invoice_prefill_items SET
-            description =". $db->qstr( $VAR['description']  ).",
-            type        =". $db->qstr( $VAR['type']         ).",
-            unit_net    =". $db->qstr( $VAR['unit_net']     ).",
-            active      =". $db->qstr( $VAR['active']       );
+            description =". $db->qstr( $qform['description']  ).",
+            type        =". $db->qstr( $qform['type']         ).",
+            unit_net    =". $db->qstr( $qform['unit_net']     ).",
+            active      =". $db->qstr( $qform['active']       );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert an invoice prefill item into the database."));
@@ -795,31 +795,31 @@ function update_invoice_static_values($invoice_id, $date, $due_date, $unit_disco
 #     update invoice (full)         #  // not currently used
 #####################################
 
-function update_invoice_full($VAR, $doNotLog = false) {
+function update_invoice_full($qform, $doNotLog = false) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."invoice_records SET     
-            employee_id         =". $db->qstr( $VAR['employee_id']     ).", 
-            client_id           =". $db->qstr( $VAR['client_id']       ).",
-            workorder_id        =". $db->qstr( $VAR['workorder_id']    ).",               
-            date                =". $db->qstr( $VAR['date']            ).",
-            due_date            =". $db->qstr( $VAR['due_date']        ).", 
-            tax_system          =". $db->qstr( $VAR['tax_system']      ).", 
-            unit_discount_rate  =". $db->qstr( $VAR['unit_discount_rate']   ).",                            
-            unit_discount       =". $db->qstr( $VAR['unit_discount'] ).",   
-            unit_net            =". $db->qstr( $VAR['unit_net']      ).",
-            sales_tax_rate      =". $db->qstr( $VAR['sales_tax_rate']  ).",
-            unit_tax            =". $db->qstr( $VAR['unit_tax']      ).",             
-            unit_gross          =". $db->qstr( $VAR['unit_gross']    ).", 
-            unit_paid           =". $db->qstr( $VAR['unit_paid']     ).",
-            balance             =". $db->qstr( $VAR['balance']         ).",
-            opened_on           =". $db->qstr( $VAR['opened_on']       ).",
-            closed_on           =". $db->qstr( $VAR['closed_on']       ).",
-            last_active         =". $db->qstr( $VAR['last_active']     ).",
-            status              =". $db->qstr( $VAR['status']          ).",
-            is_closed           =". $db->qstr( $VAR['is_closed']       )."            
-            WHERE invoice_id    =". $db->qstr( $VAR['invoice_id']      );
+            employee_id         =". $db->qstr( $qform['employee_id']     ).", 
+            client_id           =". $db->qstr( $qform['client_id']       ).",
+            workorder_id        =". $db->qstr( $qform['workorder_id']    ).",               
+            date                =". $db->qstr( $qform['date']            ).",
+            due_date            =". $db->qstr( $qform['due_date']        ).", 
+            tax_system          =". $db->qstr( $qform['tax_system']      ).", 
+            unit_discount_rate  =". $db->qstr( $qform['unit_discount_rate']   ).",                            
+            unit_discount       =". $db->qstr( $qform['unit_discount'] ).",   
+            unit_net            =". $db->qstr( $qform['unit_net']      ).",
+            sales_tax_rate      =". $db->qstr( $qform['sales_tax_rate']  ).",
+            unit_tax            =". $db->qstr( $qform['unit_tax']      ).",             
+            unit_gross          =". $db->qstr( $qform['unit_gross']    ).", 
+            unit_paid           =". $db->qstr( $qform['unit_paid']     ).",
+            balance             =". $db->qstr( $qform['balance']         ).",
+            opened_on           =". $db->qstr( $qform['opened_on']       ).",
+            closed_on           =". $db->qstr( $qform['closed_on']       ).",
+            last_active         =". $db->qstr( $qform['last_active']     ).",
+            status              =". $db->qstr( $qform['status']          ).",
+            is_closed           =". $db->qstr( $qform['is_closed']       )."            
+            WHERE invoice_id    =". $db->qstr( $qform['invoice_id']      );
 
     if(!$rs = $db->execute($sql)) {        
         
@@ -830,16 +830,16 @@ function update_invoice_full($VAR, $doNotLog = false) {
         if (!$doNotLog) {
             
             // Create a Workorder History Note  
-            insert_workorder_history_note($db, $VAR['workorder_id'], _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
+            insert_workorder_history_note($db, $qform['workorder_id'], _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Invoice").' '.$VAR['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
-            write_record_to_activity_log($record, $VAR['employee_id'], $VAR['client_id'], $VAR['workorder_id'], $VAR['invoice_id']);
+            $record = _gettext("Invoice").' '.$qform['invoice_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';        
+            write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
 
             // Update last active record    
-            update_client_last_active($db, $VAR['client_id']);
-            update_workorder_last_active($db, $VAR['workorder_id']);
-            update_invoice_last_active($db, $VAR['invoice_id']);        
+            update_client_last_active($db, $qform['client_id']);
+            update_workorder_last_active($db, $qform['workorder_id']);
+            update_invoice_last_active($db, $qform['invoice_id']);        
         
         }
         
@@ -853,16 +853,16 @@ function update_invoice_full($VAR, $doNotLog = false) {
 #   update invoice prefill item     #
 #####################################
 
-function update_invoice_prefill_item($VAR) {
+function update_invoice_prefill_item($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."invoice_prefill_items SET
-            description                 =". $db->qstr( $VAR['description']          ).",
-            type                        =". $db->qstr( $VAR['type']                 ).",
-            unit_net                    =". $db->qstr( $VAR['unit_net']             ).",
-            active                      =". $db->qstr( $VAR['active']               )."            
-            WHERE invoice_prefill_id    =". $db->qstr( $VAR['invoice_prefill_id']   );
+            description                 =". $db->qstr( $qform['description']          ).",
+            type                        =". $db->qstr( $qform['type']                 ).",
+            unit_net                    =". $db->qstr( $qform['unit_net']             ).",
+            active                      =". $db->qstr( $qform['active']               )."            
+            WHERE invoice_prefill_id    =". $db->qstr( $qform['invoice_prefill_id']   );
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an invoice labour rates item."));
@@ -870,7 +870,7 @@ function update_invoice_prefill_item($VAR) {
     } else {
         
         // Log activity        
-        write_record_to_activity_log(_gettext("The Invoice Prefill Item").' '.$VAR['invoice_prefill_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');    
+        write_record_to_activity_log(_gettext("The Invoice Prefill Item").' '.$qform['invoice_prefill_id'].' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.');    
 
     }
     
@@ -1416,7 +1416,7 @@ function recalculate_invoice_totals($invoice_id) {
 #   Upload labour rates CSV file    #
 #####################################
 
-function upload_invoice_prefill_items_csv($VAR) {
+function upload_invoice_prefill_items_csv($qform) {
     
     $db = QFactory::getDbo();
 
@@ -1443,7 +1443,7 @@ function upload_invoice_prefill_items_csv($VAR) {
         } else {        
 
             // Empty Current Invoice Rates Table (if set)
-            if($VAR['empty_prefill_items_table'] === '1') {
+            if($qform['empty_prefill_items_table'] === '1') {
                 
                 $sql = "TRUNCATE ".PRFX."invoice_prefill_items";
                 

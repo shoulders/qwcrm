@@ -31,12 +31,12 @@ if($user->login_is_employee) {
     $smarty->assign('employee_workorder_stats', get_workorders_stats('current', null, null, $user->login_user_id));
     $smarty->assign('workorder_statuses', get_workorder_statuses());
 
-    // Build the page
-    \QFactory::$BuildPage .= $smarty->fetch('core/dashboard_employee.tpl');
+    // Assign the correct version of this page
+    $smarty->assign('page_version', 'employee');
 
 } else {
     
-    // Build the page
-    \QFactory::$BuildPage .= $smarty->fetch('core/dashboard_client.tpl');
+    // Assign the correct version of this page
+    $smarty->assign('page_version', 'client');
     
 }

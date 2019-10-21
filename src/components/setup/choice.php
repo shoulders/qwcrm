@@ -17,10 +17,10 @@ if(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
 }
 
 // Define the setup type for smarty - currently only used for 'upgrade'
-isset($VAR['setup_type']) ? $smarty->assign('setup_type', $VAR['setup_type']) : $smarty->assign('setup_type', null);
+isset(\QFactory::$VAR['setup_type']) ? $smarty->assign('setup_type', \QFactory::$VAR['setup_type']) : $smarty->assign('setup_type', null);
 
 // Create a Setup Object
-$qsetup = new QSetup($VAR);
+$qsetup = new QSetup(\QFactory::$VAR);
 
 // Get Compatibility Results
 $smarty->assign('compatibility_results', $qsetup->test_server_enviroment_compatibility());

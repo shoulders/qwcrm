@@ -21,17 +21,17 @@ if(!check_page_accessed_via_qwcrm('setup', 'install', 'index_allowed')) {
 }
 
 // Prevent undefined variable errors && Get 'stage' from the submit button
-$VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
-$smarty->assign('stage', $VAR['stage']);
+\QFactory::$VAR['stage'] = isset(\QFactory::$VAR['submit']) ? \QFactory::$VAR['submit'] : null;
+$smarty->assign('stage', \QFactory::$VAR['stage']);
 
 // Get 'stage' from the submit button
-$VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
+\QFactory::$VAR['stage'] = isset(\QFactory::$VAR['submit']) ? \QFactory::$VAR['submit'] : null;
 
 // Create a Setup Object
-$qsetup = new QSetup($VAR);
+$qsetup = new QSetup(\QFactory::$VAR);
 
 // Delete Setup files Action
-if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'install')) {
+if(isset(\QFactory::$VAR['action']) && \QFactory::$VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'install')) {
     $qsetup->delete_setup_folder();
 }
 
@@ -39,24 +39,24 @@ if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_pag
 $qsetup->write_record_to_setup_log('install', _gettext("QWcrm installation has begun."));
 
 // Database Connection
-if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection') {
+if(!isset(\QFactory::$VAR['stage']) || \QFactory::$VAR['stage'] == 'database_connection') {
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_connection') {
         
         // Test the supplied database connection details and store details if successful
-        if($qsetup->verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
+        if($qsetup->verify_database_connection_details(\QFactory::$VAR['qwcrm_config']['db_host'], \QFactory::$VAR['qwcrm_config']['db_user'], \QFactory::$VAR['qwcrm_config']['db_pass'], \QFactory::$VAR['qwcrm_config']['db_name'])) {
             
             $smarty->assign('information_msg', _gettext("Database connection successful."));
             $qsetup->create_config_file_from_default(SETUP_DIR.'install/install_configuration.php');
-            update_qwcrm_config_settings_file($VAR['qwcrm_config']);           
+            update_qwcrm_config_settings_file(\QFactory::$VAR['qwcrm_config']);           
             $qsetup->write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
-            $VAR['stage'] = 'config_settings';
+            \QFactory::$VAR['stage'] = 'config_settings';
         
         // Load the page - Error message done by verify_database_connection_details();
         } else {
             
             // reload the database connection page with the entered values and error message
-            $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);                       
+            $smarty->assign('qwcrm_config', \QFactory::$VAR['qwcrm_config']);                       
             $qsetup->write_record_to_setup_log('install', _gettext("Failed to connect to the database with the supplied credentials.")); 
             $smarty->assign('stage', 'database_connection');             
             
@@ -83,24 +83,24 @@ if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection') {
 
 
 // Database Prefix (and other Config Settings)
-if($VAR['stage'] == 'config_settings') {    
+if(\QFactory::$VAR['stage'] == 'config_settings') {    
     
     // submit the config settings and load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'config_settings') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'config_settings') {
                  
         // Add other required varibles
-        $VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
+        \QFactory::$VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
         
-        update_qwcrm_config_settings_file($VAR['qwcrm_config']);
+        update_qwcrm_config_settings_file(\QFactory::$VAR['qwcrm_config']);
         $qsetup->write_record_to_setup_log('install', _gettext("Config settings have been added to the config file."));
-        $VAR['stage'] = 'database_install';
+        \QFactory::$VAR['stage'] = 'database_install';
     
     // Load the page
     } else {
         
-        $VAR['qwcrm_config']['db_prefix'] = $qsetup->generate_database_prefix();
+        \QFactory::$VAR['qwcrm_config']['db_prefix'] = $qsetup->generate_database_prefix();
     
-        $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);        
+        $smarty->assign('qwcrm_config', \QFactory::$VAR['qwcrm_config']);        
         $smarty->assign('stage', 'config_settings');
         
     }
@@ -109,9 +109,9 @@ if($VAR['stage'] == 'config_settings') {
 
 
 // Install the database
-if($VAR['stage'] == 'database_install') {    
+if(\QFactory::$VAR['stage'] == 'database_install') {    
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_install') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_install') {
        
         $qsetup->write_record_to_setup_log('install', _gettext("Starting Database installation."));
         
@@ -121,7 +121,7 @@ if($VAR['stage'] == 'database_install') {
             $record = _gettext("The database installed successfully.");            
             $smarty->assign('information_msg', $record); 
             $qsetup->write_record_to_setup_log('install', $record);
-            $VAR['stage'] = 'database_install_results';            
+            \QFactory::$VAR['stage'] = 'database_install_results';            
         
         // Load the page with the error message      
         } else {            
@@ -129,7 +129,7 @@ if($VAR['stage'] == 'database_install') {
            $record = _gettext("The database failed to install.");                      
            $smarty->assign('warning_msg', $record);
            $qsetup->write_record_to_setup_log('install', $record);
-           $VAR['stage'] = 'database_install_results';
+           \QFactory::$VAR['stage'] = 'database_install_results';
            
         }        
     
@@ -142,15 +142,15 @@ if($VAR['stage'] == 'database_install') {
 
 
 // Database Installation Results
-if($VAR['stage'] == 'database_install_results') { 
+if(\QFactory::$VAR['stage'] == 'database_install_results') { 
 
     // load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_install_results') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_install_results') {
         
         // Prefill Company Financial dates
         $qsetup->update_record_value(PRFX.'company_record', 'year_start', mysql_date());
         $qsetup->update_record_value(PRFX.'company_record', 'year_end', timestamp_mysql_date(strtotime('+1 year')));
-        $VAR['stage'] = 'company_details';    
+        \QFactory::$VAR['stage'] = 'company_details';    
     
     // Load the page  
     } else {
@@ -165,26 +165,26 @@ if($VAR['stage'] == 'database_install_results') {
 
 
 // Company Details
-if($VAR['stage'] == 'company_details') {   
+if(\QFactory::$VAR['stage'] == 'company_details') {   
     
     // submit the company details and load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'company_details') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'company_details') {
         
         // Add missing information
         $company_details = get_company_details();
-        $VAR['welcome_msg']             = $company_details['welcome_msg'];
-        $VAR['email_signature']         = $company_details['email_signature'];
-        $VAR['email_signature_active']  = $company_details['email_signature_active'];
-        $VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
-        $VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];                
+        \QFactory::$VAR['welcome_msg']             = $company_details['welcome_msg'];
+        \QFactory::$VAR['email_signature']         = $company_details['email_signature'];
+        \QFactory::$VAR['email_signature_active']  = $company_details['email_signature_active'];
+        \QFactory::$VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
+        \QFactory::$VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];                
         
         // Set the date format required for update_company_details()
         defined('DATE_FORMAT') ?: define('DATE_FORMAT', get_company_details('date_format'));
         
         // update company details and load next stage      
-        update_company_details($VAR);
+        update_company_details(\QFactory::$VAR);
         $qsetup->write_record_to_setup_log('install', _gettext("Company options inserted."));
-        $VAR['stage'] = 'start_numbers';
+        \QFactory::$VAR['stage'] = 'start_numbers';
         
     // Load the page    
     } else {
@@ -205,22 +205,22 @@ if($VAR['stage'] == 'company_details') {
 
 
 // Work Order and Invoice Start Numbers
-if($VAR['stage'] == 'start_numbers') {  
+if(\QFactory::$VAR['stage'] == 'start_numbers') {  
     
     // submit the workorder and invoice start numbers if supplied, then load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'start_numbers') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'start_numbers') {
         
-        if($VAR['workorder_start_number']) {
-            $qsetup->set_workorder_start_number($VAR['workorder_start_number']);
-            $qsetup->write_record_to_setup_log('install', _gettext("Starting Work Order number has been set to").' '.$VAR['workorder_start_number']);
+        if(\QFactory::$VAR['workorder_start_number']) {
+            $qsetup->set_workorder_start_number(\QFactory::$VAR['workorder_start_number']);
+            $qsetup->write_record_to_setup_log('install', _gettext("Starting Work Order number has been set to").' '.\QFactory::$VAR['workorder_start_number']);
         }
         
-        if($VAR['invoice_start_number']) {
-            $qsetup->set_invoice_start_number($VAR['invoice_start_number']);
-            $qsetup->write_record_to_setup_log('install', _gettext("Starting Invoice number has been set to").' '.$VAR['invoice_start_number']);
+        if(\QFactory::$VAR['invoice_start_number']) {
+            $qsetup->set_invoice_start_number(\QFactory::$VAR['invoice_start_number']);
+            $qsetup->write_record_to_setup_log('install', _gettext("Starting Invoice number has been set to").' '.\QFactory::$VAR['invoice_start_number']);
         }
         
-        $VAR['stage'] = 'administrator_account';
+        \QFactory::$VAR['stage'] = 'administrator_account';
     
     // Load the page
     } else {
@@ -231,16 +231,16 @@ if($VAR['stage'] == 'start_numbers') {
 
 
 // Create an Administrator account
-if($VAR['stage'] == 'administrator_account') {
+if(\QFactory::$VAR['stage'] == 'administrator_account') {
     
     // create the administrator and load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'administrator_account') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'administrator_account') {
        
-        insert_user($VAR);
+        insert_user(\QFactory::$VAR);
         $qsetup->write_record_to_setup_log('install', _gettext("The administrator account has been created."));
         $qsetup->write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
         $smarty->assign('information_msg', _gettext("The QWcrm installation process has completed successfully."));
-        $VAR['stage'] = 'delete_setup_folder';        
+        \QFactory::$VAR['stage'] = 'delete_setup_folder';        
     
     // Load the page
     } else {
@@ -284,12 +284,12 @@ if($VAR['stage'] == 'administrator_account') {
 
 
 // Delete Setup folder
-if($VAR['stage'] == 'delete_setup_folder') {
+if(\QFactory::$VAR['stage'] == 'delete_setup_folder') {
     
     // There is a submit action on this stage
-    if(isset($VAR['submit']) && $VAR['submit'] == 'delete_setup_folder') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'delete_setup_folder') {
         
-        //$VAR['stage'] = 'unknown';
+        //\QFactory::$VAR['stage'] = 'unknown';
    
     // Load the page
     } else {

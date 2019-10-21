@@ -22,14 +22,14 @@ if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
 }
 
 // Prevent undefined variable errors && Get 'stage' from the submit button
-$VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
-$smarty->assign('stage', $VAR['stage']);
+\QFactory::$VAR['stage'] = isset(\QFactory::$VAR['submit']) ? \QFactory::$VAR['submit'] : null;
+$smarty->assign('stage', \QFactory::$VAR['stage']);
 
 // Create a Setup Object
-$qsetup = new QSetup($VAR);
+$qsetup = new QSetup(\QFactory::$VAR);
 
 // Delete Setup files Action
-if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'upgrade')) {
+if(isset(\QFactory::$VAR['action']) && \QFactory::$VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'upgrade')) {
     $qsetup->delete_setup_folder();
 }
 
@@ -37,16 +37,16 @@ if(isset($VAR['action']) && $VAR['action'] == 'delete_setup_folder' && check_pag
 ##################################################
 
 // Temp for testing - This allows skips straight to database processing
-//$VAR['stage'] = 'database_upgrade';
-//$VAR['submit'] = 'database_upgrade';
+//\QFactory::$VAR['stage'] = 'database_upgrade';
+//\QFactory::$VAR['submit'] = 'database_upgrade';
 
 ##################################################
 
 
 // Database Connection
-if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection') {
+if(!isset(\QFactory::$VAR['stage']) || \QFactory::$VAR['stage'] == 'database_connection') {
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_connection') {
         
         // Get the final version number for this part of the process, in the correct format, this also detects a multi-process upgrade
         $final_version = $qsetup->get_upgrade_steps();
@@ -91,9 +91,9 @@ if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection') {
 }
 
 // Upgrade the database (also allows for multi-part database upgrades)
-if($VAR['stage'] == 'database_upgrade') {    
+if(\QFactory::$VAR['stage'] == 'database_upgrade') {    
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_upgrade') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_upgrade') {
        
         $qsetup->write_record_to_setup_log('upgrade', _gettext("Starting Database upgrade."));
         
@@ -101,20 +101,20 @@ if($VAR['stage'] == 'database_upgrade') {
         $upgrade_steps = $qsetup->get_upgrade_steps();
         
         // Upgrade the database by Process each upgrade step
-        $process_upgrade_steps = $qsetup->process_upgrade_steps($VAR, $upgrade_steps);
+        $process_upgrade_steps = $qsetup->process_upgrade_steps(\QFactory::$VAR, $upgrade_steps);
         
         if(!QSetup::$setup_error_flag) {            
             $record = _gettext("The database upgraded successfully.");            
             $smarty->assign('information_msg', $record); 
             $qsetup->write_record_to_setup_log('upgrade', $record);
-            $VAR['stage'] = 'database_upgrade_results';            
+            \QFactory::$VAR['stage'] = 'database_upgrade_results';            
         
         // Load the results page with the error message      
         } else {              
            $record = _gettext("The database failed to upgrade.");                      
            $smarty->assign('warning_msg', $record);
            $qsetup->write_record_to_setup_log('upgrade', $record);
-           $VAR['stage'] = 'database_upgrade_results';
+           \QFactory::$VAR['stage'] = 'database_upgrade_results';
            
         }        
     
@@ -128,15 +128,15 @@ if($VAR['stage'] == 'database_upgrade') {
 }
 
 // Database Upgrade Results
-if($VAR['stage'] == 'database_upgrade_results') {
+if(\QFactory::$VAR['stage'] == 'database_upgrade_results') {
 
     // load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_upgrade_results') {        
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_upgrade_results') {        
         
             $record = _gettext("The QWcrm upgrade process has completed successfully.");
             $qsetup->write_record_to_setup_log('upgrade', $record);
             $smarty->assign('information_msg', $record);
-            $VAR['stage'] = 'delete_setup_folder'; 
+            \QFactory::$VAR['stage'] = 'delete_setup_folder'; 
     
     // Load the page  
     } else {
@@ -166,12 +166,12 @@ if($VAR['stage'] == 'database_upgrade_results') {
 }
 
 // Delete Setup folder
-if($VAR['stage'] == 'delete_setup_folder') {
+if(\QFactory::$VAR['stage'] == 'delete_setup_folder') {
     
     // There is a submit action on this stage
-    if(isset($VAR['submit']) && $VAR['submit'] == 'delete_setup_folder') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'delete_setup_folder') {
         
-        //$VAR['stage'] = 'unknown';
+        //\QFactory::$VAR['stage'] = 'unknown';
    
     // Load the page
     } else {

@@ -21,8 +21,8 @@ if(!check_page_accessed_via_qwcrm('setup', 'migrate', 'index_allowed')) {
 }
 
 // Prevent undefined variable errors && Get 'stage' from the submit button
-$VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
-$smarty->assign('stage', $VAR['stage']);
+\QFactory::$VAR['stage'] = isset(\QFactory::$VAR['submit']) ? \QFactory::$VAR['submit'] : null;
+$smarty->assign('stage', \QFactory::$VAR['stage']);
 
 
 ####################################
@@ -30,15 +30,15 @@ $smarty->assign('stage', $VAR['stage']);
 ####################################
 
 // Create a Setup Object
-$MigrateMyitcrm = new MigrateMyitcrm($VAR);
+$MigrateMyitcrm = new MigrateMyitcrm(\QFactory::$VAR);
 
 // Database Connection (QWcrm)
-if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection_qwcrm') {    
+if(!isset(\QFactory::$VAR['stage']) || \QFactory::$VAR['stage'] == 'database_connection_qwcrm') {    
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection_qwcrm') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_connection_qwcrm') {
         
         // test the supplied database connection details
-        if($MigrateMyitcrm->verify_database_connection_details($VAR['qwcrm_config']['db_host'], $VAR['qwcrm_config']['db_user'], $VAR['qwcrm_config']['db_pass'], $VAR['qwcrm_config']['db_name'])) {
+        if($MigrateMyitcrm->verify_database_connection_details(\QFactory::$VAR['qwcrm_config']['db_host'], \QFactory::$VAR['qwcrm_config']['db_user'], \QFactory::$VAR['qwcrm_config']['db_pass'], \QFactory::$VAR['qwcrm_config']['db_name'])) {
             
             $smarty->assign('information_msg', _gettext("Database connection successful."));
             $MigrateMyitcrm->create_config_file_from_default(SETUP_DIR.'migrate/myitcrm/migrate_configuration.php');
@@ -47,19 +47,19 @@ if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection_qwcrm') {
             get_qwcrm_config_settings();
             
             // Update the Database Credentials
-            update_qwcrm_config_setting('db_host', $VAR['qwcrm_config']['db_host']);
-            update_qwcrm_config_setting('db_user', $VAR['qwcrm_config']['db_user']);
-            update_qwcrm_config_setting('db_pass', $VAR['qwcrm_config']['db_pass']);
-            update_qwcrm_config_setting('db_name', $VAR['qwcrm_config']['db_name']);
+            update_qwcrm_config_setting('db_host', \QFactory::$VAR['qwcrm_config']['db_host']);
+            update_qwcrm_config_setting('db_user', \QFactory::$VAR['qwcrm_config']['db_user']);
+            update_qwcrm_config_setting('db_pass', \QFactory::$VAR['qwcrm_config']['db_pass']);
+            update_qwcrm_config_setting('db_name', \QFactory::$VAR['qwcrm_config']['db_name']);
             
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
-            $VAR['stage'] = 'database_connection_myitcrm';
+            \QFactory::$VAR['stage'] = 'database_connection_myitcrm';
             
         // Load the page - Error message done by verify_database_connection_details();
         } else {
             
             // reload the database connection page with the details and error message
-            $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);                      
+            $smarty->assign('qwcrm_config', \QFactory::$VAR['qwcrm_config']);                      
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Failed to connect to the database with the supplied credentials."));
             $smarty->assign('stage', 'database_connection_qwcrm');  
             
@@ -89,24 +89,24 @@ if(!isset($VAR['stage']) || $VAR['stage'] == 'database_connection_qwcrm') {
 
 
 // Database Connection (MyITCRM)
-if($VAR['stage'] == 'database_connection_myitcrm') {
+if(\QFactory::$VAR['stage'] == 'database_connection_myitcrm') {
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_connection_myitcrm') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_connection_myitcrm') {
         
         // Test the supplied database connection details
-        if($MigrateMyitcrm->check_myitcrm_database_connection($VAR['qwcrm_config']['myitcrm_prefix'])) {
+        if($MigrateMyitcrm->check_myitcrm_database_connection(\QFactory::$VAR['qwcrm_config']['myitcrm_prefix'])) {
             
             // Record details into the config file and display success message and load the next page       
-            update_qwcrm_config_settings_file($VAR['qwcrm_config']);           
+            update_qwcrm_config_settings_file(\QFactory::$VAR['qwcrm_config']);           
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Connected successfully to the MyITCRM database with the supplied prefix."));  
             $smarty->assign('information_msg', _gettext("MyITCRM database connection successful."));
-            $VAR['stage'] = 'config_settings';
+            \QFactory::$VAR['stage'] = 'config_settings';
         
         // Load the page with error
         } else {
             
             // Reload the database connection page with the details and error message
-            $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);
+            $smarty->assign('qwcrm_config', \QFactory::$VAR['qwcrm_config']);
             $smarty->assign('warning_msg', _gettext("The MyITCRM database is either missing or the prefix is wrong."));
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Failed to connect to the MyITCRM database with the supplied prefix.")); 
             $smarty->assign('stage', 'database_connection_myitcrm');
@@ -129,25 +129,25 @@ if($VAR['stage'] == 'database_connection_myitcrm') {
 
 
 // Database Prefix (and other Config Settings)
-if($VAR['stage'] == 'config_settings') {    
+if(\QFactory::$VAR['stage'] == 'config_settings') {    
     
     // submit the config settings and load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'config_settings') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'config_settings') {
                  
         // Correct missing secret varibles
-        $VAR['qwcrm_config']['session_name']        = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
-        $VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
+        \QFactory::$VAR['qwcrm_config']['session_name']        = \Joomla\CMS\User\UserHelper::genRandomPassword(16);
+        \QFactory::$VAR['qwcrm_config']['secret_key']          = \Joomla\CMS\User\UserHelper::genRandomPassword(32);
         
-        update_qwcrm_config_settings_file($VAR['qwcrm_config']);
+        update_qwcrm_config_settings_file(\QFactory::$VAR['qwcrm_config']);
         $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Config settings have been added to the config file."));
-        $VAR['stage'] = 'database_install_qwcrm';
+        \QFactory::$VAR['stage'] = 'database_install_qwcrm';
     
     // Load the page
     } else {
         
-        $VAR['qwcrm_config']['db_prefix'] = $MigrateMyitcrm->generate_database_prefix();
+        \QFactory::$VAR['qwcrm_config']['db_prefix'] = $MigrateMyitcrm->generate_database_prefix();
     
-        $smarty->assign('qwcrm_config', $VAR['qwcrm_config']);        
+        $smarty->assign('qwcrm_config', \QFactory::$VAR['qwcrm_config']);        
         $smarty->assign('stage', 'config_settings');
         
     }
@@ -156,9 +156,9 @@ if($VAR['stage'] == 'config_settings') {
 
 
 // Install the database (QWcrm)
-if($VAR['stage'] == 'database_install_qwcrm') {    
+if(\QFactory::$VAR['stage'] == 'database_install_qwcrm') {    
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_install_qwcrm') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_install_qwcrm') {
         
         $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Starting Database installation."));
         
@@ -168,7 +168,7 @@ if($VAR['stage'] == 'database_install_qwcrm') {
             $record = _gettext("The database installed successfully.");
             $smarty->assign('information_msg', $record);
             $MigrateMyitcrm->write_record_to_setup_log('migrate', $record);
-            $VAR['stage'] = 'database_install_results_qwcrm';            
+            \QFactory::$VAR['stage'] = 'database_install_results_qwcrm';            
         
         // Load the page with the error message      
         } else {            
@@ -176,7 +176,7 @@ if($VAR['stage'] == 'database_install_qwcrm') {
            $record = _gettext("The database failed to install.");                     
            $smarty->assign('warning_msg', $record);
            $MigrateMyitcrm->write_record_to_setup_log('migrate', $record); 
-           $VAR['stage'] = 'database_install_results_qwcrm';
+           \QFactory::$VAR['stage'] = 'database_install_results_qwcrm';
            
         }
     
@@ -189,12 +189,12 @@ if($VAR['stage'] == 'database_install_qwcrm') {
 
 
 // Database Installation Results (QWcrm)
-if($VAR['stage'] == 'database_install_results_qwcrm') {    
+if(\QFactory::$VAR['stage'] == 'database_install_results_qwcrm') {    
 
     // load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_install_results_qwcrm') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_install_results_qwcrm') {
         
-        $VAR['stage'] = 'company_details';      
+        \QFactory::$VAR['stage'] = 'company_details';      
     
     // Load the page  
     } else {
@@ -208,26 +208,26 @@ if($VAR['stage'] == 'database_install_results_qwcrm') {
 
 
 // Company Details
-if($VAR['stage'] == 'company_details') {   
+if(\QFactory::$VAR['stage'] == 'company_details') {   
         
     // submit the company details and load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'company_details') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'company_details') {
                 
         // Add missing information to the form submission
         $company_details = $MigrateMyitcrm->get_company_details();
-        $VAR['welcome_msg']             = $company_details['welcome_msg'];
-        $VAR['email_signature']         = $company_details['email_signature'];
-        $VAR['email_signature_active']  = $company_details['email_signature_active'];
-        $VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
-        $VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
+        \QFactory::$VAR['welcome_msg']             = $company_details['welcome_msg'];
+        \QFactory::$VAR['email_signature']         = $company_details['email_signature'];
+        \QFactory::$VAR['email_signature_active']  = $company_details['email_signature_active'];
+        \QFactory::$VAR['email_msg_workorder']     = $company_details['email_msg_workorder'];
+        \QFactory::$VAR['email_msg_invoice']       = $company_details['email_msg_invoice'];
            
         // Set the date format required for update_company_details()
         defined('DATE_FORMAT') ?: define('DATE_FORMAT', $MigrateMyitcrm->get_company_details('date_format'));
         
         // update company details and load next stage
-        $MigrateMyitcrm->update_company_details($VAR);
+        $MigrateMyitcrm->update_company_details(\QFactory::$VAR);
         $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Company options inserted."));
-        $VAR['stage'] = 'database_migrate';
+        \QFactory::$VAR['stage'] = 'database_migrate';
         
     // Load the page    
     } else {
@@ -251,9 +251,9 @@ if($VAR['stage'] == 'company_details') {
 
 
 // Migrate the database (MyITCRM)
-if($VAR['stage'] == 'database_migrate') {    
+if(\QFactory::$VAR['stage'] == 'database_migrate') {    
     
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_migrate') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_migrate') {
         
         $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("Starting MyITCRM Database Migration."));
         
@@ -268,7 +268,7 @@ if($VAR['stage'] == 'database_migrate') {
             $record = _gettext("The MyITCRM database migrated successfully.");            
             $smarty->assign('information_msg', $record);
             $MigrateMyitcrm->write_record_to_setup_log('migrate', $record);            
-            $VAR['stage'] = 'database_migrate_results';            
+            \QFactory::$VAR['stage'] = 'database_migrate_results';            
         
         // Load the page with the error message      
         } else {            
@@ -276,7 +276,7 @@ if($VAR['stage'] == 'database_migrate') {
             $smarty->assign('warning_msg', $record); 
             $record = _gettext("The MyITCRM database failed to migrate successfully.");           
             $MigrateMyitcrm->write_record_to_setup_log('migrate', $record);
-            $VAR['stage'] = 'database_migrate_results';
+            \QFactory::$VAR['stage'] = 'database_migrate_results';
            
         }
     
@@ -289,12 +289,12 @@ if($VAR['stage'] == 'database_migrate') {
 
 
 // Database Migration Results (MyITCRM)
-if($VAR['stage'] == 'database_migrate_results') {    
+if(\QFactory::$VAR['stage'] == 'database_migrate_results') {    
 
     // load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'database_migrate_results') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'database_migrate_results') {
         
-        $VAR['stage'] = 'administrator_account';        
+        \QFactory::$VAR['stage'] = 'administrator_account';        
     
     // Load the page  
     } else {
@@ -308,16 +308,16 @@ if($VAR['stage'] == 'database_migrate_results') {
 
 
 // Create an Administrator account
-if($VAR['stage'] == 'administrator_account') {
+if(\QFactory::$VAR['stage'] == 'administrator_account') {
     
     // create the administrator and load the next page
-    if(isset($VAR['submit']) && $VAR['submit'] == 'administrator_account') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'administrator_account') {
                 
         // Check if the username or email have been used (the extra variable is to ignore the users current username and email to prevent submission errors when only updating other values)
-        if ($MigrateMyitcrm->check_user_username_exists($VAR['username']) || $MigrateMyitcrm->check_user_email_exists($VAR['email'])) {     
+        if ($MigrateMyitcrm->check_user_username_exists(\QFactory::$VAR['username']) || $MigrateMyitcrm->check_user_email_exists(\QFactory::$VAR['email'])) {     
 
             // send the posted data back to smarty
-            $user_details = $VAR;
+            $user_details = \QFactory::$VAR;
 
             // Reload the page with the POST'ed data
             $smarty->assign('user_details', $user_details);        
@@ -329,12 +329,12 @@ if($VAR['stage'] == 'administrator_account') {
         } else {    
 
             // Insert user record (and return the new ID)
-            $MigrateMyitcrm->insert_user($VAR);
+            $MigrateMyitcrm->insert_user(\QFactory::$VAR);
 
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("The administrator account has been created."));
             $MigrateMyitcrm->write_record_to_setup_log('migrate', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
             $smarty->assign('information_msg', _gettext("The QWcrm installation and MyITCRM migration process has completed successfully."));
-            $VAR['stage'] = 'upgrade_confirmation';        
+            \QFactory::$VAR['stage'] = 'upgrade_confirmation';        
 
         }
         
@@ -380,12 +380,12 @@ if($VAR['stage'] == 'administrator_account') {
 
 
 // Upgrade Confirmation
-if($VAR['stage'] == 'upgrade_confirmation') {
+if(\QFactory::$VAR['stage'] == 'upgrade_confirmation') {
     
     // There is not submit action on this stage
-    if(isset($VAR['submit']) && $VAR['submit'] == 'upgrade_confirmation') {
+    if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'upgrade_confirmation') {
         
-        //$VAR['stage'] = 'unknown';
+        //\QFactory::$VAR['stage'] = 'unknown';
    
     // Load the page
     } else {

@@ -564,20 +564,20 @@ function update_payment($qpayment) {
 #    Update Payment options         #
 #####################################
 
-function update_payment_options($VAR) {
+function update_payment_options($qform) {
     
     $db = QFactory::getDbo();
     
     $sql = "UPDATE ".PRFX."payment_options SET            
-            bank_account_name           =". $db->qstr( $VAR['bank_account_name']            ).",
-            bank_name                   =". $db->qstr( $VAR['bank_name']                    ).",
-            bank_account_number         =". $db->qstr( $VAR['bank_account_number']          ).",
-            bank_sort_code              =". $db->qstr( $VAR['bank_sort_code']               ).",
-            bank_iban                   =". $db->qstr( $VAR['bank_iban']                    ).",
-            paypal_email                =". $db->qstr( $VAR['paypal_email']                 ).",        
-            invoice_bank_transfer_msg   =". $db->qstr( $VAR['invoice_bank_transfer_msg']    ).",
-            invoice_cheque_msg          =". $db->qstr( $VAR['invoice_cheque_msg']           ).",
-            invoice_footer_msg          =". $db->qstr( $VAR['invoice_footer_msg']           );            
+            bank_account_name           =". $db->qstr( $qform['bank_account_name']            ).",
+            bank_name                   =". $db->qstr( $qform['bank_name']                    ).",
+            bank_account_number         =". $db->qstr( $qform['bank_account_number']          ).",
+            bank_sort_code              =". $db->qstr( $qform['bank_sort_code']               ).",
+            bank_iban                   =". $db->qstr( $qform['bank_iban']                    ).",
+            paypal_email                =". $db->qstr( $qform['paypal_email']                 ).",        
+            invoice_bank_transfer_msg   =". $db->qstr( $qform['invoice_bank_transfer_msg']    ).",
+            invoice_cheque_msg          =". $db->qstr( $qform['invoice_cheque_msg']           ).",
+            invoice_footer_msg          =". $db->qstr( $qform['invoice_footer_msg']           );            
 
     if(!$rs = $db->execute($sql)){        
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));

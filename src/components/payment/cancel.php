@@ -25,7 +25,7 @@ if(!check_page_accessed_via_qwcrm('payment', 'status')) {
 }
 
 // Check if we have an payment_id
-if(!isset($VAR['payment_id']) || !$VAR['payment_id']) {
+if(!isset(\QFactory::$VAR['payment_id']) || !\QFactory::$VAR['payment_id']) {
     force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
 }   
 
@@ -96,4 +96,4 @@ class CancelPayment {
 }
 
 // Instanciate Cancel Payment Class
-$payment = new CancelPayment($VAR);
+$payment = new CancelPayment(\QFactory::$VAR);
