@@ -36,7 +36,7 @@ if(isset(\QFactory::$VAR['client_id']) && \QFactory::$VAR['client_id']) {
 if(isset(\QFactory::$VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if (check_user_username_exists(\QFactory::$VAR['username']) || check_user_email_exists(\QFactory::$VAR['email'])) {     
+    if (check_user_username_exists(\QFactory::$VAR['qform']['username']) || check_user_email_exists(\QFactory::$VAR['qform']['email'])) {     
         
         // send the posted data back to smarty
         $user_details = \QFactory::$VAR['qform'];

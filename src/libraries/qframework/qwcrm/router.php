@@ -11,7 +11,7 @@ defined('_QWEXEC') or die;
 /* Mandatory */
   
 ############################################
-#  Build path to relevant Page Controller  #
+#  Build path to relevant Page Controller  # // $mode = set_route/get_route
 ############################################
 
 function get_page_controller($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
@@ -60,7 +60,7 @@ function get_page_controller($mode = null, $component = null, $page_tpl = null, 
 
     // If SEF routing is enabled parse the link and set the controller (not if returning the content only)
     // This allows the use of Non-SEF URLS in the SEF enviroment
-    if ($config->get('sef') && check_link_is_sef($_SERVER['REQUEST_URI']) && $mode != 'payload') {
+    if ($config->get('sef') && check_link_is_sef($_SERVER['REQUEST_URI']) && $mode != 'get_payload') {
 
         // Set 'component' and 'page_tpl' variables in \QFactory::$VAR for correct routing when using SEF
         parse_sef_url($_SERVER['REQUEST_URI'], 'basic', 'set_var');
@@ -117,7 +117,7 @@ function get_page_controller($mode = null, $component = null, $page_tpl = null, 
     page_controller_return:
         
     // Set the routing variables to the system unless only payload to be returned
-    if($mode != 'payload') {
+    if($mode != 'get_payload') {
         if(isset($component)) {\QFactory::$VAR['component'] = $component;}
         if(isset($page_tpl)) {\QFactory::$VAR['page_tpl'] = $page_tpl;}
         if(isset($themVAR)) {\QFactory::$VAR['theme'] = $themVAR;}

@@ -9,29 +9,29 @@
 defined('_QWEXEC') or die;
 
 ############################
-#  Load the page           #
+#  Load the page           #  // $mode = 'get_payload': return a variable pouplated with a rendered page, $mode = 'set_controller': load page normally
 ############################
 
-function load_page($mode = null, $component = null, $page_tpl = null, $themeVar = null) {
+function load_page($mode, $component = null, $page_tpl = null, $themeVar = null) {
     
-    // get_page_controller($component = null, $page_tpl = null, $mode = null, $themeVar = null)
-    // get_page_content($page_controller, $component = null, $page_tpl = null, $mode = null, $themeVar = null)
-        
     // Just return the page as a variable and dont change the system page (not currently using this feature but might for AJAX)    
-    if($mode == 'payload') { 
+    if($mode == 'get_payload') { 
         
+        // Get and set the page controller
         $pageController = get_page_controller($mode, $component, $page_tpl, $themeVar);
+        
+        // Return the page as a variable
         return get_page_content($pageController, $mode, $component, $page_tpl, $themeVar);
     }
     
     // Normal Behaviour, set the routing, get the page, load the page into the system
-    if($mode != 'payload') { 
+    if($mode == 'set_controller') { 
         
         // Get and set the page controller
         \QFactory::$VAR['page_controller'] = get_page_controller();
         
         // Build the page
-        \QFactory::$BuildPage = get_page_content(\QFactory::$VAR['page_controller']);
+        \QFactory::$BuildPage = get_page_content(\QFactory::$VAR['page_controller'], $mode, $component, $page_tpl, $themeVar);
         
         return;
         
@@ -46,7 +46,7 @@ function load_page($mode = null, $component = null, $page_tpl = null, $themeVar 
 function get_page_content($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
     
     $config = \QFactory::getConfig();
-    $smarty = \QFactory::getSmarty();  // This is required for the required files/templates grabbed here 
+    $smarty = \QFactory::getSmarty();    // This is required for the required files/templates grabbed here 
     $pagePayload = '';                   // Local store for page content
     if(!defined('QWCRM_SETUP')) { $user = \QFactory::getUser(); }
         
@@ -120,9 +120,9 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
     
     // Process Page links
     if(!defined('QWCRM_SETUP')) {  
-        //$pagePayload .= page_links_acl_replace($pagePayload);
-        $pagePayload .= page_links_acl_removal($pagePayload);
-        $pagePayload .= page_links_sdmenu_cleanup($pagePayload);        
+        //$pagePayload = page_links_acl_replace($pagePayload);
+        $pagePayload = page_links_acl_removal($pagePayload);
+        $pagePayload = page_links_sdmenu_cleanup($pagePayload);        
     }
     
     // Will error out if there are any issues with content replacement
@@ -132,7 +132,7 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
 
     // Convert to SEF (if enabled and NOT running setup)
     if (!defined('QWCRM_SETUP') && $config->get('sef')) { 
-        $pagePayload .= page_links_to_sef($pagePayload);        
+        $pagePayload = page_links_to_sef($pagePayload);        
     }    
         
     return $pagePayload;

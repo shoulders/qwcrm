@@ -21,8 +21,8 @@ if(isset(\QFactory::$VAR['submit'])) {
 
     // Check if the username or email have been used (the extra vareiable is to ignore the users current username and email to prevent submission errors when only updating other values)
     if (
-            check_user_username_exists(\QFactory::$VAR['username'], get_user_details(\QFactory::$VAR['user_id'], 'username')) ||
-            check_user_email_exists(\QFactory::$VAR['email'], get_user_details(\QFactory::$VAR['user_id'], 'email'))
+            check_user_username_exists(\QFactory::$VAR['qform']['username'], get_user_details(\QFactory::$VAR['qform']['user_id'], 'username')) ||
+            check_user_email_exists(\QFactory::$VAR['qform']['email'], get_user_details(\QFactory::$VAR['qform']['user_id'], 'email'))
         ) {
 
         // Reload the page with the POST'ed data        

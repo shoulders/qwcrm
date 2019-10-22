@@ -85,7 +85,7 @@ smarty_set_system_messages(\QFactory::$VAR);
 smarty_set_user_variables();
 
 // Build and Load the page into memmory
-load_page();
+load_page('set_controller');
 
 ################################################
 #         Content Plugins                      #
