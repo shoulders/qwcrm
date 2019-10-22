@@ -175,34 +175,23 @@ function display_schedules($order_by, $direction, $use_pages = false, $records_p
 /** Insert Functions **/
 
 ######################################
-#  Insert schedule                   #
-######################################
+#  Insert schedule                   #  // Cannot use 'qform' because of smarty variables 'StartTime' and 'EndTime'
+######################################  // supply times in DATETIME
 
 function insert_schedule($qform) {
     
     $db = QFactory::getDbo();
-
-    // Get times in MySQL DATETIME from Smartytime (12 Hour Clock Format) (date/hour/minute/second)
-    //$start_time = smartytime_to_otherformat('datetime', $start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
-    //$end_time   = smartytime_to_otherformat('datetime', $end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
-    
-    // Get times in MySQL DATETIME from Smartytime (24 Hour Clock Format) (date/hour/minute/second)
-    $start_time = smartytime_to_otherformat('datetime', $qform['start_date'], $qform['StartTime']['Time_Hour'], $qform['StartTime']['Time_Minute'], '0', '24');
-    $end_time   = smartytime_to_otherformat('datetime', $qform['end_date'], $qform['EndTime']['Time_Hour'], $qform['EndTime']['Time_Minute'], '0', '24');
-    
-    // Corrects the extra time segment issue by removing a seconf
-    //$end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
     
     // Validate the submitted dates
-    if(!validate_schedule_times($qform['start_date'], $start_time, $end_time, $qform['employee_id'])) { return false; }        
+    if(!validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'])) { return false; }        
 
     // Insert schedule item into the database
     $sql = "INSERT INTO ".PRFX."schedule_records SET
             employee_id     =". $db->qstr( $qform['employee_id']      ).",
             client_id       =". $db->qstr( $qform['client_id']        ).",   
             workorder_id    =". $db->qstr( $qform['workorder_id']     ).",
-            start_time      =". $db->qstr( $start_time              ).",
-            end_time        =". $db->qstr( $end_time                ).",            
+            start_time      =". $db->qstr( $qform['start_time']       ).",
+            end_time        =". $db->qstr( $qform['end_time']         ).",            
             note            =". $db->qstr( $qform['note']             );            
 
     if(!$rs = $db->Execute($sql)) {
@@ -305,34 +294,23 @@ function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start
 /** Update Functions **/
 
 ######################################
-#      Update Schedule               #
+#      Update Schedule               #  // Cannot use 'qform' because of smarty variables 'StartTime' and 'EndTime'
 ######################################
 
 function update_schedule($qform) {
     
     $db = QFactory::getDbo();
-    
-    // Get Full DATETIME for the schedule item (date/hour/minute/second) - 12 Hour
-    //$start_time = smartytime_to_otherformat('datetime', $start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
-    //$end_time   = smartytime_to_otherformat('datetime', $end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
-    
-    // Get Full DATETIME for the schedule item (date/hour/minute/second) - 24 Hour
-    $start_time = smartytime_to_otherformat('datetime', $qform['start_date'], $qform['StartTime']['Time_Hour'], $qform['StartTime']['Time_Minute'], '0', '24');
-    $end_time   = smartytime_to_otherformat('datetime', $qform['end_date'], $qform['EndTime']['Time_Hour'], $qform['EndTime']['Time_Minute'], '0', '24');
-    
-    // Corrects the extra time segment issue
-    //$end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
-    
+        
     // Validate the submitted dates
-    if(!validate_schedule_times($qform['start_date'], $start_time, $end_time, $qform['employee_id'], $qform['schedule_id'])) { return false; }        
+    if(!validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }        
     
     $sql = "UPDATE ".PRFX."schedule_records SET
         schedule_id         =". $db->qstr( $qform['schedule_id']      ).",
         employee_id         =". $db->qstr( $qform['employee_id']      ).",
         client_id           =". $db->qstr( $qform['client_id']        ).",
         workorder_id        =". $db->qstr( $qform['workorder_id']     ).",   
-        start_time          =". $db->qstr( $start_time              ).",
-        end_time            =". $db->qstr( $end_time                ).",                
+        start_time          =". $db->qstr( $qform['start_time']       ).",
+        end_time            =". $db->qstr( $qform['end_time']         ).",                
         note                =". $db->qstr( $qform['note']             )."
         WHERE schedule_id   =". $db->qstr( $qform['schedule_id']      );
    
@@ -740,8 +718,8 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
     $calendar_matrix = '';
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only
-    $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
-    $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+    $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
+    $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
     
     // Look in the database for a scheduled events for the current schedule day (within business hours)
     $sql ="SELECT 
@@ -927,21 +905,21 @@ function build_calendar_matrix($start_year, $start_month, $start_day, $employee_
 }
 
 ############################################
-#   Validate schedule start and end time   #
+#   Validate schedule start and end time   #  // supply times in DATETIME
 ############################################
 
-function validate_schedule_times($start_date, $start_time, $end_time, $employee_id, $schedule_id = null) {    
+function validate_schedule_times($start_time, $end_time, $employee_id, $schedule_id = null) {    
     
     $db = QFactory::getDbo();    
     $smarty = QFactory::getSmarty();    
     
     // convert the submitted $start_date to the correct format
-    $start_date = date_to_timestamp($start_date);
-    $start_date = timestamp_to_date($start_date, '%Y-%m-%d');
+    //$start_date = date_to_timestamp($start_date);
+    //$start_date = timestamp_to_date($start_date, '%Y-%m-%d');
     
     // Get the start and end time of the calendar schedule to be displayed, Office hours only
-    $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_date);
-    $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_date);
+    $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_time, 'datetime');
+    $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_time, 'datetime');
     
     // Prevents Schedule Start and End times getting confused
     $end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');

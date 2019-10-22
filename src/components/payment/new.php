@@ -234,6 +234,3 @@ $smarty->assign('payment_active_card_types',         get_payment_active_card_typ
 $smarty->assign('name_on_card',                      \QFactory::$VAR['qpayment']['name_on_card']                                                );
 $smarty->assign('record_balance',                    NewPayment::$record_balance                                                     );
 $smarty->assign('buttons',                           NewPayment::$buttons                                                            );
-
-
-\QFactory::$BuildPage .= $smarty->fetch('payment/new.tpl');

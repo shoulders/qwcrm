@@ -119,4 +119,3 @@ $smarty->assign('payment_methods',          get_payment_methods('receive', 'enab
 $smarty->assign('payment_statuses',         get_payment_statuses() );
 $smarty->assign('payment_details',          UpdatePayment::$payment_details);
 $smarty->assign('record_balance',           UpdatePayment::$record_balance);
-\QFactory::$BuildPage .= $smarty->fetch('payment/edit.tpl');

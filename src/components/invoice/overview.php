@@ -23,5 +23,3 @@ $smarty->assign('overview_invoices_collections',        display_invoices('invoic
 //$smarty->assign('overview_invoices_cancelled',          display_invoices('invoice_id', 'DESC', true, '15', '1', null, null, 'cancelled')           );
 $smarty->assign('overview_invoice_stats',               get_invoices_stats('current'));
 $smarty->assign('invoice_statuses',                     get_invoice_statuses());
-
-\QFactory::$BuildPage .= $smarty->fetch('invoice/overview.tpl');

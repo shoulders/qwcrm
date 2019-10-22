@@ -24,26 +24,25 @@ if(isset(\QFactory::$VAR['submit'])) {
 
     // New invoice labour rates item
     if(\QFactory::$VAR['submit'] == 'new') {
-        insert_invoice_prefill_item(\QFactory::$VAR);
+        insert_invoice_prefill_item(\QFactory::$VAR['qform']);
     }    
     
     // Update invoice labour rates item
     if(\QFactory::$VAR['submit'] == 'update') {            
-        update_invoice_prefill_item(\QFactory::$VAR);        
+        update_invoice_prefill_item(\QFactory::$VAR['qform']);        
     }
     
     // Delete invoice labour rates item
     if(\QFactory::$VAR['submit'] == 'delete') {        
-        delete_invoice_prefill_item(\QFactory::$VAR['invoice_prefill_id']);
+        delete_invoice_prefill_item(\QFactory::$VAR['qform']['invoice_prefill_id']);
     }
     
     // Upload CSV file of invoice labour rates items
     if(\QFactory::$VAR['submit'] == 'csv_upload') {
-        upload_invoice_prefill_items_csv(\QFactory::$VAR);
+        upload_invoice_prefill_items_csv(\QFactory::$VAR['qform']);
     }
     
 }
 
 // Build Page
 $smarty->assign('invoice_prefill_items', get_invoice_prefill_items());
-\QFactory::$BuildPage .= $smarty->fetch('invoice/prefill_items.tpl');

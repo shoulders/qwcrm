@@ -50,8 +50,8 @@ if(\QFactory::$VAR['print_content'] == 'technician_workorder_slip') {
         $record = _gettext("Technician Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
-        // Build the page
-        \QFactory::$BuildPage .= $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
+        // Assign the correct version of this page
+        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
     
     // Print PDF
     } elseif (\QFactory::$VAR['print_type'] == 'print_pdf') {        
@@ -109,8 +109,8 @@ if(\QFactory::$VAR['print_content'] == 'client_workorder_slip') {
         $record = _gettext("Client Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
-        // Build the page
-        \QFactory::$BuildPage .= $smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
+        // Assign the correct version of this page
+        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
     
     // Print PDF
     } elseif (\QFactory::$VAR['print_type'] == 'print_pdf') {        
@@ -168,8 +168,8 @@ if(\QFactory::$VAR['print_content'] == 'technician_job_sheet') {
         $record = _gettext("Technician Job Sheet").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
                 
-        // Build the page
-        \QFactory::$BuildPage .= $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
+        // Assign the correct version of this page
+        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
         
     // Print PDF
     } elseif (\QFactory::$VAR['print_type'] == 'print_pdf') {

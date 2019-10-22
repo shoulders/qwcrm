@@ -17,7 +17,7 @@ require(INCLUDES_DIR.'report.php');
 if(isset(\QFactory::$VAR['submit'])) {
 
     // Insert the Expense into the database
-    $expense_id = insert_expense(\QFactory::$VAR);
+    $expense_id = insert_expense(\QFactory::$VAR['qform']);
     recalculate_expense_totals($expense_id);
 
     if (\QFactory::$VAR['submit'] == 'submitandnew') {
@@ -42,7 +42,5 @@ if(isset(\QFactory::$VAR['submit'])) {
     // Build the page
     $smarty->assign('expense_types', get_expense_types());    
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));   
-    $smarty->assign('default_vat_tax_code', get_default_vat_tax_code());    
-    \QFactory::$BuildPage .= $smarty->fetch('expense/new.tpl');
-
+    $smarty->assign('default_vat_tax_code', get_default_vat_tax_code());
 }

@@ -184,11 +184,11 @@ function get_voucher_vat_tax_code($type, $tax_system = null) {
 #      Get Company Opening Hours         # // return opening hours in smarty/datetime/timestamp with an optional specified date (2019-05-72)
 ##########################################
 
-function get_company_opening_hours($event, $type, $date = null) {
+function get_company_opening_hours($event, $type, $date = null, $date_format = null) {
     
     // Convert Date to time stamp
     if($date) { 
-        $date_timestamp = date_to_timestamp($date, '%Y-%m-%d');
+        $date_timestamp = date_to_timestamp($date, $date_format);
     }
 
     // Smarty Time Format

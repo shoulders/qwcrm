@@ -27,4 +27,3 @@ $smarty->assign('client_display_name',      get_client_details(get_user_details(
 $smarty->assign('usergroups',               get_usergroups()                                                                                             );
 $smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'open', \QFactory::$VAR['user_id']));
 $smarty->assign('user_locations',           get_user_locations());
-\QFactory::$BuildPage .= $smarty->fetch('user/details.tpl');

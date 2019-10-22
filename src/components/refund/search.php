@@ -39,4 +39,3 @@ $smarty->assign('filter_status',            \QFactory::$VAR['filter_status']    
 $smarty->assign('refund_statuses',          get_refund_statuses()                                                                                           );
 $smarty->assign('refund_types',             get_refund_types()                                                                                              );
 $smarty->assign('display_refunds',          display_refunds('refund_id', 'DESC', true, '25', \QFactory::$VAR['page_no'], \QFactory::$VAR['search_category'], \QFactory::$VAR['search_term'], \QFactory::$VAR['filter_type'], \QFactory::$VAR['filter_status'])   );
-\QFactory::$BuildPage .= $smarty->fetch('refund/search.tpl');

@@ -39,7 +39,7 @@ if(isset(\QFactory::$VAR['submit'])) {
     if (check_user_username_exists(\QFactory::$VAR['username']) || check_user_email_exists(\QFactory::$VAR['email'])) {     
         
         // send the posted data back to smarty
-        $user_details = \QFactory::$VAR;
+        $user_details = \QFactory::$VAR['qform'];
         
         // Reload the page with the POST'ed data
         $smarty->assign('user_details', $user_details);        
@@ -47,10 +47,10 @@ if(isset(\QFactory::$VAR['submit'])) {
         } else {    
             
             // Insert user record (and return the new ID)
-            \QFactory::$VAR['user_id'] = insert_user(\QFactory::$VAR);
+            \QFactory::$VAR['user_id'] = insert_user(\QFactory::$VAR['qform']);
             
             // Redirect to the new user's details page
-            force_page('user', 'details&user_id='.\QFactory::$VAR['user_id'], 'information_msg='._gettext("New user has been created."));
+            force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id'], 'information_msg='._gettext("New user has been created."));
             
         }
 
@@ -63,4 +63,3 @@ if(isset(\QFactory::$VAR['submit'])) {
 
 // Build the page
 $smarty->assign('user_locations', get_user_locations());
-\QFactory::$BuildPage .= $smarty->fetch('user/new.tpl');

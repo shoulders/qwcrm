@@ -29,10 +29,10 @@
                                                 <td class="olohead"></td>
                                             </tr>
                                             <tr>
-                                                <td class="olotd"><textarea name="note" class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>
+                                                <td class="olotd"><textarea name="note class="olotd4 mceCheckForContent" rows="15" cols="70"></textarea></td>
                                             </tr>
                                         </table>
-                                        <br>
+                                        <br>                                        
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_id}';">{t}Cancel{/t}</button>
                                     </form>

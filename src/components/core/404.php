@@ -10,5 +10,3 @@ defined('_QWEXEC') or die;
 
 // Send 404 Header
 header('HTTP/1.1 404 Not Found');
-
-\QFactory::$BuildPage .= $smarty->fetch('core/404.tpl');

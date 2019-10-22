@@ -16,7 +16,7 @@ function lookupSuggestions(scope_input_string) {
     }
     
     // Lookup Records and return list - returns suggests in a list <li onclick="fill(value)" >(value)</li>
-    $.post('index.php?component=workorder&page_tpl=autosuggest_scope&theme=print', {             
+    $.post('index.php?component=workorder&page_tpl=autosuggest_scope&theme=raw_html', {             
         posted_scope_string : scope_input_string }, function(data) {
             if(data.length > 0) {
                 $('#suggestions').show();

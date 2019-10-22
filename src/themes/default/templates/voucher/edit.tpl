@@ -61,7 +61,7 @@
                                             <tr>
                                                 <td><b>{t}Expires{/t}</b></td>
                                                 <td>
-                                                    <input id="expiry_date" name="expiry_date" class="olotd4" size="10" value="{$voucher_details.expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                    <input id="expiry_date" name="qform[expiry_date]" class="olotd4" size="10" value="{$voucher_details.expiry_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                     <button type="button" id="expiry_date_button">+</button>
                                                     <script>                                                       
                                                         Calendar.setup( {
@@ -74,16 +74,17 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{if $voucher_details.tax_system != 'no_tax'}{t}Net{/t}{else}{t}Gross{/t}{/if}</b></td>
-                                                <td>{$currency_sym}<input name="unit_net" class="olotd5" size="10" value="{$voucher_details.unit_net|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                <td>{$currency_sym}<input name="qform[unit_net]" class="olotd5" size="10" value="{$voucher_details.unit_net|string_format:"%.2f"}" type="text" maxlength="10" required pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="2"><b>{t}Note{/t}:</b></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="note">{$voucher_details.note}</textarea></td>
+                                                <td colspan="2"><textarea class="olotd5" rows="15" cols="70" name="qform[note]">{$voucher_details.note}</textarea></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">                                                    
+                                                <td colspan="2">     
+                                                    <input type="hidden" name="qform[voucher_id]" value="{$voucher_details.voucher_id}">
                                                     <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                     <button type="button" class="olotd4" onclick="window.location.href='index.php?component=voucher&page_tpl=details&voucher_id={$voucher_id}';">{t}Cancel{/t}</button>
                                                 </td>

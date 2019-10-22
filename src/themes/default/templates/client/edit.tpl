@@ -34,30 +34,30 @@
                                                                     <tbody align="left">
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Company Name{/t}</strong></td>
-                                                                            <td colspan="3"><input name="company_name" class="olotd5" size="50" value="{$client_details.company_name}" type="text" maxlength="50" onkeydown="return onlyName(event);"/></td>
+                                                                            <td colspan="3"><input name="qform[company_name]" class="olotd5" size="50" value="{$client_details.company_name}" type="text" maxlength="50" onkeydown="return onlyName(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}First Name{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                            <td><input name="first_name" class="olotd5" value="{$client_details.first_name}" size="20" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
+                                                                            <td><input name="qform[first_name]" class="olotd5" value="{$client_details.first_name}" size="20" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Last Name{/t}</strong><span style="color: #ff0000">*</span></td>
-                                                                            <td><input name="last_name" class="olotd5" value="{$client_details.last_name}" size="20" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
+                                                                            <td><input name="qform[last_name]" class="olotd5" value="{$client_details.last_name}" size="20" type="text" maxlength="20" required onkeydown="return onlyName(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Website{/t}</b></td>
-                                                                            <td><input name="website" class="olotd5" value="{$client_details.website}" size="50" type="text" maxlength="50" placeholder="https://quantumwarp.com/" pattern="{literal}^(https?:\/\/)?([a-z0-9_\-]+\.?)+(\/([a-zA-Z0-9_\-~#]+)*\/?)?{/literal}" onkeydown="return onlyURL(event);"/></td>
+                                                                            <td><input name="qform[website]" class="olotd5" value="{$client_details.website}" size="50" type="text" maxlength="50" placeholder="https://quantumwarp.com/" pattern="{literal}^(https?:\/\/)?([a-z0-9_\-]+\.?)+(\/([a-zA-Z0-9_\-~#]+)*\/?)?{/literal}" onkeydown="return onlyURL(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Email{/t}</strong></td>
-                                                                            <td><input name="email" class="olotd5" value="{$client_details.email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                                            <td><input name="qform[email]" class="olotd5" value="{$client_details.email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Credit Terms{/t}</strong></td>
-                                                                            <td><input name="credit_terms" class="olotd5" value="{$client_details.credit_terms}" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                            <td><input name="qform[credit_terms]" class="olotd5" value="{$client_details.credit_terms}" size="50" type="text" maxlength="50" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Discount{/t}</b><span style="color: #ff0000">*</span></td>
-                                                                            <td><input name="unit_discount_rate" class="olotd5" size="4" value="{$client_details.unit_discount_rate|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
+                                                                            <td><input name="qform[unit_discount_rate]" class="olotd5" size="4" value="{$client_details.unit_discount_rate|string_format:"%.2f"}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/><b>%</b></td>
                                                                         </tr>                                                                                  
                                                                     </table>
                                                                 </td>
@@ -71,7 +71,7 @@
                                                                         <tr>
                                                                             <td align="right"><strong>{t}Type{/t}</strong><span style="color: #ff0000">*</span></td>
                                                                             <td>
-                                                                                <select id="type" name="type" class="olotd5"> 
+                                                                                <select id="type" name="qform[type]" class="olotd5" required> 
                                                                                     {section name=s loop=$client_types}    
                                                                                         <option value="{$client_types[s].type_key}"{if $client_details.type == $client_types[s].type_key} selected{/if}>{t}{$client_types[s].display_name}{/t}</option>
                                                                                     {/section}    
@@ -81,7 +81,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Active{/t}</b></td>
                                                                             <td>
-                                                                                <select class="olotd5" id="active" name="active">                                                       
+                                                                                <select class="olotd5" id="active" name="qform[active]" required>                                                       
                                                                                     <option value="0"{if $client_details.active == '0'} selected{/if}>{t}No{/t}</option>
                                                                                     <option value="1"{if $client_details.active == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                                 </select>                                                                                
@@ -99,15 +99,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Phone{/t}</strong></td>
-                                                                        <td><input name="primary_phone" class="olotd5" value="{$client_details.primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                        <td><input name="qform[primary_phone]" class="olotd5" value="{$client_details.primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Mobile{/t}</strong></td>
-                                                                        <td><input name="mobile_phone" class="olotd5" value="{$client_details.mobile_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                        <td><input name="qform[mobile_phone]" class="olotd5" value="{$client_details.mobile_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Fax{/t}</strong></td>
-                                                                        <td><input name="fax" class="olotd5" value="{$client_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
+                                                                        <td><input name="qform[fax]" class="olotd5" value="{$client_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"/></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
@@ -120,36 +120,37 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Address{/t}</strong></td>
-                                                                        <td colspan="3"><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);"/>{$client_details.address}</textarea></td>
+                                                                        <td colspan="3"><textarea name="qform[address]" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" onkeydown="return onlyAddress(event);"/>{$client_details.address}</textarea></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}City{/t}</strong></td>
-                                                                        <td><input name="city" class="olotd5" value="{$client_details.city}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                                        <td><input name="qform[city]" class="olotd5" value="{$client_details.city}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}State{/t}</strong></td>
-                                                                        <td><input name="state" class="olotd5" value="{$client_details.state}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
+                                                                        <td><input name="qform[state]" class="olotd5" value="{$client_details.state}" type="text" maxlength="20" onkeydown="return onlyAlpha(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Zip{/t}</strong></td>
-                                                                        <td colspan="2"><input name="zip" class="olotd5" value="{$client_details.zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                        <td colspan="2"><input name="qform[zip]" class="olotd5" value="{$client_details.zip}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td align="right"><strong>{t}Country{/t}</strong></td>
-                                                                        <td><input name="country" class="olotd5" value="{$client_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"/></td>
+                                                                        <td><input name="qform[country]" class="olotd5" value="{$client_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"/></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td class="menuhead"><b>{t}Note{/t}</b></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td></td>
-                                                                        <td colspan="2"><textarea name="note" class="olotd5" cols="50" rows="20">{$client_details.note}</textarea></td>
+                                                                        <td colspan="2"><textarea name="qform[note]" class="olotd5" cols="50" rows="20">{$client_details.note}</textarea></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
                                                         </tr>
                                                         <tr>
                                                             <td colspan="2">
+                                                                <input type="hidden" name="qform[client_id]" value="{$client_details.client_id}">
                                                                 <button type="submit" name="submit" value="update">{t}Update{/t}</button>
                                                                 <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_id}';">{t}Cancel{/t}</button>
                                                             </td>

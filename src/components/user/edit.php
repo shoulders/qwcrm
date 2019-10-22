@@ -26,21 +26,21 @@ if(isset(\QFactory::$VAR['submit'])) {
         ) {
 
         // Reload the page with the POST'ed data        
-        $smarty->assign('user_details', \QFactory::$VAR);               
+        $smarty->assign('user_details', \QFactory::$VAR['qform']);               
         
     } else {    
             
         // Insert user record
-        update_user(\QFactory::$VAR);
+        update_user(\QFactory::$VAR['qform']);
 
         // Redirect to the new users's details page
-        force_page('user', 'details&user_id='.\QFactory::$VAR['user_id'], 'information_msg='._gettext("User details updated."));
+        force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id'], 'information_msg='._gettext("User details updated."));
             
     }
 
 } else { 
   
-    $smarty->assign('user_details', get_user_details(\QFactory::$VAR['user_id']));     
+    $smarty->assign('user_details', get_user_details(\QFactory::$VAR['qform']['user_id']));     
     
 }
 
@@ -56,4 +56,3 @@ if(get_user_details(\QFactory::$VAR['user_id'], 'is_employee')) {
 
 // Build the page
 $smarty->assign('user_locations', get_user_locations());
-\QFactory::$BuildPage .= $smarty->fetch('user/edit.tpl');

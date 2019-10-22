@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'supplier.php');
 if(isset(\QFactory::$VAR['submit']) || isset(\QFactory::$VAR['submitandnew'])) {
         
     // insert the supplier record and get the supplier_id
-    \QFactory::$VAR['supplier_id'] = insert_supplier(\QFactory::$VAR);
+    \QFactory::$VAR['supplier_id'] = insert_supplier(\QFactory::$VAR['qform']);
             
     if (isset(\QFactory::$VAR['submitandnew'])) {
 
@@ -32,4 +32,3 @@ if(isset(\QFactory::$VAR['submit']) || isset(\QFactory::$VAR['submitandnew'])) {
 
 // Build the page
 $smarty->assign('supplier_types', get_supplier_types());
-\QFactory::$BuildPage .= $smarty->fetch('supplier/new.tpl');

@@ -35,5 +35,3 @@ $smarty->assign('search_term',      \QFactory::$VAR['search_term']              
 $smarty->assign('filter_status',    \QFactory::$VAR['filter_status']                                                                            );
 $smarty->assign('invoice_statuses', get_invoice_statuses()                                                                           );
 $smarty->assign('display_invoices', display_invoices('invoice_id', 'DESC', true, '25', \QFactory::$VAR['page_no'], \QFactory::$VAR['search_category'], \QFactory::$VAR['search_term'], \QFactory::$VAR['filter_status'])   );
-
-\QFactory::$BuildPage .= $smarty->fetch('invoice/search.tpl');

@@ -42,4 +42,3 @@ $smarty->assign('employees',                get_active_users('employees')       
 $smarty->assign('current_schedule_date',    convert_year_month_day_to_timestamp(\QFactory::$VAR['start_year'], \QFactory::$VAR['start_month'], \QFactory::$VAR['start_day'])                                  );
 $smarty->assign('calendar_matrix',          build_calendar_matrix(\QFactory::$VAR['start_year'], \QFactory::$VAR['start_month'], \QFactory::$VAR['start_day'], \QFactory::$VAR['employee_id'], \QFactory::$VAR['workorder_id'])     );
 $smarty->assign('selected_employee',        \QFactory::$VAR['employee_id']                                                                                                              );
-\QFactory::$BuildPage .= $smarty->fetch('schedule/day.tpl');

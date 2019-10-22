@@ -54,16 +54,22 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
     $component = isset($component) ? $component : ( isset(\QFactory::$VAR['component']) ? \QFactory::$VAR['component'] : null);
     $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\QFactory::$VAR['page_tpl']) ? \QFactory::$VAR['page_tpl'] : null);
     $themeVar = isset($themeVar) ? $themeVar : ( isset(\QFactory::$VAR['theme']) ? \QFactory::$VAR['theme'] : null);
-    
-    // If theme is set to Print mode then fetch the Page Content - Print system will output with its own format without need for headers and footers here
-    if (isset($themeVar) && $themeVar === 'print') {        
-        require($page_controller);
+        
+    // If theme is set to Print mode, Skip Header and Footer - Print system will output with it's own format without need for headers and footers here
+    if (isset($themeVar) && ($themeVar === 'print' || $themeVar === 'raw_html')) {        
+        require_once($page_controller);
+        
+        // This allows autosuggest to work
+        if ($themeVar !== 'raw_html') {
+            $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');
+        }
+        
         goto page_build_end;
     }
     
     // Set Page Header and Meta Data
     set_page_header_and_meta_data($component, $page_tpl);
-
+    
     // Fetch Header Block
     if(!isset($themeVar) || $themeVar != 'off') {     
         require(COMPONENTS_DIR.'core/blocks/theme_header_block.php');
@@ -86,19 +92,10 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
 
     }    
     
-    
-    
-    
-
     // Fetch the specified Page Controller
     require_once($page_controller);
-    $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');   /////// should this be in its own function and should i rename get_controller to set_controller then set_page_tpl()
-    
-    
-    
-    
-    
-
+    $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');
+        
     // Fetch Footer Legacy Template code Block (closes content table)
     if((!isset($themeVar) || $themeVar != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {
         $pagePayload .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
@@ -123,9 +120,9 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
     
     // Process Page links
     if(!defined('QWCRM_SETUP')) {  
-        //page_links_acl_replace($pagePayload);
-        page_links_acl_removal($pagePayload);
-        page_links_sdmenu_cleanup($pagePayload);        
+        //$pagePayload .= page_links_acl_replace($pagePayload);
+        $pagePayload .= page_links_acl_removal($pagePayload);
+        $pagePayload .= page_links_sdmenu_cleanup($pagePayload);        
     }
     
     // Will error out if there are any issues with content replacement
@@ -135,7 +132,7 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
 
     // Convert to SEF (if enabled and NOT running setup)
     if (!defined('QWCRM_SETUP') && $config->get('sef')) { 
-        page_links_to_sef($pagePayload);        
+        $pagePayload .= page_links_to_sef($pagePayload);        
     }    
         
     return $pagePayload;
@@ -187,6 +184,8 @@ function page_links_acl_replace($pagePayload) {
             }
 
         }, $pagePayload);
+        
+    return $pagePayload;
 
 }
 
@@ -213,6 +212,8 @@ function page_links_acl_removal($pagePayload) {
             }
 
         }, $pagePayload);
+        
+    return $pagePayload;
        
 }
 
@@ -238,6 +239,8 @@ function page_links_sdmenu_cleanup($pagePayload) {
             }
 
         }, $pagePayload);
+        
+    return $pagePayload;
     
 }
 
@@ -254,6 +257,8 @@ function page_links_to_sef($pagePayload) {
             return $matches[1].build_sef_url($matches[2]).$matches[3];
 
         }, $pagePayload);
+        
+    return $pagePayload;
     
 }
 
@@ -315,13 +320,13 @@ function compress_page_output($pagePayload)
     // If no supported encoding is detected do nothing and return.
     if (empty($encodings))
     {
-        return;
+        return $pagePayload;
     }
 
     // Verify that headers have not yet been sent, and that our connection is still alive.
     if (headers_sent() || (connection_status() !== CONNECTION_NORMAL))
     {
-        return;
+        return $pagePayload;
     }
 
     // Iterate through the encodings and attempt to compress the data using any found supported encodings.
@@ -352,6 +357,10 @@ function compress_page_output($pagePayload)
             
         }
     }
+    
+    // Default action if nothin has happened
+    return $pagePayload;
+    
 }
 
 ####################################################################

@@ -168,7 +168,4 @@ $smarty->assign('recaptcha', $config->get('recaptcha'));
 $smarty->assign('recaptcha_site_key', $config->get('recaptcha_site_key'));
 
 // Select the correct reset stage to load
-$smarty->assign('stage', $stage);       
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('user/reset.tpl');
+$smarty->assign('stage', $stage);

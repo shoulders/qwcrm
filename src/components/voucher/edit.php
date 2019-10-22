@@ -35,10 +35,10 @@ if(!check_voucher_can_be_edited(\QFactory::$VAR['voucher_id'])) {
 if(isset(\QFactory::$VAR['submit'])) {
     
     // Create a new Voucher
-    update_voucher(\QFactory::$VAR['voucher_id'], \QFactory::$VAR['expiry_date'], \QFactory::$VAR['unit_net'], \QFactory::$VAR['note']);
+    update_voucher(\QFactory::$VAR['qform']['voucher_id'], \QFactory::$VAR['qform']['expiry_date'], \QFactory::$VAR['qform']['unit_net'], \QFactory::$VAR['qform']['note']);
 
     // Load the new Voucher's Details page
-    force_page('voucher', 'details&voucher_id='.\QFactory::$VAR['voucher_id']);    
+    force_page('voucher', 'details&voucher_id='.\QFactory::$VAR['qform']['voucher_id']);    
 
 } else {
     
@@ -47,5 +47,4 @@ if(isset(\QFactory::$VAR['submit'])) {
     $smarty->assign('voucher_statuses', get_voucher_statuses());
     $smarty->assign('voucher_types', get_voucher_types());
     $smarty->assign('voucher_details',  get_voucher_details(\QFactory::$VAR['voucher_id']));
-    \QFactory::$BuildPage .= $smarty->fetch('voucher/edit.tpl');
 }

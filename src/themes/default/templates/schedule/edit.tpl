@@ -40,13 +40,13 @@
                                                                         <td>
                                                                             <p><b>{t}Assigned Employee{/t}</b></p>
                                                                             {if $login_usergroup_id <= 3 }                                                                                
-                                                                                <select name="employee_id">
+                                                                                <select name="qform[employee_id]">
                                                                                     {section name=i loop=$active_employees}
                                                                                         <option value="{$active_employees[i].user_id}" {if $employee_id == $active_employees[i].user_id} selected {/if}>{$active_employees[i].display_name}</option>
                                                                                     {/section}
                                                                                 </select>                                                                                
                                                                             {else}
-                                                                                <input type="hidden" name="employee_id" value="{$employee_id}">
+                                                                                <input type="hidden" name="qform[employee_id]" value="{$employee_id}">
                                                                             {/if}
                                                                         </td>
                                                                         <td></td>
@@ -57,7 +57,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>
-                                                                            <input id="start_date" name="start_date" size="10" value="{$start_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                                            <input id="start_date" name="qform[start_date]" size="10" value="{$schedule_details.start_time|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                             <button type="button" id="start_date_button">+</button>
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {
@@ -66,10 +66,10 @@
                                                                                     dateFormat  : "{$date_format}"
                                                                                 } );                                                                            
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=StartTime time=$start_time}
+                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=StartTime time=$schedule_details.start_time}
                                                                         </td>
                                                                         <td>
-                                                                            <input id="end_date" name="end_date" size="10" value="{$end_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                                            <input id="end_date" name="qform[end_date]" size="10" value="{$schedule_details.end_time|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                             <button type="button" id="end_date_button">+</button>
                                                                             <script>                                                                            
                                                                                 Calendar.setup( {
@@ -78,7 +78,7 @@
                                                                                     dateFormat  : "{$date_format}"
                                                                                 } );                                                                           
                                                                             </script>                                                                            
-                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=EndTime time=$end_time}
+                                                                            {html_select_time use_24_hours=true minute_interval=15 display_seconds=false field_array=EndTime time=$schedule_details.end_time}
                                                                         </td>
                                                                     </tr>
                                                                     
@@ -86,13 +86,14 @@
                                                                         <td colspan="2">
                                                                             <b>{t}Note{/t}</b>
                                                                             <br>
-                                                                            <textarea name="note" class="olotd5 mceCheckForContent" rows="15" cols="70">{$note}</textarea>
+                                                                            <textarea name="qform[note]" class="olotd5 mceCheckForContent" rows="15" cols="70">{$schedule_details.note}</textarea>
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td colspan="2">
-                                                                            <input type="hidden" name="client_id" value="{$client_id}"> 
-                                                                            <input type="hidden" name="workorder_id" value="{$workorder_id}"> 
+                                                                            <input type="hidden" name="qform[client_id]" value="{$schedule_details.client_id}"> 
+                                                                            <input type="hidden" name="qform[workorder_id]" value="{$schedule_details.workorder_id}"> 
+                                                                            <input type="hidden" name="qform[schedule_id]" value="{$schedule_details.schedule_id}"> 
                                                                             <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                                             <button type="button" class="olotd4" onclick="window.location.href='index.php?component=schedule&page_tpl=details&schedule_id={$schedule_id}';">{t}Cancel{/t}</button>
                                                                         </td>

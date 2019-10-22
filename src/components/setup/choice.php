@@ -24,6 +24,3 @@ $qsetup = new QSetup(\QFactory::$VAR);
 
 // Get Compatibility Results
 $smarty->assign('compatibility_results', $qsetup->test_server_enviroment_compatibility());
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('setup/choice.tpl');

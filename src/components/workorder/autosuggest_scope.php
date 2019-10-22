@@ -15,7 +15,7 @@ require(INCLUDES_DIR.'workorder.php');
 if(isset(\QFactory::$VAR['posted_scope_string']) && strlen(\QFactory::$VAR['posted_scope_string']) > 0) {
 
     // BuildPage will only hold the html for this scope table
-    \QFactory::$BuildPage = get_workorder_scope_suggestions(\QFactory::$VAR['posted_scope_string']);
+    $pagePayload  .= get_workorder_scope_suggestions(\QFactory::$VAR['posted_scope_string']);
 
 }
 

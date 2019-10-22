@@ -282,7 +282,7 @@ function get_client_details($client_id, $item = null) {
 #  Get a single client note         #
 #####################################
 
-function get_client_note($client_note_id, $item = null) {
+function get_client_note_details($client_note_id, $item = null) {
     
     $db = QFactory::getDbo();
     
@@ -422,7 +422,7 @@ function update_client_note($client_note_id, $note) {
     } else {
         
         // get client_id
-        $client_id = get_client_note($client_note_id, 'client_id');
+        $client_id = get_client_note_details($client_note_id, 'client_id');
         
         // Log activity        
         $record = _gettext("Client Note").' '.$client_note_id.' '._gettext("for").' '.get_client_details($client_id, 'display_name').' '._gettext("was updated by").' '.QFactory::getUser()->login_display_name.'.';
@@ -507,8 +507,8 @@ function delete_client_note($client_note_id) {
     $db = QFactory::getDbo();
     
     // Get information before deleting the record
-    $client_id = get_client_note($client_note_id, 'client_id');
-    $employee_id = get_client_note($client_note_id, 'employee_id');
+    $client_id = get_client_note_details($client_note_id, 'client_id');
+    $employee_id = get_client_note_details($client_note_id, 'employee_id');
     
     $sql = "DELETE FROM ".PRFX."client_notes WHERE client_note_id=".$db->qstr($client_note_id);
 

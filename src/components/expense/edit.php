@@ -22,9 +22,9 @@ if(!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id']) {
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset(\QFactory::$VAR['submit'])) {    
         
-        update_expense(\QFactory::$VAR);
-        recalculate_expense_totals(\QFactory::$VAR['expense_id']);
-        force_page('expense', 'details&expense_id='.\QFactory::$VAR['expense_id'], 'information_msg='._gettext("Expense updated successfully.")); 
+        update_expense(\QFactory::$VAR['qform']);
+        recalculate_expense_totals(\QFactory::$VAR['qform']['expense_id']);
+        force_page('expense', 'details&expense_id='.\QFactory::$VAR['qform']['expense_id'], 'information_msg='._gettext("Expense updated successfully.")); 
 
 } else {
     
@@ -38,6 +38,5 @@ if(isset(\QFactory::$VAR['submit'])) {
     $smarty->assign('expense_types', get_expense_types());
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
     $smarty->assign('expense_details', get_expense_details(\QFactory::$VAR['expense_id']));
-    \QFactory::$BuildPage .= $smarty->fetch('expense/edit.tpl');
     
 }

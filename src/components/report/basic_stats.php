@@ -24,6 +24,3 @@ $smarty->assign('global_client_historic_stats', get_clients_stats('historic'));
 // Employee Workorder Stats (Logged in user)
 $smarty->assign('employee_workorder_current_stats', get_workorders_stats('current', null, null, $user->login_user_id));
 $smarty->assign('employee_workorder_historic_stats', get_workorders_stats('historic', null, null, $user->login_user_id));
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('report/basic_stats.tpl');

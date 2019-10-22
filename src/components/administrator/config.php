@@ -39,23 +39,23 @@ if(isset(\QFactory::$VAR['clear_smarty_cache'])) {
 // Update Config details
 if(isset(\QFactory::$VAR['submit'])) {   
     
-    if(update_qwcrm_config_settings_file(\QFactory::$VAR['qwcrm_config'])) {
+    if(update_qwcrm_config_settings_file(\QFactory::$VAR['qform'])) {
         
         // Compensate for SEF change  
-        $url_sef = \QFactory::$VAR['qwcrm_config']['sef'] ? 'sef' : 'nonsef';
+        $url_sef = \QFactory::$VAR['qform']['sef'] ? 'sef' : 'nonsef';
         
         // Load maintenance page if enabled
-        if(!QFactory::getConfig()->get('maintenance') && \QFactory::$VAR['qwcrm_config']['maintenance']) {
+        if(!QFactory::getConfig()->get('maintenance') && \QFactory::$VAR['qform']['maintenance']) {
             logout_all_users();
             force_page('index.php', null, null, 'get', $url_sef);
         }        
         
         // Reload Page (nonSSL to SSL)
-        elseif (!QFactory::getConfig()->get('force_ssl') && \QFactory::$VAR['qwcrm_config']['force_ssl']) {
+        elseif (!QFactory::getConfig()->get('force_ssl') && \QFactory::$VAR['qform']['force_ssl']) {
             force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), 'auto', $url_sef, 'https');
             
         // Reload page with forced logout (SSL to nonSSL)
-        } elseif(QFactory::getConfig()->get('force_ssl') && !\QFactory::$VAR['qwcrm_config']['force_ssl']) {
+        } elseif(QFactory::getConfig()->get('force_ssl') && !\QFactory::$VAR['qform']['force_ssl']) {
             logout_all_users();
             force_page('user', 'login', null, 'get', $url_sef, 'http');
         
@@ -68,7 +68,7 @@ if(isset(\QFactory::$VAR['submit'])) {
         
         // Load the submitted values
         $smarty->assign('warning_msg', _gettext("Some information was invalid, please check for errors and try again."));
-        $smarty->assign('qwcrm_config', \QFactory::$VAR['qwcrm_config']); 
+        $smarty->assign('qwcrm_config', \QFactory::$VAR['qform']); 
     }
     
 } else {
@@ -80,4 +80,3 @@ if(isset(\QFactory::$VAR['submit'])) {
 
 // Build the page
 $smarty->assign('available_languages', load_languages() );
-\QFactory::$BuildPage .= $smarty->fetch('administrator/config.tpl');

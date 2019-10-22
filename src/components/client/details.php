@@ -61,5 +61,3 @@ $smarty->assign('refund_types',            get_refund_types()                   
 $smarty->assign('refund_statuses',         get_refund_statuses()                                                                                                        );
 $smarty->assign('display_refunds',         display_refunds('refund_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, null, null, null, \QFactory::$VAR['client_id'])        );
 $smarty->assign('refund_stats',            get_refunds_stats('all', null, null, QW_TAX_SYSTEM, null, \QFactory::$VAR['client_id'])   );
-
-\QFactory::$BuildPage .= $smarty->fetch('client/details.tpl');

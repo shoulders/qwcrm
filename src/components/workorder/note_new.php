@@ -26,6 +26,3 @@ if(isset(\QFactory::$VAR['submit'])){
     force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id'], 'information_msg='._gettext("The note has been inserted."));
     
 }
-    
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('workorder/note_new.tpl');

@@ -25,5 +25,3 @@ $smarty->assign('overview_workorders_management',        display_workorders('wor
 
 $smarty->assign('overview_workorder_stats', get_workorders_stats('current'));
 $smarty->assign('workorder_statuses', get_workorder_statuses());
-
-\QFactory::$BuildPage .= $smarty->fetch('workorder/overview.tpl');

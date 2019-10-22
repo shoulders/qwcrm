@@ -188,6 +188,3 @@ if(\QFactory::$VAR['stage'] == 'delete_setup_folder') {
     }
     
 }
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('setup/upgrade.tpl');

@@ -36,10 +36,10 @@ if(!check_payment_method_is_active('voucher')) {
 if(isset(\QFactory::$VAR['submit'])) {   
         
     // Create a new Voucher
-    $voucher_id = insert_voucher(\QFactory::$VAR['invoice_id'], \QFactory::$VAR['type'], \QFactory::$VAR['expiry_date'], \QFactory::$VAR['unit_net'], \QFactory::$VAR['note']);
+    $voucher_id = insert_voucher(\QFactory::$VAR['qform']['invoice_id'], \QFactory::$VAR['qform']['type'], \QFactory::$VAR['qform']['expiry_date'], \QFactory::$VAR['qform']['unit_net'], \QFactory::$VAR['qform']['note']);
 
     // Load the attached invoice Details page
-    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['invoice_id'], 'information_msg'._gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
+    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['qform']['invoice_id'], 'information_msg'._gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
 
 }
     
@@ -47,4 +47,3 @@ if(isset(\QFactory::$VAR['submit'])) {
 $smarty->assign('client_details', get_client_details(get_invoice_details(\QFactory::$VAR['invoice_id'], 'client_id')));
 $smarty->assign('voucher_types', get_voucher_types());
 $smarty->assign('voucher_tax_system', get_invoice_details(\QFactory::$VAR['invoice_id'], 'tax_system'));
-\QFactory::$BuildPage .= $smarty->fetch('voucher/new.tpl');

@@ -52,5 +52,3 @@ $smarty->assign('invoice_status',               get_invoice_details(\QFactory::$
 $smarty->assign('invoice_status_display_name',  get_invoice_status_display_name(get_invoice_details(\QFactory::$VAR['invoice_id'], 'status')));
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                   );
 $smarty->assign('assigned_employee_details',    get_user_details($assigned_employee_id)                 );
-
-\QFactory::$BuildPage .= $smarty->fetch('invoice/status.tpl');

@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'client.php');
 if(isset(\QFactory::$VAR['submit'])) {
 
     // Create the new Client
-    \QFactory::$VAR['client_id'] = insert_client(\QFactory::$VAR);
+    \QFactory::$VAR['client_id'] = insert_client(\QFactory::$VAR['qform']);
     
     // Load the new Client's Details page
     force_page('client', 'details&client_id='.\QFactory::$VAR['client_id']);
@@ -22,6 +22,5 @@ if(isset(\QFactory::$VAR['submit'])) {
     
     // Build the page
     $smarty->assign('client_types', get_client_types());
-    \QFactory::$BuildPage .= $smarty->fetch('client/new.tpl');
 
 }

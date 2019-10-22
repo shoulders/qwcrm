@@ -60,6 +60,3 @@ $smarty->assign('display_payments',         display_payments('payment_id', 'DESC
 $smarty->assign('employee_display_name',    get_user_details($invoice_details['employee_id'], 'display_name')  );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                   );
 $smarty->assign('voucher_statuses',        get_voucher_statuses()                                                                   );
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('invoice/details.tpl');

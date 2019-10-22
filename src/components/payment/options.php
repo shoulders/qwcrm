@@ -41,19 +41,19 @@ require(INCLUDES_DIR.'payment.php');
 // Prevent undefined variable errors (from checkboxes)
 $checkboxes = array('bank_transfer', 'card', 'cash', 'cheque', 'direct_debit', 'voucher', 'other', 'paypal');
 foreach($checkboxes as $checkbox) {     
-    \QFactory::$VAR[$checkbox]['send']     = isset(\QFactory::$VAR[$checkbox]['send'])    ? \QFactory::$VAR[$checkbox]['send']    : '0';
-    \QFactory::$VAR[$checkbox]['receive']  = isset(\QFactory::$VAR[$checkbox]['receive']) ? \QFactory::$VAR[$checkbox]['receive'] : '0';
-    \QFactory::$VAR[$checkbox]['enabled']  = isset(\QFactory::$VAR[$checkbox]['enabled']) ? \QFactory::$VAR[$checkbox]['enabled'] : '0';     
+    \QFactory::$VAR['qform'][$checkbox]['send']     = isset(\QFactory::$VAR['qform'][$checkbox]['send'])    ? \QFactory::$VAR['qform'][$checkbox]['send']    : '0';
+    \QFactory::$VAR['qform'][$checkbox]['receive']  = isset(\QFactory::$VAR['qform'][$checkbox]['receive']) ? \QFactory::$VAR['qform'][$checkbox]['receive'] : '0';
+    \QFactory::$VAR['qform'][$checkbox]['enabled']  = isset(\QFactory::$VAR['qform'][$checkbox]['enabled']) ? \QFactory::$VAR['qform'][$checkbox]['enabled'] : '0';     
 }
 
 // If changes submited
 if(isset(\QFactory::$VAR['submit'])) {
     
     // Update enabled payment methods (checkboxes)
-    update_payment_methods_statuses(\QFactory::$VAR['payment_methods']);
+    update_payment_methods_statuses(\QFactory::$VAR['qform']['payment_methods']);
     
     // Update Payment details
-    update_payment_options(\QFactory::$VAR);
+    update_payment_options(\QFactory::$VAR['qform']);
 
     // Assign success message    
     $smarty->assign('information_msg', _gettext("Payment Options Updated.") );
@@ -66,4 +66,3 @@ if(isset(\QFactory::$VAR['submit'])) {
 // Build the page
 $smarty->assign('payment_methods',          get_payment_methods() );
 $smarty->assign('payment_options',          get_payment_options() );
-\QFactory::$BuildPage .= $smarty->fetch('payment/options.tpl');

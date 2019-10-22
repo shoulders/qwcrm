@@ -18,10 +18,9 @@ if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'reset_defau
 
 // Update the ACL permissions if submitted
 if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'update') {
-    update_acl(\QFactory::$VAR['qwpermissions']);    
+    update_acl(\QFactory::$VAR['qform']['permissions']);    
     $smarty->assign('information_msg', _gettext("Permissions Updated."));    
 }
     
 // Build the page with the permissions from the database 
 $smarty->assign('acl', get_acl_permissions());
-\QFactory::$BuildPage .= $smarty->fetch('administrator/acl.tpl');

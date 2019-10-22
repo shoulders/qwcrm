@@ -26,7 +26,7 @@ if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
 if(isset(\QFactory::$VAR['submit'])) {    
         
     // Update the refund in the database
-    update_refund(\QFactory::$VAR);
+    update_refund(\QFactory::$VAR['qform']);
     recalculate_refund_totals(\QFactory::$VAR['refund_id']);
     
     // load details page
@@ -44,6 +44,5 @@ if(isset(\QFactory::$VAR['submit'])) {
     $smarty->assign('refund_types', get_refund_types());        
     $smarty->assign('refund_details', $refund_details);
     $smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));
-    \QFactory::$BuildPage .= $smarty->fetch('refund/edit.tpl');
 
 }

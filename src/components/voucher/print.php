@@ -48,8 +48,8 @@ if(\QFactory::$VAR['print_content'] == 'voucher') {
         $record = _gettext("Voucher").' '.\QFactory::$VAR['voucher_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $voucher_details['employee_id'], $voucher_details['client_id'], $voucher_details['workorder_id'], $voucher_details['invoice_id']);
         
-        // Build the page
-        \QFactory::$BuildPage .= $smarty->fetch('voucher/printing/print_voucher.tpl');
+        // Assign the correct version of this page
+        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
     
     // Print PDF
     } elseif (\QFactory::$VAR['print_type'] == 'print_pdf') {        

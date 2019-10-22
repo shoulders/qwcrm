@@ -34,5 +34,3 @@ $smarty->assign('search_category',  \QFactory::$VAR['search_category']          
 $smarty->assign('search_term',      \QFactory::$VAR['search_term']                                                                                                         );
 $smarty->assign('filter_status',    \QFactory::$VAR['filter_status']                                                                                                         );
 $smarty->assign('display_schedules', display_schedules('schedule_id', 'DESC', true, '25', \QFactory::$VAR['page_no'], \QFactory::$VAR['search_category'], \QFactory::$VAR['search_term']), \QFactory::$VAR['filter_status']   );
-
-\QFactory::$BuildPage .= $smarty->fetch('schedule/search.tpl');

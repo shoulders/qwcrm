@@ -123,12 +123,12 @@
                                                                             <table cellpadding="5" cellspacing="0">
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Name{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="company_name" class="olotd5" value="{$company_details.company_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
+                                                                                    <td><input name="qform[company_name]" class="olotd5" value="{$company_details.company_name}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Logo{/t}:</b></td>
                                                                                     <td>
-                                                                                        <input name="logo" type="file" accept=".png, .jpg, .jpeg, .gif">
+                                                                                        <input name="qform[logo]" type="file" accept=".png, .jpg, .jpeg, .gif">
                                                                                         {if $company_details.logo}
                                                                                             <img src="{$company_logo}" height="50px" alt="{t}Company Logo{/t}">
                                                                                         {else}
@@ -139,59 +139,59 @@
                                                                                 <tr>
                                                                                     <td align="right"></td>
                                                                                     <td>
-                                                                                        <input type="checkbox" name="delete_logo" value="1">{t}Delete Logo{/t}
+                                                                                        <input type="checkbox" name="qform[delete_logo]" value="1">{t}Delete Logo{/t}
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Address{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><textarea name="address" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
+                                                                                    <td><textarea name="qform[address]" class="olotd5 mceNoEditor" cols="30" rows="3" maxlength="100" required onkeydown="return onlyAddress(event);">{$company_details.address}</textarea></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}City{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="city" class="olotd5" value="{$company_details.city}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                                                    <td><input name="qform[city]" class="olotd5" value="{$company_details.city}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}State{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="state" class="olotd5" value="{$company_details.state}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
+                                                                                    <td><input name="qform[state]" class="olotd5" value="{$company_details.state}" type="text" maxlength="20" required onkeydown="return onlyAlpha(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Zip{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="zip" class="olotd5" value="{$company_details.zip}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                                                    <td><input name="qform[zip]" class="olotd5" value="{$company_details.zip}" type="text" maxlength="20" required onkeydown="return onlyAlphaNumeric(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Country{/t}:</b></td>
-                                                                                    <td><input name="country" class="olotd5" value="{$company_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"></td>
+                                                                                    <td><input name="qform[country]" class="olotd5" value="{$company_details.country}" type="text" maxlength="50" onkeydown="return onlyAlpha(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Primary Phone{/t}:</b></td>
-                                                                                    <td><input name="primary_phone" class="olotd5" value="{$company_details.primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"</td>
+                                                                                    <td><input name="qform[primary_phone]" class="olotd5" value="{$company_details.primary_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Mobile Phone{/t}:</b></td>
-                                                                                    <td><input name="mobile_phone" class="olotd5" value="{$company_details.mobile_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                    <td><input name="qform[mobile_phone]" class="olotd5" value="{$company_details.mobile_phone}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Fax{/t}:</b></td>
-                                                                                    <td><input name="fax" class="olotd5" value="{$company_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
+                                                                                    <td><input name="qform[fax]" class="olotd5" value="{$company_details.fax}" type="tel" maxlength="20" onkeydown="return onlyPhoneNumber(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Email{/t}:</b></td>                                                                
-                                                                                    <td><input name="email" class="olotd5" value="{$company_details.email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                                                    <td><input name="qform[email]" class="olotd5" value="{$company_details.email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Website{/t}:</b></td>                                                                
-                                                                                    <td><input name="website" class="olotd5" value="{$company_details.website}" size="50" type="text" maxlength="50" placeholder="https://quantumwarp.com/" pattern="{literal}^(https?:\/\/)?([a-z0-9_\-]+\.?)+(\/([a-zA-Z0-9_\-~#]+)*\/?)?{/literal}" onkeydown="return onlyURL(event);"/></td>
+                                                                                    <td><input name="qform[website]" class="olotd5" value="{$company_details.website}" size="50" type="text" maxlength="50" placeholder="https://quantumwarp.com/" pattern="{literal}^(https?:\/\/)?([a-z0-9_\-]+\.?)+(\/([a-zA-Z0-9_\-~#]+)*\/?)?{/literal}" onkeydown="return onlyURL(event);"/></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Company Number{/t}:</b></td>
-                                                                                    <td><input name="company_number" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                                    <td><input name="qform[company_number]" class="olotd5" value="{$company_details.company_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                                 </tr>                                                                                
                                                                                 <tr>
                                                                                     <td><b>{t}Welcome Message{/t}:</b> {t}(Dashboard){/t}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td colspan="2">
-                                                                                        <textarea class="olotd5" cols="80" rows="5" name="welcome_msg">{$company_details.welcome_msg}</textarea>
+                                                                                        <textarea class="olotd5" cols="80" rows="5" name="qform[welcome_msg]">{$company_details.welcome_msg}</textarea>
                                                                                         <p>* {t}If there is no welcome message, the message box will not be displayed on the dashboard.{/t}</p>
                                                                                     </td>
                                                                                 </tr>                                                                                                           
@@ -216,7 +216,7 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Financial Year Start{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                         <td>
-                                                                            <input id="year_start" name="year_start" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                                            <input id="year_start" name="qform[year_start]" class="olotd4" size="10" value="{$company_details.year_start|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                             <button type="button" id="year_start_button">+</button>
                                                                             <script>                                                        
                                                                                 Calendar.setup( {
@@ -230,7 +230,7 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Financial Year End{/t}:</b> <span style="color: #ff0000">*</span></td>
                                                                         <td>
-                                                                            <input id="year_end" name="year_end" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                                            <input id="year_end" name="qform[year_end]" class="olotd4" size="10" value="{$company_details.year_end|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                             <button type="button" id="year_end_button">+</button>
                                                                             <script>                                                        
                                                                                 Calendar.setup( {
@@ -244,7 +244,7 @@
                                                                     <tr>
                                                                         <td align="right"><b>{t}Tax System{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                         <td>
-                                                                            <select class="olotd5" id="tax_system" name="tax_system">               
+                                                                            <select class="olotd5" id="tax_system" name="qform[tax_system">               
                                                                                 {section name=s loop=$tax_systems}
                                                                                     <option value="{$tax_systems[s].type_key}"{if $company_details.tax_system == $tax_systems[s].type_key} selected{/if}>{t}{$tax_systems[s].display_name}{/t}</option>
                                                                                 {/section}
@@ -253,15 +253,15 @@
                                                                     </tr>
                                                                     <tr style="display: none;" class="sales_tax_rate">
                                                                         <td align="right"><b>{t}Sales Tax Rate{/t}:</b></td>
-                                                                        <td><input id="sales_tax_rate" name="sales_tax_rate" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
+                                                                        <td><input id="sales_tax_rate" name="qform[sales_tax_rate]" class="olotd5" size="6" value="{$company_details.sales_tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);"/>%</td>
                                                                     </tr>                                                                    
                                                                     <tr class="vat_number">
                                                                         <td align="right"><b>{t}VAT Number{/t}:</b></td>
-                                                                        <td><input name="vat_number" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
+                                                                        <td><input name="qform[vat_number]" class="olotd5" value="{$company_details.vat_number}" type="text" maxlength="20" onkeydown="return onlyAlphaNumeric(event);"/></td>
                                                                     </tr>
                                                                     <tr class="vat_flat_rate">
                                                                         <td align="right"><b>{t}VAT Flat Rate{/t}:</b></td>
-                                                                        <td><input name="vat_flat_rate" class="olotd5" value="{$company_details.vat_flat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);">%</td>
+                                                                        <td><input name="qform[vat_flat_rate]" class="olotd5" value="{$company_details.vat_flat_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);">%</td>
                                                                     </tr>
                                                                     <tr class="vat_tax_codes">
                                                                         <td align="right"><b>{t}VAT Tax Codes{/t}</b></td>
@@ -271,7 +271,7 @@
                                                                         <tr class="vat_tax_codes">
                                                                             <td align="right"><b>{t}{$vat_tax_codes[r].display_name}{/t}:</b></td>
                                                                             <td>
-                                                                                <input name="vat_tax_codes[{$vat_tax_codes[r].tax_key}]" class="olotd5" size="6" value="{$vat_tax_codes[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_tax_codes[r].editable} disabled{/if}/>%
+                                                                                <input name="qform[vat_tax_codes][{$vat_tax_codes[r].tax_key}]" class="olotd5" size="6" value="{$vat_tax_codes[r].rate}" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" {if !$vat_tax_codes[r].editable} disabled{/if}/>%
                                                                             </td>
                                                                         </tr>
                                                                     {/section}
@@ -295,16 +295,16 @@
                                                                             <table cellpadding="5" cellspacing="0">                                                        
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Currency Symbol{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="currency_symbol" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" placeholder="&pound;" required onkeydown="return onlyCurrencySymbol(event);"></td>
+                                                                                    <td><input name="qform[currency_symbol]" class="olotd5" size="3" value="{$company_details.currency_symbol}" type="text" maxlength="1" placeholder="&pound;" required onkeydown="return onlyCurrencySymbol(event);"></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Currency Code{/t}:</b> <span style="color: #ff0000">*</span></td>
-                                                                                    <td><input name="currency_code" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" placeholder="GBP" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
+                                                                                    <td><input name="qform[currency_code]" class="olotd5" size="5" value="{$company_details.currency_code}" type="text" maxlength="3" placeholder="GBP" required onkeydown="return onlyAlpha(event);">{t}eg: British Pound = GBP, Euro = EUR, US Dollars = USD, Australian Dollars = AUD{/t}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="right"><b>{t}Date Format{/t}:</b></td>
                                                                                     <td>
-                                                                                        <select name="date_format" class="olotd5"> 
+                                                                                        <select name="qform[date_format]" class="olotd5"> 
                                                                                             {section name=d loop=$date_formats}    
                                                                                                 <option value="{$date_formats[d].date_format_key}"{if $company_details.date_format == $date_formats[d].date_format_key} selected{/if}>{t}{$date_formats[d].display_name}{/t}</option>
                                                                                             {/section}    
@@ -349,11 +349,11 @@
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="email_signature">{$company_details.email_signature}</textarea></td>
+                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="qform[email_signature]">{$company_details.email_signature}</textarea></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                                        <select name="email_signature_active">                                                                    
+                                                                                        <select name="qform[email_signature_active]">                                                                    
                                                                                             <option value="1" {if $company_details.email_signature_active == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                                             <option value="0" {if $company_details.email_signature_active == '0'} selected{/if}>{t}No{/t}</option>
                                                                                         </select>
@@ -367,7 +367,7 @@
 
                                                                     <tr>
                                                                         <td>
-                                                                            <input type="hidden" name="email_msg_workorder" value="">
+                                                                            <input type="hidden" name="qform[email_msg_workorder]" value="">
                                                                             {*<table cellpadding="5" cellspacing="0">
                                                                                 <tr>
                                                                                     <td class="menuhead">{t}Workorder Message{/t}:</td>
@@ -382,11 +382,11 @@
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="email_msg_workorder">{$company_details.email_msg_workorder}</textarea></td>
+                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="qform[email_msg_workorder]">{$company_details.email_msg_workorder}</textarea></td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                                        <select name="email_msg_workorder_active">                                                                    
+                                                                                        <select name="qform[email_msg_workorder_active]">                                                                    
                                                                                             <option value="1" {if $company_details.email_msg_workorder_active == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                                             <option value="0" {if $company_details.email_msg_workorder_active == '0'} selected{/if}>{t}No{/t}</option>
                                                                                         </select>
@@ -414,11 +414,11 @@
                                                                                     </td>
                                                                                 </tr>
                                                                                 <tr>
-                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="email_msg_invoice">{$company_details.email_msg_invoice}</textarea></td>
+                                                                                    <td><textarea cols="80" rows="15" class="olotd5" name="qform[email_msg_invoice]">{$company_details.email_msg_invoice}</textarea></td>
                                                                                 </tr>
                                                                                 {*<tr>
                                                                                     <td align="left"><b>{t}Enabled{/t}:</b>
-                                                                                        <select name="email_msg_invoice_active">                                                                    
+                                                                                        <select name="qform[email_msg_invoice_active]">                                                                    
                                                                                             <option value="1" {if $company_details.email_msg_invoice_active == '1'} selected{/if}>{t}Yes{/t}</option>
                                                                                             <option value="0" {if $company_details.email_msg_invoice_active == '0'} selected{/if}>{t}No{/t}</option>
                                                                                         </select>

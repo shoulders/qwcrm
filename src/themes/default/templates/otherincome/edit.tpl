@@ -100,12 +100,12 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td colspan="3"><input id="payee" name="payee" class="olotd5" size="50" value="{$otherincome_details.payee}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
+                                                            <td colspan="3"><input id="payee" name="qform[payee]" class="olotd5" size="50" value="{$otherincome_details.payee}" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <input id="date" name="date" class="olotd5" size="10" value="{$otherincome_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                                <input id="date" name="qform[date]" class="olotd5" size="10" value="{$otherincome_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                 <button type="button" id="date_button">+</button>
                                                                 <script>                                                                    
                                                                     Calendar.setup( {
@@ -119,7 +119,7 @@
                                                         <tr>
                                                             <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                             <td>
-                                                                <select id="item_type" name="item_type" class="olotd5"> 
+                                                                <select id="item_type" name="qform[item_type]" class="olotd5"> 
                                                                     {section name=s loop=$otherincome_types}    
                                                                         <option value="{$otherincome_types[s].type_key}"{if $otherincome_details.item_type == $otherincome_types[s].type_key} selected{/if}>{t}{$otherincome_types[s].display_name}{/t}</option>
                                                                     {/section}    
@@ -132,12 +132,12 @@
                                                         </tr>
                                                         <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
                                                             <td align="right"><b>{t}Net{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><input id="unit_net" name="unit_net" class="olotd5" style="border-width: medium;" size="10" value="{$otherincome_details.unit_net}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></td>
+                                                            <td><input id="unit_net" name="qform[unit_net]" class="olotd5" style="border-width: medium;" size="10" value="{$otherincome_details.unit_net}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></td>
                                                         </tr> 
                                                         <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
                                                             <td>
-                                                                <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
+                                                                <select id="vat_tax_code" name="qform[vat_tax_code]" class="olotd5">
                                                                     {if !'/^vat_/'|preg_match:$qw_tax_system}
                                                                         <option value="TNA" data-rate="0.00"{if $default_vat_tax_code == 'TNA'} selected{/if}>{t}TNA{/t}</option>
                                                                     {/if}
@@ -149,15 +149,15 @@
                                                         </tr>
                                                         <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
                                                             <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</b></td>
-                                                            <td><input id="unit_tax_rate" name="unit_tax_rate" class="olotd5" size="4" value="{$otherincome_details.unit_tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax_rate');" readonly/><b>%</b></td>
+                                                            <td><input id="unit_tax_rate" name="qform[unit_tax_rate]" class="olotd5" size="4" value="{$otherincome_details.unit_tax_rate}" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax_rate');" readonly/><b>%</b></td>
                                                         </tr>
                                                         <tr{if !'/^vat_/'|preg_match:$otherincome_details.tax_system} hidden{/if}>
                                                             <td align="right"><b>{t}VAT{/t}</b></td>
-                                                            <td><input id="unit_tax" name="unit_tax" class="olotd5" size="10" value="{$otherincome_details.unit_tax}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax');"/></td>
+                                                            <td><input id="unit_tax" name="qform[unit_tax]" class="olotd5" size="10" value="{$otherincome_details.unit_tax}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax');"/></td>
                                                         </tr> 
                                                         <tr>
                                                             <td align="right"><b>{t}Gross{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><input id="unit_gross" name="unit_gross" class="olotd5"{if !'/^vat_/'|preg_match:$otherincome_details.tax_system}style="border-width: medium;"{/if} size="10" value="{$otherincome_details.unit_gross}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                            <td><input id="unit_gross" name="qform[unit_gross]" class="olotd5"{if !'/^vat_/'|preg_match:$otherincome_details.tax_system}style="border-width: medium;"{/if} size="10" value="{$otherincome_details.unit_gross}" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Status{/t}</b><span style="color: #ff0000"> *</span></td>
@@ -169,11 +169,11 @@
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                            <td><textarea class="olotd5 mceCheckForContent" id="items" name="items" cols="50" rows="15">{$otherincome_details.items}</textarea></td>
+                                                            <td><textarea class="olotd5 mceCheckForContent" id="items" name="qform[items]" cols="50" rows="15">{$otherincome_details.items}</textarea></td>
                                                         </tr>
                                                         <tr>
                                                             <td align="right"><b>{t}Note{/t}</b></td>
-                                                            <td><textarea class="olotd5" id="note" name="note" cols="50" rows="15">{$otherincome_details.note}</textarea></td>
+                                                            <td><textarea class="olotd5" id="note" name="qform[note]" cols="50" rows="15">{$otherincome_details.note}</textarea></td>
                                                         </tr>                                                        
                                                         <tr>
                                                             <td colspan="2">

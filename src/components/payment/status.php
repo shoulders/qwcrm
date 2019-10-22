@@ -29,5 +29,3 @@ $smarty->assign('payment_statuses',                get_payment_statuses() );
 $smarty->assign('allowed_to_cancel',               check_payment_can_be_cancelled(\QFactory::$VAR['payment_id'])   );
 $smarty->assign('allowed_to_delete',               check_payment_can_be_deleted(\QFactory::$VAR['payment_id'])              );
 $smarty->assign('payment_selectable_statuses',     get_payment_statuses(true) );
-
-\QFactory::$BuildPage .= $smarty->fetch('payment/status.tpl');

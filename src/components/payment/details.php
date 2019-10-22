@@ -30,4 +30,3 @@ $smarty->assign('payment_types',            get_payment_types()    );
 $smarty->assign('payment_methods',          get_payment_methods()  ); 
 $smarty->assign('payment_statuses',         get_payment_statuses() );
 $smarty->assign('payment_details', $payment_details);
-\QFactory::$BuildPage .= $smarty->fetch('payment/details.tpl');

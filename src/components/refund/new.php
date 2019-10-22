@@ -39,7 +39,7 @@ if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
 if (isset(\QFactory::$VAR['submit'])) {
     
     // Insert the Refund into the database
-    $refund_id = refund_invoice(\QFactory::$VAR);
+    $refund_id = refund_invoice(\QFactory::$VAR['qform']);
     recalculate_refund_totals($refund_id);  // This is not strictly needed here because balance = unit_gross
     
         if (\QFactory::$VAR['submit'] == 'submitandpayment') {
@@ -91,4 +91,3 @@ $smarty->assign('refund_details', $refund_details);
 $smarty->assign('refund_types', get_refund_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes()); 
 $smarty->assign('client_display_name', $client_display_name);
-\QFactory::$BuildPage .= $smarty->fetch('refund/new.tpl');

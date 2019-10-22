@@ -31,5 +31,3 @@ $smarty->assign('refund_statuses',                get_refund_statuses() );
 $smarty->assign('allowed_to_cancel',              check_refund_can_be_cancelled(\QFactory::$VAR['refund_id'])              );
 $smarty->assign('allowed_to_delete',              check_refund_can_be_deleted(\QFactory::$VAR['refund_id'])              );
 $smarty->assign('refund_selectable_statuses',     get_refund_statuses(true) );
-
-\QFactory::$BuildPage .= $smarty->fetch('refund/status.tpl');

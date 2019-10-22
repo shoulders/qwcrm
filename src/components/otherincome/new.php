@@ -17,7 +17,7 @@ require(INCLUDES_DIR.'report.php');
 if(isset(\QFactory::$VAR['submit'])) {
 
     // insert the otherincome and get the otherincome_id
-    $otherincome_id = insert_otherincome(\QFactory::$VAR);
+    $otherincome_id = insert_otherincome(\QFactory::$VAR['qform']);
     recalculate_otherincome_totals($otherincome_id);
         
     if (\QFactory::$VAR['submit'] == 'submitandnew') {
@@ -42,5 +42,4 @@ if(isset(\QFactory::$VAR['submit'])) {
 // Build the page
 $smarty->assign('otherincome_types', get_otherincome_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
-$smarty->assign('default_vat_tax_code', get_default_vat_tax_code()); 
-\QFactory::$BuildPage .= $smarty->fetch('otherincome/new.tpl');
+$smarty->assign('default_vat_tax_code', get_default_vat_tax_code());

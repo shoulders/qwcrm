@@ -33,5 +33,3 @@ $smarty->assign('voucher_status',              get_voucher_details(\QFactory::$V
 $smarty->assign('voucher_statuses',            get_voucher_statuses() );
 $smarty->assign('allowed_to_delete',            check_voucher_can_be_deleted(\QFactory::$VAR['voucher_id'])              );
 $smarty->assign('voucher_selectable_statuses',     get_voucher_statuses(true) );
-
-\QFactory::$BuildPage .= $smarty->fetch('voucher/status.tpl');

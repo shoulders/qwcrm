@@ -34,6 +34,3 @@ if(isset(\QFactory::$VAR['submit'])) {
     $smarty->assign('opening_time', get_company_opening_hours('opening_time', 'smartytime'));
     $smarty->assign('closing_time', get_company_opening_hours('closing_time', 'smartytime'));   
 }
-
-// Fetch the hours page
-\QFactory::$BuildPage .= $smarty->fetch('company/business_hours.tpl');

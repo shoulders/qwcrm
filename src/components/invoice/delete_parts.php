@@ -34,4 +34,3 @@ delete_invoice_parts_item(\QFactory::$VAR['parts_id']);
 
 // Load the edit invoice page
 force_page('invoice' , 'edit&invoice_id='.\QFactory::$VAR['invoice_id']);
-exit;

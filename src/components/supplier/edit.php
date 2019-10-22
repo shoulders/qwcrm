@@ -19,7 +19,7 @@ if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
 if(isset(\QFactory::$VAR['submit'])) {    
         
     // update the supplier record
-    update_supplier(\QFactory::$VAR);
+    update_supplier(\QFactory::$VAR['qform']);
     
     // load the supplier details apge
     force_page('supplier', 'details&supplier_id='.\QFactory::$VAR['supplier_id'], 'information_msg='._gettext("Supplier updated successfully."));     
@@ -35,6 +35,5 @@ if(isset(\QFactory::$VAR['submit'])) {
     $smarty->assign('supplier_statuses',   get_supplier_statuses()   );
     $smarty->assign('supplier_types', get_supplier_types());
     $smarty->assign('supplier_details', get_supplier_details(\QFactory::$VAR['supplier_id']));
-    \QFactory::$BuildPage .= $smarty->fetch('supplier/edit.tpl');
 
 }

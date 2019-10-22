@@ -18,8 +18,8 @@ require(INCLUDES_DIR.'voucher.php');
 require(INCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
-\QFactory::$VAR['labour_items'] = isset(\QFactory::$VAR['labour_items']) ? \QFactory::$VAR['labour_items'] : null;
-\QFactory::$VAR['parts_items'] = isset(\QFactory::$VAR['parts_items']) ? \QFactory::$VAR['parts_items'] : null;
+\QFactory::$VAR['qform']['labour_items'] = isset(\QFactory::$VAR['qform']['labour_items']) ? \QFactory::$VAR['qform']['labour_items'] : null;
+\QFactory::$VAR['qform']['parts_items'] = isset(\QFactory::$VAR['qform']['parts_items']) ? \QFactory::$VAR['qform']['parts_items'] : null;
 
 // Check if we have an invoice_id
 if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
@@ -38,12 +38,12 @@ if(!check_invoice_can_be_edited(\QFactory::$VAR['invoice_id'])) {
 if(isset(\QFactory::$VAR['submit'])) {
     
     // insert the parts and labour item arrays
-    insert_labour_items(\QFactory::$VAR['invoice_id'], \QFactory::$VAR['labour_items']);
-    insert_parts_items(\QFactory::$VAR['invoice_id'], \QFactory::$VAR['parts_items']);
+    insert_labour_items(\QFactory::$VAR['qform']['invoice_id'], \QFactory::$VAR['qform']['labour_items']);
+    insert_parts_items(\QFactory::$VAR['qform']['invoice_id'], \QFactory::$VAR['qform']['parts_items']);
     
     // update and recalculate the invoice
-    update_invoice_static_values(\QFactory::$VAR['invoice_id'], \QFactory::$VAR['date'], \QFactory::$VAR['due_date'], \QFactory::$VAR['unit_discount_rate']);    
-    recalculate_invoice_totals(\QFactory::$VAR['invoice_id']);
+    update_invoice_static_values(\QFactory::$VAR['qform']['invoice_id'], \QFactory::$VAR['qform']['date'], \QFactory::$VAR['qform']['due_date'], \QFactory::$VAR['qform']['unit_discount_rate']);    
+    recalculate_invoice_totals(\QFactory::$VAR['qform']['invoice_id']);
     
 }
     
@@ -83,7 +83,3 @@ $smarty->assign('display_payments',         display_payments('payment_id', 'DESC
 $smarty->assign('employee_display_name',    get_user_details(get_invoice_details(\QFactory::$VAR['invoice_id'], 'employee_id'), 'display_name') );
 $smarty->assign('invoice_statuses',         get_invoice_statuses()                                                                   );
 $smarty->assign('voucher_statuses',        get_voucher_statuses()                                                                   );
-
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('invoice/edit.tpl');

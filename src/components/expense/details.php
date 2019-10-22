@@ -28,4 +28,3 @@ $smarty->assign('expense_statuses', get_expense_statuses()            );
 $smarty->assign('expense_types', get_expense_types());
 $smarty->assign('vat_tax_codes', get_vat_tax_codes());
 $smarty->assign('expense_details', get_expense_details(\QFactory::$VAR['expense_id']));
-\QFactory::$BuildPage .= $smarty->fetch('expense/details.tpl');

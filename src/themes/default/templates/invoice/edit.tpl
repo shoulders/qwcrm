@@ -50,8 +50,8 @@
 
         // Description Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'labour_items['+iteration+'][description]');
-        el.setAttribute('name', 'labour_items['+iteration+'][description]');
+        el.setAttribute('id', 'qform[labour_items]['+iteration+'][description]');
+        el.setAttribute('name', 'qform[labour_items]['+iteration+'][description]');
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
@@ -102,8 +102,8 @@
 
         // Unit QTY Cell - Create Input Box
         var el = document.createElement('input');
-        el.setAttribute('id', 'labour_items['+iteration+'][unit_qty]');
-        el.setAttribute('name', 'labour_items['+iteration+'][unit_qty]');
+        el.setAttribute('id', 'qform[labour_items]['+iteration+'][unit_qty]');
+        el.setAttribute('name', 'qform[labour_items]['+iteration+'][unit_qty]');
         //el.setAttribute('class', 'olotd4');
         el.setAttribute('size', '6');        
         el.setAttribute('value', '1.00');
@@ -122,8 +122,8 @@
 
         // Unit Net Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'labour_items['+iteration+'][unit_net]');
-        el.setAttribute('name', 'labour_items['+iteration+'][unit_net]');
+        el.setAttribute('id', 'qform[labour_items]['+iteration+'][unit_net]');
+        el.setAttribute('name', 'qform[labour_items]['+iteration+'][unit_net]');
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '6');
         //el.setAttribute('value', '1');
@@ -172,8 +172,8 @@
 
             // VAT Tax Code Cell - Create Select Input
             var el = document.createElement('select');
-            el.setAttribute('id', 'labour_items['+iteration+'][vat_tax_code]');
-            el.setAttribute('name', 'labour_items['+iteration+'][vat_tax_code]');
+            el.setAttribute('id', 'qform[labour_items]['+iteration+'][vat_tax_code]');
+            el.setAttribute('name', 'qform[labour_items]['+iteration+'][vat_tax_code]');
             //el.setAttribute('class', 'olotd4');
             //el.setAttribute('size', '62');
             //el.setAttribute('value', '1');
@@ -209,8 +209,8 @@
 
             // Sales Tax Exempt Checkbox Cell Cell - Create Select Input
             var el = document.createElement('input');
-            el.setAttribute('id', 'labour_items['+iteration+'][sales_tax_exempt]');
-            el.setAttribute('name', 'labour_items['+iteration+'][sales_tax_exempt]');
+            el.setAttribute('id', 'qform[labour_items]['+iteration+'][sales_tax_exempt]');
+            el.setAttribute('name', 'qform[labour_items]['+iteration+'][sales_tax_exempt]');
             //el.setAttribute('class', 'olotd4');
             //el.setAttribute('size', '62');
             el.setAttribute('value', '1');
@@ -272,8 +272,8 @@
 
         // Description Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'parts_items['+iteration+'][description]');
-        el.setAttribute('name', 'parts_items['+iteration+'][description]');    
+        el.setAttribute('id', 'qform[parts_items]['+iteration+'][description]');
+        el.setAttribute('name', 'qform[parts_items]['+iteration+'][description]');    
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '62');
         //el.setAttribute('value', '1');
@@ -318,8 +318,8 @@
 
         // Unit QTY Cell - Create Input Box
         var el = document.createElement('input');
-        el.setAttribute('id', 'parts_items['+iteration+'][unit_qty]');
-        el.setAttribute('name', 'parts_items['+iteration+'][unit_qty]');
+        el.setAttribute('id', 'qform[parts_items]['+iteration+'][unit_qty]');
+        el.setAttribute('name', 'qform[parts_items]['+iteration+'][unit_qty]');
         //el.setAttribute('class', 'olotd4');
         el.setAttribute('size', '6');        
         el.setAttribute('value', '1.00');
@@ -338,8 +338,8 @@
 
         // Unit Net Cell - Create Select Input
         var el = document.createElement('select');
-        el.setAttribute('id', 'parts_items['+iteration+'][unit_net]');
-        el.setAttribute('name', 'parts_items['+iteration+'][unit_net]');
+        el.setAttribute('id', 'qform[parts_items]['+iteration+'][unit_net]');
+        el.setAttribute('name', 'qform[parts_items]['+iteration+'][unit_net]');
         //el.setAttribute('class', 'olotd4');
         //el.setAttribute('size', '10');
         //el.setAttribute('value', '1');
@@ -388,8 +388,8 @@
 
             // VAT Tax Code Cell - Create Select Input
             var el = document.createElement('select');
-            el.setAttribute('id', 'parts_items['+iteration+'][vat_tax_code]');
-            el.setAttribute('name', 'parts_items['+iteration+'][vat_tax_code]');    
+            el.setAttribute('id', 'qform[parts_items]['+iteration+'][vat_tax_code]');
+            el.setAttribute('name', 'qform[parts_items]['+iteration+'][vat_tax_code]');    
             //el.setAttribute('class', 'olotd4');
             //el.setAttribute('size', '62');
             //el.setAttribute('value', '1');
@@ -418,8 +418,8 @@
 
             // Sales Tax Exempt Checkbox Cell Cell - Create Select Input
             var el = document.createElement('input');
-            el.setAttribute('id', 'parts_items['+iteration+'][sales_tax_exempt]');
-            el.setAttribute('name', 'parts_items['+iteration+'][sales_tax_exempt]');
+            el.setAttribute('id', 'qform[parts_items]['+iteration+'][sales_tax_exempt]');
+            el.setAttribute('name', 'qform[parts_items]['+iteration+'][sales_tax_exempt]');
             //el.setAttribute('class', 'olotd4');
             //el.setAttribute('size', '62');
             el.setAttribute('value', '1');
@@ -499,7 +499,7 @@
                                                 <td><a href="index.php?component=user&page_tpl=details&user_id={$invoice_details.employee_id}">{$employee_display_name}</a></td> 
                                                 <td>
                                                     {if !$display_payments}
-                                                        <input id="date" name="date" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                        <input id="date" name="qform[date]" class="olotd4" size="10" value="{$invoice_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                         <button type="button" id="date_button">+</button>
                                                         <script>                                                        
                                                             Calendar.setup( {
@@ -514,7 +514,7 @@
                                                 </td>
                                                 <td>
                                                     {if !$display_payments}
-                                                        <input id="due_date" name="due_date" class="olotd4" size="10" value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                        <input id="due_date" name="qform[due_date]" class="olotd4" size="10" value="{$invoice_details.due_date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                         <button type="button" id="due_date_button">+</button>
                                                         <script>                                                        
                                                            Calendar.setup({
@@ -592,7 +592,7 @@
                                                     <b>{t}TERMS{/t}:</b> {$client_details.credit_terms}<br>
                                                     <b>{t}Client Discount Rate{/t}:</b>
                                                     {if !$display_payments}
-                                                        <input type="text" class="olotd4" size="4" name="unit_discount_rate" value="{$invoice_details.unit_discount_rate|string_format:"%.2f"}"> %<br>
+                                                        <input type="text" class="olotd4" size="4" name="qform[unit_discount_rate]" value="{$invoice_details.unit_discount_rate|string_format:"%.2f"}"> %<br>
                                                         <b>** {t}Change this if you want to temporarily override the discount rate for this invoice ONLY{/t} **</b>
                                                     {else}                                                        
                                                         {$invoice_details.unit_discount_rate|string_format:"%.2f"} % 
@@ -955,6 +955,7 @@
                                             <tr>
                                                 <td align="left" valign="top" width="25%">                                                    
                                                     {if !$display_payments}
+                                                        <input type="hidden" name="qform[invoice_id]" value="{$invoice_details.invoice_id}">
                                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
                                                         <button type="button" class="olotd4" onclick="window.location.href='index.php?component=invoice&page_tpl=search';">{t}Cancel{/t}</button>
                                                     {/if}

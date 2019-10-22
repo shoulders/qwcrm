@@ -507,7 +507,8 @@ function get_workorder_status_display_name($status_key) {
 function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
     
     $db = QFactory::getDbo();
-    \QFactory::$BuildPage = '';
+    
+    $pagePayload = '';
     
     // if the string is not long enough so dont bother with a DB lookup
     if(strlen($scope_string) < $return_count) { return; }
@@ -555,10 +556,10 @@ function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
 
             // loop over the rows, outputting them to the page object in the required format
             foreach($autosuggest_items as $key => $value) {
-                \QFactory::$BuildPage .= '<li onclick="fill(\''.$value['autoscope'].'\');">'.$value['autoscope'].'</li>';
+                $pagePayload .= '<li onclick="fill(\''.$value['autoscope'].'\');">'.$value['autoscope'].'</li>';
             } 
             
-            return \QFactory::$BuildPage;
+            return $pagePayload;
 
         } else {
 

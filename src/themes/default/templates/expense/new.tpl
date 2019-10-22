@@ -108,12 +108,12 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Payee{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td colspan="3"><input id="payee" name="payee" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
+                                                                            <td colspan="3"><input id="payee" name="qform[payee]" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyName(event);"></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Date{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <input id="date" name="date" class="olotd5" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                                                                <input id="date" name="qform[date]" class="olotd5" size="10" value="{$smarty.now|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                                                                 <button type="button" id="date_button">+</button>
                                                                                 <script>                                                                                
                                                                                     Calendar.setup( {
@@ -127,7 +127,7 @@
                                                                         <tr>
                                                                             <td align="right"><b>{t}Item Type{/t}</b><span style="color: #ff0000"> *</span></td>
                                                                             <td>
-                                                                                <select id="item_type" name="item_type" class="olotd5" required>
+                                                                                <select id="item_type" name="qform[item_type]" class="olotd5" required>
                                                                                    <option selected hidden disabled></option>
                                                                                    {section name=s loop=$expense_types}    
                                                                                         <option value="{$expense_types[s].type_key}">{t}{$expense_types[s].display_name}{/t}</option>
@@ -137,12 +137,12 @@
                                                                         </tr>
                                                                         <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}Net{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><a><input id="unit_net" name="unit_net" class="olotd5" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}"{if '/^vat_/'|preg_match:$qw_tax_system} required{/if} onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></b></a></td>
+                                                                            <td><a><input id="unit_net" name="qform[unit_net]" class="olotd5" style="border-width: medium;" size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}"{if '/^vat_/'|preg_match:$qw_tax_system} required{/if} onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_net');"></b></a></td>
                                                                         </tr>
                                                                         <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT Tax Code{/t}</b></td>
                                                                             <td>
-                                                                                <select id="vat_tax_code" name="vat_tax_code" class="olotd5">
+                                                                                <select id="vat_tax_code" name="qform[vat_tax_code]" class="olotd5">
                                                                                     {if !'/^vat_/'|preg_match:$qw_tax_system}
                                                                                         <option value="TNA" data-rate="0.00"{if $default_vat_tax_code == 'TNA'} selected{/if}>{t}TNA{/t}</option>
                                                                                     {/if}
@@ -154,15 +154,15 @@
                                                                         </tr> 
                                                                         <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT{/t} {t}Rate{/t}</td>
-                                                                            <td><input id="unit_tax_rate" name="unit_tax_rate" class="olotd5" size="5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax_rate');" readonly/><b>%</b></td>
+                                                                            <td><input id="unit_tax_rate" name="qform[unit_tax_rate]" class="olotd5" size="5" value="0.00" type="text" maxlength="5" pattern="{literal}^[0-9]{0,2}(\.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax_rate');" readonly/><b>%</b></td>
                                                                         </tr>
                                                                         <tr{if !'/^vat_/'|preg_match:$qw_tax_system} hidden{/if}>
                                                                             <td align="right"><b>{t}VAT{/t}</b></td>
-                                                                            <td><input id="unit_tax" name="unit_tax" class="olotd5" size="10" value="0.00" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax');"/></td>
+                                                                            <td><input id="unit_tax" name="qform[unit_tax]" class="olotd5" size="10" value="0.00" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" onkeydown="return onlyNumberPeriod(event);" onkeyup="calculateTotals('unit_tax');"/></td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td align="right"><b>{t}Gross{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                            <td><input id="unit_gross" name="unit_gross" class="olotd5"{if !'/^vat_/'|preg_match:$qw_tax_system}style="border-width: medium;"{/if} size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
+                                                                            <td><input id="unit_gross" name="qform[unit_gross]" class="olotd5"{if !'/^vat_/'|preg_match:$qw_tax_system}style="border-width: medium;"{/if} size="10" type="text" maxlength="10" pattern="{literal}^[0-9]{1,7}(.[0-9]{0,2})?${/literal}" required onkeydown="return onlyNumberPeriod(event);"/></td>
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -176,14 +176,15 @@
                                                                 <table>
                                                                     <tr>
                                                                         <td align="right"><b>{t}Items{/t}</b><span style="color: #ff0000"> *</span></td>
-                                                                        <td><textarea name="items" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
+                                                                        <td><textarea name="qform[items]" class="olotd5 mceCheckForContent" cols="50" rows="15"></textarea></td>
                                                                     </tr> 
                                                                     <tr>
                                                                         <td align="right"><b>{t}Note{/t}</b></td>
-                                                                        <td><textarea name="note" class="olotd5" cols="50" rows="15"></textarea></td>
+                                                                        <td><textarea name="qform[note]" class="olotd5" cols="50" rows="15"></textarea></td>
                                                                     </tr>                                                                                                                                       
                                                                     <tr>
                                                                         <td colspan="2">
+                                                                            <input type="hidden" name="qform[expense_id]" value="{$expense_details.expense_id}">
                                                                             <button type="submit" name="submit" value="submit" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit{/t}</button>
                                                                             <button type="submit" name="submit" value="submitandnew" onclick="return confirmChoice('{t}Are You sure you want to continue without payment?{/t}');">{t}Submit and New{/t}</button>
                                                                             <button type="submit" name="submit" value="submitandpayment">{t}Submit and Payment{/t}</button>

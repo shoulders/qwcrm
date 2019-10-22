@@ -7,7 +7,3 @@
  */
 
 defined('_QWEXEC') or die;
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('help/attribution.tpl');
-

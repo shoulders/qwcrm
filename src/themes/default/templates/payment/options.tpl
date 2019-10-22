@@ -41,22 +41,22 @@
                                                             <tr>
                                                                 <td>
                                                                     <b>{t}{$payment_methods[q].display_name}{/t}</b>
-                                                                    <input type="hidden" name="payment_methods[{$payment_methods[q].method_key}][method_key]" value="{$payment_methods[q].method_key}">
+                                                                    <input type="hidden" name="qform[payment_methods][{$payment_methods[q].method_key}][method_key]" value="{$payment_methods[q].method_key}">
                                                                 </td>
                                                                 <td>
-                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].method_key}][send]" value="1" class="olotd5" {if $payment_methods[q].send} checked{/if}{if $payment_methods[q].send_protected} disabled{/if}>
+                                                                    <input type="checkbox" name="qform[payment_methods][{$payment_methods[q].method_key}][send]" value="1" class="olotd5" {if $payment_methods[q].send} checked{/if}{if $payment_methods[q].send_protected} disabled{/if}>
                                                                     {if $payment_methods[q].send_protected}
-                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].method_key}][send]" value="{$payment_methods[q].send}">
+                                                                        <input type="hidden" name="qform[payment_methods][{$payment_methods[q].method_key}][send]" value="{$payment_methods[q].send}">
                                                                     {/if}
                                                                 </td>
                                                                 <td>
-                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].method_key}][receive]" value="1" class="olotd5" {if $payment_methods[q].receive} checked{/if}{if $payment_methods[q].receive_protected} disabled{/if}>
+                                                                    <input type="checkbox" name="qform[payment_methods][{$payment_methods[q].method_key}][receive]" value="1" class="olotd5" {if $payment_methods[q].receive} checked{/if}{if $payment_methods[q].receive_protected} disabled{/if}>
                                                                     {if $payment_methods[q].receive_protected}
-                                                                        <input type="hidden" name="payment_methods[{$payment_methods[q].method_key}][receive]" value="{$payment_methods[q].receive}">
+                                                                        <input type="hidden" name="qform[payment_methods][{$payment_methods[q].method_key}][receive]" value="{$payment_methods[q].receive}">
                                                                     {/if}
                                                                 </td>
                                                                 <td>
-                                                                    <input type="checkbox" name="payment_methods[{$payment_methods[q].method_key}][enabled]" value="1" class="olotd5" {if $payment_methods[q].enabled} checked{/if}>                                                                    
+                                                                    <input type="checkbox" name="qform[payment_methods][{$payment_methods[q].method_key}][enabled]" value="1" class="olotd5" {if $payment_methods[q].enabled} checked{/if}>                                                                    
                                                                 </td>
                                                             </tr>
                                                         {/section}
@@ -70,23 +70,23 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Account Name{/t}:</b></td>
-                                                <td><input name="bank_account_name" class="olotd5" value="{$payment_options.bank_account_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="qform[bank_account_name]" class="olotd5" value="{$payment_options.bank_account_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Name{/t}:</b></td>
-                                                <td><input name="bank_name" class="olotd5" value="{$payment_options.bank_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="qform[bank_name]" class="olotd5" value="{$payment_options.bank_name}" type="text" maxlength="30" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Account Number{/t}:</b></td>
-                                                <td><input name="bank_account_number" class="olotd5" value="{$payment_options.bank_account_number}" type="text" maxlength="15" onkeydown="return onlyNumber(event);"></td>
+                                                <td><input name="qform[bank_account_number]" class="olotd5" value="{$payment_options.bank_account_number}" type="text" maxlength="15" onkeydown="return onlyNumber(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Sort Code{/t}</b></td>
-                                                <td><input name="bank_sort_code" class="olotd5" value="{$payment_options.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlySortcode(event);"></td>
+                                                <td><input name="qform[bank_sort_code]" class="olotd5" value="{$payment_options.bank_sort_code}" type="text" maxlength="10" onkeydown="return onlySortcode(event);"></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank IBAN{/t}</b></td>
-                                                <td><input name="bank_iban" class="olotd5" value="{$payment_options.bank_iban}" type="text" maxlength="34" placeholder="GB15MIDL40051512345678" onkeydown="return onlyAlphaNumeric(event);"></td>
+                                                <td><input name="qform[bank_iban]" class="olotd5" value="{$payment_options.bank_iban}" type="text" maxlength="34" placeholder="GB15MIDL40051512345678" onkeydown="return onlyAlphaNumeric(event);"></td>
                                             </tr>
 
                                             <!-- PayPal -->
@@ -95,7 +95,7 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}PayPal{/t} {t}Email{/t}</b></td>
-                                                <td><input name="paypal_email" class="olotd5" value="{$payment_options.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
+                                                <td><input name="qform[paypal_email]" class="olotd5" value="{$payment_options.paypal_email}" size="50" type="email" maxlength="50" placeholder="no-reply@quantumwarp.com" onkeydown="return onlyEmail(event);"/></td>
                                             </tr>
                                             <!-- Invoice Messages -->
                                             <tr>
@@ -103,15 +103,15 @@
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Bank Transfer{/t}</b></td>
-                                                <td><textarea class="olotd5" name="invoice_bank_transfer_msg" cols="50" rows="2" >{$payment_options.invoice_bank_transfer_msg}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="qform[invoice_bank_transfer_msg]" cols="50" rows="2" >{$payment_options.invoice_bank_transfer_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Cheque{/t}</b></td>
-                                                <td><textarea class="olotd5" name="invoice_cheque_msg" cols="50" rows="2" >{$payment_options.invoice_cheque_msg}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="qform[invoice_cheque_msg]" cols="50" rows="2" >{$payment_options.invoice_cheque_msg}</textarea><br></td>
                                             </tr>
                                             <tr>
                                                 <td><b>{t}Footer{/t}</b></td>
-                                                <td><textarea class="olotd5" name="invoice_footer_msg" cols="50" rows="2" >{$payment_options.invoice_footer_msg}</textarea><br></td>
+                                                <td><textarea class="olotd5" name="qform[invoice_footer_msg]" cols="50" rows="2" >{$payment_options.invoice_footer_msg}</textarea><br></td>
                                             </tr>
 
                                         </table>                                            

@@ -32,4 +32,3 @@ if(isset(\QFactory::$VAR['submit'])) {
     
 // Build the page
 $smarty->assign('workorder_note_details', $workorder_note_details);
-\QFactory::$BuildPage .= $smarty->fetch('workorder/note_edit.tpl');

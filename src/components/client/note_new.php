@@ -22,10 +22,7 @@ if(isset(\QFactory::$VAR['submit'])) {
     insert_client_note(\QFactory::$VAR['client_id'], \QFactory::$VAR['note']);    
     force_page('client', 'details&client_id='.\QFactory::$VAR['client_id']);    
 
-// Build the page  
 } else {  
-
-    \QFactory::$BuildPage .= $smarty->fetch('client/note_new.tpl');
 
 }
 

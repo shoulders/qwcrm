@@ -50,74 +50,74 @@
                                                         $acl[i].page == 'setup:choice' || $acl[i].page == 'setup:install' || $acl[i].page == 'setup:migrate' || $acl[i].page == 'setup:upgrade'
                                                     }
                                                                                                                 
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Manager]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Supervisor]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Technician]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Clerical]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Counter]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Client]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Guest]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Public]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Manager]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Supervisor]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Technician]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Clerical]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Counter]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Client]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Guest]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Public]" type="hidden" value="1">{t}Yes{/t}</td>
                                                     
                                                     {* Mandatory Permissions - Only Administrator enabled
                                                     {elseif $acl[i].page == 'setup:choice' || $acl[i].page == 'setup:install' || $acl[i].page == 'setup:migrate' || $acl[i].page == 'setup:upgrade'}
                                                     
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Manager]" type="hidden" value="0">{t}No{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Supervisor]" type="hidden" value="0">{t}No{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Technician]" type="hidden" value="0">{t}No{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Clerical]" type="hidden" value="0">{t}No{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Counter]" type="hidden" value="0">{t}No{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Client]" type="hidden" value="0">{t}No{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Guest]" type="hidden" value="0">{t}No{/t}</td>
-                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qwpermissions[{$acl[i].page}][Public]" type="hidden" value="0">{t}No{/t}</td>*}
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Manager]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Supervisor]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Technician]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Clerical]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Counter]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Client]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Guest]" type="hidden" value="0">{t}No{/t}</td>
+                                                        <td class="olotd4" style="background-color: #E0E0E0;"><input name="qform[permissions][{$acl[i].page}][Public]" type="hidden" value="0">{t}No{/t}</td>*}
                                                     
                                                     {else}
                                                         
                                                         <!-- Administrator -->
                                                         <td class="olotd4" style="background-color: #E0E0E0;">
-                                                            <input name="qwpermissions[{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}
+                                                            <input name="qform[permissions][{$acl[i].page}][Administrator]" type="hidden" value="1">{t}Yes{/t}
                                                         </td>
 
                                                         <!-- Manager -->
                                                         <td class="olotd4">
-                                                           <input name="qwpermissions[{$acl[i].page}][Manager]" {if $acl[i].Manager == '1'}checked {/if}type="checkbox" value="1">
+                                                           <input name="qform[permissions][{$acl[i].page}][Manager]" {if $acl[i].Manager == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>
 
                                                         <!-- Supervisor -->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Supervisor]" {if $acl[i].Supervisor == '1'}checked {/if}type="checkbox" value="1">                                                        
+                                                            <input name="qform[permissions][{$acl[i].page}][Supervisor]" {if $acl[i].Supervisor == '1'}checked {/if}type="checkbox" value="1">                                                        
                                                         </td>
 
                                                         <!-- Technician -->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Technician]" {if $acl[i].Technician == '1'}checked {/if}type="checkbox" value="1">
+                                                            <input name="qform[permissions][{$acl[i].page}][Technician]" {if $acl[i].Technician == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>
 
                                                         <!-- Clerical -->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Clerical]" {if $acl[i].Clerical == '1'}checked {/if}type="checkbox" value="1">
+                                                            <input name="qform[permissions][{$acl[i].page}][Clerical]" {if $acl[i].Clerical == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>
 
                                                         <!-- Counter-->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Counter]" {if $acl[i].Counter == '1'}checked {/if}type="checkbox" value="1">
+                                                            <input name="qform[permissions][{$acl[i].page}][Counter]" {if $acl[i].Counter == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>                                                
 
                                                         <!-- Client -->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Client]" {if $acl[i].Client == '1'}checked {/if}type="checkbox" value="1">
+                                                            <input name="qform[permissions][{$acl[i].page}][Client]" {if $acl[i].Client == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>
 
                                                         <!-- Guest -->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Guest]" {if $acl[i].Guest == '1'}checked {/if}type="checkbox" value="1">
+                                                            <input name="qform[permissions][{$acl[i].page}][Guest]" {if $acl[i].Guest == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>
 
                                                         <!-- Public -->
                                                         <td class="olotd4">
-                                                            <input name="qwpermissions[{$acl[i].page}][Public]" {if $acl[i].Public == '1'}checked {/if}type="checkbox" value="1">
+                                                            <input name="qform[permissions][{$acl[i].page}][Public]" {if $acl[i].Public == '1'}checked {/if}type="checkbox" value="1">
                                                         </td>
                                                         
                                                     {/if}

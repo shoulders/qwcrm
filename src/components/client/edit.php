@@ -18,7 +18,7 @@ if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
 if(isset(\QFactory::$VAR['submit'])) {    
         
     // Update the Client's Details
-    update_client(\QFactory::$VAR);
+    update_client(\QFactory::$VAR['qform']);
     
     // Load the client's details page
     force_page('client', 'details&client_id='.\QFactory::$VAR['client_id'], 'information_msg='._gettext("The Client's information was updated."));
@@ -28,6 +28,5 @@ if(isset(\QFactory::$VAR['submit'])) {
     // Build the page
     $smarty->assign('client_types',   get_client_types());
     $smarty->assign('client_details', get_client_details(\QFactory::$VAR['client_id']));
-    \QFactory::$BuildPage .= $smarty->fetch('client/edit.tpl');
     
 }

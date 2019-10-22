@@ -41,5 +41,3 @@ $smarty->assign('payment_types',    get_payment_types()                         
 $smarty->assign('payment_methods',  get_payment_methods()                                                                               );
 $smarty->assign('payment_statuses', get_payment_statuses()                                                                              );
 $smarty->assign('display_payments', display_payments('payment_id', 'DESC', true, '25', \QFactory::$VAR['page_no'], \QFactory::$VAR['search_category'], \QFactory::$VAR['search_term'], \QFactory::$VAR['filter_type'], \QFactory::$VAR['filter_method'], \QFactory::$VAR['filter_status'])   );
-
-\QFactory::$BuildPage .= $smarty->fetch('payment/search.tpl');

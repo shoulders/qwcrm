@@ -30,11 +30,11 @@
                         <table width="100%" class="olotable" cellpadding="5" cellspacing="0" border="0">
                             <tr>
                                 <td width="100%" valign="top">                                    
-                                    <form method="post" action="index.php?component=client&page_tpl=note_edit&client_note_id={$client_note.client_note_id}">
+                                    <form method="post" action="index.php?component=client&page_tpl=note_edit&client_note_id={$client_note_details.client_note_id}">
                                         <p><b>{t}Edit Client Note{/t}</b></p>                                        
                                         {*<div>
                                             <b>{t}Date{/t}:<b><br>
-                                            <input id="date" name="date" class="olotd4" size="10" value="{$client_note.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
+                                            <input id="date" name="date" class="olotd4" size="10" value="{$client_note_details.date|date_format:$date_format}" type="text" maxlength="10" pattern="{literal}^[0-9]{2,4}(?:\/|-)[0-9]{2}(?:\/|-)[0-9]{2,4}${/literal}" required readonly onkeydown="return onlyDate(event);">
                                             <button type="button" id="date_button">+</button>
                                             <script>                                            
                                                 Calendar.setup( {
@@ -45,10 +45,10 @@
                                             </script>                                                    
                                         </div>*}
                                         <p><b>{t}Note{/t}:</b></p>
-                                        <textarea class="olotd4" rows="15" cols="70" name="note">{$client_note.note}</textarea>
-                                        <br>
+                                        <textarea class="olotd4" rows="15" cols="70" name="note">{$client_note_details.note}</textarea>
+                                        <br>                                        
                                         <button type="submit" name="submit" value="submit">{t}Submit{/t}</button>
-                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_note.client_id}';">{t}Cancel{/t}</button>
+                                        <button type="button" class="olotd4" onclick="window.location.href='index.php?component=client&page_tpl=details&client_id={$client_note_details.client_id}';">{t}Cancel{/t}</button>
                                     </form>
                                     <br>
                                 </td>

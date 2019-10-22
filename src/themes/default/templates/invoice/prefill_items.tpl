@@ -42,22 +42,22 @@
                                                             <form method="post" action="index.php?component=invoice&page_tpl=prefill_items">
                                                                 <tr onmouseover="this.className='row2';" onmouseout="this.className='row1';" class="row1">
                                                                     <td class="olotd4" nowrap>{$invoice_prefill_items[q].invoice_prefill_id}</td>
-                                                                    <td class="olotd4" nowrap><input name="description" class="olotd5" size="50" value="{$invoice_prefill_items[q].description}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
+                                                                    <td class="olotd4" nowrap><input name="qform[description]" class="olotd5" size="50" value="{$invoice_prefill_items[q].description}" type="text" maxlength="50" required onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
                                                                     <td class="olotd4" nowrap>
-                                                                        <select class="olotd5" name="type">
+                                                                        <select class="olotd5" name="qform[type]">
                                                                             <option value="Labour" {if $invoice_prefill_items[q].type == 'Labour'} selected{/if}>{t}Labour{/t}</option>
                                                                             <option value="Parts" {if $invoice_prefill_items[q].type == 'Parts'} selected{/if}>{t}Parts{/t}</option>
                                                                         </select>
                                                                     </td>
-                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="unit_net" class="olotd5" size="10" value="{$invoice_prefill_items[q].unit_net}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
+                                                                    <td class="olotd4" nowrap>{$currency_sym}<input name="qform[unit_net]" class="olotd5" size="10" value="{$invoice_prefill_items[q].unit_net}" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                                     <td class="olotd4" nowrap>
-                                                                        <select class="olotd5" name="active">                                                                            
+                                                                        <select class="olotd5" name="qform[active]">                                                                            
                                                                             <option value="1" {if $invoice_prefill_items[q].active == 1} selected{/if}>{t}Yes{/t}</option>
                                                                             <option value="0" {if $invoice_prefill_items[q].active == 0} selected{/if}>{t}No{/t}</option>
                                                                         </select>
                                                                     </td>
                                                                     <td class="olotd4" nowrap>
-                                                                        <input type="hidden" name="invoice_prefill_id" value="{$invoice_prefill_items[q].invoice_prefill_id}">
+                                                                        <input type="hidden" name="qform[invoice_prefill_id]" value="{$invoice_prefill_items[q].invoice_prefill_id}">
                                                                         <button type="submit" name="submit" value="delete" onclick="return confirmChoice('{t}Are You sure you want to delete this labour rate item.{/t}');">{t}Delete{/t}</button>
                                                                         <button type="submit" name="submit" value="update" onclick="return confirmChoice('{t}Are You sure you want to update this labour rate item.{/t}');">{t}Update{/t}</button>
                                                                     </td>
@@ -81,16 +81,16 @@
                                                             <td class="olohead">{t}Action{/t}</td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="olotd4"><input name="description" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
+                                                            <td class="olotd4"><input name="qform[description]" class="olotd5" size="50" type="text" maxlength="50" required onkeydown="return onlyAlphaNumericPunctuation(event);"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <select class="olotd5" name="type">
+                                                                <select class="olotd5" name="qform[type]">
                                                                     <option value="Labour" selected>{t}Labour{/t}</option>
                                                                     <option value="Parts">{t}Parts{/t}</option>
                                                                 </select>
                                                             </td>
-                                                            <td class="olotd4">{$currency_sym}<input name="unit_net" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
+                                                            <td class="olotd4">{$currency_sym}<input name="qform[unit_net]" class="olotd5" size="10" type="text" maxlength="10" pattern="{literal}[0-9]{1,7}(.[0-9]{0,2})?{/literal}" required onkeydown="return onlyNumberPeriod(event);"></td>
                                                             <td class="olotd4" nowrap>
-                                                                <select class="olotd5" name="active">                                                                    
+                                                                <select class="olotd5" name="qform[active]">                                                                    
                                                                     <option value="1" selected>{t}Yes{/t}</option>
                                                                     <option value="0">{t}No{/t}</option>
                                                                 </select>

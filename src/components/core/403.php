@@ -10,5 +10,3 @@ defined('_QWEXEC') or die;
 
 // Send 403 Header
 header('HTTP/1.1 403 Forbidden');
-
-\QFactory::$BuildPage .= $smarty->fetch('core/403.tpl');

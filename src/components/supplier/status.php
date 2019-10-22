@@ -28,5 +28,3 @@ $smarty->assign('supplier_statuses',            get_supplier_statuses() );
 $smarty->assign('allowed_to_cancel',            false      );
 $smarty->assign('allowed_to_delete',            check_supplier_can_be_deleted(\QFactory::$VAR['supplier_id'])              );
 $smarty->assign('supplier_selectable_statuses',     get_supplier_statuses(true) );
-
-\QFactory::$BuildPage .= $smarty->fetch('supplier/status.tpl');

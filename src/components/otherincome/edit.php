@@ -22,11 +22,11 @@ if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id
 if(isset(\QFactory::$VAR['submit'])) {    
         
     // Update the otherincome in the database
-    update_otherincome(\QFactory::$VAR);
-    recalculate_otherincome_totals(\QFactory::$VAR['otherincome_id']);
+    update_otherincome(\QFactory::$VAR['qform']);
+    recalculate_otherincome_totals(\QFactory::$VAR['qform']['otherincome_id']);
     
     // load details page
-    force_page('otherincome', 'details&otherincome_id='.\QFactory::$VAR['otherincome_id'], 'information_msg='._gettext("Otherincome updated successfully.")); 
+    force_page('otherincome', 'details&otherincome_id='.\QFactory::$VAR['qform']['otherincome_id'], 'information_msg='._gettext("Otherincome updated successfully.")); 
 } else {  
 
     // Check if payment can be edited
@@ -39,6 +39,5 @@ if(isset(\QFactory::$VAR['submit'])) {
     $smarty->assign('otherincome_types', get_otherincome_types());
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );    
     $smarty->assign('otherincome_details', get_otherincome_details(\QFactory::$VAR['otherincome_id']));
-    \QFactory::$BuildPage .= $smarty->fetch('otherincome/edit.tpl');
 
 }

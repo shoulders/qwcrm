@@ -19,4 +19,3 @@ if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
 $smarty->assign('supplier_statuses',   get_supplier_statuses()   );
 $smarty->assign('supplier_types', get_supplier_types());
 $smarty->assign('supplier_details', get_supplier_details(\QFactory::$VAR['supplier_id']));
-\QFactory::$BuildPage .= $smarty->fetch('supplier/details.tpl');

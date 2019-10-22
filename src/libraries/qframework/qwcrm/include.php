@@ -1082,6 +1082,10 @@ function date_to_timestamp($date_to_convert, $date_format = null) {
         case '%Y-%m-%d':         
         return DateTime::createFromFormat('!Y-m-d', $date_to_convert)->getTimestamp();
         
+        // This should be for MySQL DATETIME format
+        case 'Y-m-d H:i:s' || 'datetime':   
+        return DateTime::createFromFormat('Y-m-d H:i:s', $date_to_convert)->getTimestamp();
+        
     }
     
     return;
@@ -1091,6 +1095,18 @@ function date_to_timestamp($date_to_convert, $date_format = null) {
 ################################################
 #    Smarty Date and Time to Unix Timestamp    #  // only used in schedule at the minute - smartytime_to_otherformat
 ################################################
+
+/*
+ * Examples taken from schedule insert and update
+ * 
+    // Get times in MySQL DATETIME from Smartytime (12 Hour Clock Format) (date/hour/minute/second)
+    $start_time = smartytime_to_otherformat('datetime', $start_date, $start_time['Time_Hour'], $start_time['Time_Minute'], '0', '12', $start_time['time_meridian']);
+    $end_time   = smartytime_to_otherformat('datetime', $end_date, $end_time['Time_Hour'], $end_time['Time_Minute'], '0', '12', $end_time['time_meridian']);
+    
+    // Get times in MySQL DATETIME from Smartytime (24 Hour Clock Format) (date/hour/minute/second)
+    $start_time = smartytime_to_otherformat('datetime', $VAR['start_date'], $VAR['StartTime']['Time_Hour'], $VAR['StartTime']['Time_Minute'], '0', '24');
+    $end_time   = smartytime_to_otherformat('datetime', $VAR['end_date'], $VAR['EndTime']['Time_Hour'], $VAR['EndTime']['Time_Minute'], '0', '24');
+ */
 
 function smartytime_to_otherformat($format, $date, $hour, $minute, $second, $clock, $meridian = null) {
     

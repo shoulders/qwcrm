@@ -50,7 +50,7 @@ $smarty->assign('workorder_details',                get_workorder_details($invoi
 $smarty->assign('invoice_details',                  $invoice_details                                           );
 
 // Prefill Items
-$smarty->assign('vat_tax_codes',            get_vat_tax_codes(false)                                                               );
+$smarty->assign('vat_tax_codes',                    get_vat_tax_codes(false)                                                               );
 
 // Invoice Items
 $smarty->assign('labour_items',                     get_invoice_labour_items(\QFactory::$VAR['invoice_id'])               );
@@ -60,7 +60,7 @@ $smarty->assign('display_vouchers',                 display_vouchers('voucher_id
 // Sub Totals
 $smarty->assign('labour_items_sub_totals',          get_labour_items_sub_totals(\QFactory::$VAR['invoice_id'])                                                          );
 $smarty->assign('parts_items_sub_totals',           get_parts_items_sub_totals(\QFactory::$VAR['invoice_id'])                                                           );
-$smarty->assign('voucher_sub_totals',         get_invoice_vouchers_sub_totals(\QFactory::$VAR['invoice_id'])                                                       );
+$smarty->assign('voucher_sub_totals',               get_invoice_vouchers_sub_totals(\QFactory::$VAR['invoice_id'])                                                       );
 
 // Payment Details
 $smarty->assign('payment_options',                  get_payment_options()                                      );
@@ -84,8 +84,9 @@ if(\QFactory::$VAR['print_content'] == 'invoice') {
         $record = _gettext("Invoice").' '.\QFactory::$VAR['invoice_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
-        // Build the page
-        \QFactory::$BuildPage = $smarty->fetch('invoice/printing/print_invoice.tpl'); 
+        // Assign the correct version of this page
+        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
+        
     }
     
     // Print PDF Invoice
@@ -100,6 +101,9 @@ if(\QFactory::$VAR['print_content'] == 'invoice') {
         
         // Output PDF in brower
         mpdf_output_in_browser($pdf_filename, $pdf_template);
+        
+        // End all other processing
+        die();
         
     }        
         
@@ -144,8 +148,8 @@ if(\QFactory::$VAR['print_content'] == 'client_envelope') {
         $record = _gettext("Address Envelope").' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
-        // Build the page
-        \QFactory::$BuildPage = $smarty->fetch('invoice/printing/print_client_envelope.tpl');
+        // Assign the correct version of this page
+        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
         
     }
     

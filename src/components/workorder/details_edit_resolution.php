@@ -48,7 +48,6 @@ if(isset(\QFactory::$VAR['submit'])) {
         
 // Build the page
 $smarty->assign('resolution', get_workorder_details(\QFactory::$VAR['workorder_id'], 'resolution'));
-\QFactory::$BuildPage .= $smarty->fetch('workorder/details_edit_resolution.tpl');
 
     
     

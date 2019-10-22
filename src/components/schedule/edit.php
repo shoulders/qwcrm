@@ -20,51 +20,47 @@ if(!isset(\QFactory::$VAR['schedule_id']) || !\QFactory::$VAR['schedule_id']) {
 }
 
 // If new schedule item submitted
-if(isset(\QFactory::$VAR['submit'])) {    
+if(isset(\QFactory::$VAR['submit'])) { 
+        
+    // Add missing Time variables to 'qform' (smarty workaround)
+    \QFactory::$VAR['qform']['StartTime'] = \QFactory::$VAR['StartTime'];
+    \QFactory::$VAR['qform']['EndTime'] = \QFactory::$VAR['EndTime'];
+    
+    // Add missing Time variables in DATETIME format
+    \QFactory::$VAR['qform']['start_time'] = smartytime_to_otherformat('datetime', \QFactory::$VAR['qform']['start_date'], \QFactory::$VAR['StartTime']['Time_Hour'], \QFactory::$VAR['StartTime']['Time_Minute'], '0', '24');
+    \QFactory::$VAR['qform']['end_time']   = smartytime_to_otherformat('datetime', \QFactory::$VAR['qform']['end_date'], \QFactory::$VAR['EndTime']['Time_Hour'], \QFactory::$VAR['EndTime']['Time_Minute'], '0', '24');
+    
+    /* This manually builds a 'Time' string
+    \QFactory::$VAR['qform']['start_time'] = \QFactory::$VAR['StartTime']['Time_Hour'].":".\QFactory::$VAR['StartTime']['Time_Minute'];
+    \QFactory::$VAR['qform']['end_time'] = \QFactory::$VAR['EndTime']['Time_Hour'].":".\QFactory::$VAR['EndTime']['Time_Minute'];*/
+    
     
     // If db insert fails send them an error and reload the page with submitted info or load the page with the schedule
-    if (!update_schedule(\QFactory::$VAR)) {        
+    if (!update_schedule(\QFactory::$VAR['qform'])) {        
         
-        $smarty->assign('start_date',       \QFactory::$VAR['start_date']                                                  );       
-        $smarty->assign('start_time',       \QFactory::$VAR['StartTime']['Time_Hour'].":".\QFactory::$VAR['StartTime']['Time_Minute'] );                
-        $smarty->assign('end_date',         \QFactory::$VAR['end_date']                                                    );        
-        $smarty->assign('end_time',         \QFactory::$VAR['EndTime']['Time_Hour'].":".\QFactory::$VAR['EndTime']['Time_Minute']     );
-        $smarty->assign('note',             \QFactory::$VAR['note']                                                        );        
-        $smarty->assign('active_employees', get_active_users('employees')                                       );                      
+        // Build the page
+        $smarty->assign('schedule_details', \QFactory::$VAR['qform']);
+        $smarty->assign('active_employees', get_active_users('employees'));                      
             
     } else {       
         
         /* Load the schedule day with the updated schedule item        
-        \QFactory::$VAR['start_year']            = date('Y', date_to_timestamp(\QFactory::$VAR['start_date'])  );
-        \QFactory::$VAR['start_month']           = date('m', date_to_timestamp(\QFactory::$VAR['start_date'])  );
-        \QFactory::$VAR['start_day']             = date('d', date_to_timestamp(\QFactory::$VAR['start_date'])  );    
-    
-        // Load the schedule day with the updated schedule item
-        force_page('schedule', 'day', 'start_year='.\QFactory::$VAR['start_year'].'&start_month='.\QFactory::$VAR['start_month'].'&start_day='.\QFactory::$VAR['start_day'].'&employee_id='.\QFactory::$VAR['employee_id'].'&workorder_id='.\QFactory::$VAR['workorder_id'].'&information_msg='._gettext("Schedule Successfully Updated"));
+        \QFactory::$start_year            = date('Y', date_to_timestamp(\QFactory::$VAR['qform']['start_date'])  );
+        \QFactory::$start_month           = date('m', date_to_timestamp(\QFactory::$VAR['qform']['start_date'])  );
+        \QFactory::$start_day             = date('d', date_to_timestamp(\QFactory::$VAR['qform']['start_date'])  );         
+        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\QFactory::$VAR['qform']['employee_id'].'&workorder_id='.\QFactory::$VAR['qform']['workorder_id'].'&information_msg='._gettext("Schedule Successfully Updated."));
         */
         
-        // Load the workorder page
-        force_page('schedule', 'details&schedule_id='.\QFactory::$VAR['schedule_id']);
+        // Load the updated schedule details page
+        force_page('schedule', 'details&schedule_id='.\QFactory::$VAR['qform']['schedule_id'], 'information_msg='.gettext("Schedule Successfully Updated."));
         
     }
 
 // If edit schedule form is loaded, get schedule item from the database and assign
 } else {
     
-    // Get the Schedule Record
-    $schedule_details = get_schedule_details(\QFactory::$VAR['schedule_id']);
-    
-    $smarty->assign('employee_id',      $schedule_details['employee_id']    );    
-    $smarty->assign('client_id',        $schedule_details['client_id']      );
-    $smarty->assign('workorder_id',     $schedule_details['workorder_id']   );
-    $smarty->assign('start_date',       $schedule_details['start_time']     );       
-    $smarty->assign('start_time',       $schedule_details['start_time']     );         
-    $smarty->assign('end_date',         $schedule_details['end_time']       );         
-    $smarty->assign('end_time',         $schedule_details['end_time']       );   
-    $smarty->assign('note',             $schedule_details['note']           );
+    // Build the page       
+    $smarty->assign('schedule_details', get_schedule_details(\QFactory::$VAR['schedule_id']));
     $smarty->assign('active_employees', get_active_users('employees')       );
     
 }
-
-// Build the page
-\QFactory::$BuildPage .= $smarty->fetch('schedule/edit.tpl');

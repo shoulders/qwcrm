@@ -27,4 +27,3 @@ $smarty->assign('employee_display_name',        get_user_details($voucher_detail
 $smarty->assign('voucher_statuses',            get_voucher_statuses()                                                     );
 $smarty->assign('voucher_types',               get_voucher_types()                                                     );
 $smarty->assign('voucher_details',             $voucher_details                                                           );
-\QFactory::$BuildPage .= $smarty->fetch('voucher/details.tpl');

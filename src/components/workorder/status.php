@@ -42,5 +42,3 @@ $smarty->assign('workorder_status',             get_workorder_details(\QFactory:
 $smarty->assign('workorder_status_display_name',get_workorder_status_display_name(get_workorder_details(\QFactory::$VAR['workorder_id'], 'status')));
 $smarty->assign('assigned_employee_id',         $assigned_employee_id                                             );
 $smarty->assign('assigned_employee_details',    get_user_details($assigned_employee_id)                           );
-
-\QFactory::$BuildPage .= $smarty->fetch('workorder/status.tpl');
