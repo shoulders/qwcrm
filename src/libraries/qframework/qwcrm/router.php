@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 #  Build path to relevant Page Controller  # // $mode = set_route/get_route
 ############################################
 
-function get_page_controller($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
+function page_controller($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
     
     $config = \QFactory::getConfig();
     if(!defined('QWCRM_SETUP')) { $user = \QFactory::getUser(); }

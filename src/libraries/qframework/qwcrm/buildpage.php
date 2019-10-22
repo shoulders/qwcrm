@@ -18,7 +18,7 @@ function load_page($mode, $component = null, $page_tpl = null, $themeVar = null)
     if($mode == 'get_payload') { 
         
         // Get and set the page controller
-        $pageController = get_page_controller($mode, $component, $page_tpl, $themeVar);
+        $pageController = page_controller($mode, $component, $page_tpl, $themeVar);
         
         // Return the page as a variable
         return get_page_content($pageController, $mode, $component, $page_tpl, $themeVar);
@@ -28,7 +28,7 @@ function load_page($mode, $component = null, $page_tpl = null, $themeVar = null)
     if($mode == 'set_controller') { 
         
         // Get and set the page controller
-        \QFactory::$VAR['page_controller'] = get_page_controller();
+        \QFactory::$VAR['page_controller'] = page_controller();
         
         // Build the page
         \QFactory::$BuildPage = get_page_content(\QFactory::$VAR['page_controller'], $mode, $component, $page_tpl, $themeVar);
