@@ -287,7 +287,7 @@ function processSystemMessages(newMessages) {
 function clearSystemMessages() {
     
     var system_messages = document.getElementById('system_messages');
-    //system_messages.style.display === 'none';
+    system_messages.style.display === 'none';
     system_messages.innerHTML = '';
     
 }
