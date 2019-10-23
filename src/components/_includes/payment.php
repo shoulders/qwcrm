@@ -800,7 +800,7 @@ function validate_payment_amount($record_balance, $payment_amount) {
     // If a negative amount has been submitted. (This should not be allowed because of the <input> masks.)
     if($payment_amount < 0){
         
-        $smarty->assign('msg_danger', _gettext("You can not enter a payment with a negative amount."));
+        systemMessagesWrite('danger', _gettext("You can not enter a payment with a negative amount."));
         
         return false;
         
@@ -809,7 +809,7 @@ function validate_payment_amount($record_balance, $payment_amount) {
     // Has a zero amount been submitted, this is not allowed
     if($payment_amount == 0){
         
-        $smarty->assign('msg_danger', _gettext("You can not enter a payment with a zero (0.00) amount."));
+        systemMessagesWrite('danger', _gettext("You can not enter a payment with a zero (0.00) amount."));
         
         return false;
         
@@ -818,7 +818,7 @@ function validate_payment_amount($record_balance, $payment_amount) {
     // Is the payment larger than the outstanding invoice balance, this is not allowed
     if($payment_amount > $record_balance){
         
-        $smarty->assign('msg_danger', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
+        systemMessagesWrite('danger', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
         
         return false;
         

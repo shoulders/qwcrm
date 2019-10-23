@@ -570,7 +570,7 @@ function check_user_username_exists($username, $current_username = null) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('msg_danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
+            systemMessagesWrite('danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
             
             return true;
             
@@ -608,7 +608,7 @@ function check_user_email_exists($email, $current_email = null) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('msg_danger', _gettext("The email address has already been used. Please use a different one."));
+            systemMessagesWrite('danger', _gettext("The email address has already been used. Please use a different one."));
             
             return true;
             
@@ -641,7 +641,7 @@ function check_client_already_has_login($client_id) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('msg_danger', _gettext("The client already has a login."));           
+            systemMessagesWrite('danger', _gettext("The client already has a login."));           
             
             return true;
             
@@ -741,7 +741,7 @@ function login($qform, $credentials, $options = array())
     if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
         
         // Set error message
-        $smarty->assign('msg_danger', _gettext("Username or Password Missing."));
+        systemMessagesWrite('danger', _gettext("Username or Password Missing."));
         
         return false;
         
@@ -751,7 +751,7 @@ function login($qform, $credentials, $options = array())
     if(get_user_details(get_user_id_by_username($qform['login_username']), 'require_reset')) {
         
         // Set error message
-        $smarty->assign('msg_danger', _gettext("You must reset your password before you are allowed to login."));
+        systemMessagesWrite('danger', _gettext("You must reset your password before you are allowed to login."));
         
         return false;
         
@@ -761,7 +761,7 @@ function login($qform, $credentials, $options = array())
     if(get_user_details(get_user_id_by_username($qform['login_username']), 'active') === '0') {  
 
         // Set error message
-        $smarty->assign('msg_danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
+        systemMessagesWrite('danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
 
         // Log activity       
         write_record_to_activity_log(_gettext("Login denied for").' '.$qform['login_username'].'.');
@@ -795,7 +795,7 @@ function login($qform, $credentials, $options = array())
         // Log activity       
         write_record_to_activity_log(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
 
-        $smarty->assign('msg_danger', _gettext("Login Failed. Check you username and password."));
+        systemMessagesWrite('danger', _gettext("Login Failed. Check you username and password."));
         
         return false;
 
@@ -920,7 +920,7 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
         $error_msg .= '<p><strong>Note:</strong> Error code <kbd>missing-input-response</kbd> may mean the user just didn\'t complete the reCAPTCHA.</p>';
         $error_msg .= '<p><a href="/">Try again</a></p>';*/        
         
-        $smarty->assign('msg_danger', _gettext("Google reCAPTCHA Verification Failed."));
+        systemMessagesWrite('danger', _gettext("Google reCAPTCHA Verification Failed."));
         return false;
         
     }  
@@ -1113,24 +1113,24 @@ function validate_reset_token($token) {
         
         // Check there is only 1 record
         if($rs->RecordCount() != 1) {
-            $smarty->assign('msg_danger', _gettext("The reset token does not exist."));
+            systemMessagesWrite('danger', _gettext("The reset token does not exist."));
             return false;
         }
         
         // check if user is blocked        
         if(!get_user_details($rs->fields['user_id'], 'active')){
-            $smarty->assign('msg_danger', _gettext("The user is blocked."));
+            systemMessagesWrite('danger', _gettext("The user is blocked."));
             return false;
         }
         
         // Check not expired
         if($rs->fields['expiry_time'] < time()){
-            $smarty->assign('msg_danger', _gettext("The reset token has expired."));
+            systemMessagesWrite('danger', _gettext("The reset token has expired."));
             return false;
         }
         
         // All checked passed
-        $smarty->assign('msg_success', _gettext("Token accepted."));
+        systemMessagesWrite('success', _gettext("Token accepted."));
         return true;
         
         
@@ -1156,18 +1156,18 @@ function validate_reset_code($reset_code) {
         
         // Check there is only 1 record
         if($rs->RecordCount() != 1) {            
-            $smarty->assign('msg_danger', 'The reset code does not exist.');
+            systemMessagesWrite('danger', 'The reset code does not exist.');
             return false;
         }
         
         // Check not expired
         if($rs->fields['reset_code_expiry_time'] < time()){
-            $smarty->assign('msg_danger', 'The reset code has expired.');
+            systemMessagesWrite('danger', 'The reset code has expired.');
             return false;
         }
         
         // All checked passed
-        $smarty->assign('msg_success', _gettext("Reset code accepted."));        
+        systemMessagesWrite('success', _gettext("Reset code accepted."));        
         return true;
         
         

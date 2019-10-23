@@ -68,7 +68,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         // Output the system message to the browser (if allowed)
         if (!$silent) {
             $message = $record.'<br>'._gettext("There is no email address to send to.");
-            //$smarty->assign('msg_danger', $message);
+            //systemMessagesWrite('danger', $message);
             systemMessagesWrite('danger', $message);
             ajax_output_system_messages_onscreen();
         }
@@ -87,7 +87,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         // Output the system message to the browser (if allowed)
         if (!$silent) {
             $message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
-            //$smarty->assign('msg_danger', $message);
+            //systemMessagesWrite('danger', $message);
             systemMessagesWrite('danger', $message);
             ajax_output_system_messages_onscreen();
         }
@@ -179,7 +179,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         // Output the system message to the browser (if allowed)
         if (!$silent) {
             $message = $record.'<br>'.$RfcCompliance_exception->getMessage();
-            //$smarty->assign('msg_danger', $message);
+            //systemMessagesWrite('danger', $message);
             systemMessagesWrite('danger', $message);
             ajax_output_system_messages_onscreen();
             
@@ -247,7 +247,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             // Output the system message to the browser (if allowed)
             if (!$silent) {
                 $message = $record;
-                //$smarty->assign('msg_danger', $message);                
+                //systemMessagesWrite('danger', $message);                
                 systemMessagesWrite('danger', $message);
                 ajax_output_system_messages_onscreen();
             }
@@ -264,7 +264,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
             // Output the system message to the browser (if allowed)
             if (!$silent) {
                 $message = $record;
-                //$smarty->assign('msg_success', $message);                
+                //systemMessagesWrite('success', $message);                
                 systemMessagesWrite('success', $message);
                 ajax_output_system_messages_onscreen();
             }
@@ -295,7 +295,7 @@ function send_email($recipient_email, $subject, $body, $recipient_name = null, $
         if (!$silent) {
             preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
             $message = $record.'<br>'.$matches[0];
-            //$smarty->assign('msg_danger', $message);            
+            //systemMessagesWrite('danger', $message);            
             systemMessagesWrite('danger', $message);
             ajax_output_system_messages_onscreen();
         }

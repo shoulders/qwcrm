@@ -40,7 +40,7 @@ if(isset(\QFactory::$VAR['submit'])) {
 
 } else { 
   
-    $smarty->assign('user_details', get_user_details(\QFactory::$VAR['qform']['user_id']));     
+    $smarty->assign('user_details', get_user_details(\QFactory::$VAR['user_id']));     
     
 }
 

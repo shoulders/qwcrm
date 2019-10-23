@@ -46,7 +46,7 @@ if(!isset(\QFactory::$VAR['stage']) || \QFactory::$VAR['stage'] == 'database_con
         // Test the supplied database connection details and store details if successful
         if($qsetup->verify_database_connection_details(\QFactory::$VAR['qwcrm_config']['db_host'], \QFactory::$VAR['qwcrm_config']['db_user'], \QFactory::$VAR['qwcrm_config']['db_pass'], \QFactory::$VAR['qwcrm_config']['db_name'])) {
             
-            $smarty->assign('msg_success', _gettext("Database connection successful."));
+            systemMessagesWrite('success', _gettext("Database connection successful."));
             $qsetup->create_config_file_from_default(SETUP_DIR.'install/install_configuration.php');
             update_qwcrm_config_settings_file(\QFactory::$VAR['qwcrm_config']);           
             $qsetup->write_record_to_setup_log('install', _gettext("Connected successfully to the database with the supplied credentials and added them to the config file."));  
@@ -119,7 +119,7 @@ if(\QFactory::$VAR['stage'] == 'database_install') {
         if($qsetup->install_database(SETUP_DIR.'install/install_database.sql')) {
             
             $record = _gettext("The database installed successfully.");            
-            $smarty->assign('msg_success', $record); 
+            systemMessagesWrite('success', $record); 
             $qsetup->write_record_to_setup_log('install', $record);
             \QFactory::$VAR['stage'] = 'database_install_results';            
         
@@ -127,7 +127,7 @@ if(\QFactory::$VAR['stage'] == 'database_install') {
         } else {            
               
            $record = _gettext("The database failed to install.");                      
-           $smarty->assign('msg_danger', $record);
+           systemMessagesWrite('danger', $record);
            $qsetup->write_record_to_setup_log('install', $record);
            \QFactory::$VAR['stage'] = 'database_install_results';
            
@@ -239,7 +239,7 @@ if(\QFactory::$VAR['stage'] == 'administrator_account') {
         insert_user(\QFactory::$VAR);
         $qsetup->write_record_to_setup_log('install', _gettext("The administrator account has been created."));
         $qsetup->write_record_to_setup_log('install', _gettext("The QWcrm installation process has completed successfully."));
-        $smarty->assign('msg_success', _gettext("The QWcrm installation process has completed successfully."));
+        systemMessagesWrite('success', _gettext("The QWcrm installation process has completed successfully."));
         \QFactory::$VAR['stage'] = 'delete_setup_folder';        
     
     // Load the page

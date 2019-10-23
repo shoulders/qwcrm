@@ -275,15 +275,9 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG, toggleSu
 // This function allows me to grab systems messages created during page rendering and display
 function processSystemMessages(newMessages) {    
       
-    /*if(systemMessages) {
-        var information = document.getElementById('msg_success');
-        information.style.display = 'block';
-        information.innerHTML = msg_success;       
-    }*/
-    
-    
     var system_messages = document.getElementById('system_messages');
-    //system_messages.disabled = false;
+    system_messages.style.display === '';
+    //system_messages.style.display === 'inline';
     system_messages.innerHTML += newMessages;
     
     
@@ -292,30 +286,8 @@ function processSystemMessages(newMessages) {
 // Clear any onscreen system messages
 function clearSystemMessages() {
     
-    /* Wipe success messages
-    var information = document.getElementById('msg_success');
-    information.style.display = 'none';
-    information.innerHTML = '';
-    
-    // Wipe information messages
-    var information = document.getElementById('information_msg');
-    information.style.display = 'none';
-    information.innerHTML = '';
-
-    // wipe warning messages
-    var warning = document.getElementById('msg_danger'); 
-    warning.style.display = 'none';
-    warning.innerHTML = '';*/
-    
-    // Empty the system_message_functions div
-    //var system_message_functions = document.getElementById('system_message_functions');
-    //system_messages.innerHTML = '';
-    
-    //system_message_functions = document.getElementById('system_message_functions').innerHTML = '';
-    //document.getElementById('system_messages').innerHTML = '';
-    
     var system_messages = document.getElementById('system_messages');
-    //system_messages.disabled = true;
+    //system_messages.style.display === 'none';
     system_messages.innerHTML = '';
     
 }

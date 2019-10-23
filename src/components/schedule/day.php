@@ -27,7 +27,7 @@ if(\QFactory::$VAR['workorder_id']) {
     
     // If the workorder is closed, remove the workorder_id preventing further schedule creation for this workorder_id
     if(get_workorder_details(\QFactory::$VAR['workorder_id'], 'is_closed')) {        
-        $smarty->assign('msg_danger', _gettext("Can not set a schedule for closed work orders - Work Order ID").' '.\QFactory::$VAR['workorder_id']);
+        systemMessagesWrite('danger', _gettext("Can not set a schedule for closed work orders - Work Order ID").' '.\QFactory::$VAR['workorder_id']);
         unset(\QFactory::$VAR['workorder_id']);
     }
     

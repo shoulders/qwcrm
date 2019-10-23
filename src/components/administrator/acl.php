@@ -13,13 +13,13 @@ require(INCLUDES_DIR.'administrator.php');
 // Update the ACL permissions if submitted
 if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'reset_default') {
     reset_acl_permissions();    
-    $smarty->assign('msg_success', _gettext("Permissions reset to default."));    
+    systemMessagesWrite('success', _gettext("Permissions reset to default."));    
 }
 
 // Update the ACL permissions if submitted
 if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'update') {
     update_acl(\QFactory::$VAR['qform']['permissions']);    
-    $smarty->assign('msg_success', _gettext("Permissions Updated."));    
+    systemMessagesWrite('success', _gettext("Permissions Updated."));    
 }
     
 // Build the page with the permissions from the database 

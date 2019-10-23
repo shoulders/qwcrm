@@ -505,7 +505,7 @@ class QFactory {
                     //var_dump($e);
                     //adodb_backtrace($e->gettrace());
                     $conf->set('test_db_connection', 'failed');
-                    $smarty->assign('msg_danger', prepare_error_data('error_database_connection', $e->msg));
+                    systemMessagesWrite('danger', prepare_error_data('error_database_connection', $e->msg));
                 }
 
                 return false;
@@ -521,7 +521,7 @@ class QFactory {
                 if(!$db->isConnected()) {
                     
                     // Database connection failed
-                    $smarty->assign('msg_danger', prepare_error_data('error_database_connection', $db->ErrorMsg()));
+                    systemMessagesWrite('danger', prepare_error_data('error_database_connection', $db->ErrorMsg()));
                     $conf->set('test_db_connection', 'failed');
                     return;
                     

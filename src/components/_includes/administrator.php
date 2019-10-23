@@ -349,13 +349,13 @@ function check_for_qwcrm_update() {
 
     // If there is a connection error
     if($curl_error) {         
-        $smarty->assign('msg_danger', _gettext("Connection Error - cURL Error Number").': '.$curl_error);
+        systemMessagesWrite('danger', _gettext("Connection Error - cURL Error Number").': '.$curl_error);
         return;        
     }
     
     // If no response return with error message
     if(!$curl_response || $curl_error) {         
-        $smarty->assign('msg_danger', _gettext("No response from the QWcrm update server."));
+        systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
         $smarty->assign('update_response', 'no_response');
         return;        
     }
@@ -365,7 +365,7 @@ function check_for_qwcrm_update() {
     
     // Verify there is a real response and flag error if not
     if(!$update_response['name']) {
-        $smarty->assign('msg_danger', _gettext("No response from the QWcrm update server."));
+        systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
         $smarty->assign('update_response', 'no_response');
         return;       
     }

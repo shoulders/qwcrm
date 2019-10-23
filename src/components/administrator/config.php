@@ -67,7 +67,7 @@ if(isset(\QFactory::$VAR['submit'])) {
     } else {
         
         // Load the submitted values
-        $smarty->assign('msg_danger', _gettext("Some information was invalid, please check for errors and try again."));
+        systemMessagesWrite('danger', _gettext("Some information was invalid, please check for errors and try again."));
         $smarty->assign('qwcrm_config', \QFactory::$VAR['qform']); 
     }
     

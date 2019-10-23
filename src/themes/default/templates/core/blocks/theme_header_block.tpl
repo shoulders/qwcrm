@@ -42,5 +42,5 @@
     </div>
         
     <!-- System Messages --> 
-    <div id="system_messages"></div>
+    <div id="system_messages" style="display: none;"></div>
 

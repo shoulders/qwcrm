@@ -84,9 +84,6 @@ function load_system_variables() {
     
 }
 
-
-
-
 ######################################
 #  System Messages                   #  // This function will take any messages from \QFactory::$VAR and put them into \QFactory::$messages
 ######################################  // This has all of the bootstrap message types here
@@ -125,11 +122,6 @@ function systemMessagesWrite($type, $message) {
 // Return the Messages Store
 function systemMessagesReturnStore() {
     
-    /*\QFactory::$messages['danger'][] = 'aaaaaaaa';
-    \QFactory::$messages['danger'][] = 'bbbbbbbb';
-    \QFactory::$messages['warning'][] = 'cccccccc';
-    \QFactory::$messages['warning'][] = 'cccccccc';*/
-    
     // Remove all empty message type holders
     \QFactory::$messages = array_filter(\QFactory::$messages);
     
@@ -147,27 +139,21 @@ function systemMessagesReturnStore() {
         
     }
     
-    return $html;    
+    return $html;
     
 }
 
-// This will parse the page payload and add the system messages, (only works on an empty HTML `system_messages`)
-function systemMessagesParsePage(&$pagePayload) {
+// This will parse the page payload and add the system messages, (only works on an empty HTML `system_messages` div)
+function systemMessagesParsePage(&$pagePayload) {    
     
-    $search = '<div id="system_messages"></div>';
-    $replace = "<div id=\"system_messages\">\n".systemMessagesReturnStore()."</div>\n";
-    $count = (int)1;
-    $pagePayload = str_replace($search, $replace, $pagePayload, $count);
+    if($systemMessageStore = systemMessagesReturnStore()) {
+        $search = '<div id="system_messages" style="display: none;"></div>';
+        $replace = "<div id=\"system_messages\">\n".$systemMessageStore."</div>\n";
+        $count = (int)1;
+        $pagePayload = str_replace($search, $replace, $pagePayload, $count);
+    }
     
 }
-
-
-
-
-
-
-
-
 
 #####################################
 #  Set the User's Smarty Variables  #  // Empty if not logged in or installing (except for usergroup)
