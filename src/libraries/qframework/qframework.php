@@ -23,11 +23,12 @@ class QFactory {
     public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )
     public static $smarty       = null;     // Global Smarty object
     
-    public static $BuildPage    = '';     // Holds the HTML page to be outputted
+    public static $BuildPage    = '';       // Holds the HTML page to be outputted
     public static $VAR          = array();  // Global Variable store
-    public $Components          = null;     // Holds all of the loaded components    
-    public $Plugins             = null;     // Holds all of the loaded plugins
-    public $Modules             = null;     // Holds all of the loaded plugins
+    public static $messages     = array();  // Global System Message Store
+    public $components          = null;     // Holds all of the loaded components    
+    public $plugins             = null;     // Holds all of the loaded plugins
+    public $modules             = null;     // Holds all of the loaded plugins
 
     // Context Variables    
     public $conf                = null;
@@ -504,7 +505,7 @@ class QFactory {
                     //var_dump($e);
                     //adodb_backtrace($e->gettrace());
                     $conf->set('test_db_connection', 'failed');
-                    $smarty->assign('warning_msg', prepare_error_data('error_database_connection', $e->msg));
+                    $smarty->assign('msg_danger', prepare_error_data('error_database_connection', $e->msg));
                 }
 
                 return false;
@@ -520,7 +521,7 @@ class QFactory {
                 if(!$db->isConnected()) {
                     
                     // Database connection failed
-                    $smarty->assign('warning_msg', prepare_error_data('error_database_connection', $db->ErrorMsg()));
+                    $smarty->assign('msg_danger', prepare_error_data('error_database_connection', $db->ErrorMsg()));
                     $conf->set('test_db_connection', 'failed');
                     return;
                     

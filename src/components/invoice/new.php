@@ -40,4 +40,4 @@ if((isset(\QFactory::$VAR['client_id'], \QFactory::$VAR['invoice_type']) && \QFa
 }    
   
 // Fallback Error Control 
-force_page('workorder', 'search', 'warning_msg='._gettext("You cannot create an invoice by the method you just tried, report to admins."));
+force_page('workorder', 'search', 'msg_danger='._gettext("You cannot create an invoice by the method you just tried, report to admins."));

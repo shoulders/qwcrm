@@ -19,12 +19,12 @@ if(isset(\QFactory::$VAR['submit']) || isset(\QFactory::$VAR['submitandnew'])) {
     if (isset(\QFactory::$VAR['submitandnew'])) {
 
         // load the new supplier page
-        force_page('supplier', 'new', 'information_msg='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\QFactory::$VAR['supplier_id']); 
+        force_page('supplier', 'new', 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\QFactory::$VAR['supplier_id']); 
 
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'details&supplier_id='.\QFactory::$VAR['supplier_id'], 'information_msg='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\QFactory::$VAR['supplier_id']); 
+        force_page('supplier', 'details&supplier_id='.\QFactory::$VAR['supplier_id'], 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\QFactory::$VAR['supplier_id']); 
 
     }
 

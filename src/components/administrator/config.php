@@ -52,7 +52,7 @@ if(isset(\QFactory::$VAR['submit'])) {
         
         // Reload Page (nonSSL to SSL)
         elseif (!QFactory::getConfig()->get('force_ssl') && \QFactory::$VAR['qform']['force_ssl']) {
-            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), 'auto', $url_sef, 'https');
+            force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef, 'https');
             
         // Reload page with forced logout (SSL to nonSSL)
         } elseif(QFactory::getConfig()->get('force_ssl') && !\QFactory::$VAR['qform']['force_ssl']) {
@@ -61,13 +61,13 @@ if(isset(\QFactory::$VAR['submit'])) {
         
         // Reload Page (No change in SSL state or maintenance mode)
         } else {
-            force_page('administrator', 'config', 'information_msg='._gettext("Config settings updated successfully."), 'auto', $url_sef);             
+            force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef);             
         }        
         
     } else {
         
         // Load the submitted values
-        $smarty->assign('warning_msg', _gettext("Some information was invalid, please check for errors and try again."));
+        $smarty->assign('msg_danger', _gettext("Some information was invalid, please check for errors and try again."));
         $smarty->assign('qwcrm_config', \QFactory::$VAR['qform']); 
     }
     

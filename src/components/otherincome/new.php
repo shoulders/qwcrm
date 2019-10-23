@@ -23,17 +23,17 @@ if(isset(\QFactory::$VAR['submit'])) {
     if (\QFactory::$VAR['submit'] == 'submitandnew') {
 
         // Load New Refund page
-        force_page('otherincome', 'new', 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id); 
+        force_page('otherincome', 'new', 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id); 
 
     } elseif (\QFactory::$VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for otherincome
-         force_page('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id, 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
+         force_page('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
          
     } else {
 
         // Load Refund Details page
-        force_page('otherincome', 'details&otherincome_id='.$otherincome_id, 'information_msg='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
+        force_page('otherincome', 'details&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
 
     }
          

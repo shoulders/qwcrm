@@ -23,7 +23,7 @@ if(isset(\QFactory::$VAR['client_id']) && \QFactory::$VAR['client_id']) {
         
     } else {
         
-        force_page('client', 'details', 'client_id='.\QFactory::$VAR['client_id'].'&warning_msg='._gettext("The client already has a login."));
+        force_page('client', 'details', 'client_id='.\QFactory::$VAR['client_id'].'&msg_danger='._gettext("The client already has a login."));
         
     }    
     
@@ -50,7 +50,7 @@ if(isset(\QFactory::$VAR['submit'])) {
             \QFactory::$VAR['user_id'] = insert_user(\QFactory::$VAR['qform']);
             
             // Redirect to the new user's details page
-            force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id'], 'information_msg='._gettext("New user has been created."));
+            force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id'], 'msg_success='._gettext("New user has been created."));
             
         }
 

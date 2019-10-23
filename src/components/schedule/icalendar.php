@@ -21,17 +21,17 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a employee_id and output is set to day
 if(isset(\QFactory::$VAR['ics_type']) && \QFactory::$VAR['ics_type'] == 'day' && !\QFactory::$VAR['employee_id']) {    
-    force_page('schedule', 'search', 'warning_msg='._gettext("Employee ID missing."));
+    force_page('schedule', 'search', 'msg_danger='._gettext("Employee ID missing."));
 }
 
 // Check if we have a schedule_id if output is not set to day
 if(isset(\QFactory::$VAR['ics_type']) && \QFactory::$VAR['ics_type'] != 'day' && !\QFactory::$VAR['schedule_id']) {    
-    force_page('schedule', 'search', 'warning_msg='._gettext("Schedule ID is missing."));
+    force_page('schedule', 'search', 'msg_danger='._gettext("Schedule ID is missing."));
 }
 
 // Check if we have all of the date information required
 if(!isset(\QFactory::$VAR['start_year'], \QFactory::$VAR['start_month'], \QFactory::$VAR['start_day']) || !\QFactory::$VAR['start_year'] || !\QFactory::$VAR['start_month'] || !\QFactory::$VAR['start_day']) {
-    force_page('schedule', 'search', 'warning_msg='._gettext("Some date information is missing."));
+    force_page('schedule', 'search', 'msg_danger='._gettext("Some date information is missing."));
 }
 
 // Add routines here to decide what is returned ie multi schedule, single schedule or a live calendar

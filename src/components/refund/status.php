@@ -15,7 +15,7 @@ require(INCLUDES_DIR.'voucher.php');
 
 // Check if we have a refund_id
 if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
-    force_page('refund', 'search', 'warning_msg='._gettext("No Voucher ID supplied."));
+    force_page('refund', 'search', 'msg_danger='._gettext("No Voucher ID supplied."));
 }
 
 // Update Voucher Status

@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'payment.php');
 
 // Check if we have a otherincome_id
 if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id']) {
-    force_page('otherincome', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
+    force_page('otherincome', 'search', 'msg_danger='._gettext("No Refund ID supplied."));
 } 
 
 // Payment Details

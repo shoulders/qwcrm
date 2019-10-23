@@ -12,7 +12,7 @@ require(INCLUDES_DIR.'supplier.php');
 
 // Check if we have a supplier_id
 if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
-    force_page('supplier', 'search', 'warning_msg='._gettext("No Supplier ID supplied."));
+    force_page('supplier', 'search', 'msg_danger='._gettext("No Supplier ID supplied."));
 }
 
 // Update Supplier Status

@@ -355,86 +355,6 @@ function force_error_page($error_type, $error_location, $error_php_function, $er
     
 }
 
-###########################################
-#  POST Emulation - for server to server  #  // Might only work for logged in users, need to check, but fails on logout because session data is destroyed?
-###########################################
-
-/*
- * this writes into the session registry/$data
- * the register_shutdown_function() in native.php registers the function save() to be run as the last thing run by the script
- * $post_emulation_variable is created in the session registry.
- * It does work but i cannot control if the post varibles stay in the database store. Is this correct???
- * There is a timer to prevent abuse of this emulation and to keep messages valid. It is set to 5 seconds.
- */
-
-// This writes to the $post_emulation_varible and then the varible to the store
-function postEmulationWrite($key, $value) {
-    
-    // Refresh the store timer to keep it fresh
-    \QFactory::getSession()->set('post_emulation_timer', time());
-    
-    // Set the varible in the $post_emulation_store variable
-    \QFactory::getSession()->post_emulation_store[$key] = $value;
-    
-    // Save the whole $post_emulation_store varible into the registry (does this for every variable write)
-    \QFactory::getSession()->set('post_emulation_store', \QFactory::getSession()->post_emulation_store);
-    
-}
-
-// This reads the data from $post_emulation_varible
-function postEmulationRead($key) {
-    
-    // Refresh the store timer to keep it fresh
-    \QFactory::getSession()->set('post_emulation_timer', time());
-    
-    // Read a varible from the store and return it
-    return \QFactory::getSession()->post_emulation_store[$key];
-    
-}
-
-function postEmulationReturnStore($keep_store = false) {
-    
-    // Make temporary copy of the post store
-    $post_store = \QFactory::getSession()->get('post_emulation_store');
-    
-    // Delete Stale Post Store - make sure the store is not an old one by putting a time limit on the validity
-    if(time() - \QFactory::getSession()->get('post_emulation_timer') > 5 ) {        
-        
-        // Empty the registry store -  but keep it as an array
-        \QFactory::getSession()->set('post_emulation_store', array());
-        
-        // Empty the $post_emulation_store - not 100% i need this
-        \QFactory::getSession()->post_emulation_store = array();
-        
-    }
-    
-    // This is used for testing that the varibles get stored
-    if($keep_store === true) {
-        
-        \QFactory::getSession()->set('post_emulation_store', $post_store);
-        
-    } else {
-        
-        // Empty the registry store -  but keep it as an array
-        \QFactory::getSession()->set('post_emulation_store', array());
-        
-        // Empty the $post_emulation_store - not 100% i need this
-        \QFactory::getSession()->post_emulation_store = array();
-        
-    }
-    
-    // Set the store timer to zero
-    \QFactory::getSession()->set('post_emulation_timer', '0');
-    
-    // Return the post store - this compensates for logout
-    if(!is_array($post_store)) {
-        return array();
-    } else {
-        return $post_store;
-    }
-    
-}
-
 ############################################
 #  Error Handling - Data preperation       #
 ############################################
@@ -1373,12 +1293,12 @@ function ajax_clear_onscreen_notifications() {
 }
 
 ##############################################
-#  Output email notifications onscreen       #   // this is needed for messages when pages are requested via ajax (emails/config)
+#  Output System Messages onscreen           #   // this is needed for messages when pages are requested via ajax (emails/config)
 ##############################################
 
-function ajax_output_notifications_onscreen($information_msg = '', $warning_msg = '') {
+function ajax_output_system_messages_onscreen() {
    
-    echo "<script>processSystemMessages('".escape_for_javascript($information_msg)."', '".escape_for_javascript($warning_msg)."');</script>";
+    echo "<script>processSystemMessages('".escape_for_javascript(systemMessagesReturnStore())."');</script>";
     
 }
 
@@ -1388,15 +1308,12 @@ function ajax_output_notifications_onscreen($information_msg = '', $warning_msg 
 
 function escape_for_javascript($text){
     
-    $text = nl2br($text);
-    $text = strtr($text, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
-    
-    return $text;
+    return strtr(nl2br($text), array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n', '</' => '<\/'));
     
 }
 
 ##############################################
-#  Output email notifications onscreen       #   // this is needed for messages when pages are requested via ajax (emails/config)
+#  Used for setup and button control         #   // this is needed for messages when pages are requested via ajax (emails/config)
 ##############################################
 
 function toggle_element_by_id($element_id, $action = 'hide') {
@@ -1489,7 +1406,7 @@ function clear_smarty_cache() {
     //$smarty->clearAllCache(3600);
     
     // Output the system message to the browser   
-    ajax_output_notifications_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
+    ajax_output_system_messages_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
     
     // Log activity        
     write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
@@ -1514,7 +1431,7 @@ function clear_smarty_compile() {
     $smarty->clearCompiledTemplate();
     
     // Output the system message to the browser   
-    ajax_output_notifications_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
+    ajax_output_system_messages_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
     
     // Log activity        
     write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    

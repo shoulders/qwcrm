@@ -79,7 +79,7 @@ class PType {
         
         // If the balance has been cleared, redirect to the record details page
         if($this->invoice_details['balance'] == 0) {
-            force_page('invoice', 'details&invoice_id='.$this->VAR['invoice_id'], 'information_msg='._gettext("The balance has been cleared."));
+            force_page('invoice', 'details&invoice_id='.$this->VAR['invoice_id'], 'msg_success='._gettext("The balance has been cleared."));
         }
         
         return;
@@ -139,7 +139,7 @@ class PType {
         //$this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);        
         
         // Load the relevant record details page
-        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'information_msg='._gettext("Payment updated successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'msg_success='._gettext("Payment updated successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -158,7 +158,7 @@ class PType {
         //$this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);        
         
         // Load the relevant record details page
-        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'information_msg='._gettext("Payment cancelled successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'msg_success='._gettext("Payment cancelled successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -177,7 +177,7 @@ class PType {
         //$this->invoice_details = get_invoice_details($this->VAR['qpayment']['invoice_id']);        
         
         // Load the relevant record details page
-        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'information_msg='._gettext("Payment deleted successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'msg_success='._gettext("Payment deleted successfully and Invoice").' '.$this->VAR['qpayment']['invoice_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -188,9 +188,9 @@ class PType {
         
         // Is on a different tax system
         if($this->invoice_details['tax_system'] != QW_TAX_SYSTEM) {
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
+            //postEmulationWrite('msg_danger', _gettext("The invoice cannot receive a payment because it is on a different tax system."));
             //return false;            
-            force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'warning_msg='._gettext("The invoice cannot receive a payment because it is on a different tax system."));
+            force_page('invoice', 'details&invoice_id='.$this->VAR['qpayment']['invoice_id'], 'msg_danger='._gettext("The invoice cannot receive a payment because it is on a different tax system."));
             
         }
 

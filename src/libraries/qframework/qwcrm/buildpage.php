@@ -35,7 +35,7 @@ function load_page($mode, $component = null, $page_tpl = null, $themeVar = null)
         
         return;
         
-    }   
+    }
     
 }
 
@@ -50,11 +50,11 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
     $pagePayload = '';                   // Local store for page content
     if(!defined('QWCRM_SETUP')) { $user = \QFactory::getUser(); }
         
-    // Set the correct theme spcification, either manually supplied or from the system
+    // Set the correct theme specification, either manually supplied or from the system
     $component = isset($component) ? $component : ( isset(\QFactory::$VAR['component']) ? \QFactory::$VAR['component'] : null);
     $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\QFactory::$VAR['page_tpl']) ? \QFactory::$VAR['page_tpl'] : null);
     $themeVar = isset($themeVar) ? $themeVar : ( isset(\QFactory::$VAR['theme']) ? \QFactory::$VAR['theme'] : null);
-        
+           
     // If theme is set to Print mode, Skip Header and Footer - Print system will output with it's own format without need for headers and footers here
     if (isset($themeVar) && ($themeVar === 'print' || $themeVar === 'raw_html')) {        
         require_once($page_controller);
@@ -66,6 +66,8 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
         
         goto page_build_end;
     }
+    
+    page_build:  // This is currently not used and is only so i know where the payload build start is
     
     // Set Page Header and Meta Data
     set_page_header_and_meta_data($component, $page_tpl);
@@ -117,13 +119,22 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
     }
 
     page_build_end:
+        
+    // Modules code goes here
+    // ......................
     
+    // Plugins code goes here
+    // ......................
+        
     // Process Page links
     if(!defined('QWCRM_SETUP')) {  
-        //$pagePayload = page_links_acl_replace($pagePayload);
-        $pagePayload = page_links_acl_removal($pagePayload);
-        $pagePayload = page_links_sdmenu_cleanup($pagePayload);        
+        //page_links_acl_replace($pagePayload);
+        page_links_acl_removal($pagePayload);
+        page_links_sdmenu_cleanup($pagePayload);        
     }
+    
+    // Add system messages
+    systemMessagesParsePage($pagePayload);
     
     // Will error out if there are any issues with content replacement
     if (preg_last_error() == PREG_BACKTRACK_LIMIT_ERROR) {
@@ -166,7 +177,7 @@ function check_page_link_permission($url) {
 #  Replace all unauthorised page links with href="#"  #
 #######################################################
 
-function page_links_acl_replace($pagePayload) {
+function page_links_acl_replace(&$pagePayload) {
     
     $pagePayload = preg_replace_callback('/(["\'])(index\.php.*)(["\'])/U',
         function($matches) {
@@ -184,8 +195,6 @@ function page_links_acl_replace($pagePayload) {
             }
 
         }, $pagePayload);
-        
-    return $pagePayload;
 
 }
 
@@ -193,7 +202,7 @@ function page_links_acl_replace($pagePayload) {
 #  Remove all unauthorised page links #
 #######################################
 
-function page_links_acl_removal($pagePayload) {
+function page_links_acl_removal(&$pagePayload) {
     
     // This allows for <a>...</a> being split over several lines. The opening <a .....> must be on one line - This is also optimized with atomic groups
     $pagePayload = preg_replace_callback('/<(?>a|button|input|form)[^\r\n]*["\'](index\.php[^\r\n]*)["\'][^\r\n]*>.*<\/(?>a|button|input|form)>/Us',
@@ -212,8 +221,6 @@ function page_links_acl_removal($pagePayload) {
             }
 
         }, $pagePayload);
-        
-    return $pagePayload;
        
 }
 
@@ -221,7 +228,7 @@ function page_links_acl_removal($pagePayload) {
 #  Remove unpopulated SD Menu groups    #
 #########################################
 
-function page_links_sdmenu_cleanup($pagePayload) {
+function page_links_sdmenu_cleanup(&$pagePayload) {
     
     $pagePayload = preg_replace_callback('/<div class="menugroup">.*<\/div>/Us',
         function($matches) {
@@ -239,16 +246,14 @@ function page_links_sdmenu_cleanup($pagePayload) {
             }
 
         }, $pagePayload);
-        
-    return $pagePayload;
-    
+           
 }
 
 ###########################################
 #  Change all internal page links to SEF  #
 ###########################################
 
-function page_links_to_sef($pagePayload) {
+function page_links_to_sef(&$pagePayload) {
     
     // Replace nonsef links within "" and ''
     $pagePayload = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
@@ -257,8 +262,6 @@ function page_links_to_sef($pagePayload) {
             return $matches[1].build_sef_url($matches[2]).$matches[3];
 
         }, $pagePayload);
-        
-    return $pagePayload;
     
 }
 

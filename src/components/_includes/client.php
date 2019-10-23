@@ -614,7 +614,7 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('warning_msg', 'You can not delete a client who has work orders.');
+        //postEmulationWrite('msg_danger', 'You can not delete a client who has work orders.');
         return false;
     }
     
@@ -624,7 +624,7 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Invoices in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('warning_msg', 'You can not delete a client who has invoices.');
+        //postEmulationWrite('msg_danger', 'You can not delete a client who has invoices.');
         return false;
     }    
     
@@ -634,7 +634,7 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Vouchers in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('warning_msg', 'You can not delete a client who has Vouchers.');
+        //postEmulationWrite('msg_danger', 'You can not delete a client who has Vouchers.');
         return false;
     }
     
@@ -644,7 +644,7 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Notes in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('warning_msg', 'You can not delete a client who has client notes.');
+        //postEmulationWrite('msg_danger', 'You can not delete a client who has client notes.');
         return false;
     }
 

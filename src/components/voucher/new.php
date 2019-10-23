@@ -24,12 +24,12 @@ if(!check_page_accessed_via_qwcrm('voucher', 'new') && !check_page_accessed_via_
 
 // Check if we have an invoice_id
 if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
-    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
+    force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));
 }
 
 // Check if voucher payment method is enabled
 if(!check_payment_method_is_active('voucher')) {
-    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['invoice_id'], 'warning_msg='._gettext("Voucher payment method is not enabled. Goto Payment Options and enable Vouchers there."));
+    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['invoice_id'], 'msg_danger='._gettext("Voucher payment method is not enabled. Goto Payment Options and enable Vouchers there."));
 }
 
 // if information submitted - add new Voucher
@@ -39,7 +39,7 @@ if(isset(\QFactory::$VAR['submit'])) {
     $voucher_id = insert_voucher(\QFactory::$VAR['qform']['invoice_id'], \QFactory::$VAR['qform']['type'], \QFactory::$VAR['qform']['expiry_date'], \QFactory::$VAR['qform']['unit_net'], \QFactory::$VAR['qform']['note']);
 
     // Load the attached invoice Details page
-    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['qform']['invoice_id'], 'information_msg'._gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
+    force_page('invoice', 'edit&invoice_id='.\QFactory::$VAR['qform']['invoice_id'], 'msg_success'._gettext("Voucher").': '.$voucher_id.' '._gettext("has been added to this invoice."));
 
 }
     

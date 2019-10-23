@@ -273,24 +273,29 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG, toggleSu
 }
 
 // This function allows me to grab systems messages created during page rendering and display
-function processSystemMessages(information_msg, warning_msg) {    
-           
-    if(information_msg) {
-        var information = document.getElementById('information_msg');
+function processSystemMessages(newMessages) {    
+      
+    /*if(systemMessages) {
+        var information = document.getElementById('msg_success');
         information.style.display = 'block';
-        information.innerHTML = information_msg;       
-    }
+        information.innerHTML = msg_success;       
+    }*/
     
-    if(warning_msg) {
-        var warning = document.getElementById('warning_msg'); 
-        warning.style.display = 'block';
-        warning.innerHTML = warning_msg;
-    }
+    
+    var system_messages = document.getElementById('system_messages');
+    //system_messages.disabled = false;
+    system_messages.innerHTML += newMessages;
+    
     
 }
 
 // Clear any onscreen system messages
 function clearSystemMessages() {
+    
+    /* Wipe success messages
+    var information = document.getElementById('msg_success');
+    information.style.display = 'none';
+    information.innerHTML = '';
     
     // Wipe information messages
     var information = document.getElementById('information_msg');
@@ -298,13 +303,20 @@ function clearSystemMessages() {
     information.innerHTML = '';
 
     // wipe warning messages
-    var warning = document.getElementById('warning_msg'); 
+    var warning = document.getElementById('msg_danger'); 
     warning.style.display = 'none';
-    warning.innerHTML = '';
+    warning.innerHTML = '';*/
     
     // Empty the system_message_functions div
     //var system_message_functions = document.getElementById('system_message_functions');
-    //system_message_functions.innerHTML = '';
+    //system_messages.innerHTML = '';
+    
+    //system_message_functions = document.getElementById('system_message_functions').innerHTML = '';
+    //document.getElementById('system_messages').innerHTML = '';
+    
+    var system_messages = document.getElementById('system_messages');
+    //system_messages.disabled = true;
+    system_messages.innerHTML = '';
     
 }
 

@@ -311,7 +311,7 @@ class MigrateMyitcrm extends QSetup {
         } else {       
 
             // Assign success message
-            $this->smarty->assign('information_msg', _gettext("Company details updated."));
+            $this->smarty->assign('msg_success', _gettext("Company details updated."));
 
             // Log activity
             $qsetup = new QSetup($VAR);
@@ -1340,7 +1340,7 @@ class MigrateMyitcrm extends QSetup {
 
             if($result_count >= 1) {
 
-                $this->smarty->assign('warning_msg', _gettext("The Username")." `".$username."` "._gettext("already exists! Please use a different one."));
+                $this->smarty->assign('msg_danger', _gettext("The Username")." `".$username."` "._gettext("already exists! Please use a different one."));
 
                 return true;
 
@@ -1377,7 +1377,7 @@ class MigrateMyitcrm extends QSetup {
 
             if($result_count >= 1) {
 
-                $this->smarty->assign('warning_msg', _gettext("The email address has already been used. Please use a different one."));
+                $this->smarty->assign('msg_danger', _gettext("The email address has already been used. Please use a different one."));
 
                 return true;
 

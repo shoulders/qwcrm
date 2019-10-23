@@ -156,7 +156,7 @@ class QSetup {
 
             // Build success messgae
             $record = _gettext("The Setup folder has been deleted successfully.");
-            $system_message = _gettext("The Setup folder has been deleted successfully.");
+            $message = $record;
 
             // Hide the delete button
             toggle_element_by_id('delete_setup_folder', 'hide');
@@ -165,19 +165,21 @@ class QSetup {
             toggle_element_by_id('setup_folder_removed', 'show');
 
             // Output the system message to the browser
-            ajax_output_notifications_onscreen($system_message, '');
+            systemMessagesWrite('success', $message);
+            ajax_output_system_messages_onscreen();
 
         } else {
 
             // Build failure message
             $record = _gettext("The Setup folder failed to be deleted.");
-            $system_message = _gettext("The Setup folder has not been deleted. You need to delete the folder manually.");
+            $message = $record.' '._gettext("You need to delete the folder manually.");
 
             // Hide the delete button
             toggle_element_by_id('delete_setup_folder_button', 'hide');
 
             // Output the system message to the browser
-            ajax_output_notifications_onscreen('', $system_message);
+            systemMessagesWrite('danger', $message);
+            ajax_output_system_messages_onscreen();
 
         }
 
@@ -228,8 +230,8 @@ class QSetup {
         unset($VAR['theme']);    
         unset($VAR['component']);
         unset($VAR['page_tpl']);
-        unset($VAR['information_msg']);
-        unset($VAR['warning_msg']);   
+        unset($VAR['msg_success']);
+        unset($VAR['msg_danger']);   
 
         update_qwcrm_config_settings_file($VAR);
 
@@ -990,7 +992,7 @@ class QSetup {
 
         if (version_compare(get_mysql_version(), QWCRM_MINIMUM_MYSQL, '<')) {
             $msg = '<div style="color: red;">'._gettext("QWcrm requires MySQL").' '.QWCRM_MINIMUM_MYSQL.' '.'or later to run.'.' '._gettext("Your current version is").' '.get_mysql_version().'</div>';
-            $this->smarty->assign('warning_msg', $msg);
+            $this->smarty->assign('msg_danger', $msg);
             return false;
             //die($msg);
         }
@@ -1364,7 +1366,7 @@ class QSetup {
                     $record .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
                     $record .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
                     $this->write_record_to_setup_log('upgrade', $record);
-                    $this->smarty->assign('information_msg', $record);
+                    $this->smarty->assign('msg_success', $record);
                     break;
                 }
            

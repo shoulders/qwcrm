@@ -84,25 +84,90 @@ function load_system_variables() {
     
 }
 
-######################################
-#  Set the Message Smarty Variables  #
-######################################
 
-function smarty_set_system_messages() {
-    
-    $smarty = \QFactory::getSmarty();
-    
-    // Build Information Message (Green)
-    \QFactory::$VAR['information_msg'] = isset(\QFactory::$VAR['information_msg']) ? \QFactory::$VAR['information_msg'] : null;
-    $smarty->assign('information_msg', \QFactory::$VAR['information_msg']);
 
-    // Build Warning Message (Red)
-    \QFactory::$VAR['warning_msg'] = isset(\QFactory::$VAR['warning_msg']) ? \QFactory::$VAR['warning_msg'] : null;
-    $smarty->assign('warning_msg', \QFactory::$VAR['warning_msg']);
+
+######################################
+#  System Messages                   #  // This function will take any messages from \QFactory::$VAR and put them into \QFactory::$messages
+######################################  // This has all of the bootstrap message types here
+
+// Build the Sysmte Messages Store
+function systemMessagesBuildStore() {
+    
+    // Build the array in the correct order (for display purposes)
+    $types = array('primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark');
+     
+    // Loop through the different types or system message    
+    foreach ($types as $type) {
+        
+        // Add this Message Type to the global System Message Store
+        \QFactory::$messages[$type] = array();
+        
+        // Check for this message type in \QFactory::$VAR and set to system message store
+        if(isset(\QFactory::$VAR['msg_'.$type])) {
+            \QFactory::$messages[$type][] = strip_tags(\QFactory::$VAR['msg_'.$type], '<br>');
+            unset(\QFactory::$VAR['msg_'.$type]);
+        }     
+        
+    }
     
     return;
     
 }
+
+function systemMessagesWrite($type, $message) {
+    
+    \QFactory::$messages[$type] = [$message];
+    
+}
+
+
+// Return the Messages Store
+function systemMessagesReturnStore() {
+    
+    /*\QFactory::$messages['danger'][] = 'aaaaaaaa';
+    \QFactory::$messages['danger'][] = 'bbbbbbbb';
+    \QFactory::$messages['warning'][] = 'cccccccc';
+    \QFactory::$messages['warning'][] = 'cccccccc';*/
+    
+    // Remove all empty message type holders
+    \QFactory::$messages = array_filter(\QFactory::$messages);
+    
+    // HTML holder
+    $html = '';    
+    
+    // Loop through the different types of message and build HTML
+    foreach (\QFactory::$messages as $messageStoreType => $messages) {
+        
+        foreach ($messages as $message) {
+            
+            $html .= "<div class=\"alert alert-$messageStoreType\" role=\"alert\">$message</div>\n";
+            
+        }        
+        
+    }
+    
+    return $html;    
+    
+}
+
+// This will parse the page payload and add the system messages, (only works on an empty HTML `system_messages`)
+function systemMessagesParsePage(&$pagePayload) {
+    
+    $search = '<div id="system_messages"></div>';
+    $replace = "<div id=\"system_messages\">\n".systemMessagesReturnStore()."</div>\n";
+    $count = (int)1;
+    $pagePayload = str_replace($search, $replace, $pagePayload, $count);
+    
+}
+
+
+
+
+
+
+
+
 
 #####################################
 #  Set the User's Smarty Variables  #  // Empty if not logged in or installing (except for usergroup)
@@ -127,5 +192,86 @@ function smarty_set_user_variables() {
     }
     
     return;
+    
+}
+
+
+###########################################
+#  POST Emulation - for server to server  #  // Might only work for logged in users, need to check, but fails on logout because session data is destroyed?
+###########################################
+
+/*
+ * this writes into the session registry/$data
+ * the register_shutdown_function() in native.php registers the function save() to be run as the last thing run by the script
+ * $post_emulation_variable is created in the session registry.
+ * It does work but i cannot control if the post varibles stay in the database store. Is this correct???
+ * There is a timer to prevent abuse of this emulation and to keep messages valid. It is set to 5 seconds.
+ */
+
+// This writes to the $post_emulation_varible and then the varible to the store
+function postEmulationWrite($key, $value) {
+    
+    // Refresh the store timer to keep it fresh
+    \QFactory::getSession()->set('post_emulation_timer', time());
+    
+    // Set the varible in the $post_emulation_store variable
+    \QFactory::getSession()->post_emulation_store[$key] = $value;
+    
+    // Save the whole $post_emulation_store varible into the registry (does this for every variable write)
+    \QFactory::getSession()->set('post_emulation_store', \QFactory::getSession()->post_emulation_store);
+    
+}
+
+// This reads the data from $post_emulation_varible
+function postEmulationRead($key) {
+    
+    // Refresh the store timer to keep it fresh
+    \QFactory::getSession()->set('post_emulation_timer', time());
+    
+    // Read a varible from the store and return it
+    return \QFactory::getSession()->post_emulation_store[$key];
+    
+}
+
+function postEmulationReturnStore($keep_store = false) {
+    
+    // Make temporary copy of the post store
+    $post_store = \QFactory::getSession()->get('post_emulation_store');
+    
+    // Delete Stale Post Store - make sure the store is not an old one by putting a time limit on the validity
+    if(time() - \QFactory::getSession()->get('post_emulation_timer') > 5 ) {        
+        
+        // Empty the registry store -  but keep it as an array
+        \QFactory::getSession()->set('post_emulation_store', array());
+        
+        // Empty the $post_emulation_store - not 100% i need this
+        \QFactory::getSession()->post_emulation_store = array();
+        
+    }
+    
+    // This is used for testing that the varibles get stored
+    if($keep_store === true) {
+        
+        \QFactory::getSession()->set('post_emulation_store', $post_store);
+        
+    } else {
+        
+        // Empty the registry store -  but keep it as an array
+        \QFactory::getSession()->set('post_emulation_store', array());
+        
+        // Empty the $post_emulation_store - not 100% i need this
+        \QFactory::getSession()->post_emulation_store = array();
+        
+    }
+    
+    // Set the store timer to zero
+    \QFactory::getSession()->set('post_emulation_timer', '0');
+    
+    // Return the post store - this compensates for logout
+    if(!is_array($post_store)) {
+        return array();
+    } else {
+        return $post_store;
+    }
     
 }

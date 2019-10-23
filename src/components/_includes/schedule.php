@@ -926,19 +926,19 @@ function validate_schedule_times($start_time, $end_time, $employee_id, $schedule
      
     // If start time is after end time show message and stop further processing
     if($start_time > $end_time) {        
-        $smarty->assign('warning_msg', _gettext("Schedule ends before it starts."));
+        $smarty->assign('msg_danger', _gettext("Schedule ends before it starts."));
         return false;
     }
 
     // If the start time is the same as the end time show message and stop further processing
     if($start_time == $end_time) {       
-        $smarty->assign('warning_msg', _gettext("Start Time and End Time are the Same."));        
+        $smarty->assign('msg_danger', _gettext("Start Time and End Time are the Same."));        
         return false;
     }
 
     // Check the schedule is within Company Hours    
     if($start_time < $company_day_start || $end_time > $company_day_end) {            
-        $smarty->assign('warning_msg', _gettext("You cannot book work outside of company hours"));    
+        $smarty->assign('msg_danger', _gettext("You cannot book work outside of company hours"));    
         return false;
     }    
 
@@ -967,13 +967,13 @@ function validate_schedule_times($start_time, $end_time, $employee_id, $schedule
 
             // Check if this schedule item ends after another item has started      
             if($start_time <= $rs->fields['start_time'] && $end_time >= $rs->fields['start_time']) {                        
-                $smarty->assign('warning_msg', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
+                $smarty->assign('msg_danger', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
                 return false;           
             }
 
             // Check if this schedule item starts before another item has finished
             if($start_time >= $rs->fields['start_time'] && $start_time <= $rs->fields['end_time']) {                    
-                $smarty->assign('warning_msg', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
+                $smarty->assign('msg_danger', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
                 return false;
             }
         

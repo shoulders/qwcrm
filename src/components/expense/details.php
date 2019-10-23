@@ -14,7 +14,7 @@ require(INCLUDES_DIR.'payment.php');
 
 // Check if we have an expense_id
 if(!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id']) {
-    force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
+    force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));
 }
 
 // Payment Details

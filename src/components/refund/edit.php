@@ -19,7 +19,7 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a refund_id
 if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
-    force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));
+    force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -30,12 +30,12 @@ if(isset(\QFactory::$VAR['submit'])) {
     recalculate_refund_totals(\QFactory::$VAR['refund_id']);
     
     // load details page
-    force_page('refund', 'details&refund_id='.\QFactory::$VAR['refund_id'], 'information_msg='._gettext("Refund updated successfully.")); 
+    force_page('refund', 'details&refund_id='.\QFactory::$VAR['refund_id'], 'msg_success='._gettext("Refund updated successfully.")); 
 } else {
     
     // Check if refund can be edited
     if(!check_refund_can_be_edited(\QFactory::$VAR['refund_id'])) {
-        force_page('refund', 'details&refund_id='.\QFactory::$VAR['refund_id'], 'warning_msg='._gettext("You cannot edit this refund because its status does not allow it."));
+        force_page('refund', 'details&refund_id='.\QFactory::$VAR['refund_id'], 'msg_danger='._gettext("You cannot edit this refund because its status does not allow it."));
     }
 
     // Build the page

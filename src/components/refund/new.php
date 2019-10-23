@@ -27,12 +27,12 @@ if(!check_page_accessed_via_qwcrm('refund', 'new') && !check_page_accessed_via_q
 
 // Check if we have a refund type and is valid
 if(!isset(\QFactory::$VAR['item_type']) || !\QFactory::$VAR['item_type'] && (\QFactory::$VAR['item_type'] == 'invoice' || \QFactory::$VAR['item_type'] == 'cash_purchase')) {
-    force_page('refund', 'search', 'warning_msg='._gettext("No Refund Type."));
+    force_page('refund', 'search', 'msg_danger='._gettext("No Refund Type."));
 }
 
 // Check if we have an invoice_id
 if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
-    force_page('refund', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
+    force_page('refund', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));
 }
     
 // Process the submitted refund
@@ -45,12 +45,12 @@ if (isset(\QFactory::$VAR['submit'])) {
         if (\QFactory::$VAR['submit'] == 'submitandpayment') {
 
             // Load the new payment page for expense
-             force_page('payment', 'new&type=refund&refund_id='.$refund_id, 'information_msg='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+             force_page('payment', 'new&type=refund&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
 
         } else {
 
             // load refund details page
-            force_page('refund', 'details&refund_id='.$refund_id, 'information_msg='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+            force_page('refund', 'details&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
         }    
 
  // Load refund page with the invoice refund details
@@ -58,7 +58,7 @@ if (isset(\QFactory::$VAR['submit'])) {
 
     // Make sure the invoice is allowed to be refunded
     if(!check_invoice_can_be_refunded(\QFactory::$VAR['invoice_id'])) {
-        force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id'], 'warning_msg='._gettext("Invoice").': '.\QFactory::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
+        force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id'], 'msg_danger='._gettext("Invoice").': '.\QFactory::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
     }
 
     $invoice_details = get_invoice_details(\QFactory::$VAR['invoice_id']);

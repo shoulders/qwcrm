@@ -641,7 +641,7 @@ function update_payment_status($payment_id, $new_status, $silent = false) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $payment_details['status']) {        
-        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -656,7 +656,7 @@ function update_payment_status($payment_id, $new_status, $silent = false) {
     } else {        
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('information_msg', _gettext("Payment status updated.")); }
+        if (!$silent) { postEmulationWrite('msg_success', _gettext("Payment status updated.")); }
         
         // For writing message to log file, get payment status display name
         $payment_status_names = get_payment_status_names();
@@ -800,7 +800,7 @@ function validate_payment_amount($record_balance, $payment_amount) {
     // If a negative amount has been submitted. (This should not be allowed because of the <input> masks.)
     if($payment_amount < 0){
         
-        $smarty->assign('warning_msg', _gettext("You can not enter a payment with a negative amount."));
+        $smarty->assign('msg_danger', _gettext("You can not enter a payment with a negative amount."));
         
         return false;
         
@@ -809,7 +809,7 @@ function validate_payment_amount($record_balance, $payment_amount) {
     // Has a zero amount been submitted, this is not allowed
     if($payment_amount == 0){
         
-        $smarty->assign('warning_msg', _gettext("You can not enter a payment with a zero (0.00) amount."));
+        $smarty->assign('msg_danger', _gettext("You can not enter a payment with a zero (0.00) amount."));
         
         return false;
         
@@ -818,7 +818,7 @@ function validate_payment_amount($record_balance, $payment_amount) {
     // Is the payment larger than the outstanding invoice balance, this is not allowed
     if($payment_amount > $record_balance){
         
-        $smarty->assign('warning_msg', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
+        $smarty->assign('msg_danger', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
         
         return false;
         
@@ -875,19 +875,19 @@ function check_payment_method_is_active($method, $direction = null) {
     
     // Is the current payment method active, if not you cannot change status
     if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
-        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because it's current payment method is not available."));
+        //postEmulationWrite('msg_danger', _gettext("The payment status cannot be changed because it's current payment method is not available."));
         return false;        
     }
     
     // Is deleted
     if($payment_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be changed because the payment has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The payment status cannot be changed because the payment has been deleted."));
         return false;        
     }
     
     // Is this an invoice payment and parent invoice has been refunded
     if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be changed because the parent invoice has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be changed because the parent invoice has been refunded."));
         return false;  
     }
         
@@ -907,31 +907,31 @@ function check_payment_can_be_refunded($payment_id) {
     
     // Is partially paid
     if($payment_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This payment cannot be refunded because the payment is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This payment cannot be refunded because the payment is partially paid."));
         return false;
     }
         
     // Is refunded
     if($payment_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the payment has already been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be refunded because the payment has already been refunded."));
         return false;        
     }
     
     // Is cancelled
     if($payment_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the payment has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be refunded because the payment has been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($payment_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the payment has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be refunded because the payment has been deleted."));
         return false;        
     }    
     
     // Is this an invoice payment and parent invoice has been refunded
     if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be refunded because the parent invoice has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be refunded because the parent invoice has been refunded."));
         return false;  
     }
     
@@ -951,19 +951,19 @@ function check_payment_can_be_cancelled($payment_id) {
     
     // Is cancelled
     if($payment_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be cancelled because the payment has already been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be cancelled because the payment has already been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($payment_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be cancelled because the payment has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be cancelled because the payment has been deleted."));
         return false;        
     }
     
     // Is this an invoice payment and parent invoice has been refunded
     if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be cancelled because the parent invoice has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be cancelled because the parent invoice has been refunded."));
         return false;  
     }
     
@@ -983,19 +983,19 @@ function check_payment_can_be_deleted($payment_id) {
     
     // Is cancelled
     if($payment_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("This payment cannot be deleted because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("This payment cannot be deleted because it has been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($payment_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("This payment cannot be deleted because it already been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("This payment cannot be deleted because it already been deleted."));
         return false;        
     }
     
     // Is this an invoice payment and parent invoice has been refunded
     if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be deleted because the parent invoice has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be deleted because the parent invoice has been refunded."));
         return false;  
     }
     
@@ -1015,31 +1015,31 @@ function check_payment_can_be_deleted($payment_id) {
     
     // Is on a different tax system
     if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because it is on a different Tax system."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be edited because it is on a different Tax system."));
         return false;        
     }
     
     /* Is the current payment method active, if not you cannot change status
     if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
-        //postEmulationWrite('warning_msg', _gettext("The payment status cannot be edited because it's current payment method is not available."));
+        //postEmulationWrite('msg_danger', _gettext("The payment status cannot be edited because it's current payment method is not available."));
         return false;        
     }*/
     
     // Is Cancelled
     if($payment_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be edited because it has been cancelled."));
         return false;        
     }
            
     // Is Deleted
     if($payment_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be edited because it has been deleted."));
         return false;        
     }
     
     // Is this an invoice payment and parent invoice has been refunded
     if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
         return false;  
     }
 

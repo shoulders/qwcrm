@@ -60,7 +60,7 @@ if(!isset(\QFactory::$VAR['stage']) || \QFactory::$VAR['stage'] == 'database_con
             $record = _gettext("The upgrade procedure has been split into multiple parts to prevent server timeouts.").'<br>';
             $record .= _gettext("Follow this process through until the upgrade is complete.").'<br>';
             $record .= _gettext("The final QWcrm version will be").': '.QWCRM_VERSION;    
-            $smarty->assign('information_msg', $record);            
+            $smarty->assign('msg_success', $record);            
         }
         
         $smarty->assign('stage', 'database_upgrade'); 
@@ -73,12 +73,12 @@ if(!isset(\QFactory::$VAR['stage']) || \QFactory::$VAR['stage'] == 'database_con
         if($qsetup->verify_database_connection_details($qwcrm_config->db_host, $qwcrm_config->db_user, $qwcrm_config->db_pass, $qwcrm_config->db_name)) {            
             $smarty->assign('enable_next', true);
             $record = _gettext("Connected successfully to the database with the supplied credentials from the config file.");
-            $smarty->assign('information_msg', $record);
+            $smarty->assign('msg_success', $record);
             $qsetup->write_record_to_setup_log('upgrade', $record);                   
         } else {            
             $smarty->assign('enable_next', false);
             $record = _gettext("Failed to connect to the database with the supplied credentials. Check your config file.");
-            $smarty->assign('Warning_msg', $record);
+            $smarty->assign('msg_danger', $record);
             $qsetup->write_record_to_setup_log('upgrade', $record);            
         }
         
@@ -105,14 +105,14 @@ if(\QFactory::$VAR['stage'] == 'database_upgrade') {
         
         if(!QSetup::$setup_error_flag) {            
             $record = _gettext("The database upgraded successfully.");            
-            $smarty->assign('information_msg', $record); 
+            $smarty->assign('msg_success', $record); 
             $qsetup->write_record_to_setup_log('upgrade', $record);
             \QFactory::$VAR['stage'] = 'database_upgrade_results';            
         
         // Load the results page with the error message      
         } else {              
            $record = _gettext("The database failed to upgrade.");                      
-           $smarty->assign('warning_msg', $record);
+           $smarty->assign('msg_danger', $record);
            $qsetup->write_record_to_setup_log('upgrade', $record);
            \QFactory::$VAR['stage'] = 'database_upgrade_results';
            
@@ -135,7 +135,7 @@ if(\QFactory::$VAR['stage'] == 'database_upgrade_results') {
         
             $record = _gettext("The QWcrm upgrade process has completed successfully.");
             $qsetup->write_record_to_setup_log('upgrade', $record);
-            $smarty->assign('information_msg', $record);
+            $smarty->assign('msg_success', $record);
             \QFactory::$VAR['stage'] = 'delete_setup_folder'; 
     
     // Load the page  
@@ -145,7 +145,7 @@ if(\QFactory::$VAR['stage'] == 'database_upgrade_results') {
         if(QSetup::$split_database_upgrade) {  
             $record = _gettext("This QWcrm upgrade `Part` has completed successfully.");
             $qsetup->write_record_to_setup_log('upgrade', $record);
-            $smarty->assign('information_msg', $record);
+            $smarty->assign('msg_success', $record);
             
             // Set the 'Next' button to restart from the datbase upgrade step
             $next_button_value = 'database_connection';

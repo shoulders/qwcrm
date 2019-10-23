@@ -56,7 +56,7 @@ if(isset(\QFactory::$VAR['submit'])) {
     update_payment_options(\QFactory::$VAR['qform']);
 
     // Assign success message    
-    $smarty->assign('information_msg', _gettext("Payment Options Updated.") );
+    $smarty->assign('msg_success', _gettext("Payment Options Updated.") );
     
     // Log activity 
     write_record_to_activity_log(_gettext("Payment Options Updated."));

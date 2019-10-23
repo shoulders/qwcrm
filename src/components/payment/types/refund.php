@@ -80,7 +80,7 @@ class PType {
         
         // If the balance has been cleared, redirect to the record details page
         if($this->refund_details['balance'] == 0) {
-            force_page('refund', 'details&refund_id='.$this->VAR['refund_id'], 'information_msg='._gettext("The balance has been cleared."));
+            force_page('refund', 'details&refund_id='.$this->VAR['refund_id'], 'msg_success='._gettext("The balance has been cleared."));
         }
         
         return;
@@ -133,7 +133,7 @@ class PType {
         //$this->refund_details = get_refund_details($this->VAR['qpayment']['refund_id']);        
         
         // Load the relevant record details page
-        force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'information_msg='._gettext("Payment updated successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'msg_success='._gettext("Payment updated successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -152,7 +152,7 @@ class PType {
         //$this->refund_details = get_refund_details($this->VAR['qpayment']['refund_id']);        
         
         // Load the relevant record details page
-        force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'information_msg='._gettext("Payment cancelled successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'msg_success='._gettext("Payment cancelled successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -171,7 +171,7 @@ class PType {
         //$this->refund_details = get_refund_details($this->VAR['qpayment']['refund_id']);        
         
         // Load the relevant record details page
-        force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'information_msg='._gettext("Payment deleted successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'msg_success='._gettext("Payment deleted successfully and Refund").' '.$this->VAR['qpayment']['refund_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -182,9 +182,9 @@ class PType {
         
         // Is on a different tax system
         if($this->refund_details['tax_system'] != QW_TAX_SYSTEM) {
-            //postEmulationWrite('warning_msg', _gettext("The refund cannot receive a payment because it is on a different tax system."));
+            //postEmulationWrite('msg_danger', _gettext("The refund cannot receive a payment because it is on a different tax system."));
             //return false;            
-            force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'warning_msg='._gettext("The refund cannot receive a payment because it is on a different tax system."));
+            force_page('refund', 'details&refund_id='.$this->VAR['qpayment']['refund_id'], 'msg_danger='._gettext("The refund cannot receive a payment because it is on a different tax system."));
             
         }
 

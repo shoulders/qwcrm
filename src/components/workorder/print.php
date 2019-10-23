@@ -15,12 +15,12 @@ require(INCLUDES_DIR.'user.php');
 
 // Check if we have a workorder_id
 if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
-    force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search', 'msg_danger='._gettext("No Workorder ID supplied."));
 }
 
 // Check there is a print content and print type set
 if(!isset(\QFactory::$VAR['print_content'], \QFactory::$VAR['print_type']) || !\QFactory::$VAR['print_content'] || !\QFactory::$VAR['print_type']) {
-    force_page('workorder', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
+    force_page('workorder', 'search', 'msg_danger='._gettext("Some or all of the Printing Options are not set."));
 }
 
 // Get Record Details

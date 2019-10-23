@@ -570,7 +570,7 @@ function check_user_username_exists($username, $current_username = null) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
+            $smarty->assign('msg_danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
             
             return true;
             
@@ -608,7 +608,7 @@ function check_user_email_exists($email, $current_email = null) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', _gettext("The email address has already been used. Please use a different one."));
+            $smarty->assign('msg_danger', _gettext("The email address has already been used. Please use a different one."));
             
             return true;
             
@@ -641,7 +641,7 @@ function check_client_already_has_login($client_id) {
         
         if($result_count >= 1) {
             
-            $smarty->assign('warning_msg', _gettext("The client already has a login."));           
+            $smarty->assign('msg_danger', _gettext("The client already has a login."));           
             
             return true;
             
@@ -741,7 +741,7 @@ function login($qform, $credentials, $options = array())
     if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
         
         // Set error message
-        $smarty->assign('warning_msg', _gettext("Username or Password Missing."));
+        $smarty->assign('msg_danger', _gettext("Username or Password Missing."));
         
         return false;
         
@@ -751,7 +751,7 @@ function login($qform, $credentials, $options = array())
     if(get_user_details(get_user_id_by_username($qform['login_username']), 'require_reset')) {
         
         // Set error message
-        $smarty->assign('warning_msg', _gettext("You must reset your password before you are allowed to login."));
+        $smarty->assign('msg_danger', _gettext("You must reset your password before you are allowed to login."));
         
         return false;
         
@@ -761,7 +761,7 @@ function login($qform, $credentials, $options = array())
     if(get_user_details(get_user_id_by_username($qform['login_username']), 'active') === '0') {  
 
         // Set error message
-        $smarty->assign('warning_msg', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
+        $smarty->assign('msg_danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
 
         // Log activity       
         write_record_to_activity_log(_gettext("Login denied for").' '.$qform['login_username'].'.');
@@ -784,7 +784,7 @@ function login($qform, $credentials, $options = array())
         update_client_last_active($user->login_client_id);        
 
         // set success message to survice the login event
-        postEmulationWrite('information_msg', _gettext("Login successful."));
+        postEmulationWrite('msg_success', _gettext("Login successful."));
         
         return true;
 
@@ -795,7 +795,7 @@ function login($qform, $credentials, $options = array())
         // Log activity       
         write_record_to_activity_log(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
 
-        $smarty->assign('warning_msg', _gettext("Login Failed. Check you username and password."));
+        $smarty->assign('msg_danger', _gettext("Login Failed. Check you username and password."));
         
         return false;
 
@@ -835,7 +835,7 @@ function logout($silent = null)
         // Reload Homepage with message (default)
         
         // only $_GET will work because the session store is destroyed (this is good behaviour)
-        force_page('index.php', null, 'information_msg='._gettext("Logout successful."), 'get');
+        force_page('index.php', null, 'msg_success='._gettext("Logout successful."), 'get');
         
     }
 
@@ -920,7 +920,7 @@ function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
         $error_msg .= '<p><strong>Note:</strong> Error code <kbd>missing-input-response</kbd> may mean the user just didn\'t complete the reCAPTCHA.</p>';
         $error_msg .= '<p><a href="/">Try again</a></p>';*/        
         
-        $smarty->assign('warning_msg', _gettext("Google reCAPTCHA Verification Failed."));
+        $smarty->assign('msg_danger', _gettext("Google reCAPTCHA Verification Failed."));
         return false;
         
     }  
@@ -1113,24 +1113,24 @@ function validate_reset_token($token) {
         
         // Check there is only 1 record
         if($rs->RecordCount() != 1) {
-            $smarty->assign('warning_msg', _gettext("The reset token does not exist."));
+            $smarty->assign('msg_danger', _gettext("The reset token does not exist."));
             return false;
         }
         
         // check if user is blocked        
         if(!get_user_details($rs->fields['user_id'], 'active')){
-            $smarty->assign('warning_msg', _gettext("The user is blocked."));
+            $smarty->assign('msg_danger', _gettext("The user is blocked."));
             return false;
         }
         
         // Check not expired
         if($rs->fields['expiry_time'] < time()){
-            $smarty->assign('warning_msg', _gettext("The reset token has expired."));
+            $smarty->assign('msg_danger', _gettext("The reset token has expired."));
             return false;
         }
         
         // All checked passed
-        $smarty->assign('information_msg', _gettext("Token accepted."));
+        $smarty->assign('msg_success', _gettext("Token accepted."));
         return true;
         
         
@@ -1156,18 +1156,18 @@ function validate_reset_code($reset_code) {
         
         // Check there is only 1 record
         if($rs->RecordCount() != 1) {            
-            $smarty->assign('warning_msg', 'The reset code does not exist.');
+            $smarty->assign('msg_danger', 'The reset code does not exist.');
             return false;
         }
         
         // Check not expired
         if($rs->fields['reset_code_expiry_time'] < time()){
-            $smarty->assign('warning_msg', 'The reset code has expired.');
+            $smarty->assign('msg_danger', 'The reset code has expired.');
             return false;
         }
         
         // All checked passed
-        $smarty->assign('information_msg', _gettext("Reset code accepted."));        
+        $smarty->assign('msg_success', _gettext("Reset code accepted."));        
         return true;
         
         
@@ -1244,7 +1244,7 @@ function check_user_can_be_deleted($user_id) {
     
     // User cannot delete their own account
     if($user_id == QFactory::getUser()->login_user_id) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete your own account."));        
+        postEmulationWrite('msg_danger', _gettext("You can not delete your own account."));        
         return false;
     }
     
@@ -1256,7 +1256,7 @@ function check_user_can_be_deleted($user_id) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
         }  
         if($rs->fields['count'] <= 1 ) {
-            postEmulationWrite('warning_msg', _gettext("You can not delete the last administrator user account."));        
+            postEmulationWrite('msg_danger', _gettext("You can not delete the last administrator user account."));        
             return false;
         }        
     }
@@ -1267,7 +1267,7 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has created work orders."));        
+        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has created work orders."));        
         return false;
     }
     
@@ -1277,7 +1277,7 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has assigned work orders."));
+        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has assigned work orders."));
         return false;
     }
     
@@ -1287,7 +1287,7 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has invoices."));
+        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has invoices."));
         return false;
     }    
     
@@ -1297,7 +1297,7 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('warning_msg', _gettext("You can not delete a user who has Vouchers."));
+        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has Vouchers."));
         return false;
     }
      

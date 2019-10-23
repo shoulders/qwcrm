@@ -317,7 +317,7 @@ function update_otherincome_status($otherincome_id, $new_status, $silent = false
     
     // if the new status is the same as the current one, exit
     if($new_status == $otherincome_details['status']) {        
-        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -339,7 +339,7 @@ function update_otherincome_status($otherincome_id, $new_status, $silent = false
     } else {    
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('information_msg', _gettext("otherincome status updated.")); }
+        if (!$silent) { postEmulationWrite('msg_success', _gettext("otherincome status updated.")); }
         
         // For writing message to log file, get otherincome status display name
         $otherincome_status_display_name = _gettext(get_otherincome_status_display_name($new_status));
@@ -499,25 +499,25 @@ function recalculate_otherincome_totals($otherincome_id) {
     
     // Is partially paid
     if($otherincome_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments and is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome status cannot be changed because the otherincome has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($otherincome_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments and is paid."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome status cannot be changed because the otherincome has payments and is paid."));
         return false;        
     }
     
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome status cannot be changed because the otherincome has been deleted."));
         return false;        
     }
         
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome status cannot be changed because the otherincome has payments."));
         return false;        
     }
 
@@ -537,31 +537,31 @@ function check_otherincome_can_be_refunded($otherincome_id) {
     
     // Is partially paid
     if($otherincome_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be refunded because the otherincome is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be refunded because the otherincome is partially paid."));
         return false;
     }
         
     // Is refunded
     if($otherincome_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be refunded because the otherincome has already been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome cannot be refunded because the otherincome has already been refunded."));
         return false;        
     }
     
     // Is cancelled
     if($otherincome_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be refunded because the otherincome has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome cannot be refunded because the otherincome has been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be refunded because the otherincome has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome cannot be refunded because the otherincome has been deleted."));
         return false;        
     }    
 
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(!count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be refunded because the otherincome has no payments."));
         return false;        
     }
     
@@ -581,31 +581,31 @@ function check_otherincome_can_be_cancelled($otherincome_id) {
     
     // Is partially paid
     if($otherincome_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be cancelled because the otherincome is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be cancelled because the otherincome is partially paid."));
         return false;
     }
         
     // Is paid
     if($otherincome_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("This expense cannot be deleted because it has payments and is paid."));
+        //postEmulationWrite('msg_danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
         return false;        
     }
     
     // Is cancelled
     if($otherincome_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be cancelled because the otherincome has already been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome cannot be cancelled because the otherincome has already been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be cancelled because the otherincome has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome cannot be cancelled because the otherincome has been deleted."));
         return false;        
     }    
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be cancelled because the otherincome has payments."));
         return false;        
     }
     
@@ -625,31 +625,31 @@ function check_otherincome_can_be_deleted($otherincome_id) {
     
     // Is partially paid
     if($otherincome_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments and is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be deleted because it has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($otherincome_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be deleted because it has payments and is paid."));
         return false;        
     }
     
     // Is cancelled
     if($otherincome_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be deleted because it has been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it already been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be deleted because it already been deleted."));
         return false;        
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be deleted because it has payments."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be deleted because it has payments."));
         return false;        
     }
      
@@ -669,43 +669,43 @@ function check_otherincome_can_be_deleted($otherincome_id) {
     
     // Is on a different tax system
     if($otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be edited because it is on a different Tax system."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome cannot be edited because it is on a different Tax system."));
         return false;        
     }
     
     // Is partially paid
     if($otherincome_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments and is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be edited because it has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($otherincome_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments and is paid."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be edited because it has payments and is paid."));
         return false;        
     }
     
     // Is cancelled
     if($otherincome_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it already been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be edited because it already been deleted."));
         return false;        
     }
     
     // Is deleted
     if($otherincome_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The otherincome cannot be edited because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The otherincome cannot be edited because it has been deleted."));
         return false;        
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'otherincome', null, null, null, null, null, null, $otherincome_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it has payments."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be edited because it has payments."));
         return false;        
     }
     
     // The current record VAT code is enabled
     if(!get_vat_tax_code_status($otherincome_details['vat_tax_code'])) {
-        //postEmulationWrite('warning_msg', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."));
+        //postEmulationWrite('msg_danger', _gettext("This otherincome cannot be edited because it's current VAT Tax Code is not enabled."));
         return false; 
     }
 

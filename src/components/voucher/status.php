@@ -18,7 +18,7 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a voucher_id
 if(!isset(\QFactory::$VAR['voucher_id']) || !\QFactory::$VAR['voucher_id']) {
-    force_page('voucher', 'search', 'warning_msg='._gettext("No Voucher ID supplied."));
+    force_page('voucher', 'search', 'msg_danger='._gettext("No Voucher ID supplied."));
 }
 
 // Update Voucher Status

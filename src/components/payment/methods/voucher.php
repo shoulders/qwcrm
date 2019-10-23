@@ -21,7 +21,7 @@ class PMethod extends NewPayment {
         // Check the Voucher exists, get the voucher_id and set amount
         if(!$this->VAR['qpayment']['voucher_id'] = get_voucher_id_by_voucher_code($this->VAR['qpayment']['voucher_code'])) {
             NewPayment::$payment_valid = false;
-            $this->smarty->assign('warning_msg', _gettext("There is no Voucher with that code."));                   
+            $this->smarty->assign('msg_danger', _gettext("There is no Voucher with that code."));                   
         } else {                        
             $this->VAR['qpayment']['amount'] = get_voucher_details($this->VAR['qpayment']['voucher_id'], 'unit_net');
         }        
@@ -34,7 +34,7 @@ class PMethod extends NewPayment {
         // Make sure the Voucher is valid and then pass the amount to the next process
         if(!check_voucher_can_be_redeemed($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
             NewPayment::$payment_valid = false;
-            $this->smarty->assign('warning_msg', _gettext("This Voucher is not valid or cannot be redeemed."));
+            $this->smarty->assign('msg_danger', _gettext("This Voucher is not valid or cannot be redeemed."));
             return false;                
         }
         
@@ -72,11 +72,11 @@ class PMethod extends NewPayment {
         // Set success/failure message
         if(!NewPayment::$payment_processed) {
         
-            $this->smarty->assign('warning_msg', _gettext("Voucher was not applied successfully."));
+            $this->smarty->assign('msg_danger', _gettext("Voucher was not applied successfully."));
         
         } else {            
             
-            $this->smarty->assign('information_msg', _gettext("Voucher applied successfully."));
+            $this->smarty->assign('msg_success', _gettext("Voucher applied successfully."));
 
         }
         

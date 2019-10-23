@@ -352,7 +352,7 @@ function update_refund_status($refund_id, $new_status, $silent = false) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $refund_details['status']) {        
-        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -377,7 +377,7 @@ function update_refund_status($refund_id, $new_status, $silent = false) {
         $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('information_msg', _gettext("Refund status updated.")); }
+        if (!$silent) { postEmulationWrite('msg_success', _gettext("Refund status updated.")); }
         
         // For writing message to log file, get refund status display name
         $refund_status_display_name = _gettext(get_refund_status_display_name($new_status));
@@ -601,43 +601,43 @@ function recalculate_refund_totals($refund_id) {
     
     // Is unpaid
     if($refund_details['status'] == 'unpaid') {
-        //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund is unpaid."));
+        //postEmulationWrite('msg_danger', _gettext("The refund status cannot be changed because the refund is unpaid."));
         return false;        
     }
     
     // Is partially paid
     if($refund_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has payments and is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("The refund status cannot be changed because the refund has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($refund_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has payments and is paid."));
+        //postEmulationWrite('msg_danger', _gettext("The refund status cannot be changed because the refund has payments and is paid."));
         return false;        
     }
     
     // Is Cancelled
     if($refund_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The refund status cannot be changed because the refund has been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($refund_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The refund status cannot be changed because the refund has been deleted."));
         return false;        
     }
         
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The refund status cannot be changed because the refund has payments."));
+        //postEmulationWrite('msg_danger', _gettext("The refund status cannot be changed because the refund has payments."));
         return false;        
     }
     
     // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
     if(!check_invoice_vouchers_allow_refunding($refund_details ['invoice_id'])) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+        //postEmulationWrite('msg_danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
         return false;
     }
 
@@ -657,31 +657,31 @@ function check_refund_can_be_cancelled($refund_id) {
     
     // Is partially paid (not used yet)
     if($refund_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be cancelled because the refund is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be cancelled because the refund is partially paid."));
         return false;
     }
         
     // Is cancelled
     if($refund_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The refund cannot be cancelled because the refund has already been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The refund cannot be cancelled because the refund has already been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($refund_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The refund cannot be cancelled because the refund has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The refund cannot be cancelled because the refund has been deleted."));
         return false;        
     }    
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be cancelled because the refund has payments."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be cancelled because the refund has payments."));
         return false;        
     }
     
     // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
     if(!check_invoice_vouchers_allow_refund_cancellation($refund_details['invoice_id'])) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
+        //postEmulationWrite('msg_danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
         return false;
     }
     
@@ -701,37 +701,37 @@ function check_refund_can_be_deleted($refund_id) {
       
     // Is partially paid (not used yet)
     if($refund_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it has payments and is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be deleted because it has payments and is partially paid."));
         return false;        
     }     
     
     // Is paid
     if($refund_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it has payments and is paid."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be deleted because it has payments and is paid."));
         return false;        
     }
     
     // Is cancelled
     if($refund_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be deleted because it has been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($refund_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it already been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be deleted because it already been deleted."));
         return false;        
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be deleted because it has payments."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be deleted because it has payments."));
         return false;        
     }
     
     // Does the invoice status allow it to have its refund deleted (including vouchers)
     if(!check_invoice_vouchers_allow_refund_deletion($refund_details['invoice_id'])) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
+        //postEmulationWrite('msg_danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
         return false;
     } 
      
@@ -751,55 +751,55 @@ function check_refund_can_be_deleted($refund_id) {
     
     // Is on a different tax system
     if($refund_details['tax_system'] != QW_TAX_SYSTEM) {
-        //postEmulationWrite('warning_msg', _gettext("The refund cannot be edited because it is on a different Tax system."));
+        //postEmulationWrite('msg_danger', _gettext("The refund cannot be edited because it is on a different Tax system."));
         return false;        
     }
     
     /* Is unpaid
     if($refund_details['status'] == 'unpaid') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments and is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be edited because it has payments and is partially paid."));
         return false;        
     }*/
     
     // Is partially paid
     if($refund_details['status'] == 'partially_paid') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments and is partially paid."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be edited because it has payments and is partially paid."));
         return false;        
     }
     
     // Is paid
     if($refund_details['status'] == 'paid') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments and is paid."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be edited because it has payments and is paid."));
         return false;        
     }
     
     // Is cancelled
     if($refund_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it already been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be edited because it already been cancelled."));
         return false;        
     }
     
     // Is deleted
     if($refund_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The refund cannot be edited because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The refund cannot be edited because it has been deleted."));
         return false;        
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it has payments."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be edited because it has payments."));
         return false;        
     }
     
     // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
     if(!check_invoice_vouchers_allow_refunding($refund_details['invoice_id'])) {
-        //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+        //postEmulationWrite('msg_danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
         return false;
     }
     
     // The current record VAT code is enabled
     if(!get_vat_tax_code_status($refund_details['vat_tax_code'])) {
-        //postEmulationWrite('warning_msg', _gettext("This refund cannot be edited because it's current VAT Tax Code is not enabled."));
+        //postEmulationWrite('msg_danger', _gettext("This refund cannot be edited because it's current VAT Tax Code is not enabled."));
         return false; 
     }
 

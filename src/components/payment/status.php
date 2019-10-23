@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'payment.php');
 
 // Check if we have a payment_id
 if(!isset(\QFactory::$VAR['payment_id']) || !\QFactory::$VAR['payment_id']) {
-    force_page('payment', 'search', 'warning_msg='._gettext("No Payment ID supplied."));
+    force_page('payment', 'search', 'msg_danger='._gettext("No Payment ID supplied."));
 }
 
 // Update Payment Status

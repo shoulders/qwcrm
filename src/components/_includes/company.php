@@ -315,7 +315,7 @@ function update_company_details($qform) {
         //$smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
         
         // Assign success message
-        $smarty->assign('information_msg', _gettext("Company details updated."));
+        $smarty->assign('msg_success', _gettext("Company details updated."));
         
         // Log activity        
         write_record_to_activity_log(_gettext("Company details updated."));
@@ -346,7 +346,7 @@ function update_company_hours($openingTime, $closingTime) {
     } else {
         
         // Assign success message
-        $smarty->assign('information_msg', _gettext("Business hours have been updated."));
+        $smarty->assign('msg_success', _gettext("Business hours have been updated."));
         
         // Log activity        
         write_record_to_activity_log(_gettext("Business hours have been updated."));        
@@ -385,7 +385,7 @@ function update_vat_rates($vat_rates) {
         
     } else {
         // Assign success message
-        //$smarty->assign('information_msg', _gettext("VAT rates have been updated."));
+        //$smarty->assign('msg_success', _gettext("VAT rates have been updated."));
         
         // Log activity        
         //write_record_to_activity_log(_gettext("VAT rates have been updated."));        
@@ -412,13 +412,13 @@ function check_start_end_times($start_time, $end_time) {
     
     // If start time is before end time
     if($start_time > $end_time) {        
-        $smarty->assign('warning_msg', _gettext("Start Time is after End Time."));
+        $smarty->assign('msg_danger', _gettext("Start Time is after End Time."));
         return false;
     }
         
     // If the start and end time are the same    
     if($start_time ==  $end_time) {        
-        $smarty->assign('warning_msg', _gettext("Start Time is the same as End Time."));
+        $smarty->assign('msg_danger', _gettext("Start Time is the same as End Time."));
         return false;
     }
     

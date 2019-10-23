@@ -78,7 +78,7 @@ class PType {
         
         // If the balance has been cleared, redirect to the record details page
         if($this->otherincome_details['balance'] == 0) {
-            force_page('otherincome', 'details&otherincome_id='.$this->VAR['otherincome_id'], 'information_msg='._gettext("The balance has been cleared."));
+            force_page('otherincome', 'details&otherincome_id='.$this->VAR['otherincome_id'], 'msg_success='._gettext("The balance has been cleared."));
         }
         
         return;
@@ -131,7 +131,7 @@ class PType {
         //$this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
         
         // Load the relevant record details page
-        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'information_msg='._gettext("Payment updated successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'msg_success='._gettext("Payment updated successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -150,7 +150,7 @@ class PType {
         //$this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
         
         // Load the relevant record details page
-        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'information_msg='._gettext("Payment cancelled successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'msg_success='._gettext("Payment cancelled successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -169,7 +169,7 @@ class PType {
         //$this->otherincome_details = get_otherincome_details($this->VAR['qpayment']['otherincome_id']);        
         
         // Load the relevant record details page
-        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'information_msg='._gettext("Payment deleted successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'msg_success='._gettext("Payment deleted successfully and Otherincome").' '.$this->VAR['qpayment']['otherincome_id'].' '._gettext("has been updated to reflect this change."));
                 
         return;        
         
@@ -180,9 +180,9 @@ class PType {
         
         // Is on a different tax system
         if($this->otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-            //postEmulationWrite('warning_msg', _gettext("The other income cannot receive a payment because it is on a different tax system."));
+            //postEmulationWrite('msg_danger', _gettext("The other income cannot receive a payment because it is on a different tax system."));
             //return false;            
-            force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'warning_msg='._gettext("The other income cannot receive a payment because it is on a different tax system."));
+            force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'msg_danger='._gettext("The other income cannot receive a payment because it is on a different tax system."));
             
         }
 

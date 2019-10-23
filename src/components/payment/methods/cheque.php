@@ -48,11 +48,11 @@ class PMethod extends NewPayment {
         // Set success/failure message
         if(!NewPayment::$payment_processed) {
         
-            $this->smarty->assign('warning_msg', _gettext("Cheque payment was not successful."));
+            $this->smarty->assign('msg_danger', _gettext("Cheque payment was not successful."));
         
         } else {            
             
-            $this->smarty->assign('information_msg', _gettext("Cheque payment added successfully."));
+            $this->smarty->assign('msg_success', _gettext("Cheque payment added successfully."));
 
         }
         

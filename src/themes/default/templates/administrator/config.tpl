@@ -114,7 +114,7 @@
                         <td>
                             <select class="olotd5" id="default_language" name="qform[default_language]">
                                 {section name=l loop=$available_languages}  
-                                    <option value="{$available_languages[l]}"{if $available_languages[l] == $qform.default_language} selected{/if}>{t}{$available_languages[l]}{/t}</option>
+                                    <option value="{$available_languages[l]}"{if $available_languages[l] == $qwcrm_config.default_language} selected{/if}>{t}{$available_languages[l]}{/t}</option>
                                 {/section} 
                             </select>
                             <img src="{$theme_images_dir}icons/16x16/help.gif" border="0" onMouseOver="ddrivetip('<div><strong>{t escape=tooltip}Default Language{/t}</strong></div><hr><div>{t escape=tooltip}This is the default language QWcrm uses. If \'Autodetect Language\' is disabled or the user\'s language is not availabe then this language will be used to display translations. If for some reason this fails, the language will default to english. This only works if your PHP enviroment supports Internationalization.{/t}</div>');" onMouseOut="hideddrivetip();">
@@ -234,7 +234,7 @@
                         <td align="right"><b>{t}SMTP Security{/t}:</b></td>
                         <td>
                             <select class="olotd5" name="qform[email_smtp_security]">
-                                <option value="" {if !$qform.email_smtp_security} selected{/if}>{t}None{/t}</option>
+                                <option value="" {if !$qwcrm_config.email_smtp_security} selected{/if}>{t}None{/t}</option>
                                 <option value="ssl" {if $qwcrm_config.email_smtp_security == 'ssl' } selected{/if}>SSL/TLS</option>
                                 <option value="tls" {if $qwcrm_config.email_smtp_security == 'tls' } selected{/if}>STARTTLS</option>                                                                    
                             </select>

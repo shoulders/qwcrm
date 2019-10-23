@@ -13,7 +13,7 @@ require(INCLUDES_DIR.'user.php');
 
 // Check if we have an user_id
 if(!isset(\QFactory::$VAR['user_id']) || !\QFactory::$VAR['user_id']) {
-    force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
+    force_page('user', 'search', 'msg_danger='._gettext("No User ID supplied."));
 }
 
 // If user data has been submitted, Update the record
@@ -34,7 +34,7 @@ if(isset(\QFactory::$VAR['submit'])) {
         update_user(\QFactory::$VAR['qform']);
 
         // Redirect to the new users's details page
-        force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id'], 'information_msg='._gettext("User details updated."));
+        force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id'], 'msg_success='._gettext("User details updated."));
             
     }
 

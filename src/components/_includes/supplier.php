@@ -358,7 +358,7 @@ function update_supplier_status($supplier_id, $new_status, $silent = false) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $supplier_details['status']) {        
-        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -380,7 +380,7 @@ function update_supplier_status($supplier_id, $new_status, $silent = false) {
     } else {    
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('information_msg', _gettext("supplier status updated.")); }
+        if (!$silent) { postEmulationWrite('msg_success', _gettext("supplier status updated.")); }
         
         // For writing message to log file, get supplier status display name
         $supplier_status_display_name = _gettext(get_supplier_status_display_name($new_status));
@@ -488,7 +488,7 @@ function last_supplier_id_lookup() {
     
     /* Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The supplier cannot be changed because the supplier has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
         return false;        
     }*/
 
@@ -509,7 +509,7 @@ function check_supplier_can_be_cancelled($supplier_id) {
    
     // Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
         return false;        
     }  
    
@@ -529,7 +529,7 @@ function check_supplier_can_be_deleted($supplier_id) {
     
     /* Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("This supplier cannot be deleted because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("This supplier cannot be deleted because it has been cancelled."));
         return false;        
     }*/
      
@@ -549,7 +549,7 @@ function check_supplier_can_be_deleted($supplier_id) {
     
     // Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The supplier cannot be edited because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The supplier cannot be edited because it has been cancelled."));
         return false;        
     }
     

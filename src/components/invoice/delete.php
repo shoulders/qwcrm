@@ -25,18 +25,18 @@ if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
 
 // Check if we have an invoice_id
 if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
-    force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));
+    force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));
 }
 
 // Delete Invoice
 if(!delete_invoice(\QFactory::$VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
-    force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id'], 'information_msg='._gettext("The invoice failed to be deleted."));    
+    force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id'], 'msg_success='._gettext("The invoice failed to be deleted."));    
     
 } else {   
     
     // Load the invoice search page with success message
-    force_page('invoice', 'search', 'information_msg='._gettext("The invoice has been deleted successfully."));
+    force_page('invoice', 'search', 'msg_success='._gettext("The invoice has been deleted successfully."));
     
 }

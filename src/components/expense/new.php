@@ -23,17 +23,17 @@ if(isset(\QFactory::$VAR['submit'])) {
     if (\QFactory::$VAR['submit'] == 'submitandnew') {
 
          // Load the new expense page
-         force_page('expense', 'new', 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id );
+         force_page('expense', 'new', 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id );
 
     } elseif (\QFactory::$VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for expense
-         force_page('payment', 'new&type=expense&expense_id='.$expense_id, 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
+         force_page('payment', 'new&type=expense&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
          
     } else {
 
         // load expense details page
-        force_page('expense', 'details&expense_id='.$expense_id, 'information_msg='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
+        force_page('expense', 'details&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
 
      }        
 

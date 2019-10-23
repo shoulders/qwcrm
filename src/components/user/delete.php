@@ -19,7 +19,7 @@ if(!check_page_accessed_via_qwcrm()) {
 
 // Check if we have an user_id
 if(!isset(\QFactory::$VAR['user_id']) || !\QFactory::$VAR['user_id']) {
-    force_page('user', 'search', 'warning_msg='._gettext("No User ID supplied."));
+    force_page('user', 'search', 'msg_danger='._gettext("No User ID supplied."));
 }
 
 // Run the delete function
@@ -31,6 +31,6 @@ if(!delete_user(\QFactory::$VAR['user_id'])) {
 } else {
     
     // load the user search page
-    force_page('user', 'search', 'information_msg='._gettext("User record deleted."));   
+    force_page('user', 'search', 'msg_success='._gettext("User record deleted."));   
     
 }

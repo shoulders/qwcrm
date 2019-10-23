@@ -19,12 +19,12 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an employee_id
 if(!isset(\QFactory::$VAR['employee_id']) || !\QFactory::$VAR['employee_id']) {
-    force_page('user', 'search', 'warning_msg='._gettext("No Employee ID supplied."));
+    force_page('user', 'search', 'msg_danger='._gettext("No Employee ID supplied."));
 }
 
 // Check if we have a workorder_id
 if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
-    force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search', 'msg_danger='._gettext("No Workorder ID supplied."));
 }
 
 // Get client_id
@@ -58,10 +58,10 @@ if(isset(\QFactory::$VAR['submit'])) {
         $start_day             = date('d', date_to_timestamp(\QFactory::$VAR['qform']['start_date'])  );
     
         // Load the schedule day with the newly submitted schedule item
-        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\QFactory::$VAR['qform']['employee_id'].'&workorder_id='.\QFactory::$VAR['qform']['workorder_id'].'&information_msg='._gettext("Schedule Successfully Created"));
+        force_page('schedule', 'day', 'start_year='.$start_year.'&start_month='.$start_month.'&start_day='.$start_day.'&employee_id='.\QFactory::$VAR['qform']['employee_id'].'&workorder_id='.\QFactory::$VAR['qform']['workorder_id'].'&msg_success='._gettext("Schedule Successfully Created"));
         
         // Load the updated schedule details page
-        //force_page('schedule', 'details&schedule_id='.\QFactory::$VAR['qform']['schedule_id'], 'information_msg='.gettext("Schedule Successfully Updated."));
+        //force_page('schedule', 'details&schedule_id='.\QFactory::$VAR['qform']['schedule_id'], 'msg_success='.gettext("Schedule Successfully Updated."));
         
     }
 

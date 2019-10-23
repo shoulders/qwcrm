@@ -20,7 +20,7 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Make sure a payment type is set
 if(!isset(\QFactory::$VAR['type']) && (\QFactory::$VAR['type'] == 'invoice' || \QFactory::$VAR['type'] == 'refund' || \QFactory::$VAR['type'] == 'expense' || \QFactory::$VAR['type'] == 'otherincome')) {
-    force_page('payment', 'search', 'warning_msg='._gettext("No Payment Type supplied."));  
+    force_page('payment', 'search', 'msg_danger='._gettext("No Payment Type supplied."));  
 }
 
 // Prevent undefined variable errors (with and without submit)
@@ -42,28 +42,28 @@ if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_q
     
     // Check we have a valid request
     if(\QFactory::$VAR['qpayment']['type'] == 'invoice' && (!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id'])) {
-        force_page('invoice', 'search', 'warning_msg='._gettext("No Invoice ID supplied."));    
+        force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));    
     }    
     
 } elseif(check_page_accessed_via_qwcrm('refund', 'new') || check_page_accessed_via_qwcrm('refund', 'details')) {   
     
     // Check we have a valid request
     if(\QFactory::$VAR['qpayment']['type'] == 'refund' && (!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id'])) {
-        force_page('refund', 'search', 'warning_msg='._gettext("No Refund ID supplied."));    
+        force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));    
     }    
     
 } elseif(check_page_accessed_via_qwcrm('expense', 'new') || check_page_accessed_via_qwcrm('expense', 'details')) {
     
     // Check we have a valid request
     if(\QFactory::$VAR['qpayment']['type'] == 'expense' && (!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id'])) {
-        force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));    
+        force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));    
     }
  
 } elseif(check_page_accessed_via_qwcrm('otherincome', 'new') || check_page_accessed_via_qwcrm('otherincome', 'details')) {
     
     // Check we have a valid request
     if(\QFactory::$VAR['qpayment']['type'] == 'otherincome' && (!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id'])) {
-        force_page('otherincome', 'search', 'warning_msg='._gettext("No Otherincome ID supplied."));    
+        force_page('otherincome', 'search', 'msg_danger='._gettext("No Otherincome ID supplied."));    
     }
      
 } elseif(!check_page_accessed_via_qwcrm('payment', 'new')) {
@@ -161,7 +161,7 @@ class NewPayment {
             break;
 
             default:
-            force_page('payment', 'search', 'warning_msg='._gettext("Invalid Payment Type."));
+            force_page('payment', 'search', 'msg_danger='._gettext("Invalid Payment Type."));
             break;
 
         }
@@ -209,7 +209,7 @@ class NewPayment {
             break;
 
             default:
-            force_page('payment', 'search', 'warning_msg='._gettext("Invalid Payment Method."));
+            force_page('payment', 'search', 'msg_danger='._gettext("Invalid Payment Method."));
             break;
         }
         

@@ -13,12 +13,12 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_id
 if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
-    force_page('workorder', 'search', 'warning_msg='._gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search', 'msg_danger='._gettext("No Workorder ID supplied."));
 }
 
 // Check if we can edit the workorder comment
 if(get_workorder_details(\QFactory::$VAR['workorder_id'], 'is_closed')) {
-    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id'], 'warning_msg='._gettext("Cannot edit the comment of a closed Work Order."));
+    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id'], 'msg_danger='._gettext("Cannot edit the comment of a closed Work Order."));
 }
 
 // If updated comment are submitted
@@ -28,7 +28,7 @@ if(isset(\QFactory::$VAR['submit'])) {
     update_workorder_comment(\QFactory::$VAR['workorder_id'], \QFactory::$VAR['comment']);
     
     // load the workorder details page
-    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id'], 'information_msg='._gettext("Comment has been updated."));
+    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id'], 'msg_success='._gettext("Comment has been updated."));
     
 }
 

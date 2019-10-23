@@ -464,7 +464,7 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $voucher_details['status']) {        
-        if (!$silent) { postEmulationWrite('warning_msg', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }  
     
@@ -499,7 +499,7 @@ function update_voucher_status($voucher_id, $new_status, $silent = false) {
     } else {    
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('information_msg', _gettext("Voucher status updated.")); }
+        if (!$silent) { postEmulationWrite('msg_success', _gettext("Voucher status updated.")); }
         
         // For writing message to log file, get voucher status display name
         $voucher_status_display_name = _gettext(get_voucher_status_display_name($new_status));
@@ -590,7 +590,7 @@ function refund_voucher($voucher_id, $refund_id) {
     if(!check_single_voucher_can_be_refunded($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'), 'warning_msg='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
+        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'), 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
         
     }
     
@@ -629,7 +629,7 @@ function revert_refund_voucher($voucher_id) {
     if(!check_single_voucher_can_be_refunded($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'), 'warning_msg='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
+        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'), 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
         
     }*/
     
@@ -669,7 +669,7 @@ function cancel_voucher($voucher_id) {
     if(!check_single_voucher_can_be_cancelled($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'warning_msg='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
+        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
         
     } else {
         
@@ -807,7 +807,7 @@ function delete_voucher($voucher_id) {
     if(!check_single_voucher_can_be_deleted($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'warning_msg='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
+        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
         
     } else {
         
@@ -1051,37 +1051,37 @@ function check_voucher_can_be_redeemed($voucher_id, $redeem_invoice_id) {
         
     // Unused and Expired
     if($voucher_details['status'] == 'unused' && check_voucher_is_expired($voucher_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has expired."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has expired."));
         return false;        
     }
     
     // Is Redeemed
     if($voucher_details['status'] == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been redeemed."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been redeemed."));
         return false;        
     }   
     
     // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
     if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been expired."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been expired."));
         return false;        
     }   
         
     // Is Refunded
     if($voucher_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
     if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been deleted."));
         return false;        
     }
     
@@ -1098,7 +1098,7 @@ function check_voucher_can_be_refunded($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
     if(!check_invoice_can_be_refunded(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
         return false;
     }
     
@@ -1117,37 +1117,37 @@ function check_single_voucher_can_be_refunded($voucher_id) {
     
     // Is Redeemed
     if($voucher_details['status'] == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been redeemed."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been redeemed."));
         return false;        
     }
         
     // Is Suspended
     if($voucher_details['status'] == 'suspended') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has expired."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has expired."));
         return false;        
     }  
     
     // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
     if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be refunded because it has been expired."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be refunded because it has been expired."));
         return false;        
     }
     
     // Is Refunded
     if($voucher_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
     if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been deleted."));
         return false;        
     }
     
@@ -1192,8 +1192,8 @@ function check_invoice_vouchers_allow_refunding($invoice_id) {
         
         // Check to if any vouchers prevent the invoice from being deleted
         if(!$vouchers_allow_refunding) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_danger='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
+            //postEmulationWrite('msg_danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
             return false;
             
         } else {
@@ -1214,7 +1214,7 @@ function check_voucher_can_be_cancelled($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
     if(!check_invoice_can_be_cancelled(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be cancelled because the invoice it is attached to, does not allow it."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be cancelled because the invoice it is attached to, does not allow it."));
         return false;
     }
     
@@ -1233,37 +1233,37 @@ function check_single_voucher_can_be_cancelled($voucher_id) {
     
     // Is Redeemed
     if($voucher_details['status'] == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been redeemed."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be cancelled because it has been redeemed."));
         return false;        
     }
     
     // Is Suspended
     if($voucher_details['status'] == 'suspended') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been suspended."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be cancelled because it has been suspended."));
         return false;        
     }
     
     // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
     if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been expired."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be cancelled because it has been expired."));
         return false;        
     }
             
     // Is Refunded
     if($voucher_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be cancelled because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be cancelled because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
     if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be cancelled because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be cancelled because it has been deleted."));
         return false;        
     }    
     
@@ -1306,8 +1306,8 @@ function check_invoice_vouchers_allow_cancellation($invoice_id) {
         }
         // Check to if any vouchers prevent the invoice from being deleted
         if(!$vouchers_allow_cancellation) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']);                               
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']); 
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_danger='._gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']);                               
+            //postEmulationWrite('msg_danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']); 
             return false;
             
         } else {
@@ -1328,7 +1328,7 @@ function check_voucher_can_be_deleted($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
     if(!check_invoice_can_be_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
         return false;
     }
     
@@ -1347,37 +1347,37 @@ function check_single_voucher_can_be_deleted($voucher_id) {
     
     // Is Redeemed
     if($voucher_details['status'] == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because it has been redeemed."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because it has been redeemed."));
         return false;        
     }
     
     // Is Suspended
     if($voucher_details['status'] == 'suspended') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because it is suspended."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because it is suspended."));
         return false;        
     }
     
     // Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
     if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be deleted because it has been expired."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be deleted because it has been expired."));
         return false;        
     }
             
     // Is Refunded
     if($voucher_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because it has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because it has been refunded."));
         return false;        
     }
     
     // Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
     if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because it has been deleted."));
         return false;        
     }    
     
@@ -1418,8 +1418,8 @@ function check_invoice_vouchers_allow_deletion($invoice_id) {
         }
         // Check to if any vouchers prevent the invoice from being deleted
         if(!$vouchers_allow_deletion) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_danger='._gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
+            //postEmulationWrite('msg_danger', _gettext("The invoice cannot be deleted because of Voucher").': '.$voucher_details['voucher_id']);
             return false;
             
         } else {
@@ -1440,7 +1440,7 @@ function check_voucher_can_be_edited($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
     if(!check_invoice_can_be_edited(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
         return false;
     }
     
@@ -1462,43 +1462,43 @@ function check_voucher_can_be_edited($voucher_id) {
     
     // Is on a different tax system
     if($voucher_details['tax_system'] != QW_TAX_SYSTEM) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be edited because it is on a different Tax system."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be edited because it is on a different Tax system."));
         return false;        
     }
     
     // Is Redeemed
     if($voucher_details['status'] == 'redeemed') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been redeemed."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been redeemed."));
         return false;        
     }
         
     // Is Refunded
     if($voucher_details['status'] == 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been refunded."));
         return false;        
     }
     
     /* Is Expired - If not marked as expired this does a live check for expiry because expiry is not always upto date
     if($voucher_details['status'] == 'expired' || check_voucher_is_expired($voucher_id)) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been expired."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been expired."));
         return false;        
     }*/
     
     // Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
     if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been deleted."));
         return false;        
     }
     
     // The current record VAT code is enabled
     if(!get_vat_tax_code_status($voucher_details['vat_tax_code'])) {
-        //postEmulationWrite('warning_msg', _gettext("This voucher cannot be edited because it's current VAT Tax Code is not enabled."));
+        //postEmulationWrite('msg_danger', _gettext("This voucher cannot be edited because it's current VAT Tax Code is not enabled."));
         return false; 
     }
 
@@ -1539,8 +1539,8 @@ function check_invoice_vouchers_allow_editing($invoice_id) {
         }
         // Check to if any vouchers prevent the invoice from being deleted
         if(!$vouchers_allow_editing) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be edited because of Voucher").': '.$voucher_details['voucher_id']);
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be edited because of Voucher").': '.$voucher_details['voucher_id']);
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_danger='._gettext("The invoice cannot be edited because of Voucher").': '.$voucher_details['voucher_id']);
+            //postEmulationWrite('msg_danger', _gettext("The invoice cannot be edited because of Voucher").': '.$voucher_details['voucher_id']);
             return false;
             
         } else {
@@ -1561,7 +1561,7 @@ function check_voucher_can_have_refund_cancelled($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
     if(!check_invoice_can_have_refund_cancelled(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
         return false;
     }
     
@@ -1603,8 +1603,8 @@ function check_invoice_vouchers_allow_refund_cancellation($invoice_id) {
         
         // Check to if any vouchers prevent the invoice from being deleted
         if(!$vouchers_allow_refund_cancellation) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']);                               
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']); 
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_danger='._gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']);                               
+            //postEmulationWrite('msg_danger', _gettext("The invoice cannot be cancelled because of Voucher").': '.$voucher_details['voucher_id']); 
             return false;
             
         } else {
@@ -1628,19 +1628,19 @@ function check_single_voucher_can_have_refund_cancelled($voucher_id) {
            
     /* Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
     if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been deleted."));
         return false;        
     }*/
     
     // Is not refunded
     if($voucher_details['status'] != 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
         return false;        
     }
     
@@ -1657,7 +1657,7 @@ function check_voucher_can_have_refund_deleted($voucher_id) {
         
     // This checks the parent invoice and it's associated vouchers including the supplied voucher
     if(!check_invoice_can_have_refund_deleted(get_voucher_details($voucher_id, 'invoice_id'))) {
-        //postEmulationWrite('warning_msg', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher cannot be deleted because the invoice it is attached to, does not allow it."));
         return false;
     }
     
@@ -1699,8 +1699,8 @@ function check_invoice_vouchers_allow_refund_deletion($invoice_id) {
         
         // Check to if any vouchers prevent the invoice from being deleted
         if(!$vouchers_allow_refund_deletion) {            
-            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'warning_msg='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
-            //postEmulationWrite('warning_msg', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
+            //force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_danger='._gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']);                               
+            //postEmulationWrite('msg_danger', _gettext("The invoice cannot be refunded because of Voucher").': '.$voucher_details['voucher_id']); 
             return false;
             
         } else {
@@ -1724,19 +1724,19 @@ function check_single_voucher_can_have_refund_deleted($voucher_id) {
            
     /* Is Cancelled
     if($voucher_details['status'] == 'cancelled') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been cancelled."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been cancelled."));
         return false;        
     }
     
     // Is Deleted
     if($voucher_details['status'] == 'deleted') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot be changed because it has been deleted."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot be changed because it has been deleted."));
         return false;        
     }*/
     
     // Is not refunded
     if($voucher_details['status'] != 'refunded') {
-        //postEmulationWrite('warning_msg', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
+        //postEmulationWrite('msg_danger', _gettext("The voucher status cannot have it' refund deleted because it is not refunded."));
         return false;        
     }
     

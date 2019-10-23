@@ -17,12 +17,12 @@ $barcode = $bc_generator->getBarcode(get_voucher_details(\QFactory::$VAR['vouche
 
 // Check if we have an voucher_id
 if(!isset(\QFactory::$VAR['voucher_id']) || !\QFactory::$VAR['voucher_id']) {
-    force_page('voucher', 'search', 'warning_msg='._gettext("No Voucher ID supplied."));
+    force_page('voucher', 'search', 'msg_danger='._gettext("No Voucher ID supplied."));
 }
 
 // Check there is a print content and print type set
 if(!isset(\QFactory::$VAR['print_content'], \QFactory::$VAR['print_type']) || !\QFactory::$VAR['print_content'] || !\QFactory::$VAR['print_type']) {
-    force_page('voucher', 'search', 'warning_msg='._gettext("Some or all of the Printing Options are not set."));
+    force_page('voucher', 'search', 'msg_danger='._gettext("Some or all of the Printing Options are not set."));
 }
 
 // Get Voucher details

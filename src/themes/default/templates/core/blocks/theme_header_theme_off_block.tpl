@@ -25,9 +25,6 @@
     <div id="dhtmltooltip"></div>
     <script src="{$theme_js_dir}dhtmltooltip.js"></script>
     
-    <!-- Information Message --> 
-    <div id="information_msg" class="information_msg" style="display: none;"></div>
-
-    <!-- Warning Message --> 
-    <div id="warning_msg" class="warning_msg" style="display: none;"></div>
+    <!-- System Messages --> 
+    <div id="system_messages"></div>
 

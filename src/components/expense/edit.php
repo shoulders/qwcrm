@@ -16,7 +16,7 @@ require(INCLUDES_DIR.'report.php');
 
 // Check if we have an expense_id
 if(!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id']) {
-    force_page('expense', 'search', 'warning_msg='._gettext("No Expense ID supplied."));
+    force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));
 }
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -24,13 +24,13 @@ if(isset(\QFactory::$VAR['submit'])) {
         
         update_expense(\QFactory::$VAR['qform']);
         recalculate_expense_totals(\QFactory::$VAR['qform']['expense_id']);
-        force_page('expense', 'details&expense_id='.\QFactory::$VAR['qform']['expense_id'], 'information_msg='._gettext("Expense updated successfully.")); 
+        force_page('expense', 'details&expense_id='.\QFactory::$VAR['qform']['expense_id'], 'msg_success='._gettext("Expense updated successfully.")); 
 
 } else {
     
     // Check if expense can be edited
     if(!check_expense_can_be_edited(\QFactory::$VAR['expense_id'])) {
-        force_page('expense', 'details&expense_id='.\QFactory::$VAR['expense_id'], 'warning_msg='._gettext("You cannot edit this expense because its status does not allow it."));
+        force_page('expense', 'details&expense_id='.\QFactory::$VAR['expense_id'], 'msg_danger='._gettext("You cannot edit this expense because its status does not allow it."));
     }
     
     // Build the page       

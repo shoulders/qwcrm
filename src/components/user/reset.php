@@ -49,7 +49,7 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['email']) && \QFac
         if(!isset(\QFactory::$VAR['email']) || !$user_id = validate_reset_email(\QFactory::$VAR['email'])) {
 
             // Display error message
-            $smarty->assign('warning_msg', _gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
+            $smarty->assign('msg_danger', _gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
 
         // The account is valid and allowed to be reset
         } else {
@@ -136,7 +136,7 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['reset_code']) && 
     if(!validate_reset_code(\QFactory::$VAR['reset_code'])) {
 
         // Display an error message
-        $smarty->assign('warning_msg', _gettext("The submitted reset code was invalid."));
+        $smarty->assign('msg_danger', _gettext("The submitted reset code was invalid."));
 
     } else {
 
@@ -153,7 +153,7 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['reset_code']) && 
         logout(true);
 
         // Redirect to login page with success or failed message
-        force_page('user', 'login', 'information_msg='._gettext("Password reset successfully."));
+        force_page('user', 'login', 'msg_success='._gettext("Password reset successfully."));
 
     }    
 

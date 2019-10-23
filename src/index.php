@@ -11,7 +11,7 @@
 #################################################
 
 // Define and check QWcrm Minimum PHP version
-define('QWCRM_MINIMUM_PHP', '5.6.21');
+define('QWCRM_MINIMUM_PHP', '7.2.0');
 if (version_compare(PHP_VERSION, QWCRM_MINIMUM_PHP, '<')) {
     die('QWcrm requires PHP '.QWCRM_MINIMUM_PHP.' '.'or later to run. Your current version is '.PHP_VERSION);
 }
@@ -74,24 +74,18 @@ if(!defined('QWCRM_SETUP')) {
        
 }
 
-################################################
-#         Build Page and Content               #
-################################################
+############################################################
+#  Finish Building the Environment and Load Page           #
+############################################################
 
-// Build and set the system Messages
-smarty_set_system_messages(\QFactory::$VAR);
-
-// Set the Smarty User variables (This seems the best place for this function to run)
+// Build and set the System Messages Store (only run once per session)
+systemMessagesBuildStore();  
+    
+// Set the Smarty User Variables (only run once per session)
 smarty_set_user_variables();
 
 // Build and Load the page into memmory
 load_page('set_controller');
-
-################################################
-#         Content Plugins                      #
-################################################
-
-// You can add plugins here that parse and change the page content
 
 ################################################
 #         Logging                              #
