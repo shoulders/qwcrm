@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
+require_once(INCLUDES_DIR.'client.php');
 require(INCLUDES_DIR.'invoice.php');
 require(INCLUDES_DIR.'refund.php');
 require(INCLUDES_DIR.'report.php');

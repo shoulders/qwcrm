@@ -605,8 +605,9 @@ function build_googlemap_directions_string($client_id, $employee_id) {
 ###############################################################
 
 function check_client_can_be_deleted($client_id) {
-    
+            
     $db = QFactory::getDbo();
+    $state_flag = true;
     
     // Check if client has any workorders
     $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE client_id=".$db->qstr($client_id);    
@@ -614,8 +615,8 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('msg_danger', 'You can not delete a client who has work orders.');
-        return false;
+        systemMessagesWrite('danger', 'You can not delete a client who has work orders.');
+        $state_flag = false;
     }
     
     // Check if client has any invoices
@@ -624,8 +625,8 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Invoices in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('msg_danger', 'You can not delete a client who has invoices.');
-        return false;
+        systemMessagesWrite('danger', 'You can not delete a client who has invoices.');
+        $state_flag = false;
     }    
     
     // Check if client has any Vouchers
@@ -634,8 +635,8 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Vouchers in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('msg_danger', 'You can not delete a client who has Vouchers.');
-        return false;
+        systemMessagesWrite('danger', 'You can not delete a client who has Vouchers.');
+        $state_flag = false;
     }
     
     // Check if client has any client notes
@@ -644,11 +645,10 @@ function check_client_can_be_deleted($client_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the client's Notes in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        //postEmulationWrite('msg_danger', 'You can not delete a client who has client notes.');
-        return false;
+        systemMessagesWrite('danger', 'You can not delete a client who has client notes.');
+        $state_flag = false;
     }
 
-    // All checks passed
-    return true;
+    return $state_flag;
     
 }

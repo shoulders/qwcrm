@@ -114,7 +114,9 @@ function systemMessagesBuildStore() {
 
 function systemMessagesWrite($type, $message) {
     
-    \QFactory::$messages[$type] = [$message];
+    \QFactory::$messages[$type][] = $message;
+    
+    return;
     
 }
 
@@ -180,7 +182,6 @@ function smarty_set_user_variables() {
     return;
     
 }
-
 
 ###########################################
 #  POST Emulation - for server to server  #  // Might only work for logged in users, need to check, but fails on logout because session data is destroyed?

@@ -14,7 +14,7 @@ defined('_QWEXEC') or die;
 
 function load_page($mode, $component = null, $page_tpl = null, $themeVar = null) {
     
-    // Just return the page as a variable and dont change the system page (not currently using this feature but might for AJAX)    
+    // Get the page as a variable, dont set routing
     if($mode == 'get_payload') { 
         
         // Get and set the page controller
@@ -24,14 +24,14 @@ function load_page($mode, $component = null, $page_tpl = null, $themeVar = null)
         return get_page_content($pageController, $mode, $component, $page_tpl, $themeVar);
     }
     
-    // Normal Behaviour, set the routing, get the page, load the page into the system
+    // Normal Behaviour, set the routing, get the page, load the page into the browser
     if($mode == 'set_controller') { 
         
         // Get and set the page controller
         \QFactory::$VAR['page_controller'] = page_controller();
         
         // Build the page
-        \QFactory::$BuildPage = get_page_content(\QFactory::$VAR['page_controller'], $mode, $component, $page_tpl, $themeVar);
+        \QFactory::$BuildPage = get_page_content(\QFactory::$VAR['page_controller'], $mode);
         
         return;
         
@@ -53,12 +53,22 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
     // Set the correct theme specification, either manually supplied or from the system
     $component = isset($component) ? $component : ( isset(\QFactory::$VAR['component']) ? \QFactory::$VAR['component'] : null);
     $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\QFactory::$VAR['page_tpl']) ? \QFactory::$VAR['page_tpl'] : null);
-    $themeVar = isset($themeVar) ? $themeVar : ( isset(\QFactory::$VAR['theme']) ? \QFactory::$VAR['theme'] : null);
-           
-    // If theme is set to Print mode, Skip Header and Footer - Print system will output with it's own format without need for headers and footers here
-    if (isset($themeVar) && ($themeVar === 'print' || $themeVar === 'raw_html')) {        
-        require_once($page_controller);
+    $themeVar = isset($themeVar) ? $themeVar : ( isset(\QFactory::$VAR['theme']) ? \QFactory::$VAR['theme'] : null);          
+    
+    // This is currently not used, and is only so i know where the pagec controller section is
+    page_controller:
         
+    // Fetch the specified Page Controller
+    require($page_controller);
+    
+    // If an alternative page has been loaded by the page controller, return this content
+    if($pagePayload) {        
+        return $pagePayload;        
+    }
+        
+    // If theme is set to Print mode, Skip Header, Footer or raw_html - System will output without headers, footers and debug
+    if (isset($themeVar) && ($themeVar === 'print' || $themeVar === 'raw_html')) {        
+                
         // This allows autosuggest to work
         if ($themeVar !== 'raw_html') {
             $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');
@@ -66,8 +76,9 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
         
         goto page_build_end;
     }
-    
-    page_build:  // This is currently not used and is only so i know where the payload build start is
+        
+    // This is currently not used, and is only so i know where the payload build start is
+    page_build:
     
     // Set Page Header and Meta Data
     set_page_header_and_meta_data($component, $page_tpl);
@@ -92,10 +103,9 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
             $pagePayload .= $smarty->fetch('core/blocks/theme_menu_block.tpl');
         }
 
-    }    
+    }  
     
-    // Fetch the specified Page Controller
-    require_once($page_controller);
+    // Fetch the specified Page Tempalte
     $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');
         
     // Fetch Footer Legacy Template code Block (closes content table)

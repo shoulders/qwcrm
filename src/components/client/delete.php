@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
+require_once(INCLUDES_DIR.'client.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
@@ -24,12 +24,13 @@ if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
 // Run the delete function and return the results
 if(!delete_client(\QFactory::$VAR['client_id'])) {
     
-    // Reload client details apge with error message
-    force_page('client', 'details&client_id='.\QFactory::$VAR['client_id'], 'msg_danger='._gettext("This client cannot be deleted."));
+    // Reload client details page with error messages
+    $pagePayload = load_page('get_payload', 'client', 'details');    
+    //force_page('client', 'details&client_id='.\QFactory::$VAR['client_id'], 'msg_danger='._gettext("This client cannot be deleted."));
     
 } else {
     
     // Load the Client search page
-    force_page('client', 'search');
+    force_page('client', 'search', 'msg_success='._gettext("The client has been deleted."));
     
 }
