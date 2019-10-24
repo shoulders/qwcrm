@@ -112,6 +112,7 @@ function systemMessagesBuildStore() {
     
 }
 
+// Write a system messgae to the store
 function systemMessagesWrite($type, $message) {
     
     \QFactory::$messages[$type][] = $message;

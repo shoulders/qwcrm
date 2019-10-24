@@ -18,7 +18,7 @@ require QFRAMEWORK_DIR . 'qwcrm/mpdf.php';                         // Load mPDF 
 require QFRAMEWORK_DIR . 'qwcrm/email.php';                        // Load email transport
 require QFRAMEWORK_DIR . 'qwcrm/variables.php';                    // Configure variables to be used by QWcrm
 require QFRAMEWORK_DIR . 'qwcrm/router.php';                       // Route the page request
-require QFRAMEWORK_DIR . 'qwcrm/buildpage.php';                    // Build the page content payload
+require QFRAMEWORK_DIR . 'qwcrm/page.php';                         // Page related functions
 require QFRAMEWORK_DIR . 'qframework.php';                         // Main Framework class
 
 // Misc (Joomla)
