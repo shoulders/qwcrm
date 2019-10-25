@@ -15,7 +15,8 @@ require(INCLUDES_DIR.'report.php');
 
 // Check if we have a otherincome_id
 if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id']) {
-    force_page('otherincome', 'search', 'msg_danger='._gettext("No Refund ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
+    force_page('otherincome', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -31,7 +32,8 @@ if(isset(\QFactory::$VAR['submit'])) {
 
     // Check if payment can be edited
     if(!check_otherincome_can_be_edited(\QFactory::$VAR['otherincome_id'])) {
-        force_page('otherincome', 'details&otherincome_id='.\QFactory::$VAR['otherincome_id'], 'msg_danger='._gettext("You cannot edit this otherincome because its status does not allow it."));
+        systemMessagesWrite('danger', _gettext("You cannot edit this otherincome because its status does not allow it."));
+        force_page('otherincome', 'details&otherincome_id='.\QFactory::$VAR['otherincome_id']);
     }
     
     // Build the page

@@ -12,7 +12,8 @@ require(INCLUDES_DIR.'client.php');
 
 // check if we have a client_note_id
 if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
-    force_page('client', 'search', 'msg_danger='._gettext("No Client Note ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Client Note ID supplied."));
+    force_page('client', 'search');
 }
 
 // Get the client_id before we delete the record

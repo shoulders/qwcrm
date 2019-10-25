@@ -15,7 +15,8 @@ require(INCLUDES_DIR.'user.php');
 
 // Check if we have a workorder_id
 if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
-    force_page('workorder', 'search', 'msg_danger='._gettext("No Workorder ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search');
 }
 
 $workorder_details = get_workorder_details(\QFactory::$VAR['workorder_id']);

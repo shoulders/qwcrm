@@ -21,7 +21,8 @@ if(!check_page_accessed_via_qwcrm()) {
 
 // Check if we have a schedule_id
 if(!isset(\QFactory::$VAR['schedule_id']) || !\QFactory::$VAR['schedule_id']) {
-    force_page('schedule', 'search', 'msg_danger='._gettext("No Schedule ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Schedule ID supplied."));
+    force_page('schedule', 'search');
 }
 
 // Get workorder_id before deleting the record

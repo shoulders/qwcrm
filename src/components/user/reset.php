@@ -153,7 +153,8 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['reset_code']) && 
         logout(true);
 
         // Redirect to login page with success or failed message
-        force_page('user', 'login', 'msg_success='._gettext("Password reset successfully."));
+        systemMessagesWrite('success', _gettext("Password reset successfully."));
+        force_page('user', 'login');
 
     }    
 

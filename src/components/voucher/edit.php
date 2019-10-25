@@ -18,17 +18,20 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an voucher_id
 if(!isset(\QFactory::$VAR['voucher_id']) || !\QFactory::$VAR['voucher_id']) {
-    force_page('voucher', 'search', 'msg_danger='._gettext("No Voucher ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
+    force_page('voucher', 'search');
 }
 
 // Check if voucher payment method is enabled
 if(!check_payment_method_is_active('voucher')) {
-    force_page('index.php', 'null', 'msg_danger='._gettext("Voucher payment method is not enabled. Goto Payment Options and enable Vouchers there."));
+    systemMessagesWrite('danger', _gettext("Voucher payment method is not enabled. Goto Payment Options and enable Vouchers there."));
+    force_page('index.php', 'null');
 }
 
 // Check if voucher can be edited
 if(!check_voucher_can_be_edited(\QFactory::$VAR['voucher_id'])) {
-    force_page('voucher', 'details&voucher_id='.\QFactory::$VAR['voucher_id'], 'msg_danger='._gettext("You cannot edit this Voucher because its status does not allow it."));
+    systemMessagesWrite('danger', _gettext("You cannot edit this Voucher because its status does not allow it."));
+    force_page('voucher', 'details&voucher_id='.\QFactory::$VAR['voucher_id']);
 }
 
 // if information submitted

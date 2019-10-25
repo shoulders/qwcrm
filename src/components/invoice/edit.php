@@ -23,12 +23,14 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an invoice_id
 if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
-    force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
+    force_page('invoice', 'search');
 }
 
 // Check if invoice can be edited
 if(!check_invoice_can_be_edited(\QFactory::$VAR['invoice_id'])) {
-    force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id'], 'msg_danger='._gettext("You cannot edit this invoice because its status does not allow it."));
+    systemMessagesWrite('danger', _gettext("You cannot edit this invoice because its status does not allow it."));
+    force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id']);
 }
 
 ##################################

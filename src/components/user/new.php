@@ -50,7 +50,8 @@ if(isset(\QFactory::$VAR['submit'])) {
             \QFactory::$VAR['user_id'] = insert_user(\QFactory::$VAR['qform']);
             
             // Redirect to the new user's details page
-            force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id'], 'msg_success='._gettext("New user has been created."));
+            systemMessagesWrite('success', _gettext("New user has been created."));
+            force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id']);
             
         }
 

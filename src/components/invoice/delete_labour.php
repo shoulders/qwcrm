@@ -23,7 +23,8 @@ if(!check_page_accessed_via_qwcrm()) {
 
 // Check if we have an invoice labour_id
 if(!isset(\QFactory::$VAR['labour_id']) || !\QFactory::$VAR['labour_id']) {
-    force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice Labour ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Invoice Labour ID supplied."));
+    force_page('invoice', 'search');
 }
 
 // Get invoice ID before deletion

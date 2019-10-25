@@ -13,7 +13,8 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_note_id
 if(!isset(\QFactory::$VAR['workorder_note_id']) || !\QFactory::$VAR['workorder_note_id']) {
-    force_page('workorder', 'search', 'msg_danger='._gettext("No Work Order Note ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));
+    force_page('workorder', 'search');
 }
 
 // Get teh work order note details
@@ -26,7 +27,8 @@ if(isset(\QFactory::$VAR['submit'])) {
     update_workorder_note(\QFactory::$VAR['workorder_note_id'], \QFactory::$VAR['note']);
     
     // load the workorder details page
-    force_page('workorder', 'details&workorder_id='.$workorder_note_details['workorder_id'], 'msg_success='._gettext("The note has been updated."));
+    systemMessagesWrite('success', _gettext("The note has been updated."));
+    force_page('workorder', 'details&workorder_id='.$workorder_note_details['workorder_id']);
     
 }   
     

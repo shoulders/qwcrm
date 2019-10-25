@@ -161,7 +161,8 @@ class NewPayment {
             break;
 
             default:
-            force_page('payment', 'search', 'msg_danger='._gettext("Invalid Payment Type."));
+            systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
+            force_page('payment', 'search');
             break;
 
         }
@@ -209,7 +210,8 @@ class NewPayment {
             break;
 
             default:
-            force_page('payment', 'search', 'msg_danger='._gettext("Invalid Payment Method."));
+            systemMessagesWrite('danger', _gettext("Invalid Payment Method."));
+            force_page('payment', 'search');
             break;
         }
         

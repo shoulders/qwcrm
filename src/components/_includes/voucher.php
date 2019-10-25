@@ -590,7 +590,8 @@ function refund_voucher($voucher_id, $refund_id) {
     if(!check_single_voucher_can_be_refunded($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'), 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
+        systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
+        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'));
         
     }
     
@@ -629,7 +630,8 @@ function revert_refund_voucher($voucher_id) {
     if(!check_single_voucher_can_be_refunded($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'), 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
+        systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be refunded."));
+        force_page('invoice', 'details&invoice_id='.get_voucher_details($voucher_id, 'invoice_id'));
         
     }*/
     
@@ -669,7 +671,8 @@ function cancel_voucher($voucher_id) {
     if(!check_single_voucher_can_be_cancelled($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
+        systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be cancelled."));
+        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
         
     } else {
         
@@ -807,7 +810,8 @@ function delete_voucher($voucher_id) {
     if(!check_single_voucher_can_be_deleted($voucher_id)) {
         
         // Load the relevant invoice page with failed message
-        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id'], 'msg_danger='._gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
+        systemMessagesWrite('danger', _gettext("Voucher").': '.$voucher_id.' '._gettext("cannot be deleted."));
+        force_page('invoice', 'details&invoice_id='.$voucher_details['invoice_id']);
         
     } else {
         

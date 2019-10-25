@@ -19,12 +19,14 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an employee_id
 if(!isset(\QFactory::$VAR['employee_id']) || !\QFactory::$VAR['employee_id']) {
-    force_page('user', 'search', 'msg_danger='._gettext("No Employee ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Employee ID supplied."));
+    force_page('user', 'search');
 }
 
 // Check if we have a workorder_id
 if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
-    force_page('workorder', 'search', 'msg_danger='._gettext("No Workorder ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
+    force_page('workorder', 'search');
 }
 
 // Get client_id

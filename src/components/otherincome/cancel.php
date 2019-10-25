@@ -19,7 +19,8 @@ if(!check_page_accessed_via_qwcrm('otherincome', 'status')) {
 
 // Check if we have a otherincome_id
 if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id']) {
-    force_page('otherincome', 'search', 'msg_danger='._gettext("No Otherincome ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
+    force_page('otherincome', 'search');
 } 
 
 // Cancel the otherincome function call

@@ -19,7 +19,8 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an invoice_id
 if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
-    force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
+    force_page('invoice', 'search');
 }
 
 $invoice_details = get_invoice_details(\QFactory::$VAR['invoice_id']);

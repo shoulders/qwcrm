@@ -20,7 +20,8 @@ if(isset(\QFactory::$VAR['qform']['submit'])) {
     update_company_details(\QFactory::$VAR['qform']);    
     
     // Reload Company options and display a success message
-    force_page('company', 'edit', 'msg_success='._gettext("Company details updated."));
+    systemMessagesWrite('success', _gettext("Company details updated."));
+    force_page('company', 'edit');
     
 }
 

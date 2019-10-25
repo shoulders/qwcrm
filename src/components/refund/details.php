@@ -15,7 +15,8 @@ require(INCLUDES_DIR.'payment.php');
 
 // Check if we have a refund_id
 if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
-    force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
+    force_page('refund', 'search');
 } 
 
 // Payment Details

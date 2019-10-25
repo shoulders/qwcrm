@@ -16,7 +16,8 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a schedule_id
 if(!isset(\QFactory::$VAR['schedule_id']) || !\QFactory::$VAR['schedule_id']) {
-    force_page('schedule', 'search', 'msg_danger='._gettext("No Schedule ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Schedule ID supplied."));
+    force_page('schedule', 'search');
 }
 
 // If new schedule item submitted

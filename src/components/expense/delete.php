@@ -20,7 +20,8 @@ if(!check_page_accessed_via_qwcrm('expense', 'status')) {
 
 // Check if we have an expense_id
 if(!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id']) {
-    force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
+    force_page('expense', 'search');
 }   
 
 // Delete the expense

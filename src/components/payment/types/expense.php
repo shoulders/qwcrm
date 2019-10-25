@@ -78,7 +78,8 @@ class PType {
         
         /* If the balance has been cleared, redirect to the record details page
         if($this->expense_details['balance'] == 0) {
-            force_page('expense', 'details&expense_id='.$this->VAR['expense_id'], 'msg_success='._gettext("The balance has been cleared."));
+            systemMessagesWrite('success', _gettext("The balance has been cleared."));
+            force_page('expense', 'details&expense_id='.$this->VAR['expense_id']);
         }*/
         
         return;
@@ -131,7 +132,8 @@ class PType {
         //$this->expense_details = get_expense_details($this->VAR['qpayment']['expense_id']);        
         
         // Load the relevant record details page
-        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id'], 'msg_success='._gettext("Payment updated successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+        systemMessagesWrite('success', _gettext("Payment updated successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
                 
         return;        
         
@@ -150,7 +152,8 @@ class PType {
         //$this->expense_details = get_expense_details($this->VAR['qpayment']['expense_id']);        
         
         // Load the relevant record details page
-        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id'], 'msg_success='._gettext("Payment cancelled successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+        systemMessagesWrite('success', _gettext("Payment cancelled successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
                 
         return;        
         
@@ -169,7 +172,8 @@ class PType {
         //$this->expense_details = get_expense_details($this->VAR['qpayment']['expense_id']);        
         
         // Load the relevant record details page
-        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id'], 'msg_success='._gettext("Payment deleted successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+        systemMessagesWrite('success', _gettext("Payment deleted successfully and Expense").' '.$this->VAR['qpayment']['expense_id'].' '._gettext("has been updated to reflect this change."));
+        force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
                 
         return;        
         
@@ -182,7 +186,8 @@ class PType {
         if($this->expense_details['tax_system'] != QW_TAX_SYSTEM) {
             //systemMessagesWrite('danger', _gettext("The expense cannot receive a payment because it is on a different tax system."));
             //return false;            
-            force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id'], 'msg_danger='._gettext("The expense cannot receive a payment because it is on a different tax system."));
+            systemMessagesWrite('danger', _gettext("The expense cannot receive a payment because it is on a different tax system."));
+            force_page('expense', 'details&expense_id='.$this->VAR['qpayment']['expense_id']);
             
         }
 

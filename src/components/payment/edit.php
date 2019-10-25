@@ -21,12 +21,14 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an payment_id
 if(!isset(\QFactory::$VAR['payment_id']) || !\QFactory::$VAR['payment_id']) {
-    force_page('payment', 'search', 'msg_danger='._gettext("No Payment ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
+    force_page('payment', 'search');
 }   
 
 // Check if payment can be edited
 if(!check_payment_can_be_edited(\QFactory::$VAR['payment_id'])) {
-    force_page('payment', 'details&payment_id='.\QFactory::$VAR['payment_id'], 'msg_danger='._gettext("You cannot edit this payment because its status does not allow it."));
+    systemMessagesWrite('danger', _gettext("You cannot edit this payment because its status does not allow it."));
+    force_page('payment', 'details&payment_id='.\QFactory::$VAR['payment_id']);
 }
     
 // This is a dirty hack because QWcrm is not fully OOP yet
@@ -96,7 +98,8 @@ class UpdatePayment {
             break;
 
             default:
-            force_page('payment', 'search', 'msg_danger='._gettext("Invalid Payment Type."));
+            systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
+            force_page('payment', 'search');
             break;
 
         }

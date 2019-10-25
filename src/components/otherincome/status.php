@@ -13,7 +13,8 @@ require(INCLUDES_DIR.'report.php');
 
 // Check if we have a otherincome_id
 if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id']) {
-    force_page('otherincome', 'search', 'msg_danger='._gettext("No Voucher ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
+    force_page('otherincome', 'search');
 }
 
 // Update Voucher Status

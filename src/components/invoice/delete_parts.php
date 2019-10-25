@@ -23,7 +23,8 @@ if(!check_page_accessed_via_qwcrm()) {
 
 // Check if we have an invoice parts_id
 if(!isset(\QFactory::$VAR['parts_id']) || !\QFactory::$VAR['parts_id']) {
-    force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice Parts ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Invoice Parts ID supplied."));
+    force_page('invoice', 'search');
 }
 
 // Get Invoice ID before deletion

@@ -19,7 +19,8 @@ if(!check_page_accessed_via_qwcrm()) {
 
 // Check if we have a workorder_note_id
 if(!isset(\QFactory::$VAR['workorder_note_id']) || !\QFactory::$VAR['workorder_note_id']) {
-    force_page('workorder', 'search', 'msg_danger='._gettext("No Work Order Note ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));
+    force_page('workorder', 'search');
 }
 
 // Get the workorder_id before we delete the record

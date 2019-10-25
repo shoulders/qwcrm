@@ -23,7 +23,8 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have a client_id
 if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
-    force_page('client', 'search', 'msg_danger='._gettext("No Client ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Client ID supplied."));
+    force_page('client', 'search');
 }
 
 // Build the page

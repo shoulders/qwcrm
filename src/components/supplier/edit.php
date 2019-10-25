@@ -12,7 +12,8 @@ require(INCLUDES_DIR.'supplier.php');
 
 // Check if we have a supplier_id
 if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
-    force_page('supplier', 'search', 'msg_danger='._gettext("No Supplier ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
+    force_page('supplier', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
@@ -28,7 +29,8 @@ if(isset(\QFactory::$VAR['submit'])) {
     
     // Check if supplier can be edited
     if(!check_supplier_can_be_edited(\QFactory::$VAR['supplier_id'])) {
-        force_page('supplier', 'details&supplier_id='.\QFactory::$VAR['supplier_id'], 'msg_danger='._gettext("You cannot edit this supplier because its status does not allow it."));
+        systemMessagesWrite('danger', _gettext("You cannot edit this supplier because its status does not allow it."));
+        force_page('supplier', 'details&supplier_id='.\QFactory::$VAR['supplier_id']);
     }
 
     // Build the page

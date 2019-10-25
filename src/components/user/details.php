@@ -17,7 +17,8 @@ require(INCLUDES_DIR.'workorder.php');
 
 // Check if we have an user_id
 if(!isset(\QFactory::$VAR['user_id']) || !\QFactory::$VAR['user_id']) {
-    force_page('user', 'search', 'msg_danger='._gettext("No User ID supplied."));
+    systemMessagesWrite('danger', _gettext("No User ID supplied."));
+    force_page('user', 'search');
 }
 
 // Build the page

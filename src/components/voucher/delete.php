@@ -23,7 +23,8 @@ if(!check_page_accessed_via_qwcrm('voucher', 'status')) {
 
 // Check if we have an voucher_id
 if(!isset(\QFactory::$VAR['voucher_id']) || !\QFactory::$VAR['voucher_id']) {
-    force_page('voucher', 'search', 'msg_danger='._gettext("No Voucher ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
+    force_page('voucher', 'search');
 }
 
 // Get invoice_id before deleting
@@ -33,11 +34,13 @@ $invoice_id = get_voucher_details(\QFactory::$VAR['voucher_id'], 'invoice_id');
 if(!delete_voucher(\QFactory::$VAR['voucher_id'])) {
     
     // Load the relevant invoice page with fail message
-    force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_danger='._gettext("Voucher failed to be deleted."));
+    systemMessagesWrite('danger', _gettext("Voucher failed to be deleted."));
+    force_page('invoice', 'details&invoice_id='.$invoice_id);
     
 } else {
     
     // Load the relevant invoice page with success message
-    force_page('invoice', 'details&invoice_id='.$invoice_id, 'msg_success='._gettext("Voucher deleted successfully."));
+    systemMessagesWrite('success', _gettext("Voucher deleted successfully."));
+    force_page('invoice', 'details&invoice_id='.$invoice_id);
 
 }

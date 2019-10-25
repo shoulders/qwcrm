@@ -13,7 +13,8 @@ require(INCLUDES_DIR.'report.php');
 
 // Check if we have a expense_id
 if(!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id']) {
-    force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
+    force_page('expense', 'search');
 }
 
 // Update Expense Status

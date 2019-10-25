@@ -17,7 +17,8 @@ require(INCLUDES_DIR.'user.php');
 
 // Check if we have a client_id
 if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
-    force_page('client', 'search', 'msg_danger='._gettext("No Client ID supplied."));
+    systemMessagesWrite('danger', _gettext("No Client ID supplied."));
+    force_page('client', 'search');
 }
 
 // If a workorder is submitted
@@ -32,7 +33,8 @@ if(isset(\QFactory::$VAR['submit'])){
     }
     
     // load the workorder details page
-    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id'], 'msg_success='._gettext("New Work Order created."));
+    systemMessagesWrite('success', _gettext("New Work Order created."));
+    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id']);
         
 }
 
