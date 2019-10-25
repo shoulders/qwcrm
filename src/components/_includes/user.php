@@ -784,7 +784,7 @@ function login($qform, $credentials, $options = array())
         update_client_last_active($user->login_client_id);        
 
         // set success message to survice the login event
-        postEmulationWrite('msg_success', _gettext("Login successful."));
+        systemMessagesWrite('success', _gettext("Login successful."));
         
         return true;
 

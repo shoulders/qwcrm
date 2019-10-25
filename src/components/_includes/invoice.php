@@ -889,7 +889,7 @@ function update_invoice_status($invoice_id, $new_status) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $invoice_details['status']) {        
-        postEmulationWrite('msg_danger', _gettext("Nothing done. The new invoice status is the same as the current invoice status."));
+        systemMessagesWrite('danger', _gettext("Nothing done. The new invoice status is the same as the current invoice status."));
         return false;
     }    
     
@@ -918,7 +918,7 @@ function update_invoice_status($invoice_id, $new_status) {
         }
         
         // Status updated message
-        postEmulationWrite('msg_success', _gettext("Invoice status updated."));  
+        systemMessagesWrite('success', _gettext("Invoice status updated."));  
         
         // For writing message to log file, get invoice status display name
         $inv_status_diplay_name = _gettext(get_invoice_status_display_name($new_status));
@@ -1560,7 +1560,7 @@ function assign_invoice_to_employee($invoice_id, $target_employee_id) {
     
     // if the new employee is the same as the current one, exit
     if($target_employee_id == $invoice_details['employee_id']) {         
-        postEmulationWrite('msg_danger', _gettext("Nothing done. The new employee is the same as the current employee."));
+        systemMessagesWrite('danger', _gettext("Nothing done. The new employee is the same as the current employee."));
         return false;
     }     
     
@@ -1587,7 +1587,7 @@ function assign_invoice_to_employee($invoice_id, $target_employee_id) {
     } else {
         
         // Assigned employee success message
-        postEmulationWrite('msg_success', _gettext("Assigned employee updated."));        
+        systemMessagesWrite('success', _gettext("Assigned employee updated."));        
         
         // Get Logged in Employee's Display Name        
         $logged_in_employee_display_name = QFactory::getUser()->login_display_name;
@@ -1883,13 +1883,13 @@ function check_invoice_can_be_deleted($invoice_id) {
     /*
     // Has Labour (these will get deleted anyway)
     if(!empty(get_invoice_labour_items($invoice_id))) {
-        postEmulationWrite('msg_danger', _gettext("This invoice cannot be deleted because it has labour items."));
+        systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has labour items."));
         return false;          
     }    
     
     // Has Parts (these will get deleted anyway)
     if(!empty(get_invoice_parts_items($invoice_id))) {
-        postEmulationWrite('msg_danger', _gettext("This invoice cannot be deleted because it has parts."));
+        systemMessagesWrite('danger', _gettext("This invoice cannot be deleted because it has parts."));
         return false;          
     }
     */

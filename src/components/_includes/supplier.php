@@ -358,7 +358,7 @@ function update_supplier_status($supplier_id, $new_status, $silent = false) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $supplier_details['status']) {        
-        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -380,7 +380,7 @@ function update_supplier_status($supplier_id, $new_status, $silent = false) {
     } else {    
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('msg_success', _gettext("supplier status updated.")); }
+        if (!$silent) { systemMessagesWrite('success', _gettext("supplier status updated.")); }
         
         // For writing message to log file, get supplier status display name
         $supplier_status_display_name = _gettext(get_supplier_status_display_name($new_status));

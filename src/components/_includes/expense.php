@@ -344,7 +344,7 @@ function update_expense_status($expense_id, $new_status, $silent = false) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $expense_details['status']) {        
-        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -366,7 +366,7 @@ function update_expense_status($expense_id, $new_status, $silent = false) {
     } else {        
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('msg_success', _gettext("Expense status updated.")); }
+        if (!$silent) { systemMessagesWrite('success', _gettext("Expense status updated.")); }
         
         // For writing message to log file, get expense status display name
         /*$expense_status_display_name = _gettext(get_expense_status_display_name($new_status));

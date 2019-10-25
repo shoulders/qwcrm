@@ -180,7 +180,7 @@ class PType {
         
         // Is on a different tax system
         if($this->otherincome_details['tax_system'] != QW_TAX_SYSTEM) {
-            //postEmulationWrite('msg_danger', _gettext("The other income cannot receive a payment because it is on a different tax system."));
+            //systemMessagesWrite('danger', _gettext("The other income cannot receive a payment because it is on a different tax system."));
             //return false;            
             force_page('otherincome', 'details&otherincome_id='.$this->VAR['qpayment']['otherincome_id'], 'msg_danger='._gettext("The other income cannot receive a payment because it is on a different tax system."));
             

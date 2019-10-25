@@ -317,7 +317,7 @@ function update_otherincome_status($otherincome_id, $new_status, $silent = false
     
     // if the new status is the same as the current one, exit
     if($new_status == $otherincome_details['status']) {        
-        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -339,7 +339,7 @@ function update_otherincome_status($otherincome_id, $new_status, $silent = false
     } else {    
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('msg_success', _gettext("otherincome status updated.")); }
+        if (!$silent) { systemMessagesWrite('success', _gettext("otherincome status updated.")); }
         
         // For writing message to log file, get otherincome status display name
         $otherincome_status_display_name = _gettext(get_otherincome_status_display_name($new_status));

@@ -696,7 +696,7 @@ function update_workorder_status($workorder_id, $new_status) {
     
     // If the new status is the same as the current one, exit
     if($new_status == $workorder_details['status']) {        
-        postEmulationWrite('msg_danger', _gettext("Nothing done. The new work order status is the same as the current work order status."));
+        systemMessagesWrite('danger', _gettext("Nothing done. The new work order status is the same as the current work order status."));
         return false;
     }
     
@@ -730,7 +730,7 @@ function update_workorder_status($workorder_id, $new_status) {
         }
                 
         // Status updated message
-        postEmulationWrite('msg_success', _gettext("Work order status updated."));        
+        systemMessagesWrite('success', _gettext("Work order status updated."));        
         
         // For writing message to log file, get work order status display name
         $wo_status_display_name = _gettext(get_workorder_status_display_name($new_status));
@@ -974,13 +974,13 @@ function delete_workorder($workorder_id) {
     
     // Does the workorder have an invoice
     if(get_workorder_details($workorder_id, 'invoice_id')) {        
-        postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it has an invoice."));
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has an invoice."));
         return false;
     }
     
     // Is the workorder in an allowed state to be deleted
     if(!check_workorder_status_allows_for_deletion($workorder_id)) {        
-        postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because its status does not allow it."));
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because its status does not allow it."));
         return false;
     }
     
@@ -1106,14 +1106,14 @@ function resolution_edit_status_check($workorder_id) {
     // Workorder is Closed
     if($wo_is_closed == '1') {
 
-        postEmulationWrite('msg_danger', _gettext("Cannot edit the resolution because the work order is already closed."));
+        systemMessagesWrite('danger', _gettext("Cannot edit the resolution because the work order is already closed."));
         return false;
     }
     
     // Waiting For Parts
     if ($wo_status == 'waiting_for_parts') {           
 
-        postEmulationWrite('msg_danger', _gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."));
+        systemMessagesWrite('danger', _gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."));
         return false;
 
     }
@@ -1135,7 +1135,7 @@ function assign_workorder_to_employee($workorder_id, $target_employee_id) {
     
     // If the new employee is the same as the current one, exit
     if($target_employee_id == $workorder_details['employee_id']) {        
-        postEmulationWrite('msg_danger', _gettext("Nothing done. The new employee is the same as the current employee."));
+        systemMessagesWrite('danger', _gettext("Nothing done. The new employee is the same as the current employee."));
         return false;
     }    
     
@@ -1162,7 +1162,7 @@ function assign_workorder_to_employee($workorder_id, $target_employee_id) {
     } else {
         
         // Assigned employee success message
-        postEmulationWrite('msg_success', _gettext("Assigned employee updated.")); 
+        systemMessagesWrite('success', _gettext("Assigned employee updated.")); 
         
         // Get Logged in Employee's Display Name        
         $logged_in_employee_display_name = QFactory::getUser()->login_display_name;

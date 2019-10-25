@@ -641,7 +641,7 @@ function update_payment_status($payment_id, $new_status, $silent = false) {
     
     // if the new status is the same as the current one, exit
     if($new_status == $payment_details['status']) {        
-        if (!$silent) { postEmulationWrite('msg_danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+        if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
         return false;
     }    
     
@@ -656,7 +656,7 @@ function update_payment_status($payment_id, $new_status, $silent = false) {
     } else {        
         
         // Status updated message
-        if (!$silent) { postEmulationWrite('msg_success', _gettext("Payment status updated.")); }
+        if (!$silent) { systemMessagesWrite('success', _gettext("Payment status updated.")); }
         
         // For writing message to log file, get payment status display name
         $payment_status_names = get_payment_status_names();
