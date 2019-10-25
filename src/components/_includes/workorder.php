@@ -1205,72 +1205,73 @@ function assign_workorder_to_employee($workorder_id, $target_employee_id) {
 ######################################################
 
 function check_workorder_status_allows_for_deletion($workorder_id) {
+    
+    $state_flag = true;
      
     // Get the otherincome details
     $workorder_details = get_workorder_details($workorder_id);
     
     /* Is Unassigned
     if($workorder_details['status'] == 'unassigned') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it is unassigned."));
-        return false;        
+        systemMessagesWrite('danger',  _gettext("This workorder cannot be deleted because it is unassigned."));
+        $state_flag = false;        
     }*/
     
     // Is Assigned
     if($workorder_details['status'] == 'assigned') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it is assigned"));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is assigned"));
+        $state_flag = false;        
     }
     
     // Is Waiting for Parts
     if($workorder_details['status'] == 'waiting_for_parts') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it is waiting for parts."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is waiting for parts."));
+        $state_flag = false;        
     }
     
     // Is Scheduled
     if($workorder_details['status'] == 'scheduled') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it is scheduled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is scheduled."));
+        $state_flag = false;        
     }
     
     // With Client
     if($workorder_details['status'] == 'with_client') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it is with the client."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with the client."));
+        $state_flag = false;        
     }
     
     // Is On Hold
     if($workorder_details['status'] == 'on_hold') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it is on hold."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is on hold."));
+        $state_flag = false;        
     }
     
     /* Is with Management
     if($workorder_details['status'] == 'management') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it is with mangement."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with mangement."));
+        $state_flag = false;        
     }*/
     
     // Closed without Invoice
     if($workorder_details['status'] == 'closed_without_invoice') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
+        $state_flag = false;        
     }
     
     // Closed with Invoice
     if($workorder_details['status'] == 'closed_with_invoice') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($workorder_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("The workorder cannot be deleted because it has already been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The workorder cannot be deleted because it has already been deleted."));
+        $state_flag = false;        
     }
     
-    // All checks passed
-    return true;    
+    return $state_flag;  
      
 }
 
@@ -1280,71 +1281,72 @@ function check_workorder_status_allows_for_deletion($workorder_id) {
 
  function check_workorder_status_can_be_changed($workorder_id) {
      
+    $state_flag = true;
+     
    // Get the otherincome details
     $workorder_details = get_workorder_details($workorder_id);
     
     /* Is Unassigned
     if($workorder_details['status'] == 'unassigned') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it is unassigned."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is unassigned."));
+        $state_flag = false;        
     }*/
     
     /* Is Assigned
     if($workorder_details['status'] == 'assigned') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it is assigned"));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is assigned"));
+        $state_flag = false;        
     }*/
     
     /* Is Waiting for Parts
     if($workorder_details['status'] == 'waiting_for_parts') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it is waiting for parts."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is waiting for parts."));
+        $state_flag = false;        
     }*/
     
     /* Is Scheduled
     if($workorder_details['status'] == 'scheduled') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it is scheduled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is scheduled."));
+        $state_flag = false;        
     }*/
     
     /* With Client
     if($workorder_details['status'] == 'with_client') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it is with the client."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with the client."));
+        $state_flag = false;        
     }*/
     
     /* Is On Hold
     if($workorder_details['status'] == 'on_hold') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it is on hold."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is on hold."));
+        $state_flag = false;        
     }*/
     
     /* Is with Management
     if($workorder_details['status'] == 'management') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it is with mangement."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with mangement."));
+        $state_flag = false;        
     }*/
     
     /* Closed without Invoice
     if($workorder_details['status'] == 'closed_without_invoice') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it has been closed without an invoice."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed without an invoice."));
+        $state_flag = false;        
     }*/
     
     // Closed with Invoice
     if($workorder_details['status'] == 'closed_with_invoice') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($workorder_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder status cannot be changed because it has already been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has already been deleted."));
+        $state_flag = false;        
     }
     
-    // All checks passed
-    return true;    
+    return $state_flag;
      
  }
  
@@ -1354,76 +1356,77 @@ function check_workorder_status_allows_for_deletion($workorder_id) {
 
  function check_workorder_allowed_to_change_employee($workorder_id) {
      
+    $state_flag = true;
+     
     // Get the otherincome details
     $workorder_details = get_workorder_details($workorder_id);
     
     /* Is Unassigned
     if($workorder_details['status'] == 'unassigned') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it is unassigned."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is unassigned."));
+        $state_flag = false;        
     }*/
     
     /* Is Assigned
     if($workorder_details['status'] == 'assigned') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it is assigned"));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is assigned"));
+        $state_flag = false;        
     }*/
     
     /* Is Waiting for Parts
     if($workorder_details['status'] == 'waiting_for_parts') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it is waiting for parts."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is waiting for parts."));
+        $state_flag = false;        
     }*/
     
     /* Is Scheduled
     if($workorder_details['status'] == 'scheduled') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it is scheduled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is scheduled."));
+        $state_flag = false;        
     }*/
     
     /* With Client
     if($workorder_details['status'] == 'with_client') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it is with the client."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with the client."));
+        $state_flag = false;        
     }*/
     
     /* Is On Hold
     if($workorder_details['status'] == 'on_hold') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it is on hold."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is on hold."));
+        $state_flag = false;        
     }*/
     
     /* Is with Management
     if($workorder_details['status'] == 'management') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it is with mangement."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with mangement."));
+        $state_flag = false;        
     }*/
     
     // Closed without Invoice
     if($workorder_details['status'] == 'closed_without_invoice') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."));
+        $state_flag = false;        
     }
     
     // Closed with Invoice
     if($workorder_details['status'] == 'closed_with_invoice') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($workorder_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it has already been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has already been deleted."));
+        $state_flag = false;        
     }
     
     /* Is Closed (old Fallback method)
     if(!get_workorder_details($workorder_details['workorder_id'], 'is_closed')) {
-        //postEmulationWrite('msg_danger', _gettext("This workorder employee cannot be changed because it has been closes."));
-        return false;  
+        systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closes."));
+        $state_flag = false;  
     }*/
     
-    // All checks passed
-    return true;    
+    return $state_flag;  
      
  }

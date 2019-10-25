@@ -153,7 +153,7 @@ function get_page_content($page_controller, $mode = null, $component = null, $pa
 
     // Convert to SEF (if enabled and NOT running setup)
     if (!defined('QWCRM_SETUP') && $config->get('sef')) { 
-        $pagePayload = page_links_to_sef($pagePayload);        
+        page_links_to_sef($pagePayload);        
     }    
         
     return $pagePayload;

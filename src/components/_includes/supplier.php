@@ -483,17 +483,18 @@ function last_supplier_id_lookup() {
 
  function check_supplier_status_can_be_changed($supplier_id) {
      
+    $state_flag = true;
+     
     // Get the supplier details
     //$supplier_details = get_supplier_details($supplier_id); 
     
     /* Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
+        $state_flag = false;       
     }*/
 
-    // All checks passed
-    return true;     
+    return $state_flag;   
      
  }
 
@@ -504,17 +505,18 @@ function last_supplier_id_lookup() {
 
 function check_supplier_can_be_cancelled($supplier_id) {
     
+    $state_flag = true;
+    
     // Get the supplier details
     $supplier_details = get_supplier_details($supplier_id);   
    
     // Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
+        $state_flag = false;       
     }  
    
-    // All checks passed
-    return true;
+    return $state_flag;
     
 }
 
@@ -524,17 +526,18 @@ function check_supplier_can_be_cancelled($supplier_id) {
 
 function check_supplier_can_be_deleted($supplier_id) {
     
+    $state_flag = true;
+    
     // Get the supplier details
     //$supplier_details = get_supplier_details($supplier_id);
     
     /* Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("This supplier cannot be deleted because it has been cancelled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has been cancelled."));
+        $state_flag = false;       
     }*/
      
-    // All checks passed
-    return true;
+    return $state_flag;
     
 }
 
@@ -544,16 +547,17 @@ function check_supplier_can_be_deleted($supplier_id) {
 
  function check_supplier_can_be_edited($supplier_id) {
      
+    $state_flag = true;
+     
     // Get the supplier details
     $supplier_details = get_supplier_details($supplier_id);
     
     // Is cancelled
     if($supplier_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("The supplier cannot be edited because it has been cancelled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been cancelled."));
+        $state_flag = false;       
     }
     
-    // All checks passed
-    return true;    
+    return $state_flag;
      
 }

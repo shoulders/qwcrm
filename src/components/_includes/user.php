@@ -1237,6 +1237,8 @@ function delete_expired_reset_codes() {
 
 function check_user_can_be_deleted($user_id) {
     
+    $state_flag = true;
+    
     $db = QFactory::getDbo();
     
     // Get the user details
@@ -1244,8 +1246,8 @@ function check_user_can_be_deleted($user_id) {
     
     // User cannot delete their own account
     if($user_id == QFactory::getUser()->login_user_id) {
-        postEmulationWrite('msg_danger', _gettext("You can not delete your own account."));        
-        return false;
+        systemMessagesWrite('danger', _gettext("You can not delete your own account."));        
+        $state_flag = false;
     }
     
     // Cannot delete this account if it is the last administrator account
@@ -1256,8 +1258,8 @@ function check_user_can_be_deleted($user_id) {
             force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
         }  
         if($rs->fields['count'] <= 1 ) {
-            postEmulationWrite('msg_danger', _gettext("You can not delete the last administrator user account."));        
-            return false;
+            systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."));        
+            $state_flag = false;
         }        
     }
 
@@ -1267,8 +1269,8 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has created work orders."));        
-        return false;
+        systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."));        
+        $state_flag = false;
     }
     
     // Check if user has any assigned workorders
@@ -1277,8 +1279,8 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has assigned work orders."));
-        return false;
+        systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."));
+        $state_flag = false;
     }
     
     // Check if user has any invoices
@@ -1287,8 +1289,8 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
     }    
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has invoices."));
-        return false;
+        systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."));
+        $state_flag = false;
     }    
     
     // Check if user is assigned to any Vouchers
@@ -1297,11 +1299,10 @@ function check_user_can_be_deleted($user_id) {
         force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
     }  
     if($rs->fields['count'] > 0 ) {
-        postEmulationWrite('msg_danger', _gettext("You can not delete a user who has Vouchers."));
-        return false;
+        systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."));
+        $state_flag = false;
     }
      
-    // All checks passed
-    return true;
+    return $state_flag;
     
 }

@@ -79,7 +79,7 @@ if(!defined('QWCRM_SETUP')) {
 ############################################################
 
 // Build and set the System Messages Store (only run once per session)
-systemMessagesBuildStore();  
+systemMessagesBuildStore(true);
     
 // Set the Smarty User Variables (only run once per session)
 smarty_set_user_variables();

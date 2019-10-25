@@ -572,35 +572,36 @@ function recalculate_expense_totals($expense_id) {
 
  function check_expense_status_can_be_changed($expense_id) {
      
+    $state_flag = true;
+     
     // Get the expense details
     $expense_details = get_expense_details($expense_id);
     
     // Is partially paid
     if($expense_details['status'] == 'partially_paid') {
-        //postEmulationWrite('msg_danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is partially paid."));
+        $state_flag = false;        
     }
     
     // Is paid
     if($expense_details['status'] == 'paid') {
-        //postEmulationWrite('msg_danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments and is paid."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("The expense status cannot be changed because the expense has been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has been deleted."));
+        $state_flag = false;        
     }
         
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
-        //postEmulationWrite('msg_danger', _gettext("The expense status cannot be changed because the expense has payments."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense status cannot be changed because the expense has payments."));
+        $state_flag = false;        
     }
 
-    // All checks passed
-    return true;     
+    return $state_flag;    
      
  }
 
@@ -610,41 +611,42 @@ function recalculate_expense_totals($expense_id) {
 
 function check_expense_can_be_refunded($expense_id) {
     
+    $state_flag = true;
+    
     // Get the expense details
     $expense_details = get_expense_details($expense_id);
     
     // Is partially paid
     if($expense_details['status'] == 'partially_paid') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be refunded because the expense is partially paid."));
-        return false;
+        systemMessagesWrite('danger', _gettext("This expense cannot be refunded because the expense is partially paid."));
+        $state_flag = false;
     }
         
     // Is refunded
     if($expense_details['status'] == 'refunded') {
-        //postEmulationWrite('msg_danger', _gettext("The expense cannot be refunded because the expense has already been refunded."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense cannot be refunded because the expense has already been refunded."));
+        $state_flag = false;        
     }
     
     // Is cancelled
     if($expense_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("The expense cannot be refunded because the expense has been cancelled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense cannot be refunded because the expense has been cancelled."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("The expense cannot be refunded because the expense has been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense cannot be refunded because the expense has been deleted."));
+        $state_flag = false;        
     }    
     
     // Has no payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(!count_payments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be refunded because the expense has no payments."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be refunded because the expense has no payments."));
+        $state_flag = false;        
     }
     
-    // All checks passed
-    return true;
+    return $state_flag;
     
 }
 
@@ -654,41 +656,42 @@ function check_expense_can_be_refunded($expense_id) {
 
 function check_expense_can_be_cancelled($expense_id) {
     
+    $state_flag = true;
+    
     // Get the expense details
     $expense_details = get_expense_details($expense_id);
     
     // Is partially paid
     if($expense_details['status'] == 'partially_paid') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be cancelled because the expense is partially paid."));
-        return false;
+        systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense is partially paid."));
+        $state_flag = false;
     }
     
     // Is paid
     if($expense_details['status'] == 'paid') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
+        $state_flag = false;        
     }
         
     // Is cancelled
     if($expense_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("The expense cannot be cancelled because the expense has already been cancelled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has already been cancelled."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("The expense cannot be cancelled because the expense has been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense cannot be cancelled because the expense has been deleted."));
+        $state_flag = false;        
     }    
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be cancelled because the expense has payments."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be cancelled because the expense has payments."));
+        $state_flag = false;        
     }
    
-    // All checks passed
-    return true;
+    return $state_flag;
     
 }
 
@@ -698,41 +701,42 @@ function check_expense_can_be_cancelled($expense_id) {
 
 function check_expense_can_be_deleted($expense_id) {
     
+    $state_flag = true;
+    
     // Get the expense details
     $expense_details = get_expense_details($expense_id);
     
     // Is partially paid
     if($expense_details['status'] == 'partially_paid') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is partially paid."));
+        $state_flag = false;        
     }
     
     // Is paid
     if($expense_details['status'] == 'paid') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments and is paid."));
+        $state_flag = false;        
     }
     
     // Is cancelled
     if($expense_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be deleted because it has been cancelled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has been cancelled."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be deleted because it already been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it already been deleted."));
+        $state_flag = false;        
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be deleted because it has payments."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be deleted because it has payments."));
+        $state_flag = false;        
     }
      
-    // All checks passed
-    return true;
+    return $state_flag;
     
 }
 
@@ -742,52 +746,53 @@ function check_expense_can_be_deleted($expense_id) {
 
  function check_expense_can_be_edited($expense_id) {
      
+    $state_flag = true;
+     
     // Get the expense details
     $expense_details = get_expense_details($expense_id);
     
     // Is on a different tax system
     if($expense_details['tax_system'] != QW_TAX_SYSTEM) {
-        //postEmulationWrite('msg_danger', _gettext("The expense cannot be edited because it is on a different Tax system."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense cannot be edited because it is on a different Tax system."));
+        $state_flag = false;        
     }
     
     // Is partially paid
     if($expense_details['status'] == 'partially_paid') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be edited because it has payments and is partially paid."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is partially paid."));
+        $state_flag = false;        
     }
     
     // Is paid
     if($expense_details['status'] == 'paid') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be edited because it has payments and is paid."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments and is paid."));
+        $state_flag = false;        
     }
     
     // Is cancelled
     if($expense_details['status'] == 'cancelled') {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be edited because it has been cancelled."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has been cancelled."));
+        $state_flag = false;        
     }
     
     // Is deleted
     if($expense_details['status'] == 'deleted') {
-        //postEmulationWrite('msg_danger', _gettext("The expense cannot be edited because it has been deleted."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("The expense cannot be edited because it has been deleted."));
+        $state_flag = false;        
     }
     
     // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
     if(count_payments(null, null, 'date', null, null, 'expense', null, null, null, null, null, $expense_id)) {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be edited because it has payments."));
-        return false;        
+        systemMessagesWrite('danger', _gettext("This expense cannot be edited because it has payments."));
+        $state_flag = false;        
     }   
     
     // The current record VAT code is enabled
     if(!get_vat_tax_code_status($expense_details['vat_tax_code'])) {
-        //postEmulationWrite('msg_danger', _gettext("This expense cannot be edited because it's current VAT Tax Code is not enabled."));
-        return false; 
+        systemMessagesWrite('danger', _gettext("This expense cannot be edited because it's current VAT Tax Code is not enabled."));
+        $state_flag = false; 
     }
 
-    // All checks passed
-    return true;    
+    return $state_flag;    
      
 }

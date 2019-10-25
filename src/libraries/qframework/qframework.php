@@ -45,8 +45,8 @@ class QFactory {
         $PlgSystemRemember = new PlgSystemRemember;  // This allows silent login using 'Remember me' cookie after checking it exists - need to make sure it does not re-logon if already logged on
         $PlgSystemRemember->onAfterInitialise();
         unset($PlgSystemRemember);        
-        
-        // Merge the `Post Emulation Store` stored in the session
+                
+        // Merge the `Post Emulation Store`, `(stored in the session) to $VAR  ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)        
         self::$VAR = array_merge(self::$VAR, postEmulationReturnStore());
     
     }
@@ -750,7 +750,7 @@ class QFactory {
     }  
     
     /** 
-     * Merge the $_GET, $_POST and emulated $_POST - 1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
+     * Merge the $_GET, $_POST and emulated $_POST ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
      */
     private static function merge_primary_arrays()
     {

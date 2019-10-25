@@ -119,6 +119,11 @@ function update_user_last_active($user_id = null) {
 
 function force_page($component, $page_tpl = null, $variables = null, $method = 'auto', $url_sef = 'auto', $url_protocol = 'auto') {
     
+    // Preserve the Message Store (if there are any messages) for the next page load
+    if($forcePageSystemMessageStore = systemMessagesReturnStore(false, 'array')) {
+        postEmulationWrite('forcePageSystemMessageStore', $forcePageSystemMessageStore);
+    }
+    
     /* Process Options */
     
     // Set method to be used

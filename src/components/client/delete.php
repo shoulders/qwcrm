@@ -25,8 +25,11 @@ if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
 if(!delete_client(\QFactory::$VAR['client_id'])) {
     
     // Reload client details page with error messages
-    $pagePayload = load_page('get_payload', 'client', 'details');    
+    //$pagePayload = load_page('get_payload', 'client', 'details');     
     //force_page('client', 'details&client_id='.\QFactory::$VAR['client_id'], 'msg_danger='._gettext("This client cannot be deleted."));
+    
+    systemMessagesWrite('danger', _gettext("This client cannot be deleted."));
+    force_page('client', 'details&client_id='.\QFactory::$VAR['client_id']);
     
 } else {
     

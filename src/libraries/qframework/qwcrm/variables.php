@@ -84,80 +84,6 @@ function load_system_variables() {
     
 }
 
-######################################
-#  System Messages                   #  // This function will take any messages from \QFactory::$VAR and put them into \QFactory::$messages
-######################################  // This has all of the bootstrap message types here
-
-// Build the Sysmte Messages Store
-function systemMessagesBuildStore() {
-    
-    // Build the array in the correct order (for display purposes)
-    $types = array('primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark');
-     
-    // Loop through the different types or system message    
-    foreach ($types as $type) {
-        
-        // Add this Message Type to the global System Message Store
-        \QFactory::$messages[$type] = array();
-        
-        // Check for this message type in \QFactory::$VAR and set to system message store
-        if(isset(\QFactory::$VAR['msg_'.$type])) {
-            \QFactory::$messages[$type][] = strip_tags(\QFactory::$VAR['msg_'.$type], '<br>');
-            unset(\QFactory::$VAR['msg_'.$type]);
-        }     
-        
-    }
-    
-    return;
-    
-}
-
-// Write a system messgae to the store
-function systemMessagesWrite($type, $message) {
-    
-    \QFactory::$messages[$type][] = $message;
-    
-    return;
-    
-}
-
-
-// Return the Messages Store
-function systemMessagesReturnStore() {
-    
-    // Remove all empty message type holders
-    \QFactory::$messages = array_filter(\QFactory::$messages);
-    
-    // HTML holder
-    $html = '';    
-    
-    // Loop through the different types of message and build HTML
-    foreach (\QFactory::$messages as $messageStoreType => $messages) {
-        
-        foreach ($messages as $message) {
-            
-            $html .= "<div class=\"alert alert-$messageStoreType\" role=\"alert\">$message</div>\n";
-            
-        }        
-        
-    }
-    
-    return $html;
-    
-}
-
-// This will parse the page payload and add the system messages, (only works on an empty HTML `system_messages` div)
-function systemMessagesParsePage(&$pagePayload) {    
-    
-    if($systemMessageStore = systemMessagesReturnStore()) {
-        $search = '<div id="system_messages" style="display: none;"></div>';
-        $replace = "<div id=\"system_messages\">\n".$systemMessageStore."</div>\n";
-        $count = (int)1;
-        $pagePayload = str_replace($search, $replace, $pagePayload, $count);
-    }
-    
-}
-
 #####################################
 #  Set the User's Smarty Variables  #  // Empty if not logged in or installing (except for usergroup)
 #####################################
@@ -260,6 +186,125 @@ function postEmulationReturnStore($keep_store = false) {
         return array();
     } else {
         return $post_store;
+    }
+    
+}
+
+
+######################################  // This function will take any messages from \QFactory::$VAR and put them into \QFactory::$messages
+#  System Messages                   #  // This has all of the bootstrap message types here
+######################################
+
+// Build the System Messages Store
+function systemMessagesBuildStore($grabVar = false) {
+    
+    // Build the array in the correct order (for display purposes)
+    $types = array('primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark');
+     
+    // Loop through the different types or system message    
+    foreach ($types as $type) {
+        
+        // Add this Message Type to the global System Message Store
+        \QFactory::$messages[$type] = array();
+        
+        // Get single message varibles from \QFactory::$VAR (legacy)
+        if($grabVar) {
+            // Check for this message type in \QFactory::$VAR and set to system message store
+            if(isset(\QFactory::$VAR['msg_'.$type])) {
+                \QFactory::$messages[$type][] = strip_tags(\QFactory::$VAR['msg_'.$type], '<br>');
+                unset(\QFactory::$VAR['msg_'.$type]);
+            }     
+        }   
+        
+    } 
+       
+    if($grabVar) {
+        
+        // Merge Force Page Message Store into the System Message Store
+        \QFactory::$messages = array_merge(\QFactory::$messages, systemMessagesReturnForcePageStore());
+        
+    }
+
+    return;
+    
+}
+
+// Write a system messgae to the store
+function systemMessagesWrite($type, $message) {
+    
+    \QFactory::$messages[$type][] = $message;
+    
+    return;
+    
+}
+
+// Return the Messages Store
+function systemMessagesReturnStore($keep_store = false, $format = 'html') {
+    
+    // Remove all empty message type holders
+    \QFactory::$messages = array_filter(\QFactory::$messages);
+    
+    // Return Message store as an array
+    if($format === 'array') {
+        $messages = \QFactory::$messages;
+    }
+    
+    // Return Message store as formatted HTML
+    if($format === 'html') {
+        
+        // HTML holder
+        $html = '';    
+
+        // Loop through the different types of message and build HTML
+        foreach (\QFactory::$messages as $messageStoreType => $messages) {
+
+            foreach ($messages as $message) {
+
+                $html .= "<div class=\"alert alert-$messageStoreType\" role=\"alert\">$message</div>\n";
+
+            }        
+
+        }
+        
+    }
+    
+    // Wipe the message store
+    if($keep_store === false) {
+        systemMessagesBuildStore();
+    }
+    
+    // Return selected format
+    if($format === 'array') {
+        return $messages;
+    } else {    
+        return $html;
+    }
+    
+}
+
+// Get force_page() Message Store and merge (if passed/present)
+function systemMessagesReturnForcePageStore() {
+    
+    // If a System Message Store has been passed by force_page(), merge this array in to the System Message Store
+    if(isset(\QFactory::$VAR['forcePageSystemMessageStore']) && is_array(\QFactory::$VAR['forcePageSystemMessageStore'])) {
+        $message_store = \QFactory::$VAR['forcePageSystemMessageStore'];
+        unset(\QFactory::$VAR['forcePageSystemMessageStore']);
+    } else {        
+        $message_store = array();
+    }
+        
+    return $message_store;
+    
+}
+
+// This will parse the page payload and add the system messages, (only works on an empty HTML `system_messages` div)
+function systemMessagesParsePage(&$pagePayload) {    
+    
+    if($systemMessageStore = systemMessagesReturnStore()) {
+        $search = '<div id="system_messages" style="display: none;"></div>';
+        $replace = "<div id=\"system_messages\">\n".$systemMessageStore."</div>\n";
+        $count = (int)1;
+        $pagePayload = str_replace($search, $replace, $pagePayload, $count);
     }
     
 }
