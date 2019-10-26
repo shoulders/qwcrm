@@ -12,6 +12,7 @@ defined('_QWEXEC') or die;
 // QWcrm
 require QFRAMEWORK_DIR . 'qwcrm/defines.php';                      // Load System Constants
 require QFRAMEWORK_DIR . 'qwcrm/error.php';                        // Configure PHP error reporting
+
 require QFRAMEWORK_DIR . 'qwcrm/general.php';                      // Load General Library
 require QFRAMEWORK_DIR . 'qwcrm/security.php';                     // Load QWcrm Security including mandatory security code
 require QFRAMEWORK_DIR . 'qwcrm/mpdf.php';                         // Load mPDF functions
