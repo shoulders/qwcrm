@@ -12,14 +12,14 @@ defined('_QWEXEC') or die;
 // QWcrm
 require QFRAMEWORK_DIR . 'qwcrm/defines.php';                      // Load System Constants
 require QFRAMEWORK_DIR . 'qwcrm/error.php';                        // Configure PHP error reporting
-require QFRAMEWORK_DIR . 'qwcrm/include.php';                      // Load System Include
+require QFRAMEWORK_DIR . 'qwcrm/general.php';                      // Load General Library
 require QFRAMEWORK_DIR . 'qwcrm/security.php';                     // Load QWcrm Security including mandatory security code
 require QFRAMEWORK_DIR . 'qwcrm/mpdf.php';                         // Load mPDF functions
 require QFRAMEWORK_DIR . 'qwcrm/email.php';                        // Load email transport
 require QFRAMEWORK_DIR . 'qwcrm/variables.php';                    // Configure variables to be used by QWcrm
 require QFRAMEWORK_DIR . 'qwcrm/router.php';                       // Route the page request
 require QFRAMEWORK_DIR . 'qwcrm/page.php';                         // Page related functions
-require QFRAMEWORK_DIR . 'qframework.php';                         // Main Framework class
+require QFRAMEWORK_DIR . 'qfactory.php';                           // Main Framework class
 
 // Misc (Joomla)
 require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/registry/src/Registry.php';            // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session

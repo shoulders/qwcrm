@@ -32,7 +32,7 @@ defined('_QWEXEC') or die;
 #      get company details               #
 ##########################################
 
-// This is in the main include.php file
+// This is in the main general.php file
 
 #####################################
 #    Get company tax systems        #
