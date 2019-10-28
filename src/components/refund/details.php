@@ -8,13 +8,13 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'company.php');
-require(INCLUDES_DIR.'refund.php');
-require(INCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'refund.php');
+require(CINCLUDES_DIR.'payment.php');
 
 // Check if we have a refund_id
-if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
+if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
     systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
     force_page('refund', 'search');
 } 
@@ -23,10 +23,10 @@ if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
 $smarty->assign('payment_types',            get_payment_types()                                                                                 );
 $smarty->assign('payment_methods',          get_payment_methods()                                                             ); 
 $smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
-$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'refund', null, null, null, null, null, \QFactory::$VAR['refund_id']));
+$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'refund', null, null, null, null, null, \CMSApplication::$VAR['refund_id']));
 
 // Build the page
-$refund_details = get_refund_details(\QFactory::$VAR['refund_id']);
+$refund_details = get_refund_details(\CMSApplication::$VAR['refund_id']);
 $smarty->assign('refund_statuses', get_refund_statuses()  );
 $smarty->assign('refund_types', get_refund_types());
 $smarty->assign('refund_details', $refund_details);

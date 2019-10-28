@@ -8,38 +8,38 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'company.php');
-require(INCLUDES_DIR.'otherincome.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'otherincome.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'report.php');
 
 // Check if we have a otherincome_id
-if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id']) {
+if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
     force_page('otherincome', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
-if(isset(\QFactory::$VAR['submit'])) {    
+if(isset(\CMSApplication::$VAR['submit'])) {    
         
     // Update the otherincome in the database
-    update_otherincome(\QFactory::$VAR['qform']);
-    recalculate_otherincome_totals(\QFactory::$VAR['qform']['otherincome_id']);
+    update_otherincome(\CMSApplication::$VAR['qform']);
+    recalculate_otherincome_totals(\CMSApplication::$VAR['qform']['otherincome_id']);
     
     // load details page
-    force_page('otherincome', 'details&otherincome_id='.\QFactory::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
+    force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
 } else {  
 
     // Check if payment can be edited
-    if(!check_otherincome_can_be_edited(\QFactory::$VAR['otherincome_id'])) {
+    if(!check_otherincome_can_be_edited(\CMSApplication::$VAR['otherincome_id'])) {
         systemMessagesWrite('danger', _gettext("You cannot edit this otherincome because its status does not allow it."));
-        force_page('otherincome', 'details&otherincome_id='.\QFactory::$VAR['otherincome_id']);
+        force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
     }
     
     // Build the page
     $smarty->assign('otherincome_statuses', get_otherincome_statuses());
     $smarty->assign('otherincome_types', get_otherincome_types());
     $smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );    
-    $smarty->assign('otherincome_details', get_otherincome_details(\QFactory::$VAR['otherincome_id']));
+    $smarty->assign('otherincome_details', get_otherincome_details(\CMSApplication::$VAR['otherincome_id']));
 
 }

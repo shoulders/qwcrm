@@ -8,33 +8,33 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_id
-if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
+if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
     force_page('workorder', 'search');
 }
 
 // Check if we can edit the workorder description
-if(get_workorder_details(\QFactory::$VAR['workorder_id'], 'is_closed')) {
+if(get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {
     systemMessagesWrite('danger', _gettext("Cannot edit the description of a closed Work Order."));
-    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id']);
+    force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 }
 
 // If updated scope and description are submitted
-if(isset(\QFactory::$VAR['submit'])) {
+if(isset(\CMSApplication::$VAR['submit'])) {
     
     // update the scope and description in the database
-    update_workorder_scope_and_description(\QFactory::$VAR['workorder_id'], \QFactory::$VAR['scope'], \QFactory::$VAR['description']);
+    update_workorder_scope_and_description(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['scope'], \CMSApplication::$VAR['description']);
     
     // load the workorder details page
     systemMessagesWrite('success', _gettext("Description has been updated."));
-    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id']);
+    force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 
 }
 
 // Build the page 
-$smarty->assign('scope',          get_workorder_details(\QFactory::$VAR['workorder_id'], 'scope')        );
-$smarty->assign('description',    get_workorder_details(\QFactory::$VAR['workorder_id'], 'description')  );  
+$smarty->assign('scope',          get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'scope')        );
+$smarty->assign('description',    get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'description')  );  

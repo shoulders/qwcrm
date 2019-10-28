@@ -8,12 +8,12 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('voucher', 'status')) {
@@ -22,16 +22,16 @@ if(!check_page_accessed_via_qwcrm('voucher', 'status')) {
 }
 
 // Check if we have an voucher_id
-if(!isset(\QFactory::$VAR['voucher_id']) || !\QFactory::$VAR['voucher_id']) {
+if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
     systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
     force_page('voucher', 'search');
 }
 
 // Get invoice_id before deleting
-$invoice_id = get_voucher_details(\QFactory::$VAR['voucher_id'], 'invoice_id');
+$invoice_id = get_voucher_details(\CMSApplication::$VAR['voucher_id'], 'invoice_id');
 
 // Delete the Voucher - The Voucher is effectively only deactivated
-if(!delete_voucher(\QFactory::$VAR['voucher_id'])) {
+if(!delete_voucher(\CMSApplication::$VAR['voucher_id'])) {
     
     // Load the relevant invoice page with fail message
     systemMessagesWrite('danger', _gettext("Voucher failed to be deleted."));

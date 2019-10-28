@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'supplier.php');
+require(CINCLUDES_DIR.'supplier.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('supplier', 'status')) {
@@ -17,13 +17,13 @@ if(!check_page_accessed_via_qwcrm('supplier', 'status')) {
 }
 
 // Check if we have a supplier_id
-if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
+if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
     systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
     force_page('supplier', 'search');
 }  
 
 // Cancel the supplier function call
-cancel_supplier(\QFactory::$VAR['supplier_id']);
+cancel_supplier(\CMSApplication::$VAR['supplier_id']);
 
 // Load the supplier search page
 force_page('supplier', 'search', 'msg_success='._gettext("Supplier cancelled successfully."));

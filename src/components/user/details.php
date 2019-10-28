@@ -8,23 +8,23 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'user.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Prevent undefined variable errors
-\QFactory::$VAR['page_no'] = isset(\QFactory::$VAR['page_no']) ? \QFactory::$VAR['page_no'] : null;
+\CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
 
 // Check if we have an user_id
-if(!isset(\QFactory::$VAR['user_id']) || !\QFactory::$VAR['user_id']) {
+if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']) {
     systemMessagesWrite('danger', _gettext("No User ID supplied."));
     force_page('user', 'search');
 }
 
 // Build the page
 
-$smarty->assign('user_details',             get_user_details(\QFactory::$VAR['user_id'])                                                                            );
-$smarty->assign('client_display_name',      get_client_details(get_user_details(\QFactory::$VAR['user_id'], 'client_id'), 'client_display_name')                    );
+$smarty->assign('user_details',             get_user_details(\CMSApplication::$VAR['user_id'])                                                                            );
+$smarty->assign('client_display_name',      get_client_details(get_user_details(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name')                    );
 $smarty->assign('usergroups',               get_usergroups()                                                                                             );
-$smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'open', \QFactory::$VAR['user_id']));
+$smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'open', \CMSApplication::$VAR['user_id']));
 $smarty->assign('user_locations',           get_user_locations());

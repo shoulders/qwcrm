@@ -8,17 +8,17 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'user.php');
-require(INCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'voucher.php');
 
 // Check if we have an voucher_id
-if(!isset(\QFactory::$VAR['voucher_id']) || !\QFactory::$VAR['voucher_id']) {
+if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
     systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));
     force_page('voucher', 'search');
 }
 
-$voucher_details = get_voucher_details(\QFactory::$VAR['voucher_id']);
+$voucher_details = get_voucher_details(\CMSApplication::$VAR['voucher_id']);
 $redeemed_client_display_name = $voucher_details['redeemed_client_id'] ? get_client_details($voucher_details['redeemed_client_id'], 'display_name') : null;
 
 // Build the page

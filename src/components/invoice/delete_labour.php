@@ -8,12 +8,12 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
@@ -22,16 +22,16 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have an invoice labour_id
-if(!isset(\QFactory::$VAR['labour_id']) || !\QFactory::$VAR['labour_id']) {
+if(!isset(\CMSApplication::$VAR['labour_id']) || !\CMSApplication::$VAR['labour_id']) {
     systemMessagesWrite('danger', _gettext("No Invoice Labour ID supplied."));
     force_page('invoice', 'search');
 }
 
 // Get invoice ID before deletion
-\QFactory::$VAR['invoice_id'] = get_invoice_labour_item_details(\QFactory::$VAR['labour_id'], 'invoice_id');
+\CMSApplication::$VAR['invoice_id'] = get_invoice_labour_item_details(\CMSApplication::$VAR['labour_id'], 'invoice_id');
 
 // Delete Invoice Labour item
-delete_invoice_labour_item(\QFactory::$VAR['labour_id']);
+delete_invoice_labour_item(\CMSApplication::$VAR['labour_id']);
 
 // Load the edit invoice page
-force_page('invoice' , 'edit&invoice_id='.\QFactory::$VAR['invoice_id']);
+force_page('invoice' , 'edit&invoice_id='.\CMSApplication::$VAR['invoice_id']);

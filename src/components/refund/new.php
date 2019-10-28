@@ -8,14 +8,14 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'company.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'refund.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'refund.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 $refund_details = array();
 
@@ -26,25 +26,25 @@ if(!check_page_accessed_via_qwcrm('refund', 'new') && !check_page_accessed_via_q
 }
 
 // Check if we have a refund type and is valid
-if(!isset(\QFactory::$VAR['item_type']) || !\QFactory::$VAR['item_type'] && (\QFactory::$VAR['item_type'] == 'invoice' || \QFactory::$VAR['item_type'] == 'cash_purchase')) {
+if(!isset(\CMSApplication::$VAR['item_type']) || !\CMSApplication::$VAR['item_type'] && (\CMSApplication::$VAR['item_type'] == 'invoice' || \CMSApplication::$VAR['item_type'] == 'cash_purchase')) {
     systemMessagesWrite('danger', _gettext("No Refund Type."));
     force_page('refund', 'search');
 }
 
 // Check if we have an invoice_id
-if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
+if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
     force_page('refund', 'search');
 }
     
 // Process the submitted refund
-if (isset(\QFactory::$VAR['submit'])) {
+if (isset(\CMSApplication::$VAR['submit'])) {
     
     // Insert the Refund into the database
-    $refund_id = refund_invoice(\QFactory::$VAR['qform']);
+    $refund_id = refund_invoice(\CMSApplication::$VAR['qform']);
     recalculate_refund_totals($refund_id);  // This is not strictly needed here because balance = unit_gross
     
-        if (\QFactory::$VAR['submit'] == 'submitandpayment') {
+        if (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
 
             // Load the new payment page for expense
              force_page('payment', 'new&type=refund&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
@@ -59,12 +59,12 @@ if (isset(\QFactory::$VAR['submit'])) {
 } else { 
 
     // Make sure the invoice is allowed to be refunded
-    if(!check_invoice_can_be_refunded(\QFactory::$VAR['invoice_id'])) {
-        systemMessagesWrite('danger', _gettext("Invoice").': '.\QFactory::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
-        force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id']);
+    if(!check_invoice_can_be_refunded(\CMSApplication::$VAR['invoice_id'])) {
+        systemMessagesWrite('danger', _gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
+        force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
     }
 
-    $invoice_details = get_invoice_details(\QFactory::$VAR['invoice_id']);
+    $invoice_details = get_invoice_details(\CMSApplication::$VAR['invoice_id']);
         
     // Build array
     $refund_details['client_id'] = $invoice_details['client_id'];
@@ -72,9 +72,9 @@ if (isset(\QFactory::$VAR['submit'])) {
     $refund_details['invoice_id'] = $invoice_details['invoice_id'];
     $refund_details['date'] = date('Y-m-d');
     $refund_details['tax_system'] = $invoice_details['tax_system'];    
-    $refund_details['item_type'] = \QFactory::$VAR['item_type'];    
+    $refund_details['item_type'] = \CMSApplication::$VAR['item_type'];    
     $refund_details['unit_net'] = $invoice_details['unit_net'];
-    if(preg_match('/^vat_/', $invoice_details['tax_system']) && \QFactory::$VAR['item_type'] == 'invoice') {
+    if(preg_match('/^vat_/', $invoice_details['tax_system']) && \CMSApplication::$VAR['item_type'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'TVM';
     } else {
         $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);

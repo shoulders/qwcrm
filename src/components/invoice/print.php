@@ -8,28 +8,28 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'company.php');
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'user.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Check if we have an invoice_id
-if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
+if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
     force_page('invoice', 'search');
 }
 
 // Check there is a print content and print type set
-if(!isset(\QFactory::$VAR['print_content'], \QFactory::$VAR['print_type']) || !\QFactory::$VAR['print_content'] || !\QFactory::$VAR['print_type']) {
+if(!isset(\CMSApplication::$VAR['print_content'], \CMSApplication::$VAR['print_type']) || !\CMSApplication::$VAR['print_content'] || !\CMSApplication::$VAR['print_type']) {
     systemMessagesWrite('danger', _gettext("Some or all of the Printing Options are not set."));
     force_page('invoice', 'search');
 }
 
 // Get Record Details
-$invoice_details = get_invoice_details(\QFactory::$VAR['invoice_id']);
+$invoice_details = get_invoice_details(\CMSApplication::$VAR['invoice_id']);
 $client_details = get_client_details($invoice_details['client_id']);
 
 // Only show payment instruction if bank_transfer|cheque|PayPal is enabled, these are the only valid instructions you can put on an invoice
@@ -55,14 +55,14 @@ $smarty->assign('invoice_details',                  $invoice_details            
 $smarty->assign('vat_tax_codes',                    get_vat_tax_codes(false)                                                               );
 
 // Invoice Items
-$smarty->assign('labour_items',                     get_invoice_labour_items(\QFactory::$VAR['invoice_id'])               );
-$smarty->assign('parts_items',                      get_invoice_parts_items(\QFactory::$VAR['invoice_id'])                );
-$smarty->assign('display_vouchers',                 display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, \QFactory::$VAR['invoice_id']) );
+$smarty->assign('labour_items',                     get_invoice_labour_items(\CMSApplication::$VAR['invoice_id'])               );
+$smarty->assign('parts_items',                      get_invoice_parts_items(\CMSApplication::$VAR['invoice_id'])                );
+$smarty->assign('display_vouchers',                 display_vouchers('voucher_id', 'DESC', false, '25', null, null, null, null, null, null, null, \CMSApplication::$VAR['invoice_id']) );
 
 // Sub Totals
-$smarty->assign('labour_items_sub_totals',          get_labour_items_sub_totals(\QFactory::$VAR['invoice_id'])                                                          );
-$smarty->assign('parts_items_sub_totals',           get_parts_items_sub_totals(\QFactory::$VAR['invoice_id'])                                                           );
-$smarty->assign('voucher_sub_totals',               get_invoice_vouchers_sub_totals(\QFactory::$VAR['invoice_id'])                                                       );
+$smarty->assign('labour_items_sub_totals',          get_labour_items_sub_totals(\CMSApplication::$VAR['invoice_id'])                                                          );
+$smarty->assign('parts_items_sub_totals',           get_parts_items_sub_totals(\CMSApplication::$VAR['invoice_id'])                                                           );
+$smarty->assign('voucher_sub_totals',               get_invoice_vouchers_sub_totals(\CMSApplication::$VAR['invoice_id'])                                                       );
 
 // Payment Details
 $smarty->assign('payment_options',                  get_payment_options()                                      );
@@ -74,31 +74,31 @@ $smarty->assign('employee_display_name',            get_user_details($invoice_de
 $smarty->assign('invoice_statuses',                 get_invoice_statuses()                                     );
 
 // Invoice Print Routine
-if(\QFactory::$VAR['print_content'] == 'invoice') {
+if(\CMSApplication::$VAR['print_content'] == 'invoice') {
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Invoice").'-'.\QFactory::$VAR['invoice_id'];
+    $pdf_filename = _gettext("Invoice").'-'.\CMSApplication::$VAR['invoice_id'];
     
     // Print HTML Invoice
-    if (\QFactory::$VAR['print_type'] == 'print_html') {
+    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Invoice").' '.\QFactory::$VAR['invoice_id'].' '._gettext("has been printed as html.");
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Assign the correct version of this page
-        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
+        $smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
         
     }
     
     // Print PDF Invoice
-    if (\QFactory::$VAR['print_type'] == 'print_pdf') {
+    if (\CMSApplication::$VAR['print_type'] == 'print_pdf') {
         
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('invoice/printing/print_invoice.tpl');
         
         // Log activity
-        $record = _gettext("Invoice").' '.\QFactory::$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Output PDF in brower
@@ -110,7 +110,7 @@ if(\QFactory::$VAR['print_content'] == 'invoice') {
     }        
         
     // Email PDF Invoice
-    if(\QFactory::$VAR['print_type'] == 'email_pdf') {  
+    if(\CMSApplication::$VAR['print_type'] == 'email_pdf') {  
                 
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('invoice/printing/print_invoice.tpl');
@@ -127,11 +127,11 @@ if(\QFactory::$VAR['print_content'] == 'invoice') {
         $body = get_email_message_body('email_msg_invoice', $client_details);
         
         // Log activity
-        $record = _gettext("Invoice").' '.\QFactory::$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Email the PDF        
-        send_email($client_details['email'], _gettext("Invoice").' '.\QFactory::$VAR['invoice_id'], $body, $client_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], \QFactory::$VAR['invoice_id']);
+        send_email($client_details['email'], _gettext("Invoice").' '.\CMSApplication::$VAR['invoice_id'], $body, $client_details['display_name'], $attachment, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], \CMSApplication::$VAR['invoice_id']);
                 
         // End all other processing
         die();
@@ -141,17 +141,17 @@ if(\QFactory::$VAR['print_content'] == 'invoice') {
 }
 
 // Client Envelope Print Routine
-if(\QFactory::$VAR['print_content'] == 'client_envelope') {
+if(\CMSApplication::$VAR['print_content'] == 'client_envelope') {
     
     // Print HTML Client Envelope
-    if (\QFactory::$VAR['print_type'] == 'print_html') {
+    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
         
         // Log activity
         $record = _gettext("Address Envelope").' '._gettext("for").' '.$client_details['display_name'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $invoice_details['employee_id'], $invoice_details['client_id'], $invoice_details['workorder_id'], $invoice_details['invoice_id']);
         
         // Assign the correct version of this page
-        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
+        $smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
         
     }
     

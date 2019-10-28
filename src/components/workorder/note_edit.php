@@ -8,23 +8,23 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_note_id
-if(!isset(\QFactory::$VAR['workorder_note_id']) || !\QFactory::$VAR['workorder_note_id']) {
+if(!isset(\CMSApplication::$VAR['workorder_note_id']) || !\CMSApplication::$VAR['workorder_note_id']) {
     systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));
     force_page('workorder', 'search');
 }
 
 // Get teh work order note details
-$workorder_note_details = get_workorder_note_details(\QFactory::$VAR['workorder_note_id']);
+$workorder_note_details = get_workorder_note_details(\CMSApplication::$VAR['workorder_note_id']);
 
 // If record submitted for updating
-if(isset(\QFactory::$VAR['submit'])) {    
+if(isset(\CMSApplication::$VAR['submit'])) {    
     
     // update the workorder note
-    update_workorder_note(\QFactory::$VAR['workorder_note_id'], \QFactory::$VAR['note']);
+    update_workorder_note(\CMSApplication::$VAR['workorder_note_id'], \CMSApplication::$VAR['note']);
     
     // load the workorder details page
     systemMessagesWrite('success', _gettext("The note has been updated."));

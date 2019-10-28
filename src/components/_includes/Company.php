@@ -20,493 +20,496 @@
 
 defined('_QWEXEC') or die;
 
-/** Mandatory Code **/
+class Company {
 
-/** Display Functions **/
+    /** Mandatory Code **/
 
-/** Insert Functions **/
+    /** Display Functions **/
 
-/** Get Functions **/
+    /** Insert Functions **/
 
-##########################################
-#      get company details               #
-##########################################
+    /** Get Functions **/
 
-// This is in the main general.php file
+    ##########################################
+    #      get company details               #
+    ##########################################
 
-#####################################
-#    Get company tax systems        #
-#####################################
+    // This is in the main general.php file
 
-function get_tax_systems() {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."company_tax_systems";
+    #####################################
+    #    Get company tax systems        #
+    #####################################
 
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
-    } else {
-        
-        return $rs->GetArray();
-        
-    }    
-    
-}
+    function get_tax_systems() {
 
-#####################################
-#   Get VAT rate for given tax_key  #
-#####################################
+        $db = \Factory::getDbo();
 
-function get_vat_rate($vat_tax_code) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
-            WHERE tax_key = ".$db->qstr($vat_tax_code);
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
-    } else {
-        
-        return $rs->fields['rate'];
-        
-    }    
-    
-}
+        $sql = "SELECT * FROM ".PRFX."company_tax_systems";
 
-#####################################
-#    Get VAT Tax Codes              # Editable is only used in company:edit
-##################################### system_tax_code is not currently used and might be removed
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get tax types."));
+        } else {
 
-function get_vat_tax_codes($hidden_status = null, $editable_status = null, $system_tax_code = null) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
-    
-    // Restrict by enabled status
-    $sql .= "\nWHERE enabled = 1";
-        
-    // Restrict by hidden status
-    if(!is_null($hidden_status)) {
-        $sql .= "\nAND hidden = ".$db->qstr($hidden_status);
+            return $rs->GetArray();
+
+        }    
+
     }
-    
-    // Restrict by editable status
-    if(!is_null($editable_status)) {
-        $sql .= "\nAND editable = ".$db->qstr($editable_status);
+
+    #####################################
+    #   Get VAT rate for given tax_key  #
+    #####################################
+
+    function get_vat_rate($vat_tax_code) {
+
+        $db = \Factory::getDbo();
+
+        $sql = "SELECT rate FROM ".PRFX."company_vat_tax_codes
+                WHERE tax_key = ".$db->qstr($vat_tax_code);
+
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT rate."));
+        } else {
+
+            return $rs->fields['rate'];
+
+        }    
+
     }
-    
-    // Restrict by tax code type
-    if(!is_null($system_tax_code)) {
-        $sql .= "\nAND standard = ".$db->qstr($system_tax_code);
+
+    #####################################
+    #    Get VAT Tax Codes              # Editable is only used in company:edit
+    ##################################### system_tax_code is not currently used and might be removed
+
+    function get_vat_tax_codes($hidden_status = null, $editable_status = null, $system_tax_code = null) {
+
+        $db = \Factory::getDbo();
+
+        $sql = "SELECT * FROM ".PRFX."company_vat_tax_codes";
+
+        // Restrict by enabled status
+        $sql .= "\nWHERE enabled = 1";
+
+        // Restrict by hidden status
+        if(!is_null($hidden_status)) {
+            $sql .= "\nAND hidden = ".$db->qstr($hidden_status);
+        }
+
+        // Restrict by editable status
+        if(!is_null($editable_status)) {
+            $sql .= "\nAND editable = ".$db->qstr($editable_status);
+        }
+
+        // Restrict by tax code type
+        if(!is_null($system_tax_code)) {
+            $sql .= "\nAND standard = ".$db->qstr($system_tax_code);
+        }
+
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
+        } else {
+
+            return $rs->GetArray();
+
+        }    
+
     }
-        
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT Taxx Codes."));
-    } else {
-        
-        return $rs->GetArray();
-        
-    }    
-    
-}
 
-############################
-#  Get VAT Code Status     #  // Only return true is a valid configuration for the code
-############################
+    ############################
+    #  Get VAT Code Status     #  // Only return true is a valid configuration for the code
+    ############################
 
-function get_vat_tax_code_status($vat_tax_code) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT enabled
-            FROM ".PRFX."company_vat_tax_codes
-            WHERE tax_key = ".$db->qstr($vat_tax_code);
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
-    } else {       
-        
-        return $rs->fields['enabled'];
-        
-    }   
-    
-}
+    function get_vat_tax_code_status($vat_tax_code) {
 
-#####################################
-#    Get default VAT Code           # // This gets the default VAT Tax Code based on the company tax system or supplied tax_system
-#####################################
+        $db = \Factory::getDbo();
 
-function get_default_vat_tax_code($tax_system = null) {
-    
-    if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
-    
-    if($tax_system == 'no_tax') { return 'TNA'; }
-    if($tax_system == 'sales_tax_cash') { return 'TNA'; }     
-    if($tax_system == 'vat_standard') { return 'T1'; }    
-    if($tax_system == 'vat_cash') { return 'T1'; }
-    if($tax_system == 'vat_flat_basic') { return 'T1'; }
-    if($tax_system == 'vat_flat_cash') { return 'T1'; }       
-    
-}
+        $sql = "SELECT enabled
+                FROM ".PRFX."company_vat_tax_codes
+                WHERE tax_key = ".$db->qstr($vat_tax_code);
 
-#####################################  // This gets the Voucher VAT Tax Code based on the company tax system or supplied tax_system
-#    Get Voucher default VAT Code   #  // not currently using '$tax_system = null'
-#####################################  // move to vouchers?
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get VAT Tax Code status."));
+        } else {       
 
-function get_voucher_vat_tax_code($type, $tax_system = null) {
-    
-    if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
-    
-    if($type == 'MPV') {
+            return $rs->fields['enabled'];
+
+        }   
+
+    }
+
+    #####################################
+    #    Get default VAT Code           # // This gets the default VAT Tax Code based on the company tax system or supplied tax_system
+    #####################################
+
+    function get_default_vat_tax_code($tax_system = null) {
+
+        if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
+
         if($tax_system == 'no_tax') { return 'TNA'; }
-        if($tax_system == 'sales_tax_cash') { return 'TNA'; } 
-        if($tax_system == 'vat_standard') { return 'T9'; }        
-        if($tax_system == 'vat_cash') { return 'T9'; }
-        if($tax_system == 'vat_flat_basic') { return 'T9'; }
-        if($tax_system == 'vat_flat_cash') { return 'T9'; }       
-    }
-    
-    if($type == 'SPV') {
-        if($tax_system == 'no_tax') { return 'TNA'; }
-        if($tax_system == 'sales_tax_cash') { return 'TNA'; }
-        if($tax_system == 'vat_standard') { return 'T1'; }
+        if($tax_system == 'sales_tax_cash') { return 'TNA'; }     
+        if($tax_system == 'vat_standard') { return 'T1'; }    
         if($tax_system == 'vat_cash') { return 'T1'; }
         if($tax_system == 'vat_flat_basic') { return 'T1'; }
-        if($tax_system == 'vat_flat_cash') { return 'T1'; }         
-    }    
-    
-}
+        if($tax_system == 'vat_flat_cash') { return 'T1'; }       
 
-##########################################
-#      Get Company Opening Hours         # // return opening hours in smarty/datetime/timestamp with an optional specified date (2019-05-72)
-##########################################
-
-function get_company_opening_hours($event, $type, $date = null, $date_format = null) {
-    
-    // Convert Date to time stamp
-    if($date) { 
-        $date_timestamp = date_to_timestamp($date, $date_format);
     }
 
-    // Smarty Time Format
-    if($type == 'smartytime') {
-        
-        // return opening time in correct format for smartytime builder
-        if($event == 'opening_time') {
-            return get_company_details('opening_hour').':'.get_company_details('opening_minute').':00';
+    #####################################  // This gets the Voucher VAT Tax Code based on the company tax system or supplied tax_system
+    #    Get Voucher default VAT Code   #  // not currently using '$tax_system = null'
+    #####################################  // move to vouchers?
+
+    function get_voucher_vat_tax_code($type, $tax_system = null) {
+
+        if(!$tax_system) {$tax_system = QW_TAX_SYSTEM;}
+
+        if($type == 'MPV') {
+            if($tax_system == 'no_tax') { return 'TNA'; }
+            if($tax_system == 'sales_tax_cash') { return 'TNA'; } 
+            if($tax_system == 'vat_standard') { return 'T9'; }        
+            if($tax_system == 'vat_cash') { return 'T9'; }
+            if($tax_system == 'vat_flat_basic') { return 'T9'; }
+            if($tax_system == 'vat_flat_cash') { return 'T9'; }       
         }
 
-        // return closing time in correct format for smartytime builder
-        if($event == 'closing_time') {
-            return get_company_details('closing_hour').':'.get_company_details('closing_minute').':00';
-        }   
-        
-    }
-    
-    // MySQL DATETIME format
-    if($type == 'datetime') {
+        if($type == 'SPV') {
+            if($tax_system == 'no_tax') { return 'TNA'; }
+            if($tax_system == 'sales_tax_cash') { return 'TNA'; }
+            if($tax_system == 'vat_standard') { return 'T1'; }
+            if($tax_system == 'vat_cash') { return 'T1'; }
+            if($tax_system == 'vat_flat_basic') { return 'T1'; }
+            if($tax_system == 'vat_flat_cash') { return 'T1'; }         
+        }    
 
-        // return opening time in correct format for smarty time builder
-        if($event == 'opening_time') {            
-            //return $date.' '.get_company_details('opening_hour').':'.get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME            
-            return build_mysql_datetime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
+    }
+
+    ##########################################
+    #      Get Company Opening Hours         # // return opening hours in smarty/datetime/timestamp with an optional specified date (2019-05-72)
+    ##########################################
+
+    function get_company_opening_hours($event, $type, $date = null, $date_format = null) {
+
+        // Convert Date to time stamp
+        if($date) { 
+            $date_timestamp = date_to_timestamp($date, $date_format);
         }
 
-        // return closing time in correct format for smarty time builder
-        if($event == 'closing_time') {
-            //return $date.' '.get_company_details('closing_hour').':'.get_company_details('closing_minute');  // This only allows the use of DATE and not DATETIME
-            
-            return build_mysql_datetime(get_company_details('closing_hour'), get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
-        }
-    }
-    
-    // Unix Timestamp
-    if($type == 'timestamp') {
+        // Smarty Time Format
+        if($type == 'smartytime') {
 
-        // return opening time in correct format for smarty time builder
-        if($event == 'opening_time') {
-            return mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
-        }
-
-        // return closing time in correct format for smarty time builder
-        if($event == 'closing_time') {
-            return mktime(get_company_details('closing_hour'), get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
-        }   
-        
-    }    
-    
-}
-
-/** Update Functions **/
-
-#############################
-#  Update Company details   #
-#############################
-
-function update_company_details($qform) {
-
-    $db = QFactory::getDbo();
-    $smarty = QFactory::getSmarty();    
-    $sql = null;
-    
-    // Update VAT rates
-    update_vat_rates($qform['vat_tax_codes']);
-    
-    // Prevent undefined variable errors
-    $qform['delete_logo'] = isset($qform['delete_logo']) ? $qform['delete_logo'] : null;    
-           
-    // Delete logo if selected and no new logo is presented
-    if($qform['delete_logo'] && !$_FILES['logo']['name']) {
-        delete_logo();        
-    }
-    
-    // A new logo is supplied, delete old and upload new
-    if($_FILES['logo']['name']) {
-        delete_logo();
-        $new_logo_filepath = upload_logo();
-    }
-    
-    $sql .= "UPDATE ".PRFX."company_record SET
-            company_name            =". $db->qstr( $qform['company_name']                     ).",";
-    
-    if($qform['delete_logo']) {
-        $sql .="logo                =''                                                     ,";
-    }
-                
-    if(!empty($_FILES['logo']['name'])) {
-        $sql .="logo                =". $db->qstr( $new_logo_filepath                       ).",";
-    }
-    
-    $sql .="address                 =". $db->qstr( $qform['address']                          ).",
-            city                    =". $db->qstr( $qform['city']                             ).",
-            state                   =". $db->qstr( $qform['state']                            ).",
-            zip                     =". $db->qstr( $qform['zip']                              ).",
-            country                 =". $db->qstr( $qform['country']                          ).",
-            primary_phone           =". $db->qstr( $qform['primary_phone']                    ).",
-            mobile_phone            =". $db->qstr( $qform['mobile_phone']                     ).",
-            fax                     =". $db->qstr( $qform['fax']                              ).",
-            email                   =". $db->qstr( $qform['email']                            ).",    
-            website                 =". $db->qstr( process_inputted_url($qform['website'])    ).",
-            company_number          =". $db->qstr( $qform['company_number']                   ).",                                        
-            tax_system              =". $db->qstr( $qform['tax_system']                       ).",
-            sales_tax_rate          =". $db->qstr( $qform['sales_tax_rate']                   ).",
-            vat_number              =". $db->qstr( $qform['vat_number']                       ).",
-            vat_flat_rate           =". $db->qstr( $qform['vat_flat_rate']                    ).",   
-            year_start              =". $db->qstr( date_to_mysql_date($qform['year_start'])   ).",
-            year_end                =". $db->qstr( date_to_mysql_date($qform['year_end'])     ).",
-            welcome_msg             =". $db->qstr( $qform['welcome_msg']                      ).",
-            currency_symbol         =". $db->qstr( htmlentities($qform['currency_symbol'])    ).",
-            currency_code           =". $db->qstr( $qform['currency_code']                    ).",
-            date_format             =". $db->qstr( $qform['date_format']                      ).",            
-            email_signature         =". $db->qstr( $qform['email_signature']                  ).",
-            email_signature_active  =". $db->qstr( $qform['email_signature_active']           ).",
-            email_msg_invoice       =". $db->qstr( $qform['email_msg_invoice']                ).",
-            email_msg_workorder     =". $db->qstr( $qform['email_msg_workorder']              );                          
-
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
-    } else {       
-            
-        // Refresh company logo
-        //$smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
-        
-        // Assign success message
-        systemMessagesWrite('success', _gettext("Company details updated."));
-        
-        // Log activity        
-        write_record_to_activity_log(_gettext("Company details updated."));
-
-        return;
-        
-    }
-    
-}
-
-##########################################
-#        Update Company Hours            #
-##########################################
-
-function update_company_hours($openingTime, $closingTime) {
-    
-    $db = QFactory::getDbo();
-    $smarty = QFactory::getSmarty();
-    
-    $sql = "UPDATE ".PRFX."company_record SET
-            opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
-            opening_minute  =". $db->qstr( $openingTime['Time_Minute']   ).",
-            closing_hour    =". $db->qstr( $closingTime['Time_Hour']     ).",
-            closing_minute  =". $db->qstr( $closingTime['Time_Minute']   );
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
-    } else {
-        
-        // Assign success message
-        systemMessagesWrite('success', _gettext("Business hours have been updated."));
-        
-        // Log activity        
-        write_record_to_activity_log(_gettext("Business hours have been updated."));        
-        
-        return true;
-        
-    }
-    
-}
-
-##########################################
-#        Update VAT Rates                #
-##########################################
-
-function update_vat_rates($vat_rates) {
-    
-    $db = QFactory::getDbo();
-    //$smarty = QFactory::getSmarty();
-    $error_flag = false;
-    
-    // Cycle through the submitted VAT rates and update the database
-    foreach ($vat_rates as $tax_key => $rate) {
-        $sql =  "UPDATE ".PRFX."company_vat_tax_codes SET
-                rate = ".$db->qstr($rate)."
-                WHERE tax_key = ".$db->qstr($tax_key);
-        
-        if(!$rs = $db->Execute($sql)) {
-            $error_flag = true;            
-        }        
-    }
-    
-    if($error_flag) {
-        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
-        //return false;      
-        
-    } else {
-        // Assign success message
-        //systemMessagesWrite('success', _gettext("VAT rates have been updated."));
-        
-        // Log activity        
-        //write_record_to_activity_log(_gettext("VAT rates have been updated."));        
-        
-        return true;
-        
-    }
-    
-}
-
-/** Close Functions **/
-
-/** Delete Functions **/
-
-/** Other Functions **/
-
-##########################################
-#  Check Start and End times are valid   #
-##########################################
-
-function check_start_end_times($start_time, $end_time) {
-    
-    // If start time is before end time
-    if($start_time > $end_time) {        
-        systemMessagesWrite('danger', _gettext("Start Time is after End Time."));
-        return false;
-    }
-        
-    // If the start and end time are the same    
-    if($start_time ==  $end_time) {        
-        systemMessagesWrite('danger', _gettext("Start Time is the same as End Time."));
-        return false;
-    }
-    
-    return true;
-    
-}
-
-##########################
-#  Delete Company Logo   #
-##########################
-
-function delete_logo() {
-    
-    // Only delete a logo if there is one set
-    if(get_company_details('logo')) {
-        
-        // Build the full logo file path (new)
-        $logo_file = parse_url(MEDIA_DIR . get_company_details('logo'), PHP_URL_PATH);
-        
-        // Check the file exists
-        if(file_exists($logo_file)) {
-            
-            // Perform the deletion
-            unlink($logo_file);        
-            
-        }
-        
-    }
-    
-}
-
-##########################
-#  Upload Company Logo   #
-##########################
-
-function upload_logo() {
-    
-    $db = QFactory::getDbo();
-    
-    // Logo - Only process if there is an image uploaded
-    if($_FILES['logo']['size'] > 0) {
-        
-        // Allowed extensions
-        $allowedExts = array('png', 'jpg', 'jpeg', 'gif');
-        
-        // Get file extension
-        $filename_info = pathinfo($_FILES['logo']['name']);
-        $extension = $filename_info['extension'];
-        
-        // Rename Logo Filename to logo.xxx (keeps original image extension)
-        $new_logo_filename = 'logo.' . $extension;       
-        
-        // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
-        if ((($_FILES['logo']['type'] == 'image/gif')
-                || ($_FILES['logo']['type'] == 'image/jpeg')
-                || ($_FILES['logo']['type'] == 'image/jpg')
-                || ($_FILES['logo']['type'] == 'image/pjpeg')
-                || ($_FILES['logo']['type'] == 'image/x-png')
-                || ($_FILES['logo']['type'] == 'image/png'))
-                && ($_FILES['logo']['size'] < 2048000)
-                && in_array($extension, $allowedExts)) {
-    
-            // Check for file submission errors and echo them
-            if ($_FILES['logo']['error'] > 0 ) {
-                echo _gettext("Return Code").': ' . $_FILES['logo']['error'] . '<br />';                
-            
-            // If no errors then move the file from the PHP temporary storage to the logo location
-            } else {
-                move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);              
+            // return opening time in correct format for smartytime builder
+            if($event == 'opening_time') {
+                return get_company_details('opening_hour').':'.get_company_details('opening_minute').':00';
             }
-            
-            // return the filename with a random query to allow for caching issues
-            return $new_logo_filename . '?' . strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(3));
-            
-        // If file is invalid then load the error page  
-        } else {
-            
-            /*
-            echo "Upload: "    . $_FILES['company_logo']['name']           . '<br />';
-            echo "Type: "      . $_FILES['company_logo']['type']           . '<br />';
-            echo "Size: "      . ($_FILES['company_logo']['size'] / 1024)  . ' Kb<br />';
-            echo "Temp file: " . $_FILES['company_logo']['tmp_name']       . '<br />';
-            echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
-             */   
-            
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
-            
-        }
-        
-    }
-    
-}
 
+            // return closing time in correct format for smartytime builder
+            if($event == 'closing_time') {
+                return get_company_details('closing_hour').':'.get_company_details('closing_minute').':00';
+            }   
+
+        }
+
+        // MySQL DATETIME format
+        if($type == 'datetime') {
+
+            // return opening time in correct format for smarty time builder
+            if($event == 'opening_time') {            
+                //return $date.' '.get_company_details('opening_hour').':'.get_company_details('opening_minute');  // This only allows the use of DATE and not DATETIME            
+                return build_mysql_datetime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));            
+            }
+
+            // return closing time in correct format for smarty time builder
+            if($event == 'closing_time') {
+                //return $date.' '.get_company_details('closing_hour').':'.get_company_details('closing_minute');  // This only allows the use of DATE and not DATETIME
+
+                return build_mysql_datetime(get_company_details('closing_hour'), get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));                    
+            }
+        }
+
+        // Unix Timestamp
+        if($type == 'timestamp') {
+
+            // return opening time in correct format for smarty time builder
+            if($event == 'opening_time') {
+                return mktime(get_company_details('opening_hour'), get_company_details('opening_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
+            }
+
+            // return closing time in correct format for smarty time builder
+            if($event == 'closing_time') {
+                return mktime(get_company_details('closing_hour'), get_company_details('closing_minute'), 0, date('m', $date_timestamp), date('d', $date_timestamp), date('Y', $date_timestamp));
+            }   
+
+        }    
+
+    }
+
+    /** Update Functions **/
+
+    #############################
+    #  Update Company details   #
+    #############################
+
+    function update_company_details($qform) {
+
+        $db = \Factory::getDbo();
+        $smarty = \Factory::getSmarty();    
+        $sql = null;
+
+        // Update VAT rates
+        update_vat_rates($qform['vat_tax_codes']);
+
+        // Prevent undefined variable errors
+        $qform['delete_logo'] = isset($qform['delete_logo']) ? $qform['delete_logo'] : null;    
+
+        // Delete logo if selected and no new logo is presented
+        if($qform['delete_logo'] && !$_FILES['logo']['name']) {
+            delete_logo();        
+        }
+
+        // A new logo is supplied, delete old and upload new
+        if($_FILES['logo']['name']) {
+            delete_logo();
+            $new_logo_filepath = upload_logo();
+        }
+
+        $sql .= "UPDATE ".PRFX."company_record SET
+                company_name            =". $db->qstr( $qform['company_name']                     ).",";
+
+        if($qform['delete_logo']) {
+            $sql .="logo                =''                                                     ,";
+        }
+
+        if(!empty($_FILES['logo']['name'])) {
+            $sql .="logo                =". $db->qstr( $new_logo_filepath                       ).",";
+        }
+
+        $sql .="address                 =". $db->qstr( $qform['address']                          ).",
+                city                    =". $db->qstr( $qform['city']                             ).",
+                state                   =". $db->qstr( $qform['state']                            ).",
+                zip                     =". $db->qstr( $qform['zip']                              ).",
+                country                 =". $db->qstr( $qform['country']                          ).",
+                primary_phone           =". $db->qstr( $qform['primary_phone']                    ).",
+                mobile_phone            =". $db->qstr( $qform['mobile_phone']                     ).",
+                fax                     =". $db->qstr( $qform['fax']                              ).",
+                email                   =". $db->qstr( $qform['email']                            ).",    
+                website                 =". $db->qstr( process_inputted_url($qform['website'])    ).",
+                company_number          =". $db->qstr( $qform['company_number']                   ).",                                        
+                tax_system              =". $db->qstr( $qform['tax_system']                       ).",
+                sales_tax_rate          =". $db->qstr( $qform['sales_tax_rate']                   ).",
+                vat_number              =". $db->qstr( $qform['vat_number']                       ).",
+                vat_flat_rate           =". $db->qstr( $qform['vat_flat_rate']                    ).",   
+                year_start              =". $db->qstr( date_to_mysql_date($qform['year_start'])   ).",
+                year_end                =". $db->qstr( date_to_mysql_date($qform['year_end'])     ).",
+                welcome_msg             =". $db->qstr( $qform['welcome_msg']                      ).",
+                currency_symbol         =". $db->qstr( htmlentities($qform['currency_symbol'])    ).",
+                currency_code           =". $db->qstr( $qform['currency_code']                    ).",
+                date_format             =". $db->qstr( $qform['date_format']                      ).",            
+                email_signature         =". $db->qstr( $qform['email_signature']                  ).",
+                email_signature_active  =". $db->qstr( $qform['email_signature_active']           ).",
+                email_msg_invoice       =". $db->qstr( $qform['email_msg_invoice']                ).",
+                email_msg_workorder     =". $db->qstr( $qform['email_msg_workorder']              );                          
+
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company details."));
+        } else {       
+
+            // Refresh company logo
+            //$smarty->assign('company_logo', QW_MEDIA_DIR . get_company_details('logo'));
+
+            // Assign success message
+            systemMessagesWrite('success', _gettext("Company details updated."));
+
+            // Log activity        
+            write_record_to_activity_log(_gettext("Company details updated."));
+
+            return;
+
+        }
+
+    }
+
+    ##########################################
+    #        Update Company Hours            #
+    ##########################################
+
+    function update_company_hours($openingTime, $closingTime) {
+
+        $db = \Factory::getDbo();
+        $smarty = \Factory::getSmarty();
+
+        $sql = "UPDATE ".PRFX."company_record SET
+                opening_hour    =". $db->qstr( $openingTime['Time_Hour']     ).",
+                opening_minute  =". $db->qstr( $openingTime['Time_Minute']   ).",
+                closing_hour    =". $db->qstr( $closingTime['Time_Hour']     ).",
+                closing_minute  =". $db->qstr( $closingTime['Time_Minute']   );
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the company hours."));
+        } else {
+
+            // Assign success message
+            systemMessagesWrite('success', _gettext("Business hours have been updated."));
+
+            // Log activity        
+            write_record_to_activity_log(_gettext("Business hours have been updated."));        
+
+            return true;
+
+        }
+
+    }
+
+    ##########################################
+    #        Update VAT Rates                #
+    ##########################################
+
+    function update_vat_rates($vat_rates) {
+
+        $db = \Factory::getDbo();
+        //$smarty = \Factory::getSmarty();
+        $error_flag = false;
+
+        // Cycle through the submitted VAT rates and update the database
+        foreach ($vat_rates as $tax_key => $rate) {
+            $sql =  "UPDATE ".PRFX."company_vat_tax_codes SET
+                    rate = ".$db->qstr($rate)."
+                    WHERE tax_key = ".$db->qstr($tax_key);
+
+            if(!$rs = $db->Execute($sql)) {
+                $error_flag = true;            
+            }        
+        }
+
+        if($error_flag) {
+
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the VAT rates."));
+            //return false;      
+
+        } else {
+            // Assign success message
+            //systemMessagesWrite('success', _gettext("VAT rates have been updated."));
+
+            // Log activity        
+            //write_record_to_activity_log(_gettext("VAT rates have been updated."));        
+
+            return true;
+
+        }
+
+    }
+
+    /** Close Functions **/
+
+    /** Delete Functions **/
+
+    /** Other Functions **/
+
+    ##########################################
+    #  Check Start and End times are valid   #
+    ##########################################
+
+    function check_start_end_times($start_time, $end_time) {
+
+        // If start time is before end time
+        if($start_time > $end_time) {        
+            systemMessagesWrite('danger', _gettext("Start Time is after End Time."));
+            return false;
+        }
+
+        // If the start and end time are the same    
+        if($start_time ==  $end_time) {        
+            systemMessagesWrite('danger', _gettext("Start Time is the same as End Time."));
+            return false;
+        }
+
+        return true;
+
+    }
+
+    ##########################
+    #  Delete Company Logo   #
+    ##########################
+
+    function delete_logo() {
+
+        // Only delete a logo if there is one set
+        if(get_company_details('logo')) {
+
+            // Build the full logo file path (new)
+            $logo_file = parse_url(MEDIA_DIR . get_company_details('logo'), PHP_URL_PATH);
+
+            // Check the file exists
+            if(file_exists($logo_file)) {
+
+                // Perform the deletion
+                unlink($logo_file);        
+
+            }
+
+        }
+
+    }
+
+    ##########################
+    #  Upload Company Logo   #
+    ##########################
+
+    function upload_logo() {
+
+        $db = \Factory::getDbo();
+
+        // Logo - Only process if there is an image uploaded
+        if($_FILES['logo']['size'] > 0) {
+
+            // Allowed extensions
+            $allowedExts = array('png', 'jpg', 'jpeg', 'gif');
+
+            // Get file extension
+            $filename_info = pathinfo($_FILES['logo']['name']);
+            $extension = $filename_info['extension'];
+
+            // Rename Logo Filename to logo.xxx (keeps original image extension)
+            $new_logo_filename = 'logo.' . $extension;       
+
+            // Validate the uploaded file is allowed (extension, mime type, 0 - 2mb)
+            if ((($_FILES['logo']['type'] == 'image/gif')
+                    || ($_FILES['logo']['type'] == 'image/jpeg')
+                    || ($_FILES['logo']['type'] == 'image/jpg')
+                    || ($_FILES['logo']['type'] == 'image/pjpeg')
+                    || ($_FILES['logo']['type'] == 'image/x-png')
+                    || ($_FILES['logo']['type'] == 'image/png'))
+                    && ($_FILES['logo']['size'] < 2048000)
+                    && in_array($extension, $allowedExts)) {
+
+                // Check for file submission errors and echo them
+                if ($_FILES['logo']['error'] > 0 ) {
+                    echo _gettext("Return Code").': ' . $_FILES['logo']['error'] . '<br />';                
+
+                // If no errors then move the file from the PHP temporary storage to the logo location
+                } else {
+                    move_uploaded_file($_FILES['logo']['tmp_name'], MEDIA_DIR . $new_logo_filename);              
+                }
+
+                // return the filename with a random query to allow for caching issues
+                return $new_logo_filename . '?' . strtolower(\Joomla\CMS\User\UserHelper::genRandomPassword(3));
+
+            // If file is invalid then load the error page  
+            } else {
+
+                /*
+                echo "Upload: "    . $_FILES['company_logo']['name']           . '<br />';
+                echo "Type: "      . $_FILES['company_logo']['type']           . '<br />';
+                echo "Size: "      . ($_FILES['company_logo']['size'] / 1024)  . ' Kb<br />';
+                echo "Temp file: " . $_FILES['company_logo']['tmp_name']       . '<br />';
+                echo "Stored in: " . MEDIA_DIR . $_FILES['file']['name']       ;
+                 */   
+
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update logo because the submitted file was invalid."));
+
+            }
+
+        }
+
+    }
+
+}

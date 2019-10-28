@@ -8,30 +8,30 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'invoice.php');
 
 // Prevent undefined variable errors
-\QFactory::$VAR['page_no'] = isset(\QFactory::$VAR['page_no']) ? \QFactory::$VAR['page_no'] : null;
-\QFactory::$VAR['search_category'] = isset(\QFactory::$VAR['search_category']) ? \QFactory::$VAR['search_category'] : null;
-\QFactory::$VAR['search_term'] = isset(\QFactory::$VAR['search_term']) ? \QFactory::$VAR['search_term'] : null;
-\QFactory::$VAR['filter_status'] = isset(\QFactory::$VAR['filter_status']) ? \QFactory::$VAR['filter_status'] : null;
+\CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
+\CMSApplication::$VAR['search_category'] = isset(\CMSApplication::$VAR['search_category']) ? \CMSApplication::$VAR['search_category'] : null;
+\CMSApplication::$VAR['search_term'] = isset(\CMSApplication::$VAR['search_term']) ? \CMSApplication::$VAR['search_term'] : null;
+\CMSApplication::$VAR['filter_status'] = isset(\CMSApplication::$VAR['filter_status']) ? \CMSApplication::$VAR['filter_status'] : null;
 
 // If a search is submitted
-if(isset(\QFactory::$VAR['submit'])) {
+if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
-    $record = _gettext("A search of invoices has been performed with the search term").' `'.\QFactory::$VAR['search_term'].'` '.'in the category'.' `'.\QFactory::$VAR['search_category'].'`.';
+    $record = _gettext("A search of invoices has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
     write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
-    unset(\QFactory::$VAR['submit']);
-    force_page('invoice', 'search', \QFactory::$VAR, 'get');
+    unset(\CMSApplication::$VAR['submit']);
+    force_page('invoice', 'search', \CMSApplication::$VAR, 'get');
     
 }
 
 // Build the page
-$smarty->assign('search_category',  \QFactory::$VAR['search_category']                                                                          );
-$smarty->assign('search_term',      \QFactory::$VAR['search_term']                                                                              );
-$smarty->assign('filter_status',    \QFactory::$VAR['filter_status']                                                                            );
+$smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                          );
+$smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                              );
+$smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                            );
 $smarty->assign('invoice_statuses', get_invoice_statuses()                                                                           );
-$smarty->assign('display_invoices', display_invoices('invoice_id', 'DESC', true, '25', \QFactory::$VAR['page_no'], \QFactory::$VAR['search_category'], \QFactory::$VAR['search_term'], \QFactory::$VAR['filter_status'])   );
+$smarty->assign('display_invoices', display_invoices('invoice_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status'])   );

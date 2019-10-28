@@ -476,7 +476,7 @@ class Authentication //extends \JObject
              * Any errors raised should be done in the plugin as this provides the ability
              * to provide much more information about why the routine may have failed.
              */
-            $user = \QFactory::getUser();
+            $user = \Factory::getUser();
 
             if ($response->type == 'Cookie')
             {
@@ -535,10 +535,10 @@ class Authentication //extends \JObject
     public function logout($userid = null, $options = array())
     {
         // Get a user object from the JApplication.       
-        $user = \QFactory::getUser($userid);       
+        $user = \Factory::getUser($userid);       
         
         // Get config
-        $config = \QFactory::getConfig();
+        $config = \Factory::getConfig();
 
         // Build the credentials array.        
         $parameters['username'] = $user->username;
@@ -547,7 +547,7 @@ class Authentication //extends \JObject
         // Set clientid in the options array if it hasn't been set already and shared sessions are not enabled.
         if (!$config->get('shared_session', '0') && !isset($options['clientid']))
         {
-            $options['clientid'] = \QFactory::getClientId();
+            $options['clientid'] = \CMSApplication::getClientId();
         }
 
         // Import the user plugin group.

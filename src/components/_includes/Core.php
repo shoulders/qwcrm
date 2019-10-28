@@ -16,24 +16,28 @@
 
 defined('_QWEXEC') or die;
 
-/** Home Page **/
+class Core {
 
-#########################################
-# Display Welcome Note                  #
-#########################################
+    /** Home Page **/
 
-function display_welcome_msg() {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT welcome_msg FROM ".PRFX."company_record";
-       
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
-    } else { 
-        
-        return $rs->fields['welcome_msg'];
-        
+    #########################################
+    # Display Welcome Note                  #
+    #########################################
+
+    function display_welcome_msg() {
+
+        $db = \Factory::getDbo();
+
+        $sql = "SELECT welcome_msg FROM ".PRFX."company_record";
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
+        } else { 
+
+            return $rs->fields['welcome_msg'];
+
+        }
+
     }
     
 }

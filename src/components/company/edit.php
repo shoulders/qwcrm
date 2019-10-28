@@ -8,16 +8,16 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'company.php');
 
 // Prevent undefined variable errors
-\QFactory::$VAR['qform']['delete_logo'] = isset(\QFactory::$VAR['qform']['delete_logo']) ? \QFactory::$VAR['qform']['delete_logo'] : null;
+\CMSApplication::$VAR['qform']['delete_logo'] = isset(\CMSApplication::$VAR['qform']['delete_logo']) ? \CMSApplication::$VAR['qform']['delete_logo'] : null;
 
 // Update Company details
-if(isset(\QFactory::$VAR['qform']['submit'])) {
+if(isset(\CMSApplication::$VAR['qform']['submit'])) {
 
     // Submit data to the database
-    update_company_details(\QFactory::$VAR['qform']);    
+    update_company_details(\CMSApplication::$VAR['qform']);    
     
     // Reload Company options and display a success message
     systemMessagesWrite('success', _gettext("Company details updated."));

@@ -141,7 +141,7 @@ class JSessionHandlerJoomla extends JSessionHandlerNative
             $cookie['secure'] = true;
         }
 
-        $config = \QFactory::getConfig();
+        $config = \Factory::getConfig();
 
         if ($config->get('cookie_domain', '') != '')
         {

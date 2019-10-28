@@ -1,79 +1,82 @@
 <?php
-// joomla\includes\framework.php
 /**
  * @package   QWcrm
  * @author    Jon Brown https://quantumwarp.com/
  * @copyright Copyright (C) 2016 - 2017 Jon Brown, All rights reserved.
- * @copyright Copyright (C) 2005 - 2017 Open Source Matters, Inc. All rights reserved.
  * @license   GNU/GPLv3 or later; https://www.gnu.org/licenses/gpl.html
  */
 
 defined('_QWEXEC') or die;
 
-// Main Framework class
-class QFactory {
+abstract class Factory {
     
     // Static
+    public static $application  = null;     // Application Object
     public static $config       = null;     // Global Config object
     public static $session      = null;     // Global Session object
     public static $auth         = null;     // Global Authetication object
     public static $user         = null;     // Global User object
-    public static $database     = null;     // Global Database object
-    public static $clientId     = 0;        // The Client identifier. (0 = site, 1 = administrator)
-    public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )
-    public static $smarty       = null;     // Global Smarty object
+    public static $database     = null;     // Global Database object    
+    public static $smarty       = null;     // Global Smarty object  
     
-    public static $BuildPage    = '';       // Holds the HTML page to be outputted
-    public static $VAR          = array();  // Global Variable store
-    public static $messages     = array();  // Global System Message Store
-    public $components          = null;     // Holds all of the loaded components    
-    public $plugins             = null;     // Holds all of the loaded plugins
-    public $modules             = null;     // Holds all of the loaded plugins
-
-    // Context Variables    
-    public $conf                = null;
-
-    public function __construct()
-    {
-               
-        $this->conf     = self::getConfig();        
-        
-        // Load/Start/Create the session
-        $this->loadSession();                
-     
-        // Try to automatically login - i.e. using the 'Remember me' feature, a silent login is instigated if a 'Remember me' cookie is found
-        $PlgSystemRemember = new PlgSystemRemember;  // This allows silent login using 'Remember me' cookie after checking it exists - need to make sure it does not re-logon if already logged on
-        $PlgSystemRemember->onAfterInitialise();
-        unset($PlgSystemRemember);        
-                
-        // Merge the `Post Emulation Store`, `(stored in the session) to $VAR  ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)        
-        self::$VAR = array_merge(self::$VAR, postEmulationReturnStore());
-    
-    }
-
-/****************** Load QWcrm enviroment, files, variables and dependencies ******************/
+    /****************** Application Object ******************/
     
     /**
-     * Load all of the includes, settings and variables for QWcrm
+     * Get an application object.
      *
-     */    
-    public static function loadQwcrm()
-    {                
-        load_defines();                                                     // Load System Constants
-        force_ssl(self::getConfig()->get('force_ssl'));                     // Redirect to SSL (if enabled)
-        configure_php_error_reporting();                                    // Configure PHP error reporting
-        require(VENDOR_DIR.'autoload.php');                                 // Load dependencies via composer
-        load_whoops(self::getConfig()->get('error_handler_whoops'));        // Whoops Error Handler - Here so it can load ASAP (has to be after vendor)        
-        load_language();                                                    // Load Language  (now in include)
-        self::merge_primary_arrays();                                       // Merge Primary Arrays        
-        verify_qwcrm_install_state();                                       // Verify Installation state (install/migrate/upgrade/complete)
-        load_system_variables();                                            // Load the system variables
-
-        return;
+     * Returns the global {@link CMSApplication} object, only creating it if it doesn't already exist.
+     *
+     *
+     * @return  CMSApplication object
+     *
+     * @see     JApplication
+     * @since   1.7.0
+     * @throws  \Exception
+     */
+    //public static function getApplication($id = null, array $config = array(), $prefix = 'J')
+    public static function getApplication()
+    {        
+        if(!self::$application)
+        {
+            self::$application = new CMSApplication;            
+        }
+        return self::$application;
     }
     
-/****************** Configuration Object ******************/
+        /**
+     * Returns a reference to the global CMSApplication object, only creating it if it doesn't already exist.
+     *
+     * This method must be invoked as: $web = CMSApplication::getInstance();
+     *
+     * @param   string  $name  The name (optional) of the CMSApplication class to instantiate.
+     *
+     * @return  CMSApplication
+     *
+     * @since   3.2
+     * @throws  \RuntimeException
+     */
+    public static function createApplication()
+    {
+        if (empty(static::$instances[$name]))
+        {
+            // Create a CMSApplication object.
+            //$classname = '\JApplication' . ucfirst($name);
+            $classname = 'CMSApplication';
+            
+            if (!class_exists($classname))
+            {
+                //throw new \RuntimeException(\JText::sprintf('JLIB_APPLICATION_ERROR_APPLICATION_LOAD', $name), 500);
+            }
+
+            static::$instances[$name] = new $classname;
+        }
+
+        return static::$instances[$name];
+    }
     
+    
+    
+    /****************** Configuration Object ******************/
     
     /**
      * Get a configuration object - this allows the use in non object context
@@ -103,8 +106,8 @@ class QFactory {
         }
 
         return self::$config;
-    }
-
+    }    
+    
     /**
      * Create a configuration object
      *
@@ -149,84 +152,7 @@ class QFactory {
     
 /****************** Session Object ******************/
 
-    /**
-     * Allows the application to load a custom or default session.
-     *
-     * The logic and options for creating this object are adequately generic for default cases
-     * but for many applications it will make sense to override this method and create a session,
-     * if required, based on more specific needs.
-     *
-     * @param   \JSession  $session  An optional session object. If omitted, the session is created.
-     *
-     * @return  CMSApplication  This method is chainable.
-     *
-     * @since   3.2
-     *
-     * From Joomla 3.9.8 libraries/src/Application/CMSApplication.php
-     * This loads/starts a session with defined options
-     * This 'Wrapper' can be changed to use any options you wish for the session
-     */
-    public function loadSession(\JSession $session = null)
-    {
-        if ($session !== null)
-        {
-            $this->session = $session;
 
-            return $this;
-        }
-
-        /////$this->registerEvent('onAfterSessionStart', array($this, 'afterSessionStart')); - dont think this is needed here for QWcrm
-
-        /*
-         * Note: The below code CANNOT change from instantiating a session via \JFactory until there is a proper dependency injection container supported
-         * by the application. The current default behaviours result in this method being called each time an application class is instantiated.
-         * https://github.com/joomla/joomla-cms/issues/12108 explains why things will crash and burn if you ever attempt to make this change
-         * without a proper dependency injection container.
-         */
-         
-        /* 
-         * This actually starts the session with the options defined in the array
-         * get_class($this) always returns this class's name which then gets hashed to the same hash
-         * so if i replace this with another fixed hash or string this causes everyone to be logged out as their session seems dependent on this hash
-         * session_name is only used when shared sessions is enabled.
-         * session_name is a randomly created hash that is created when shared session is enabled and deleted when disabled.
-         * Both these hashes need to be fixed
-         */        
-        $session = self::getSession(
-            array(
-                'name'      => self::getHash($this->conf->get('session_name', get_class($this))),                       // If i use a random string instead of get_class($this), i can never login
-                'expire'    => $this->conf->get('session_lifetime') ? $this->conf->get('session_lifetime') * 60 : 900,
-                'force_ssl' => self::isHttpsForced(),
-                //'clientid' => 0, // Possible option to declare the client(site/administrator)
-            )
-        );
-
-        /////$session->initialise($this->input, $this->dispatcher);
-        
-        // Get the session handler from the configuration.
-        $handler = $this->conf->get('session_handler', 'none');
-
-        /*
-         * Check for extra session metadata when:
-         *
-         * 1) The database handler is in use and the session is new
-         * 2) The database handler is not in use and the time is an even numbered second or the session is new
-         * 
-         * This actually creates the session in the database
-         */
-        if (($handler !== 'database' && (time() % 2 || $session->isNew())) || ($handler === 'database' && $session->isNew()))
-        {
-            $session->checkSession();
-        }
-
-        // Set the session object.
-        self::$session = $session;
-        
-        // Check the session table for stale entries (replaces above)
-        $this->removeExpiredSessions();
-
-        return $this;
-    } 
 
     
    /**
@@ -245,7 +171,7 @@ class QFactory {
     {
         if (!self::$session)
         {
-        self::$session = self::createSession($options);
+            self::$session = self::createSession($options);
         }
 
         return self::$session;
@@ -345,80 +271,10 @@ class QFactory {
 
         return $instance;
     }
+
     
-    /**
-     * Gets a user state.
-     *
-     * @param   string  $key      The path of the state.
-     * @param   mixed   $default  Optional default value, returned if the internal value is null.
-     *
-     * @return  mixed  The user state or null.
-     *
-     * @since   3.2
-     */
-    public function getUserState($key, $default = null)
-    {
-        $session = self::getSession();
-        $registry = $session->get('registry');
 
-        if (!is_null($registry))
-        {
-            return $registry->get($key, $default);
-        }
-
-        return $default;
-    }
     
-    /**                                             - not currently used
-     * Sets the value of a user state variable.
-     *
-     * @param   string  $key    The path of the state.
-     * @param   mixed   $value  The value of the variable.
-     *
-     * @return  mixed  The previous state, if one existed.
-     *
-     * @since   3.2
-     */
-    public function setUserState($key, $value)
-    {
-        $session = self::getSession();
-        $registry = $session->get('registry');
-
-        if (!is_null($registry))
-        {
-            return $registry->set($key, $value);
-        }
-
-        return;
-    }
-    
-    /**                                             - not currently used
-     * Gets the value of a user state variable.
-     *
-     * @param   string  $key      The key of the user state variable.
-     * @param   string  $request  The name of the variable passed in a request.
-     * @param   string  $default  The default value for the variable if not found. Optional.
-     * @param   string  $type     Filter for the variable, for valid values see {@link JFilterInput::clean()}. Optional.
-     *
-     * @return  mixed  The request user state.
-     *
-     * @since   3.2
-     */
-    public function getUserStateFromRequest($key, $request, $default = null, $type = 'none')
-    {
-        $cur_state = $this->getUserState($key, $default);
-        $new_state = $this->input->get($request, null, $type);
-
-        if ($new_state === null)
-        {
-            return $cur_state;
-        }
-
-        // Save the new value only if it was set in this request.
-        $this->setUserState($key, $new_state);
-
-        return $new_state;
-    }  
 
 /****************** Database Object ******************/
     
@@ -568,10 +424,10 @@ class QFactory {
     public static function getSmarty($newInstance = null)
     {
         if(!is_null($newInstance)) {
-        self::$smarty = $newInstance;    
+            self::$smarty = $newInstance;    
         }
         if(is_null(self::$smarty)) {
-        self::$smarty = self::createSmarty();      
+            self::$smarty = self::createSmarty();      
         }
         return self::$smarty;
     }         
@@ -626,135 +482,5 @@ class QFactory {
         return $smarty;
     
     }
-
-/****************** Client and Site checks ******************/
-    
-    
-    /**
-     * Gets the client id of the current running application.
-     *
-     * @return  integer  A client identifier.
-     *
-     * @since   3.2
-     */
-    public static function getClientId()
-    {
-        return self::$clientId;
-    }
-
-    /**
-     * Gets the name of the current running application.
-     *
-     * @return  string  The name of the application.
-     *
-     * @since   3.2
-     */
-    public static function getSiteName()
-    {
-        return self::$siteName;
-    }
-
-    /**
-     * Check the client interface by name.
-     *
-     * @param   string  $identifier  String identifier for the application interface
-     *
-     * @return  boolean  True if this application is of the given type client interface.
-     *
-     * @since   3.7.0
-     */
-    public static function isClient($identifier)
-    {
-        return self::getSiteName() === $identifier;
-    }
-
-    // Joomla 3.9.8 - joomla/libraries/src/Application/CMSApplication.php
-    /**
-     * Checks if HTTPS is forced in the client configuration.
-     *
-     * @param   integer  $clientId  An optional client id (defaults to current application client).
-     *
-     * @return  boolean  True if is forced for the client, false otherwise.
-     *
-     * @since   3.7.3
-     */
-    public static function isHttpsForced($clientId = null)
-    {
-        $clientId = (int) ($clientId !== null ? $clientId : self::getClientId());
-        $forceSsl = (int) self::$config->get('force_ssl');
-
-        if ($clientId === 0 && $forceSsl === 2)
-        {
-            return true;
-        }
-
-        if ($clientId === 1 && $forceSsl >= 1)
-        {
-            return true;
-        }
-
-        return false;
-    }
-    
-    /**
-     * From Joomla 3.7.0 joomla/libraries/src/Application/WebApplication.php
-     * Determine if we are using a secure (SSL) connection.
-     *
-     * @return  boolean  True if using SSL, false if not.
-     *
-     * @since   12.2
-     */
-    public static function isSSLConnection()
-    {
-        return (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on')) || getenv('SSL_PROTOCOL_VERSION');
-    } 
-    
-/****************** Misc ******************/
-    
-    
-   // joomla\libraries\cms\application\helper.php
-   /**
-     * Provides a secure hash based on a seed
-     *
-     * @param   string  $seed  Seed string.
-     *
-     * @return  string  A secure hash
-     *
-     * @since   3.2
-     */
-    public static function getHash($seed)
-    {        
-        return md5(self::getConfig()->get('secret_key') . $seed);
-    }      
-      
-    
-    /** 
-     * From Joomla 3.7.0 libraries/legacy/application/application.php - no longer used, merged into QFramework::loadSession()
-     * I wrote this one myself but based on code from line 999 -> 1012
-     */
-    public function removeExpiredSessions()
-    {
-       $db = self::getDbo();
-
-        // Get the current Time
-       $time = time();
-
-       // Remove expired sessions from the database.
-       if ($time % 2)
-       {
-           // The modulus '% 2' introduces a little entropy, making the flushing less accurate
-           // by firing the query less than half the time.
-           $sql = "DELETE FROM ".PRFX."session WHERE time < " . ($time - self::$session->getExpire());            
-           $db->Execute($sql);
-       }  
-    }  
-    
-    /** 
-     * Merge the $_GET, $_POST and emulated $_POST ---  1,2,3   1 is overwritten by 2, 2 is overwritten by 3.)
-     */
-    private static function merge_primary_arrays()
-    {
-       self::$VAR = array_merge($_POST, $_GET, self::$VAR); 
-    } 
     
 }

@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'user.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('workorder', 'status')) {
@@ -19,16 +19,16 @@ if(!check_page_accessed_via_qwcrm('workorder', 'status')) {
 }
 
 // Check if we have a workorder_id
-if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
+if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
     force_page('workorder', 'search');
 }
 
 // Delete the Workorder
-if(!delete_workorder(\QFactory::$VAR['workorder_id'])) {
+if(!delete_workorder(\CMSApplication::$VAR['workorder_id'])) {
     
     // load the staus page
-    force_page('workorder', 'status', 'workorder_id='.\QFactory::$VAR['workorder_id']);
+    force_page('workorder', 'status', 'workorder_id='.\CMSApplication::$VAR['workorder_id']);
     
 } else {
     

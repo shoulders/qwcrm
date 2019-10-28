@@ -8,22 +8,22 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'user.php');
 
 // Set the template for the correct user type (client/employee)
-if(isset(\QFactory::$VAR['client_id']) && \QFactory::$VAR['client_id']) {
+if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id']) {
     
     // check if there is already a user for the client (and error if there is)
-    if(!check_client_already_has_login(\QFactory::$VAR['client_id'])) {
+    if(!check_client_already_has_login(\CMSApplication::$VAR['client_id'])) {
         
         $smarty->assign('is_employee', '0');
-        $smarty->assign('client_display_name', get_client_details(\QFactory::$VAR['client_id'], 'client_display_name'));
+        $smarty->assign('client_display_name', get_client_details(\CMSApplication::$VAR['client_id'], 'client_display_name'));
         $smarty->assign('usergroups', get_usergroups('clients'));
         
     } else {
         
-        force_page('client', 'details', 'client_id='.\QFactory::$VAR['client_id'].'&msg_danger='._gettext("The client already has a login."));
+        force_page('client', 'details', 'client_id='.\CMSApplication::$VAR['client_id'].'&msg_danger='._gettext("The client already has a login."));
         
     }    
     
@@ -33,13 +33,13 @@ if(isset(\QFactory::$VAR['client_id']) && \QFactory::$VAR['client_id']) {
 }
 
 // If user data has been submitted
-if(isset(\QFactory::$VAR['submit'])) { 
+if(isset(\CMSApplication::$VAR['submit'])) { 
             
     // Insert the record - if the username or email have not been used
-    if (check_user_username_exists(\QFactory::$VAR['qform']['username']) || check_user_email_exists(\QFactory::$VAR['qform']['email'])) {     
+    if (check_user_username_exists(\CMSApplication::$VAR['qform']['username']) || check_user_email_exists(\CMSApplication::$VAR['qform']['email'])) {     
         
         // send the posted data back to smarty
-        $user_details = \QFactory::$VAR['qform'];
+        $user_details = \CMSApplication::$VAR['qform'];
         
         // Reload the page with the POST'ed data
         $smarty->assign('user_details', $user_details);        
@@ -47,11 +47,11 @@ if(isset(\QFactory::$VAR['submit'])) {
         } else {    
             
             // Insert user record (and return the new ID)
-            \QFactory::$VAR['user_id'] = insert_user(\QFactory::$VAR['qform']);
+            \CMSApplication::$VAR['user_id'] = insert_user(\CMSApplication::$VAR['qform']);
             
             // Redirect to the new user's details page
             systemMessagesWrite('success', _gettext("New user has been created."));
-            force_page('user', 'details&user_id='.\QFactory::$VAR['qform']['user_id']);
+            force_page('user', 'details&user_id='.\CMSApplication::$VAR['qform']['user_id']);
             
         }
 

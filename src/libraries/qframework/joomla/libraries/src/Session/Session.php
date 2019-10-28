@@ -282,8 +282,8 @@ class Session implements \IteratorAggregate
      */
     public static function getFormToken($forceNew = false)
     {
-        $user    = \QFactory::getUser();
-        $session = \QFactory::getSession();
+        $user    = \Factory::getUser();
+        $session = \Factory::getSession();
 
         return ApplicationHelper::getHash($user->get('id', 0) . $session->getToken($forceNew));
     }
@@ -314,7 +314,7 @@ class Session implements \IteratorAggregate
     public static function checkToken($method = 'post')
     {
         $token = self::getFormToken();
-        $app = \QFactory::getApplication();
+        $app = \Factory::getApplication();
 
         // Check from header first
         if ($token === $app->input->server->get('HTTP_X_CSRF_TOKEN', '', 'alnum'))
@@ -325,7 +325,7 @@ class Session implements \IteratorAggregate
         // Then fallback to HTTP query
         if (!$app->input->$method->get($token, '', 'alnum'))
         {
-            if (\QFactory::getSession()->isNew())
+            if (\Factory::getSession()->isNew())
             {
                 // Redirect to login screen.
                 $app->enqueueMessage(_gettext("Your session has expired. Please log in again."), 'warning');
@@ -1053,9 +1053,9 @@ class Session implements \IteratorAggregate
      */
     public function checkSession()
     {
-        $db     = \QFactory::getDbo();
+        $db     = \Factory::getDbo();
         //$session = JFactory::getSession(); using $this
-        $user   = \QFactory::getUser();      // this gets the user from the session
+        $user   = \Factory::getUser();      // this gets the user from the session
 
         $sql    = "SELECT session_id FROM ".PRFX."session WHERE session_id = " . $db->qstr( $this->getId() );        
         $rs     = $db->Execute($sql);    
@@ -1082,9 +1082,9 @@ class Session implements \IteratorAggregate
                 $record['username']    = $user->username;*/                
                                 
                 $sql = "INSERT INTO ".PRFX."session SET     
-                        session_id      =". $db->qstr( $this->getId()       ).",
-                        clientid        =". (int) \QFactory::getClientId()  .",                        
-                        time            =". time()                          ; 
+                        session_id      =". $db->qstr( $this->getId()               ).",
+                        clientid        =". (int) \CMSApplication::getClientId()    .",                        
+                        time            =". time()                                  ; 
                 
             }
             else
@@ -1105,14 +1105,14 @@ class Session implements \IteratorAggregate
                 
                 $sql = "INSERT INTO ".PRFX."session SET  
                         session_id      =". $db->qstr( $this->getId()                   ).",
-                        clientid        =". (int) \QFactory::getClientId()              .", 
+                        clientid        =". (int) \Factory::getClientId()              .", 
                         guest           =". (int) $user->guest                          .",
                         time            =". (int) $this->get('session.timer.start')     .",
                         userid          =". (int) $user->id                             .",
                         username        =". $db->qstr( $user->username                  );
                 
                 /*$sql = "UPDATE ".PRFX."session SET                          
-                        clientid        =". (int) \QFactory::getClientId()              .", 
+                        clientid        =". (int) \Factory::getClientId()              .", 
                         guest           =". (int) $user->guest                          .",
                         time            =". (int) $this->get('session.timer.start')     .",
                         userid          =". (int) $user->id                             .",

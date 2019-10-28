@@ -8,14 +8,14 @@
 
 defined('_QWEXEC') or die;
 
-require_once(INCLUDES_DIR.'core_theme.php');
+require_once(CINCLUDES_DIR.'CoreTheme.php');
 
 // Display Date and Time
 $smarty->assign('todays_display_date', date('l, j F Y'));
 
 //Add a welcome message based on time
 if(!defined('QWCRM_SETUP')) {
-    $smarty->assign('greeting_msg', greeting_message_based_on_time($user->login_display_name));    
+    $smarty->assign('greeting_msg', $this->app->components->coretheme->greeting_message_based_on_time($user->login_display_name));    
 } else {
-    $smarty->assign('greeting_msg', greeting_message_based_on_time(null)); 
+    $smarty->assign('greeting_msg', $this->app->components->coretheme->greeting_message_based_on_time(null)); 
 }

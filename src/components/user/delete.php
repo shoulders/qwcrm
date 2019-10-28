@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'user.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
@@ -18,16 +18,16 @@ if(!check_page_accessed_via_qwcrm()) {
 }
 
 // Check if we have an user_id
-if(!isset(\QFactory::$VAR['user_id']) || !\QFactory::$VAR['user_id']) {
+if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']) {
     systemMessagesWrite('danger', _gettext("No User ID supplied."));
     force_page('user', 'search');
 }
 
 // Run the delete function
-if(!delete_user(\QFactory::$VAR['user_id'])) {
+if(!delete_user(\CMSApplication::$VAR['user_id'])) {
     
     // load the user details page
-    force_page('user', 'details&user_id='.\QFactory::$VAR['user_id']);    
+    force_page('user', 'details&user_id='.\CMSApplication::$VAR['user_id']);    
     
 } else {
     

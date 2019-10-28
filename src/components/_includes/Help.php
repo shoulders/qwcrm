@@ -20,19 +20,22 @@
 
 defined('_QWEXEC') or die;
 
-/** Mandatory Code **/
+class Help {
 
-/** Display Functions **/
+    /** Mandatory Code **/
 
-/** Insert Functions **/
+    /** Display Functions **/
 
-/** Get Functions **/
+    /** Insert Functions **/
 
-/** Update Functions **/
+    /** Get Functions **/
 
-/** Close Functions **/
+    /** Update Functions **/
 
-/** Delete Functions **/
+    /** Close Functions **/
 
-/** Other Functions **/
+    /** Delete Functions **/
 
+    /** Other Functions **/
+
+}

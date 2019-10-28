@@ -8,10 +8,10 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'supplier.php');
+require(CINCLUDES_DIR.'supplier.php');
 
 // Check if we have a supplier_id
-if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
+if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
     systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
     force_page('supplier', 'search');
 }  
@@ -19,4 +19,4 @@ if(!isset(\QFactory::$VAR['supplier_id']) || !\QFactory::$VAR['supplier_id']) {
 // Build the page
 $smarty->assign('supplier_statuses',   get_supplier_statuses()   );
 $smarty->assign('supplier_types', get_supplier_types());
-$smarty->assign('supplier_details', get_supplier_details(\QFactory::$VAR['supplier_id']));
+$smarty->assign('supplier_details', get_supplier_details(\CMSApplication::$VAR['supplier_id']));

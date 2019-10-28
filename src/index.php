@@ -52,58 +52,66 @@ $startMem = memory_get_usage();
 
 // Load the framework (session/user/database/template engine/system includes)
 define('QFRAMEWORK_DIR', 'libraries/qframework/'); 
-require(QFRAMEWORK_DIR.'qwcrm/loader.php');
-\QFactory::loadQwcrm();
+require(QFRAMEWORK_DIR.'qwcrm/includes/loader.php');
+//\CMSApplication::loadQwcrm();
 
 ###################################################
 # Debugging Information Start Variable Acqusition #
 ###################################################
 
 // Save the start time and memory usage. (to system)
-\QFactory::$VAR['system']['startTime'] = $startTime;
-\QFactory::$VAR['system']['startMem'] = $startMem;
+\CMSApplication::$VAR['system']['startTime'] = $startTime;
+\CMSApplication::$VAR['system']['startMem'] = $startMem;
 
 ################################################
 #         Initialise QWCRM                     #
 ################################################
 
-if(!defined('QWCRM_SETUP')) {
+/*if(!defined('QWCRM_SETUP')) {
     
     // Start the QFramework 
-    $app = new \QFactory;
+    $app = new \Factory;
        
-}
+}*/
+
+// Start the QFramework 
+//$app = new \CMSApplication();
+
+// Instantiate the application.
+$app = \Factory::getApplication('site');
+
+// Execute the application.
+$app->execute();
 
 ############################################################
 #  Finish Building the Environment and Load Page           #
 ############################################################
 
 // Build and set the System Messages Store (only run once per session)
-systemMessagesBuildStore(true);
+$app->system->variables->systemMessagesBuildStore(true);
     
 // Set the Smarty User Variables (only run once per session)
-smarty_set_user_variables();
+if(!defined('QWCRM_SETUP')) {
+    $app->system->variables->smarty_set_user_variables();
+}
 
 // Build and Load the page into memmory
-load_page('set_controller');
+$app->system->page->load_page('set_controller');
 
 ################################################
 #         Logging                              #
 ################################################
 
-// Update the Logged in User's Last Active Times
-if(!defined('QWCRM_SETUP')) {    
-    update_user_last_active(\QFactory::getUser()->login_user_id);    
-}
-
-// Access Logging
-if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP'))) {
+if(!defined('QWCRM_SETUP')) { 
     
-    // This logs QWcrm page load details to the access log
-    if(\QFactory::getConfig()->get('qwcrm_access_log')){
-        write_record_to_access_log();
+    // Update the Logged in User's Last Active Times
+    $app->system->general->update_user_last_active(\Factory::getUser()->login_user_id);
+    
+    // Access Logging - This logs QWcrm page load details to the access log
+    if(!defined('SKIP_LOGGING') && \Factory::getConfig()->get('qwcrm_access_log')) {    
+        $app->system->general->write_record_to_access_log();    
     }
-    
+
 }
 
 ################################################
@@ -114,8 +122,8 @@ if(!defined('SKIP_LOGGING') && (!defined('QWCRM_SETUP'))) {
 if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') { 
 
     // Compress page payload and send compression headers
-    if (\QFactory::getConfig()->get('gzip')) {
-        \QFactory::$BuildPage = compress_page_output(\QFactory::$BuildPage);
+    if (\Factory::getConfig()->get('gzip')) {
+        \CMSApplication::$BuildPage = $app->system->page->compress_page_output(\CMSApplication::$BuildPage);
     }
         
 }
@@ -124,4 +132,4 @@ if(!isset($VAR['theme']) || $VAR['theme'] !== 'print') {
 #         Display the Built Page               #
 ################################################
 
-echo \QFactory::$BuildPage;
+echo \CMSApplication::$BuildPage;

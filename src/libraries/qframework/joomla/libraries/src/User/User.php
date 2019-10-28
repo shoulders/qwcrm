@@ -529,7 +529,7 @@ class User //extends \JObject
         return $table->setLastVisit($timestamp);
         */
         
-        $db = \QFactory::getDbo();        
+        $db = \Factory::getDbo();        
             $sql = "UPDATE ".PRFX."user_records SET last_active = ".mysql_datetime()." WHERE user_id = " . $db->qstr($this->id);
             $db->Execute($sql);
     
@@ -650,7 +650,7 @@ class User //extends \JObject
             if (isset($array['password2']) && $array['password'] != $array['password2'])
             {
             //\JFactory::getApplication()->enqueueMessage(\JText::_('JLIB_USER_ERROR_PASSWORD_NOT_MATCH'), 'error');
-                        \QFactory::getApplication()->enqueueMessage(_gettext("Passwords do not match. Please re-enter password."), 'error');             
+                        \Factory::getApplication()->enqueueMessage(_gettext("Passwords do not match. Please re-enter password."), 'error');             
 
                 return false;
             }
@@ -660,7 +660,7 @@ class User //extends \JObject
             $array['password'] = $this->userHelper->hashPassword($array['password']);
 
             // Set the registration timestamp
-            $this->set('registerDate', \QFactory::getDate()->toSql());
+            $this->set('registerDate', \Factory::getDate()->toSql());
 
             // Check that username is not greater than 150 characters
             $username = $this->get('username');
@@ -919,7 +919,7 @@ class User //extends \JObject
             }        
             */
         
-            $db = \QFactory::getDbo();
+            $db = \Factory::getDbo();
 
             $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id = " . $db->qstr($id);        
 

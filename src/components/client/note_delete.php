@@ -8,19 +8,19 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'client.php');
 
 // check if we have a client_note_id
-if(!isset(\QFactory::$VAR['client_id']) || !\QFactory::$VAR['client_id']) {
+if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_id']) {
     systemMessagesWrite('danger', _gettext("No Client Note ID supplied."));
     force_page('client', 'search');
 }
 
 // Get the client_id before we delete the record
-\QFactory::$VAR['client_id'] = get_client_note_details(\QFactory::$VAR['client_note_id'], 'client_id');
+\CMSApplication::$VAR['client_id'] = get_client_note_details(\CMSApplication::$VAR['client_note_id'], 'client_id');
 
 // Delete the client note
-delete_client_note(\QFactory::$VAR['client_note_id']);
+delete_client_note(\CMSApplication::$VAR['client_note_id']);
 
 // Reload the clients details page
-force_page('client', 'details&client_id='.\QFactory::$VAR['client_id']);
+force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);

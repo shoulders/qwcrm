@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'administrator.php');
+require(CINCLUDES_DIR.'administrator.php');
 
-if(isset(\QFactory::$VAR['submit'])) {
+if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Check for updates
     check_for_qwcrm_update();

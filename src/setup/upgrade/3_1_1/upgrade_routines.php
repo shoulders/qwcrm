@@ -9,7 +9,7 @@
 
 defined('_QWEXEC') or die;
 
-class Upgrade3_1_1 extends QSetup {
+class Upgrade3_1_1 extends Setup {
     
     private $upgrade_step = null;
     private $setup_time = null;

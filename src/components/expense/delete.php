@@ -8,9 +8,9 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'expense.php');
-require(INCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'expense.php');
+require(CINCLUDES_DIR.'report.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('expense', 'status')) {
@@ -19,13 +19,13 @@ if(!check_page_accessed_via_qwcrm('expense', 'status')) {
 }
 
 // Check if we have an expense_id
-if(!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id']) {
+if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id']) {
     systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
     force_page('expense', 'search');
 }   
 
 // Delete the expense
-delete_expense(\QFactory::$VAR['expense_id']);
+delete_expense(\CMSApplication::$VAR['expense_id']);
 
 // Load the expense search page
 force_page('expense', 'search', 'msg_success='._gettext("Expense deleted successfully."));

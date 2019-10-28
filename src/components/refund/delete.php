@@ -8,12 +8,12 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'refund.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'refund.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('refund', 'status')) {
@@ -22,13 +22,13 @@ if(!check_page_accessed_via_qwcrm('refund', 'status')) {
 }
 
 // Check if we have a refund_id
-if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
+if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
     systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
     force_page('refund', 'search');
 } 
 
 // Delete the refund function call
-delete_refund(\QFactory::$VAR['refund_id']);
+delete_refund(\CMSApplication::$VAR['refund_id']);
 
 // Load the refund search page
 force_page('refund', 'search', 'msg_success='._gettext("Refund deleted successfully."));

@@ -16,7 +16,7 @@ class PMethod {
     public function __construct(&$VAR) {
         
         $this->VAR = &$VAR;
-        $this->smarty = QFactory::getSmarty();
+        $this->smarty = \Factory::getSmarty();
         
     }
     

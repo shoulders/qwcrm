@@ -8,15 +8,15 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'expense.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'otherincome.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'refund.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'expense.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'otherincome.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'refund.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('payment', 'status')) {
@@ -25,7 +25,7 @@ if(!check_page_accessed_via_qwcrm('payment', 'status')) {
 }
 
 // Check if we have an payment_id
-if(!isset(\QFactory::$VAR['payment_id']) || !\QFactory::$VAR['payment_id']) {
+if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
     force_page('payment', 'search');
 }   
@@ -98,4 +98,4 @@ class DeletePayment {
 }
 
 // Instanciate Delete Payment Class
-$payment = new DeletePayment(\QFactory::$VAR);
+$payment = new DeletePayment(\CMSApplication::$VAR);

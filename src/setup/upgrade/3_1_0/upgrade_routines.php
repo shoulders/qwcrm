@@ -9,7 +9,7 @@
 
 defined('_QWEXEC') or die;
 
-class Upgrade3_1_0 extends QSetup {
+class Upgrade3_1_0 extends Setup {
     
     private $upgrade_step = null;
     private $company_tax_system = null;
@@ -211,7 +211,7 @@ class Upgrade3_1_0 extends QSetup {
     
      public function column_timestamp_to_mysql_date($table, $column_timestamp, $column_primary_key) {
         
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
         $mysql_date = null;
         $temp_prfx = 'temp_';
         $local_error_flag = false;
@@ -397,7 +397,7 @@ class Upgrade3_1_0 extends QSetup {
     
     public function column_timestamp_to_mysql_datetime($table, $column_timestamp, $column_primary_key) {
         
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
         $mysql_datetime = null;
         $temp_prfx = 'temp_';
         $local_error_flag = false;
@@ -625,7 +625,7 @@ class Upgrade3_1_0 extends QSetup {
 
     function voucher_correct_records() {
         
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         
         $local_error_flag = false;                     
         
@@ -775,7 +775,7 @@ class Upgrade3_1_0 extends QSetup {
 
     function invoice_correct_labour_totals() {
         
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         
         $local_error_flag = false;                     
         
@@ -913,7 +913,7 @@ class Upgrade3_1_0 extends QSetup {
 
     function invoice_correct_parts_totals() {
         
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         
         $local_error_flag = false;                     
         
@@ -1051,7 +1051,7 @@ class Upgrade3_1_0 extends QSetup {
 
     function payments_parse_import_additional_info() {
         
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         
         $local_error_flag = false;                     
         
@@ -1218,7 +1218,7 @@ class Upgrade3_1_0 extends QSetup {
 
     function payments_create_expense_records_payments() {
         
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         
         $local_error_flag = false;                     
         
@@ -1370,7 +1370,7 @@ class Upgrade3_1_0 extends QSetup {
 
     function payments_create_otherincome_records_payments() {
         
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         
         $local_error_flag = false;                     
         

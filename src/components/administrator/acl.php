@@ -8,17 +8,17 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'administrator.php');
+require(CINCLUDES_DIR.'administrator.php');
 
 // Update the ACL permissions if submitted
-if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'reset_default') {
+if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'reset_default') {
     reset_acl_permissions();    
     systemMessagesWrite('success', _gettext("Permissions reset to default."));    
 }
 
 // Update the ACL permissions if submitted
-if(isset(\QFactory::$VAR['submit']) && \QFactory::$VAR['submit'] == 'update') {
-    update_acl(\QFactory::$VAR['qform']['permissions']);    
+if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'update') {
+    update_acl(\CMSApplication::$VAR['qform']['permissions']);    
     systemMessagesWrite('success', _gettext("Permissions Updated."));    
 }
     

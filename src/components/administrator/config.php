@@ -8,12 +8,12 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'administrator.php');
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'administrator.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'user.php');
 
 // Send a Test Mail
-if(isset(\QFactory::$VAR['send_test_mail'])) {
+if(isset(\CMSApplication::$VAR['send_test_mail'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         send_test_mail();
     }
@@ -21,7 +21,7 @@ if(isset(\QFactory::$VAR['send_test_mail'])) {
 }
 
 // Clear Smarty Compile
-if(isset(\QFactory::$VAR['clear_smarty_compile'])) {    
+if(isset(\CMSApplication::$VAR['clear_smarty_compile'])) {    
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         clear_smarty_compile();        
     }    
@@ -29,7 +29,7 @@ if(isset(\QFactory::$VAR['clear_smarty_compile'])) {
 }
 
 // Clear Smarty Cache button
-if(isset(\QFactory::$VAR['clear_smarty_cache'])) {
+if(isset(\CMSApplication::$VAR['clear_smarty_cache'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {
         clear_smarty_cache();
     }
@@ -37,25 +37,25 @@ if(isset(\QFactory::$VAR['clear_smarty_cache'])) {
 }
 
 // Update Config details
-if(isset(\QFactory::$VAR['submit'])) {   
+if(isset(\CMSApplication::$VAR['submit'])) {   
     
-    if(update_qwcrm_config_settings_file(\QFactory::$VAR['qform'])) {
+    if(update_qwcrm_config_settings_file(\CMSApplication::$VAR['qform'])) {
         
         // Compensate for SEF change  
-        $url_sef = \QFactory::$VAR['qform']['sef'] ? 'sef' : 'nonsef';
+        $url_sef = \CMSApplication::$VAR['qform']['sef'] ? 'sef' : 'nonsef';
         
         // Load maintenance page if enabled
-        if(!QFactory::getConfig()->get('maintenance') && \QFactory::$VAR['qform']['maintenance']) {
+        if(!\Factory::getConfig()->get('maintenance') && \CMSApplication::$VAR['qform']['maintenance']) {
             logout_all_users();
             force_page('index.php', null, null, 'get', $url_sef);
         }        
         
         // Reload Page (nonSSL to SSL)
-        elseif (!QFactory::getConfig()->get('force_ssl') && \QFactory::$VAR['qform']['force_ssl']) {
+        elseif (!\Factory::getConfig()->get('force_ssl') && \CMSApplication::$VAR['qform']['force_ssl']) {
             force_page('administrator', 'config', 'msg_success='._gettext("Config settings updated successfully."), 'auto', $url_sef, 'https');
             
         // Reload page with forced logout (SSL to nonSSL)
-        } elseif(QFactory::getConfig()->get('force_ssl') && !\QFactory::$VAR['qform']['force_ssl']) {
+        } elseif(\Factory::getConfig()->get('force_ssl') && !\CMSApplication::$VAR['qform']['force_ssl']) {
             logout_all_users();
             force_page('user', 'login', null, 'get', $url_sef, 'http');
         
@@ -68,7 +68,7 @@ if(isset(\QFactory::$VAR['submit'])) {
         
         // Load the submitted values
         systemMessagesWrite('danger', _gettext("Some information was invalid, please check for errors and try again."));
-        $smarty->assign('qwcrm_config', \QFactory::$VAR['qform']); 
+        $smarty->assign('qwcrm_config', \CMSApplication::$VAR['qform']); 
     }
     
 } else {

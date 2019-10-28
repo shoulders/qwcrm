@@ -8,40 +8,40 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'company.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'refund.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'refund.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Check if we have a refund_id
-if(!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id']) {
+if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
     systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
     force_page('refund', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
-if(isset(\QFactory::$VAR['submit'])) {    
+if(isset(\CMSApplication::$VAR['submit'])) {    
         
     // Update the refund in the database
-    update_refund(\QFactory::$VAR['qform']);
-    recalculate_refund_totals(\QFactory::$VAR['refund_id']);
+    update_refund(\CMSApplication::$VAR['qform']);
+    recalculate_refund_totals(\CMSApplication::$VAR['refund_id']);
     
     // load details page
-    force_page('refund', 'details&refund_id='.\QFactory::$VAR['refund_id'], 'msg_success='._gettext("Refund updated successfully.")); 
+    force_page('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id'], 'msg_success='._gettext("Refund updated successfully.")); 
 } else {
     
     // Check if refund can be edited
-    if(!check_refund_can_be_edited(\QFactory::$VAR['refund_id'])) {
+    if(!check_refund_can_be_edited(\CMSApplication::$VAR['refund_id'])) {
         systemMessagesWrite('danger', _gettext("You cannot edit this refund because its status does not allow it."));
-        force_page('refund', 'details&refund_id='.\QFactory::$VAR['refund_id']);
+        force_page('refund', 'details&refund_id='.\CMSApplication::$VAR['refund_id']);
     }
 
     // Build the page
-    $refund_details = get_refund_details(\QFactory::$VAR['refund_id']);
+    $refund_details = get_refund_details(\CMSApplication::$VAR['refund_id']);
     $smarty->assign('refund_statuses', get_refund_statuses());
     $smarty->assign('refund_types', get_refund_types());        
     $smarty->assign('refund_details', $refund_details);

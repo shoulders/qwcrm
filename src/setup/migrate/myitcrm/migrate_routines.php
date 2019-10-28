@@ -13,7 +13,7 @@
 
 defined('_QWEXEC') or die;
 
-class MigrateMyitcrm extends QSetup {
+class MigrateMyitcrm extends Setup {
     
     public function __construct(&$VAR) {
         
@@ -34,7 +34,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function insert_user($VAR) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         $sql = "INSERT INTO ".PRFX."user SET
                 customer_id         =". $db->qstr( $VAR['customer_id']                          ).", 
@@ -94,7 +94,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function get_company_details($item = null) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         $sql = "SELECT * FROM ".PRFX."company";
 
@@ -135,8 +135,8 @@ class MigrateMyitcrm extends QSetup {
 
     public function get_company_details_myitcrm($item = null) {
 
-        $config = QFactory::getConfig();
-        $db = QFactory::getDbo();
+        $config = \Factory::getConfig();
+        $db = \Factory::getDbo();
 
         $sql = "SELECT * FROM ".$config->get('myitcrm_prefix')."TABLE_COMPANY";
 
@@ -206,7 +206,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function get_user_details($user_id = null, $item = null) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         // This allows for workorder:status to work
         if(!$user_id){
@@ -249,7 +249,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function update_company_details($VAR) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
         $sql = null;
         
         // Prevent undefined variable errors
@@ -314,7 +314,7 @@ class MigrateMyitcrm extends QSetup {
             $this->smarty->assign('msg_success', _gettext("Company details updated."));
 
             // Log activity
-            $qsetup = new QSetup($VAR);
+            $qsetup = new Setup($VAR);
             $qsetup->write_record_to_setup_log('migrate', _gettext("Company details updated."));
             
             return;
@@ -804,7 +804,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function database_correction_workorder($qwcrm_prefix, $myitcrm_prefix) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
         
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -929,7 +929,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function database_correction_invoice($qwcrm_prefix) {
 
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -1023,7 +1023,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function database_correction_giftcert($qwcrm_prefix) {
 
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -1090,7 +1090,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function database_correction_schedule($qwcrm_prefix, $myitcrm_prefix) {
 
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -1161,7 +1161,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function database_correction_user($qwcrm_prefix) {
 
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
 
         // Add division to seperate table migration function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
@@ -1225,7 +1225,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function check_myitcrm_database_connection($myitcrm_prefix) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         $sql = "SELECT VERSION_ID FROM ".$myitcrm_prefix."VERSION WHERE VERSION_ID = '293'";
 
@@ -1258,7 +1258,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function reset_all_user_passwords() { 
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         $sql = "SELECT user_id FROM ".PRFX."user";
 
@@ -1293,7 +1293,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function reset_user_password($user_id, $password = null) { 
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         // if no password supplied generate a random one
         if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
@@ -1325,7 +1325,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function check_user_username_exists($username, $current_username = null) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_username != null && $username === $current_username) {return false;}
@@ -1360,7 +1360,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function check_user_email_exists($email, $current_email = null) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_email != null && $email === $current_email) {return false;}
@@ -1416,7 +1416,7 @@ class MigrateMyitcrm extends QSetup {
 
     public function upload_logo() {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         // Logo - Only process if there is an image uploaded
         if($_FILES['logo']['size'] > 0) {

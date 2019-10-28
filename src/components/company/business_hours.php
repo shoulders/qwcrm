@@ -8,20 +8,20 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'company.php');
 
 // If new times submitted
-if(isset(\QFactory::$VAR['submit'])) {
+if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Build the start and end times for comparison
-    $opening_time = strtotime(\QFactory::$VAR['openingTime']['Time_Hour'].':'.\QFactory::$VAR['openingTime']['Time_Minute'].':'.'00');
-    $closing_time = strtotime(\QFactory::$VAR['closingTime']['Time_Hour'].':'.\QFactory::$VAR['closingTime']['Time_Minute'].':'.'00');
+    $opening_time = strtotime(\CMSApplication::$VAR['openingTime']['Time_Hour'].':'.\CMSApplication::$VAR['openingTime']['Time_Minute'].':'.'00');
+    $closing_time = strtotime(\CMSApplication::$VAR['closingTime']['Time_Hour'].':'.\CMSApplication::$VAR['closingTime']['Time_Minute'].':'.'00');
 
     // Validate the submitted times
     if (check_start_end_times($opening_time, $closing_time)) {
         
         // Update opening and closing Times into the database
-        update_company_hours(\QFactory::$VAR['openingTime'], \QFactory::$VAR['closingTime']);
+        update_company_hours(\CMSApplication::$VAR['openingTime'], \CMSApplication::$VAR['closingTime']);
         
     }
     

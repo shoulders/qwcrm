@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-function load_defines() {   
+    $QConfig = class_exists('QConfig') ? new QConfig : null;  // This is temporary, I have to include configuration.php earlier, however joomla does this as well
 
     // Misc
     //define('SEP',                       DIRECTORY_SEPARATOR             );            // on windows = '\'
@@ -19,19 +19,19 @@ function load_defines() {
     define('QWCRM_MINIMUM_MYSQL',       '5.0.0'                                             );
     
     // This allows the use of the database ASAP in the setup process - This is the where the config is first created from configuration.php
-    if($db_prefix = \QFactory::getConfig()->get('db_prefix')) {
-        define('PRFX',                  $db_prefix                                          );
+    if($QConfig->db_prefix) {
+        define('PRFX',                  $QConfig->db_prefix                                 );
     }
 
     // System Folders
     define('CACHE_DIR',                 'cache/'                                            );
     define('COMPONENTS_DIR',            'components/'                                       );
-    define('INCLUDES_DIR',              COMPONENTS_DIR.'_includes/'                         );
-    define('MEDIA_DIR',                 'media/'                                            );
-    define('MODULES_DIR',               'modules/'                                          );
+    define('CINCLUDES_DIR',             COMPONENTS_DIR.'_includes/'                         );
     define('LANGUAGE_DIR',              'language/'                                         );
     define('LIBRARIES_DIR',             'libraries/'                                        );
     define('LOGS_DIR',                  'logs/'                                             );
+    define('MEDIA_DIR',                 'media/'                                            );
+    define('MODULES_DIR',               'modules/'                                          );    
     define('PLUGINS_DIR',               'plugins/'                                          );
     define('SETUP_DIR',                 'setup/'                                            );
 
@@ -45,8 +45,8 @@ function load_defines() {
     define('QW_MEDIA_DIR',              QWCRM_BASE_PATH.MEDIA_DIR                           );
 
     // Theme Folders
-    if(QFactory::getConfig()->get('theme_name')) {
-        define('THEME_NAME',            \QFactory::getConfig()->get('theme_name')            );   
+    if($QConfig->theme_name) {
+        define('THEME_NAME',            $QConfig->theme_name            );   
     } else {
         define('THEME_NAME',            'default'                                           );      
     }
@@ -68,4 +68,4 @@ function load_defines() {
     define('ERROR_LOG',                 LOGS_DIR.'error.log'                                );
     define('SETUP_LOG',                 LOGS_DIR.'setup.log'                                );
 
-}
+unset($QConfig);

@@ -19,7 +19,7 @@ class PlgAuthenticationJoomla //extends JPlugin
     private $db;
     public function __construct()
     {
-        $this->db = \QFactory::getDbo();
+        $this->db = \Factory::getDbo();
     }
     /**
      * This method should handle any authentication and report back to the subject

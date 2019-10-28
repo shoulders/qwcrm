@@ -17,7 +17,7 @@ class PType {
     public function __construct(&$VAR) {
         
         $this->VAR = &$VAR;
-        $this->smarty = QFactory::getSmarty();    
+        $this->smarty = \Factory::getSmarty();    
         $this->refund_details = get_refund_details($this->VAR['qpayment']['refund_id']);
         
         // Set intial record balance

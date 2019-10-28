@@ -55,14 +55,14 @@ class PlgSystemRemember //extends JPlugin
         */
 
         // No remember me for admin.
-        if (\QFactory::isClient('administrator'))
+        if (\CMSApplication::isClient('administrator'))
         {
             return;
         }
 
         // Check for a cookie if user is not logged in - (guests are not logged in)
         //if (JFactory::getUser()->get('guest'))
-        $user = \QFactory::getUser();
+        $user = \Factory::getUser();
         if ($user->guest)
         {
             $cookieName = 'qwcrm_remember_me_' . \Joomla\CMS\User\UserHelper::getShortHashedUserAgent();
@@ -78,7 +78,7 @@ class PlgSystemRemember //extends JPlugin
             // Check for the cookie - by seeing if there is any content    
             if ($this->cookie->get($cookieName))
             {
-                \QFactory::getAuth()->login(array('username' => ''), array('silent' => true));
+                \Factory::getAuth()->login(array('username' => ''), array('silent' => true));
             }
         }
     }
@@ -94,7 +94,7 @@ class PlgSystemRemember //extends JPlugin
     public function onUserLogout($user, $options)
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (\CMSApplication::isClient('administrator'))
         {
             return true;
         }

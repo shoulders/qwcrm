@@ -8,19 +8,19 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'invoice.php'); // require to stop email sub-system error
-require(INCLUDES_DIR.'user.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'invoice.php'); // require to stop email sub-system error
+require(CINCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Delete any expired resets (CRON is better)
 delete_expired_reset_codes();
 
 // Prevent undefined variable errors (temp)
-\QFactory::$VAR['reset_code'] = isset(\QFactory::$VAR['reset_code']) ? \QFactory::$VAR['reset_code'] : null;
-$smarty->assign('reset_code', \QFactory::$VAR['reset_code']);
-\QFactory::$VAR['token'] = isset(\QFactory::$VAR['token']) ? \QFactory::$VAR['token'] : null;
-$smarty->assign('token', \QFactory::$VAR['token']);
+\CMSApplication::$VAR['reset_code'] = isset(\CMSApplication::$VAR['reset_code']) ? \CMSApplication::$VAR['reset_code'] : null;
+$smarty->assign('reset_code', \CMSApplication::$VAR['reset_code']);
+\CMSApplication::$VAR['token'] = isset(\CMSApplication::$VAR['token']) ? \CMSApplication::$VAR['token'] : null;
+$smarty->assign('token', \CMSApplication::$VAR['token']);
 
 ###########################################################
 # Stage 1 - Load Enter Email (Page Default Action)        #
@@ -32,7 +32,7 @@ $stage = 'enter_email';
 #  STAGE 2 - Email Submitted, Load Enter Token            #
 ###########################################################
 
-if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['email']) && \QFactory::$VAR['email']) {
+if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['email']) && \CMSApplication::$VAR['email']) {
     
     // Prevent direct access to this page (when submitting form)
     if(!check_page_accessed_via_qwcrm('user', 'reset')) {
@@ -41,12 +41,12 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['email']) && \QFac
     }
 
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \QFactory::$VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \CMSApplication::$VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */
 
         // Make sure user account exists and is not blocked
-        if(!isset(\QFactory::$VAR['email']) || !$user_id = validate_reset_email(\QFactory::$VAR['email'])) {
+        if(!isset(\CMSApplication::$VAR['email']) || !$user_id = validate_reset_email(\CMSApplication::$VAR['email'])) {
 
             // Display error message
             systemMessagesWrite('danger', _gettext("You cannot reset the password on this account. It either does not exist or is blocked."));
@@ -74,10 +74,10 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['email']) && \QFac
 #  STAGE 2a - Token Submitted via Email, Load Enter Token #
 ###########################################################
 
-if(!isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['token']) && \QFactory::$VAR['token']) {    
+if(!isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['token']) && \CMSApplication::$VAR['token']) {    
     
     // Load the 'Enter Token' form
-    $smarty->assign('token', \QFactory::$VAR['token']);
+    $smarty->assign('token', \CMSApplication::$VAR['token']);
     $stage = 'enter_token';
     
 }
@@ -86,7 +86,7 @@ if(!isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['token']) && \QFac
 #  STAGE 3 - Token Submitted, Load Enter Password         #
 ###########################################################
 
-if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['token']) && \QFactory::$VAR['token']) {  
+if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['token']) && \CMSApplication::$VAR['token']) {  
     
     // Load the 'Enter Token' form (Default Action)       
     $stage = 'enter_token';
@@ -98,15 +98,15 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['token']) && \QFac
     }
 
     // if recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \QFactory::$VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \CMSApplication::$VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */
 
         // Process the token and reset the password for the account - this function sets response messages
-        if(validate_reset_token(\QFactory::$VAR['token'])) {
+        if(validate_reset_token(\CMSApplication::$VAR['token'])) {
 
             // Authorise the actual password change, return the secret code and assign reset code into Smarty
-            $smarty->assign('reset_code', authorise_password_reset(\QFactory::$VAR['token']));
+            $smarty->assign('reset_code', authorise_password_reset(\CMSApplication::$VAR['token']));
 
             // Load the 'Enter Password' form
             $stage = 'enter_password';
@@ -121,7 +121,7 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['token']) && \QFac
 #  STAGE 4 - Password Submitted, Complete Reset           #
 ###########################################################
 
-if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['reset_code']) && \QFactory::$VAR['reset_code'] && isset(\QFactory::$VAR['password']) && \QFactory::$VAR['password']) {
+if (isset(\CMSApplication::$VAR['submit']) && isset(\CMSApplication::$VAR['reset_code']) && \CMSApplication::$VAR['reset_code'] && isset(\CMSApplication::$VAR['password']) && \CMSApplication::$VAR['password']) {
     
     // Load the 'Enter Password' form (Default Action)       
     $stage = 'enter_password';
@@ -133,7 +133,7 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['reset_code']) && 
     }       
     
     // Validate the reset code
-    if(!validate_reset_code(\QFactory::$VAR['reset_code'])) {
+    if(!validate_reset_code(\CMSApplication::$VAR['reset_code'])) {
 
         // Display an error message
         systemMessagesWrite('danger', _gettext("The submitted reset code was invalid."));
@@ -141,13 +141,13 @@ if (isset(\QFactory::$VAR['submit']) && isset(\QFactory::$VAR['reset_code']) && 
     } else {
 
         // Get the user_id by the reset_code
-        $user_id = get_user_id_by_reset_code(\QFactory::$VAR['reset_code']);
+        $user_id = get_user_id_by_reset_code(\CMSApplication::$VAR['reset_code']);
 
         // Delete reset_code for this user
         delete_user_reset_code($user_id);
 
         // Reset the password
-        reset_user_password($user_id, \QFactory::$VAR['password']);
+        reset_user_password($user_id, \CMSApplication::$VAR['password']);
 
         // Logout the user out silently (if logged in)
         logout(true);

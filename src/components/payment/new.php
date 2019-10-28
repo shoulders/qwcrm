@@ -8,61 +8,61 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'expense.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'otherincome.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'refund.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'expense.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'otherincome.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'refund.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Make sure a payment type is set
-if(!isset(\QFactory::$VAR['type']) && (\QFactory::$VAR['type'] == 'invoice' || \QFactory::$VAR['type'] == 'refund' || \QFactory::$VAR['type'] == 'expense' || \QFactory::$VAR['type'] == 'otherincome')) {
+if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'refund' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome')) {
     force_page('payment', 'search', 'msg_danger='._gettext("No Payment Type supplied."));  
 }
 
 // Prevent undefined variable errors (with and without submit)
-\QFactory::$VAR['qpayment']['type'] = \QFactory::$VAR['type'];
-\QFactory::$VAR['qpayment']['method'] = isset(\QFactory::$VAR['qpayment']['method']) ? \QFactory::$VAR['qpayment']['method'] : null;
-\QFactory::$VAR['qpayment']['invoice_id'] = isset(\QFactory::$VAR['qpayment']['invoice_id']) ? \QFactory::$VAR['qpayment']['invoice_id'] : '';
-\QFactory::$VAR['qpayment']['invoice_id'] = isset(\QFactory::$VAR['invoice_id']) ? \QFactory::$VAR['invoice_id'] : \QFactory::$VAR['qpayment']['invoice_id'];
-\QFactory::$VAR['qpayment']['voucher_id'] = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : ''; // Do i need this? probably!
-\QFactory::$VAR['qpayment']['refund_id'] = isset(\QFactory::$VAR['qpayment']['refund_id']) ? \QFactory::$VAR['qpayment']['refund_id'] : '';
-\QFactory::$VAR['qpayment']['refund_id'] = isset(\QFactory::$VAR['refund_id']) ? \QFactory::$VAR['refund_id'] : \QFactory::$VAR['qpayment']['refund_id'];
-\QFactory::$VAR['qpayment']['expense_id'] = isset(\QFactory::$VAR['qpayment']['expense_id']) ? \QFactory::$VAR['qpayment']['expense_id'] : '';
-\QFactory::$VAR['qpayment']['expense_id'] = isset(\QFactory::$VAR['expense_id']) ? \QFactory::$VAR['expense_id'] : \QFactory::$VAR['qpayment']['expense_id'];
-\QFactory::$VAR['qpayment']['otherincome_id'] = isset(\QFactory::$VAR['qpayment']['otherincome_id']) ? \QFactory::$VAR['qpayment']['otherincome_id'] : '';
-\QFactory::$VAR['qpayment']['otherincome_id'] = isset(\QFactory::$VAR['otherincome_id']) ? \QFactory::$VAR['otherincome_id'] : \QFactory::$VAR['qpayment']['otherincome_id'];
-\QFactory::$VAR['qpayment']['name_on_card'] = isset(\QFactory::$VAR['qpayment']['name_on_card']) ? \QFactory::$VAR['qpayment']['name_on_card'] : null;
+\CMSApplication::$VAR['qpayment']['type'] = \CMSApplication::$VAR['type'];
+\CMSApplication::$VAR['qpayment']['method'] = isset(\CMSApplication::$VAR['qpayment']['method']) ? \CMSApplication::$VAR['qpayment']['method'] : null;
+\CMSApplication::$VAR['qpayment']['invoice_id'] = isset(\CMSApplication::$VAR['qpayment']['invoice_id']) ? \CMSApplication::$VAR['qpayment']['invoice_id'] : '';
+\CMSApplication::$VAR['qpayment']['invoice_id'] = isset(\CMSApplication::$VAR['invoice_id']) ? \CMSApplication::$VAR['invoice_id'] : \CMSApplication::$VAR['qpayment']['invoice_id'];
+\CMSApplication::$VAR['qpayment']['voucher_id'] = isset($qpayment['voucher_id']) ? $qpayment['voucher_id'] : ''; // Do i need this? probably!
+\CMSApplication::$VAR['qpayment']['refund_id'] = isset(\CMSApplication::$VAR['qpayment']['refund_id']) ? \CMSApplication::$VAR['qpayment']['refund_id'] : '';
+\CMSApplication::$VAR['qpayment']['refund_id'] = isset(\CMSApplication::$VAR['refund_id']) ? \CMSApplication::$VAR['refund_id'] : \CMSApplication::$VAR['qpayment']['refund_id'];
+\CMSApplication::$VAR['qpayment']['expense_id'] = isset(\CMSApplication::$VAR['qpayment']['expense_id']) ? \CMSApplication::$VAR['qpayment']['expense_id'] : '';
+\CMSApplication::$VAR['qpayment']['expense_id'] = isset(\CMSApplication::$VAR['expense_id']) ? \CMSApplication::$VAR['expense_id'] : \CMSApplication::$VAR['qpayment']['expense_id'];
+\CMSApplication::$VAR['qpayment']['otherincome_id'] = isset(\CMSApplication::$VAR['qpayment']['otherincome_id']) ? \CMSApplication::$VAR['qpayment']['otherincome_id'] : '';
+\CMSApplication::$VAR['qpayment']['otherincome_id'] = isset(\CMSApplication::$VAR['otherincome_id']) ? \CMSApplication::$VAR['otherincome_id'] : \CMSApplication::$VAR['qpayment']['otherincome_id'];
+\CMSApplication::$VAR['qpayment']['name_on_card'] = isset(\CMSApplication::$VAR['qpayment']['name_on_card']) ? \CMSApplication::$VAR['qpayment']['name_on_card'] : null;
 
 // Prevent direct access to this page, and validate requests
 if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_qwcrm('invoice', 'details')) {  
     
     // Check we have a valid request
-    if(\QFactory::$VAR['qpayment']['type'] == 'invoice' && (!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id'])) {
+    if(\CMSApplication::$VAR['qpayment']['type'] == 'invoice' && (!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id'])) {
         force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));    
     }    
     
 } elseif(check_page_accessed_via_qwcrm('refund', 'new') || check_page_accessed_via_qwcrm('refund', 'details')) {   
     
     // Check we have a valid request
-    if(\QFactory::$VAR['qpayment']['type'] == 'refund' && (!isset(\QFactory::$VAR['refund_id']) || !\QFactory::$VAR['refund_id'])) {
+    if(\CMSApplication::$VAR['qpayment']['type'] == 'refund' && (!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id'])) {
         force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));    
     }    
     
 } elseif(check_page_accessed_via_qwcrm('expense', 'new') || check_page_accessed_via_qwcrm('expense', 'details')) {
     
     // Check we have a valid request
-    if(\QFactory::$VAR['qpayment']['type'] == 'expense' && (!isset(\QFactory::$VAR['expense_id']) || !\QFactory::$VAR['expense_id'])) {
+    if(\CMSApplication::$VAR['qpayment']['type'] == 'expense' && (!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id'])) {
         force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));    
     }
  
 } elseif(check_page_accessed_via_qwcrm('otherincome', 'new') || check_page_accessed_via_qwcrm('otherincome', 'details')) {
     
     // Check we have a valid request
-    if(\QFactory::$VAR['qpayment']['type'] == 'otherincome' && (!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id'])) {
+    if(\CMSApplication::$VAR['qpayment']['type'] == 'otherincome' && (!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id'])) {
         force_page('otherincome', 'search', 'msg_danger='._gettext("No Otherincome ID supplied."));    
     }
      
@@ -223,16 +223,16 @@ class NewPayment {
 }
 
 // Instanciate New Payment Class
-$payment = new NewPayment(\QFactory::$VAR);
+$payment = new NewPayment(\CMSApplication::$VAR);
 
 // Build the page
-$smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \QFactory::$VAR['qpayment']['invoice_id'], \QFactory::$VAR['qpayment']['refund_id'], \QFactory::$VAR['qpayment']['expense_id'], \QFactory::$VAR['qpayment']['otherincome_id'])  );
-$smarty->assign('payment_method',                    \QFactory::$VAR['qpayment']['method']                                                      );
-$smarty->assign('payment_type',                      \QFactory::$VAR['qpayment']['type']                                                        );
+$smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'])  );
+$smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
+$smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
 $smarty->assign('payment_types',                     get_payment_types()                                                             );
 $smarty->assign('payment_methods',                   get_payment_methods()                                                           );
 $smarty->assign('payment_statuses',                  get_payment_statuses()                                                          );
 $smarty->assign('payment_active_card_types',         get_payment_active_card_types()                                                 );
-$smarty->assign('name_on_card',                      \QFactory::$VAR['qpayment']['name_on_card']                                                );
+$smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
 $smarty->assign('record_balance',                    NewPayment::$record_balance                                                     );
 $smarty->assign('buttons',                           NewPayment::$buttons                                                            );

@@ -8,33 +8,33 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'user.php');
+//require(CINCLUDES_DIR.'client.php');
+//require(CINCLUDES_DIR.'user.php');
 
 // Prevent undefined variable errors
-\QFactory::$VAR['login_username'] = isset(\QFactory::$VAR['login_username']) ? \QFactory::$VAR['login_username'] : null;
-\QFactory::$VAR['login_pwd'] = isset(\QFactory::$VAR['login_pwd']) ? \QFactory::$VAR['login_pwd'] : null;
-\QFactory::$VAR['action'] = isset(\QFactory::$VAR['action']) ? \QFactory::$VAR['action'] : null;
+\CMSApplication::$VAR['login_username'] = isset(\CMSApplication::$VAR['login_username']) ? \CMSApplication::$VAR['login_username'] : null;
+\CMSApplication::$VAR['login_pwd'] = isset(\CMSApplication::$VAR['login_pwd']) ? \CMSApplication::$VAR['login_pwd'] : null;
+\CMSApplication::$VAR['action'] = isset(\CMSApplication::$VAR['action']) ? \CMSApplication::$VAR['action'] : null;
 
 // Get variables in correct format for login()
-$credentials['username'] = \QFactory::$VAR['login_username'];
-$credentials['password'] = \QFactory::$VAR['login_pwd'];
-if ($config->get('remember_me') && isset(\QFactory::$VAR['remember'])) {
-    $options['remember'] = \QFactory::$VAR['remember'];
+$credentials['username'] = \CMSApplication::$VAR['login_username'];
+$credentials['password'] = \CMSApplication::$VAR['login_pwd'];
+if ($config->get('remember_me') && isset(\CMSApplication::$VAR['remember'])) {
+    $options['remember'] = \CMSApplication::$VAR['remember'];
 } else {
     $options = array();
 }
 
 // If login submitted 
-if(\QFactory::$VAR['action'] === 'login') {
+if(\CMSApplication::$VAR['action'] === 'login') {
     
     // recaptcha is disabled || recaptcha is enabled and passes authentication
-    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \QFactory::$VAR['g-recaptcha-response']))) {
+    if(!$config->get('recaptcha') || ($config->get('recaptcha') && authenticate_recaptcha($config->get('recaptcha_secret_key'), \CMSApplication::$VAR['g-recaptcha-response']))) {
 
         /* Allowed to submit */        
 
         // Log the user in
-        if(login(\QFactory::$VAR, $credentials, $options)) {
+        if(login(\CMSApplication::$VAR, $credentials, $options)) {
 
             force_page('index.php');
 
@@ -59,7 +59,7 @@ unset($credentials);
 unset($options);
 
 // If logout is set, then log the user off
-if (\QFactory::$VAR['action'] == 'logout') {    
+if (\CMSApplication::$VAR['action'] == 'logout') {    
     logout();
 }
 

@@ -25,20 +25,20 @@ if (!is_dir(SETUP_DIR)) {
     die(_gettext("You cannot use these functions without the setup folder."));        
 }
 
-class QSetup {
+class Setup {
 
     public static $setup_error_flag = null;
     public static $executed_sql_results = null;
     public static $split_database_upgrade = null; 
     protected $smarty = null;    
     
-    public function __construct(&$VAR) {
+    public function __construct() {
         
-        $this->smarty = QFactory::getSmarty();
+        $this->smarty = \Factory::getSmarty();
         
         // Prevent undefined variable errors && Get 'stage' from the submit button
-        $VAR['stage'] = isset($VAR['submit']) ? $VAR['submit'] : null;
-        $this->smarty->assign('stage', $VAR['stage']);
+        \CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
+        $this->smarty->assign('stage', \CMSApplication::$VAR['stage']);
         $this->smarty->assign('setup_error_flag', self::$setup_error_flag);
         $this->smarty->assign('executed_sql_results', self::$executed_sql_results);
         
@@ -55,7 +55,7 @@ class QSetup {
     
     public function get_column_comment($table, $column) {
         
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
     
         $sql = "SELECT column_comment
                 FROM information_schema.columns
@@ -101,8 +101,8 @@ class QSetup {
             $username = '-';
             $login_user_id = '-';
         } else {
-            $username = QFactory::getUser()->login_username;
-            $login_user_id = QFactory::getUser()->login_user_id;
+            $username = \Factory::getUser()->login_username;
+            $login_user_id = \Factory::getUser()->login_user_id;
         }
 
         // prepare database error for the log
@@ -552,7 +552,7 @@ class QSetup {
 
     public function update_record_value($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null, $where_record_not_flag = null) {
 
-        $db = QFactory::getDbo();    
+        $db = \Factory::getDbo();    
         
         $sql = "UPDATE $select_table SET
                 $select_column =". $db->qstr($record_new_value);
@@ -610,7 +610,7 @@ class QSetup {
 
     public function update_column_values($table, $column, $current_value, $new_value) {
 
-        $db = QFactory::getDbo();    
+        $db = \Factory::getDbo();    
         
         if($current_value === '*') {
 
@@ -671,7 +671,7 @@ class QSetup {
 
     public function execute_sql_file($sql_file) {
 
-        $db = QFactory::getDbo();    
+        $db = \Factory::getDbo();    
         $local_error_flag = null;    
 
         // Load the SQL file into memory as string
@@ -768,7 +768,7 @@ class QSetup {
 
     public function execute_sql_file_lines($sql_file) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
         
         // Prevent undefined variable errors
         $local_error_flag = null; 
@@ -957,7 +957,7 @@ class QSetup {
 
     public function verify_database_connection_details($db_host, $db_user, $db_pass, $db_name) {
 
-        $conf = QFactory::getConfig();
+        $conf = \Factory::getConfig();
 
         // This allows me to re-use config-registry to test the database connection
         $conf->set('db_host', $db_host);
@@ -969,7 +969,7 @@ class QSetup {
         $conf->set('test_db_connection', 'test');
 
         // Fire up the database connection
-        QFactory::getDbo();
+        \Factory::getDbo();
 
         // This function will generate the error messages upstream as needed
         if($conf->get('test_db_connection') == 'passed') {
@@ -1094,7 +1094,7 @@ class QSetup {
 
     public function set_workorder_start_number($start_number) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$db->qstr($start_number);
 
@@ -1110,7 +1110,7 @@ class QSetup {
 
     public function set_invoice_start_number($start_number) {
 
-        $db = QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$db->qstr($start_number);
 
@@ -1128,7 +1128,7 @@ class QSetup {
 
     public function migrate_table($qwcrm_table, $myitcrm_table, $column_mappings) {
 
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         $local_error_flag = null;
 
         // Add division to seperate table migration function results
@@ -1361,7 +1361,7 @@ class QSetup {
                 
                 // If break.txt exists stop adding further stages (to prevent timeouts on large upgrades)
                 if(file_exists($directory.'/break.txt')) {
-                    QSetup::$split_database_upgrade = true;
+                    Setup::$split_database_upgrade = true;
                     $record  = _gettext("The upgrade process has been split to prevent server timeouts.").'<br>';
                     $record .= _gettext("This stage will upgrade QWcrm to version").' '.$targetVersion.'<br>';
                     $record .= _gettext("If there are more upgrade stages to perform, they will start immediately after this one.");
@@ -1462,7 +1462,7 @@ class QSetup {
 
     function copy_columnA_to_columnB($table, $columnA, $columnB) {
         
-        $db = QFactory::getDbo();        
+        $db = \Factory::getDbo();        
         
         // Loop through all of the labour records
         $sql = "UPDATE `".PRFX.$table."` SET `".$columnB."` = `".$columnA."`";          

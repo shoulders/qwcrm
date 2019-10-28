@@ -8,8 +8,8 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'otherincome.php');
-require(INCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'otherincome.php');
+require(CINCLUDES_DIR.'report.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('otherincome', 'status')) {
@@ -18,13 +18,13 @@ if(!check_page_accessed_via_qwcrm('otherincome', 'status')) {
 }
 
 // Check if we have a otherincome_id
-if(!isset(\QFactory::$VAR['otherincome_id']) || !\QFactory::$VAR['otherincome_id']) {
+if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
     force_page('otherincome', 'search');
 } 
 
 // Delete the otherincome function call
-delete_otherincome(\QFactory::$VAR['otherincome_id']);
+delete_otherincome(\CMSApplication::$VAR['otherincome_id']);
 
 // Load the otherincome search page
 force_page('otherincome', 'search', 'msg_success='._gettext("Otherincome deleted successfully."));

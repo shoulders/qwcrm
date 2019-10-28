@@ -16,7 +16,7 @@ class PMethod extends NewPayment {
     public function __construct(&$VAR) {
         
         $this->VAR = &$VAR;
-        $this->smarty = QFactory::getSmarty();
+        $this->smarty = \Factory::getSmarty();
         
         // Check the Voucher exists, get the voucher_id and set amount
         if(!$this->VAR['qpayment']['voucher_id'] = get_voucher_id_by_voucher_code($this->VAR['qpayment']['voucher_code'])) {

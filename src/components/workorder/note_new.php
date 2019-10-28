@@ -8,23 +8,23 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Check if we have a workorder_id
-if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
+if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
     force_page('workorder', 'search');
 }
 
 // If a note is submitted
-if(isset(\QFactory::$VAR['submit'])){
+if(isset(\CMSApplication::$VAR['submit'])){
     
     // insert the note into the database
-    insert_workorder_note(\QFactory::$VAR['workorder_id'], \QFactory::$VAR['workorder_note']);
+    insert_workorder_note(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['workorder_note']);
     
     // load the workorder details page    
     systemMessagesWrite('success', _gettext("The note has been inserted."));
-    force_page('workorder', 'details&workorder_id='.\QFactory::$VAR['workorder_id']);
+    force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
     
 }

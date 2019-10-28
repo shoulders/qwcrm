@@ -9,18 +9,22 @@
 
 defined('_QWEXEC') or die;
 
-// QWcrm
-require QFRAMEWORK_DIR . 'qwcrm/defines.php';                      // Load System Constants
-require QFRAMEWORK_DIR . 'qwcrm/error.php';                        // Configure PHP error reporting
+// Config File
+if(file_exists('configuration.php')){require_once('configuration.php');}
 
-require QFRAMEWORK_DIR . 'qwcrm/general.php';                      // Load General Library
-require QFRAMEWORK_DIR . 'qwcrm/security.php';                     // Load QWcrm Security including mandatory security code
-require QFRAMEWORK_DIR . 'qwcrm/mpdf.php';                         // Load mPDF functions
-require QFRAMEWORK_DIR . 'qwcrm/email.php';                        // Load email transport
-require QFRAMEWORK_DIR . 'qwcrm/variables.php';                    // Configure variables to be used by QWcrm
-require QFRAMEWORK_DIR . 'qwcrm/router.php';                       // Route the page request
-require QFRAMEWORK_DIR . 'qwcrm/page.php';                         // Page related functions
-require QFRAMEWORK_DIR . 'qfactory.php';                           // Main Framework class
+// Defines
+require QFRAMEWORK_DIR . 'qwcrm/includes/defines.php';             // Load System Constants
+
+/*require QFRAMEWORK_DIR . 'qwcrm/Error.php';                      // Configure PHP error reporting
+require QFRAMEWORK_DIR . 'qwcrm/General.php';                      // Load General Library
+require QFRAMEWORK_DIR . 'qwcrm/Security.php';                     // Load QWcrm Security including mandatory security code
+require QFRAMEWORK_DIR . 'qwcrm/Pdf.php';                          // Load mPDF functions
+require QFRAMEWORK_DIR . 'qwcrm/Email.php';                        // Load email transport
+require QFRAMEWORK_DIR . 'qwcrm/Variables.php';                    // Configure variables to be used by QWcrm
+require QFRAMEWORK_DIR . 'qwcrm/Router.php';                       // Route the page request
+require QFRAMEWORK_DIR . 'qwcrm/Page.php';                         // Page related functions*/
+require QFRAMEWORK_DIR . 'qwcrm/System.php';                       // System Classes wrapping class
+require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';               // Main Framework class*/
 
 // Misc (Joomla)
 require QFRAMEWORK_DIR . 'joomla/libraries/vendor/joomla/registry/src/Registry.php';            // Used to create a register for the class which can be manipulated (set/get/clear) and can be serialised into JSON compatible string for storage in the session
@@ -38,8 +42,8 @@ require QFRAMEWORK_DIR . 'joomla/libraries/fof/input/jinput/input.php';         
 require QFRAMEWORK_DIR . 'joomla/libraries/fof/input/jinput/cookie.php';                        // Extends input.php with cookie get and set functions to allow manipulation of cookie data via input.php class
 
 // Crypto (Joomla)
-require QFRAMEWORK_DIR . 'joomla/libraries/src/Crypt/Crypt.php';
-class_alias('\Joomla\CMS\Crypt\Crypt', '\JCrypt');     // Joomla uses an alias of 'Crypt'
+require QFRAMEWORK_DIR . 'joomla/libraries/src/Crypt/Crypt.php';                                // Joomla Crypto Library
+class_alias('\Joomla\CMS\Crypt\Crypt', '\JCrypt');                                              // Joomla uses an alias of 'Crypt'
 
 // Session (Joomla)
 require QFRAMEWORK_DIR . 'joomla/libraries/src/Session/Session.php';                            // Primary Class for managing HTTP sessions
@@ -62,3 +66,12 @@ require QFRAMEWORK_DIR . 'joomla/libraries/src/User/User.php';                  
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserHelper.php';                            // This contains password hassing functions etc.. associated with users but used elswhere
 require QFRAMEWORK_DIR . 'joomla/libraries/src/User/UserWrapper.php';                           // Wrapper class for UserHelper
 require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla/joomla.php';                               // Basic User Objects interactions (login/logout) - class PlgUserJoomla extends JPlugin
+
+// Load dependencies via composer
+require(VENDOR_DIR.'autoload.php');   
+
+// Load the qframework system classes (files only)
+\CMSApplication::classFilesLoad('system', QFRAMEWORK_DIR.'qwcrm/System/');         
+
+// load the qframework components classes (files only)
+\CMSApplication::classFilesLoad('components', CINCLUDES_DIR);

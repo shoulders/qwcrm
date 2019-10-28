@@ -11,20 +11,20 @@ defined('_QWEXEC') or die;
 // Decide which dashboard to show (employee or client)
 if($user->login_is_employee) {
     
-    require(INCLUDES_DIR.'core.php');
-    require(INCLUDES_DIR.'report.php');
-    require(INCLUDES_DIR.'workorder.php');
+    require(CINCLUDES_DIR.'core.php');
+    require(CINCLUDES_DIR.'report.php');
+    require(CINCLUDES_DIR.'workorder.php');
 
     // Prevent undefined variable errors
-    \QFactory::$VAR['page_no'] = isset(\QFactory::$VAR['page_no']) ? \QFactory::$VAR['page_no'] : null;
+    \CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
 
     // Employee Workorders
-    $smarty->assign('employee_workorders_assigned',          display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'assigned', $user->login_user_id)          );
-    $smarty->assign('employee_workorders_waiting_for_parts', display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'waiting_for_parts', $user->login_user_id) );
-    $smarty->assign('employee_workorders_scheduled',         display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'scheduled', $user->login_user_id)         );
-    $smarty->assign('employee_workorders_with_client',       display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'with_client', $user->login_user_id)       );
-    $smarty->assign('employee_workorders_on_hold',           display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'on_hold', $user->login_user_id)           );
-    $smarty->assign('employee_workorders_management',        display_workorders('workorder_id', 'DESC', false, '25', \QFactory::$VAR['page_no'], null, null, 'management', $user->login_user_id)        );
+    $smarty->assign('employee_workorders_assigned',          display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'assigned', $user->login_user_id)          );
+    $smarty->assign('employee_workorders_waiting_for_parts', display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'waiting_for_parts', $user->login_user_id) );
+    $smarty->assign('employee_workorders_scheduled',         display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'scheduled', $user->login_user_id)         );
+    $smarty->assign('employee_workorders_with_client',       display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'with_client', $user->login_user_id)       );
+    $smarty->assign('employee_workorders_on_hold',           display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'on_hold', $user->login_user_id)           );
+    $smarty->assign('employee_workorders_management',        display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'management', $user->login_user_id)        );
 
     // Misc
     $smarty->assign('welcome_msg', display_welcome_msg());

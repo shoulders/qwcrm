@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'setup.php');
+require(CINCLUDES_DIR.'setup.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
@@ -17,10 +17,10 @@ if(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
 }
 
 // Define the setup type for smarty - currently only used for 'upgrade'
-isset(\QFactory::$VAR['setup_type']) ? $smarty->assign('setup_type', \QFactory::$VAR['setup_type']) : $smarty->assign('setup_type', null);
+isset(\CMSApplication::$VAR['setup_type']) ? $smarty->assign('setup_type', \CMSApplication::$VAR['setup_type']) : $smarty->assign('setup_type', null);
 
 // Create a Setup Object
-$qsetup = new QSetup(\QFactory::$VAR);
+$qsetup = new Setup(\CMSApplication::$VAR);
 
 // Get Compatibility Results
 $smarty->assign('compatibility_results', $qsetup->test_server_enviroment_compatibility());

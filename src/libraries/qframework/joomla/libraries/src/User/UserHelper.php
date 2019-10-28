@@ -161,7 +161,7 @@ abstract class UserHelper
         $user->groups = $groups;
 
         // Get the titles for the user groups.
-        $db = \QFactory::getDbo();
+        $db = \Factory::getDbo();
         $query = $db->getQuery(true)
             ->select($db->quoteName('id') . ', ' . $db->quoteName('title'))
             ->from($db->quoteName('#__usergroups'))
@@ -181,11 +181,11 @@ abstract class UserHelper
         if (session_id())
         {
             // Set the group data for any preloaded user objects.
-            $temp = \QFactory::getUser((int) $userId);
+            $temp = \Factory::getUser((int) $userId);
             $temp->groups = $user->groups;
 
             // Set the group data for the user object in the session.
-            $temp = \QFactory::getUser();
+            $temp = \Factory::getUser();
 
             if ($temp->id == $userId)
             {
@@ -209,7 +209,7 @@ abstract class UserHelper
     {
         if ($userId == 0)
         {
-            $user   = \QFactory::getUser();
+            $user   = \Factory::getUser();
             $userId = $user->id;
         }
 
@@ -237,7 +237,7 @@ abstract class UserHelper
      */
     public static function activateUser($activation)
     {
-        $db = \QFactory::getDbo();
+        $db = \Factory::getDbo();
 
         // Let's get the id of the user we want to activate
         $query = $db->getQuery(true)
@@ -288,7 +288,7 @@ abstract class UserHelper
     public static function getUserId($username)
     {
         // Initialise some variables
-        $db = \QFactory::getDbo();
+        $db = \Factory::getDbo();
         /*
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
@@ -858,7 +858,7 @@ abstract class UserHelper
      */
     public static function getShortHashedUserAgent()
     {
-        //$ua = \QFactory::getApplication()->client;    // this is to load the browser details
+        //$ua = \Factory::getApplication()->client;    // this is to load the browser details
         $ua = new \Joomla\Application\Web\WebClient;    // this is to load the browser details
         $uaString = $ua->userAgent;
         $browserVersion = $ua->browserVersion;

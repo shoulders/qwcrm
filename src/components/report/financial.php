@@ -8,18 +8,18 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'company.php');
-require(INCLUDES_DIR.'expense.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'otherincome.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'refund.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'company.php');
+require(CINCLUDES_DIR.'expense.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'otherincome.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'refund.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
-if(isset(\QFactory::$VAR['submit'])) {
+if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Get the company VAT Flat Rate
     $vat_flat_rate = get_company_details('vat_flat_rate');
@@ -30,8 +30,8 @@ if(isset(\QFactory::$VAR['submit'])) {
     /* Build Basic Data Set */
 
     // Change dates to proper timestamps
-    $start_date = date_to_mysql_date(\QFactory::$VAR['start_date']);    
-    $end_date   = date_to_mysql_date(\QFactory::$VAR['end_date']);    
+    $start_date = date_to_mysql_date(\CMSApplication::$VAR['start_date']);    
+    $end_date   = date_to_mysql_date(\CMSApplication::$VAR['end_date']);    
     
     // Clients
     $smarty->assign('client_stats', get_clients_stats('basic', $start_date, $end_date));      
@@ -240,7 +240,7 @@ if(isset(\QFactory::$VAR['submit'])) {
     /* Logging */
     
     // Log activity
-    write_record_to_activity_log(_gettext("Financial report run for the date range").': '.\QFactory::$VAR['start_date'].' - '.\QFactory::$VAR['end_date']);
+    write_record_to_activity_log(_gettext("Financial report run for the date range").': '.\CMSApplication::$VAR['start_date'].' - '.\CMSApplication::$VAR['end_date']);
     
 } else {
     

@@ -8,12 +8,12 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'invoice.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'report.php');
-require(INCLUDES_DIR.'voucher.php');
-require(INCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'invoice.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'report.php');
+require(CINCLUDES_DIR.'voucher.php');
+require(CINCLUDES_DIR.'workorder.php');
 
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
@@ -22,16 +22,16 @@ if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
 }
 
 // Check if we have an invoice_id
-if(!isset(\QFactory::$VAR['invoice_id']) || !\QFactory::$VAR['invoice_id']) {
+if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
     force_page('invoice', 'search');
 }
 
 // Cancel Invoice
-if(!cancel_invoice(\QFactory::$VAR['invoice_id'])) {    
+if(!cancel_invoice(\CMSApplication::$VAR['invoice_id'])) {    
     
     // Load the invoice details page with error
-    force_page('invoice', 'details&invoice_id='.\QFactory::$VAR['invoice_id'].'&msg_success='._gettext("The invoice failed to be cancelled."));
+    force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id'].'&msg_success='._gettext("The invoice failed to be cancelled."));
     
     
 } else {   

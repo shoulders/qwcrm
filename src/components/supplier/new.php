@@ -8,23 +8,23 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'supplier.php');
+require(CINCLUDES_DIR.'supplier.php');
 
 // If details submitted insert record, if non submitted load new.tpl and populate values
-if(isset(\QFactory::$VAR['submit']) || isset(\QFactory::$VAR['submitandnew'])) {
+if(isset(\CMSApplication::$VAR['submit']) || isset(\CMSApplication::$VAR['submitandnew'])) {
         
     // insert the supplier record and get the supplier_id
-    \QFactory::$VAR['supplier_id'] = insert_supplier(\QFactory::$VAR['qform']);
+    \CMSApplication::$VAR['supplier_id'] = insert_supplier(\CMSApplication::$VAR['qform']);
             
-    if (isset(\QFactory::$VAR['submitandnew'])) {
+    if (isset(\CMSApplication::$VAR['submitandnew'])) {
 
         // load the new supplier page
-        force_page('supplier', 'new', 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\QFactory::$VAR['supplier_id']); 
+        force_page('supplier', 'new', 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
 
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'details&supplier_id='.\QFactory::$VAR['supplier_id'], 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\QFactory::$VAR['supplier_id']); 
+        force_page('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
 
     }
 

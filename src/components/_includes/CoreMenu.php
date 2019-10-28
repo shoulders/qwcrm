@@ -20,3 +20,7 @@
  */
 
 defined('_QWEXEC') or die;
+
+class CoreMenu {
+    
+}

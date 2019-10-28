@@ -42,7 +42,7 @@ class PlgUserJoomla //extends JPlugin
 
     public function __construct()
     {
-        $this->db = \QFactory::getDbo();
+        $this->db = \Factory::getDbo();
     }
     
     /**
@@ -234,7 +234,7 @@ class PlgUserJoomla //extends JPlugin
         // Mark the user as logged in
         $instance->guest = 0;
 
-        $session = \QFactory::getSession();
+        $session = \Factory::getSession();
 
         // Grab the current session ID
         $oldSessionId = $session->getId();
@@ -265,8 +265,8 @@ class PlgUserJoomla //extends JPlugin
         $instance->setLastVisit();
 
         // Add "user state" cookie used for reverse caching proxies like Varnish, Nginx etc.
-        $config = \QFactory::getConfig();
-        if (QFactory::isClient('site'))
+        $config = \Factory::getConfig();
+        if (\CMSApplication::isClient('site'))
         {
             $cookie = new \Joomla\CMS\Input\Cookie;
             $cookie->set(
@@ -275,7 +275,7 @@ class PlgUserJoomla //extends JPlugin
                 0,
                 $config->get('cookie_path', '/'),
                 $config->get('cookie_domain', ''),
-                \QFactory::isHttpsForced(),
+                \CMSApplication::isHttpsForced(),
                 true
             );
         }
@@ -295,9 +295,9 @@ class PlgUserJoomla //extends JPlugin
      */
     public function onUserLogout($user, $options = array())
     {
-        $my      = \QFactory::getUser();
-        $session = \QFactory::getSession();
-        $config  = \QFactory::getConfig();
+        $my      = \Factory::getUser();
+        $session = \Factory::getSession();
+        $config  = \Factory::getConfig();
         $cookie  = new \Joomla\CMS\Input\Cookie;
 
         // Make sure we're a valid user first
@@ -309,7 +309,7 @@ class PlgUserJoomla //extends JPlugin
         $sharedSessions = $config->get('shared_session', '0');
 
         // Check to see if we're deleting the current session
-        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == \QFactory::getClientId())))
+        if ($my->id == $user['id'] && ($sharedSessions || (!$sharedSessions && $options['clientid'] == \CMSApplication::getClientId())))
         {
             // Hit the user last visit field
             $my->setLastVisit();
@@ -343,7 +343,7 @@ class PlgUserJoomla //extends JPlugin
         }
 
         // Delete "user state" cookie used for reverse caching proxies like Varnish, Nginx etc.
-        if (QFactory::isClient('site'))
+        if (\CMSApplication::isClient('site'))
         {
             $cookie->set('qwcrm_user_state', '', 1, $config->get('cookie_path', '/'), $config->get('cookie_domain', ''));
         }

@@ -8,25 +8,25 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'workorder.php');
-require(INCLUDES_DIR.'schedule.php');
-require(INCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'workorder.php');
+require(CINCLUDES_DIR.'schedule.php');
+require(CINCLUDES_DIR.'user.php');
 
 // Check if we have a workorder_id
-if(!isset(\QFactory::$VAR['workorder_id']) || !\QFactory::$VAR['workorder_id']) {
+if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
     systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
     force_page('workorder', 'search');
 }
 
 // Check there is a print content and print type set
-if(!isset(\QFactory::$VAR['print_content'], \QFactory::$VAR['print_type']) || !\QFactory::$VAR['print_content'] || !\QFactory::$VAR['print_type']) {
+if(!isset(\CMSApplication::$VAR['print_content'], \CMSApplication::$VAR['print_type']) || !\CMSApplication::$VAR['print_content'] || !\CMSApplication::$VAR['print_type']) {
     systemMessagesWrite('danger', _gettext("Some or all of the Printing Options are not set."));
     force_page('workorder', 'search');
 }
 
 // Get Record Details
-$workorder_details  = get_workorder_details(\QFactory::$VAR['workorder_id']);
+$workorder_details  = get_workorder_details(\CMSApplication::$VAR['workorder_id']);
 $client_details   = get_client_details($workorder_details['client_id']);
 
 /// Assign Variables
@@ -36,40 +36,40 @@ $smarty->assign('client_details',       $client_details                         
 $smarty->assign('workorder_details',    $workorder_details                                           );
 $smarty->assign('client_types',         get_client_types()                                           );
 $smarty->assign('workorder_statuses',   get_workorder_statuses()                                     );
-$smarty->assign('workorder_notes',      display_workorder_notes(\QFactory::$VAR['workorder_id'])                );
-$smarty->assign('workorder_schedules',  display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \QFactory::$VAR['workorder_id'])  );
+$smarty->assign('workorder_notes',      display_workorder_notes(\CMSApplication::$VAR['workorder_id'])                );
+$smarty->assign('workorder_schedules',  display_schedules('schedule_id', 'DESC', false, null, null, null, null, null, null, null, \CMSApplication::$VAR['workorder_id'])  );
 
 // Technician Workorder Slip Print Routine
-if(\QFactory::$VAR['print_content'] == 'technician_workorder_slip') {    
+if(\CMSApplication::$VAR['print_content'] == 'technician_workorder_slip') {    
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Technician Workorder Slip").' '.\QFactory::$VAR['workorder_id'];
+    $pdf_filename = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'];
     
     // Print HTML
-    if (\QFactory::$VAR['print_type'] == 'print_html') {
+    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Technician Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as html.");
+        $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Assign the correct version of this page
-        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
+        $smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
     
     // Print PDF
-    } elseif (\QFactory::$VAR['print_type'] == 'print_pdf') {        
+    } elseif (\CMSApplication::$VAR['print_type'] == 'print_pdf') {        
         
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
         
         // Log activity
-        $record = _gettext("Technician Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Output PDF in brower
         mpdf_output_in_browser($pdf_filename, $pdf_template);
         
     // Email PDF
-    } elseif (\QFactory::$VAR['print_type'] == 'email_pdf') {
+    } elseif (\CMSApplication::$VAR['print_type'] == 'email_pdf') {
         
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_workorder_slip.tpl');
@@ -86,11 +86,11 @@ if(\QFactory::$VAR['print_content'] == 'technician_workorder_slip') {
         $body = get_email_message_body('email_msg_workorder', $client_details);
         
         // Log activity
-        $record = _gettext("Technician Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Technician Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
 
         // Email the PDF
-        send_email($client_details['email'], _gettext("Work Order").' '.\QFactory::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
+        send_email($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
         
         // End all other processing
         die();
@@ -99,36 +99,36 @@ if(\QFactory::$VAR['print_content'] == 'technician_workorder_slip') {
 }
 
 // Client Workorder Slip Print Routine
-if(\QFactory::$VAR['print_content'] == 'client_workorder_slip') {
+if(\CMSApplication::$VAR['print_content'] == 'client_workorder_slip') {
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Client Workorder Slip").' '.\QFactory::$VAR['workorder_id'];    
+    $pdf_filename = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'];    
     
     // Print HTML
-    if (\QFactory::$VAR['print_type'] == 'print_html') {
+    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Client Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as html.");
+        $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Assign the correct version of this page
-        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
+        $smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
     
     // Print PDF
-    } elseif (\QFactory::$VAR['print_type'] == 'print_pdf') {        
+    } elseif (\CMSApplication::$VAR['print_type'] == 'print_pdf') {        
         
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
         
         // Log activity
-        $record = _gettext("Client Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Output PDF in brower
         mpdf_output_in_browser($pdf_filename, $pdf_template);       
         
     // Email PDF
-    } elseif (\QFactory::$VAR['print_type'] == 'email_pdf') { 
+    } elseif (\CMSApplication::$VAR['print_type'] == 'email_pdf') { 
         
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_client_workorder_slip.tpl');
@@ -145,11 +145,11 @@ if(\QFactory::$VAR['print_content'] == 'client_workorder_slip') {
         $body = get_email_message_body('email_msg_workorder', $client_details);
         
         // Log activity
-        $record = _gettext("Client Workorder Slip").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Client Workorder Slip").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
         
         // Email the PDF
-        send_email($client_details['email'], _gettext("Work Order").' '.\QFactory::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
+        send_email($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
         
         // End all other processing
         die();
@@ -158,36 +158,36 @@ if(\QFactory::$VAR['print_content'] == 'client_workorder_slip') {
 }
 
 // Technician Job Sheet Print Routine
-if(\QFactory::$VAR['print_content'] == 'technician_job_sheet') {
+if(\CMSApplication::$VAR['print_content'] == 'technician_job_sheet') {
     
     // Build the PDF filename
-    $pdf_filename = _gettext("Technician Job Sheet").' '.\QFactory::$VAR['workorder_id'];        
+    $pdf_filename = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'];        
     
     // Print HTML
-    if (\QFactory::$VAR['print_type'] == 'print_html') {
+    if (\CMSApplication::$VAR['print_type'] == 'print_html') {
         
         // Log activity
-        $record = _gettext("Technician Job Sheet").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as html.");
+        $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as html.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
                 
         // Assign the correct version of this page
-        $smarty->assign('print_content', \QFactory::$VAR['print_content']);
+        $smarty->assign('print_content', \CMSApplication::$VAR['print_content']);
         
     // Print PDF
-    } elseif (\QFactory::$VAR['print_type'] == 'print_pdf') {
+    } elseif (\CMSApplication::$VAR['print_type'] == 'print_pdf') {
         
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
         
         // Log activity
-        $record = _gettext("Technician Job Sheet").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
+        $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been printed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
             
         // Output PDF in brower
         mpdf_output_in_browser($pdf_filename, $pdf_template);
         
     // Print HTML
-    } elseif (\QFactory::$VAR['print_type'] == 'email_pdf') {  
+    } elseif (\CMSApplication::$VAR['print_type'] == 'email_pdf') {  
         
         // Get Print Invoice as HTML into a variable
         $pdf_template = $smarty->fetch('workorder/printing/print_technician_job_sheet.tpl');
@@ -204,11 +204,11 @@ if(\QFactory::$VAR['print_content'] == 'technician_job_sheet') {
         $body = get_email_message_body('email_msg_workorder', $client_details);
         
         // Log activity
-        $record = _gettext("Technician Job Sheet").' '.\QFactory::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
+        $record = _gettext("Technician Job Sheet").' '.\CMSApplication::$VAR['workorder_id'].' '._gettext("has been emailed as a PDF.");
         write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id'], $workorder_details['invoice_id']);
             
         // Email the PDF
-        send_email($client_details['email'], _gettext("Work Order").' '.\QFactory::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
+        send_email($client_details['email'], _gettext("Work Order").' '.\CMSApplication::$VAR['workorder_id'], $body, $client_details['display_name'], $attachment);
         
         // End all other processing
         die();

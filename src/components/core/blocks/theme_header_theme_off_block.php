@@ -8,4 +8,4 @@
 
 defined('_QWEXEC') or die;
 
-require_once(INCLUDES_DIR.'core_theme.php');
+require_once(CINCLUDES_DIR.'CoreTheme.php');

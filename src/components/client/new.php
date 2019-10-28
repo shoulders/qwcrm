@@ -8,15 +8,15 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'client.php');
 
-if(isset(\QFactory::$VAR['submit'])) {
+if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Create the new Client
-    \QFactory::$VAR['client_id'] = insert_client(\QFactory::$VAR['qform']);
+    \CMSApplication::$VAR['client_id'] = insert_client(\CMSApplication::$VAR['qform']);
     
     // Load the new Client's Details page
-    force_page('client', 'details&client_id='.\QFactory::$VAR['client_id']);
+    force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
     
 } else {
     

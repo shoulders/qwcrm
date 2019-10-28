@@ -8,17 +8,17 @@
 
 defined('_QWEXEC') or die;
 
-require(INCLUDES_DIR.'client.php');
-require(INCLUDES_DIR.'payment.php');
-require(INCLUDES_DIR.'user.php');
+require(CINCLUDES_DIR.'client.php');
+require(CINCLUDES_DIR.'payment.php');
+require(CINCLUDES_DIR.'user.php');
 
 // Check if we have an payment_id
-if(!isset(\QFactory::$VAR['payment_id']) || !\QFactory::$VAR['payment_id']) {
+if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
     force_page('payment', 'search');
 }
     
-$payment_details = get_payment_details(\QFactory::$VAR['payment_id']);
+$payment_details = get_payment_details(\CMSApplication::$VAR['payment_id']);
 
 // Prevent undefined variable errors
 $client_display_name = $payment_details['client_id'] ? get_client_details($payment_details['client_id'], 'display_name') : null;

@@ -20,794 +20,798 @@
 
 defined('_QWEXEC') or die;
 
-/** Mandatory Code **/
+class Refund {
 
-/** Display Functions **/
-   
-#############################
-#     Display refunds       #
-#############################
+    /** Mandatory Code **/
 
-function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
-    
-    $db = QFactory::getDbo();
-    $smarty = QFactory::getSmarty();
-    
-    // Process certain variables - This prevents undefined variable errors
-    $records_per_page = $records_per_page ?: '25';
-    $page_no = $page_no ?: '1';
-    $search_category = $search_category ?: 'refund_id';    
-    
-    /* Records Search */    
-    
-    // Default Action
-    $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";
-    $havingTheseRecords = '';
-    
-    // Restrict results by search category (client) and search term
-    if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
-        
-    // Restrict results by search category (employee) and search term
-    elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
-    
-    /* Filter the Records */  
-    
-    // Restrict by Type
-    if($item_type) { $whereTheseRecords .= " AND ".PRFX."refund_records.item_type= ".$db->qstr($item_type);}
-        
-    // Restrict by Status
-    if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$db->qstr($status);}
+    /** Display Functions **/
 
-    // Restrict by Employee
-    if($employee_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$db->qstr($employee_id);}        
+    #############################
+    #     Display refunds       #
+    #############################
 
-    // Restrict by Client
-    if($client_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$db->qstr($client_id);}
-    
-    /* The SQL code */
-    
-    $sql =  "SELECT
-            ".PRFX."refund_records.*,
-                
-            IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name
+    function display_refunds($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $item_type = null, $status = null, $employee_id = null, $client_id = null) {
 
-            FROM ".PRFX."refund_records
-                
-            LEFT JOIN ".PRFX."client_records ON ".PRFX."refund_records.client_id = ".PRFX."client_records.client_id  
-                
-            ".$whereTheseRecords."            
-            GROUP BY ".PRFX."refund_records.".$order_by."
-            ".$havingTheseRecords."
-            ORDER BY ".PRFX."refund_records.".$order_by."
-            ".$direction;           
-    
-    /* Restrict by pages */
-    
-    if($use_pages) {
-    
-        // Get Start Record
-        $start_record = (($page_no * $records_per_page) - $records_per_page);
-        
-        // Figure out the total number of records in the database for the given search        
+        $db = \Factory::getDbo();
+        $smarty = \Factory::getSmarty();
+
+        // Process certain variables - This prevents undefined variable errors
+        $records_per_page = $records_per_page ?: '25';
+        $page_no = $page_no ?: '1';
+        $search_category = $search_category ?: 'refund_id';    
+
+        /* Records Search */    
+
+        // Default Action
+        $whereTheseRecords = "WHERE ".PRFX."refund_records.refund_id\n";
+        $havingTheseRecords = '';
+
+        // Restrict results by search category (client) and search term
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+
+        // Restrict results by search category (employee) and search term
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."refund_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
+
+        /* Filter the Records */  
+
+        // Restrict by Type
+        if($item_type) { $whereTheseRecords .= " AND ".PRFX."refund_records.item_type= ".$db->qstr($item_type);}
+
+        // Restrict by Status
+        if($status) {$whereTheseRecords .= " AND ".PRFX."refund_records.status= ".$db->qstr($status);}
+
+        // Restrict by Employee
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.employee_id=".$db->qstr($employee_id);}        
+
+        // Restrict by Client
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."refund_records.client_id=".$db->qstr($client_id);}
+
+        /* The SQL code */
+
+        $sql =  "SELECT
+                ".PRFX."refund_records.*,
+
+                IF(company_name !='', company_name, CONCAT(".PRFX."client_records.first_name, ' ', ".PRFX."client_records.last_name)) AS client_display_name
+
+                FROM ".PRFX."refund_records
+
+                LEFT JOIN ".PRFX."client_records ON ".PRFX."refund_records.client_id = ".PRFX."client_records.client_id  
+
+                ".$whereTheseRecords."            
+                GROUP BY ".PRFX."refund_records.".$order_by."
+                ".$havingTheseRecords."
+                ORDER BY ".PRFX."refund_records.".$order_by."
+                ".$direction;           
+
+        /* Restrict by pages */
+
+        if($use_pages) {
+
+            // Get Start Record
+            $start_record = (($page_no * $records_per_page) - $records_per_page);
+
+            // Figure out the total number of records in the database for the given search        
+            if(!$rs = $db->Execute($sql)) {
+                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching refund records."));
+            } else {        
+                $total_results = $rs->RecordCount();            
+                $smarty->assign('total_results', $total_results);
+            }        
+
+            // Figure out the total number of pages. Always round up using ceil()
+            $total_pages = ceil($total_results / $records_per_page);
+            $smarty->assign('total_pages', $total_pages);
+
+            // Set the page number
+            $smarty->assign('page_no', $page_no);
+
+            // Assign the Previous page        
+            $previous_page_no = ($page_no - 1);        
+            $smarty->assign('previous_page_no', $previous_page_no);          
+
+            // Assign the next page        
+            if($page_no == $total_pages) {$next_page_no = 0;}
+            elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
+            else {$next_page_no = $total_pages;}
+            $smarty->assign('next_page_no', $next_page_no);
+
+            // Only return the given page's records
+            $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
+
+            // add the restriction on to the SQL
+            $sql .= $limitTheseRecords;
+
+        } else {
+
+            // This make the drop down menu look correct
+            $smarty->assign('total_pages', 1);
+
+        }
+
+        /* Return the records */
+
         if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching refund records."));
-        } else {        
-            $total_results = $rs->RecordCount();            
-            $smarty->assign('total_results', $total_results);
-        }        
-
-        // Figure out the total number of pages. Always round up using ceil()
-        $total_pages = ceil($total_results / $records_per_page);
-        $smarty->assign('total_pages', $total_pages);
-        
-        // Set the page number
-        $smarty->assign('page_no', $page_no);
-        
-        // Assign the Previous page        
-        $previous_page_no = ($page_no - 1);        
-        $smarty->assign('previous_page_no', $previous_page_no);          
-        
-        // Assign the next page        
-        if($page_no == $total_pages) {$next_page_no = 0;}
-        elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
-        else {$next_page_no = $total_pages;}
-        $smarty->assign('next_page_no', $next_page_no);
-        
-        // Only return the given page's records
-        $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
-        
-        // add the restriction on to the SQL
-        $sql .= $limitTheseRecords;
-        
-    } else {
-        
-        // This make the drop down menu look correct
-        $smarty->assign('total_pages', 1);
-        
-    }
-
-    /* Return the records */
-         
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching refund records."));
-    } else {
-        
-        $records = $rs->GetArray();   // do i need to add the check empty
-
-        if(empty($records)){
-            
-            return false;
-            
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching refund records."));
         } else {
-            
-            return $records;
-            
+
+            $records = $rs->GetArray();   // do i need to add the check empty
+
+            if(empty($records)){
+
+                return false;
+
+            } else {
+
+                return $records;
+
+            }
+
         }
-        
+
     }
-    
-}
 
-/** Insert Functions **/
+    /** Insert Functions **/
 
-##########################################
-#      Insert Refund                     #
-##########################################
+    ##########################################
+    #      Insert Refund                     #
+    ##########################################
 
-function insert_refund($qform) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "INSERT INTO ".PRFX."refund_records SET
-            employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            client_id        =". $db->qstr( $qform['client_id']               ).",
-            workorder_id     =". $db->qstr( $qform['workorder_id']            ).",
-            invoice_id       =". $db->qstr( $qform['invoice_id']              ).",                        
-            date             =". $db->qstr( date_to_mysql_date($qform['date'])).",
-            tax_system       =". $db->qstr( $qform['tax_system']              ).",
-            item_type        =". $db->qstr( $qform['item_type']               ).",             
-            unit_net         =". $db->qstr( $qform['unit_net']                ).", 
-            vat_tax_code     =". $db->qstr( $qform['vat_tax_code']            ).", 
-            unit_tax_rate    =". $db->qstr( $qform['unit_tax_rate']           ).",
-            unit_tax         =". $db->qstr( $qform['unit_tax']                ).",
-            unit_gross       =". $db->qstr( $qform['unit_gross']              ).",
-            balance          =". $db->qstr( $qform['unit_gross']              ).",
-            status           =". $db->qstr( 'unpaid'                        ).",   
-            opened_on        =". $db->qstr( mysql_datetime()                ).",                        
-            note             =". $db->qstr( $qform['note']                    );
+    function insert_refund($qform) {
 
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
-    } else {
-        
-        $refund_id = $db->Insert_ID();
-                
-        // Create a Workorder History Note
-        insert_workorder_history_note($qform['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
-                  
-        // Log activity        
-        $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("created.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
-        
-        // Update last active record    
-        update_client_last_active($qform['client_id']);
-        update_workorder_last_active($qform['workorder_id']);
-        update_invoice_last_active($qform['invoice_id']);
-                
-        return $refund_id;
-        
-    } 
-    
-}
+        $db = \Factory::getDbo();
 
-/** Get Functions **/
+        $sql = "INSERT INTO ".PRFX."refund_records SET
+                employee_id      =". $db->qstr( \Factory::getUser()->login_user_id ).",
+                client_id        =". $db->qstr( $qform['client_id']               ).",
+                workorder_id     =". $db->qstr( $qform['workorder_id']            ).",
+                invoice_id       =". $db->qstr( $qform['invoice_id']              ).",                        
+                date             =". $db->qstr( date_to_mysql_date($qform['date'])).",
+                tax_system       =". $db->qstr( $qform['tax_system']              ).",
+                item_type        =". $db->qstr( $qform['item_type']               ).",             
+                unit_net         =". $db->qstr( $qform['unit_net']                ).", 
+                vat_tax_code     =". $db->qstr( $qform['vat_tax_code']            ).", 
+                unit_tax_rate    =". $db->qstr( $qform['unit_tax_rate']           ).",
+                unit_tax         =". $db->qstr( $qform['unit_tax']                ).",
+                unit_gross       =". $db->qstr( $qform['unit_gross']              ).",
+                balance          =". $db->qstr( $qform['unit_gross']              ).",
+                status           =". $db->qstr( 'unpaid'                        ).",   
+                opened_on        =". $db->qstr( mysql_datetime()                ).",                        
+                note             =". $db->qstr( $qform['note']                    );
 
-##########################
-#   Get refund details   #
-##########################
-
-function get_refund_details($refund_id, $item = null) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$db->qstr($refund_id);
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
-    } else {
-        
-        if($item === null){
-            
-            return $rs->GetRowAssoc();            
-            
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the refund record into the database."));
         } else {
-            
-            return $rs->fields[$item];   
-            
+
+            $refund_id = $db->Insert_ID();
+
+            // Create a Workorder History Note
+            insert_workorder_history_note($qform['workorder_id'], _gettext("Refund").' '.$refund_id.' '._gettext("added").' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.');
+
+            // Log activity        
+            $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("created.");
+            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $qform['client_id'], $qform['workorder_id'], $qform['invoice_id']);
+
+            // Update last active record    
+            update_client_last_active($qform['client_id']);
+            update_workorder_last_active($qform['workorder_id']);
+            update_invoice_last_active($qform['invoice_id']);
+
+            return $refund_id;
+
         } 
-        
+
     }
-    
-}
 
-#####################################
-#    Get Refund Statuses            #
-#####################################
+    /** Get Functions **/
 
-function get_refund_statuses($restricted_statuses = false) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."refund_statuses";
-    
-    // Restrict statuses to those that are allowed to be changed by the user
-    if($restricted_statuses) {
-        $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
-    }
-    
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Refund statuses."));
-    } else {
-        
-        return $rs->GetArray();     
-        
-    }    
-    
-}
+    ##########################
+    #   Get refund details   #
+    ##########################
 
-######################################
-#  Get Refund status display name    #
-######################################
+    function get_refund_details($refund_id, $item = null) {
 
-function get_refund_status_display_name($status_key) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT display_name FROM ".PRFX."refund_statuses WHERE status_key=".$db->qstr($status_key);
+        $db = \Factory::getDbo();
 
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund status display name."));
-    } else {
-        
-        return $rs->fields['display_name'];
-        
-    }    
-    
-}
+        $sql = "SELECT * FROM ".PRFX."refund_records WHERE refund_id=".$db->qstr($refund_id);
 
-#####################################
-#    Get Refund Types               #
-#####################################
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund details."));
+        } else {
 
-function get_refund_types() {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."refund_types";
+            if($item === null){
 
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get refund types."));
-    } else {
-        
-        return $rs->GetArray();
-        
-    }    
-    
-}
+                return $rs->GetRowAssoc();            
 
-/** Update Functions **/
+            } else {
 
-#####################################
-#     Update refund                 #
-#####################################
+                return $rs->fields[$item];   
 
-function update_refund($qform) {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "UPDATE ".PRFX."refund_records SET
-            employee_id      =". $db->qstr( QFactory::getUser()->login_user_id ).",
-            date             =". $db->qstr( date_to_mysql_date($qform['date'])   ).",            
-            last_active      =". $db->qstr( mysql_datetime()                   ).",
-            note             =". $db->qstr( $qform['note']                       )."
-            WHERE refund_id  =". $db->qstr( $qform['refund_id']                  );                        
-            
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
-    } else {
-        
-        $refund_details = get_refund_details($qform['refund_id']);
-        
-        // Get related workorder_id
-        $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
-        
-        // Create a Workorder History Note
-        insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$qform['refund_id'].' '._gettext("updated").' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
-        
-        // Log activity        
-        $record = _gettext("Refund Record").' '.$qform['refund_id'].' '._gettext("updated.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
-        
-        // Update last active record  
-        update_client_last_active($refund_details['client_id']);
-        update_workorder_last_active($workorder_id);
-        update_invoice_last_active($refund_details['invoice_id']);
-        
-        return true;
-      
-    }
-    
-} 
+            } 
 
-############################
-# Update Refund Status     #
-############################
-
-function update_refund_status($refund_id, $new_status, $silent = false) {
-    
-    $db = QFactory::getDbo();
-    
-    // Get refund details
-    $refund_details = get_refund_details($refund_id);
-    
-    // if the new status is the same as the current one, exit
-    if($new_status == $refund_details['status']) {        
-        if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
-        return false;
-    }    
-    
-    // Unify Dates and Times
-    $datetime = mysql_datetime();
-    
-    // Set the appropriate closed_on date
-    $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
-    
-    $sql = "UPDATE ".PRFX."refund_records SET
-            status             =". $db->qstr( $new_status   ).",
-            closed_on          =". $db->qstr( $closed_on    ).",
-            last_active        =". $db->qstr( $datetime     )." 
-            WHERE refund_id    =". $db->qstr( $refund_id    );
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an refund Status."));
-        
-    } else {    
-        
-        // Get related workorder_id
-        $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
-        
-        // Status updated message
-        if (!$silent) { systemMessagesWrite('success', _gettext("Refund status updated.")); }
-        
-        // For writing message to log file, get refund status display name
-        $refund_status_display_name = _gettext(get_refund_status_display_name($new_status));
-        
-        // Create a Workorder History Note
-        insert_workorder_history_note($workorder_id, _gettext("Refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.');
-        
-        // Log activity        
-        $record = _gettext("Refund").' '.$refund_id.' '._gettext("Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.QFactory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
-                
-        // Update last active record - // not used, the current user is updated elsewhere  
-        update_client_last_active($refund_details['client_id']);
-        update_workorder_last_active($workorder_id);
-        update_invoice_last_active($refund_details['invoice_id']);              
-        
-        return true;
-        
-    }
-    
-}
-
-/** Close Functions **/
-
-#####################################
-#   Cancel Refund                   #
-#####################################
-
-function cancel_refund($refund_id) {
-    
-    // Make sure the refund can be cancelled
-    if(!check_refund_can_be_cancelled($refund_id)) {        
-        return false;
-    }
-    
-    // Get refund details
-    $refund_details = get_refund_details($refund_id);
-    
-    // Get related workorder_id
-    $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
-    
-    // Change the refund status to cancelled (I do this here to maintain consistency)
-    update_refund_status($refund_id, 'cancelled');
-    
-    // Revert invoice status back to paid
-    update_invoice_status($refund_details['invoice_id'], 'paid');
-    
-    // Remove the refund ID from the invoice
-    update_invoice_refund_id($refund_details['invoice_id'], '');
-    
-    // Revert attached vouchers status back to paid
-    revert_refunded_invoice_vouchers($refund_details['invoice_id']);
-        
-    // Create a Workorder History Note  
-    insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.');
-    
-    // Log activity        
-    $record = _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.QFactory::getUser()->login_display_name.'.';
-    write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
-    
-    // Update last active record
-    update_client_last_active($refund_details['client_id']);
-    update_workorder_last_active($workorder_id);
-    update_invoice_last_active($refund_details['invoice_id']);
-
-    return true;
-    
-}
-
-/** Delete Functions **/
-
-#####################################
-#    Delete Record                  #
-#####################################
-
-function delete_refund($refund_id) {
-    
-    $db = QFactory::getDbo();
-    
-    // Make sure the invoice can be deleted (does not harm to check again here, other check is on status button)
-    if(!check_refund_can_be_deleted($refund_id)) {        
-        return false;
-    }
-    
-    // Get record before deleting the record
-    $refund_details = get_refund_details($refund_id);
-    
-    // Change the refund status to deleted (I do this here to maintain consistency)
-    update_refund_status($refund_id, 'deleted');  
-    
-    // Revert invoice status back to paid
-    update_invoice_status($refund_details['invoice_id'], 'paid');
-    
-    // Remove the refund ID from the invoice
-    update_invoice_refund_id($refund_details['invoice_id'], '');
-    
-    // Revert attached vouchers status back to paid
-    revert_refunded_invoice_vouchers($refund_details['invoice_id']);
-        
-    $sql = "UPDATE ".PRFX."refund_records SET
-            employee_id         = '',
-            client_id           = '',
-            workorder_id        = '',
-            invoice_id          = '',
-            date                = '0000-00-00', 
-            tax_system          = '',  
-            item_type           = '',             
-            unit_net            = '',
-            vat_tax_code        = '',
-            unit_tax_rate       = '0.00',
-            unit_tax            = '0.00',
-            unit_gross          = '0.00',
-            balance             = '0.00',
-            status              = 'deleted', 
-            last_active         = '0000-00-00 00:00:00',
-            opened_on           = '0000-00-00 00:00:00',
-            closed_on           = '0000-00-00 00:00:00',
-            note                = ''
-            WHERE refund_id    =". $db->qstr($refund_details['refund_id']);
-    
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
-    } else {
-        
-        // Get related workorder_id
-        $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
-    
-        // Create a Workorder History Note  
-        insert_workorder_history_note($workorder_id, _gettext("Expense").' '.$refund_id.' '._gettext("was deleted by").' '.QFactory::getUser()->login_display_name.'.');
-        
-        // Log activity        
-        $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("deleted.");
-        write_record_to_activity_log($record, QFactory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
-        
-        // Update last active record    
-        update_client_last_active($refund_details['client_id']);
-        update_workorder_last_active($workorder_id);
-        update_invoice_last_active($refund_details['invoice_id']);
-        
-        return true;
-        
-    }
-    
-}
-
-/** Other Functions **/
-   
-##########################################
-#      Last Record Look Up               #  // not currently used
-##########################################
-
-function last_refund_id_lookup() {
-    
-    $db = QFactory::getDbo();
-    
-    $sql = "SELECT * FROM ".PRFX."refund_records ORDER BY refund_id DESC LIMIT 1";
-
-    if(!$rs = $db->Execute($sql)) {
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
-    } else {
-        
-        return $rs->fields['refund_id'];
-        
-    }
-        
-}
-
-#####################################
-#   Recalculate Refund Totals       #
-#####################################
-
-function recalculate_refund_totals($refund_id) {
-    
-    $db = QFactory::getDbo();
-    
-    $refund_details             = get_refund_details($refund_id);    
-    
-    $unit_gross                 = $refund_details['unit_gross'];   
-    $payments_sub_total         = sum_payments(null, null, 'date', null, 'valid', 'refund', null, null, null, null, $refund_id);
-    $balance                    = $unit_gross - $payments_sub_total;
-
-    $sql = "UPDATE ".PRFX."refund_records SET
-            balance             =". $db->qstr( $balance   )."
-            WHERE refund_id     =". $db->qstr( $refund_id );
-
-    if(!$rs = $db->execute($sql)){        
-        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
-    } else {
-     
-        /* Update Status - only change if there is a change in status */        
-        
-        // Balance = Gross Amount (i.e no payments)
-        if($unit_gross > 0 && $unit_gross == $balance && $refund_details['status'] != 'unpaid') {
-            update_refund_status($refund_id, 'unpaid');
         }
-        
-        // Balance < Gross Amount (i.e some payments)
-        elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $refund_details['status'] != 'partially_paid') {            
-            update_refund_status($refund_id, 'partially_paid');
+
+    }
+
+    #####################################
+    #    Get Refund Statuses            #
+    #####################################
+
+    function get_refund_statuses($restricted_statuses = false) {
+
+        $db = \Factory::getDbo();
+
+        $sql = "SELECT * FROM ".PRFX."refund_statuses";
+
+        // Restrict statuses to those that are allowed to be changed by the user
+        if($restricted_statuses) {
+            $sql .= "\nWHERE status_key NOT IN ('paid', 'partially_paid', 'cancelled', 'deleted')";
         }
-        
-        // Balance = 0.00 (i.e has payments and is all paid)
-        elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $refund_details['status'] != 'paid') {            
-            update_refund_status($refund_id, 'paid');
-        }        
-        
-        return;        
-        
-    }
-    
-}
 
-##########################################################
-#  Check if the refund status is allowed to be changed   #  // not currently used (from refund:status), manual change
-##########################################################
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Refund statuses."));
+        } else {
 
- function check_refund_status_can_be_changed($refund_id) {
-     
-    $state_flag = true;
-     
-    // Get the refund details
-    $refund_details = get_refund_details($refund_id);
-    
-    // Is unpaid
-    if($refund_details['status'] == 'unpaid') {
-        systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund is unpaid."));
-        $state_flag = false;       
-    }
-    
-    // Is partially paid
-    if($refund_details['status'] == 'partially_paid') {
-        systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments and is partially paid."));
-        $state_flag = false;       
-    }
-    
-    // Is paid
-    if($refund_details['status'] == 'paid') {
-        systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments and is paid."));
-        $state_flag = false;       
-    }
-    
-    // Is Cancelled
-    if($refund_details['status'] == 'cancelled') {
-        systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has been cancelled."));
-        $state_flag = false;       
-    }
-    
-    // Is deleted
-    if($refund_details['status'] == 'deleted') {
-        systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has been deleted."));
-        $state_flag = false;       
-    }
-        
-    // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments."));
-        $state_flag = false;       
-    }
-    
-    // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-    if(!check_invoice_vouchers_allow_refunding($refund_details ['invoice_id'])) {
-        systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
-        $state_flag = false;
+            return $rs->GetArray();     
+
+        }    
+
     }
 
-    return $state_flag;    
-     
- }
+    ######################################
+    #  Get Refund status display name    #
+    ######################################
 
-###############################################################
-#   Check to see if the refund can be cancelled               #
-###############################################################
+    function get_refund_status_display_name($status_key) {
 
-function check_refund_can_be_cancelled($refund_id) {
-    
-    $state_flag = true;
-    
-    // Get the refund details
-    $refund_details = get_refund_details($refund_id);
-    
-    // Is partially paid (not used yet)
-    if($refund_details['status'] == 'partially_paid') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be cancelled because the refund is partially paid."));
-        return false;
-    }
-        
-    // Is cancelled
-    if($refund_details['status'] == 'cancelled') {
-        systemMessagesWrite('danger', _gettext("The refund cannot be cancelled because the refund has already been cancelled."));
-        $state_flag = false;       
-    }
-    
-    // Is deleted
-    if($refund_details['status'] == 'deleted') {
-        systemMessagesWrite('danger', _gettext("The refund cannot be cancelled because the refund has been deleted."));
-        $state_flag = false;       
-    }    
-    
-    // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        systemMessagesWrite('danger', _gettext("This refund cannot be cancelled because the refund has payments."));
-        $state_flag = false;       
-    }
-    
-    // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
-    if(!check_invoice_vouchers_allow_refund_cancellation($refund_details['invoice_id'])) {
-        systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
-        $state_flag = false;
-    }
-    
-    return $state_flag;
-    
-}
+        $db = \Factory::getDbo();
 
-###############################################################
-#   Check to see if the refund can be deleted                 #
-###############################################################
+        $sql = "SELECT display_name FROM ".PRFX."refund_statuses WHERE status_key=".$db->qstr($status_key);
 
-function check_refund_can_be_deleted($refund_id) {
-    
-    $state_flag = true;
-    
-    // Get the refund details
-    $refund_details = get_refund_details($refund_id);
-      
-    // Is partially paid (not used yet)
-    if($refund_details['status'] == 'partially_paid') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments and is partially paid."));
-        $state_flag = false;       
-    }     
-    
-    // Is paid
-    if($refund_details['status'] == 'paid') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments and is paid."));
-        $state_flag = false;       
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the refund status display name."));
+        } else {
+
+            return $rs->fields['display_name'];
+
+        }    
+
     }
-    
-    // Is cancelled
-    if($refund_details['status'] == 'cancelled') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has been cancelled."));
-        $state_flag = false;       
+
+    #####################################
+    #    Get Refund Types               #
+    #####################################
+
+    function get_refund_types() {
+
+        $db = \Factory::getDbo();
+
+        $sql = "SELECT * FROM ".PRFX."refund_types";
+
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get refund types."));
+        } else {
+
+            return $rs->GetArray();
+
+        }    
+
     }
-    
-    // Is deleted
-    if($refund_details['status'] == 'deleted') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it already been deleted."));
-        $state_flag = false;       
-    }
-    
-    // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments."));
-        $state_flag = false;       
-    }
-    
-    // Does the invoice status allow it to have its refund deleted (including vouchers)
-    if(!check_invoice_vouchers_allow_refund_deletion($refund_details['invoice_id'])) {
-        systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
-        $state_flag = false;
+
+    /** Update Functions **/
+
+    #####################################
+    #     Update refund                 #
+    #####################################
+
+    function update_refund($qform) {
+
+        $db = \Factory::getDbo();
+
+        $sql = "UPDATE ".PRFX."refund_records SET
+                employee_id      =". $db->qstr( \Factory::getUser()->login_user_id ).",
+                date             =". $db->qstr( date_to_mysql_date($qform['date'])   ).",            
+                last_active      =". $db->qstr( mysql_datetime()                   ).",
+                note             =". $db->qstr( $qform['note']                       )."
+                WHERE refund_id  =". $db->qstr( $qform['refund_id']                  );                        
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the refund details."));
+        } else {
+
+            $refund_details = get_refund_details($qform['refund_id']);
+
+            // Get related workorder_id
+            $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+
+            // Create a Workorder History Note
+            insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$qform['refund_id'].' '._gettext("updated").' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.');
+
+            // Log activity        
+            $record = _gettext("Refund Record").' '.$qform['refund_id'].' '._gettext("updated.");
+            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+
+            // Update last active record  
+            update_client_last_active($refund_details['client_id']);
+            update_workorder_last_active($workorder_id);
+            update_invoice_last_active($refund_details['invoice_id']);
+
+            return true;
+
+        }
+
     } 
-     
-    return $state_flag;
-    
-}
 
-##########################################################
-#  Check if the refund status allows editing             #       
-##########################################################
+    ############################
+    # Update Refund Status     #
+    ############################
 
- function check_refund_can_be_edited($refund_id) {
-     
-    $state_flag = true;
-     
-    // Get the refund details
-    $refund_details = get_refund_details($refund_id);
-    
-    // Is on a different tax system
-    if($refund_details['tax_system'] != QW_TAX_SYSTEM) {
-        systemMessagesWrite('danger', _gettext("The refund cannot be edited because it is on a different Tax system."));
-        $state_flag = false;       
-    }
-    
-    /* Is unpaid
-    if($refund_details['status'] == 'unpaid') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments and is partially paid."));
-        $state_flag = false;       
-    }*/
-    
-    // Is partially paid
-    if($refund_details['status'] == 'partially_paid') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments and is partially paid."));
-        $state_flag = false;       
-    }
-    
-    // Is paid
-    if($refund_details['status'] == 'paid') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments and is paid."));
-        $state_flag = false;       
-    }
-    
-    // Is cancelled
-    if($refund_details['status'] == 'cancelled') {
-        systemMessagesWrite('danger', _gettext("This refund cannot be edited because it already been cancelled."));
-        $state_flag = false;       
-    }
-    
-    // Is deleted
-    if($refund_details['status'] == 'deleted') {
-        systemMessagesWrite('danger', _gettext("The refund cannot be edited because it has been deleted."));
-        $state_flag = false;       
-    }
-    
-    // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
-    if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
-        systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments."));
-        $state_flag = false;       
-    }
-    
-    // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
-    if(!check_invoice_vouchers_allow_refunding($refund_details['invoice_id'])) {
-        systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
-        $state_flag = false;
-    }
-    
-    // The current record VAT code is enabled
-    if(!get_vat_tax_code_status($refund_details['vat_tax_code'])) {
-        systemMessagesWrite('danger', _gettext("This refund cannot be edited because it's current VAT Tax Code is not enabled."));
-        $state_flag = false;
+    function update_refund_status($refund_id, $new_status, $silent = false) {
+
+        $db = \Factory::getDbo();
+
+        // Get refund details
+        $refund_details = get_refund_details($refund_id);
+
+        // if the new status is the same as the current one, exit
+        if($new_status == $refund_details['status']) {        
+            if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+            return false;
+        }    
+
+        // Unify Dates and Times
+        $datetime = mysql_datetime();
+
+        // Set the appropriate closed_on date
+        $closed_on = ($new_status == 'paid') ? $datetime : '0000-00-00 00:00:00';
+
+        $sql = "UPDATE ".PRFX."refund_records SET
+                status             =". $db->qstr( $new_status   ).",
+                closed_on          =". $db->qstr( $closed_on    ).",
+                last_active        =". $db->qstr( $datetime     )." 
+                WHERE refund_id    =". $db->qstr( $refund_id    );
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an refund Status."));
+
+        } else {    
+
+            // Get related workorder_id
+            $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+
+            // Status updated message
+            if (!$silent) { systemMessagesWrite('success', _gettext("Refund status updated.")); }
+
+            // For writing message to log file, get refund status display name
+            $refund_status_display_name = _gettext(get_refund_status_display_name($new_status));
+
+            // Create a Workorder History Note
+            insert_workorder_history_note($workorder_id, _gettext("Refund Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.');
+
+            // Log activity        
+            $record = _gettext("Refund").' '.$refund_id.' '._gettext("Status updated to").' '.$refund_status_display_name.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.';
+            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+
+            // Update last active record - // not used, the current user is updated elsewhere  
+            update_client_last_active($refund_details['client_id']);
+            update_workorder_last_active($workorder_id);
+            update_invoice_last_active($refund_details['invoice_id']);              
+
+            return true;
+
+        }
+
     }
 
-    return $state_flag;
-     
+    /** Close Functions **/
+
+    #####################################
+    #   Cancel Refund                   #
+    #####################################
+
+    function cancel_refund($refund_id) {
+
+        // Make sure the refund can be cancelled
+        if(!check_refund_can_be_cancelled($refund_id)) {        
+            return false;
+        }
+
+        // Get refund details
+        $refund_details = get_refund_details($refund_id);
+
+        // Get related workorder_id
+        $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+
+        // Change the refund status to cancelled (I do this here to maintain consistency)
+        update_refund_status($refund_id, 'cancelled');
+
+        // Revert invoice status back to paid
+        update_invoice_status($refund_details['invoice_id'], 'paid');
+
+        // Remove the refund ID from the invoice
+        update_invoice_refund_id($refund_details['invoice_id'], '');
+
+        // Revert attached vouchers status back to paid
+        revert_refunded_invoice_vouchers($refund_details['invoice_id']);
+
+        // Create a Workorder History Note  
+        insert_workorder_history_note($workorder_id, _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.\Factory::getUser()->login_display_name.'.');
+
+        // Log activity        
+        $record = _gettext("Refund").' '.$refund_id.' '._gettext("was cancelled by").' '.\Factory::getUser()->login_display_name.'.';
+        write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+
+        // Update last active record
+        update_client_last_active($refund_details['client_id']);
+        update_workorder_last_active($workorder_id);
+        update_invoice_last_active($refund_details['invoice_id']);
+
+        return true;
+
+    }
+
+    /** Delete Functions **/
+
+    #####################################
+    #    Delete Record                  #
+    #####################################
+
+    function delete_refund($refund_id) {
+
+        $db = \Factory::getDbo();
+
+        // Make sure the invoice can be deleted (does not harm to check again here, other check is on status button)
+        if(!check_refund_can_be_deleted($refund_id)) {        
+            return false;
+        }
+
+        // Get record before deleting the record
+        $refund_details = get_refund_details($refund_id);
+
+        // Change the refund status to deleted (I do this here to maintain consistency)
+        update_refund_status($refund_id, 'deleted');  
+
+        // Revert invoice status back to paid
+        update_invoice_status($refund_details['invoice_id'], 'paid');
+
+        // Remove the refund ID from the invoice
+        update_invoice_refund_id($refund_details['invoice_id'], '');
+
+        // Revert attached vouchers status back to paid
+        revert_refunded_invoice_vouchers($refund_details['invoice_id']);
+
+        $sql = "UPDATE ".PRFX."refund_records SET
+                employee_id         = '',
+                client_id           = '',
+                workorder_id        = '',
+                invoice_id          = '',
+                date                = '0000-00-00', 
+                tax_system          = '',  
+                item_type           = '',             
+                unit_net            = '',
+                vat_tax_code        = '',
+                unit_tax_rate       = '0.00',
+                unit_tax            = '0.00',
+                unit_gross          = '0.00',
+                balance             = '0.00',
+                status              = 'deleted', 
+                last_active         = '0000-00-00 00:00:00',
+                opened_on           = '0000-00-00 00:00:00',
+                closed_on           = '0000-00-00 00:00:00',
+                note                = ''
+                WHERE refund_id    =". $db->qstr($refund_details['refund_id']);
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the refund records."));
+        } else {
+
+            // Get related workorder_id
+            $workorder_id = get_invoice_details($refund_details['invoice_id'], 'workorder_id');
+
+            // Create a Workorder History Note  
+            insert_workorder_history_note($workorder_id, _gettext("Expense").' '.$refund_id.' '._gettext("was deleted by").' '.\Factory::getUser()->login_display_name.'.');
+
+            // Log activity        
+            $record = _gettext("Refund Record").' '.$refund_id.' '._gettext("deleted.");
+            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $refund_details['client_id'], $workorder_id, $refund_details['invoice_id']);
+
+            // Update last active record    
+            update_client_last_active($refund_details['client_id']);
+            update_workorder_last_active($workorder_id);
+            update_invoice_last_active($refund_details['invoice_id']);
+
+            return true;
+
+        }
+
+    }
+
+    /** Other Functions **/
+
+    ##########################################
+    #      Last Record Look Up               #  // not currently used
+    ##########################################
+
+    function last_refund_id_lookup() {
+
+        $db = \Factory::getDbo();
+
+        $sql = "SELECT * FROM ".PRFX."refund_records ORDER BY refund_id DESC LIMIT 1";
+
+        if(!$rs = $db->Execute($sql)) {
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last refund record ID."));
+        } else {
+
+            return $rs->fields['refund_id'];
+
+        }
+
+    }
+
+    #####################################
+    #   Recalculate Refund Totals       #
+    #####################################
+
+    function recalculate_refund_totals($refund_id) {
+
+        $db = \Factory::getDbo();
+
+        $refund_details             = get_refund_details($refund_id);    
+
+        $unit_gross                 = $refund_details['unit_gross'];   
+        $payments_sub_total         = sum_payments(null, null, 'date', null, 'valid', 'refund', null, null, null, null, $refund_id);
+        $balance                    = $unit_gross - $payments_sub_total;
+
+        $sql = "UPDATE ".PRFX."refund_records SET
+                balance             =". $db->qstr( $balance   )."
+                WHERE refund_id     =". $db->qstr( $refund_id );
+
+        if(!$rs = $db->execute($sql)){        
+            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to recalculate the refund totals."));
+        } else {
+
+            /* Update Status - only change if there is a change in status */        
+
+            // Balance = Gross Amount (i.e no payments)
+            if($unit_gross > 0 && $unit_gross == $balance && $refund_details['status'] != 'unpaid') {
+                update_refund_status($refund_id, 'unpaid');
+            }
+
+            // Balance < Gross Amount (i.e some payments)
+            elseif($unit_gross > 0 && $payments_sub_total > 0 && $payments_sub_total < $unit_gross && $refund_details['status'] != 'partially_paid') {            
+                update_refund_status($refund_id, 'partially_paid');
+            }
+
+            // Balance = 0.00 (i.e has payments and is all paid)
+            elseif($unit_gross > 0 && $unit_gross == $payments_sub_total && $refund_details['status'] != 'paid') {            
+                update_refund_status($refund_id, 'paid');
+            }        
+
+            return;        
+
+        }
+
+    }
+
+    ##########################################################
+    #  Check if the refund status is allowed to be changed   #  // not currently used (from refund:status), manual change
+    ##########################################################
+
+     function check_refund_status_can_be_changed($refund_id) {
+
+        $state_flag = true;
+
+        // Get the refund details
+        $refund_details = get_refund_details($refund_id);
+
+        // Is unpaid
+        if($refund_details['status'] == 'unpaid') {
+            systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund is unpaid."));
+            $state_flag = false;       
+        }
+
+        // Is partially paid
+        if($refund_details['status'] == 'partially_paid') {
+            systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments and is partially paid."));
+            $state_flag = false;       
+        }
+
+        // Is paid
+        if($refund_details['status'] == 'paid') {
+            systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments and is paid."));
+            $state_flag = false;       
+        }
+
+        // Is Cancelled
+        if($refund_details['status'] == 'cancelled') {
+            systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has been cancelled."));
+            $state_flag = false;       
+        }
+
+        // Is deleted
+        if($refund_details['status'] == 'deleted') {
+            systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has been deleted."));
+            $state_flag = false;       
+        }
+
+        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+            systemMessagesWrite('danger', _gettext("The refund status cannot be changed because the refund has payments."));
+            $state_flag = false;       
+        }
+
+        // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+        if(!check_invoice_vouchers_allow_refunding($refund_details ['invoice_id'])) {
+            systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+            $state_flag = false;
+        }
+
+        return $state_flag;    
+
+     }
+
+    ###############################################################
+    #   Check to see if the refund can be cancelled               #
+    ###############################################################
+
+    function check_refund_can_be_cancelled($refund_id) {
+
+        $state_flag = true;
+
+        // Get the refund details
+        $refund_details = get_refund_details($refund_id);
+
+        // Is partially paid (not used yet)
+        if($refund_details['status'] == 'partially_paid') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be cancelled because the refund is partially paid."));
+            return false;
+        }
+
+        // Is cancelled
+        if($refund_details['status'] == 'cancelled') {
+            systemMessagesWrite('danger', _gettext("The refund cannot be cancelled because the refund has already been cancelled."));
+            $state_flag = false;       
+        }
+
+        // Is deleted
+        if($refund_details['status'] == 'deleted') {
+            systemMessagesWrite('danger', _gettext("The refund cannot be cancelled because the refund has been deleted."));
+            $state_flag = false;       
+        }    
+
+        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+            systemMessagesWrite('danger', _gettext("This refund cannot be cancelled because the refund has payments."));
+            $state_flag = false;       
+        }
+
+        // Does the invoice have any Vouchers preventing cancelling the invoice (i.e. any that have been used)
+        if(!check_invoice_vouchers_allow_refund_cancellation($refund_details['invoice_id'])) {
+            systemMessagesWrite('danger', _gettext("The invoice cannot be cancelled because of Vouchers on it prevent this."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+
+    ###############################################################
+    #   Check to see if the refund can be deleted                 #
+    ###############################################################
+
+    function check_refund_can_be_deleted($refund_id) {
+
+        $state_flag = true;
+
+        // Get the refund details
+        $refund_details = get_refund_details($refund_id);
+
+        // Is partially paid (not used yet)
+        if($refund_details['status'] == 'partially_paid') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments and is partially paid."));
+            $state_flag = false;       
+        }     
+
+        // Is paid
+        if($refund_details['status'] == 'paid') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments and is paid."));
+            $state_flag = false;       
+        }
+
+        // Is cancelled
+        if($refund_details['status'] == 'cancelled') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has been cancelled."));
+            $state_flag = false;       
+        }
+
+        // Is deleted
+        if($refund_details['status'] == 'deleted') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it already been deleted."));
+            $state_flag = false;       
+        }
+
+        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+            systemMessagesWrite('danger', _gettext("This refund cannot be deleted because it has payments."));
+            $state_flag = false;       
+        }
+
+        // Does the invoice status allow it to have its refund deleted (including vouchers)
+        if(!check_invoice_vouchers_allow_refund_deletion($refund_details['invoice_id'])) {
+            systemMessagesWrite('danger', _gettext("The invoice cannot be deleted because of Vouchers on it prevent this."));
+            $state_flag = false;
+        } 
+
+        return $state_flag;
+
+    }
+
+    ##########################################################
+    #  Check if the refund status allows editing             #       
+    ##########################################################
+
+     function check_refund_can_be_edited($refund_id) {
+
+        $state_flag = true;
+
+        // Get the refund details
+        $refund_details = get_refund_details($refund_id);
+
+        // Is on a different tax system
+        if($refund_details['tax_system'] != QW_TAX_SYSTEM) {
+            systemMessagesWrite('danger', _gettext("The refund cannot be edited because it is on a different Tax system."));
+            $state_flag = false;       
+        }
+
+        /* Is unpaid
+        if($refund_details['status'] == 'unpaid') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments and is partially paid."));
+            $state_flag = false;       
+        }*/
+
+        // Is partially paid
+        if($refund_details['status'] == 'partially_paid') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments and is partially paid."));
+            $state_flag = false;       
+        }
+
+        // Is paid
+        if($refund_details['status'] == 'paid') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments and is paid."));
+            $state_flag = false;       
+        }
+
+        // Is cancelled
+        if($refund_details['status'] == 'cancelled') {
+            systemMessagesWrite('danger', _gettext("This refund cannot be edited because it already been cancelled."));
+            $state_flag = false;       
+        }
+
+        // Is deleted
+        if($refund_details['status'] == 'deleted') {
+            systemMessagesWrite('danger', _gettext("The refund cannot be edited because it has been deleted."));
+            $state_flag = false;       
+        }
+
+        // Has payments (Fallback - is currently not needed because of statuses, but it might be used for information reporting later)
+        if(count_payments(null, null, 'date', null, null, 'refund', null, null, null, null, $refund_id)) {
+            systemMessagesWrite('danger', _gettext("This refund cannot be edited because it has payments."));
+            $state_flag = false;       
+        }
+
+        // Does the invoice have any Vouchers preventing refunding the invoice (i.e. any that have been used)
+        if(!check_invoice_vouchers_allow_refunding($refund_details['invoice_id'])) {
+            systemMessagesWrite('danger', _gettext("The invoice cannot be refunded because of Vouchers on it prevent this."));
+            $state_flag = false;
+        }
+
+        // The current record VAT code is enabled
+        if(!get_vat_tax_code_status($refund_details['vat_tax_code'])) {
+            systemMessagesWrite('danger', _gettext("This refund cannot be edited because it's current VAT Tax Code is not enabled."));
+            $state_flag = false;
+        }
+
+        return $state_flag;
+
+    }
+    
 }

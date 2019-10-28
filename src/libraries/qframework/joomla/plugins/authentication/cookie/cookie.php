@@ -39,8 +39,8 @@ class PlgAuthenticationCookie //extends JPlugin
     
     public function __construct()
     {
-        $this->db           = \QFactory::getDbo();
-        $this->config       = \QFactory::getConfig();
+        $this->db           = \Factory::getDbo();
+        $this->config       = \Factory::getConfig();
         $this->cookie       = new \Joomla\CMS\Input\Cookie;
         $this->response     = new Joomla\CMS\Authentication\AuthenticationResponse;
         $this->filter       = new Joomla\CMS\Filter\InputFilter;
@@ -78,7 +78,7 @@ class PlgAuthenticationCookie //extends JPlugin
     public function onUserAuthenticate($credentials, $options, &$response)
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (\CMSApplication::isClient('administrator'))
         {
             return false;
         }
@@ -245,7 +245,7 @@ class PlgAuthenticationCookie //extends JPlugin
     public function onUserAfterLogin($options)
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (\CMSApplication::isClient('administrator'))
         {
             return false;
         }
@@ -338,7 +338,7 @@ class PlgAuthenticationCookie //extends JPlugin
             time() + $lifetime,
             $this->config->get('cookie_path', '/'),
             $this->config->get('cookie_domain'),
-            \QFactory::isSSLConnection()
+            \CMSApplication::isSSLConnection()
         );
 
         // If the 'Remember me' box is ticked
@@ -402,7 +402,7 @@ class PlgAuthenticationCookie //extends JPlugin
     public function onUserAfterLogout()
     {
         // No remember me for admin
-        if (QFactory::isClient('administrator'))
+        if (\CMSApplication::isClient('administrator'))
         {
             return false;
         }
