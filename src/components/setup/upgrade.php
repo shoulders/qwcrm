@@ -8,13 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'administrator.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'setup.php');
-require(CINCLUDES_DIR.'voucher.php');
-
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
     header('HTTP/1.1 403 Forbidden');

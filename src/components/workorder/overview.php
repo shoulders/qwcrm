@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Prevent undefined variable errors
 \CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;
 

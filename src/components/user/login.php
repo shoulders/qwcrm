@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-//require(CINCLUDES_DIR.'client.php');
-//require(CINCLUDES_DIR.'user.php');
-
 // Prevent undefined variable errors
 \CMSApplication::$VAR['login_username'] = isset(\CMSApplication::$VAR['login_username']) ? \CMSApplication::$VAR['login_username'] : null;
 \CMSApplication::$VAR['login_pwd'] = isset(\CMSApplication::$VAR['login_pwd']) ? \CMSApplication::$VAR['login_pwd'] : null;

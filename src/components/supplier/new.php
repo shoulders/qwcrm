@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'supplier.php');
-
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if(isset(\CMSApplication::$VAR['submit']) || isset(\CMSApplication::$VAR['submitandnew'])) {
         

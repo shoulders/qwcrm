@@ -8,16 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'expense.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'otherincome.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'refund.php');
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'voucher.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Make sure a payment type is set
 if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'refund' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome')) {
     force_page('payment', 'search', 'msg_danger='._gettext("No Payment Type supplied."));  

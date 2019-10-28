@@ -8,12 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'schedule.php');
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Prevent undefined variable errors
 //\CMSApplication::$VAR['qform']['note'] = isset(\CMSApplication::$VAR['qform']['note']) ? \CMSApplication::$VAR['qform']['note'] : null; 
 

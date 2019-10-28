@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'invoice.php');
-
 // Build the page
 $smarty->assign('overview_invoices_pending',            display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'pending')           );
 $smarty->assign('overview_invoices_unpaid',             display_invoices('invoice_id', 'DESC', false, null, null, null, null, 'unpaid')            );

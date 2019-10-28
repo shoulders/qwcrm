@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'voucher.php');
-
 // Check if we have an voucher_id
 if(!isset(\CMSApplication::$VAR['voucher_id']) || !\CMSApplication::$VAR['voucher_id']) {
     systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));

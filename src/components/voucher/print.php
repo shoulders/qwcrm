@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'voucher.php');
-
 // Generate the barcode (as html)
 $bc_generator = new Picqer\Barcode\BarcodeGeneratorHTML();
 $barcode = $bc_generator->getBarcode(get_voucher_details(\CMSApplication::$VAR['voucher_id'], 'voucher_code'), $bc_generator::TYPE_CODE_128);

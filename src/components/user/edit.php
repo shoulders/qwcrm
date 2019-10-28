@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'user.php');
-
 // Check if we have an user_id
 if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']) {
     systemMessagesWrite('danger', _gettext("No User ID supplied."));

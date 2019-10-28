@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require_once(CINCLUDES_DIR.'client.php');
-
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm()) {
     header('HTTP/1.1 403 Forbidden');

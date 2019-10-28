@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'company.php');
-
 // If new times submitted
 if(isset(\CMSApplication::$VAR['submit'])) {
     

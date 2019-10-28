@@ -7,8 +7,6 @@
  */
 
 defined('_QWEXEC') or die;
-
-require_once(CINCLUDES_DIR.'CoreMenu.php');
  
 /* Get Workorder Status if we have a workorder_id - not currently used
 if(\CMSApplication::$VAR['workorder_id'] != '') {

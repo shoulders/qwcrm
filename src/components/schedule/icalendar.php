@@ -8,12 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'schedule.php');
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // If no schedule year/month/day set, use today's date
 \CMSApplication::$VAR['start_year'] = isset(\CMSApplication::$VAR['start_year']) ? \CMSApplication::$VAR['start_year'] : date('Y');
 \CMSApplication::$VAR['start_month'] = isset(\CMSApplication::$VAR['start_month']) ? \CMSApplication::$VAR['start_month'] : date('m');

@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Check if we have a workorder_note_id
 if(!isset(\CMSApplication::$VAR['workorder_note_id']) || !\CMSApplication::$VAR['workorder_note_id']) {
     systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));

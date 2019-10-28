@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'payment.php');
-
 /* Prevent undefined variable errors (does the same as below)
  * 
 \CMSApplication::$VAR['bank_transfer']['send'] = isset(\CMSApplication::$VAR['bank_transfer']['send']) ? \CMSApplication::$VAR['bank_transfer']['send'] : null;

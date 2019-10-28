@@ -8,15 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'voucher.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Prevent undefined variable errors
 \CMSApplication::$VAR['qform']['labour_items'] = isset(\CMSApplication::$VAR['qform']['labour_items']) ? \CMSApplication::$VAR['qform']['labour_items'] : null;
 \CMSApplication::$VAR['qform']['parts_items'] = isset(\CMSApplication::$VAR['qform']['parts_items']) ? \CMSApplication::$VAR['qform']['parts_items'] : null;

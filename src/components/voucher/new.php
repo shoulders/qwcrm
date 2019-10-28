@@ -8,14 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php'); // just for get_voucher_vat_tax_code()
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'voucher.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('voucher', 'new') && !check_page_accessed_via_qwcrm('invoice', 'edit')) {
     header('HTTP/1.1 403 Forbidden');

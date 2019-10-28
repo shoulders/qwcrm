@@ -8,15 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'refund.php');
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'voucher.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Check if we have an invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
     systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));

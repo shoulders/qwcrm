@@ -8,17 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'expense.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'otherincome.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'refund.php');
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'voucher.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Get the company VAT Flat Rate

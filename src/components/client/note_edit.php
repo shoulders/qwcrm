@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-
 // check if we have a client_note_id
 if(!isset(\CMSApplication::$VAR['client_note_id']) || !\CMSApplication::$VAR['client_note_id']) {
     systemMessagesWrite('danger', _gettext("No Client Note ID supplied."));

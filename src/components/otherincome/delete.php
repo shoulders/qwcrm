@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'otherincome.php');
-require(CINCLUDES_DIR.'report.php');
-
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('otherincome', 'status')) {
     header('HTTP/1.1 403 Forbidden');

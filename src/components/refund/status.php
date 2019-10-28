@@ -8,11 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'refund.php');
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'voucher.php');
-
 // Check if we have a refund_id
 if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
     systemMessagesWrite('danger', _gettext("No Voucher ID supplied."));

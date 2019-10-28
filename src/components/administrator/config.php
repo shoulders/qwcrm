@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'administrator.php');
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'user.php');
-
 // Send a Test Mail
 if(isset(\CMSApplication::$VAR['send_test_mail'])) {
     if(check_page_accessed_via_qwcrm('administrator', 'config')) {

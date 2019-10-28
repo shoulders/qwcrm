@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'company.php');
-
 // Prevent undefined variable errors
 \CMSApplication::$VAR['qform']['delete_logo'] = isset(\CMSApplication::$VAR['qform']['delete_logo']) ? \CMSApplication::$VAR['qform']['delete_logo'] : null;
 

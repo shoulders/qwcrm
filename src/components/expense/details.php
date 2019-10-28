@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'expense.php');
-require(CINCLUDES_DIR.'payment.php');
-
 // Check if we have an expense_id
 if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id']) {
     systemMessagesWrite('danger', _gettext("No Expense ID supplied."));

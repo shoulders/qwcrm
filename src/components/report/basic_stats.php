@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'report.php');
-
 // Global Workorder Stats
 $smarty->assign('global_workorder_current_stats', get_workorders_stats('current'));
 $smarty->assign('global_workorder_historic_stats', get_workorders_stats('historic'));

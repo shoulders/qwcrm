@@ -10,10 +10,6 @@ defined('_QWEXEC') or die;
 
 // Decide which dashboard to show (employee or client)
 if($user->login_is_employee) {
-    
-    require(CINCLUDES_DIR.'core.php');
-    require(CINCLUDES_DIR.'report.php');
-    require(CINCLUDES_DIR.'workorder.php');
 
     // Prevent undefined variable errors
     \CMSApplication::$VAR['page_no'] = isset(\CMSApplication::$VAR['page_no']) ? \CMSApplication::$VAR['page_no'] : null;

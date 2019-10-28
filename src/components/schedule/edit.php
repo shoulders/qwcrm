@@ -8,12 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'schedule.php');
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Check if we have a schedule_id
 if(!isset(\CMSApplication::$VAR['schedule_id']) || !\CMSApplication::$VAR['schedule_id']) {
     systemMessagesWrite('danger', _gettext("No Schedule ID supplied."));

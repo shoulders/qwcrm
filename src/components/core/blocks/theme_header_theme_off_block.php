@@ -7,5 +7,3 @@
  */
 
 defined('_QWEXEC') or die;
-
-require_once(CINCLUDES_DIR.'CoreTheme.php');

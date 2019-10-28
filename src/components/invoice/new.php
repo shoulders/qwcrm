@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Create an invoice for the supplied workorder
 if(isset(\CMSApplication::$VAR['workorder_id']) && \CMSApplication::$VAR['workorder_id'] && !get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'invoice_id')) {
 

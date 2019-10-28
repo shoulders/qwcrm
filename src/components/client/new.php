@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Create the new Client

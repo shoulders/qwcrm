@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'administrator.php');
-
 if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Check for updates

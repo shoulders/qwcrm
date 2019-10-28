@@ -8,11 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'otherincome.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'report.php');
-
 // If details submitted insert record, if non submitted load new.tpl and populate values
 if(isset(\CMSApplication::$VAR['submit'])) {
 

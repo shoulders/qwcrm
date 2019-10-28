@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'otherincome.php');
-require(CINCLUDES_DIR.'payment.php');
-
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
     systemMessagesWrite('danger', _gettext("No Refund ID supplied."));

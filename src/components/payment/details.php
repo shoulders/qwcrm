@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'user.php');
-
 // Check if we have an payment_id
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
     systemMessagesWrite('danger', _gettext("No Payment ID supplied."));

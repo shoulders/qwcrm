@@ -8,9 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'user.php');
-
 // Set the template for the correct user type (client/employee)
 if(isset(\CMSApplication::$VAR['client_id']) && \CMSApplication::$VAR['client_id']) {
     

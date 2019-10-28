@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'workorder.php');
-require(CINCLUDES_DIR.'user.php');
-
 // Prevent undefined variable errors
 \CMSApplication::$VAR['assign_to_employee'] = isset(\CMSApplication::$VAR['assign_to_employee']) ? \CMSApplication::$VAR['assign_to_employee'] : null;
 

@@ -8,10 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'administrator.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'setup.php');
-require(CINCLUDES_DIR.'user.php');
 require(SETUP_DIR.'migrate/myitcrm/migrate_routines.php');
 
 // Prevent direct access to this page

@@ -8,11 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'schedule.php');
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Prevent undefined variable errors
 \CMSApplication::$VAR['workorder_id'] = isset(\CMSApplication::$VAR['workorder_id']) ? \CMSApplication::$VAR['workorder_id'] : null;
 \CMSApplication::$VAR['employee_id']  = isset(\CMSApplication::$VAR['employee_id']) ? \CMSApplication::$VAR['employee_id'] : \Factory::getUser()->login_user_id;

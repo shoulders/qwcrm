@@ -8,15 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'company.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'refund.php');
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'voucher.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 $refund_details = array();
 
 // Prevent direct access to this page

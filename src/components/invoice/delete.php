@@ -8,15 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'invoice.php');
-require(CINCLUDES_DIR.'payment.php');
-require(CINCLUDES_DIR.'report.php');
-require(CINCLUDES_DIR.'user.php'); // need when changing WO from 'closed_with_invoice' to 'closed_without_invoice'
-require(CINCLUDES_DIR.'voucher.php');
-require(CINCLUDES_DIR.'workorder.php');
-
-
 // Prevent direct access to this page
 if(!check_page_accessed_via_qwcrm('invoice', 'status')) {
     header('HTTP/1.1 403 Forbidden');

@@ -8,11 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'client.php');
-require(CINCLUDES_DIR.'invoice.php'); // require to stop email sub-system error
-require(CINCLUDES_DIR.'user.php');
-require(CINCLUDES_DIR.'workorder.php');
-
 // Delete any expired resets (CRON is better)
 delete_expired_reset_codes();
 

@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'invoice.php');
-
 // Prevent undefined variable errors
 \CMSApplication::$VAR['empty_prefill_items_table'] = isset(\CMSApplication::$VAR['empty_prefill_items_table']) ? \CMSApplication::$VAR['empty_prefill_items_table'] : null;
 

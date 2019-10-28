@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'supplier.php');
-
 // Check if we have a supplier_id
 if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
     systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));

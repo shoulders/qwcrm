@@ -8,8 +8,6 @@
 
 defined('_QWEXEC') or die;
 
-require(CINCLUDES_DIR.'administrator.php');
-
 // Update the ACL permissions if submitted
 if(isset(\CMSApplication::$VAR['submit']) && \CMSApplication::$VAR['submit'] == 'reset_default') {
     reset_acl_permissions();    
