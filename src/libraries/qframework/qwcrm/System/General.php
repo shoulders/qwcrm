@@ -35,8 +35,6 @@ class General extends System {
 
     function get_company_details($item = null) {
 
-        $db = \Factory::getDbo();
-
         // This is a fallback to make diagnosing critical database failure - This is the first function loaded for $date_format
         if (!$db->isConnected()) {
             die('
@@ -106,7 +104,7 @@ class General extends System {
 
         // Preserve the Message Store (if there are any messages) for the next page load
         if($forcePageSystemMessageStore = systemMessagesReturnStore(false, 'array')) {
-            postEmulationWrite('forcePageSystemMessageStore', $forcePageSystemMessageStore);
+            $this->app->system->variables->postEmulationWrite('forcePageSystemMessageStore', $forcePageSystemMessageStore);
         }
 
         /* Process Options */
@@ -117,7 +115,7 @@ class General extends System {
         // Set URL SEF type to be used
         if ($url_sef == 'sef') { $makeSEF = true; }
         elseif ($url_sef == 'nonsef') { $makeSEF = false; }
-        elseif(class_exists('\CMSApplication')) { $makeSEF = \Factory::getConfig()->get('sef'); }
+        elseif(class_exists('\CMSApplication')) { $makeSEF = $this->app->config->get('sef'); }
         else { $makeSEF = false; }
 
         // Configure and set URL protocol and domain segment (allows for https to http, http to https using QWcrm style force_page() links)
@@ -131,7 +129,7 @@ class General extends System {
         if($component != 'index.php' && $page_tpl == null) {       
 
             // Build the URL and perform the redirect
-            perform_redirect($protocol_domain_segment.$component);        
+            $this->perform_redirect($protocol_domain_segment.$component);        
 
         }
 
@@ -164,11 +162,11 @@ class General extends System {
                 $url = QWCRM_BASE_PATH.'index.php'.$variables;
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = build_sef_url($url); }
+                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
 
                 // Perform redirect
                 if($method == 'get') {
-                    perform_redirect($protocol_domain_segment.$url);
+                    $this->perform_redirect($protocol_domain_segment.$url);
                 } else {
                     return $url;
                 }
@@ -183,11 +181,11 @@ class General extends System {
                 $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl.$variables;
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = build_sef_url($url); }
+                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
 
                 // Perform redirect
                 if($method == 'get') {
-                    perform_redirect($protocol_domain_segment.$url);            
+                    $this->perform_redirect($protocol_domain_segment.$url);            
                 } else {
                     return $url;
                 }
@@ -211,7 +209,7 @@ class General extends System {
 
                 // Set the page varible in the session - it does not matter page varible is set twice 1 in $_SESSION and 1 in $_GET the array merge will fix that
                 foreach($variable_array as $key => $value) {                    
-                    postEmulationWrite($key, $value);
+                    $this->app->system->variables->postEmulationWrite($key, $value);
                 }               
 
             }
@@ -223,7 +221,7 @@ class General extends System {
                 $url = QWCRM_BASE_PATH.'index.php';
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = build_sef_url($url); }
+                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url); }
 
                 // Perform redirect
                 perform_redirect($protocol_domain_segment.$url);
@@ -235,10 +233,10 @@ class General extends System {
                 $url = QWCRM_BASE_PATH.'index.php?component='.$component.'&page_tpl='.$page_tpl;
 
                 // Convert to SEF if enabled            
-                if ($makeSEF) { $url = build_sef_url($url);}
+                if ($makeSEF) { $url = $this->app->system->router->build_sef_url($url);}
 
                 // Perform redirect
-                perform_redirect($protocol_domain_segment.$url);
+                $this->perform_redirect($protocol_domain_segment.$url);
 
             }
 
@@ -270,11 +268,11 @@ class General extends System {
                 $error_msg = '<p>'._gettext("Headers already sent in").' '.$filename.' '._gettext("on line").' '.$linenum.'.</p>';
 
                 // Get routing variables
-                $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
+                $routing_variables = $this->app->system->router->get_routing_variables_from_url($_SERVER['REQUEST_URI']);
 
                 // Log errors to log if enabled
-                if(\Factory::getConfig()->get('qwcrm_error_log')) {    
-                    write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
+                if($this->app->config->get('qwcrm_error_log')) {    
+                    $this->app->components->general->write_record_to_error_log($routing_variables['component'].':'.$routing_variables['page_tpl'], 'redirect', '', debug_backtrace()[1]['function'], '', $error_msg, '');    
                 }
 
                 // Output the message and stop processing
@@ -306,22 +304,22 @@ class General extends System {
     function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
 
         // Get routing variables
-        $routing_variables = get_routing_variables_from_url($_SERVER['REQUEST_URI']);
+        $routing_variables = $this->app->system->router->get_routing_variables_from_url($_SERVER['REQUEST_URI']);
 
         // Prepare Variables
-        $VAR['error_component']     = prepare_error_data('error_component', $routing_variables['component']);
-        $VAR['error_page_tpl']      = prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
+        $VAR['error_component']     = $this->prepare_error_data('error_component', $routing_variables['component']);
+        $VAR['error_page_tpl']      = $this->prepare_error_data('error_page_tpl', $routing_variables['page_tpl']);
         $VAR['error_type']          = $error_type;
-        $VAR['error_location']      = prepare_error_data('error_location', $error_location);
-        $VAR['error_php_function']  = prepare_error_data('error_php_function', $error_php_function);
+        $VAR['error_location']      = $this->prepare_error_data('error_location', $error_location);
+        $VAR['error_php_function']  = $this->prepare_error_data('error_php_function', $error_php_function);
         $VAR['error_database']      = $error_database ;
-        $VAR['error_sql_query']     = prepare_error_data('error_sql_query', $error_sql_query);
+        $VAR['error_sql_query']     = $this->prepare_error_data('error_sql_query', $error_sql_query);
         $VAR['error_msg']           = $error_msg;
 
         $VAR['error_enable_override'] = 'override'; // This is required to prevent page looping when an error occurs early on (i.e. in a root page)
 
         // raw_output mode is very basic, error logging still works, bootloops are prevented, page tracking and compression are skipped
-        if(\Factory::getConfig()->get('error_page_raw_output')) {
+        if($this->app->config->get('error_page_raw_output')) {
 
             // Create and empty page object
             \CMSApplication::$BuildPage = '';
@@ -339,7 +337,7 @@ class General extends System {
         } else {  
 
             // Load Error Page
-            force_page('core', 'error', $VAR);   // No referer unless loaded from clicked link
+            $this->force_page('core', 'error', $VAR);   // No referer unless loaded from clicked link
 
         }
 
@@ -353,7 +351,7 @@ class General extends System {
 
         // Allows errors from install/migrate to be processed
         if(!defined('QWCRM_SETUP')) {
-            $user = \Factory::getUser();
+            $user = $this->app->user;
         }
 
         /* Error Page (by referring page) - only needed when using referrer - not currently used 
@@ -511,43 +509,43 @@ class General extends System {
         }
 
         // Prevent undefined variable errors
-        QFramework::$VAR['component'] = isset(QFramework::$VAR['component']) ? QFramework::$VAR['component'] : null;
-        QFramework::$VAR['page_tpl']  = isset(QFramework::$VAR['page_tpl'])  ? QFramework::$VAR['page_tpl']  : null;
+        CMSApplication::$VAR['component'] = isset(CMSApplication::$VAR['component']) ? CMSApplication::$VAR['component'] : null;
+        CMSApplication::$VAR['page_tpl']  = isset(CMSApplication::$VAR['page_tpl'])  ? CMSApplication::$VAR['page_tpl']  : null;
 
         // Installation is in progress
-        if ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+        if ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
 
-            QFramework::$VAR['component'] = 'setup';
-            QFramework::$VAR['page_tpl']  = 'install';
-            QFramework::$VAR['theme']     = 'menu_off';        
+            CMSApplication::$VAR['component'] = 'setup';
+            CMSApplication::$VAR['page_tpl']  = 'install';
+            CMSApplication::$VAR['theme']     = 'menu_off';        
             define('QWCRM_SETUP', 'install');  
 
             return;        
 
 
         // Migration is in progress (but if migration is passing to upgrade, ignore)
-        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
 
-            QFramework::$VAR['component'] = 'setup';
-            QFramework::$VAR['page_tpl']  = 'migrate';
-            QFramework::$VAR['theme']     = 'menu_off';
+            CMSApplication::$VAR['component'] = 'setup';
+            CMSApplication::$VAR['page_tpl']  = 'migrate';
+            CMSApplication::$VAR['theme']     = 'menu_off';
             define('QWCRM_SETUP', 'install'); 
 
             return;        
 
 
         // Upgrade is in progress
-        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
 
-            QFramework::$VAR['component'] = 'setup';
-            QFramework::$VAR['page_tpl']  = 'upgrade';
-            QFramework::$VAR['theme']     = 'menu_off';        
+            CMSApplication::$VAR['component'] = 'setup';
+            CMSApplication::$VAR['page_tpl']  = 'upgrade';
+            CMSApplication::$VAR['theme']     = 'menu_off';        
             define('QWCRM_SETUP', 'install');
 
             return;
 
         /* Redirect to choice page (optional)
-        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !$this->app->system->security->check_page_accessed_via_qwcrm() && !isset(QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {        
+        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !$this->app->system->security->check_page_accessed_via_qwcrm() && !isset(CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {        
 
             force_page('setup', 'choice');
 
@@ -557,7 +555,7 @@ class General extends System {
         } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !$this->app->system->security->check_page_accessed_via_qwcrm()) {
 
             // Prevent direct access to this page
-            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }
@@ -569,9 +567,9 @@ class General extends System {
             }        
 
             // Move Direct page access control to the pages controller (i.e. I might allow direct access to setup:choice)        
-            \QFramework::$VAR['component'] = 'setup';
-            \QFramework::$VAR['page_tpl']  = 'choice';
-            \QFramework::$VAR['theme']     = 'menu_off';        
+            \CMSApplication::$VAR['component'] = 'setup';
+            \CMSApplication::$VAR['page_tpl']  = 'choice';
+            \CMSApplication::$VAR['theme']     = 'menu_off';        
 
             /* This allows the use of the database ASAP in the setup process
             if (defined('PRFX') && \Factory::getDbo()->isConnected() && $this->app->components->general->get_qwcrm_database_version_number()) {
@@ -587,7 +585,7 @@ class General extends System {
         } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
 
             // Prevent direct access to this page
-            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', CMSApplication::$VAR['component'], CMSApplication::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }        
@@ -599,7 +597,7 @@ class General extends System {
             }               
 
             // This will compare the database and filesystem and automatically start the upgrade if valid (no need for setup:choice)       
-            compare_qwcrm_filesystem_and_database(QFramework::$VAR);    
+            $this->app->components->general->compare_qwcrm_filesystem_and_database(CMSApplication::$VAR);    
 
         // Fallback option for those situations I have not thought about
         } else {
@@ -641,19 +639,19 @@ class General extends System {
 
         /* If the file system is newer than the database - run upgrade (this loads setup:upgrade directly)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            QFramework::$VAR['component']     = 'setup';
-            QFramework::$VAR['page_tpl']      = 'upgrade';
-            QFramework::$VAR['theme']         = 'menu_off';
+            CMSApplication::$VAR['component']     = 'setup';
+            CMSApplication::$VAR['page_tpl']      = 'upgrade';
+            CMSApplication::$VAR['theme']         = 'menu_off';
             define('QWCRM_SETUP', 'install'); 
             return;
         }*/
 
         // If the file system is newer than the database - run upgrade (this loads setup:choice but flags it as an upgrade directly)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version, '>')) {             
-            QFramework::$VAR['component']     = 'setup';
-            QFramework::$VAR['page_tpl']      = 'choice';
-            QFramework::$VAR['theme']         = 'menu_off';
-            QFramework::$VAR['setup_type']    = 'upgrade';
+            CMSApplication::$VAR['component']     = 'setup';
+            CMSApplication::$VAR['page_tpl']      = 'choice';
+            CMSApplication::$VAR['theme']         = 'menu_off';
+            CMSApplication::$VAR['setup_type']    = 'upgrade';
             define('QWCRM_SETUP', 'install'); 
             return;
         }
@@ -683,11 +681,11 @@ class General extends System {
 
     function get_qwcrm_database_version_number() {
 
-        $db = \Factory::getDbo();
+        //$db = \Factory::getDbo();
 
         $sql = "SELECT * FROM ".PRFX."version ORDER BY ".PRFX."version.database_version DESC LIMIT 1";
 
-        if(!$rs = $db->execute($sql)) {
+        if(!$rs = $this->db->execute($sql)) {
 
            return false;
 
@@ -706,7 +704,7 @@ class General extends System {
     function check_template_is_compatible() {
 
         // Get template details
-        $template_details = parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
+        $template_details = $this->parse_xml_file_into_array(THEME_DIR.'templateDetails.xml');
 
         // is the QWCRM version too low to run the template
         if (version_compare(QWCRM_VERSION, $template_details['qwcrm_min_version'], '<')) {
@@ -740,13 +738,11 @@ class General extends System {
 
     function get_mysql_version() {
 
-        $db = \Factory::getDbo();    
-
         // adodb.org prefered method - does not bring back complete string - [server_info] =&gt; 5.5.5-10.1.13-MariaDB - Array ( [description] => 10.1.13-MariaDB [version] => 10.1.13 ) 
         //$db->ServerInfo();
 
         // Extract and return the MySQL version - print_r() this and it gives you all of the values - 5.5.5-10.1.13-MariaDB
-        preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $db->_connectionID->server_info, $matches);
+        preg_match('/^[vV]?(\d+\.\d+\.\d+)/', $this->db->_connectionID->server_info, $matches);
         return $matches[1];    
 
     }
@@ -830,10 +826,10 @@ class General extends System {
         $logname        = '-';                                                  //  This is the RFC 1413 identity of the client determined by identd on the clients machine. This information is highly unreliable and should almost never be used except on tightly controlled internal networks.
 
         // Login User - substituting qwcrm user for the traditional apache HTTP Authentication
-        if(!\Factory::getUser()->login_username) {
+        if(!$this->app->user->login_username) {
             $username = '-';
         } else {
-            $username = \Factory::getUser()->login_username;
+            $username = $this->app->user->login_username;
         }  
 
         $time           = date("[d/M/Y:H:i:s O]", $_SERVER['REQUEST_TIME']);    // Time in apache log format
@@ -881,7 +877,7 @@ class General extends System {
     function write_record_to_activity_log($record, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null) {
 
         // if activity logging not enabled exit
-        if(\Factory::getConfig()->get('qwcrm_activity_log') != true) { return; }
+        if($this->app->config->get('qwcrm_activity_log') != true) { return; }
 
         /* Use any supplied IDs instead of $GLOBALS[] counterpart
         if(!$employee_id)   { $employee_id  = $GLOBALS['employee_id'];  }
@@ -890,14 +886,14 @@ class General extends System {
         if(!$invoice_id)    { $invoice_id   = $GLOBALS['invoice_id'];   }*/   
 
         // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
-        if(!\Factory::getUser()->login_username) {
+        if(!$this->app->user->login_username) {
             $username = '-';
         } else {
-            $username = \Factory::getUser()->login_username;
+            $username = $this->app->user->login_username;
         } 
 
         // Build log entry
-        $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.\Factory::getUser()->login_user_id.','.$employee_id.','.$client_id.','.$workorder_id.','.$invoice_id.','.'"'.$record.'"'."\r\n";
+        $log_entry = $_SERVER['REMOTE_ADDR'].','.$username.','.date("[d/M/Y:H:i:s O]", time()).','.$this->app->user->login_user_id.','.$employee_id.','.$client_id.','.$workorder_id.','.$invoice_id.','.'"'.$record.'"'."\r\n";
 
         // Write log entry  
         if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
@@ -920,10 +916,10 @@ class General extends System {
         // it is not - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
 
         // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
-        if(!\Factory::getUser()->login_username) {
+        if(!$this->app->user->login_username) {
             $username = '-';
         } else {
-            $username = \Factory::getUser()->login_username;
+            $username = $this->app->user->login_username;
         }
 
         // Build log entry - perhaps use the apache time stamp below
@@ -948,8 +944,6 @@ class General extends System {
     ##########################################
 
     function get_date_formats() {
-
-        $db = \Factory::getDbo();
 
         $sql = "SELECT * FROM ".PRFX."company_date_formats";
 
@@ -1024,7 +1018,7 @@ class General extends System {
         if($clock == '12') {
 
             // Create timestamp from date
-            $timestamp = date_to_timestamp($date);
+            $timestamp = $this->date_to_timestamp($date);
 
             // if hour is 12am set hour as 0 - for correct calculation as no zero hour
             if($hour == '12' && $meridian == 'am') {$hour = '0';}
@@ -1054,7 +1048,7 @@ class General extends System {
         if($clock == '24') {
 
             // Create timestamp from date
-            $timestamp = date_to_timestamp($date);        
+            $timestamp = $this->date_to_timestamp($date);        
 
             // Convert hours into seconds and then add
             $timestamp += ($hour * 60 * 60 );
@@ -1384,19 +1378,17 @@ class General extends System {
 
     function clear_smarty_cache() {
 
-        $smarty = \Factory::getSmarty();
-
         // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-        ajax_clear_onscreen_notifications();
+        $this->ajax_clear_onscreen_notifications();
 
         // clear the entire cache
-        $smarty->clearAllCache();
+        $this->app->smarty->clearAllCache();
 
         // clears all files over one hour old
-        //$smarty->clearAllCache(3600);
+        //$this->app->smarty->clearAllCache(3600);
 
         // Output the system message to the browser   
-        ajax_output_system_messages_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
+        $this->ajax_output_system_messages_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
 
         // Log activity        
         $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
@@ -1409,19 +1401,17 @@ class General extends System {
 
     function clear_smarty_compile() {
 
-        $smarty = \Factory::getSmarty();
-
         // Clear any onscreen notifications - this allows for mutiple errors to be displayed
-        ajax_clear_onscreen_notifications();
+        $this->ajax_clear_onscreen_notifications();
 
         // clear a specific template resource
-        //$smarty->clearCompiledTemplate('index.tpl');
+        //$this->app->smarty->clearCompiledTemplate('index.tpl');
 
         // clear entire compile directory
-        $smarty->clearCompiledTemplate();
+        $this->app->smarty->clearCompiledTemplate();
 
         // Output the system message to the browser   
-        ajax_output_system_messages_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
+        $this->ajax_output_system_messages_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
 
         // Log activity        
         $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
@@ -1468,13 +1458,13 @@ class General extends System {
         PhpMyAdmin\MoTranslator\Loader::loadFunctions();
 
         // Autodetect Language - I18N support information here
-        if(function_exists('locale_accept_from_http') && (\Factory::getConfig()->get('autodetect_language') == '1' || \Factory::getConfig()->get('autodetect_language') == null)) {
+        if(function_exists('locale_accept_from_http') && (\Factory::getConfig()->get('autodetect_language') == '1' || $this->app->config->get('autodetect_language') == null)) {
 
             // Use the locale language if detected or default language or british english (format = en_GB)
             if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
                 // Set default language as the chosen language or fallback to british english
-                if(!$language = \Factory::getConfig()->get('default_language')) {
+                if(!$language = $this->app->config->get('default_language')) {
                     $language = 'en_GB';
                 }
 
@@ -1488,7 +1478,7 @@ class General extends System {
         } else {
 
             // Set default language or fallback to british english
-            if(!$language = \Factory::getConfig()->get('default_language')) {
+            if(!$language = $this->app->config->get('default_language')) {
                 $language = 'en_GB';
             }
 

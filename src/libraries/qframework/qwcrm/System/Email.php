@@ -52,12 +52,9 @@ class Email extends System {
 
     function send_email($recipient_email, $subject, $body, $recipient_name = null, $attachment = null, $employee_id = null, $client_id = null, $workorder_id = null, $invoice_id = null, $silent = false) {
 
-        $config = \Factory::getConfig();
-        //$smarty = \Factory::getSmarty();
-
         // Clear any onscreen notifications - this allows for mutiple errors to be displayed (if allowed)
         if (!$silent) {
-            ajax_clear_onscreen_notifications();
+            $this->app->components->general->ajax_clear_onscreen_notifications();
         }
 
         // Check for a recipient email address
@@ -70,9 +67,8 @@ class Email extends System {
             // Output the system message to the browser (if allowed)
             if (!$silent) {
                 $message = $record.'<br>'._gettext("There is no email address to send to.");
-                //systemMessagesWrite('danger', $message);
-                systemMessagesWrite('danger', $message);
-                ajax_output_system_messages_onscreen();
+                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->components->general->ajax_output_system_messages_onscreen();
             }
 
             return false;
@@ -80,7 +76,7 @@ class Email extends System {
         }
 
         // If email is not enabled, do not send emails
-        if(!$config->get('email_online')) {
+        if(!$this->app->config->get('email_online')) {
 
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
@@ -89,9 +85,8 @@ class Email extends System {
             // Output the system message to the browser (if allowed)
             if (!$silent) {
                 $message = $record.'<br>'._gettext("The email system is not enabled, contact the administrators.");
-                //systemMessagesWrite('danger', $message);
-                systemMessagesWrite('danger', $message);
-                ajax_output_system_messages_onscreen();
+                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->components->general->ajax_output_system_messages_onscreen();
             }
 
             return false;
@@ -101,27 +96,27 @@ class Email extends System {
         /* Create the Transport */
 
         // Use SMTP
-        if($config->get('email_mailer') == 'smtp') {        
+        if($this->app->config->get('email_mailer') == 'smtp') {        
 
             // Create SMTP Object 
-            $transport = new Swift_SmtpTransport($config->get('email_smtp_host'), $config->get('email_smtp_port'));        
+            $transport = new Swift_SmtpTransport($this->app->config->get('email_smtp_host'), $this->app->config->get('email_smtp_port'));        
 
             // Enable encryption - The options are: None (Null), SSL/TLS ('ssl') - STARTTLS('tls') - The protocols are mislabelled in the code.
-            if($config->get('email_smtp_security')) {
-                $transport->setEncryption($config->get('email_smtp_security'));
+            if($this->app->config->get('email_smtp_security')) {
+                $transport->setEncryption($this->app->config->get('email_smtp_security'));
             }
 
             // SMTP Authentication if set
-            if($config->get('email_smtp_auth')) {
-                $transport->setUsername($config->get('email_smtp_username'));
-                $transport->setPassword($config->get('email_smtp_password')); 
+            if($this->app->config->get('email_smtp_auth')) {
+                $transport->setUsername($this->app->config->get('email_smtp_username'));
+                $transport->setPassword($this->app->config->get('email_smtp_password')); 
             }                               
 
         // Use Sendmail / Locally installed MTA - only works on Linux/Unix
-        } elseif($config->get('email_mailer') == 'sendmail') {
+        } elseif($this->app->config->get('email_mailer') == 'sendmail') {
 
             // Standard sendmail
-            $transport = new Swift_SendmailTransport($config->get('email_sendmail_path').' -bs');
+            $transport = new Swift_SendmailTransport($this->app->config->get('email_sendmail_path').' -bs');
 
             // Exim - The Swift_SendmailTransport also supports the use of Exim (same ninary wrapper as sendmail)
             //$transport = new Swift_SendmailTransport('/usr/sbin/exim -bs');
@@ -159,11 +154,11 @@ class Email extends System {
         // Verify the supplied emails, then add them to the object
         try {
             $email->setTo([$recipient_email => $recipient_name]);
-            $email->setFrom([$config->get('email_mailfrom') => $config->get('email_fromname')]);   
+            $email->setFrom([$this->app->config->get('email_mailfrom') => $this->app->config->get('email_fromname')]);   
 
             // Only add 'Reply To' if the reply email address is present. This prevents errors.
-            if($config->get('email_replyto')) {
-                $email->setReplyTo([$config->get('email_replyto') => $config->get('email_replytoname')]);  
+            if($this->app->config->get('email_replyto')) {
+                $email->setReplyTo([$this->app->config->get('email_replyto') => $this->app->config->get('email_replytoname')]);  
             }
 
         }
@@ -175,15 +170,15 @@ class Email extends System {
 
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
-            write_record_to_email_error_log($RfcCompliance_exception->getMessage());
+            $this->write_record_to_email_error_log($RfcCompliance_exception->getMessage());
             $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);        
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
                 $message = $record.'<br>'.$RfcCompliance_exception->getMessage();
-                //systemMessagesWrite('danger', $message);
-                systemMessagesWrite('danger', $message);
-                ajax_output_system_messages_onscreen();
+                //$this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->components->general->ajax_output_system_messages_onscreen();
 
             }
 
@@ -192,17 +187,17 @@ class Email extends System {
         }
 
         // Subject - prefix with the QWcrm company name to all emails
-        $email->setSubject(get_company_details('company_name').' - '.$subject);    
+        $email->setSubject($this->app->components->company->get_company_details('company_name').' - '.$subject);    
 
         /* Build the message body */
 
         // Add the email signature if enabled (if not a reset email)
-        if(get_company_details('email_signature_active') && !$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset') && !$this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
+        if($this->app->components->company->get_company_details('email_signature_active') && !$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset') && !$this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
             $body .= add_email_signature($email);
         } 
 
         // Parse message body and convert links to SEF (if enabled)
-        if ($config->get('sef')) { email_links_to_sef($body); }  
+        if ($this->app->config->get('sef')) { $this->email_links_to_sef($body); }  
 
         // Add Message Body
         $email->setBody($body, 'text/html');
@@ -249,9 +244,8 @@ class Email extends System {
                 // Output the system message to the browser (if allowed)
                 if (!$silent) {
                     $message = $record;
-                    //systemMessagesWrite('danger', $message);                
-                    systemMessagesWrite('danger', $message);
-                    ajax_output_system_messages_onscreen();
+                    $this->app->system->variables->systemMessagesWrite('danger', $message);
+                    $this->app->components->general->ajax_output_system_messages_onscreen();
                 }
 
             } else {
@@ -260,19 +254,18 @@ class Email extends System {
 
                 // Log activity
                 $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
-                if($workorder_id) {insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.\Factory::getUser()->login_display_name);}
+                if($workorder_id) {insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.$this->app->user->login_display_name);}
                 $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);            
 
                 // Output the system message to the browser (if allowed)
                 if (!$silent) {
                     $message = $record;
-                    //systemMessagesWrite('success', $message);                
-                    systemMessagesWrite('success', $message);
-                    ajax_output_system_messages_onscreen();
+                    $this->app->system->variables->systemMessagesWrite('success', $message);
+                    $this->app->components->general->ajax_output_system_messages_onscreen();
                 }
 
                 // Update last active record (will not error if no invoice_id sent )
-                update_user_last_active($employee_id);
+                $this->app->components->user->update_user_last_active($employee_id);
                 if($client_id) {$this->app->components->client->update_client_last_active($client_id);}  
                 if($workorder_id) {update_workorder_last_active($workorder_id);}
                 if($invoice_id) {update_invoice_last_active($invoice_id);}
@@ -290,22 +283,22 @@ class Email extends System {
 
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-            write_record_to_email_error_log($Transport_exception->getMessage());
+            $this->write_record_to_email_error_log($Transport_exception->getMessage());
             $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
                 preg_match('/^(.*)$/m', $Transport_exception->getMessage(), $matches);  // output the first line of the error message only
                 $message = $record.'<br>'.$matches[0];
-                //systemMessagesWrite('danger', $message);            
-                systemMessagesWrite('danger', $message);
-                ajax_output_system_messages_onscreen();
+                //$this->app->system->variables->systemMessagesWrite('danger', $message);            
+                $this->app->system->variables->systemMessagesWrite('danger', $message);
+                $this->app->components->general->ajax_output_system_messages_onscreen();
             }
 
         }
 
         // Write the Email Transport Record to the log
-        write_record_to_email_transport_log($logger->dump());
+        $this->write_record_to_email_transport_log($logger->dump());
 
         return;
 
@@ -318,14 +311,14 @@ class Email extends System {
     function get_email_message_body($message_name, $client_details) {
 
         // get the message from the database
-        $content = get_company_details($message_name);
+        $content = $this->app->components->company->get_company_details($message_name);
 
         // Process placeholders
         if($message_name == 'email_msg_invoice') {        
-            $content = replace_placeholder($content, '{client_display_name}', $client_details['display_name']);
-            $content = replace_placeholder($content, '{client_first_name}', $client_details['first_name']);
-            $content = replace_placeholder($content, '{client_last_name}', $client_details['last_name']);
-            $content = replace_placeholder($content, '{client_credit_terms}', $client_details['credit_terms']);
+            $content = $this->replace_placeholder($content, '{client_display_name}', $client_details['display_name']);
+            $content = $this->replace_placeholder($content, '{client_first_name}', $client_details['first_name']);
+            $content = $this->replace_placeholder($content, '{client_last_name}', $client_details['last_name']);
+            $content = $this->replace_placeholder($content, '{client_credit_terms}', $client_details['credit_terms']);
         }
         if($message_name == 'email_msg_workorder') {
             // not currently used
@@ -342,7 +335,7 @@ class Email extends System {
 
     function add_email_signature($swift_emailer = null) {
 
-        $company_details = get_company_details();
+        $company_details = $this->app->components->company->get_company_details();
 
         // Load the signature from the database
         $email_signature = $company_details['email_signature'];
@@ -372,11 +365,11 @@ class Email extends System {
         $company_website = '<a href="'.$company_details['website'].'">'.$company_website.'</a>';        
 
         // Swap placeholders
-        $email_signature  = replace_placeholder($email_signature, '{company_logo}', $logo_string);
-        $email_signature  = replace_placeholder($email_signature, '{company_name}', $company_details['company_name']);
-        $email_signature  = replace_placeholder($email_signature, '{company_address}', $company_address);
-        $email_signature  = replace_placeholder($email_signature, '{company_telephone}', $company_details['telephone']);
-        $email_signature  = replace_placeholder($email_signature, '{company_website}', $company_website);
+        $email_signature  = $this->replace_placeholder($email_signature, '{company_logo}', $logo_string);
+        $email_signature  = $this->replace_placeholder($email_signature, '{company_name}', $company_details['company_name']);
+        $email_signature  = $this->replace_placeholder($email_signature, '{company_address}', $company_address);
+        $email_signature  = $this->replace_placeholder($email_signature, '{company_telephone}', $company_details['telephone']);
+        $email_signature  = $this->replace_placeholder($email_signature, '{company_website}', $company_website);
 
         // Return the processed signature
         return $email_signature ;
@@ -403,7 +396,7 @@ class Email extends System {
         $body = preg_replace_callback('|(["\'>])http(.*index\.php.*)+(["\'<])|U',
             function($matches) {
 
-                return $matches[1].build_sef_url($matches[2], 'absolute').$matches[3];
+                return $matches[1].$this->app->system->router->build_sef_url($matches[2], 'absolute').$matches[3];
 
             }, $body);
 
@@ -416,10 +409,10 @@ class Email extends System {
     function write_record_to_email_error_log($record) {
 
         // if email error logging is not enabled exit
-        if(\Factory::getConfig()->get('qwcrm_email_error_log') != true) { return; }    
+        if($this->app->config->get('qwcrm_email_error_log') != true) { return; }    
 
         // Build log entry    
-        $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . \Factory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
+        $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $this->app->user->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
         $log_entry .= $record . "\r\n\r\n";
         $log_entry .= '-----------------------------------------------------------------------------' . "\r\n\r\n";
 
@@ -442,10 +435,10 @@ class Email extends System {
     function write_record_to_email_transport_log($record) {
 
         // if email transport logging is not enabled exit
-        if(\Factory::getConfig()->get('qwcrm_email_transport_log') != true) { return; }
+        if($this->app->config->get('qwcrm_email_transport_log') != true) { return; }
 
         // Build log entry
-        $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . \Factory::getUser()->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
+        $log_entry = $_SERVER['REMOTE_ADDR'] . ',' . $this->app->user->login_username . ',' . date("[d/M/Y:H:i:s O]", time())."\r\n\r\n";
         $log_entry .= $record . "\r\n\r\n";
         $log_entry .= '-----------------------------------------------------------------------------' . "\r\n\r\n";
 

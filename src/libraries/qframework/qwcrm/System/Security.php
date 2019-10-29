@@ -23,7 +23,7 @@ class Security extends System {
 
         // Force SSL/HTTPS if enabled - add base path stuff here
         if($force_ssl_config >= 1 && !isset($_SERVER['HTTPS'])) {   
-            force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
+            $this->app->system->general->force_page($_SERVER['REQUEST_URI'], null, null, 'auto', 'auto', 'https' );
         }
 
     }
@@ -173,7 +173,7 @@ class Security extends System {
 
     public function confirm_direct_access($component, $page_tpl) {
 
-        if($_SERVER['REQUEST_URI'] === build_url_from_variables($component, $page_tpl, $url_length = 'relative')) {
+        if($_SERVER['REQUEST_URI'] === $this->app->system->router->build_url_from_variables($component, $page_tpl, $url_length = 'relative')) {
 
             return true;
 

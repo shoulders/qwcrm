@@ -16,16 +16,13 @@ class Variables extends System {
 
     public function load_system_variables() {
 
-        $smarty = \Factory::getSmarty();
-
         ##########################################################
         #   Assign Global PHP Variables                          #
         ##########################################################
 
         // If there are DATABASE ERRORS, they will present here (white screen) when verify QWcrm function is not on
         if(!defined('QWCRM_SETUP')) {
-            $app = \Factory::getApplication();
-            $company_details = $app->system->general->get_company_details();
+            $company_details = $this->app->system->general->get_company_details();
             define('DATE_FORMAT',   $company_details['date_format']);
             define('QW_TAX_SYSTEM', $company_details['tax_system'] );
         }
@@ -35,38 +32,38 @@ class Variables extends System {
         ##########################################################################
 
         // QWcrm System Folders
-        $smarty->assign('base_path',                QWCRM_BASE_PATH             );      // set base path, useful for javascript links i.e. 404.tpl
-        $smarty->assign('media_dir',                QW_MEDIA_DIR                );      // set media directory
+        $this->app->smarty->assign('base_path',                QWCRM_BASE_PATH             );      // set base path, useful for javascript links i.e. 404.tpl
+        $this->app->smarty->assign('media_dir',                QW_MEDIA_DIR                );      // set media directory
 
         // QWcrm Theme Directory Template Variables
-        $smarty->assign('theme_dir',                THEME_DIR                   );      // set theme directory
-        $smarty->assign('theme_images_dir',         THEME_IMAGES_DIR            );      // set theme images directory
-        $smarty->assign('theme_css_dir',            THEME_CSS_DIR               );      // set theme CSS directory
-        $smarty->assign('theme_js_dir',             THEME_JS_DIR                );      // set theme JS directory
+        $this->app->smarty->assign('theme_dir',                THEME_DIR                   );      // set theme directory
+        $this->app->smarty->assign('theme_images_dir',         THEME_IMAGES_DIR            );      // set theme images directory
+        $this->app->smarty->assign('theme_css_dir',            THEME_CSS_DIR               );      // set theme CSS directory
+        $this->app->smarty->assign('theme_js_dir',             THEME_JS_DIR                );      // set theme JS directory
 
         // QWcrm Theme Directory Template Smarty File Include Path Variables
-        $smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
+        $this->app->smarty->assign('theme_js_dir_finc',        THEME_JS_DIR_FINC           );
 
         // This assigns framework globals to smarty and also prevents undefined variable errors (mainly for the menu)
-        isset(\CMSApplication::$VAR['user_id'])          ? $smarty->assign('user_id', \CMSApplication::$VAR['user_id'])               : $smarty->assign('user_id', null);
-        isset(\CMSApplication::$VAR['employee_id'])      ? $smarty->assign('employee_id', \CMSApplication::$VAR['employee_id'])       : $smarty->assign('employee_id', null);
-        isset(\CMSApplication::$VAR['client_id'])        ? $smarty->assign('client_id', \CMSApplication::$VAR['client_id'])           : $smarty->assign('client_id', null);
-        isset(\CMSApplication::$VAR['workorder_id'])     ? $smarty->assign('workorder_id', \CMSApplication::$VAR['workorder_id'])     : $smarty->assign('workorder_id', null);
-        isset(\CMSApplication::$VAR['schedule_id'])      ? $smarty->assign('schedule_id', \CMSApplication::$VAR['schedule_id'])       : $smarty->assign('schedule_id', null);
-        isset(\CMSApplication::$VAR['invoice_id'])       ? $smarty->assign('invoice_id', \CMSApplication::$VAR['invoice_id'])         : $smarty->assign('invoice_id', null);
-        isset(\CMSApplication::$VAR['voucher_id'])       ? $smarty->assign('voucher_id', \CMSApplication::$VAR['voucher_id'])         : $smarty->assign('voucher_id', null); 
-        isset(\CMSApplication::$VAR['payment_id'])       ? $smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'])         : $smarty->assign('payment_id', null);
-        isset(\CMSApplication::$VAR['refund_id'])        ? $smarty->assign('refund_id', \CMSApplication::$VAR['refund_id'])           : $smarty->assign('refund_id', null);
-        isset(\CMSApplication::$VAR['expense_id'])       ? $smarty->assign('expense_id', \CMSApplication::$VAR['expense_id'])         : $smarty->assign('expense_id', null);    
-        isset(\CMSApplication::$VAR['otherincome_id'])   ? $smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id']) : $smarty->assign('otherincome_id', null);      
-        isset(\CMSApplication::$VAR['supplier_id'])      ? $smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'])       : $smarty->assign('supplier_id', null);    
+        isset(\CMSApplication::$VAR['user_id'])          ? $this->app->smarty->assign('user_id', \CMSApplication::$VAR['user_id'])               : $this->app->smarty->assign('user_id', null);
+        isset(\CMSApplication::$VAR['employee_id'])      ? $this->app->smarty->assign('employee_id', \CMSApplication::$VAR['employee_id'])       : $this->app->smarty->assign('employee_id', null);
+        isset(\CMSApplication::$VAR['client_id'])        ? $this->app->smarty->assign('client_id', \CMSApplication::$VAR['client_id'])           : $this->app->smarty->assign('client_id', null);
+        isset(\CMSApplication::$VAR['workorder_id'])     ? $this->app->smarty->assign('workorder_id', \CMSApplication::$VAR['workorder_id'])     : $this->app->smarty->assign('workorder_id', null);
+        isset(\CMSApplication::$VAR['schedule_id'])      ? $this->app->smarty->assign('schedule_id', \CMSApplication::$VAR['schedule_id'])       : $this->app->smarty->assign('schedule_id', null);
+        isset(\CMSApplication::$VAR['invoice_id'])       ? $this->app->smarty->assign('invoice_id', \CMSApplication::$VAR['invoice_id'])         : $this->app->smarty->assign('invoice_id', null);
+        isset(\CMSApplication::$VAR['voucher_id'])       ? $this->app->smarty->assign('voucher_id', \CMSApplication::$VAR['voucher_id'])         : $this->app->smarty->assign('voucher_id', null); 
+        isset(\CMSApplication::$VAR['payment_id'])       ? $this->app->smarty->assign('payment_id', \CMSApplication::$VAR['payment_id'])         : $this->app->smarty->assign('payment_id', null);
+        isset(\CMSApplication::$VAR['refund_id'])        ? $this->app->smarty->assign('refund_id', \CMSApplication::$VAR['refund_id'])           : $this->app->smarty->assign('refund_id', null);
+        isset(\CMSApplication::$VAR['expense_id'])       ? $this->app->smarty->assign('expense_id', \CMSApplication::$VAR['expense_id'])         : $this->app->smarty->assign('expense_id', null);    
+        isset(\CMSApplication::$VAR['otherincome_id'])   ? $this->app->smarty->assign('otherincome_id', \CMSApplication::$VAR['otherincome_id']) : $this->app->smarty->assign('otherincome_id', null);      
+        isset(\CMSApplication::$VAR['supplier_id'])      ? $this->app->smarty->assign('supplier_id', \CMSApplication::$VAR['supplier_id'])       : $this->app->smarty->assign('supplier_id', null);    
 
         // Used throughout the site
         if(!defined('QWCRM_SETUP')) {
-            $smarty->assign('currency_sym',  $company_details['currency_symbol']     );
-            $smarty->assign('company_logo',  QW_MEDIA_DIR . $company_details['logo'] );
-            $smarty->assign('qw_tax_system', QW_TAX_SYSTEM                           ); 
-            $smarty->assign('date_format',   DATE_FORMAT                             );
+            $this->app->smarty->assign('currency_sym',  $company_details['currency_symbol']     );
+            $this->app->smarty->assign('company_logo',  QW_MEDIA_DIR . $company_details['logo'] );
+            $this->app->smarty->assign('qw_tax_system', QW_TAX_SYSTEM                           ); 
+            $this->app->smarty->assign('date_format',   DATE_FORMAT                             );
         }
 
         #############################
@@ -83,16 +80,13 @@ class Variables extends System {
 
     public function smarty_set_user_variables() {     
 
-        $smarty = \Factory::getSmarty();
-        $user = \Factory::getUser();    
-
-        $smarty->assign('login_user_id',            $user->login_user_id          );
-        $smarty->assign('login_username',           $user->login_username         );
-        $smarty->assign('login_usergroup_id',       $user->login_usergroup_id     );
-        $smarty->assign('login_display_name',       $user->login_display_name     );
-        $smarty->assign('login_token',              $user->login_token            );
-        $smarty->assign('login_is_employee',        $user->login_is_employee      );
-        $smarty->assign('login_client_id',          $user->login_client_id        );
+        $this->app->smarty->assign('login_user_id',            $this->app->user->login_user_id          );
+        $this->app->smarty->assign('login_username',           $this->app->user->login_username         );
+        $this->app->smarty->assign('login_usergroup_id',       $this->app->user->login_usergroup_id     );
+        $this->app->smarty->assign('login_display_name',       $this->app->user->login_display_name     );
+        $this->app->smarty->assign('login_token',              $this->app->user->login_token            );
+        $this->app->smarty->assign('login_is_employee',        $this->app->user->login_is_employee      );
+        $this->app->smarty->assign('login_client_id',          $this->app->user->login_client_id        );
 
         return;
 

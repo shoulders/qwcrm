@@ -20,7 +20,7 @@ class QError extends System {
     public function configure_php_error_reporting() {
 
         // Set the error_reporting
-        switch (\Factory::getConfig()->get('error_reporting'))
+        switch ($this->app->config->get('error_reporting'))
         {
             case 'default':
             case '-1':

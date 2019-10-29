@@ -189,11 +189,11 @@ abstract class Factory {
     protected static function createSession(array $options = array())
     {
         // Get the Joomla configuration settings
-        $conf    = self::getConfig();
-        $handler = $conf->get('session_handler', 'none');
+        $config    = self::getConfig();
+        $handler = $config->get('session_handler', 'none');
 
         // Config time is in minutes already declared in loadsession()
-        //$options['expire'] = ($conf->get('session_lifetime')) ? $conf->get('session_lifetime') * 60 : 900;  // this is already stated in load session
+        //$options['expire'] = ($config->get('session_lifetime')) ? $config->get('session_lifetime') * 60 : 900;  // this is already stated in load session
 
         $sessionHandler = new JSessionHandlerJoomla($options);
         $session        = Joomla\CMS\Session\Session::getInstance($handler, $options, $sessionHandler);
@@ -311,7 +311,7 @@ abstract class Factory {
     protected static function createDbo()
     {        
         
-        $conf = self::getConfig();
+        $config = self::getConfig();
         $smarty = self::getSmarty();
         
         $db = ADONewConnection('mysqli');
@@ -343,12 +343,12 @@ abstract class Factory {
         //error_reporting(0); // Disable PHP error reporting (works globally) (not needed with this version of ADOdb)
 
         // ADOdb will show as connected if null values are sent to $db->connect  ?? - This is needed to allow install/migration
-        if ($conf->get('db_host') && $conf->get('db_user') && $conf->get('db_name')) {
+        if ($config->get('db_host') && $config->get('db_user') && $config->get('db_name')) {
             
             // Create ADOdb database connection - and collection exceptions
             try
             {        
-                $db->Connect($conf->get('db_host'), $conf->get('db_user'), $conf->get('db_pass'), $conf->get('db_name'));
+                $db->Connect($config->get('db_host'), $config->get('db_user'), $config->get('db_pass'), $config->get('db_name'));
             }
 
             catch (Exception $e)
@@ -356,12 +356,12 @@ abstract class Factory {
                 // Re-Enable PHP error reporting
                 //error_reporting($reporting_level); (not needed with this version of ADOdb)
 
-                if($conf->get('test_db_connection') == 'test') {
+                if($config->get('test_db_connection') == 'test') {
                     //echo $e->msg;
                     //var_dump($e);
                     //adodb_backtrace($e->gettrace());
-                    $conf->set('test_db_connection', 'failed');
-                    systemMessagesWrite('danger', prepare_error_data('error_database_connection', $e->msg));
+                    $config->set('test_db_connection', 'failed');
+                    self::getApplication()->components->variables->systemMessagesWrite('danger', prepare_error_data('error_database_connection', $e->msg));
                 }
 
                 return false;
@@ -372,19 +372,19 @@ abstract class Factory {
             //error_reporting($reporting_level);
             
             // If just testing the database connection
-            if($conf->get('test_db_connection') == 'test') {
+            if($config->get('test_db_connection') == 'test') {
                 
                 if(!$db->isConnected()) {
                     
                     // Database connection failed
-                    systemMessagesWrite('danger', prepare_error_data('error_database_connection', $db->ErrorMsg()));
-                    $conf->set('test_db_connection', 'failed');
+                    self::getApplication()->components->variables->systemMessagesWrite('danger', prepare_error_data('error_database_connection', $db->ErrorMsg()));
+                    $config->set('test_db_connection', 'failed');
                     return;
                     
                 } else {
                     
                     // Database connection succeeded
-                    $conf->set('test_db_connection', 'passed');
+                    $config->set('test_db_connection', 'passed');
                     return;
                     
                 }                
@@ -442,7 +442,7 @@ abstract class Factory {
      */
     protected static function createSmarty()
     {        
-        $conf = self::getConfig();
+        $config = self::getConfig();
         $smarty = new Smarty;
         
         /* Configure Smarty */
@@ -452,21 +452,21 @@ abstract class Factory {
         $smarty->template_dir           = THEME_TEMPLATE_DIR;
         $smarty->cache_dir              = SMARTY_CACHE_DIR;
         $smarty->compile_dir            = SMARTY_COMPILE_DIR;
-        $smarty->force_compile          = $conf->get('smarty_force_compile');
+        $smarty->force_compile          = $config->get('smarty_force_compile');
 
         // Enable caching
-        if($conf->get('smarty_caching') == '1') { $smarty->caching = Smarty::CACHING_LIFETIME_CURRENT;}
-        if($conf->get('smarty_caching') == '2') { $smarty->caching = Smarty::CACHING_LIFETIME_SAVED;}
+        if($config->get('smarty_caching') == '1') { $smarty->caching = Smarty::CACHING_LIFETIME_CURRENT;}
+        if($config->get('smarty_caching') == '2') { $smarty->caching = Smarty::CACHING_LIFETIME_SAVED;}
 
         // Other Caching settings
-        $smarty->force_cache            = $conf->get('smarty_force_cache');
-        $smarty->cache_lifetime         = $conf->get('smarty_cache_lifetime');
-        $smarty->cache_modified_check   = $conf->get('smarty_cache_modified_check');
-        $smarty->cache_locking          = $conf->get('smarty_cache_locking');
+        $smarty->force_cache            = $config->get('smarty_force_cache');
+        $smarty->cache_lifetime         = $config->get('smarty_cache_lifetime');
+        $smarty->cache_modified_check   = $config->get('smarty_cache_modified_check');
+        $smarty->cache_locking          = $config->get('smarty_cache_locking');
 
         // Debugging    
-        $smarty->debugging_ctrl         = $conf->get('smarty_debugging_ctrl');
-        //$smarty->debugging            = $conf->get('smarty_debugging');                                 // Does not work with fetch()
+        $smarty->debugging_ctrl         = $config->get('smarty_debugging_ctrl');
+        //$smarty->debugging            = $config->get('smarty_debugging');                                 // Does not work with fetch()
         //$smarty->debugging_ctrl       = ($_SERVER['SERVER_NAME'] == 'localhost') ? 'URL' : 'NONE';      // Restrict debugging URL to work only on localhost
         //$smarty->debug_tpl            = LIBRARIES_DIR.'smarty/debug.tpl';                               // By default it is in the Smarty directory
 

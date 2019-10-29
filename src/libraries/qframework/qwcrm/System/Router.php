@@ -18,8 +18,6 @@ class Router extends System {
 
     function page_controller($mode = null, $component = null, $page_tpl = null, $themeVar = null) {        
         
-        if(!defined('QWCRM_SETUP')) { $user = \Factory::getUser(); }
-
         // Set routing variables locally for analysis, either manually supplied or from the system
         $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
         $page_tpl = isset($page_tpl) ? $page_tpl : ( isset(\CMSApplication::$VAR['page_tpl']) ? \CMSApplication::$VAR['page_tpl'] : null);
@@ -83,7 +81,7 @@ class Router extends System {
         // If no page specified, set page based on login status
         if(!isset($component) && !isset($page_tpl) ) {    
 
-            if(isset($user->login_token)) {
+            if(isset($this->app->user->login_token)) {
 
                 // If logged in
                 $component           = 'core';
@@ -334,8 +332,6 @@ class Router extends System {
 
     function get_routing_variables_from_url($url) {
 
-        $user = \Factory::getUser();
-
         // Check if URL is valid
         if(!$this->check_link_is_valid($_SERVER['REQUEST_URI'])) {
 
@@ -364,7 +360,7 @@ class Router extends System {
             // If $VAR is empty it is because page is index.php, set required
             if(!isset($routingVariables['component']) && !isset($routingVariables['page_tpl'])) {
 
-                if(isset($user->login_token)) {
+                if(isset($this->app->user->login_token)) {
 
                     // If logged in
                     $routingVariables['component']           = 'core';
@@ -392,10 +388,8 @@ class Router extends System {
 
     function check_page_acl($component, $page_tpl, $user = null) {
 
-        $db = \Factory::getDbo();
-
         // Get the current user unless a user (object) has been passed
-        if($user == null) { $user = \Factory::getUser(); }
+        if($user == null) { $user = $this->app->user; }
 
         // If installing
         if(defined('QWCRM_SETUP')) { return true; }
@@ -450,8 +444,6 @@ class Router extends System {
     #######################
 
     function check_page_exists($component = null, $page_tpl = null) {
-
-        $db = \Factory::getDbo();
 
         // If a valid page has not been submitted
         if($component == null || $page_tpl == null) { return false; }

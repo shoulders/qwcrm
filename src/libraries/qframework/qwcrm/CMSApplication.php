@@ -177,8 +177,8 @@ class CMSApplication {
             $session->checkSession();
         }
 
-        // Set the session object.
-        \Factory::$session = $session;
+        // Set the session object. the getSession() adds this to the static variable so i could remove this
+        //\Factory::$session = $session;
         
         // Check the session table for stale entries (replaces above)
         $this->removeExpiredSessions();
@@ -226,7 +226,7 @@ class CMSApplication {
      */
     public function setUserState($key, $value)
     {
-        $session = self::getSession();
+        $session = \Factory::getSession();
         $registry = $session->get('registry');
 
         if (!is_null($registry))

@@ -23,7 +23,7 @@ class Page extends System {
             $pageController = $this->app->system->router->page_controller($mode, $component, $page_tpl, $themeVar);
 
             // Return the page as a variable
-            return get_page_content($pageController, $mode, $component, $page_tpl, $themeVar);
+            return $this->get_page_content($pageController, $mode, $component, $page_tpl, $themeVar);
         }
 
         // Normal Behaviour, set the routing, get the page, load the page into the browser
@@ -47,10 +47,10 @@ class Page extends System {
 
     public function get_page_content($page_controller, $mode = null, $component = null, $page_tpl = null, $themeVar = null) {    
 
-        $config = \Factory::getConfig();
-        $smarty = \Factory::getSmarty();    // This is required for the required files/templates grabbed here 
-        $pagePayload = '';                   // Local store for page content
-        if(!defined('QWCRM_SETUP')) { $user = \Factory::getUser(); }
+        // Local store for page content
+        $pagePayload = '';             
+        
+        if(!defined('QWCRM_SETUP')) { $user = $this->app->user; }
 
         // Set the correct theme specification, either manually supplied or from the system
         $component = isset($component) ? $component : ( isset(\CMSApplication::$VAR['component']) ? \CMSApplication::$VAR['component'] : null);
@@ -73,7 +73,7 @@ class Page extends System {
 
             // This allows autosuggest to work
             if ($themeVar !== 'raw_html') {
-                $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');
+                $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
             }
 
             goto page_build_end;
@@ -88,43 +88,43 @@ class Page extends System {
         // Fetch Header Block
         if(!isset($themeVar) || $themeVar != 'off') {     
             require(COMPONENTS_DIR.'core/blocks/theme_header_block.php');
-            $pagePayload .= $smarty->fetch('core/blocks/theme_header_block.tpl');
+            $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_header_block.tpl');
         } else {
             //echo '<!DOCTYPE html><head></head><body>';
             require(COMPONENTS_DIR.'core/blocks/theme_header_theme_off_block.php');
-            $pagePayload .= $smarty->fetch('core/blocks/theme_header_theme_off_block.tpl');
+            $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_header_theme_off_block.tpl');
         }
 
         // Fetch Header Legacy Template Code and Menu Block - Clients, Guests and Public users will not see the menu
         if((!isset($themeVar) || $themeVar != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {       
-            $pagePayload .= $smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
+            $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_header_legacy_supplement_block.tpl');
 
             // is the menu disabled
             if(!isset($themeVar) || $themeVar != 'menu_off') {
                 require(COMPONENTS_DIR.'core/blocks/theme_menu_block.php');
-                $pagePayload .= $smarty->fetch('core/blocks/theme_menu_block.tpl');
+                $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_menu_block.tpl');
             }
 
         }  
 
         // Fetch the specified Page Tempalte
-        $pagePayload .= $smarty->fetch($component.'/'.$page_tpl.'.tpl');
+        $pagePayload .= $this->app->smarty->fetch($component.'/'.$page_tpl.'.tpl');
 
         // Fetch Footer Legacy Template code Block (closes content table)
         if((!isset($themeVar) || $themeVar != 'off') && isset($user->login_token) && $user->login_usergroup_id != 7 && $user->login_usergroup_id != 8 && $user->login_usergroup_id != 9) {
-            $pagePayload .= $smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
+            $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_footer_legacy_supplement_block.tpl');             
         }
 
         // Fetch the Footer Block
         if(!isset($themeVar) || $themeVar != 'off'){        
             require(COMPONENTS_DIR.'core/blocks/theme_footer_block.php'); 
-            $pagePayload .= $smarty->fetch('core/blocks/theme_footer_block.tpl');
+            $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_footer_block.tpl');
         }    
 
         // Fetch the Debug Block
         if(!defined('QWCRM_SETUP') && $config->get('qwcrm_debug')){
             require(COMPONENTS_DIR.'core/blocks/theme_debug_block.php');
-            $pagePayload .= $smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl'); /////////////////// This TPL needs sorting  
+            $pagePayload .= $this->app->smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl'); /////////////////// This TPL needs sorting  
             $pagePayload .= "\r\n</body>\r\n</html>";
         } else {
             $pagePayload .= "\r\n</body>\r\n</html>";
@@ -271,7 +271,7 @@ class Page extends System {
         $pagePayload = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
             function($matches) {
 
-                return $matches[1].build_sef_url($matches[2]).$matches[3];
+                return $matches[1].$this->build_sef_url($matches[2]).$matches[3];
 
             }, $pagePayload);
 
@@ -283,14 +283,12 @@ class Page extends System {
 
     public function set_page_header_and_meta_data($component, $page_tpl) {
 
-        $smarty = \Factory::getSmarty();
-
         // Page Title
-        $smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
+        $this->app->smarty->assign('page_title', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_PAGE_TITLE'));    
 
         // Meta Tags
-        $smarty->assign('meta_description', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
-        $smarty->assign('meta_keywords',    _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
+        $this->app->smarty->assign('meta_description', _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_DESCRIPTION')  );
+        $this->app->smarty->assign('meta_keywords',    _gettext(strtoupper($component).'_'.strtoupper($page_tpl).'_META_KEYWORDS')     );
 
         return;
 
