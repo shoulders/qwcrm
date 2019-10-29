@@ -246,13 +246,13 @@ class Setup extends Components {
         
         // Walk through php_options and convert objects into arrays
         $php_options = $this->getPhpOptions();
-        array_walk($php_options, public function(&$value) {
+        array_walk($php_options, function(&$value) {
             $value = get_object_vars($value);
         });
         
         // Walk through php_options and convert objects into arrays
         $php_settings = $this->getPhpSettings();
-        array_walk($php_settings, public function(&$value) {
+        array_walk($php_settings, function(&$value) {
             $value = get_object_vars($value);
         });
         
@@ -356,7 +356,7 @@ class Setup extends Components {
         // Check for missing native json_encode / json_decode support.
         $option = new stdClass;
         $option->label  = _gettext("JSON Support");
-        $option->state  = public function_exists('json_encode') && public function_exists('json_decode');
+        $option->state  = function_exists('json_encode') && function_exists('json_decode');
         $option->notice = null;
         $options[] = $option;
 
@@ -416,7 +416,7 @@ class Setup extends Components {
         // Check for file_get_contents() support
         $option = new stdClass;
         $option->label  = _gettext("file_get_contents() Enabled");
-        $option->state  = public function_exists('file_get_contents');
+        $option->state  = function_exists('file_get_contents');
         $option->notice = $option->state ? null : _gettext("The PHP Function 'file_get_contents()' needs to be enabled.");
         $options[] = $option;
         
@@ -510,7 +510,7 @@ class Setup extends Components {
         // Check for native ZIP support.
         $setting = new stdClass;
         $setting->label = _gettext("Zlib Compression Support");
-        $setting->state = public function_exists('zip_open') && public function_exists('zip_read');
+        $setting->state = function_exists('zip_open') && function_exists('zip_read');
         $setting->recommended = true;
         $setting->notice = null;
         $settings[] = $setting;
@@ -532,7 +532,7 @@ class Setup extends Components {
         // Check for locale_accept_from_http() support
         $setting = new stdClass;
         $setting->label  = _gettext("locale_accept_from_http()");
-        $setting->state  = public function_exists('locale_accept_from_http');        
+        $setting->state  = function_exists('locale_accept_from_http');        
         $setting->recommended = true;
         $setting->notice = $setting->state ? null : _gettext("The PHP Function 'locale_accept_from_http()' is required for automatic language detection. ");
         $settings[] = $setting;
