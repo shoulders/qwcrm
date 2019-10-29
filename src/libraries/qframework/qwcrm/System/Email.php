@@ -65,7 +65,7 @@ class Email extends System {
 
             // Log activity 
             $record = _gettext("Failed to send email to").' `'._gettext("Not Specified").'` ('.$recipient_name.')';        
-            write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+            $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
@@ -84,7 +84,7 @@ class Email extends System {
 
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
-            write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+            $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
@@ -176,7 +176,7 @@ class Email extends System {
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';
             write_record_to_email_error_log($RfcCompliance_exception->getMessage());
-            write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);        
+            $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);        
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
@@ -197,7 +197,7 @@ class Email extends System {
         /* Build the message body */
 
         // Add the email signature if enabled (if not a reset email)
-        if(get_company_details('email_signature_active') && !check_page_accessed_via_qwcrm('user', 'reset') && !check_page_accessed_via_qwcrm('administrator', 'config')) {
+        if(get_company_details('email_signature_active') && !$this->app->system->security->check_page_accessed_via_qwcrm('user', 'reset') && !$this->app->system->security->check_page_accessed_via_qwcrm('administrator', 'config')) {
             $body .= add_email_signature($email);
         } 
 
@@ -244,7 +244,7 @@ class Email extends System {
 
                 // Log activity             
                 $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';            
-                write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+                $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
                 // Output the system message to the browser (if allowed)
                 if (!$silent) {
@@ -261,7 +261,7 @@ class Email extends System {
                 // Log activity
                 $record = _gettext("Successfully sent email to").' '.$recipient_email.' ('.$recipient_name.')'.' '._gettext("with the subject").' : '.$subject; 
                 if($workorder_id) {insert_workorder_history_note($workorder_id, $record.' : '._gettext("and was sent by").' '.\Factory::getUser()->login_display_name);}
-                write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);            
+                $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);            
 
                 // Output the system message to the browser (if allowed)
                 if (!$silent) {
@@ -273,7 +273,7 @@ class Email extends System {
 
                 // Update last active record (will not error if no invoice_id sent )
                 update_user_last_active($employee_id);
-                if($client_id) {update_client_last_active($client_id);}  
+                if($client_id) {$this->app->components->client->update_client_last_active($client_id);}  
                 if($workorder_id) {update_workorder_last_active($workorder_id);}
                 if($invoice_id) {update_invoice_last_active($invoice_id);}
 
@@ -291,7 +291,7 @@ class Email extends System {
             // Log activity 
             $record = _gettext("Failed to send email to").' '.$recipient_email.' ('.$recipient_name.')';        
             write_record_to_email_error_log($Transport_exception->getMessage());
-            write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
+            $this->app->system->general->write_record_to_activity_log($record, $employee_id, $client_id, $workorder_id, $invoice_id);
 
             // Output the system message to the browser (if allowed)
             if (!$silent) {
@@ -425,7 +425,7 @@ class Email extends System {
 
         // Write log entry
         if(!$fp = fopen(EMAIL_ERROR_LOG, 'a')) {        
-            force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
+            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Error Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -451,7 +451,7 @@ class Email extends System {
 
         // Write log entry  
         if(!$fp = fopen(EMAIL_TRANSPORT_LOG, 'a')) {        
-            force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
+            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Email Transport Log to save the record."));
         }
 
         fwrite($fp, $log_entry);

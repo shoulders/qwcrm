@@ -24,20 +24,20 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of users has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    write_record_to_activity_log($record);
+    $this->app->system->general->write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    force_page('user', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->general->force_page('user', 'search', \CMSApplication::$VAR, 'get');
     
 }
 
 // Build the page with the results for the current search (if there is no search term, all results are returned)
-$smarty->assign('search_category',   \CMSApplication::$VAR['search_category']                                                                                                                                             );
-$smarty->assign('search_term',       \CMSApplication::$VAR['search_term']                                                                                                                                                 );
-$smarty->assign('filter_status',     \CMSApplication::$VAR['filter_status']                                                                                                                                               );
-$smarty->assign('filter_usertype',   \CMSApplication::$VAR['filter_usertype']                                                                                                                                             );
-$smarty->assign('filter_usergroup',  \CMSApplication::$VAR['filter_usergroup']                                                                                                                                             );
-$smarty->assign('usergroups',        get_usergroups()                                                                                                                                                 );
-$smarty->assign('user_locations',    get_user_locations());
-$smarty->assign('display_users',     display_users('user_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_usergroup'], \CMSApplication::$VAR['filter_usertype'], \CMSApplication::$VAR['filter_status'])    );
+$this->app->smarty->assign('search_category',   \CMSApplication::$VAR['search_category']                                                                                                                                             );
+$this->app->smarty->assign('search_term',       \CMSApplication::$VAR['search_term']                                                                                                                                                 );
+$this->app->smarty->assign('filter_status',     \CMSApplication::$VAR['filter_status']                                                                                                                                               );
+$this->app->smarty->assign('filter_usertype',   \CMSApplication::$VAR['filter_usertype']                                                                                                                                             );
+$this->app->smarty->assign('filter_usergroup',  \CMSApplication::$VAR['filter_usergroup']                                                                                                                                             );
+$this->app->smarty->assign('usergroups',        $this->app->components->user->get_usergroups()                                                                                                                                                 );
+$this->app->smarty->assign('user_locations',    $this->app->components->user->get_user_locations());
+$this->app->smarty->assign('display_users',     $this->app->components->user->display_users('user_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_usergroup'], \CMSApplication::$VAR['filter_usertype'], \CMSApplication::$VAR['filter_status'])    );

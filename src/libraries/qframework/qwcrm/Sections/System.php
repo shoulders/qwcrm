@@ -8,5 +8,15 @@
 
 defined('_QWEXEC') or die;
 
-// Build the page with the phpinfo
-$this->app->smarty->assign('phpinfo', getPHPInfo());
+abstract class System {
+    
+    /*
+     * Varible for holding the application for use within each system module
+     */
+    protected $app = null;
+    
+    public function __construct() {
+        $this->app = \Factory::getApplication();
+    }
+    
+}

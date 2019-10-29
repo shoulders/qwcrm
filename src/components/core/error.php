@@ -20,13 +20,13 @@ defined('_QWEXEC') or die;
 \CMSApplication::$VAR['error_enable_override'] = isset(\CMSApplication::$VAR['error_enable_override']) ? \CMSApplication::$VAR['error_enable_override'] : null;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm(null, null, \CMSApplication::$VAR['error_enable_override'])) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, \CMSApplication::$VAR['error_enable_override'])) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Process SQL Query for log if SQL loggin is enabled
-if($config->get('qwcrm_sql_logging')) {
+if($this->app->config->get('qwcrm_sql_logging')) {
     
     // Prepare the SQL statement for the error log (already been prepared for output to screen)
     $sql_query_for_log = str_replace('<br>', '\r\n', \CMSApplication::$VAR['error_sql_query']);
@@ -36,12 +36,12 @@ if($config->get('qwcrm_sql_logging')) {
 }
 
 // Log errors to log if enabled
-if($config->get('qwcrm_error_log')) {    
-    write_record_to_error_log(\CMSApplication::$VAR['error_component'].':'.\CMSApplication::$VAR['error_page_tpl'], \CMSApplication::$VAR['error_type'], \CMSApplication::$VAR['error_location'], \CMSApplication::$VAR['error_php_function'], \CMSApplication::$VAR['error_database'], \CMSApplication::$VAR['error_msg'], $sql_query_for_log);    
+if($this->app->config->get('qwcrm_error_log')) {    
+    $this->app->components->general->write_record_to_error_log(\CMSApplication::$VAR['error_component'].':'.\CMSApplication::$VAR['error_page_tpl'], \CMSApplication::$VAR['error_type'], \CMSApplication::$VAR['error_location'], \CMSApplication::$VAR['error_php_function'], \CMSApplication::$VAR['error_database'], \CMSApplication::$VAR['error_msg'], $sql_query_for_log);    
 }
     
 // View RAW error output if allowed and set
-if($user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
+if($this->app->user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
 
     \CMSApplication::$BuildPage = '
         <div>    
@@ -59,19 +59,19 @@ if($user->login_usergroup_id <= 6 && isset($output_raw_error_page)) {
     ';
 
 // View errors in normal template if allowed
-} elseif($user->login_usergroup_id <= 6){
+} elseif($this->app->user->login_usergroup_id <= 6){
 
     // Assign variables to display on the error page (core:error)
-    $smarty->assign('error_component',      \CMSApplication::$VAR['error_component']        );
-    $smarty->assign('error_page_tpl',       \CMSApplication::$VAR['error_page_tpl']         );
-    $smarty->assign('error_type',           \CMSApplication::$VAR['error_type']             );
-    $smarty->assign('error_location',       \CMSApplication::$VAR['error_location']         );
-    $smarty->assign('error_php_function',   \CMSApplication::$VAR['error_php_function']     );
-    $smarty->assign('error_database',       \CMSApplication::$VAR['error_database']         );
-    $smarty->assign('error_sql_query',      \CMSApplication::$VAR['error_sql_query']        );
-    $smarty->assign('error_msg',            \CMSApplication::$VAR['error_msg']              );
+    $this->app->smarty->assign('error_component',      \CMSApplication::$VAR['error_component']        );
+    $this->app->smarty->assign('error_page_tpl',       \CMSApplication::$VAR['error_page_tpl']         );
+    $this->app->smarty->assign('error_type',           \CMSApplication::$VAR['error_type']             );
+    $this->app->smarty->assign('error_location',       \CMSApplication::$VAR['error_location']         );
+    $this->app->smarty->assign('error_php_function',   \CMSApplication::$VAR['error_php_function']     );
+    $this->app->smarty->assign('error_database',       \CMSApplication::$VAR['error_database']         );
+    $this->app->smarty->assign('error_sql_query',      \CMSApplication::$VAR['error_sql_query']        );
+    $this->app->smarty->assign('error_msg',            \CMSApplication::$VAR['error_msg']              );
 
-    \CMSApplication::$BuildPage .= $smarty->fetch('core/error.tpl');
+    \CMSApplication::$BuildPage .= $this->app->smarty->fetch('core/error.tpl');
 
 // No permission to see errors
 } else {

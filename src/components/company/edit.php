@@ -15,16 +15,16 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['qform']['submit'])) {
 
     // Submit data to the database
-    update_company_details(\CMSApplication::$VAR['qform']);    
+    $this->app->components->company->update_company_details(\CMSApplication::$VAR['qform']);    
     
     // Reload Company options and display a success message
-    systemMessagesWrite('success', _gettext("Company details updated."));
-    force_page('company', 'edit');
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("Company details updated."));
+    $this->app->system->general->force_page('company', 'edit');
     
 }
 
 // Build the page
-$smarty->assign('date_formats', get_date_formats());
-$smarty->assign('tax_systems', get_tax_systems() );
-$smarty->assign('vat_tax_codes', get_vat_tax_codes(null, true) );
-$smarty->assign('company_details', get_company_details() );
+$this->app->smarty->assign('date_formats', $this->app->system->general->get_date_formats());
+$this->app->smarty->assign('tax_systems', $this->app->components->company->get_tax_systems() );
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(null, true) );
+$this->app->smarty->assign('company_details', $this->app->components->company->get_company_details() );

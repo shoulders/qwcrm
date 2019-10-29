@@ -8,7 +8,7 @@
 
 defined('_QWEXEC') or die;
 
-class System {
+abstract class Modules {
     
     /*
      * Varible for holding the application for use within each system module

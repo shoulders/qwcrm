@@ -11,51 +11,51 @@ defined('_QWEXEC') or die;
 $refund_details = array();
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('refund', 'new') && !check_page_accessed_via_qwcrm('invoice', 'status')) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm('refund', 'new') && !$this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'status')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have a refund type and is valid
 if(!isset(\CMSApplication::$VAR['item_type']) || !\CMSApplication::$VAR['item_type'] && (\CMSApplication::$VAR['item_type'] == 'invoice' || \CMSApplication::$VAR['item_type'] == 'cash_purchase')) {
-    systemMessagesWrite('danger', _gettext("No Refund Type."));
-    force_page('refund', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund Type."));
+    $this->app->system->general->force_page('refund', 'search');
 }
 
 // Check if we have an invoice_id
 if(!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id']) {
-    systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
-    force_page('refund', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Invoice ID supplied."));
+    $this->app->system->general->force_page('refund', 'search');
 }
     
 // Process the submitted refund
 if (isset(\CMSApplication::$VAR['submit'])) {
     
     // Insert the Refund into the database
-    $refund_id = refund_invoice(\CMSApplication::$VAR['qform']);
-    recalculate_refund_totals($refund_id);  // This is not strictly needed here because balance = unit_gross
+    $refund_id = $this->app->components->invoice->refund_invoice(\CMSApplication::$VAR['qform']);
+    $this->app->components->refund->recalculate_refund_totals($refund_id);  // This is not strictly needed here because balance = unit_gross
     
         if (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
 
             // Load the new payment page for expense
-             force_page('payment', 'new&type=refund&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+             $this->app->system->general->force_page('payment', 'new&type=refund&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
 
         } else {
 
             // load refund details page
-            force_page('refund', 'details&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
+            $this->app->system->general->force_page('refund', 'details&refund_id='.$refund_id, 'msg_success='._gettext("Refund added successfully.").' '._gettext("ID").': '.$refund_id);
         }    
 
  // Load refund page with the invoice refund details
 } else { 
 
     // Make sure the invoice is allowed to be refunded
-    if(!check_invoice_can_be_refunded(\CMSApplication::$VAR['invoice_id'])) {
-        systemMessagesWrite('danger', _gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
-        force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
+    if(!$this->app->components->invoice->check_invoice_can_be_refunded(\CMSApplication::$VAR['invoice_id'])) {
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("Invoice").': '.\CMSApplication::$VAR['invoice_id'].' '._gettext("cannot be refunded."));
+        $this->app->system->general->force_page('invoice', 'details&invoice_id='.\CMSApplication::$VAR['invoice_id']);
     }
 
-    $invoice_details = get_invoice_details(\CMSApplication::$VAR['invoice_id']);
+    $invoice_details = $this->app->components->invoice->get_invoice_details(\CMSApplication::$VAR['invoice_id']);
         
     // Build array
     $refund_details['client_id'] = $invoice_details['client_id'];
@@ -68,20 +68,20 @@ if (isset(\CMSApplication::$VAR['submit'])) {
     if(preg_match('/^vat_/', $invoice_details['tax_system']) && \CMSApplication::$VAR['item_type'] == 'invoice') {
         $refund_details['vat_tax_code'] = 'TVM';
     } else {
-        $refund_details['vat_tax_code'] = get_default_vat_tax_code($invoice_details['tax_system']);
+        $refund_details['vat_tax_code'] = $this->app->components->company->get_default_vat_tax_code($invoice_details['tax_system']);
     }
-    $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_cash') ? $invoice_details['sales_tax_rate'] : get_vat_rate($refund_details['vat_tax_code']); 
+    $refund_details['unit_tax_rate'] = ($invoice_details['tax_system'] == 'sales_tax_cash') ? $invoice_details['sales_tax_rate'] : $this->app->company->get_vat_rate($refund_details['vat_tax_code']); 
     $refund_details['unit_tax'] = $invoice_details['unit_tax'];
     $refund_details['unit_gross'] = $invoice_details['unit_gross'];  
     $refund_details['note'] = '';
 
     // Get Client display_name
-    $client_display_name = get_client_details($invoice_details['client_id'], 'display_name'); 
+    $client_display_name = $this->app->components->client->get_client_details($invoice_details['client_id'], 'display_name'); 
 
 }  
 
 // Build the page
-$smarty->assign('refund_details', $refund_details);
-$smarty->assign('refund_types', get_refund_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes()); 
-$smarty->assign('client_display_name', $client_display_name);
+$this->app->smarty->assign('refund_details', $refund_details);
+$this->app->smarty->assign('refund_types', $this->app->components->refund->get_refund_types());
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes()); 
+$this->app->smarty->assign('client_display_name', $client_display_name);

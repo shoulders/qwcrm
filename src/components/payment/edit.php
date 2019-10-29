@@ -10,14 +10,14 @@ defined('_QWEXEC') or die;
 
 // Check if we have an payment_id
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
-    systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
-    force_page('payment', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
+    $this->app->system->general->force_page('payment', 'search');
 }   
 
 // Check if payment can be edited
-if(!check_payment_can_be_edited(\CMSApplication::$VAR['payment_id'])) {
-    systemMessagesWrite('danger', _gettext("You cannot edit this payment because its status does not allow it."));
-    force_page('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
+if(!$this->app->components->payment->check_payment_can_be_edited(\CMSApplication::$VAR['payment_id'])) {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this payment because its status does not allow it."));
+    $this->app->system->general->force_page('payment', 'details&payment_id='.\CMSApplication::$VAR['payment_id']);
 }
     
 // This is a dirty hack because QWcrm is not fully OOP yet
@@ -35,7 +35,7 @@ class UpdatePayment {
         $this->VAR = &$VAR;
         
         // Set Payment details
-        self::$payment_details = get_payment_details($VAR['payment_id']);
+        self::$payment_details = $this->app->components->payment->get_payment_details($VAR['payment_id']);
         
         // Set the various payment type IDs
         $this->VAR['qpayment']['payment_id'] = self::$payment_details['payment_id'];
@@ -58,7 +58,7 @@ class UpdatePayment {
             // Process the update if valid
             if(self::$payment_valid) {  
                 $this->type->update();
-                self::$payment_details = get_payment_details($VAR['payment_id']);
+                self::$payment_details = $this->app->components->payment->get_payment_details($VAR['payment_id']);
             }
             
         }
@@ -87,8 +87,8 @@ class UpdatePayment {
             break;
 
             default:
-            systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
-            force_page('payment', 'search');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
+            $this->app->system->general->force_page('payment', 'search');
             break;
 
         }
@@ -104,10 +104,10 @@ class UpdatePayment {
 $payment = new UpdatePayment(\CMSApplication::$VAR);
 
 // Build the page
-$smarty->assign('client_display_name',      get_client_details(UpdatePayment::$payment_details['client_id'], 'display_name'));
-$smarty->assign('employee_display_name',    get_user_details(UpdatePayment::$payment_details['employee_id'], 'display_name'));
-$smarty->assign('payment_types',            get_payment_types()    );
-$smarty->assign('payment_methods',          get_payment_methods('receive', 'enabled'));
-$smarty->assign('payment_statuses',         get_payment_statuses() );
-$smarty->assign('payment_details',          UpdatePayment::$payment_details);
-$smarty->assign('record_balance',           UpdatePayment::$record_balance);
+$this->app->smarty->assign('client_display_name',      $this->app->components->client->get_client_details(UpdatePayment::$payment_details['client_id'], 'display_name'));
+$this->app->smarty->assign('employee_display_name',    $this->app->components->user->get_user_details(UpdatePayment::$payment_details['employee_id'], 'display_name'));
+$this->app->smarty->assign('payment_types',            $this->app->components->payment->get_payment_types()    );
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->get_payment_methods('receive', 'enabled'));
+$this->app->smarty->assign('payment_statuses',         $this->app->components->payment->get_payment_statuses() );
+$this->app->smarty->assign('payment_details',          UpdatePayment::$payment_details);
+$this->app->smarty->assign('record_balance',           UpdatePayment::$record_balance);

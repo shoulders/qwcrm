@@ -10,15 +10,15 @@ defined('_QWEXEC') or die;
 
 // check if we have a client_note_id
 if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_id']) {
-    systemMessagesWrite('danger', _gettext("No Client Note ID supplied."));
-    force_page('client', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Client Note ID supplied."));
+    $this->app->system->general->force_page('client', 'search');
 }
 
 // Get the client_id before we delete the record
-\CMSApplication::$VAR['client_id'] = get_client_note_details(\CMSApplication::$VAR['client_note_id'], 'client_id');
+\CMSApplication::$VAR['client_id'] = $this->app->components->client->get_client_note_details(\CMSApplication::$VAR['client_note_id'], 'client_id');
 
 // Delete the client note
-delete_client_note(\CMSApplication::$VAR['client_note_id']);
+$this->app->components->client->delete_client_note(\CMSApplication::$VAR['client_note_id']);
 
 // Reload the clients details page
-force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
+$this->app->system->general->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);

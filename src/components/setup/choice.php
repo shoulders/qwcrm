@@ -9,16 +9,16 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm('setup', 'choice', 'setup')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Define the setup type for smarty - currently only used for 'upgrade'
-isset(\CMSApplication::$VAR['setup_type']) ? $smarty->assign('setup_type', \CMSApplication::$VAR['setup_type']) : $smarty->assign('setup_type', null);
+isset(\CMSApplication::$VAR['setup_type']) ? $this->app->smarty->assign('setup_type', \CMSApplication::$VAR['setup_type']) : $this->app->smarty->assign('setup_type', null);
 
 // Create a Setup Object
 $qsetup = new Setup(\CMSApplication::$VAR);
 
 // Get Compatibility Results
-$smarty->assign('compatibility_results', $qsetup->test_server_enviroment_compatibility());
+$this->app->smarty->assign('compatibility_results', $qsetup->test_server_enviroment_compatibility());

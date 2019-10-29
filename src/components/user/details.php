@@ -13,14 +13,14 @@ defined('_QWEXEC') or die;
 
 // Check if we have an user_id
 if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']) {
-    systemMessagesWrite('danger', _gettext("No User ID supplied."));
-    force_page('user', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No User ID supplied."));
+    $this->app->system->general->force_page('user', 'search');
 }
 
 // Build the page
 
-$smarty->assign('user_details',             get_user_details(\CMSApplication::$VAR['user_id'])                                                                            );
-$smarty->assign('client_display_name',      get_client_details(get_user_details(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name')                    );
-$smarty->assign('usergroups',               get_usergroups()                                                                                             );
-$smarty->assign('user_workorders',          display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'open', \CMSApplication::$VAR['user_id']));
-$smarty->assign('user_locations',           get_user_locations());
+$this->app->smarty->assign('user_details',             $this->app->components->user->get_user_details(\CMSApplication::$VAR['user_id'])                                                                            );
+$this->app->smarty->assign('client_display_name',      $this->app->components->client->get_client_details($this->app->components->user->get_user_details(\CMSApplication::$VAR['user_id'], 'client_id'), 'client_display_name')                    );
+$this->app->smarty->assign('usergroups',               $this->app->components->user->get_usergroups()                                                                                             );
+$this->app->smarty->assign('user_workorders',          $this->app->components->workorder->display_workorders('workorder_id', 'DESC', false, '25', \CMSApplication::$VAR['page_no'], null, null, 'open', \CMSApplication::$VAR['user_id']));
+$this->app->smarty->assign('user_locations',           $this->app->components->user->get_user_locations());

@@ -20,19 +20,19 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of refunds has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    write_record_to_activity_log($record);
+    $this->app->system->general->write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    force_page('refund', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->general->force_page('refund', 'search', \CMSApplication::$VAR, 'get');
     
 }
 
 // Build the page
-$smarty->assign('search_category',          \CMSApplication::$VAR['search_category']                                                                                         );
-$smarty->assign('search_term',              \CMSApplication::$VAR['search_term']                                                                                             );
-$smarty->assign('filter_type',              \CMSApplication::$VAR['filter_type']                                                                                             );
-$smarty->assign('filter_status',            \CMSApplication::$VAR['filter_status']                                                                                           );
-$smarty->assign('refund_statuses',          get_refund_statuses()                                                                                           );
-$smarty->assign('refund_types',             get_refund_types()                                                                                              );
-$smarty->assign('display_refunds',          display_refunds('refund_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_status'])   );
+$this->app->smarty->assign('search_category',          \CMSApplication::$VAR['search_category']                                                                                         );
+$this->app->smarty->assign('search_term',              \CMSApplication::$VAR['search_term']                                                                                             );
+$this->app->smarty->assign('filter_type',              \CMSApplication::$VAR['filter_type']                                                                                             );
+$this->app->smarty->assign('filter_status',            \CMSApplication::$VAR['filter_status']                                                                                           );
+$this->app->smarty->assign('refund_statuses',          $this->app->components->refund->get_refund_statuses()                                                                                           );
+$this->app->smarty->assign('refund_types',             $this->app->components->refund->get_refund_types()                                                                                              );
+$this->app->smarty->assign('display_refunds',          $this->app->components->refund->display_refunds('refund_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_status'])   );

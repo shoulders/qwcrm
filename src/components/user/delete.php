@@ -9,26 +9,26 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm()) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have an user_id
 if(!isset(\CMSApplication::$VAR['user_id']) || !\CMSApplication::$VAR['user_id']) {
-    systemMessagesWrite('danger', _gettext("No User ID supplied."));
-    force_page('user', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No User ID supplied."));
+    $this->app->system->general->force_page('user', 'search');
 }
 
 // Run the delete function
-if(!delete_user(\CMSApplication::$VAR['user_id'])) {
+if(!$this->app->components->user->delete_user(\CMSApplication::$VAR['user_id'])) {
     
     // load the user details page
-    force_page('user', 'details&user_id='.\CMSApplication::$VAR['user_id']);    
+    $this->app->system->general->force_page('user', 'details&user_id='.\CMSApplication::$VAR['user_id']);    
     
 } else {
     
     // load the user search page
-    force_page('user', 'search', 'msg_success='._gettext("User record deleted."));   
+    $this->app->system->general->force_page('user', 'search', 'msg_success='._gettext("User record deleted."));   
     
 }

@@ -20,7 +20,7 @@
 
 defined('_QWEXEC') or die;
 
-class WorkOrder {
+class WorkOrder extends Components {
 
     /** Mandatory Code **/
 
@@ -30,10 +30,7 @@ class WorkOrder {
     #  Display all Work orders for the given status     #
     #####################################################
 
-    function display_workorders($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function display_workorders($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -47,13 +44,13 @@ class WorkOrder {
         $whereTheseRecords = "WHERE ".PRFX."workorder_records.workorder_id\n";    
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
        // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."workorder_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         /* Filter the Records */
 
@@ -73,17 +70,17 @@ class WorkOrder {
             // Return Workorders for the given status
             } else {
 
-                $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$db->qstr($status);
+                $whereTheseRecords .= " AND ".PRFX."workorder_records.status= ".$this->db->qstr($status);
 
             }
 
         }        
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user_records.user_id=".$db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."user_records.user_id=".$this->db->qstr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."client_records.client_id=".$db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."client_records.client_id=".$this->db->qstr($client_id);}
 
         /* The SQL code */
 
@@ -131,29 +128,29 @@ class WorkOrder {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching work orders."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching work orders."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $smarty->assign('total_results', $total_results);
+                $this->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $smarty->assign('total_pages', $total_pages);
+            $this->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $smarty->assign('page_no', $page_no);
+            $this->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $smarty->assign('previous_page_no', $previous_page_no);          
+            $this->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $smarty->assign('next_page_no', $next_page_no);
+            $this->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -164,14 +161,14 @@ class WorkOrder {
         } else {
 
             // This make the drop down menu look correct
-            $smarty->assign('total_pages', 1);
+            $this->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching work orders."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching work orders."));
         } else {
 
             $records = $rs->GetArray();   // do i need to add the check empty
@@ -195,9 +192,7 @@ class WorkOrder {
     # Display Work Order Notes  #
     #############################
 
-    function display_workorder_notes($workorder_id) {
-
-        $db = \Factory::getDbo();
+    public function display_workorder_notes($workorder_id) {
 
         $sql = "SELECT
                 ".PRFX."workorder_notes.*,
@@ -206,11 +201,11 @@ class WorkOrder {
                 FROM
                 ".PRFX."workorder_notes,
                 ".PRFX."user_records
-                WHERE workorder_id=".$db->qstr($workorder_id)."
+                WHERE workorder_id=".$this->db->qstr($workorder_id)."
                 AND ".PRFX."user_records.user_id = ".PRFX."workorder_notes.employee_id";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return notes for the work order."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return notes for the work order."));
         } else {
 
             return $rs->GetArray(); 
@@ -223,9 +218,7 @@ class WorkOrder {
     # Display Work Order History #
     ##############################
 
-    function display_workorder_history($workorder_id) {
-
-        $db = \Factory::getDbo();
+    public function display_workorder_history($workorder_id) {
 
         $sql = "SELECT 
                 ".PRFX."workorder_history.*,
@@ -234,12 +227,12 @@ class WorkOrder {
                 FROM 
                 ".PRFX."workorder_history
                 LEFT JOIN ".PRFX."user_records ON ".PRFX."workorder_history.employee_id = ".PRFX."user_records.user_id
-                WHERE ".PRFX."workorder_history.workorder_id=".$db->qstr($workorder_id)." 
+                WHERE ".PRFX."workorder_history.workorder_id=".$this->db->qstr($workorder_id)." 
                 AND ".PRFX."user_records.user_id = ".PRFX."workorder_history.employee_id
                 ORDER BY ".PRFX."workorder_history.history_id";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return history records for the work order."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return history records for the work order."));
         } else {
 
             return $rs->GetArray();  
@@ -254,37 +247,35 @@ class WorkOrder {
     # Insert New Work Order #
     #########################
 
-    function insert_workorder($client_id, $scope, $description, $comment) {
-
-        $db = \Factory::getDbo();
+    public function insert_workorder($client_id, $scope, $description, $comment) {
 
         $sql = "INSERT INTO ".PRFX."workorder_records SET            
-                client_id       =". $db->qstr( $client_id                           ).",
-                created_by      =". $db->qstr( \Factory::getUser()->login_user_id   ).",
-                status          =". $db->qstr( 'unassigned'                         ).",
-                opened_on       =". $db->qstr( mysql_datetime()                     ).",            
-                is_closed       =". $db->qstr( 0                                    ).",            
-                scope           =". $db->qstr( $scope                               ).",
-                description     =". $db->qstr( $description                         ).",            
-                comment         =". $db->qstr( $comment                             );
+                client_id       =". $this->db->qstr( $client_id                           ).",
+                created_by      =". $this->db->qstr( $this->app->user->login_user_id   ).",
+                status          =". $this->db->qstr( 'unassigned'                         ).",
+                opened_on       =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",            
+                is_closed       =". $this->db->qstr( 0                                    ).",            
+                scope           =". $this->db->qstr( $scope                               ).",
+                description     =". $this->db->qstr( $description                         ).",            
+                comment         =". $this->db->qstr( $comment                             );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the work order Record into the database."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the work order Record into the database."));
 
         } else {
 
             // Get the new Workorders ID
-            $workorder_id = $db->Insert_ID();
+            $workorder_id = $this->db->Insert_ID();
 
             // Create a Workorder History Note            
-            insert_workorder_history_note($workorder_id, _gettext("Created by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Created by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Created by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $client_id, $workorder_id);
+            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Created by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
             // Update last active record        
-            update_client_last_active(get_workorder_details($workorder_id, 'client_id'));
+            $this->app->components->client->update_client_last_active($this->get_workorder_details($workorder_id, 'client_id'));
 
             return $workorder_id;
 
@@ -296,24 +287,24 @@ class WorkOrder {
     # Insert New Work Order History Note #  // this might be go in the main include as different modules add work order history notes
     ######################################
 
-    function insert_workorder_history_note($workorder_id = null, $note = '') {
+    public function insert_workorder_history_note($workorder_id = null, $note = '') {
 
-        $db = \Factory::getDbo();
+        $this->db = \Factory::getDbo();
 
         // If Work Order History Notes are not enabled, exit
-        if(\Factory::getConfig()->get('workorder_history_notes') != true) { return; }    
+        if($this->app->system->config->get('workorder_history_notes') != true) { return; }    
 
-        // This prevents errors from such functions as email.php where a workorder_id is not always present - not currently used
+        // This prevents errors from such public functions as email.php where a workorder_id is not always present - not currently used
         if($workorder_id == null) { return; }
 
         $sql = "INSERT INTO ".PRFX."workorder_history SET            
-                employee_id     =". $db->qstr( \Factory::getUser()->login_user_id   ).",
-                workorder_id    =". $db->qstr( $workorder_id                        ).",
-                date            =". $db->qstr( mysql_datetime()                     ).",
-                note            =". $db->qstr( $note                                );
+                employee_id     =". $this->db->qstr( $this->app->user->login_user_id   ).",
+                workorder_id    =". $this->db->qstr( $workorder_id                        ).",
+                date            =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                note            =". $this->db->qstr( $note                                );
 
-        if(!$rs = $db->Execute($sql)) {        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert a work order history note."));
+        if(!$rs = $this->db->Execute($sql)) {        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order history note."));
         } else {
 
             return true;
@@ -326,37 +317,35 @@ class WorkOrder {
     #    insert workorder note   #
     ##############################
 
-    function insert_workorder_note($workorder_id, $note) {
-
-        $db = \Factory::getDbo();
+    public function insert_workorder_note($workorder_id, $note) {
 
         $sql = "INSERT INTO ".PRFX."workorder_notes SET                        
-                employee_id     =". $db->qstr( \Factory::getUser()->login_user_id   ).",
-                workorder_id    =". $db->qstr( $workorder_id                        ).", 
-                date            =". $db->qstr( mysql_datetime()                     ).",
-                description     =". $db->qstr( $note                                );
+                employee_id     =". $this->db->qstr( $this->app->user->login_user_id   ).",
+                workorder_id    =". $this->db->qstr( $workorder_id                        ).", 
+                date            =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                description     =". $this->db->qstr( $note                                );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert a work order note."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert a work order note."));
 
         } else {
 
             // Get the new Note ID
-            $workorder_note_id = $db->Insert_ID();
+            $workorder_note_id = $this->db->Insert_ID();
 
             // Get client id
-            $client_id = get_workorder_details($workorder_id, 'client_id');
+            $client_id = $this->get_workorder_details($workorder_id, 'client_id');
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($workorder_id, _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added to Work Order").' '.$workorder_id.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $client_id, $workorder_id);
+            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("added to Work Order").' '.$workorder_id.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
             // Update last active record
-            update_client_last_active($client_id);
-            update_workorder_last_active($workorder_id);
+            $this->app->components->client->update_client_last_active($client_id);
+            $this->$this->update_workorder_last_active($workorder_id);
 
             return true;
 
@@ -370,19 +359,17 @@ class WorkOrder {
     #   Get a Workorder's details          #
     ########################################
 
-    function get_workorder_details($workorder_id = null, $item = null) {  
-
-        $db = \Factory::getDbo();
+    public function get_workorder_details($workorder_id = null, $item = null) {  
 
         // This covers invoice only
         if(!$workorder_id) {
             return;        
         }
 
-        $sql = "SELECT * FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id);
+        $sql = "SELECT * FROM ".PRFX."workorder_records WHERE workorder_id=".$this->db->qstr($workorder_id);
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get work order details."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get work order details."));
         } else {
 
             if($item === null){
@@ -403,14 +390,14 @@ class WorkOrder {
     #  Get a single workorder note      #
     #####################################
 
-    function get_workorder_note_details($workorder_note_id, $item = null) {
+    public function get_workorder_note_details($workorder_note_id, $item = null) {
 
-        $db = \Factory::getDbo();
+        $this->db = \Factory::getDbo();
 
-        $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$db->qstr($workorder_note_id);    
+        $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->db->qstr($workorder_note_id);    
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get a work order Note."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get a work order Note."));
         } else { 
 
             if($item === null){
@@ -431,14 +418,12 @@ class WorkOrder {
     #  Get ALL of a workorder's notes   # // not currently used
     #####################################
 
-    function get_workorder_notes($workorder_id) {
+    public function get_workorder_notes($workorder_id) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_id=".$this->db->qstr($workorder_id);
 
-        $sql = "SELECT * FROM ".PRFX."workorder_notes WHERE workorder_id=".$db->qstr($workorder_id);
-
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get all notes for a work order."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get all notes for a work order."));
         } else {
 
             $records = $rs->GetArray();
@@ -461,9 +446,7 @@ class WorkOrder {
     #    Get Workorder Statuses         #
     #####################################
 
-    function get_workorder_statuses($restricted_statuses = false) {
-
-        $db = \Factory::getDbo();
+    public function get_workorder_statuses($restricted_statuses = false) {
 
         $sql = "SELECT * FROM ".PRFX."workorder_statuses";
 
@@ -472,8 +455,8 @@ class WorkOrder {
             $sql .= "\nWHERE status_key NOT IN ('closed_with_invoice', 'deleted')";
         }
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get work order statuses."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get work order statuses."));
         } else {
 
             return $rs->GetArray();
@@ -486,14 +469,12 @@ class WorkOrder {
     #  Get Workorder status display name #
     ######################################
 
-    function get_workorder_status_display_name($status_key) {
+    public function get_workorder_status_display_name($status_key) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$this->db->qstr($status_key);
 
-        $sql = "SELECT display_name FROM ".PRFX."workorder_statuses WHERE status_key=".$db->qstr($status_key);
-
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the work order status display name."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the work order status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -506,9 +487,7 @@ class WorkOrder {
     #  Get Workorder Scope Suggestions      #
     #########################################
 
-    function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
-
-        $db = \Factory::getDbo();
+    public function get_workorder_scope_suggestions($scope_string, $return_count = 4) {
 
         $pagePayload = '';
 
@@ -538,15 +517,15 @@ class WorkOrder {
                 DISTINCT (CAST(scope AS CHAR CHARACTER SET utf8) COLLATE utf8_bin) AS autoscope
                 FROM ".PRFX."workorder_records
                 WHERE scope
-                LIKE ".$db->qstr($scope_string.'%')."
+                LIKE ".$this->db->qstr($scope_string.'%')."
                 LIMIT 10";    
 
 
         // Get Workorder Scope Suggestions from the database      
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->db->Execute($sql)) {
 
-            //force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get a work order scopes list from the database."));
-            echo $db->ErrorMsg();
+            //$this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get a work order scopes list from the database."));
+            echo $this->db->ErrorMsg();
 
         } else {
 
@@ -580,32 +559,30 @@ class WorkOrder {
     # Update Work Order Scope and Description #
     ###########################################
 
-    function update_workorder_scope_and_description($workorder_id, $scope, $description) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_scope_and_description($workorder_id, $scope, $description) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET           
-                scope               =".$db->qstr($scope).",
-                description         =".$db->qstr($description)."            
-                WHERE workorder_id  =".$db->qstr($workorder_id);
+                scope               =".$this->db->qstr($scope).",
+                description         =".$this->db->qstr($description)."            
+                WHERE workorder_id  =".$this->db->qstr($workorder_id);
 
-        if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order scope and description."));
+        if(!$rs = $this->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order scope and description."));
         } else {
 
             // Get Work Order Details
-            $workorder_details = get_workorder_details($workorder_id);
+            $workorder_details = $this->get_workorder_details($workorder_id);
 
             // Creates a History record        
-            insert_workorder_history_note($workorder_id, _gettext("Scope and Description updated by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);        
+            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Scope and Description updated by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);        
 
             // Update last active record        
-            update_client_last_active($workorder_details['client_id']);
-            update_workorder_last_active($workorder_id);
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']);
+            $this->update_workorder_last_active($workorder_id);
 
             return true;
 
@@ -617,31 +594,29 @@ class WorkOrder {
     #   Update Workorder Comment     #
     ##################################
 
-    function update_workorder_comment($workorder_id, $comment) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_comment($workorder_id, $comment) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET            
-                comment             =". $db->qstr($comment)."
-                WHERE workorder_id  =". $db->qstr($workorder_id);
+                comment             =". $this->db->qstr($comment)."
+                WHERE workorder_id  =". $this->db->qstr($workorder_id);
 
-        if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comment."));
+        if(!$rs = $this->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Comment."));
         } else {
 
             // Get Work Order Details
-            $workorder_details = get_workorder_details($workorder_id);
+            $workorder_details = $this->get_workorder_details($workorder_id);
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($workorder_id, _gettext("Comment updated by").' '.\Factory::getUser()->login_display_name);
+            $this->insert_workorder_history_note($workorder_id, _gettext("Comment updated by").' '.$this->app->user->login_display_name);
 
             // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Comment updated by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
             // Update last active record       
-            update_client_last_active($workorder_details['client_id']); 
-            update_workorder_last_active($workorder_id);
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']); 
+            $this->update_workorder_last_active($workorder_id);
 
             return true;
 
@@ -653,31 +628,29 @@ class WorkOrder {
     # Update Work Order Resolution #
     ################################
 
-    function update_workorder_resolution($workorder_id, $resolution) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_resolution($workorder_id, $resolution) {
 
         $sql = "UPDATE ".PRFX."workorder_records SET                        
-                resolution          =". $db->qstr( $resolution      )."            
-                WHERE workorder_id  =". $db->qstr( $workorder_id    );
+                resolution          =". $this->db->qstr( $resolution      )."            
+                WHERE workorder_id  =". $this->db->qstr( $workorder_id    );
 
-        if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order resolution."));
+        if(!$rs = $this->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order resolution."));
         } else {
 
             // Get Work Order Details
-            $workorder_details = get_workorder_details($workorder_id);
+            $workorder_details = $this->get_workorder_details($workorder_id);
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($workorder_id, _gettext("Resolution updated by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Resolution updated by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
             // Update last active record        
-            update_client_last_active($workorder_details['client_id']);
-            update_workorder_last_active($workorder_id);
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']);
+            $this->update_workorder_last_active($workorder_id);
 
             return true;
 
@@ -689,16 +662,14 @@ class WorkOrder {
     # Update Workorder Status  #
     ############################
 
-    function update_workorder_status($workorder_id, $new_status) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_status($workorder_id, $new_status) {
 
         // Get current workorder details
-        $workorder_details = get_workorder_details($workorder_id);
+        $workorder_details = $this->get_workorder_details($workorder_id);
 
         // If the new status is the same as the current one, exit
         if($new_status == $workorder_details['status']) {        
-            systemMessagesWrite('danger', _gettext("Nothing done. The new work order status is the same as the current work order status."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new work order status is the same as the current work order status."));
             return false;
         }
 
@@ -706,47 +677,47 @@ class WorkOrder {
         $employee_id = ($new_status == 'unassigned') ? '' : $workorder_details['employee_id'];
 
         // Set the appropriate closed_on date
-        $closed_on = ($new_status == 'closed') ? mysql_datetime() : '0000-00-00 00:00:00';
+        $closed_on = ($new_status == 'closed') ? $this->app->system->general->mysql_datetime() : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."workorder_records SET   
-                employee_id         =". $db->qstr( $employee_id     ).",
-                status              =". $db->qstr( $new_status      ).",
-                closed_on           =". $db->qstr( $closed_on       )."  
-                WHERE workorder_id  =". $db->qstr( $workorder_id    );
+                employee_id         =". $this->db->qstr( $employee_id     ).",
+                status              =". $this->db->qstr( $new_status      ).",
+                closed_on           =". $this->db->qstr( $closed_on       )."  
+                WHERE workorder_id  =". $this->db->qstr( $workorder_id    );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order Status."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Status."));
 
         } else {
 
             // If there is no employee and status is not 'unassigned', set the current logged in user as the assigned employee
             if($workorder_details['employee_id'] == '' && $new_status != 'unassigned') {
-                assign_workorder_to_employee($workorder_id, \Factory::getUser()->login_user_id);
+                $this->assign_workorder_to_employee($workorder_id, $this->app->user->login_user_id);
             }
 
             // Update Workorder 'is_closed' boolean
             if($new_status == 'closed_without_invoice' || $new_status == 'closed_with_invoice') {
-                update_workorder_closed_status($workorder_id, 'close');
+                $this->update_workorder_closed_status($workorder_id, 'close');
             } else {
-                update_workorder_closed_status($workorder_id, 'open');
+                $this->update_workorder_closed_status($workorder_id, 'open');
             }
 
             // Status updated message
-            systemMessagesWrite('success', _gettext("Work order status updated."));        
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Work order status updated."));        
 
             // For writing message to log file, get work order status display name
-            $wo_status_display_name = _gettext(get_workorder_status_display_name($new_status));
+            $wo_status_display_name = _gettext($this->get_workorder_status_display_name($new_status));
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($workorder_id, _gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
+            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("Status updated to").' '.$wo_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_id);
 
             // Update last active record        
-            update_client_last_active(get_workorder_details($workorder_id, 'client_id'));
-            update_workorder_last_active($workorder_id);        
+            $this->app->components->client->update_client_last_active($this->get_workorder_details($workorder_id, 'client_id'));
+            $this->update_workorder_last_active($workorder_id);        
 
             return true;
 
@@ -755,34 +726,32 @@ class WorkOrder {
     }
 
     ###################################
-    # Update Workorder Closed Status  #  // This should be moved to update_workorder_status()
+    # Update Workorder Closed Status  #  // This should be moved to $this->app->components->workorder->update_workorder_status()
     ###################################
 
-    function update_workorder_closed_status($workorder_id, $new_closed_status) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_closed_status($workorder_id, $new_closed_status) {
 
         if($new_closed_status == 'open') {
 
             $sql = "UPDATE ".PRFX."workorder_records SET
                     closed_by           ='',
                     closed_on           ='0000-00-00 00:00:00',
-                    is_closed           =". $db->qstr( 0                                    )."
-                    WHERE workorder_id  =". $db->qstr( $workorder_id                        );
+                    is_closed           =". $this->db->qstr( 0                                    )."
+                    WHERE workorder_id  =". $this->db->qstr( $workorder_id                        );
 
         }
 
         if($new_closed_status == 'close') {        
             $sql = "UPDATE ".PRFX."workorder_records SET
-                    closed_by           =". $db->qstr( \Factory::getUser()->login_user_id   ).",
-                    closed_on           =". $db->qstr( mysql_datetime()                     ).",
-                    is_closed           =". $db->qstr( 1                                    )."
-                    WHERE workorder_id  =". $db->qstr( $workorder_id                        );
+                    closed_by           =". $this->db->qstr( $this->app->user->login_user_id   ).",
+                    closed_on           =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                    is_closed           =". $this->db->qstr( 1                                    )."
+                    WHERE workorder_id  =". $this->db->qstr( $workorder_id                        );
 
         }
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order's Closed status."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order's Closed status."));
         }
 
     }
@@ -791,19 +760,17 @@ class WorkOrder {
     #    Update Last Active         #
     #################################
 
-    function update_workorder_last_active($workorder_id = null) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_last_active($workorder_id = null) {
 
         // compensate for some invoices not having workorders
         if(!$workorder_id) { return; }
 
         $sql = "UPDATE ".PRFX."workorder_records SET
-                last_active=".$db->qstr( mysql_datetime() )."
-                WHERE workorder_id=".$db->qstr($workorder_id);
+                last_active=".$this->db->qstr( $this->app->system->general->mysql_datetime() )."
+                WHERE workorder_id=".$this->db->qstr($workorder_id);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order last active time."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order last active time."));
         }
 
     }
@@ -812,19 +779,17 @@ class WorkOrder {
     # Update a Workorder's Invoice ID  #
     ####################################
 
-    function update_workorder_invoice_id($workorder_id = null, $invoice_id = null) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_invoice_id($workorder_id = null, $invoice_id = null) {
 
         // This prevents invoices with no workorders causing issues
         if(!$workorder_id) { return; }
 
         $sql = "UPDATE ".PRFX."workorder_records SET
-                invoice_id          =". $db->qstr( $invoice_id      )."
-                WHERE workorder_id  =". $db->qstr( $workorder_id    );
+                invoice_id          =". $this->db->qstr( $invoice_id      )."
+                WHERE workorder_id  =". $this->db->qstr( $workorder_id    );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order Invoice ID."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order Invoice ID."));
         }    
 
     }
@@ -833,32 +798,30 @@ class WorkOrder {
     #    update workorder note   #
     ##############################
 
-    function update_workorder_note($workorder_note_id, $note) {
-
-        $db = \Factory::getDbo();
+    public function update_workorder_note($workorder_note_id, $note) {
 
         $sql = "UPDATE ".PRFX."workorder_notes SET
-                employee_id             =". $db->qstr( \Factory::getUser()->login_user_id   ).",            
-                description             =". $db->qstr( $note                                )."
-                WHERE workorder_note_id =". $db->qstr( $workorder_note_id                   );
+                employee_id             =". $this->db->qstr( $this->app->user->login_user_id   ).",            
+                description             =". $this->db->qstr( $note                                )."
+                WHERE workorder_note_id =". $this->db->qstr( $workorder_note_id                   );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a work order note."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a work order note."));
 
         } else {
 
-            $workorder_details = get_workorder_details(get_workorder_note_details($workorder_note_id, 'workorder_id'));
+            $workorder_details = $this->get_workorder_details($this->get_workorder_note_details($workorder_note_id, 'workorder_id'));
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("updated by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("updated by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was updated by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
+            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
             // Update last active record        
-            update_client_last_active($workorder_details['client_id']);
-            update_workorder_last_active($workorder_details['workorder_id']);
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']);
+            $this->update_workorder_last_active($workorder_details['workorder_id']);
 
         }
 
@@ -870,44 +833,42 @@ class WorkOrder {
     # Close Workorder without invoice      #
     ########################################
 
-    function close_workorder_without_invoice($workorder_id, $resolution) {
-
-        $db = \Factory::getDbo();
+    public function close_workorder_without_invoice($workorder_id, $resolution) {
 
         // Insert resolution and close information
         $sql = "UPDATE ".PRFX."workorder_records SET
-                closed_by           =". $db->qstr( \Factory::getUser()->login_user_id   ).",                        
-                status              =". $db->qstr( 'closed_without_invoice'             ).",
-                closed_on           =". $db->qstr( mysql_datetime()                     ).",
-                is_closed           =". $db->qstr( 1                                    ).",
-                resolution          =". $db->qstr( $resolution                          )."
-                WHERE workorder_id  =". $db->qstr( $workorder_id                        );
+                closed_by           =". $this->db->qstr( $this->app->user->login_user_id   ).",                        
+                status              =". $this->db->qstr( 'closed_without_invoice'             ).",
+                closed_on           =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                is_closed           =". $this->db->qstr( 1                                    ).",
+                resolution          =". $this->db->qstr( $resolution                          )."
+                WHERE workorder_id  =". $this->db->qstr( $workorder_id                        );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to close a work order without an invoice."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to close a work order without an invoice."));
         } else {
 
             // Update Work Order Status - not needed
-            //update_workorder_status($workorder_id, 'closed_without_invoice');
+            //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_without_invoice');
 
             // Get client_id
-            $workorder_details = get_workorder_details($workorder_id);
+            $workorder_details = $this->get_workorder_details($workorder_id);
 
             // If there is no employee assigned, set the current logged in user as the assigned employee
             if(!$workorder_details['employee_id']) {
-                assign_workorder_to_employee($workorder_id, \Factory::getUser()->login_user_id);
+                $this->assign_workorder_to_employee($workorder_id, $this->app->user->login_user_id);
             }
 
             // Create a History record
-            insert_workorder_history_note($workorder_id, _gettext("Closed without invoice by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Closed without invoice by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $workorder_details['client_id'], $workorder_id);
+            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed without invoice by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
 
             // Update last active record
-            update_client_last_active($workorder_details['client_id']);
-            update_workorder_last_active($workorder_id);        
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']);
+            $this->update_workorder_last_active($workorder_id);        
 
             return true;
 
@@ -919,44 +880,42 @@ class WorkOrder {
     # Close Workorder with Invoice  #
     #################################
 
-    function close_workorder_with_invoice($workorder_id, $resolution) {
-
-        $db = \Factory::getDbo();
+    public function close_workorder_with_invoice($workorder_id, $resolution) {
 
         // Insert resolution and close information
         $sql = "UPDATE ".PRFX."workorder_records SET
-                closed_by           =". $db->qstr( \Factory::getUser()->login_user_id   ).",
-                status              =". $db->qstr( 'closed_with_invoice'                ).",
-                closed_on          =". $db->qstr( mysql_datetime()                     ).",            
-                is_closed           =". $db->qstr( 1                                    ).",
-                resolution          =". $db->qstr( $resolution                          )."
-                WHERE workorder_id  =". $db->qstr( $workorder_id                        );
+                closed_by           =". $this->db->qstr( $this->app->user->login_user_id   ).",
+                status              =". $this->db->qstr( 'closed_with_invoice'                ).",
+                closed_on          =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",            
+                is_closed           =". $this->db->qstr( 1                                    ).",
+                resolution          =". $this->db->qstr( $resolution                          )."
+                WHERE workorder_id  =". $this->db->qstr( $workorder_id                        );
 
-        if(!$rs = $db->Execute($sql)){ 
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to close a work order with an invoice."));
+        if(!$rs = $this->db->Execute($sql)){ 
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to close a work order with an invoice."));
         } else {
 
             // Update Work Order Status - not needed
-            //update_workorder_status($workorder_id, 'closed_with_invoice');
+            //$this->app->components->workorder->update_workorder_status($workorder_id, 'closed_with_invoice');
 
             // Get workorder details
-            $workorder_details = get_workorder_details($workorder_id);
+            $workorder_details = $this->get_workorder_details($workorder_id);
 
             // If there is no employee assigned, set the current logged in user as the assigned employee
             if(!$workorder_details['employee_id']) {
-                assign_workorder_to_employee($workorder_id, \Factory::getUser()->login_user_id);
+                $this->assign_workorder_to_employee($workorder_id, $this->app->user->login_user_id);
             }
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($workorder_id, _gettext("Closed with invoice by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Closed with invoice by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity
-            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $workorder_details['client_id'], $workorder_id);
+            $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been closed with invoice by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $workorder_details['client_id'], $workorder_id);
 
             // Update last active record
-            update_client_last_active($workorder_details['client_id']);
-            update_workorder_last_active($workorder_id);   
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']);
+            $this->update_workorder_last_active($workorder_id);   
 
             return true;
 
@@ -970,30 +929,28 @@ class WorkOrder {
     # Delete Workorder  #
     #####################
 
-    function delete_workorder($workorder_id) {
-
-        $db = \Factory::getDbo();
+    public function delete_workorder($workorder_id) {
 
         // Does the workorder have an invoice
-        if(get_workorder_details($workorder_id, 'invoice_id')) {        
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has an invoice."));
+        if($this->get_workorder_details($workorder_id, 'invoice_id')) {        
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has an invoice."));
             return false;
         }
 
         // Is the workorder in an allowed state to be deleted
-        if(!check_workorder_status_allows_for_deletion($workorder_id)) {        
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because its status does not allow it."));
+        if(!$this->$this->check_workorder_status_allows_for_deletion($workorder_id)) {        
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because its status does not allow it."));
             return false;
         }
 
         // get client_id before deleletion
-        $client_id = get_workorder_details($workorder_id, 'client_id');
+        $client_id = $this->get_workorder_details($workorder_id, 'client_id');
 
         // Change the workorder status to deleted (I do this here to maintain consistency)
-        update_workorder_status($workorder_id, 'deleted'); 
+        $this->app->components->workorder->update_workorder_status($workorder_id, 'deleted'); 
 
         // Delete the workorder primary record
-        //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$db->qstr($workorder_id); (this use to delete the whole record)
+        //$sql = "DELETE FROM ".PRFX."workorder_records WHERE workorder_id=".$this->db->qstr($workorder_id); (this use to delete the whole record)
         $sql = "UPDATE ".PRFX."workorder_records SET
             employee_id         = '',
             client_id           = '',   
@@ -1009,45 +966,45 @@ class WorkOrder {
             description         = '',
             comment             = '',
             resolution          = ''
-            WHERE workorder_id =". $db->qstr($workorder_id);
+            WHERE workorder_id =". $this->db->qstr($workorder_id);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the Work Order").' '.$workorder_id.'.');
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the Work Order").' '.$workorder_id.'.');
 
         // Delete the workorder history
         } else {        
 
-            $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$db->qstr($workorder_id);
+            $sql = "DELETE FROM ".PRFX."workorder_history WHERE workorder_id=".$this->db->qstr($workorder_id);
 
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the history notes for Work Order").' '.$workorder_id.'.');
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the history notes for Work Order").' '.$workorder_id.'.');
 
             // Delete the workorder notes    
             } else {
 
-                $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_id=".$db->qstr($workorder_id);
+                $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_id=".$this->db->qstr($workorder_id);
 
-                if(!$rs = $db->Execute($sql)) {
-                    force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the notes for Work Order").' '.$workorder_id.'.');
+                if(!$rs = $this->db->Execute($sql)) {
+                    $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the notes for Work Order").' '.$workorder_id.'.');
 
 
                 // Delete the workorder schedule events     
                 } else {
 
-                    $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$db->qstr($workorder_id);
+                    $sql = "DELETE FROM ".PRFX."schedule_records WHERE workorder_id=".$this->db->qstr($workorder_id);
 
-                    if(!$rs = $db->Execute($sql)) {
-                        force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the schedules for Work Order").' '.$workorder_id.'.');
+                    if(!$rs = $this->db->Execute($sql)) {
+                        $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the schedules for Work Order").' '.$workorder_id.'.');
 
                     // Log the workorder deletion
                     } else {
 
                         // Write the record to the activity log                    
-                        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.\Factory::getUser()->login_display_name.'.';
-                        write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $client_id, $workorder_id);
+                        $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.';
+                        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $client_id, $workorder_id);
 
                         // Update last active record
-                        update_client_last_active($client_id);                    
+                        $this->app->components->client->update_client_last_active($client_id);                    
 
                         return true;
 
@@ -1065,30 +1022,28 @@ class WorkOrder {
     #    delete a workorders's note    #
     ####################################
 
-    function delete_workorder_note($workorder_note_id) {
-
-        $db = \Factory::getDbo();
+    public function delete_workorder_note($workorder_note_id) {
 
         // Get workorder details before any deleting
-        $workorder_details = get_workorder_details(get_workorder_note_details($workorder_note_id, 'workorder_id'));
+        $workorder_details = $this->get_workorder_details($this->get_workorder_note_details($workorder_note_id, 'workorder_id'));
 
-        $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$db->qstr( $workorder_note_id );
+        $sql = "DELETE FROM ".PRFX."workorder_notes WHERE workorder_note_id=".$this->db->qstr( $workorder_note_id );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete a work order note."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete a work order note."));
 
         } else {        
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("has been deleted by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->insert_workorder_history_note($workorder_details['workorder_id'], _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was deleted by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
+            $record = _gettext("Work Order Note").' '.$workorder_note_id.' '._gettext("for Work Order").' '.$workorder_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $workorder_details['employee_id'], $workorder_details['client_id'], $workorder_details['workorder_id']);
 
             // Update last active record        
-            update_client_last_active($workorder_details['client_id']);
-            update_workorder_last_active($workorder_details['workorder_id']);
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']);
+            $this->update_workorder_last_active($workorder_details['workorder_id']);
 
         }
 
@@ -1097,25 +1052,25 @@ class WorkOrder {
     /** Other Functions **/
 
     ################################
-    # Resolution Edit Status Check #
+    # Resolution Edit Status Check #  // not currently used
     ################################
 
-    function resolution_edit_status_check($workorder_id) {    
+    public function resolution_edit_status_check($workorder_id) {    
 
-        $wo_is_closed   = get_workorder_details($workorder_id, 'is_closed');
-        $wo_status      = get_workorder_details($workorder_id, 'status');
+        $wo_is_closed   = $this->get_workorder_details($workorder_id, 'is_closed');
+        $wo_status      = $this->get_workorder_details($workorder_id, 'status');
 
         // Workorder is Closed
         if($wo_is_closed == '1') {
 
-            systemMessagesWrite('danger', _gettext("Cannot edit the resolution because the work order is already closed."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution because the work order is already closed."));
             return false;
         }
 
         // Waiting For Parts
         if ($wo_status == 'waiting_for_parts') {           
 
-            systemMessagesWrite('danger', _gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Can not close a work order if it is Waiting for Parts. Please Adjust the status."));
             return false;
 
         }
@@ -1128,16 +1083,14 @@ class WorkOrder {
     # Assign Workorder to another employee  #
     #########################################
 
-    function assign_workorder_to_employee($workorder_id, $target_employee_id) {
-
-        $db = \Factory::getDbo();
+    public function assign_workorder_to_employee($workorder_id, $target_employee_id) {
 
         // Get the workorder details
-        $workorder_details = get_workorder_details($workorder_id);
+        $workorder_details = $this->get_workorder_details($workorder_id);
 
         // If the new employee is the same as the current one, exit
         if($target_employee_id == $workorder_details['employee_id']) {        
-            systemMessagesWrite('danger', _gettext("Nothing done. The new employee is the same as the current employee."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new employee is the same as the current employee."));
             return false;
         }    
 
@@ -1145,29 +1098,29 @@ class WorkOrder {
         if($workorder_details['status'] == 'unassigned') {
 
             $sql = "UPDATE ".PRFX."workorder_records SET
-                    employee_id         =". $db->qstr( $target_employee_id  ).",
-                    status              =". $db->qstr( 'assigned'           )."
-                    WHERE workorder_id  =". $db->qstr( $workorder_id        );
+                    employee_id         =". $this->db->qstr( $target_employee_id  ).",
+                    status              =". $this->db->qstr( 'assigned'           )."
+                    WHERE workorder_id  =". $this->db->qstr( $workorder_id        );
 
         // Keep the same workorder status    
         } else {    
 
             $sql = "UPDATE ".PRFX."workorder_records SET
-                    employee_id         =". $db->qstr( $target_employee_id  )."            
-                    WHERE workorder_id  =". $db->qstr( $workorder_id        );
+                    employee_id         =". $this->db->qstr( $target_employee_id  )."            
+                    WHERE workorder_id  =". $this->db->qstr( $workorder_id        );
 
         }
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to assign a work order to an employee."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to assign a work order to an employee."));
 
         } else {
 
             // Assigned employee success message
-            systemMessagesWrite('success', _gettext("Assigned employee updated.")); 
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Assigned employee updated.")); 
 
             // Get Logged in Employee's Display Name        
-            $logged_in_employee_display_name = \Factory::getUser()->login_display_name;
+            $logged_in_employee_display_name = $this->app->user->login_display_name;
 
             // Get the currently assigned employee ID
             $assigned_employee_id = $workorder_details['employee_id'];
@@ -1176,24 +1129,24 @@ class WorkOrder {
             if($assigned_employee_id == ''){
                 $assigned_employee_display_name = _gettext("Unassigned");            
             } else {            
-                $assigned_employee_display_name = get_user_details($assigned_employee_id, 'display_name');
+                $assigned_employee_display_name = $this->app->components->user->get_user_details($assigned_employee_id, 'display_name');
             }
 
             // Get the Display Name of the Target Employee        
-            $target_employee_display_name = get_user_details($target_employee_id, 'display_name');
+            $target_employee_display_name = $this->app->components->user->get_user_details($target_employee_id, 'display_name');
 
             // Creates a History record
-            insert_workorder_history_note($workorder_id, _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
+            $this->insert_workorder_history_note($workorder_id, _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.');
 
             // Log activity
             $record = _gettext("Work Order").' '.$workorder_id.' '._gettext("has been assigned to").' '.$target_employee_display_name.' '._gettext("from").' '.$assigned_employee_display_name.' '._gettext("by").' '. $logged_in_employee_display_name.'.';
-            write_record_to_activity_log($record, $target_employee_id, $workorder_details['client_id'], $workorder_id);
+            $this->app->system->general->write_record_to_activity_log($record, $target_employee_id, $workorder_details['client_id'], $workorder_id);
 
             // Update last active record
-            update_user_last_active($workorder_details['employee_id']);
-            update_user_last_active($target_employee_id);
-            update_client_last_active($workorder_details['client_id']);
-            update_workorder_last_active($workorder_id);
+            $this->app->components->user->update_user_last_active($workorder_details['employee_id']);
+            $this->app->components->user->update_user_last_active($target_employee_id);
+            $this->app->components->client->update_client_last_active($workorder_details['client_id']);
+            $this->update_workorder_last_active($workorder_id);
 
             return true;
 
@@ -1206,70 +1159,70 @@ class WorkOrder {
     # Is the workorder in an allowed state to be deleted #
     ######################################################
 
-    function check_workorder_status_allows_for_deletion($workorder_id) {
+    public function check_workorder_status_allows_for_deletion($workorder_id) {
 
         $state_flag = true;
 
         // Get the otherincome details
-        $workorder_details = get_workorder_details($workorder_id);
+        $workorder_details = $this->get_workorder_details($workorder_id);
 
         /* Is Unassigned
         if($workorder_details['status'] == 'unassigned') {
-            systemMessagesWrite('danger',  _gettext("This workorder cannot be deleted because it is unassigned."));
+            $this->app->system->variables->systemMessagesWrite('danger',  _gettext("This workorder cannot be deleted because it is unassigned."));
             $state_flag = false;        
         }*/
 
         // Is Assigned
         if($workorder_details['status'] == 'assigned') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is assigned"));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is assigned"));
             $state_flag = false;        
         }
 
         // Is Waiting for Parts
         if($workorder_details['status'] == 'waiting_for_parts') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is waiting for parts."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is waiting for parts."));
             $state_flag = false;        
         }
 
         // Is Scheduled
         if($workorder_details['status'] == 'scheduled') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is scheduled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is scheduled."));
             $state_flag = false;        
         }
 
         // With Client
         if($workorder_details['status'] == 'with_client') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with the client."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with the client."));
             $state_flag = false;        
         }
 
         // Is On Hold
         if($workorder_details['status'] == 'on_hold') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is on hold."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is on hold."));
             $state_flag = false;        
         }
 
         /* Is with Management
         if($workorder_details['status'] == 'management') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with mangement."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it is with mangement."));
             $state_flag = false;        
         }*/
 
         // Closed without Invoice
         if($workorder_details['status'] == 'closed_without_invoice') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed without an invoice."));
             $state_flag = false;        
         }
 
         // Closed with Invoice
         if($workorder_details['status'] == 'closed_with_invoice') {
-            systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder cannot be deleted because it has been closed with an invoice."));
             $state_flag = false;        
         }
 
         // Is deleted
         if($workorder_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("The workorder cannot be deleted because it has already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The workorder cannot be deleted because it has already been deleted."));
             $state_flag = false;        
         }
 
@@ -1281,70 +1234,70 @@ class WorkOrder {
     #  Check if the workorder status is allowed to be changed  #
     ############################################################
 
-     function check_workorder_status_can_be_changed($workorder_id) {
+     public function check_workorder_status_can_be_changed($workorder_id) {
 
         $state_flag = true;
 
        // Get the otherincome details
-        $workorder_details = get_workorder_details($workorder_id);
+        $workorder_details = $this->get_workorder_details($workorder_id);
 
         /* Is Unassigned
         if($workorder_details['status'] == 'unassigned') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is unassigned."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is unassigned."));
             $state_flag = false;        
         }*/
 
         /* Is Assigned
         if($workorder_details['status'] == 'assigned') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is assigned"));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is assigned"));
             $state_flag = false;        
         }*/
 
         /* Is Waiting for Parts
         if($workorder_details['status'] == 'waiting_for_parts') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is waiting for parts."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is waiting for parts."));
             $state_flag = false;        
         }*/
 
         /* Is Scheduled
         if($workorder_details['status'] == 'scheduled') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is scheduled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is scheduled."));
             $state_flag = false;        
         }*/
 
         /* With Client
         if($workorder_details['status'] == 'with_client') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with the client."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with the client."));
             $state_flag = false;        
         }*/
 
         /* Is On Hold
         if($workorder_details['status'] == 'on_hold') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is on hold."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is on hold."));
             $state_flag = false;        
         }*/
 
         /* Is with Management
         if($workorder_details['status'] == 'management') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with mangement."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it is with mangement."));
             $state_flag = false;        
         }*/
 
         /* Closed without Invoice
         if($workorder_details['status'] == 'closed_without_invoice') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed without an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed without an invoice."));
             $state_flag = false;        
         }*/
 
         // Closed with Invoice
         if($workorder_details['status'] == 'closed_with_invoice') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has been closed with an invoice."));
             $state_flag = false;        
         }
 
         // Is deleted
         if($workorder_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder status cannot be changed because it has already been deleted."));
             $state_flag = false;        
         }
 
@@ -1356,76 +1309,76 @@ class WorkOrder {
     #  Check if the workorder employee is allowed to be changed  #
     ##############################################################
 
-     function check_workorder_allowed_to_change_employee($workorder_id) {
+     public function check_workorder_allowed_to_change_employee($workorder_id) {
 
         $state_flag = true;
 
         // Get the otherincome details
-        $workorder_details = get_workorder_details($workorder_id);
+        $workorder_details = $this->get_workorder_details($workorder_id);
 
         /* Is Unassigned
         if($workorder_details['status'] == 'unassigned') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is unassigned."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is unassigned."));
             $state_flag = false;        
         }*/
 
         /* Is Assigned
         if($workorder_details['status'] == 'assigned') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is assigned"));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is assigned"));
             $state_flag = false;        
         }*/
 
         /* Is Waiting for Parts
         if($workorder_details['status'] == 'waiting_for_parts') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is waiting for parts."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is waiting for parts."));
             $state_flag = false;        
         }*/
 
         /* Is Scheduled
         if($workorder_details['status'] == 'scheduled') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is scheduled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is scheduled."));
             $state_flag = false;        
         }*/
 
         /* With Client
         if($workorder_details['status'] == 'with_client') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with the client."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with the client."));
             $state_flag = false;        
         }*/
 
         /* Is On Hold
         if($workorder_details['status'] == 'on_hold') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is on hold."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is on hold."));
             $state_flag = false;        
         }*/
 
         /* Is with Management
         if($workorder_details['status'] == 'management') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with mangement."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it is with mangement."));
             $state_flag = false;        
         }*/
 
         // Closed without Invoice
         if($workorder_details['status'] == 'closed_without_invoice') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed without an invoice."));
             $state_flag = false;        
         }
 
         // Closed with Invoice
         if($workorder_details['status'] == 'closed_with_invoice') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closed with an invoice."));
             $state_flag = false;        
         }
 
         // Is deleted
         if($workorder_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has already been deleted."));
             $state_flag = false;        
         }
 
         /* Is Closed (old Fallback method)
-        if(!get_workorder_details($workorder_details['workorder_id'], 'is_closed')) {
-            systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closes."));
+        if(!$this->get_workorder_details($workorder_details['workorder_id'], 'is_closed')) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This workorder employee cannot be changed because it has been closes."));
             $state_flag = false;  
         }*/
 

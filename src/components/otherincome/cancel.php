@@ -9,19 +9,19 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('otherincome', 'status')) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'status')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
-    systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
-    force_page('otherincome', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Otherincome ID supplied."));
+    $this->app->system->general->force_page('otherincome', 'search');
 } 
 
 // Cancel the otherincome function call
-cancel_otherincome(\CMSApplication::$VAR['otherincome_id']);
+$this->app->components->otherincome->cancel_otherincome(\CMSApplication::$VAR['otherincome_id']);
 
 // Load the otherincome search page
-force_page('otherincome', 'search', 'msg_success='._gettext("Otherincome cancelled successfully."));
+$this->app->system->general->force_page('otherincome', 'search', 'msg_success='._gettext("Otherincome cancelled successfully."));

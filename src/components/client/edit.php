@@ -10,23 +10,23 @@ defined('_QWEXEC') or die;
 
 // Check if we have a client_id
 if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_id']) {
-    systemMessagesWrite('danger', _gettext("No Client ID supplied."));
-    force_page('client', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Client ID supplied."));
+    $this->app->system->general->force_page('client', 'search');
 }
 
 if(isset(\CMSApplication::$VAR['submit'])) {    
         
     // Update the Client's Details
-    update_client(\CMSApplication::$VAR['qform']);
+    $this->app->components->client->update_client(\CMSApplication::$VAR['qform']);
     
     // Load the client's details page
-    systemMessagesWrite('success', _gettext("The Client's information was updated."));
-    force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("The Client's information was updated."));
+    $this->app->system->general->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
 
 } else {    
 
     // Build the page
-    $smarty->assign('client_types',   get_client_types());
-    $smarty->assign('client_details', get_client_details(\CMSApplication::$VAR['client_id']));
+    $this->app->smarty->assign('client_types',   $this->app->components->client->get_client_types());
+    $this->app->smarty->assign('client_details', $this->app->components->client->get_client_details(\CMSApplication::$VAR['client_id']));
     
 }

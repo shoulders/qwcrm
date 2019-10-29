@@ -10,20 +10,20 @@ defined('_QWEXEC') or die;
 
 // Check if we have a supplier_id
 if(!isset(\CMSApplication::$VAR['supplier_id']) || !\CMSApplication::$VAR['supplier_id']) {
-    systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
-    force_page('supplier', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Supplier ID supplied."));
+    $this->app->system->general->force_page('supplier', 'search');
 }
 
 // Update Supplier Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    update_supplier_status(\CMSApplication::$VAR['supplier_id'], \CMSApplication::$VAR['assign_status']);    
-    force_page('supplier', 'status&supplier_id='.\CMSApplication::$VAR['supplier_id']);
+    $this->app->components->general->update_supplier_status(\CMSApplication::$VAR['supplier_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->system->general->force_page('supplier', 'status&supplier_id='.\CMSApplication::$VAR['supplier_id']);
 }
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',     false       );
-$smarty->assign('supplier_status',              get_supplier_details(\CMSApplication::$VAR['supplier_id'], 'status')             );
-$smarty->assign('supplier_statuses',            get_supplier_statuses() );
-$smarty->assign('allowed_to_cancel',            false      );
-$smarty->assign('allowed_to_delete',            check_supplier_can_be_deleted(\CMSApplication::$VAR['supplier_id'])              );
-$smarty->assign('supplier_selectable_statuses',     get_supplier_statuses(true) );
+$this->app->smarty->assign('allowed_to_change_status',     false       );
+$this->app->smarty->assign('supplier_status',              $this->app->components->supplier->get_supplier_details(\CMSApplication::$VAR['supplier_id'], 'status')             );
+$this->app->smarty->assign('supplier_statuses',            $this->app->components->supplier->get_supplier_statuses() );
+$this->app->smarty->assign('allowed_to_cancel',            false      );
+$this->app->smarty->assign('allowed_to_delete',            $this->app->components->supplier->check_supplier_can_be_deleted(\CMSApplication::$VAR['supplier_id'])              );
+$this->app->smarty->assign('supplier_selectable_statuses',     $this->app->components->supplier->get_supplier_statuses(true) );

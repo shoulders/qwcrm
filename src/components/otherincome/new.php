@@ -12,29 +12,29 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // insert the otherincome and get the otherincome_id
-    $otherincome_id = insert_otherincome(\CMSApplication::$VAR['qform']);
-    recalculate_otherincome_totals($otherincome_id);
+    $otherincome_id = $this->app->components->otherincome->insert_otherincome(\CMSApplication::$VAR['qform']);
+    $this->app->components->otherincome->recalculate_otherincome_totals($otherincome_id);
         
     if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
 
         // Load New Refund page
-        force_page('otherincome', 'new', 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id); 
+        $this->app->system->general->force_page('otherincome', 'new', 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id); 
 
     } elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for otherincome
-         force_page('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
+         $this->app->system->general->force_page('payment', 'new&type=otherincome&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
          
     } else {
 
         // Load Refund Details page
-        force_page('otherincome', 'details&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
+        $this->app->system->general->force_page('otherincome', 'details&otherincome_id='.$otherincome_id, 'msg_success='._gettext("Other Income added successfully.").' '._gettext("ID").': '.$otherincome_id);      
 
     }
          
 }
 
 // Build the page
-$smarty->assign('otherincome_types', get_otherincome_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes(false));
-$smarty->assign('default_vat_tax_code', get_default_vat_tax_code());
+$this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->get_otherincome_types());
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(false));
+$this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->get_default_vat_tax_code());

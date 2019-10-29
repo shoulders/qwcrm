@@ -21,32 +21,35 @@ defined('_QWEXEC') or die;
 // Main Framework class
 class CMSApplication {
     
-    public static $clientId     = 0;        // The Client identifier. (0 = site, 1 = administrator) should this bee from the user???
-    public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )
-    
     public static $BuildPage    = '';       // Holds the HTML page to be outputted
     public static $VAR          = array();  // Global Variable store
-    public static $messages     = array();  // Global System Message Store
-    private static $classes     = null;     // Store for classess that need instaciating
+    public static $messages     = array();  // Global System Message Store    
+    public static $clientId     = 0;        // The Client identifier. (0 = site, 1 = administrator) should this bee from the user???
+    public static $siteName     = 'site';   // Site Name ('site' or 'administrator' )    
+    public static $classes      = null;     // Store for classess that need instanciating (needs to be Static so loader.php can load)
     
-    // Context Variables    
-    public $config              = null;     // Local Config object
+    // Context Variables
+    public $config              = null;     // Local Config object    
+    public $smarty              = null;     // Smarty Template System  
+    protected $db               = null;     // Database instance
     public $system              = null;     // Hold all of the core framework
-    public $components          = null;     // Holds all of the loaded components    
-    public $plugins             = null;     // Holds all of the loaded plugins
-    public $modules             = null;     // Holds all of the loaded plugins
-
-
+    public $components          = null;     // Holds all of the loaded components        
+    public $modules             = null;     // Holds all of the loaded modules (not currently used)
+    public $plugins             = null;     // Holds all of the loaded plugins (not currently used)
+ 
 /****************** Load QWcrm enviroment, files, variables and dependencies ******************/
     
     public function execute() {
            
-        // Instanciate the 'components' classes
+        // Instanciate the QWcrm classes
         self::classFilesExecuteStored('system');
+        //self::classFilesExecuteStored('modules');
+        //self::classFilesExecuteStored('plugins');
 
-        // Load Gloabl Config + so we can use it here
+        // Load App Globals
         $this->config = \Factory::getConfig();
-
+        $this->smarty = \Factory::getSmarty();
+        
         // Enable Error Reporting Immediately
         $this->system->qerror->configure_php_error_reporting();                                     // Configure PHP error reporting (need to make static and first)----------- (has no dependencies so coulf go earlier)
         $this->system->qerror->load_whoops($this->config->get('error_handler_whoops'));             // Whoops Error Handler - Here so it can load ASAP (has to be after vendor) 
@@ -60,6 +63,9 @@ class CMSApplication {
 
         if(!defined('QWCRM_SETUP'))
         {
+            // Load App Globals
+            $this->db = \Factory::getDbo();    
+            
             // Load/Start/Create the session
             $this->loadSession();                
 
@@ -72,8 +78,11 @@ class CMSApplication {
             self::$VAR = array_merge(self::$VAR, $this->system->variables->postEmulationReturnStore());
         }
 
-        // Instanciate the 'components' classes
+        // Instanciate the QWcrm classes
         self::classFilesExecuteStored('components');
+        //self::classFilesExecuteStored('modules');
+        //self::classFilesExecuteStored('plugins');
+        
         
     }
     
@@ -363,6 +372,8 @@ class CMSApplication {
 
 
     /**
+     * based on discover() joomla/libraries/loader.php
+     * 
      * Method to discover and instanciate classes of a given type in a given path to a specific variable   - not currently used
      *
      * @param   string   $parentPath   Full path to the parent folder for the classes to discover.
@@ -425,6 +436,8 @@ class CMSApplication {
 
 
     /**
+     * based on discover() joomla/libraries/loader.php
+     * 
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
      * This allows me to autload the files withoug instanciating thr classes
@@ -481,6 +494,8 @@ class CMSApplication {
     }
     
     /**
+     * based on discover() joomla/libraries/loader.php
+     * 
      * Method to discover and load class files classes of a given type in a given path to a specific variable
      *
      * This allows me to autload the files withoug instanciating thr classes

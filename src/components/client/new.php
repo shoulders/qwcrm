@@ -11,14 +11,14 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Create the new Client
-    \CMSApplication::$VAR['client_id'] = insert_client(\CMSApplication::$VAR['qform']);
+    \CMSApplication::$VAR['client_id'] = $this->app->components->client->insert_client(\CMSApplication::$VAR['qform']);
     
     // Load the new Client's Details page
-    force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
+    $this->app->system->general->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);
     
 } else {
     
     // Build the page
-    $smarty->assign('client_types', get_client_types());
+    $this->app->smarty->assign('client_types', $this->app->components->client->get_client_types());
 
 }

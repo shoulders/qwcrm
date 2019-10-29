@@ -69,7 +69,7 @@ class General extends System {
                 }        
 
             // Any other lookup error
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get company details."));        
 
         } else {
 
@@ -89,24 +89,7 @@ class General extends System {
 
     /* Update Functions */
 
-    #######################################
-    #    Update User's Last Active Date   #
-    #######################################
 
-    function update_user_last_active($user_id = null) {
-
-        $db = \Factory::getDbo();
-
-        // compensate for some operations not having a user_id
-        if(!$user_id) { return; }        
-
-        $sql = "UPDATE ".PRFX."user_records SET last_active=".$db->qstr( mysql_datetime() )." WHERE user_id=".$db->qstr($user_id);
-
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
-        }
-
-    }
 
     /* Other Functions */
 
@@ -318,7 +301,7 @@ class General extends System {
     ############################################
 
     // Example to use
-    // new - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
+    // new - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the Work Order record requested"));
 
     function force_error_page($error_type, $error_location, $error_php_function, $error_database, $error_sql_query, $error_msg) { 
 
@@ -532,7 +515,7 @@ class General extends System {
         QFramework::$VAR['page_tpl']  = isset(QFramework::$VAR['page_tpl'])  ? QFramework::$VAR['page_tpl']  : null;
 
         // Installation is in progress
-        if (check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+        if ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'install', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
 
             QFramework::$VAR['component'] = 'setup';
             QFramework::$VAR['page_tpl']  = 'install';
@@ -543,7 +526,7 @@ class General extends System {
 
 
         // Migration is in progress (but if migration is passing to upgrade, ignore)
-        } elseif (check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'migrate', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
 
             QFramework::$VAR['component'] = 'setup';
             QFramework::$VAR['page_tpl']  = 'migrate';
@@ -554,7 +537,7 @@ class General extends System {
 
 
         // Upgrade is in progress
-        } elseif (check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+        } elseif ($this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'refered-index_allowed-route_matched', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
 
             QFramework::$VAR['component'] = 'setup';
             QFramework::$VAR['page_tpl']  = 'upgrade';
@@ -564,17 +547,17 @@ class General extends System {
             return;
 
         /* Redirect to choice page (optional)
-        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !check_page_accessed_via_qwcrm() && !isset(QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {        
+        elseif (!is_file('configuration.php') && is_dir(SETUP_DIR)) && !$this->app->system->security->check_page_accessed_via_qwcrm() && !isset(QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {        
 
             force_page('setup', 'choice');
 
         }*/        
 
         // Choice - Fresh Installation/Migrate/Upgrade (1st Run) (or refered from the migration process)
-        } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !check_page_accessed_via_qwcrm()) {
+        } elseif (!is_file('configuration.php') && is_dir(SETUP_DIR) && !$this->app->system->security->check_page_accessed_via_qwcrm()) {
 
             // Prevent direct access to this page
-            if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }
@@ -591,7 +574,7 @@ class General extends System {
             \QFramework::$VAR['theme']     = 'menu_off';        
 
             /* This allows the use of the database ASAP in the setup process
-            if (defined('PRFX') && \Factory::getDbo()->isConnected() && get_qwcrm_database_version_number()) {
+            if (defined('PRFX') && \Factory::getDbo()->isConnected() && $this->app->components->general->get_qwcrm_database_version_number()) {
                 define('QWCRM_SETUP', 'database_allowed'); 
             } else {
                 define('QWCRM_SETUP', 'install'); 
@@ -604,13 +587,13 @@ class General extends System {
         } elseif (is_file('configuration.php') && is_dir(SETUP_DIR)) {
 
             // Prevent direct access to this page
-            if(!check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
+            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'no_referer-routing_disallowed', QFramework::$VAR['component'], QFramework::$VAR['page_tpl'])) {
                 header('HTTP/1.1 403 Forbidden');
                 die(_gettext("No Direct Access Allowed."));
             }        
 
             // Allow only root or index.php
-            if(!check_page_accessed_via_qwcrm(null, null, 'root_only')) {
+            if(!$this->app->system->security->check_page_accessed_via_qwcrm(null, null, 'root_only')) {
                 header('HTTP/1.1 404 Not Found');
                 die(_gettext("This page does not exist."));
             }               
@@ -641,7 +624,7 @@ class General extends System {
     function compare_qwcrm_filesystem_and_database() {
 
         // Get the QWcrm database version number (assumes database connection is good)
-        $qwcrm_database_version = get_qwcrm_database_version_number();
+        $qwcrm_database_version = $this->app->components->general->get_qwcrm_database_version_number();
 
         // File System and Database versions match(not needed handles in opening 'if' statement, left for reference)
         if(version_compare(QWCRM_VERSION, $qwcrm_database_version,  '=')) {
@@ -881,7 +864,7 @@ class General extends System {
 
         // Write log entry   
         if(!$fp = fopen(ACCESS_LOG, 'a')) {        
-            force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
+            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Access Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -918,7 +901,7 @@ class General extends System {
 
         // Write log entry  
         if(!$fp = fopen(ACTIVITY_LOG, 'a')) {        
-            force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
+            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Activity Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -934,7 +917,7 @@ class General extends System {
 
     function write_record_to_error_log($error_page, $error_type, $error_location, $php_function, $database_error, $error_msg) {
 
-        // it is not - force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
+        // it is not - $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching Work Orders."));
 
         // Apache Login User - using qwcrm user to emulate the traditional apache HTTP Authentication
         if(!\Factory::getUser()->login_username) {
@@ -948,7 +931,7 @@ class General extends System {
 
         // Write log entry  
         if(!$fp = fopen(ERROR_LOG, 'a')) {        
-            force_error_page('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
+            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__.'()', '', '', _gettext("Could not open the Error Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -971,7 +954,7 @@ class General extends System {
         $sql = "SELECT * FROM ".PRFX."company_date_formats";
 
         if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get date formats."));
         } else {
 
             return $rs->GetArray();
@@ -1416,7 +1399,7 @@ class General extends System {
         ajax_output_system_messages_onscreen(_gettext("The Smarty cache has been emptied successfully."), '');
 
         // Log activity        
-        write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
+        $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Cache Cleared."));
 
     }
 
@@ -1441,7 +1424,7 @@ class General extends System {
         ajax_output_system_messages_onscreen(_gettext("The Smarty compile directory has been emptied successfully."), '');
 
         // Log activity        
-        write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
+        $this->app->system->general->write_record_to_activity_log(_gettext("Smarty Compile Cache Cleared."));    
 
     }
 

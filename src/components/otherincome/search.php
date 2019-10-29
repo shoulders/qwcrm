@@ -20,19 +20,19 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of otherincomes has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    write_record_to_activity_log($record);
+    $this->app->system->general->write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    force_page('otherincome', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->general->force_page('otherincome', 'search', \CMSApplication::$VAR, 'get');
     
 }
 
 // Build the page
-$smarty->assign('search_category',          \CMSApplication::$VAR['search_category']                                                                                         );
-$smarty->assign('search_term',              \CMSApplication::$VAR['search_term']                                                                                             );
-$smarty->assign('filter_type',              \CMSApplication::$VAR['filter_type']                                                                                             );
-$smarty->assign('filter_status',            \CMSApplication::$VAR['filter_status']                                                                                             );
-$smarty->assign('otherincome_statuses',     get_otherincome_statuses()                                                                                      );
-$smarty->assign('otherincome_types',        get_otherincome_types()                                                                                         );
-$smarty->assign('display_otherincomes',     display_otherincomes('otherincome_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_status']));
+$this->app->smarty->assign('search_category',          \CMSApplication::$VAR['search_category']                                                                                         );
+$this->app->smarty->assign('search_term',              \CMSApplication::$VAR['search_term']                                                                                             );
+$this->app->smarty->assign('filter_type',              \CMSApplication::$VAR['filter_type']                                                                                             );
+$this->app->smarty->assign('filter_status',            \CMSApplication::$VAR['filter_status']                                                                                             );
+$this->app->smarty->assign('otherincome_statuses',     $this->app->components->otherincome->get_otherincome_statuses()                                                                                      );
+$this->app->smarty->assign('otherincome_types',        $this->app->components->otherincome->get_otherincome_types()                                                                                         );
+$this->app->smarty->assign('display_otherincomes',     $this->app->components->otherincome->display_otherincomes('otherincome_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_status']));

@@ -16,12 +16,12 @@
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
  * iCalendar Functions - code for creating and manipulation iCalendar .ics format
- * Other Functions - All other functions not covered above
+ * Other Functions - All other public functions not covered above
  */
 
 defined('_QWEXEC') or die;
 
-class Schedule {
+class Schedule extends Components {
 
 
     /** Mandatory Code **/
@@ -32,10 +32,7 @@ class Schedule {
     # Display all Work orders for the given status      # // Status is not currently used but it will be
     #####################################################
 
-    function display_schedules($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function display_schedules($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $status = null, $employee_id = null, $client_id = null, $workorder_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -49,13 +46,13 @@ class Schedule {
         $whereTheseRecords = "WHERE ".PRFX."schedule_records.schedule_id\n";
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}     
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."schedule_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');} 
 
         /* Filter the Records */
 
@@ -75,20 +72,20 @@ class Schedule {
             // Return schedules for the given status
             } else {
 
-                $whereTheseRecords .= " AND ".PRFX."schedule_records.status= ".$db->qstr($status);
+                $whereTheseRecords .= " AND ".PRFX."schedule_records.status= ".$this->db->qstr($status);
 
             }
 
         }        
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.user_id=".$this->db->qstr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.client_id=".$db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.client_id=".$this->db->qstr($client_id);}
 
         // Restrict by Work Order
-        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$db->qstr($workorder_id);}    
+        if($workorder_id) {$whereTheseRecords .= " AND ".PRFX."schedule_records.workorder_id=".$this->db->qstr($workorder_id);}    
 
         /* The SQL code */
 
@@ -116,29 +113,29 @@ class Schedule {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching schedules."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $smarty->assign('total_results', $total_results);
+                $this->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $smarty->assign('total_pages', $total_pages);
+            $this->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $smarty->assign('page_no', $page_no);
+            $this->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $smarty->assign('previous_page_no', $previous_page_no);          
+            $this->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $smarty->assign('next_page_no', $next_page_no);
+            $this->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -149,14 +146,14 @@ class Schedule {
         } else {
 
             // This make the drop down menu look correct
-            $smarty->assign('total_pages', 1);
+            $this->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching schedules."));
         } else {
 
             $records = $rs->GetArray();
@@ -181,52 +178,50 @@ class Schedule {
     #  Insert schedule                   #  // Cannot use 'qform' because of smarty variables 'StartTime' and 'EndTime'
     ######################################  // supply times in DATETIME
 
-    function insert_schedule($qform) {
-
-        $db = \Factory::getDbo();
+    public function insert_schedule($qform) {
 
         // Validate the submitted dates
-        if(!validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'])) { return false; }        
+        if(!$this->validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'])) { return false; }        
 
         // Insert schedule item into the database
         $sql = "INSERT INTO ".PRFX."schedule_records SET
-                employee_id     =". $db->qstr( $qform['employee_id']      ).",
-                client_id       =". $db->qstr( $qform['client_id']        ).",   
-                workorder_id    =". $db->qstr( $qform['workorder_id']     ).",
-                start_time      =". $db->qstr( $qform['start_time']       ).",
-                end_time        =". $db->qstr( $qform['end_time']         ).",            
-                note            =". $db->qstr( $qform['note']             );            
+                employee_id     =". $this->db->qstr( $qform['employee_id']      ).",
+                client_id       =". $this->db->qstr( $qform['client_id']        ).",   
+                workorder_id    =". $this->db->qstr( $qform['workorder_id']     ).",
+                start_time      =". $this->db->qstr( $qform['start_time']       ).",
+                end_time        =". $this->db->qstr( $qform['end_time']         ).",            
+                note            =". $this->db->qstr( $qform['note']             );            
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the schedule record into the database."));
         } else {
 
             // Get work order details
-            $workorder_details = get_workorder_details($qform['workorder_id']);
+            $workorder_details = $this->app->components->workorder->get_workorder_details($qform['workorder_id']);
 
             // Get the new Schedule ID
-            $schedule_id = $db->Insert_ID();
+            $schedule_id = $this->db->Insert_ID();
 
             // Assign the work order to the scheduled employee (if not already)
             if($qform['employee_id'] != $workorder_details['employee_id']) {
-                assign_workorder_to_employee($qform['workorder_id'], $qform['employee_id']);
+                $this->app->components->workorder->assign_workorder_to_employee($qform['workorder_id'], $qform['employee_id']);
             }
 
             // Change the Workorders Status to scheduled (if not already)
             if($workorder_details['status'] != 'scheduled') {
-                update_workorder_status($qform['workorder_id'], 'scheduled');
+                $this->app->components->workorder->update_workorder_status($qform['workorder_id'], 'scheduled');
             }
 
             // Insert Work Order History Note
-            insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.\Factory::getUser()->login_display_name.'.');             
+            $this->app->components->workorder->insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was created by").' '.$this->app->user->login_display_name.'.');             
 
             // Log activity 
-            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
+            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("has been created and added to work order").' '.$qform['workorder_id'].' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
 
             // Update last active record
-            update_workorder_last_active($qform['workorder_id']);
-            update_client_last_active($qform['client_id']);
+            $this->app->components->workorder->update_workorder_last_active($qform['workorder_id']);
+            $this->app->components->client->update_client_last_active($qform['client_id']);
 
             return true;
 
@@ -240,14 +235,12 @@ class Schedule {
     #  Get Schedule Details        #
     ################################
 
-    function get_schedule_details($schedule_id, $item = null) {
+    public function get_schedule_details($schedule_id, $item = null) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$this->db->qstr($schedule_id);
 
-        $sql = "SELECT * FROM ".PRFX."schedule_records WHERE schedule_id=".$db->qstr($schedule_id);
-
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the schedule details."));
         } else { 
 
             if($item === null){
@@ -268,24 +261,22 @@ class Schedule {
     #    Get all schedule IDs for an employee for a date     #
     ##########################################################
 
-    function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day) {
-
-        $db = \Factory::getDbo();
+    public function get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day) {
 
         // Get the start and end time of the calendar schedule to be displayed, Office hours only
-        $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
-        $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+        $company_day_start = $this->app->components->company->get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
+        $company_day_end   = $this->app->components->company->get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day);
 
         // Look in the database for a scheduled events for the current schedule day (within business hours)
         $sql = "SELECT schedule_id
                 FROM ".PRFX."schedule_records       
-                WHERE start_time >= ".$db->qstr($company_day_start)." AND start_time <= ".$db->qstr($company_day_end)."
-                AND employee_id =".$db->qstr($employee_id)."
+                WHERE start_time >= ".$this->db->qstr($company_day_start)." AND start_time <= ".$this->db->qstr($company_day_end)."
+                AND employee_id =".$this->db->qstr($employee_id)."
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get all schedule IDs belonging to an employee."));
         } else {
 
             return $rs->GetArray();  
@@ -300,37 +291,35 @@ class Schedule {
     #      Update Schedule               #  // Cannot use 'qform' because of smarty variables 'StartTime' and 'EndTime'
     ######################################
 
-    function update_schedule($qform) {
-
-        $db = \Factory::getDbo();
+    public function update_schedule($qform) {
 
         // Validate the submitted dates
-        if(!validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }        
+        if(!$this->validate_schedule_times($qform['start_time'], $qform['end_time'], $qform['employee_id'], $qform['schedule_id'])) { return false; }        
 
         $sql = "UPDATE ".PRFX."schedule_records SET
-            schedule_id         =". $db->qstr( $qform['schedule_id']      ).",
-            employee_id         =". $db->qstr( $qform['employee_id']      ).",
-            client_id           =". $db->qstr( $qform['client_id']        ).",
-            workorder_id        =". $db->qstr( $qform['workorder_id']     ).",   
-            start_time          =". $db->qstr( $qform['start_time']       ).",
-            end_time            =". $db->qstr( $qform['end_time']         ).",                
-            note                =". $db->qstr( $qform['note']             )."
-            WHERE schedule_id   =". $db->qstr( $qform['schedule_id']      );
+            schedule_id         =". $this->db->qstr( $qform['schedule_id']      ).",
+            employee_id         =". $this->db->qstr( $qform['employee_id']      ).",
+            client_id           =". $this->db->qstr( $qform['client_id']        ).",
+            workorder_id        =". $this->db->qstr( $qform['workorder_id']     ).",   
+            start_time          =". $this->db->qstr( $qform['start_time']       ).",
+            end_time            =". $this->db->qstr( $qform['end_time']         ).",                
+            note                =". $this->db->qstr( $qform['note']             )."
+            WHERE schedule_id   =". $this->db->qstr( $qform['schedule_id']      );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a schedule record."));
         } else {       
 
             // Insert Work Order History Note
-            insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.\Factory::getUser()->login_display_name.'.');             
+            $this->app->components->workorder->insert_workorder_history_note($qform['workorder_id'], _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.');             
 
             // Log activity 
-            $record = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
+            $record = _gettext("Schedule").' '.$qform['schedule_id'].' '._gettext("was updated by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $qform['employee_id'], $qform['client_id'], $qform['workorder_id']);
 
             // Update last active record
-            update_workorder_last_active($qform['workorder_id']);
-            update_client_last_active($qform['client_id']);        
+            $this->app->components->workorder->update_workorder_last_active($qform['workorder_id']);
+            $this->app->components->client->update_client_last_active($qform['client_id']);        
 
             return true;
 
@@ -346,40 +335,38 @@ class Schedule {
     #        Delete Schedule         #
     ##################################
 
-    function delete_schedule($schedule_id) {
-
-        $db = \Factory::getDbo();
+    public function delete_schedule($schedule_id) {
 
         // Get schedule details before deleting
-        $schedule_details = get_schedule_details($schedule_id);
+        $schedule_details = $this->get_schedule_details($schedule_id);
 
-        $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$db->qstr($schedule_id);
+        $sql = "DELETE FROM ".PRFX."schedule_records WHERE schedule_id =".$this->db->qstr($schedule_id);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete a schedule record."));
 
         } else {
 
             // If there are no schedules left for this workorder
-            if(count_schedules($schedule_details['workorder_id']) == 0) {
+            if($this->app->components->report->count_schedules($schedule_details['workorder_id']) == 0) {
 
                 // if the workorder status is 'scheduled', change the status to 'assigned'
-                if(get_workorder_details($schedule_details['workorder_id'], 'status') == 'scheduled') {
-                    update_workorder_status($schedule_details['workorder_id'], 'assigned');
+                if($this->app->components->workorder->get_workorder_details($schedule_details['workorder_id'], 'status') == 'scheduled') {
+                    $this->app->components->workorder->update_workorder_status($schedule_details['workorder_id'], 'assigned');
                 }
 
             }
 
             // Create a Workorder History Note        
-            insert_workorder_history_note($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->app->components->workorder->insert_workorder_history_note($schedule_details['workorder_id'], _gettext("Schedule").' '.$schedule_id.' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
+            $record = _gettext("Schedule").' '.$schedule_id.' '._gettext("for Work Order").' '.$schedule_details['workorder_id'].' '._gettext("was deleted by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $schedule_details['employee_id'], $schedule_details['client_id'], $schedule_details['workorder_id']);
 
             // Update last active record
-            update_workorder_last_active($schedule_details['workorder_id']);
-            update_client_last_active($schedule_details['client_id']);
+            $this->app->components->workorder->update_workorder_last_active($schedule_details['workorder_id']);
+            $this->app->components->client->update_client_last_active($schedule_details['client_id']);
 
             return true;
 
@@ -393,7 +380,7 @@ class Schedule {
     #     .ics header settings                          #
     #####################################################
 
-    function ics_header_settings() {
+    public function ics_header_settings() {
 
         $ics_header_settings =
             'BEGIN:VCALENDAR'."\r\n".
@@ -410,28 +397,28 @@ class Schedule {
     #        This is the schedule .ics builder          #
     #####################################################
 
-    function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
+    public function build_single_schedule_ics($schedule_id, $ics_type = 'single') {
 
         // Get the schedule information
-        $schedule_details   = get_schedule_details($schedule_id);
-        $client_details     = get_client_details($schedule_details['client_id']);
+        $schedule_details   = $this->get_schedule_details($schedule_id);
+        $client_details     = $this->app->components->client->get_client_details($schedule_details['client_id']);
 
-        $start_datetime     = mysql_datetime_to_ics_datetime($schedule_details['start_time']);
-        $end_datetime       = mysql_datetime_to_ics_datetime($schedule_details['end_time']);
-        $current_datetime   = timestamp_to_ics_datetime( time() );
+        $start_datetime     = $this->mysql_datetime_to_ics_datetime($schedule_details['start_time']);
+        $end_datetime       = $this->mysql_datetime_to_ics_datetime($schedule_details['end_time']);
+        $current_datetime   = $this->timestamp_to_ics_datetime( time() );
 
-        $summary            = prepare_ics_strings('SUMMARY', $client_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
-        $description        = prepare_ics_strings('DESCRIPTION', build_ics_description('textarea', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
-        $x_alt_desc         = prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', build_ics_description('html', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
+        $summary            = $this->prepare_ics_strings('SUMMARY', $client_details['display_name'].' - Workorder '.$schedule_details['workorder_id'].' - Schedule '.$schedule_id);
+        $description        = $this->prepare_ics_strings('DESCRIPTION', $this->build_ics_description('textarea', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
+        $x_alt_desc         = $this->prepare_ics_strings('X-ALT-DESC;FMTTYPE=text/html', $this->build_ics_description('html', $schedule_details, $schedule_details['client_id'], $schedule_details['workorder_id']));
 
-        $location           = prepare_ics_strings('LOCATION', build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']));
+        $location           = $this->prepare_ics_strings('LOCATION', $this->build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']));
         $uniqid             = 'QWcrm-'.$schedule_details['schedule_id'].'-'.$schedule_details['start_time'];    
 
         // Build the Schedule .ics content
 
         $single_schedule_ics = '';    
 
-        if($ics_type == 'single') {$single_schedule_ics .= ics_header_settings();}
+        if($ics_type == 'single') {$single_schedule_ics .= $this->ics_header_settings();}
 
         $single_schedule_ics .= 
             'BEGIN:VEVENT'."\r\n".
@@ -456,15 +443,15 @@ class Schedule {
     #    Build a multi .ics - the employees schedule items for that day     #
     #########################################################################
 
-    function build_ics_schedule_day($employee_id, $start_year, $start_month, $start_day) {
+    public function build_ics_schedule_day($employee_id, $start_year, $start_month, $start_day) {
 
         // fetch all schdule items for this setup
-        $schedule_multi_ics = ics_header_settings();
+        $schedule_multi_ics = $this->ics_header_settings();
 
-        $schedule_multi_id = get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day);    
+        $schedule_multi_id = $this->get_schedule_ids_for_employee_on_date($employee_id, $start_year, $start_month, $start_day);    
 
         foreach($schedule_multi_id as $schedule_id) {
-            $schedule_multi_ics .= build_single_schedule_ics($schedule_id['schedule_id'], $type = 'multi');
+            $schedule_multi_ics .= $this->build_single_schedule_ics($schedule_id['schedule_id'], $type = 'multi');
         }
 
         $schedule_multi_ics .= 'END:VCALENDAR'."\r\n";
@@ -477,7 +464,7 @@ class Schedule {
     # Build single line address (suitable for .ics location #
     #########################################################
 
-    function build_single_line_address($address, $city, $state, $postcode){
+    public function build_single_line_address($address, $city, $state, $postcode){
 
         // Replace real newlines with comma and space, build address using commans
         return preg_replace("/(\r\n|\r|\n)/", ', ', $address).', '.$city.', '.$state.', '.$postcode;
@@ -489,7 +476,7 @@ class Schedule {
     #####################################
 
     // build adddress html style
-    function build_html_adddress($address, $city, $state, $postcode){
+    public function build_html_adddress($address, $city, $state, $postcode){
 
         // Open address block
         $html_address = '<address>';
@@ -509,10 +496,10 @@ class Schedule {
     #    Build description for ics                   #
     ##################################################
 
-    function build_ics_description($type, $single_schedule, $client_id, $workorder_id) {
+    public function build_ics_description($type, $single_schedule, $client_id, $workorder_id) {
 
-        $workorder_details  = get_workorder_details($workorder_id);
-        $client_details   = get_client_details($client_id);
+        $workorder_details  = $this->app->components->workorder->get_workorder_details($workorder_id);
+        $client_details   = $this->app->components->client->get_client_details($client_id);
 
         if($type == 'textarea') {      
 
@@ -520,9 +507,9 @@ class Schedule {
             $description =  _gettext("Scope").': \n\n'.
                             $workorder_details['scope'].'\n\n'.
                             _gettext("Description").': \n\n'.
-                            html_to_textarea($workorder_details['description']).'\n\n'.
+                            $this->html_to_textarea($workorder_details['description']).'\n\n'.
                             _gettext("Schedule Note").': \n\n'.
-                            html_to_textarea($single_schedule['note']);
+                            $this->html_to_textarea($single_schedule['note']);
 
             // Contact Information
             $description .= _gettext("Contact Information")  .'\n\n'.
@@ -532,7 +519,7 @@ class Schedule {
                             _gettext("Mobile")               .': '   .$client_details['mobile_phone'].'\n\n'.
                             _gettext("Website")              .': '   .$client_details['website'].'\n\n'.
                             _gettext("Email")                .': '   .$client_details['email'].'\n\n'.
-                            _gettext("Address")              .': '   .build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']).'\n\n';                        
+                            _gettext("Address")              .': '   .$this->build_single_line_address($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']).'\n\n';                        
 
         }
 
@@ -568,7 +555,7 @@ class Schedule {
                                 '<strong>'._gettext("Email")     .':</strong> '  .$client_details['email'].'<br>'.                        
                             '</p>'.                
                             '<p><strong>'._gettext("Address").': </strong><br></p>'.
-                            build_html_adddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']);
+                            $this->build_html_adddress($client_details['address'], $client_details['city'], $client_details['state'], $client_details['zip']);
 
             // Close HTML Wrapper
             $description .= '</BODY>\n'.
@@ -592,7 +579,7 @@ class Schedule {
     // Also note that we are using "H" instead of "g" because iCalendar's Time format
     // requires 24-hour time (see RFC 5545 section 3.3.12 for info).
 
-    function timestamp_to_ics_datetime($timestamp) {
+    public function timestamp_to_ics_datetime($timestamp) {
         return date('Ymd\THis\Z', $timestamp);
     }
 
@@ -608,7 +595,7 @@ class Schedule {
     // Also note that we are using "H" instead of "g" because iCalendar's Time format
     // requires 24-hour time (see RFC 5545 section 3.3.12 for info).
 
-    function mysql_datetime_to_ics_datetime($mysql_date) {
+    public function mysql_datetime_to_ics_datetime($mysql_date) {
         return date('Ymd\THis\Z', strtotime($mysql_date));
     }
 
@@ -616,7 +603,7 @@ class Schedule {
     #      Convert HTML into Textarea                #
     ##################################################
 
-    function html_to_textarea($content) {   
+    public function html_to_textarea($content) {   
 
         // Remove real newlines
         $content = preg_replace("/(\r|\n)/", '', $content);
@@ -639,7 +626,7 @@ class Schedule {
     ##################################################
 
     // prepare the text strings
-    function prepare_ics_strings($ics_keyname, $ics_string) {
+    public function prepare_ics_strings($ics_keyname, $ics_string) {
 
         // Remove whitespace at the beginning and end of the string
         $ics_string = trim($ics_string);
@@ -654,7 +641,7 @@ class Schedule {
         $ics_string = preg_replace('/([\,;])/', '\\\$1', $ics_string);
 
         // Break into octets with 75 character line limit (as per spec)
-        $ics_string = ics_string_octet_split($ics_keyname, $ics_string);
+        $ics_string = $this->ics_string_octet_split($ics_keyname, $ics_string);
 
         return $ics_string;
 
@@ -666,7 +653,7 @@ class Schedule {
 
     // Original script from https://gist.github.com/hugowetterberg/81747
 
-    function ics_string_octet_split($ics_keyname, $ics_string) {    
+    public function ics_string_octet_split($ics_keyname, $ics_string) {    
 
         // Get the ics_key length (after correction)
         $ics_keyname        .= ':';                 
@@ -715,14 +702,13 @@ class Schedule {
     #        Build Calendar Matrix                      #
     #####################################################
 
-    function build_calendar_matrix($start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
+    public function build_calendar_matrix($start_year, $start_month, $start_day, $employee_id, $workorder_id = null) {
 
-        $db = \Factory::getDbo();
         $calendar_matrix = '';
 
         // Get the start and end time of the calendar schedule to be displayed, Office hours only
-        $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
-        $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
+        $company_day_start = $this->app->components->company->get_company_opening_hours('opening_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
+        $company_day_end   = $this->app->components->company->get_company_opening_hours('closing_time', 'datetime', $start_year.'-'.$start_month.'-'.$start_day, '%Y-%m-%d');
 
         // Look in the database for a scheduled events for the current schedule day (within business hours)
         $sql ="SELECT 
@@ -734,14 +720,14 @@ class Schedule {
             LEFT JOIN ".PRFX."workorder_records ON ".PRFX."schedule_records.workorder_id = ".PRFX."workorder_records.workorder_id
             LEFT JOIN ".PRFX."client_records ON ".PRFX."schedule_records.client_id = ".PRFX."client_records.client_id
 
-            WHERE ".PRFX."schedule_records.start_time >= ".$db->qstr($company_day_start)."
-            AND ".PRFX."schedule_records.start_time <= ".$db->qstr($company_day_end)."
-            AND ".PRFX."schedule_records.employee_id =".$db->qstr($employee_id)."
+            WHERE ".PRFX."schedule_records.start_time >= ".$this->db->qstr($company_day_start)."
+            AND ".PRFX."schedule_records.start_time <= ".$this->db->qstr($company_day_end)."
+            AND ".PRFX."schedule_records.employee_id =".$this->db->qstr($employee_id)."
             ORDER BY ".PRFX."schedule_records.start_time
             ASC";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         }
 
         // Add any scheduled events found into the $scheduleObject for any employee
@@ -831,7 +817,7 @@ class Schedule {
                     // Links for schedule
                     $calendar_matrix .= "<b><a href=\"index.php?component=workorder&page_tpl=details&workorder_id=".$scheduleObject[$i]['workorder_id']."\">"._gettext("Work Order")."</a> - </b>";
                     $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=details&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Details")."</a></b>";
-                    if(!get_workorder_details($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
+                    if(!$this->app->components->workorder->get_workorder_details($scheduleObject[$i]['workorder_id'], 'is_closed')) {                    
                         $calendar_matrix .= " - <b><a href=\"index.php?component=schedule&page_tpl=edit&schedule_id=".$scheduleObject[$i]['schedule_id']."\">"._gettext("Edit")."</a></b> - ";
                         $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=icalendar&schedule_id=".$scheduleObject[$i]['schedule_id']."&theme=print\">"._gettext("Export")."</a></b> - ";
                         $calendar_matrix .= "<b><a href=\"index.php?component=schedule&page_tpl=delete&schedule_id=".$scheduleObject[$i]['schedule_id']."\" onclick=\"return confirmChoice('"._gettext("Are you sure you want to delete this schedule?")."');\">"._gettext("Delete")."</a></b>\n";                                    
@@ -911,37 +897,34 @@ class Schedule {
     #   Validate schedule start and end time   #  // supply times in DATETIME
     ############################################
 
-    function validate_schedule_times($start_time, $end_time, $employee_id, $schedule_id = null) {    
-
-        $db = \Factory::getDbo();    
-        $smarty = \Factory::getSmarty();    
+    public function validate_schedule_times($start_time, $end_time, $employee_id, $schedule_id = null) {    
 
         // convert the submitted $start_date to the correct format
-        //$start_date = date_to_timestamp($start_date);
+        //$start_date = $this->app->components->general->date_to_timestamp($start_date);
         //$start_date = timestamp_to_date($start_date, '%Y-%m-%d');
 
         // Get the start and end time of the calendar schedule to be displayed, Office hours only
-        $company_day_start = get_company_opening_hours('opening_time', 'datetime', $start_time, 'datetime');
-        $company_day_end   = get_company_opening_hours('closing_time', 'datetime', $start_time, 'datetime');
+        $company_day_start = $this->app->components->company->get_company_opening_hours('opening_time', 'datetime', $start_time, 'datetime');
+        $company_day_end   = $this->app->components->company->get_company_opening_hours('closing_time', 'datetime', $start_time, 'datetime');
 
         // Prevents Schedule Start and End times getting confused
         $end_time = (new DateTime($end_time))->modify('-1 second')->format('Y-m-d H:i:s');
 
         // If start time is after end time show message and stop further processing
         if($start_time > $end_time) {        
-            systemMessagesWrite('danger', _gettext("Schedule ends before it starts."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule ends before it starts."));
             return false;
         }
 
         // If the start time is the same as the end time show message and stop further processing
         if($start_time == $end_time) {       
-            systemMessagesWrite('danger', _gettext("Start Time and End Time are the Same."));        
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Start Time and End Time are the Same."));        
             return false;
         }
 
         // Check the schedule is within Company Hours    
         if($start_time < $company_day_start || $end_time > $company_day_end) {            
-            systemMessagesWrite('danger', _gettext("You cannot book work outside of company hours"));    
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot book work outside of company hours"));    
             return false;
         }    
 
@@ -949,14 +932,14 @@ class Schedule {
         $sql = "SELECT
                 schedule_id, start_time, end_time
                 FROM ".PRFX."schedule_records
-                WHERE start_time >= ".$db->qstr($company_day_start)."
-                AND end_time <=".$db->qstr($company_day_end)."
-                AND employee_id =".$db->qstr($employee_id)."
+                WHERE start_time >= ".$this->db->qstr($company_day_start)."
+                AND end_time <=".$this->db->qstr($company_day_end)."
+                AND employee_id =".$this->db->qstr($employee_id)."
                 ORDER BY start_time
                 ASC";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the selected schedules."));
         }   
 
         // Loop through all schedule items in the database (for the selected day and employee) and validate that schedule item can be inserted with no conflict.
@@ -970,13 +953,13 @@ class Schedule {
 
                 // Check if this schedule item ends after another item has started      
                 if($start_time <= $rs->fields['start_time'] && $end_time >= $rs->fields['start_time']) {                        
-                    systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item ends after another schedule has started."));    
                     return false;           
                 }
 
                 // Check if this schedule item starts before another item has finished
                 if($start_time >= $rs->fields['start_time'] && $start_time <= $rs->fields['end_time']) {                    
-                    systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
+                    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Schedule conflict - This schedule item starts before another schedule ends."));    
                     return false;
                 }
 

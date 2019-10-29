@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Make sure a payment type is set
 if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'invoice' || \CMSApplication::$VAR['type'] == 'refund' || \CMSApplication::$VAR['type'] == 'expense' || \CMSApplication::$VAR['type'] == 'otherincome')) {
-    force_page('payment', 'search', 'msg_danger='._gettext("No Payment Type supplied."));  
+    $this->app->system->general->force_page('payment', 'search', 'msg_danger='._gettext("No Payment Type supplied."));  
 }
 
 // Prevent undefined variable errors (with and without submit)
@@ -28,35 +28,35 @@ if(!isset(\CMSApplication::$VAR['type']) && (\CMSApplication::$VAR['type'] == 'i
 \CMSApplication::$VAR['qpayment']['name_on_card'] = isset(\CMSApplication::$VAR['qpayment']['name_on_card']) ? \CMSApplication::$VAR['qpayment']['name_on_card'] : null;
 
 // Prevent direct access to this page, and validate requests
-if(check_page_accessed_via_qwcrm('invoice', 'edit') || check_page_accessed_via_qwcrm('invoice', 'details')) {  
+if($this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'edit') || $this->app->system->security->check_page_accessed_via_qwcrm('invoice', 'details')) {  
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'invoice' && (!isset(\CMSApplication::$VAR['invoice_id']) || !\CMSApplication::$VAR['invoice_id'])) {
-        force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));    
+        $this->app->system->general->force_page('invoice', 'search', 'msg_danger='._gettext("No Invoice ID supplied."));    
     }    
     
-} elseif(check_page_accessed_via_qwcrm('refund', 'new') || check_page_accessed_via_qwcrm('refund', 'details')) {   
+} elseif($this->app->system->security->check_page_accessed_via_qwcrm('refund', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('refund', 'details')) {   
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'refund' && (!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id'])) {
-        force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));    
+        $this->app->system->general->force_page('refund', 'search', 'msg_danger='._gettext("No Refund ID supplied."));    
     }    
     
-} elseif(check_page_accessed_via_qwcrm('expense', 'new') || check_page_accessed_via_qwcrm('expense', 'details')) {
+} elseif($this->app->system->security->check_page_accessed_via_qwcrm('expense', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('expense', 'details')) {
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'expense' && (!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id'])) {
-        force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));    
+        $this->app->system->general->force_page('expense', 'search', 'msg_danger='._gettext("No Expense ID supplied."));    
     }
  
-} elseif(check_page_accessed_via_qwcrm('otherincome', 'new') || check_page_accessed_via_qwcrm('otherincome', 'details')) {
+} elseif($this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'new') || $this->app->system->security->check_page_accessed_via_qwcrm('otherincome', 'details')) {
     
     // Check we have a valid request
     if(\CMSApplication::$VAR['qpayment']['type'] == 'otherincome' && (!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id'])) {
-        force_page('otherincome', 'search', 'msg_danger='._gettext("No Otherincome ID supplied."));    
+        $this->app->system->general->force_page('otherincome', 'search', 'msg_danger='._gettext("No Otherincome ID supplied."));    
     }
      
-} elseif(!check_page_accessed_via_qwcrm('payment', 'new')) {
+} elseif(!$this->app->system->security->check_page_accessed_via_qwcrm('payment', 'new')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
@@ -88,7 +88,7 @@ class NewPayment {
         // Set name on card to company name (if appropriate)
         if(!$this->VAR['qpayment']['name_on_card'] && ($this->VAR['qpayment']['type'] == 'refund' || $this->VAR['qpayment']['type'] == 'expense'))
         {
-            $this->VAR['qpayment']['name_on_card'] = get_company_details('company_name');
+            $this->VAR['qpayment']['name_on_card'] = $this->app->components->company->get_company_details('company_name');
         }
                
         // Set the payment type class
@@ -151,8 +151,8 @@ class NewPayment {
             break;
 
             default:
-            systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
-            force_page('payment', 'search');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
+            $this->app->system->general->force_page('payment', 'search');
             break;
 
         }
@@ -200,8 +200,8 @@ class NewPayment {
             break;
 
             default:
-            systemMessagesWrite('danger', _gettext("Invalid Payment Method."));
-            force_page('payment', 'search');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Invalid Payment Method."));
+            $this->app->system->general->force_page('payment', 'search');
             break;
         }
         
@@ -216,13 +216,13 @@ class NewPayment {
 $payment = new NewPayment(\CMSApplication::$VAR);
 
 // Build the page
-$smarty->assign('display_payments',                  display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'])  );
-$smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
-$smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
-$smarty->assign('payment_types',                     get_payment_types()                                                             );
-$smarty->assign('payment_methods',                   get_payment_methods()                                                           );
-$smarty->assign('payment_statuses',                  get_payment_statuses()                                                          );
-$smarty->assign('payment_active_card_types',         get_payment_active_card_types()                                                 );
-$smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
-$smarty->assign('record_balance',                    NewPayment::$record_balance                                                     );
-$smarty->assign('buttons',                           NewPayment::$buttons                                                            );
+$this->app->smarty->assign('display_payments',                  $this->app->components->payment->display_payments('payment_id', 'DESC', false, null, null, null, null, null, null, null, null, null, \CMSApplication::$VAR['qpayment']['invoice_id'], \CMSApplication::$VAR['qpayment']['refund_id'], \CMSApplication::$VAR['qpayment']['expense_id'], \CMSApplication::$VAR['qpayment']['otherincome_id'])  );
+$this->app->smarty->assign('payment_method',                    \CMSApplication::$VAR['qpayment']['method']                                                      );
+$this->app->smarty->assign('payment_type',                      \CMSApplication::$VAR['qpayment']['type']                                                        );
+$this->app->smarty->assign('payment_types',                     $this->app->components->payment->get_payment_types()                                                             );
+$this->app->smarty->assign('payment_methods',                   $this->app->components->payment->get_payment_methods()                                                           );
+$this->app->smarty->assign('payment_statuses',                  $this->app->components->payment->get_payment_statuses()                                                          );
+$this->app->smarty->assign('payment_active_card_types',         $this->app->components->payment->get_payment_active_card_types()                                                 );
+$this->app->smarty->assign('name_on_card',                      \CMSApplication::$VAR['qpayment']['name_on_card']                                                );
+$this->app->smarty->assign('record_balance',                    NewPayment::$record_balance                                                     );
+$this->app->smarty->assign('buttons',                           NewPayment::$buttons                                                            );

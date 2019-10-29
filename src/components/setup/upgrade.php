@@ -9,20 +9,20 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade', 'index_allowed')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Prevent undefined variable errors && Get 'stage' from the submit button
 \CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
-$smarty->assign('stage', \CMSApplication::$VAR['stage']);
+$this->app->smarty->assign('stage', \CMSApplication::$VAR['stage']);
 
 // Create a Setup Object
 $qsetup = new Setup(\CMSApplication::$VAR);
 
 // Delete Setup files Action
-if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && check_page_accessed_via_qwcrm('setup', 'upgrade')) {
+if(isset(\CMSApplication::$VAR['action']) && \CMSApplication::$VAR['action'] == 'delete_setup_folder' && $this->app->system->security->check_page_accessed_via_qwcrm('setup', 'upgrade')) {
     $qsetup->delete_setup_folder();
 }
 
@@ -46,17 +46,17 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
         $final_version = str_replace('_', '.', end($final_version));
         
         // Load the 'To' and 'From' version numbers
-        $smarty->assign('qwcrm_config', array('from' => get_qwcrm_database_version_number(), 'to' => $final_version));        
+        $this->app->smarty->assign('qwcrm_config', array('from' => $this->app->components->general->get_qwcrm_database_version_number(), 'to' => $final_version));        
         
         // If multiple steps - Advertise the fact here
         if(Setup::$split_database_upgrade) {
             $record = _gettext("The upgrade procedure has been split into multiple parts to prevent server timeouts.").'<br>';
             $record .= _gettext("Follow this process through until the upgrade is complete.").'<br>';
             $record .= _gettext("The final QWcrm version will be").': '.QWCRM_VERSION;    
-            systemMessagesWrite('success', $record);            
+            $this->app->system->variables->systemMessagesWrite('success', $record);            
         }
         
-        $smarty->assign('stage', 'database_upgrade'); 
+        $this->app->smarty->assign('stage', 'database_upgrade'); 
             
     } else {
         
@@ -64,20 +64,20 @@ if(!isset(\CMSApplication::$VAR['stage']) || \CMSApplication::$VAR['stage'] == '
         
         // Test the supplied database connection details, set message and button permission
         if($qsetup->verify_database_connection_details($qwcrm_config->db_host, $qwcrm_config->db_user, $qwcrm_config->db_pass, $qwcrm_config->db_name)) {            
-            $smarty->assign('enable_next', true);
+            $this->app->smarty->assign('enable_next', true);
             $record = _gettext("Connected successfully to the database with the supplied credentials from the config file.");
-            systemMessagesWrite('success', $record);
+            $this->app->system->variables->systemMessagesWrite('success', $record);
             $qsetup->write_record_to_setup_log('upgrade', $record);                   
         } else {            
-            $smarty->assign('enable_next', false);
+            $this->app->smarty->assign('enable_next', false);
             $record = _gettext("Failed to connect to the database with the supplied credentials. Check your config file.");
-            systemMessagesWrite('danger', $record);
+            $this->app->system->variables->systemMessagesWrite('danger', $record);
             $qsetup->write_record_to_setup_log('upgrade', $record);            
         }
         
         // Load the Database Connection page
-        $smarty->assign('qwcrm_config', array('db_host' => $qwcrm_config->db_host, 'db_name' => $qwcrm_config->db_name, 'db_user' => $qwcrm_config->db_user));
-        $smarty->assign('stage', 'database_connection');         
+        $this->app->smarty->assign('qwcrm_config', array('db_host' => $qwcrm_config->db_host, 'db_name' => $qwcrm_config->db_name, 'db_user' => $qwcrm_config->db_user));
+        $this->app->smarty->assign('stage', 'database_connection');         
         
     }
     
@@ -98,14 +98,14 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade') {
         
         if(!Setup::$setup_error_flag) {            
             $record = _gettext("The database upgraded successfully.");            
-            systemMessagesWrite('success', $record); 
+            $this->app->system->variables->systemMessagesWrite('success', $record); 
             $qsetup->write_record_to_setup_log('upgrade', $record);
             \CMSApplication::$VAR['stage'] = 'database_upgrade_results';            
         
         // Load the results page with the error message      
         } else {              
            $record = _gettext("The database failed to upgrade.");                      
-           systemMessagesWrite('danger', $record);
+           $this->app->system->variables->systemMessagesWrite('danger', $record);
            $qsetup->write_record_to_setup_log('upgrade', $record);
            \CMSApplication::$VAR['stage'] = 'database_upgrade_results';
            
@@ -114,7 +114,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade') {
     // Load the page
     } else {
                 
-        $smarty->assign('stage', 'database_upgrade');
+        $this->app->smarty->assign('stage', 'database_upgrade');
         
     }
     
@@ -128,7 +128,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade_results') {
         
             $record = _gettext("The QWcrm upgrade process has completed successfully.");
             $qsetup->write_record_to_setup_log('upgrade', $record);
-            systemMessagesWrite('success', $record);
+            $this->app->system->variables->systemMessagesWrite('success', $record);
             \CMSApplication::$VAR['stage'] = 'delete_setup_folder'; 
     
     // Load the page  
@@ -138,7 +138,7 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade_results') {
         if(Setup::$split_database_upgrade) {  
             $record = _gettext("This QWcrm upgrade `Part` has completed successfully.");
             $qsetup->write_record_to_setup_log('upgrade', $record);
-            systemMessagesWrite('success', $record);
+            $this->app->system->variables->systemMessagesWrite('success', $record);
             
             // Set the 'Next' button to restart from the datbase upgrade step
             $next_button_value = 'database_connection';
@@ -150,9 +150,9 @@ if(\CMSApplication::$VAR['stage'] == 'database_upgrade_results') {
         }
         
         // Output Execution results to the screen
-        $smarty->assign('executed_sql_results', Setup::$executed_sql_results);        
-        $smarty->assign('stage', 'database_upgrade_results');
-        $smarty->assign('next_button_value', $next_button_value);
+        $this->app->smarty->assign('executed_sql_results', Setup::$executed_sql_results);        
+        $this->app->smarty->assign('stage', 'database_upgrade_results');
+        $this->app->smarty->assign('next_button_value', $next_button_value);
                 
     }
     
@@ -176,7 +176,7 @@ if(\CMSApplication::$VAR['stage'] == 'delete_setup_folder') {
         $qsetup->setup_finished();
         
         // Set mandatory default values               
-        $smarty->assign('stage', 'delete_setup_folder');
+        $this->app->smarty->assign('stage', 'delete_setup_folder');
         
     }
     

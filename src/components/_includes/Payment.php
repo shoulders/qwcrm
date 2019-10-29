@@ -15,12 +15,12 @@
  * Update Functions - For updating records/fields
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
- * Other Functions - All other functions not covered above
+ * Other Functions - All other public functions not covered above
  */
 
 defined('_QWEXEC') or die;
 
-class Payment {
+class Payment extends Components {
 
     /** Mandatory Code **/
 
@@ -30,10 +30,7 @@ class Payment {
     #  Display all payments the given status            #
     #####################################################
 
-    function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function display_payments($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no =  null, $search_category = null, $search_term = null, $type = null, $method = null, $status = null, $employee_id = null, $client_id = null, $invoice_id = null, $refund_id = null, $expense_id = null, $otherincome_id = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -47,13 +44,13 @@ class Payment {
         $whereTheseRecords = "WHERE ".PRFX."payment_records.payment_id\n";
 
         // Restrict results by search category (client) and search term
-        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        if($search_category == 'client_display_name') {$havingTheseRecords .= " HAVING client_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
        // Restrict results by search category (employee) and search term
-        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$db->qstr('%'.$search_term.'%');}     
+        elseif($search_category == 'employee_display_name') {$havingTheseRecords .= " HAVING employee_display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}     
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');} 
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."payment_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');} 
 
         /* Filter the Records */
 
@@ -70,34 +67,34 @@ class Payment {
 
             // Return records for the given type
             } else {            
-                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$db->qstr($type);            
+                $whereTheseRecords .= " AND ".PRFX."payment_records.type= ".$this->db->qstr($type);            
             }
 
         }
 
         // Restrict by method
-        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$db->qstr($method);}
+        if($method) {$whereTheseRecords .= " AND ".PRFX."payment_records.method= ".$this->db->qstr($method);}
 
         // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$db->qstr($status);}   
+        if($status) {$whereTheseRecords .= " AND ".PRFX."payment_records.status= ".$this->db->qstr($status);}   
 
         // Restrict by Employee
-        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$db->qstr($employee_id);}
+        if($employee_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.employee_id=".$this->db->qstr($employee_id);}
 
         // Restrict by Client
-        if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$db->qstr($client_id);}
+        if($client_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.client_id=".$this->db->qstr($client_id);}
 
         // Restrict by Invoice
-        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$db->qstr($invoice_id);}    
+        if($invoice_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.invoice_id=".$this->db->qstr($invoice_id);}    
 
         // Restrict by Refund
-        if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$db->qstr($refund_id);} 
+        if($refund_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.refund_id=".$this->db->qstr($refund_id);} 
 
         // Restrict by Expense
-        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$db->qstr($expense_id);} 
+        if($expense_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.expense_id=".$this->db->qstr($expense_id);} 
 
         // Restrict by Otherincome
-        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$db->qstr($otherincome_id);}             
+        if($otherincome_id) {$whereTheseRecords .= " AND ".PRFX."payment_records.otherincome_id=".$this->db->qstr($otherincome_id);}             
 
         /* The SQL code */
 
@@ -124,29 +121,29 @@ class Payment {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching payments."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $smarty->assign('total_results', $total_results);
+                $this->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $smarty->assign('total_pages', $total_pages);
+            $this->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $smarty->assign('page_no', $page_no);
+            $this->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $smarty->assign('previous_page_no', $previous_page_no);          
+            $this->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $smarty->assign('next_page_no', $next_page_no);
+            $this->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -157,14 +154,14 @@ class Payment {
         } else {
 
             // This make the drop down menu look correct
-            $smarty->assign('total_pages', 1);
+            $this->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching payments."));
         } else {
 
             $records = $rs->GetArray();   // do i need to add the check empty
@@ -189,48 +186,46 @@ class Payment {
     #   Insert Payment         #
     ############################
 
-    function insert_payment($qpayment) {
-
-        $db = \Factory::getDbo();
+    public function insert_payment($qpayment) {
 
         $sql = "INSERT INTO ".PRFX."payment_records SET            
-                employee_id     = ".$db->qstr( \Factory::getUser()->login_user_id       ).",
-                client_id       = ".$db->qstr( $qpayment['client_id']                   ).",
-                workorder_id    = ".$db->qstr( $qpayment['workorder_id']                ).",
-                invoice_id      = ".$db->qstr( $qpayment['invoice_id']                  ).",
-                voucher_id      = ".$db->qstr( $qpayment['voucher_id']                  ).",               
-                refund_id       = ".$db->qstr( $qpayment['refund_id']                   ).", 
-                expense_id      = ".$db->qstr( $qpayment['expense_id']                  ).", 
-                otherincome_id  = ".$db->qstr( $qpayment['otherincome_id']              ).",
-                date            = ".$db->qstr( date_to_mysql_date($qpayment['date'])    ).",
-                tax_system      = ".$db->qstr( QW_TAX_SYSTEM                            ).",   
-                type            = ".$db->qstr( $qpayment['type']                        ).",
-                method          = ".$db->qstr( $qpayment['method']                      ).",
+                employee_id     = ".$this->db->qstr( $this->app->user->login_user_id       ).",
+                client_id       = ".$this->db->qstr( $qpayment['client_id']                   ).",
+                workorder_id    = ".$this->db->qstr( $qpayment['workorder_id']                ).",
+                invoice_id      = ".$this->db->qstr( $qpayment['invoice_id']                  ).",
+                voucher_id      = ".$this->db->qstr( $qpayment['voucher_id']                  ).",               
+                refund_id       = ".$this->db->qstr( $qpayment['refund_id']                   ).", 
+                expense_id      = ".$this->db->qstr( $qpayment['expense_id']                  ).", 
+                otherincome_id  = ".$this->db->qstr( $qpayment['otherincome_id']              ).",
+                date            = ".$this->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date'])    ).",
+                tax_system      = ".$this->db->qstr( QW_TAX_SYSTEM                            ).",   
+                type            = ".$this->db->qstr( $qpayment['type']                        ).",
+                method          = ".$this->db->qstr( $qpayment['method']                      ).",
                 status          = 'valid',
-                amount          = ".$db->qstr( $qpayment['amount']                      ).",
-                last_active     =". $db->qstr( mysql_datetime()                         ).",
-                additional_info = ".$db->qstr( $qpayment['additional_info']             ).",
-                note            = ".$db->qstr( $qpayment['note']                        );
+                amount          = ".$this->db->qstr( $qpayment['amount']                      ).",
+                last_active     =". $this->db->qstr( $this->app->system->general->mysql_datetime()                         ).",
+                additional_info = ".$this->db->qstr( $qpayment['additional_info']             ).",
+                note            = ".$this->db->qstr( $qpayment['note']                        );
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert payment into the database."));
 
         } else {
 
             // Get Payment Record ID
-            $payment_id = $db->Insert_ID();
+            $payment_id = $this->db->Insert_ID();
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.\Factory::getUser()->login_display_name);
+            $this->app->components->workorder->insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("added by").' '.$this->app->user->login_display_name);
 
             // Log activity        
             $record = _gettext("Payment").' '.$payment_id.' '._gettext("created.");
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
 
             // Update last active record    
-            update_client_last_active($qpayment['client_id']);
-            update_workorder_last_active($qpayment['workorder_id']);
-            update_invoice_last_active($qpayment['invoice_id']);
+            $this->app->components->client->update_client_last_active($qpayment['client_id']);
+            $this->app->components->workorder->update_workorder_last_active($qpayment['workorder_id']);
+            $this->app->components->invoice->update_invoice_last_active($qpayment['invoice_id']);
 
             // Return the payment_id
             return $payment_id;
@@ -245,14 +240,12 @@ class Payment {
     #  Get payment details      #
     #############################
 
-    function get_payment_details($payment_id, $item = null) {
+    public function get_payment_details($payment_id, $item = null) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$this->db->qstr($payment_id);
 
-        $sql = "SELECT * FROM ".PRFX."payment_records WHERE payment_id=".$db->qstr($payment_id);
-
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment details."));
         } else {
 
             if($item === null){
@@ -273,14 +266,12 @@ class Payment {
     #  Get payment options   #
     ##########################
 
-    function get_payment_options($item = null) {
-
-        $db = \Factory::getDbo();
+    public function get_payment_options($item = null) {
 
         $sql = "SELECT * FROM ".PRFX."payment_options";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment options."));
         } else {
 
             if($item === null){
@@ -301,9 +292,7 @@ class Payment {
     #   Get get Payment Methods                    #
     ################################################
 
-    function get_payment_methods($direction = null, $status = null) {
-
-        $db = \Factory::getDbo();
+    public function get_payment_methods($direction = null, $status = null) {
 
         $sql = "SELECT *
                 FROM ".PRFX."payment_methods";
@@ -322,8 +311,8 @@ class Payment {
             $sql .= "\nAND enabled = '1'";        
         }
 
-        if(!$rs = $db->execute($sql)) {        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
+        if(!$rs = $this->db->execute($sql)) {        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment method types."));
         } else {
 
             return $rs->GetArray();            
@@ -336,14 +325,12 @@ class Payment {
     #    Get Payment Types              #  // i.e. invoice, refund
     #####################################
 
-    function get_payment_types() {
-
-        $db = \Factory::getDbo();
+    public function get_payment_types() {
 
         $sql = "SELECT * FROM ".PRFX."payment_types";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment types."));
         } else {
 
             //return $rs->GetRowAssoc();
@@ -357,14 +344,12 @@ class Payment {
     #    Get Payment Statuses           #
     #####################################
 
-    function get_payment_statuses() {
-
-        $db = \Factory::getDbo();
+    public function get_payment_statuses() {
 
         $sql = "SELECT * FROM ".PRFX."payment_statuses";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment statuses."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment statuses."));
         } else {
 
             //return $rs->GetRowAssoc();
@@ -378,9 +363,7 @@ class Payment {
     #   Get get active credit cards         #
     #########################################
 
-    function get_payment_active_card_types() {
-
-        $db = \Factory::getDbo();
+    public function get_payment_active_card_types() {
 
         $sql = "SELECT
                 type_key,
@@ -388,8 +371,8 @@ class Payment {
                 FROM ".PRFX."payment_card_types
                 WHERE active='1'";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active cards."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the active cards."));
         } else {
 
             $records = $rs->GetArray();
@@ -409,17 +392,15 @@ class Payment {
     }
 
     #####################################
-    #  Get Card name from type          #
+    #  Get Card name from type          # // not currently used
     #####################################
 
-    function get_card_display_name_from_key($type_key) {
+    public function get_card_display_name_from_key($type_key) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$this->db->qstr($type_key);
 
-        $sql = "SELECT display_name FROM ".PRFX."payment_card_types WHERE type_key=".$db->qstr($type_key);
-
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Credit Card Name by key."));
         } else {
 
             return $rs->fields['display_name'];
@@ -432,15 +413,13 @@ class Payment {
     #  Get status names as an array     #
     #####################################
 
-    function get_payment_status_names() {
-
-        $db = \Factory::getDbo();
+    public function get_payment_status_names() {
 
         $sql = "SELECT status_key, display_name
                 FROM ".PRFX."payment_statuses";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Status Names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -460,18 +439,16 @@ class Payment {
     }
 
     #####################################
-    #  Get Card names as an array       #
+    #  Get Card names as an array       #  // not currently used
     #####################################
 
-    function get_payment_card_names() {
-
-        $db = \Factory::getDbo();
+    public function get_payment_card_names() {
 
         $sql = "SELECT type_key, display_name
                 FROM ".PRFX."payment_card_types";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Card Names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -491,18 +468,16 @@ class Payment {
     }
 
     ##########################################
-    #    Get Payment additional info names   #
+    #    Get Payment additional info names   # // not currently used
     ##########################################
 
-    function get_payment_additional_info_names() {
-
-        $db = \Factory::getDbo();
+    public function get_payment_additional_info_names() {
 
         $sql = "SELECT type_key, display_name
                 FROM ".PRFX."payment_additional_info_types";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get payment additional info names."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get payment additional info names."));
         } else {
 
             $records = $rs->GetAssoc();
@@ -527,34 +502,32 @@ class Payment {
     #   update payment  #
     #####################
 
-    function update_payment($qpayment) {    
-
-        $db = \Factory::getDbo();
+    public function update_payment($qpayment) {    
 
         $sql = "UPDATE ".PRFX."payment_records SET        
-                employee_id     = ".$db->qstr( \Factory::getUser()->login_user_id    ).",
-                date            = ".$db->qstr( date_to_mysql_date($qpayment['date']) ).",
-                amount          = ".$db->qstr( $qpayment['amount']                   ).",
-                last_active     =". $db->qstr( mysql_datetime()                      ).",
-                note            = ".$db->qstr( $qpayment['note']                     )."
-                WHERE payment_id =". $db->qstr( $qpayment['payment_id']              );
+                employee_id     = ".$this->db->qstr( $this->app->user->login_user_id    ).",
+                date            = ".$this->db->qstr( $this->app->system->general->date_to_mysql_date($qpayment['date']) ).",
+                amount          = ".$this->db->qstr( $qpayment['amount']                   ).",
+                last_active     =". $this->db->qstr( $this->app->system->general->mysql_datetime()                      ).",
+                note            = ".$this->db->qstr( $qpayment['note']                     )."
+                WHERE payment_id =". $this->db->qstr( $qpayment['payment_id']              );
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the payment details."));
 
         } else {
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.\Factory::getUser()->login_display_name);           
+            $this->app->components->workorder->insert_workorder_history_note($qpayment['workorder_id'], _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated by").' '.$this->app->user->login_display_name);           
 
             // Log activity 
             $record = _gettext("Payment").' '.$qpayment['payment_id'].' '._gettext("updated.");
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $qpayment['client_id'], $qpayment['workorder_id'], $qpayment['invoice_id']);
 
             // Update last active record    
-            update_client_last_active($qpayment['client_id']);
-            update_workorder_last_active($qpayment['workorder_id']);
-            update_invoice_last_active($qpayment['invoice_id']);
+            $this->app->components->client->update_client_last_active($qpayment['client_id']);
+            $this->app->components->workorder->update_workorder_last_active($qpayment['workorder_id']);
+            $this->app->components->invoice->update_invoice_last_active($qpayment['invoice_id']);
 
         }
 
@@ -566,23 +539,21 @@ class Payment {
     #    Update Payment options         #
     #####################################
 
-    function update_payment_options($qform) {
-
-        $db = \Factory::getDbo();
+    public function update_payment_options($qform) {
 
         $sql = "UPDATE ".PRFX."payment_options SET            
-                bank_account_name           =". $db->qstr( $qform['bank_account_name']            ).",
-                bank_name                   =". $db->qstr( $qform['bank_name']                    ).",
-                bank_account_number         =". $db->qstr( $qform['bank_account_number']          ).",
-                bank_sort_code              =". $db->qstr( $qform['bank_sort_code']               ).",
-                bank_iban                   =". $db->qstr( $qform['bank_iban']                    ).",
-                paypal_email                =". $db->qstr( $qform['paypal_email']                 ).",        
-                invoice_bank_transfer_msg   =". $db->qstr( $qform['invoice_bank_transfer_msg']    ).",
-                invoice_cheque_msg          =". $db->qstr( $qform['invoice_cheque_msg']           ).",
-                invoice_footer_msg          =". $db->qstr( $qform['invoice_footer_msg']           );            
+                bank_account_name           =". $this->db->qstr( $qform['bank_account_name']            ).",
+                bank_name                   =". $this->db->qstr( $qform['bank_name']                    ).",
+                bank_account_number         =". $this->db->qstr( $qform['bank_account_number']          ).",
+                bank_sort_code              =". $this->db->qstr( $qform['bank_sort_code']               ).",
+                bank_iban                   =". $this->db->qstr( $qform['bank_iban']                    ).",
+                paypal_email                =". $this->db->qstr( $qform['paypal_email']                 ).",        
+                invoice_bank_transfer_msg   =". $this->db->qstr( $qform['invoice_bank_transfer_msg']    ).",
+                invoice_cheque_msg          =". $this->db->qstr( $qform['invoice_cheque_msg']           ).",
+                invoice_footer_msg          =". $this->db->qstr( $qform['invoice_footer_msg']           );            
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update payment options."));
         } else {
 
             // Log activity 
@@ -598,9 +569,7 @@ class Payment {
     #  Update Payment Methods statuses  #
     #####################################
 
-    function update_payment_methods_statuses($payment_methods) {
-
-        $db = \Factory::getDbo();
+    public function update_payment_methods_statuses($payment_methods) {
 
         // Loop throught the various payment system methods and update the database
         foreach($payment_methods as $payment_method) {
@@ -612,13 +581,13 @@ class Payment {
 
             $sql = "UPDATE ".PRFX."payment_methods
                     SET
-                    send                    = ". $db->qstr($payment_method['send']).",
-                    receive                 = ". $db->qstr($payment_method['receive']).",
-                    enabled                 = ". $db->qstr($payment_method['enabled'])."   
-                    WHERE method_key = ". $db->qstr($payment_method['method_key']); 
+                    send                    = ". $this->db->qstr($payment_method['send']).",
+                    receive                 = ". $this->db->qstr($payment_method['receive']).",
+                    enabled                 = ". $this->db->qstr($payment_method['enabled'])."   
+                    WHERE method_key = ". $this->db->qstr($payment_method['method_key']); 
 
-            if(!$rs = $db->execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
+            if(!$rs = $this->db->execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update payment method statuses."));
             }
 
         }
@@ -634,47 +603,45 @@ class Payment {
     # Update Payment Status    #
     ############################
 
-    function update_payment_status($payment_id, $new_status, $silent = false) {
-
-        $db = \Factory::getDbo();
+    public function update_payment_status($payment_id, $new_status, $silent = false) {
 
         // Get payment details
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         // if the new status is the same as the current one, exit
         if($new_status == $payment_details['status']) {        
-            if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+            if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
             return false;
         }    
 
         $sql = "UPDATE ".PRFX."payment_records SET
-                status               =". $db->qstr( $new_status      ).",
-                last_active          =". $db->qstr( mysql_datetime() )."
-                WHERE payment_id     =". $db->qstr( $payment_id      );
+                status               =". $this->db->qstr( $new_status      ).",
+                last_active          =". $this->db->qstr( $this->app->system->general->mysql_datetime() )."
+                WHERE payment_id     =". $this->db->qstr( $payment_id      );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update a Payment Status."));
 
         } else {        
 
             // Status updated message
-            if (!$silent) { systemMessagesWrite('success', _gettext("Payment status updated.")); }
+            if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("Payment status updated.")); }
 
             // For writing message to log file, get payment status display name
-            $payment_status_names = get_payment_status_names();
+            $payment_status_names = $this->get_payment_status_names();
             $payment_status_display_name = _gettext($payment_status_names[$new_status]);
 
             // Create a Workorder History Note (Not Used)      
-            insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.');
+            $this->app->components->workorder->insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.');
 
             // Log activity        
-            $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+            $record = _gettext("Expense").' '.$payment_id.' '._gettext("Status updated to").' '.$payment_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
 
             // Update last active record (Not Used)
-            update_client_last_active($payment_details['client_id']);
-            update_workorder_last_active($payment_details['workorder_id']);
-            update_invoice_last_active($payment_details['invoice_id']);
+            $this->app->components->client->update_client_last_active($payment_details['client_id']);
+            $this->app->components->workorder->update_workorder_last_active($payment_details['workorder_id']);
+            $this->app->components->invoice->update_invoice_last_active($payment_details['invoice_id']);
 
             return true;
 
@@ -684,30 +651,30 @@ class Payment {
 
     /** Close Functions **/
 
-    function cancel_payment($payment_id) {
+    public function cancel_payment($payment_id) {
 
         // Make sure the payment can be cancelled
-        if(!check_payment_can_be_cancelled($payment_id)) {        
+        if(!$this->check_payment_can_be_cancelled($payment_id)) {        
             return false;
         }
 
         // Get payment details
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         // Change the payment status to cancelled (I do this here to maintain consistency)
-        update_payment_status($payment_id, 'cancelled');      
+        $this->update_payment_status($payment_id, 'cancelled');      
 
         // Create a Workorder History Note  
-        insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.\Factory::getUser()->login_display_name.'.');
+        $this->app->components->workorder->insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.');
 
         // Log activity        
-        $record = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.\Factory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+        $record = _gettext("Expense").' '.$payment_id.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
 
         // Update last active record
-        update_client_last_active($payment_details['client_id']);
-        update_workorder_last_active($payment_details['workorder_id']);
-        update_invoice_last_active($payment_details['invoice_id']);
+        $this->app->components->client->update_client_last_active($payment_details['client_id']);
+        $this->app->components->workorder->update_workorder_last_active($payment_details['workorder_id']);
+        $this->app->components->invoice->update_invoice_last_active($payment_details['invoice_id']);
 
         return true;
 
@@ -719,12 +686,10 @@ class Payment {
     #    Delete Payment                 #
     #####################################
 
-    function delete_payment($payment_id) {
-
-        $db = \Factory::getDbo();
+    public function delete_payment($payment_id) {
 
         // Get payment details before deleting the record
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         $sql = "UPDATE ".PRFX."payment_records SET        
                 employee_id     = '',
@@ -744,23 +709,23 @@ class Payment {
                 additional_info = '',
                 last_active         = '0000-00-00 00:00:00',
                 note            = ''
-                WHERE payment_id =". $db->qstr( $payment_id );    
+                WHERE payment_id =". $this->db->qstr( $payment_id );    
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the payment record."));
         } else {
 
             // Create a Workorder History Note       
-            insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.\Factory::getUser()->login_display_name);           
+            $this->app->components->workorder->insert_workorder_history_note($payment_details['workorder_id'], _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted by").' '.$this->app->user->login_display_name);           
 
             // Log activity        
             $record = _gettext("Payment").' '.$payment_id.' '._gettext("has been deleted.");
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id, $payment_details['client_id'], $payment_details['workorder_id'], $payment_details['invoice_id']);
 
             // Update last active record    
-            update_client_last_active($payment_details['client_id']);
-            update_workorder_last_active($payment_details['workorder_id']);
-            update_invoice_last_active($payment_details['invoice_id']);
+            $this->app->components->client->update_client_last_active($payment_details['client_id']);
+            $this->app->components->workorder->update_workorder_last_active($payment_details['workorder_id']);
+            $this->app->components->invoice->update_invoice_last_active($payment_details['invoice_id']);
 
             return true;        
 
@@ -774,7 +739,7 @@ class Payment {
     #  Build additional_info JSON           #       
     #########################################
 
-     function build_additional_info_json($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
+     public function build_additional_info_json($bank_transfer_reference = null, $card_type_key = null, $name_on_card = null, $cheque_number = null, $direct_debit_reference = null, $paypal_transaction_id = null) {
 
         $additional_info = array();
 
@@ -795,14 +760,12 @@ class Payment {
     #   Make sure the submitted payment amount is valid  #
     ######################################################
 
-    function validate_payment_amount($record_balance, $payment_amount) {
-
-        $smarty = \Factory::getSmarty();
+    public function validate_payment_amount($record_balance, $payment_amount) {
 
         // If a negative amount has been submitted. (This should not be allowed because of the <input> masks.)
         if($payment_amount < 0){
 
-            systemMessagesWrite('danger', _gettext("You can not enter a payment with a negative amount."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not enter a payment with a negative amount."));
 
             return false;
 
@@ -811,7 +774,7 @@ class Payment {
         // Has a zero amount been submitted, this is not allowed
         if($payment_amount == 0){
 
-            systemMessagesWrite('danger', _gettext("You can not enter a payment with a zero (0.00) amount."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not enter a payment with a zero (0.00) amount."));
 
             return false;
 
@@ -820,7 +783,7 @@ class Payment {
         // Is the payment larger than the outstanding invoice balance, this is not allowed
         if($payment_amount > $record_balance){
 
-            systemMessagesWrite('danger', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not enter an payment with an amount greater than the outstanding balance."));
 
             return false;
 
@@ -834,16 +797,14 @@ class Payment {
     #      Check if a payment method is active         #
     ####################################################
 
-    function check_payment_method_is_active($method, $direction = null) {
-
-        $db = \Factory::getDbo();
+    public function check_payment_method_is_active($method, $direction = null) {
 
         $sql = "SELECT *
                 FROM ".PRFX."payment_methods
-                WHERE method_key=".$db->qstr($method);
+                WHERE method_key=".$this->db->qstr($method);
 
-        if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
+        if(!$rs = $this->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check if the payment method is active."));    
 
         } else {
 
@@ -867,28 +828,28 @@ class Payment {
     #  Check if the payment status is allowed to be changed  #  // not currently used
     ##########################################################
 
-     function check_payment_status_can_be_changed($payment_id) {
+     public function check_payment_status_can_be_changed($payment_id) {
 
         $state_flag = false; // Disable the ability to manually change status for now
 
         // Get the payment details
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         // Is the current payment method active, if not you cannot change status
-        if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
-            systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."));
+        if(!$this->check_payment_method_is_active($payment_details['method'], 'receive')) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because it's current payment method is not available."));
             $state_flag = false;       
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be changed because the payment has been deleted."));
             $state_flag = false;       
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be changed because the parent invoice has been refunded."));
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be changed because the parent invoice has been refunded."));
             $state_flag = false; 
         }
 
@@ -900,40 +861,40 @@ class Payment {
     #   Check to see if the payment can be refunded (by status)   #  // not currently used - i DONT think i will use this , you cant refund a payment?
     ###############################################################
 
-    function check_payment_can_be_refunded($payment_id) {
+    public function check_payment_can_be_refunded($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         // Is partially paid
         if($payment_details['status'] == 'partially_paid') {
-            systemMessagesWrite('danger', _gettext("This payment cannot be refunded because the payment is partially paid."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be refunded because the payment is partially paid."));
             return $state_flag;
         }
 
         // Is refunded
         if($payment_details['status'] == 'refunded') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has already been refunded."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has already been refunded."));
             $state_flag = false;       
         }
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has been cancelled."));
             $state_flag = false;       
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the payment has been deleted."));
             $state_flag = false;       
         }    
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the parent invoice has been refunded."));
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be refunded because the parent invoice has been refunded."));
             $state_flag = false; 
         }
 
@@ -942,31 +903,31 @@ class Payment {
     }
 
     ###############################################################
-    #   Check to see if the payment can be cancelled              #  // not currently used
+    #   Check to see if the payment can be cancelled              #
     ###############################################################
 
-    function check_payment_can_be_cancelled($payment_id) {
+    public function check_payment_can_be_cancelled($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has already been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has already been cancelled."));
             $state_flag = false;       
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the payment has been deleted."));
             $state_flag = false;       
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the parent invoice has been refunded."));
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be cancelled because the parent invoice has been refunded."));
             $state_flag = false; 
         }
 
@@ -978,28 +939,28 @@ class Payment {
     #   Check to see if the payment can be deleted                #
     ###############################################################
 
-    function check_payment_can_be_deleted($payment_id) {
+    public function check_payment_can_be_deleted($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         // Is cancelled
         if($payment_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it has been cancelled."));
             $state_flag = false;       
         }
 
         // Is deleted
         if($payment_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This payment cannot be deleted because it already been deleted."));
             $state_flag = false;       
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be deleted because the parent invoice has been refunded."));
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be deleted because the parent invoice has been refunded."));
             $state_flag = false; 
         }
 
@@ -1011,40 +972,40 @@ class Payment {
     #  Check if the payment status allows editing            #       
     ##########################################################
 
-     function check_payment_can_be_edited($payment_id) {
+     public function check_payment_can_be_edited($payment_id) {
 
         $state_flag = true;
 
         // Get the payment details
-        $payment_details = get_payment_details($payment_id);
+        $payment_details = $this->get_payment_details($payment_id);
 
         // Is on a different tax system
         if($payment_details['tax_system'] != QW_TAX_SYSTEM) {
-            systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it is on a different Tax system."));
             $state_flag = false;       
         }
 
         /* Is the current payment method active, if not you cannot change status
-        if(!check_payment_method_is_active($payment_details['method'], 'receive')) {
-            systemMessagesWrite('danger', _gettext("The payment status cannot be edited because it's current payment method is not available."));
+        if(!$this->check_payment_method_is_active($payment_details['method'], 'receive')) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment status cannot be edited because it's current payment method is not available."));
             $state_flag = false;       
         }*/
 
         // Is Cancelled
         if($payment_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been cancelled."));
             $state_flag = false;       
         }
 
         // Is Deleted
         if($payment_details['status'] == 'deleted') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because it has been deleted."));
             $state_flag = false;       
         }
 
         // Is this an invoice payment and parent invoice has been refunded
-        if($payment_details['type'] == 'invoice' && get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
-            systemMessagesWrite('danger', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
+        if($payment_details['type'] == 'invoice' && $this->app->components->invoice->get_invoice_details($payment_details['invoice_id'], 'status') == 'refunded') {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The payment cannot be edited because the parent invoice has been refunded."));
             $state_flag = false; 
         }
 

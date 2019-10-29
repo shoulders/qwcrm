@@ -15,14 +15,14 @@
  * Update Functions - For updating records/fields
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
- * Other Functions - All other functions not covered above
+ * Other Functions - All other public functions not covered above
  * Login
  * Reset Password
  */
 
 defined('_QWEXEC') or die;
 
-class User {
+class User extends Components {
 
 
     /** Mandatory Code **/
@@ -33,10 +33,7 @@ class User {
     #    Display Users                  #  // 'display_name' and 'full_name' are the same. This is usability issues.
     #####################################
 
-    function display_users($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $usergroup = null, $usertype = null, $status = null) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function display_users($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $usergroup = null, $usertype = null, $status = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -50,37 +47,37 @@ class User {
         $whereTheseRecords = "WHERE ".PRFX."user_records.user_id\n";
 
         // Search category (display) and search term
-        if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."user_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         /* Filter the Records */
 
         // Restrict results by usergroup
-        if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr($usergroup);}
+        if($usergroup) {$whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$this->db->qstr($usergroup);}
 
         // Restrict results by user type
         if($usertype && !$usergroup) {
 
             if($usertype == 'client') { 
-                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr(7);}            
+                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$this->db->qstr(7);}            
 
             if($usertype == 'employee') {
 
-                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$db->qstr(1);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(2);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(3);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(4);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(5);
-                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$db->qstr(6);
+                $whereTheseRecords .= " AND ".PRFX."user_records.usergroup =".$this->db->qstr(1);
+                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->db->qstr(2);
+                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->db->qstr(3);
+                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->db->qstr(4);
+                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->db->qstr(5);
+                $whereTheseRecords .= " OR ".PRFX."user_records.usergroup =".$this->db->qstr(6);
 
             }
 
         }
 
         // Restrict by Status (is null because using boolean/integer)
-        if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$db->qstr($status);}  
+        if(!is_null($status)) {$whereTheseRecords .= " AND ".PRFX."user_records.active=".$this->db->qstr($status);}  
 
         /* The SQL code */    
 
@@ -106,29 +103,29 @@ class User {
             $start_record = (($page_no * $records_per_page) - $records_per_page);        
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching user records."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the number of matching user records."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $smarty->assign('total_results', $total_results);
+                $this->smarty->assign('total_results', $total_results);
             }  
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $smarty->assign('total_pages', $total_pages);
+            $this->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $smarty->assign('page_no', $page_no);        
+            $this->smarty->assign('page_no', $page_no);        
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $smarty->assign('previous_page_no', $previous_page_no);          
+            $this->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $smarty->assign('next_page_no', $next_page_no);
+            $this->smarty->assign('next_page_no', $next_page_no);
 
            // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -140,14 +137,14 @@ class User {
         } else {
 
             // This make the drop down menu look correct
-            $smarty->assign('total_pages', 1);
+            $this->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching user records."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching user records."));
 
         } else {        
 
@@ -173,45 +170,43 @@ class User {
     #    Insert new user                #
     #####################################
 
-    function insert_user($qform) {
-
-        $db = \Factory::getDbo();
+    public function insert_user($qform) {
 
         $sql = "INSERT INTO ".PRFX."user_records SET
-                client_id           =". $db->qstr( $qform['client_id']                            ).", 
-                username            =". $db->qstr( $qform['username']                             ).",
-                password            =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
-                email               =". $db->qstr( $qform['email']                                ).",
-                usergroup           =". $db->qstr( $qform['usergroup']                            ).",
-                active              =". $db->qstr( $qform['active']                               ).",
-                register_date       =". $db->qstr( mysql_datetime()                             ).",   
-                require_reset       =". $db->qstr( $qform['require_reset']                        ).",
-                is_employee         =". $db->qstr( $qform['is_employee']                          ).", 
-                first_name          =". $db->qstr( $qform['first_name']                           ).",
-                last_name           =". $db->qstr( $qform['last_name']                            ).",
-                work_primary_phone  =". $db->qstr( $qform['work_primary_phone']                   ).",
-                work_mobile_phone   =". $db->qstr( $qform['work_mobile_phone']                    ).",
-                work_fax            =". $db->qstr( $qform['work_fax']                             ).",                    
-                home_primary_phone  =". $db->qstr( $qform['home_primary_phone']                   ).",
-                home_mobile_phone   =". $db->qstr( $qform['home_mobile_phone']                    ).",
-                home_email          =". $db->qstr( $qform['home_email']                           ).",
-                home_address        =". $db->qstr( $qform['home_address']                         ).",
-                home_city           =". $db->qstr( $qform['home_city']                            ).",  
-                home_state          =". $db->qstr( $qform['home_state']                           ).",
-                home_zip            =". $db->qstr( $qform['home_zip']                             ).",
-                home_country        =". $db->qstr( $qform['home_country']                         ).", 
-                based               =". $db->qstr( $qform['based']                                ).",  
-                note                =". $db->qstr( $qform['note']                                 );                     
+                client_id           =". $this->db->qstr( $qform['client_id']                            ).", 
+                username            =". $this->db->qstr( $qform['username']                             ).",
+                password            =". $this->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($qform['password'])  ).",
+                email               =". $this->db->qstr( $qform['email']                                ).",
+                usergroup           =". $this->db->qstr( $qform['usergroup']                            ).",
+                active              =". $this->db->qstr( $qform['active']                               ).",
+                register_date       =". $this->db->qstr( $this->app->system->general->mysql_datetime()  ).",   
+                require_reset       =". $this->db->qstr( $qform['require_reset']                        ).",
+                is_employee         =". $this->db->qstr( $qform['is_employee']                          ).", 
+                first_name          =". $this->db->qstr( $qform['first_name']                           ).",
+                last_name           =". $this->db->qstr( $qform['last_name']                            ).",
+                work_primary_phone  =". $this->db->qstr( $qform['work_primary_phone']                   ).",
+                work_mobile_phone   =". $this->db->qstr( $qform['work_mobile_phone']                    ).",
+                work_fax            =". $this->db->qstr( $qform['work_fax']                             ).",                    
+                home_primary_phone  =". $this->db->qstr( $qform['home_primary_phone']                   ).",
+                home_mobile_phone   =". $this->db->qstr( $qform['home_mobile_phone']                    ).",
+                home_email          =". $this->db->qstr( $qform['home_email']                           ).",
+                home_address        =". $this->db->qstr( $qform['home_address']                         ).",
+                home_city           =". $this->db->qstr( $qform['home_city']                            ).",  
+                home_state          =". $this->db->qstr( $qform['home_state']                           ).",
+                home_zip            =". $this->db->qstr( $qform['home_zip']                             ).",
+                home_country        =". $this->db->qstr( $qform['home_country']                         ).", 
+                based               =". $this->db->qstr( $qform['based']                                ).",  
+                note                =". $this->db->qstr( $qform['note']                                 );                     
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the user record into the database."));
         } else {
 
             // Get user_id
-            $user_id = $db->Insert_ID();
+            $user_id = $this->db->Insert_ID();
 
             // Update last active record        
-            update_client_last_active($qform['client_id']);        
+            $this->app->components->client->update_client_last_active($qform['client_id']);        
 
             // Log activity
             if($qform['client_id']) {
@@ -219,8 +214,8 @@ class User {
             } else {
                 $user_type = _gettext("Employee");
             }        
-            $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.get_user_details($user_id, 'display_name').' '._gettext("created").'.';
-            write_record_to_activity_log($record, $user_id);
+            $record = _gettext("User Account").' '.$user_id.' ('.$user_type.') '.'for'.' '.$this->get_user_details($user_id, 'display_name').' '._gettext("created").'.';
+            $this->app->system->general->write_record_to_activity_log($record, $user_id);
 
             return $user_id;
 
@@ -234,19 +229,17 @@ class User {
     #     Get User Details              #  // 'display_name' and 'full_name' are the same. This is usability issues.
     #####################################
 
-    function get_user_details($user_id = null, $item = null) {
-
-        $db = \Factory::getDbo();
+    public function get_user_details($user_id = null, $item = null) {
 
         // This allows for workorder:status to work
         if(!$user_id){
             return;        
         }
 
-        $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id =".$db->qstr($user_id);
+        $sql = "SELECT * FROM ".PRFX."user_records WHERE user_id =".$this->db->qstr($user_id);
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
         } else {
 
             if($item === null) {
@@ -294,14 +287,12 @@ class User {
      * 
      */
 
-    function get_user_id_by_username($username) {
+    public function get_user_id_by_username($username) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$this->db->qstr($username);
 
-        $sql = "SELECT user_id FROM ".PRFX."user_records WHERE username =".$db->qstr($username);
-
-        if(!$rs = $db->execute($sql)){
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
+        if(!$rs = $this->db->execute($sql)){
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their username."));
         } else {
 
             return $rs->fields['user_id'];
@@ -314,14 +305,12 @@ class User {
     # Get User ID by username               #
     #########################################
 
-    function get_user_id_by_email($email) {
+    public function get_user_id_by_email($email) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT user_id FROM ".PRFX."user_records WHERE email =".$this->db->qstr($email);
 
-        $sql = "SELECT user_id FROM ".PRFX."user_records WHERE email =".$db->qstr($email);
-
-        if(!$rs = $db->execute($sql)){
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their email."));
+        if(!$rs = $this->db->execute($sql)){
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by their email."));
         } else {
 
             $result_count = $rs->RecordCount();
@@ -344,9 +333,7 @@ class User {
     # Get the usergroups             #
     ##################################
 
-    function get_usergroups($user_type = null) {
-
-        $db = \Factory::getDbo();
+    public function get_usergroups($user_type = null) {
 
         $sql = "SELECT * FROM ".PRFX."user_usergroups";
 
@@ -355,8 +342,8 @@ class User {
         if($user_type === 'clients')   {$sql .= " WHERE user_type='2'";}    
         if($user_type === 'other')     {$sql .= " WHERE user_type='3'";}
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the usergroups."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the usergroups."));
         } else {
 
             return $rs->GetArray();
@@ -369,9 +356,7 @@ class User {
     # Get all active users display name and ID       #
     ##################################################
 
-    function get_active_users($user_type = null) {  
-
-        $db = \Factory::getDbo();
+    public function get_active_users($user_type = null) {  
 
         $sql = "SELECT        
                 user_id,
@@ -384,8 +369,8 @@ class User {
         if($user_type === 'clients')   {$sql .= " AND is_employee='0'";}
         if($user_type === 'employees') {$sql .= " AND is_employee='1'";}
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the active users."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the active users."));
         } else {    
 
             return $rs->GetArray();    
@@ -398,14 +383,12 @@ class User {
     # Get all active users display name and ID       #
     ##################################################
 
-    function get_user_locations() {  
-
-        $db = \Factory::getDbo();
+    public function get_user_locations() {  
 
         $sql = "SELECT * FROM ".PRFX."user_locations";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the user locations."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the user locations."));
         } else {    
 
             return $rs->GetArray();    
@@ -420,49 +403,47 @@ class User {
     #   Update Employee     #
     #########################
 
-    function update_user($qform) {
-
-        $db = \Factory::getDbo();
+    public function update_user($qform) {
 
         $sql = "UPDATE ".PRFX."user_records SET        
-                username            =". $db->qstr( $qform['username']                             ).",
-                email               =". $db->qstr( $qform['email']                                ).",
-                usergroup           =". $db->qstr( $qform['usergroup']                            ).",
-                active              =". $db->qstr( $qform['active']                               ).",                    
-                require_reset       =". $db->qstr( $qform['require_reset']                        ).",               
-                first_name          =". $db->qstr( $qform['first_name']                           ).",
-                last_name           =". $db->qstr( $qform['last_name']                            ).",
-                work_primary_phone  =". $db->qstr( $qform['work_primary_phone']                   ).",
-                work_mobile_phone   =". $db->qstr( $qform['work_mobile_phone']                    ).",
-                work_fax            =". $db->qstr( $qform['work_fax']                             ).",                    
-                home_primary_phone  =". $db->qstr( $qform['home_primary_phone']                   ).",
-                home_mobile_phone   =". $db->qstr( $qform['home_mobile_phone']                    ).",
-                home_email          =". $db->qstr( $qform['home_email']                           ).",
-                home_address        =". $db->qstr( $qform['home_address']                         ).",
-                home_city           =". $db->qstr( $qform['home_city']                            ).",  
-                home_state          =". $db->qstr( $qform['home_state']                           ).",
-                home_zip            =". $db->qstr( $qform['home_zip']                             ).",
-                home_country        =". $db->qstr( $qform['home_country']                         ).",
-                based               =". $db->qstr( $qform['based']                                ).",  
-                note                =". $db->qstr( $qform['note']                                 )."
-                WHERE user_id= ".$db->qstr($qform['user_id']);
+                username            =". $this->db->qstr( $qform['username']                             ).",
+                email               =". $this->db->qstr( $qform['email']                                ).",
+                usergroup           =". $this->db->qstr( $qform['usergroup']                            ).",
+                active              =". $this->db->qstr( $qform['active']                               ).",                    
+                require_reset       =". $this->db->qstr( $qform['require_reset']                        ).",               
+                first_name          =". $this->db->qstr( $qform['first_name']                           ).",
+                last_name           =". $this->db->qstr( $qform['last_name']                            ).",
+                work_primary_phone  =". $this->db->qstr( $qform['work_primary_phone']                   ).",
+                work_mobile_phone   =". $this->db->qstr( $qform['work_mobile_phone']                    ).",
+                work_fax            =". $this->db->qstr( $qform['work_fax']                             ).",                    
+                home_primary_phone  =". $this->db->qstr( $qform['home_primary_phone']                   ).",
+                home_mobile_phone   =". $this->db->qstr( $qform['home_mobile_phone']                    ).",
+                home_email          =". $this->db->qstr( $qform['home_email']                           ).",
+                home_address        =". $this->db->qstr( $qform['home_address']                         ).",
+                home_city           =". $this->db->qstr( $qform['home_city']                            ).",  
+                home_state          =". $this->db->qstr( $qform['home_state']                           ).",
+                home_zip            =". $this->db->qstr( $qform['home_zip']                             ).",
+                home_country        =". $this->db->qstr( $qform['home_country']                         ).",
+                based               =". $this->db->qstr( $qform['based']                                ).",  
+                note                =". $this->db->qstr( $qform['note']                                 )."
+                WHERE user_id= ".$this->db->qstr($qform['user_id']);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the user record."));
         } else {
 
             // Reset user password if required
             if($qform['password']) {
-                reset_user_password($qform['user_id'], $qform['password']);
+                $this->reset_user_password($qform['user_id'], $qform['password']);
             }
 
             // Update last active record
-            update_user_last_active($qform['user_id']);
-            update_client_last_active(get_user_details($qform['user_id'], 'client_id'));        
+            $this->$this->update_user_last_active($qform['user_id']);
+            $this->app->components->client->update_client_last_active($this->get_user_details($qform['user_id'], 'client_id'));        
 
             // Log activity        
-            $record = _gettext("User Account").' '.$qform['user_id'].' ('.get_user_details($qform['user_id'], 'display_name').') '._gettext("updated.");
-            write_record_to_activity_log($record, $qform['user_id']);
+            $record = _gettext("User Account").' '.$qform['user_id'].' ('.$this->get_user_details($qform['user_id'], 'display_name').') '._gettext("updated.");
+            $this->app->system->general->write_record_to_activity_log($record, $qform['user_id']);
 
             return true;
 
@@ -470,6 +451,23 @@ class User {
 
     }
 
+    #######################################
+    #    Update User's Last Active Date   #
+    #######################################
+
+    public function update_user_last_active($user_id = null) {
+
+        // compensate for some operations not having a user_id
+        if(!$user_id) { return; }        
+
+        $sql = "UPDATE ".PRFX."user_records SET last_active=".$db->qstr( mysql_datetime() )." WHERE user_id=".$db->qstr($user_id);
+
+        if(!$rs = $db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update a User's last active time."));
+        }
+
+    }
+    
     /** Close Functions **/
 
     /** Delete Functions **/
@@ -478,32 +476,30 @@ class User {
     #    Delete User                    #
     #####################################
 
-    function delete_user($user_id) {
-
-        $db = \Factory::getDbo();
+    public function delete_user($user_id) {
 
         // get user details before deleting
-        $user_details = get_user_details($user_id);
+        $user_details = $this->get_user_details($user_id);
 
         // Make sure the client can be deleted 
-        if(!check_user_can_be_deleted($user_id)) {        
+        if(!$this->check_user_can_be_deleted($user_id)) {        
             return false;
         }
 
         /* we can now delete the user */
 
         // Delete User account
-        $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$db->qstr($user_id);    
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
+        $sql = "DELETE FROM ".PRFX."user_records WHERE user_id=".$this->db->qstr($user_id);    
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the user from the database."));
         }
 
         // Log activity        
         $record = _gettext("User Account").' '.$user_id.' ('.$user_details['display_name'].') '._gettext("deleted.");
-        write_record_to_activity_log($record, $user_id);
+        $this->app->system->general->write_record_to_activity_log($record, $user_id);
 
         // Update last active record
-        update_client_last_active($user_details['client_id']);    
+        $this->app->components->client->update_client_last_active($user_details['client_id']);    
 
         return true;
 
@@ -512,7 +508,7 @@ class User {
     /** Other Functions **/
 
     ##############################################
-    #   Build an active employee <option> list   #  // keep for reference
+    #   Build an active employee <option> list   #  // Not currently used keep for reference
     ##############################################
 
     /*
@@ -528,9 +524,7 @@ class User {
      * 
      */
 
-    function build_active_employee_form_option_list($assigned_user_id) {
-
-        $db = \Factory::getDbo();
+    public function build_active_employee_form_option_list($assigned_user_id) {
 
         // select all employees and return their display name and ID as an array
         $sql = "SELECT
@@ -540,8 +534,8 @@ class User {
                 FROM ".PRFX."user_records
                 WHERE active=1 AND is_employee=1";
 
-        if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
+        if(!$rs = $this->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed build and return and User list."));
         } else {
 
             // Get ADODB to build the form using the loaded dataset
@@ -555,25 +549,22 @@ class User {
     #    Check if username already exists           #
     #################################################
 
-    function check_user_username_exists($username, $current_username = null) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function check_user_username_exists($username, $current_username = null) {
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_username != null && $username === $current_username) {return false;}
 
-        $sql = "SELECT username FROM ".PRFX."user_records WHERE username =". $db->qstr($username);
+        $sql = "SELECT username FROM ".PRFX."user_records WHERE username =". $this->db->qstr($username);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check if the username exists."));
         } else {
 
             $result_count = $rs->RecordCount();
 
             if($result_count >= 1) {
 
-                systemMessagesWrite('danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The Username")." '".$username."' "._gettext("already exists! Please use a different one."));
 
                 return true;
 
@@ -591,19 +582,16 @@ class User {
     #  Check if an email address has already been used   #
     ######################################################
 
-    function check_user_email_exists($email, $current_email = null) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function check_user_email_exists($email, $current_email = null) {
 
         // This prevents self-checking of the current username of the record being edited
         if ($current_email != null && $email === $current_email) {return false;}
 
-        $sql = "SELECT email FROM ".PRFX."user_records WHERE email =". $db->qstr($email);
+        $sql = "SELECT email FROM ".PRFX."user_records WHERE email =". $this->db->qstr($email);
 
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->db->Execute($sql)) {
 
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check if the email address has been used."));
 
         } else {
 
@@ -611,7 +599,7 @@ class User {
 
             if($result_count >= 1) {
 
-                systemMessagesWrite('danger', _gettext("The email address has already been used. Please use a different one."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The email address has already been used. Please use a different one."));
 
                 return true;
 
@@ -629,22 +617,19 @@ class User {
     #    Check if user already has login            #
     #################################################
 
-    function check_client_already_has_login($client_id) {
+    public function check_client_already_has_login($client_id) {
 
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+        $sql = "SELECT user_id FROM ".PRFX."user_records WHERE client_id =". $this->db->qstr($client_id);
 
-        $sql = "SELECT user_id FROM ".PRFX."user_records WHERE client_id =". $db->qstr($client_id);
-
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the client already has a login."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check if the client already has a login."));
         } else {
 
             $result_count = $rs->RecordCount();
 
             if($result_count >= 1) {
 
-                systemMessagesWrite('danger', _gettext("The client already has a login."));           
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The client already has a login."));           
 
                 return true;
 
@@ -662,32 +647,30 @@ class User {
     #    Reset a user's password        #    
     #####################################
 
-    function reset_user_password($user_id, $password = null) { 
-
-        $db = \Factory::getDbo();
+    public function reset_user_password($user_id, $password = null) { 
 
         // if no password supplied generate a random one
         if($password == null) { $password = \Joomla\CMS\User\UserHelper::genRandomPassword(16); }
 
         $sql = "UPDATE ".PRFX."user_records SET
-                password        =". $db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
-                require_reset   =". $db->qstr( 0                                    ).",   
-                last_reset_time =". $db->qstr( mysql_datetime()                     ).",
-                reset_count     =". $db->qstr( 0                                    )."
-                WHERE user_id   =". $db->qstr( $user_id                             );
+                password        =". $this->db->qstr( \Joomla\CMS\User\UserHelper::hashPassword($password) ).",
+                require_reset   =". $this->db->qstr( 0                                    ).",   
+                last_reset_time =". $this->db->qstr( $this->app->system->general->mysql_datetime()                     ).",
+                reset_count     =". $this->db->qstr( 0                                    )."
+                WHERE user_id   =". $this->db->qstr( $user_id                             );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
 
         } else {
 
             // Log activity        
-            $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($user_id, 'display_name').') '._gettext("password has been reset.");
-            write_record_to_activity_log($record, $user_id);
+            $record = _gettext("User Account").' '.$user_id.' ('.$this->get_user_details($user_id, 'display_name').') '._gettext("password has been reset.");
+            $this->app->system->general->write_record_to_activity_log($record, $user_id);
 
             // Update last active record
-            update_user_last_active($user_id);
-            update_client_last_active(get_user_details($user_id, 'client_id'));
+            $this->$this->update_user_last_active($user_id);
+            $this->app->components->client->update_client_last_active($this->get_user_details($user_id, 'client_id'));
 
             return;
 
@@ -699,14 +682,12 @@ class User {
     #    Reset all user's passwords     #   // used for migrations or security
     #####################################
 
-    function reset_all_user_passwords() { 
-
-        $db = \Factory::getDbo();
+    public function reset_all_user_passwords() { 
 
         $sql = "SELECT user_id FROM ".PRFX."user_records";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to read all users from the database."));
 
         } else {
 
@@ -714,7 +695,7 @@ class User {
             while(!$rs->EOF) { 
 
                 // Reset User's password
-                reset_user_password($rs->fields['user_id']);
+                $this->reset_user_password($rs->fields['user_id']);
 
                 // Advance the INSERT loop to the next record            
                 $rs->MoveNext();            
@@ -722,7 +703,7 @@ class User {
             }
 
             // Log activity        
-            write_record_to_activity_log(_gettext("All User Account passwords have been reset."));
+            $this->app->system->general->write_record_to_activity_log(_gettext("All User Account passwords have been reset."));
 
             return;
 
@@ -733,41 +714,41 @@ class User {
     /* Login */
 
     ####################################
-    #  Login authentication function   #
+    #  Login authentication public function   #
     ####################################
 
-    function login($qform, $credentials, $options = array())
+    public function login($qform, $credentials, $options = array())
     {   
-        $smarty = \Factory::getSmarty();   
+        $this->smarty = \Factory::getSmarty();   
 
         // If username or password is missing
         if (!isset($credentials['username']) || $credentials['username'] == '' || !isset($credentials['password']) || $credentials['password'] == '') {
 
             // Set error message
-            systemMessagesWrite('danger', _gettext("Username or Password Missing."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Username or Password Missing."));
 
             return false;
 
         } 
 
         // Does the account require the password to be reset, if so force it
-        if(get_user_details(get_user_id_by_username($qform['login_username']), 'require_reset')) {
+        if($this->get_user_details($this->get_user_id_by_username($qform['login_username']), 'require_reset')) {
 
             // Set error message
-            systemMessagesWrite('danger', _gettext("You must reset your password before you are allowed to login."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You must reset your password before you are allowed to login."));
 
             return false;
 
         }
 
         // If user is blocked - QFramework returns True for a blocked user, but does blocks it.
-        if(get_user_details(get_user_id_by_username($qform['login_username']), 'active') === '0') {  
+        if($this->get_user_details($this->get_user_id_by_username($qform['login_username']), 'active') === '0') {  
 
             // Set error message
-            systemMessagesWrite('danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login denied! Your account has either been blocked or you have not activated it yet."));
 
             // Log activity       
-            write_record_to_activity_log(_gettext("Login denied for").' '.$qform['login_username'].'.');
+            $this->app->system->general->write_record_to_activity_log(_gettext("Login denied for").' '.$qform['login_username'].'.');
 
             return false;
 
@@ -777,17 +758,21 @@ class User {
 
             /* Login Successful */
 
+            // Wipe the current user details (probably guest) is this needed?
+            //$this->app->user = null; \Factory::$user = null;
+            
+            // Get the new login details
             $user = \Factory::getUser();       
 
             // Log activity       
             $record = _gettext("Login successful for").' '.$user->login_username.'.';
-            write_record_to_activity_log($record, $user->login_user_id);        
+            $this->app->system->general->write_record_to_activity_log($record, $user->login_user_id);        
 
             // Update last active record        
-            update_client_last_active($user->login_client_id);        
+            $this->app->components->client->update_client_last_active($user->login_client_id);        
 
             // set success message to survice the login event
-            systemMessagesWrite('success', _gettext("Login successful."));
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Login successful."));
 
             return true;
 
@@ -796,9 +781,9 @@ class User {
             /* Login failed */
 
             // Log activity       
-            write_record_to_activity_log(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
+            $this->app->system->general->write_record_to_activity_log(_gettext("Login unsuccessful for").' '.$credentials['username'].'.');
 
-            systemMessagesWrite('danger', _gettext("Login Failed. Check you username and password."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Login Failed. Check you username and password."));
 
             return false;
 
@@ -806,25 +791,23 @@ class User {
     }
 
     ####################################
-    #  Login authentication function   # // could add silent to logout?
+    #  Login authentication public function   # // could add silent to logout?
     ####################################
 
-    function logout($silent = null)        
+    public function logout($silent = null)        
     {   
-        $user = \Factory::getUser();
-
         // Build logout message (while user details exist)
-        $record = _gettext("Logout successful for").' '.$user->login_username.'.';
+        $record = _gettext("Logout successful for").' '.$this->app->user->login_username.'.';
 
         // Logout
         \Factory::getAuth()->logout();    
 
         // Log activity       
-        write_record_to_activity_log($record, $user->login_user_id);
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
 
         // Update last active record 
-        update_user_last_active($user->login_user_id);
-        update_client_last_active($user->login_client_id);
+        $this->$this->update_user_last_active($this->app->user->login_user_id);
+        $this->app->components->client->update_client_last_active($this->app->user->login_client_id);
 
         // Action after logout
         if($silent) {
@@ -838,7 +821,7 @@ class User {
             // Reload Homepage with message (default)
 
             // only $_GET will work because the session store is destroyed (this is good behaviour)
-            force_page('index.php', null, 'msg_success='._gettext("Logout successful."), 'get');
+            $this->app->system->general->force_page('index.php', null, 'msg_success='._gettext("Logout successful."), 'get');
 
         }
 
@@ -848,38 +831,36 @@ class User {
     #  Logout all online users         #  // This terminates sessions fo those currently connected (Logged in and Guests). This does not handle users with 'remember me' enabled. 
     ####################################
 
-    function logout_all_users($except_me = false) {
+    public function logout_all_users($except_me = false) {
 
         //truncate something like `#__user_keys` destroys the remember_me link, the session kills the imediate session
-
-        $db = \Factory::getDbo();
 
         // Logout all users
         if(!$except_me) {
 
             // Sessions
             $sql = "TRUNCATE ".PRFX."session";
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
             }
 
             // Remember Me
             $sql = "TRUNCATE ".PRFX."user_keys";
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
             }
 
         // Delete all sessions except the currently logged in user 
         } else {
 
-            $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$db->qstr(\Factory::getUser()->login_user_id);
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
+            $sql = "DELETE FROM ".PRFX."session WHERE userid <> ".$this->db->qstr($this->app->user->login_user_id);
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to empty the Session table."));
             }
 
-            $sql = "DELETE FROM ".PRFX."user_keys WHERE userid <> ".$db->qstr(\Factory::getUser()->login_user_id);
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
+            $sql = "DELETE FROM ".PRFX."user_keys WHERE userid <> ".$this->db->qstr($this->app->user->login_user_id);
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to empty the Remember Me table."));
             }
 
         }
@@ -894,7 +875,7 @@ class User {
     #    Verify submitted reCAPTCHA     #    
     #####################################
 
-    function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
+    public function authenticate_recaptcha($recaptcha_secret_key, $recaptcha_response) {
 
         // Load ReCaptcha library       
         $recaptcha = new \ReCaptcha\ReCaptcha($recaptcha_secret_key);
@@ -910,8 +891,6 @@ class User {
 
         } else {
 
-            $smarty = \Factory::getSmarty();        
-
             /* If it's not successful, then one or more error codes will be returned.      
             $error_msg .= '<h2>Something went wrong</h2>';
             $error_msg .= '<p>The following error was returned:';
@@ -923,7 +902,7 @@ class User {
             $error_msg .= '<p><strong>Note:</strong> Error code <kbd>missing-input-response</kbd> may mean the user just didn\'t complete the reCAPTCHA.</p>';
             $error_msg .= '<p><a href="/">Try again</a></p>';*/        
 
-            systemMessagesWrite('danger', _gettext("Google reCAPTCHA Verification Failed."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Google reCAPTCHA Verification Failed."));
             return false;
 
         }  
@@ -934,15 +913,15 @@ class User {
     #    Validate that the email submitted belongs to a valid account and can be reset   #    
     ######################################################################################
 
-    function validate_reset_email($email) {
+    public function validate_reset_email($email) {
 
         // get the user_id if the user exists
-        if(!$user_id = get_user_id_by_email($email)) {
+        if(!$user_id = $this->get_user_id_by_email($email)) {
             return false;        
         }
 
         // is the user active
-        if(!get_user_details($user_id, 'active')) {
+        if(!$this->get_user_details($user_id, 'active')) {
             return false;
         }
 
@@ -954,16 +933,16 @@ class User {
     #    Build and send a reset email   #    
     #####################################
 
-    function send_reset_email($user_id) {
+    public function send_reset_email($user_id) {
 
         // Get recipient email
-        $recipient_email = get_user_details($user_id, 'email');
+        $recipient_email = $this->get_user_details($user_id, 'email');
 
         // Set subject  
         $subject = _gettext("Your QWcrm password reset request");    
 
         // Create Token
-        $token = create_reset_token($user_id);
+        $token = $this->$this->create_reset_token($user_id);
 
         /* Build Email body
         $body = '';
@@ -999,11 +978,11 @@ class User {
         $body .= '<p>'._gettext("Thank you.").'</p>';    
 
         // Send Reset Email (no onscreen notifications to prevent headers already sent error)
-        send_email($recipient_email, $subject, $body, null, null, null, null, null, null, true);
+        $this->app->system->email->send_email($recipient_email, $subject, $body, null, null, null, null, null, null, true);
 
         // Log activity        
-        $record = _gettext("User Account").' '.$user_id.' ('.get_user_details($user_id, 'display_name').') '._gettext("reset email has been sent.");
-        write_record_to_activity_log($record, $user_id);
+        $record = _gettext("User Account").' '.$user_id.' ('.$this->get_user_details($user_id, 'display_name').') '._gettext("reset email has been sent.");
+        $this->app->system->general->write_record_to_activity_log($record, $user_id);
 
         return;
 
@@ -1013,21 +992,19 @@ class User {
     #   Set time limited reset code to allow new passwords to be submitted securely   #
     ###################################################################################
 
-    function authorise_password_reset($token) {
-
-        $db = \Factory::getDbo();
+    public function authorise_password_reset($token) {
 
         $reset_code = \Joomla\CMS\User\UserHelper::genRandomPassword(64);   // 64 character token
         $reset_code_expiry_time = time() + (60 * 5);                        // sets a 5 minute expiry time
 
         $sql = "UPDATE ".PRFX."user_reset
                 SET
-                reset_code              =". $db->qstr( $reset_code              ).",
-                reset_code_expiry_time  =". $db->qstr( $reset_code_expiry_time  )."            
-                WHERE token             =". $db->qstr( $token                   );
+                reset_code              =". $this->db->qstr( $reset_code              ).",
+                reset_code_expiry_time  =". $this->db->qstr( $reset_code_expiry_time  )."            
+                WHERE token             =". $this->db->qstr( $token                   );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
         } else{
 
             return $reset_code;
@@ -1040,15 +1017,13 @@ class User {
     #    create a reset user token      #    
     #####################################
 
-    function create_reset_token($user_id) {
-
-        $db = \Factory::getDbo();
+    public function create_reset_token($user_id) {
 
         // check for previous tokens for this user and delete them
-        $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$db->qstr($user_id);
+        $sql = "SELECT * FROM ".PRFX."user_reset WHERE user_id=".$this->db->qstr($user_id);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
         } else {        
             $result_count = $rs->RecordCount();       
         } 
@@ -1056,7 +1031,7 @@ class User {
         // Delete any reset tokens for this user
         if($result_count >= 1) {
 
-            delete_user_reset_code($user_id);
+            $this->delete_user_reset_code($user_id);
 
         }
 
@@ -1065,12 +1040,12 @@ class User {
         $token = \Joomla\CMS\User\UserHelper::genRandomPassword(64);    // 64 character token
 
         $sql = "INSERT INTO ".PRFX."user_reset SET              
-                user_id         =". $db->qstr( $user_id     ).", 
-                expiry_time     =". $db->qstr( $expiry_time ).",   
-                token           =". $db->qstr( $token       );                     
+                user_id         =". $this->db->qstr( $user_id     ).", 
+                expiry_time     =". $this->db->qstr( $expiry_time ).",   
+                token           =". $this->db->qstr( $token       );                     
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the user reset token into the database."));
         }
 
         // Return the token
@@ -1082,14 +1057,12 @@ class User {
     # Get User ID by reset code             #
     #########################################
 
-    function get_user_id_by_reset_code($reset_code) {
+    public function get_user_id_by_reset_code($reset_code) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$this->db->qstr($reset_code);
 
-        $sql = "SELECT user_id FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
-
-        if(!$rs = $db->execute($sql)){
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
+        if(!$rs = $this->db->execute($sql)){
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the User ID by secret code."));
         } else {
 
             return $rs->fields['user_id'];
@@ -1102,38 +1075,35 @@ class User {
     #    validate the reset token can be used    #    
     ##############################################
 
-    function validate_reset_token($token) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function validate_reset_token($token) {
 
         // check for previous tokens for this user and delete them
-        $sql = "SELECT * FROM ".PRFX."user_reset WHERE token =".$db->qstr($token);
+        $sql = "SELECT * FROM ".PRFX."user_reset WHERE token =".$this->db->qstr($token);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check for existing tokens for the submitted user."));
         } else {
 
             // Check there is only 1 record
             if($rs->RecordCount() != 1) {
-                systemMessagesWrite('danger', _gettext("The reset token does not exist."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token does not exist."));
                 return false;
             }
 
             // check if user is blocked        
-            if(!get_user_details($rs->fields['user_id'], 'active')){
-                systemMessagesWrite('danger', _gettext("The user is blocked."));
+            if(!$this->get_user_details($rs->fields['user_id'], 'active')){
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The user is blocked."));
                 return false;
             }
 
             // Check not expired
             if($rs->fields['expiry_time'] < time()){
-                systemMessagesWrite('danger', _gettext("The reset token has expired."));
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("The reset token has expired."));
                 return false;
             }
 
             // All checked passed
-            systemMessagesWrite('success', _gettext("Token accepted."));
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Token accepted."));
             return true;
 
 
@@ -1145,32 +1115,29 @@ class User {
     #   validate reset code - submitted with password form  #
     #########################################################
 
-    function validate_reset_code($reset_code) {
+    public function validate_reset_code($reset_code) {
 
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+       // Check for previous tokens for this user and delete them
+        $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code =".$this->db->qstr($reset_code);
 
-        // Check for previous tokens for this user and delete them
-        $sql = "SELECT * FROM ".PRFX."user_reset WHERE reset_code =".$db->qstr($reset_code);
-
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to check for the submitted reset code."));
         } else {
 
             // Check there is only 1 record
             if($rs->RecordCount() != 1) {            
-                systemMessagesWrite('danger', 'The reset code does not exist.');
+                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code does not exist.');
                 return false;
             }
 
             // Check not expired
             if($rs->fields['reset_code_expiry_time'] < time()){
-                systemMessagesWrite('danger', 'The reset code has expired.');
+                $this->app->system->variables->systemMessagesWrite('danger', 'The reset code has expired.');
                 return false;
             }
 
             // All checked passed
-            systemMessagesWrite('success', _gettext("Reset code accepted."));        
+            $this->app->system->variables->systemMessagesWrite('success', _gettext("Reset code accepted."));        
             return true;
 
 
@@ -1182,14 +1149,12 @@ class User {
     #    Delete user reset codes             #
     ##########################################
 
-    function delete_user_reset_code($user_id) {  
+    public function delete_user_reset_code($user_id) {  
 
-        $db = \Factory::getDbo();
+        $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$this->db->qstr($user_id);
 
-        $sql = "DELETE FROM ".PRFX."user_reset WHERE user_id = ".$db->qstr($user_id);
-
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
         }
 
     }
@@ -1198,14 +1163,12 @@ class User {
     #    Delete all expired reset codes      #
     ##########################################
 
-    function delete_expired_reset_codes() {   
+    public function delete_expired_reset_codes() {   
 
-        $db = \Factory::getDbo();
+        $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$this->db->qstr( time() );
 
-        $sql = "DELETE FROM ".PRFX."user_reset WHERE expiry_time < ".$db->qstr( time() );
-
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete existing tokens for the submitted user."));
         }
 
     }
@@ -1215,16 +1178,14 @@ class User {
     #    Update users reset count       #    
     #####################################
 
-     function update_user_reset_count($user_id) {
-
-        $db = \Factory::getDbo();
+     public function update_user_reset_count($user_id) {
 
         $sql = "UPDATE ".PRFX."user_records SET       
                 reset_count     = reset_count + 1
-                WHERE user_id   =". $db->qstr($user_id);
+                WHERE user_id   =". $this->db->qstr($user_id);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to add password reset authorization."));
 
         } else{
 
@@ -1238,18 +1199,16 @@ class User {
     #   Check to see if the user can be deleted                   #
     ###############################################################
 
-    function check_user_can_be_deleted($user_id) {
+    public function check_user_can_be_deleted($user_id) {
 
         $state_flag = true;
 
-        $db = \Factory::getDbo();
-
         // Get the user details
-        $user_details = get_user_details($user_id);
+        $user_details = $this->get_user_details($user_id);
 
         // User cannot delete their own account
-        if($user_id == \Factory::getUser()->login_user_id) {
-            systemMessagesWrite('danger', _gettext("You can not delete your own account."));        
+        if($user_id == $this->app->user->login_user_id) {
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete your own account."));        
             $state_flag = false;
         }
 
@@ -1257,52 +1216,52 @@ class User {
         if($user_details['usergroup'] == '1') {
 
             $sql = "SELECT count(*) as count FROM ".PRFX."user_records WHERE usergroup = '1'";    
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the users in the administrator usergroup."));
             }  
             if($rs->fields['count'] <= 1 ) {
-                systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."));        
+                $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete the last administrator user account."));        
                 $state_flag = false;
             }        
         }
 
         // Check if user has created any workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$db->qstr($user_id);    
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE created_by=".$this->db->qstr($user_id);    
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
         }  
         if($rs->fields['count'] > 0 ) {
-            systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."));        
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has created work orders."));        
             $state_flag = false;
         }
 
         // Check if user has any assigned workorders
-        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$db->qstr($user_id);    
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."workorder_records WHERE employee_id=".$this->db->qstr($user_id);    
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Workorders in the database."));
         }  
         if($rs->fields['count'] > 0 ) {
-            systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has assigned work orders."));
             $state_flag = false;
         }
 
         // Check if user has any invoices
-        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$db->qstr($user_id);    
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."invoice_records WHERE employee_id=".$this->db->qstr($user_id);    
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Invoices in the database."));
         }    
         if($rs->fields['count'] > 0 ) {
-            systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has invoices."));
             $state_flag = false;
         }    
 
         // Check if user is assigned to any Vouchers
-        $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$db->qstr($user_id);
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
+        $sql = "SELECT count(*) as count FROM ".PRFX."voucher_records WHERE employee_id=".$this->db->qstr($user_id);
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the user's Vouchers in the database."));
         }  
         if($rs->fields['count'] > 0 ) {
-            systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("You can not delete a user who has Vouchers."));
             $state_flag = false;
         }
 

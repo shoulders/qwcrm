@@ -12,30 +12,30 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
 
     // Insert the Expense into the database
-    $expense_id = insert_expense(\CMSApplication::$VAR['qform']);
-    recalculate_expense_totals($expense_id);
+    $expense_id = $this->app->components->expense->insert_expense(\CMSApplication::$VAR['qform']);
+    $this->app->components->expense->recalculate_expense_totals($expense_id);
 
     if (\CMSApplication::$VAR['submit'] == 'submitandnew') {
 
          // Load the new expense page
-         force_page('expense', 'new', 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id );
+         $this->app->system->general->force_page('expense', 'new', 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id );
 
     } elseif (\CMSApplication::$VAR['submit'] == 'submitandpayment') {
          
         // Load the new payment page for expense
-         force_page('payment', 'new&type=expense&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
+         $this->app->system->general->force_page('payment', 'new&type=expense&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
          
     } else {
 
         // load expense details page
-        force_page('expense', 'details&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
+        $this->app->system->general->force_page('expense', 'details&expense_id='.$expense_id, 'msg_success='._gettext("Expense added successfully.").' '._gettext("ID").': '.$expense_id);
 
      }        
 
 } else {
     
     // Build the page
-    $smarty->assign('expense_types', get_expense_types());    
-    $smarty->assign('vat_tax_codes', get_vat_tax_codes(false));   
-    $smarty->assign('default_vat_tax_code', get_default_vat_tax_code());
+    $this->app->smarty->assign('expense_types', $this->app->components->expense->get_expense_types());    
+    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(false));   
+    $this->app->smarty->assign('default_vat_tax_code', $this->app->components->company->get_default_vat_tax_code());
 }

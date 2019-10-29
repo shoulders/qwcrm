@@ -8,24 +8,24 @@
 
 defined('_QWEXEC') or die;
 
-$smarty->assign('IPaddress',                get_visitor_ip_address()            );  // IP address of the Visitor
-$smarty->assign('pageLoadTime',             microtime(1) - \CMSApplication::$VAR['system']['startTime'][$startTime]          );  // Time to load the page to the nearest microsecond
-$smarty->assign('pageDisplayController',    $page_controller                    );  // the location of the real php file that loads the page
-$smarty->assign('loadedComponent',          \CMSApplication::$VAR['component']                   );  // Loaded component
-$smarty->assign('loadedPageTpl',            \CMSApplication::$VAR['page_tpl']                    );  // Loaded page
-$smarty->assign('startMem',                 \CMSApplication::$VAR['system']['startMem'][$startMem] / 1048576                 );  // PHP Memory used when starting QWcrm (in MB)
-$smarty->assign('currentMem',               memory_get_usage() / 1048576        );  // PHP Memory used at the time this php is called (in MB)
-$smarty->assign('peakMem',                  memory_get_peak_usage() / 1048576   );  // Peak PHP Memory used during the page load (in MB)
+$this->app->smarty->assign('IPaddress',                $this->app->system->security->get_visitor_ip_address()            );  // IP address of the Visitor
+$this->app->smarty->assign('pageLoadTime',             microtime(1) - \CMSApplication::$VAR['system']['startTime'][$startTime]          );  // Time to load the page to the nearest microsecond
+$this->app->smarty->assign('pageDisplayController',    $page_controller                    );  // the location of the real php file that loads the page
+$this->app->smarty->assign('loadedComponent',          \CMSApplication::$VAR['component']                   );  // Loaded component
+$this->app->smarty->assign('loadedPageTpl',            \CMSApplication::$VAR['page_tpl']                    );  // Loaded page
+$this->app->smarty->assign('startMem',                 \CMSApplication::$VAR['system']['startMem'][$startMem] / 1048576                 );  // PHP Memory used when starting QWcrm (in MB)
+$this->app->smarty->assign('currentMem',               memory_get_usage() / 1048576        );  // PHP Memory used at the time this php is called (in MB)
+$this->app->smarty->assign('peakMem',                  memory_get_peak_usage() / 1048576   );  // Peak PHP Memory used during the page load (in MB)
 
-\CMSApplication::$BuildPage .= $smarty->fetch('core/blocks/theme_debug_block.tpl');
+\CMSApplication::$BuildPage .= $this->app->smarty->fetch('core/blocks/theme_debug_block.tpl');
 
-// Smarty Debugging - Done this way because $smarty_debugging is not supported when using fetch()
-if($config->get('qwcrm_smarty_debugging')) {
-    \CMSApplication::$BuildPage .= $smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl');
+// Smarty Debugging - Done this way because $this->app->smarty_debugging is not supported when using fetch()
+if($this->app->config->get('qwcrm_smarty_debugging')) {
+    \CMSApplication::$BuildPage .= $this->app->smarty->fetch('core/blocks/theme_debug_smarty_debug_block.tpl');
 }
 
 // Advanced Debug - Only use in offline sites and for developement only
-if($config->get('qwcrm_advanced_debug')) {
+if($this->app->config->get('qwcrm_advanced_debug')) {
 
     \CMSApplication::$BuildPage .= "\r\n\r\n<div><h2><strong>"._gettext("QWcrm Advanced Debug Section")."</strong></h2></div>\r\n";
  

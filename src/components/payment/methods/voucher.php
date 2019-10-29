@@ -19,11 +19,11 @@ class PMethod extends NewPayment {
         $this->smarty = \Factory::getSmarty();
         
         // Check the Voucher exists, get the voucher_id and set amount
-        if(!$this->VAR['qpayment']['voucher_id'] = get_voucher_id_by_voucher_code($this->VAR['qpayment']['voucher_code'])) {
+        if(!$this->VAR['qpayment']['voucher_id'] = $this->app->components->voucher->get_voucher_id_by_voucher_code($this->VAR['qpayment']['voucher_code'])) {
             NewPayment::$payment_valid = false;
             $this->smarty->assign('msg_danger', _gettext("There is no Voucher with that code."));                   
         } else {                        
-            $this->VAR['qpayment']['amount'] = get_voucher_details($this->VAR['qpayment']['voucher_id'], 'unit_net');
+            $this->VAR['qpayment']['amount'] = $this->app->components->voucher->get_voucher_details($this->VAR['qpayment']['voucher_id'], 'unit_net');
         }        
         
     }
@@ -32,7 +32,7 @@ class PMethod extends NewPayment {
     public function pre_process() {
         
         // Make sure the Voucher is valid and then pass the amount to the next process
-        if(!check_voucher_can_be_redeemed($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
+        if(!$this->app->components->voucher->check_voucher_can_be_redeemed($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'])) {
             NewPayment::$payment_valid = false;
             $this->smarty->assign('msg_danger', _gettext("This Voucher is not valid or cannot be redeemed."));
             return false;                
@@ -46,19 +46,19 @@ class PMethod extends NewPayment {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = build_additional_info_json();    
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json();    
 
         // Insert the payment with the calculated information
-        $payment_id = insert_payment($this->VAR['qpayment']);
+        $payment_id = $this->app->components->payment->insert_payment($this->VAR['qpayment']);
         if($payment_id) {
             
             NewPayment::$payment_processed = true;
             
             // Change the status of the Voucher to prevent further use
-            update_voucher_status($this->VAR['qpayment']['voucher_id'], 'redeemed', true);
+            $this->app->components->voucher->update_voucher_status($this->VAR['qpayment']['voucher_id'], 'redeemed', true);
 
             // Update the redeemed Voucher with the missing redemption information
-            update_voucher_as_redeemed($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'], $payment_id);
+            $this->app->components->voucher->update_voucher_as_redeemed($this->VAR['qpayment']['voucher_id'], $this->VAR['qpayment']['invoice_id'], $payment_id);
             
         }
         

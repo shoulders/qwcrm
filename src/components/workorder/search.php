@@ -19,17 +19,17 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of workorders has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    write_record_to_activity_log($record);
+    $this->app->system->general->write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    force_page('workorder', 'search', \CMSApplication::$VAR, 'get');    
+    $this->app->system->general->force_page('workorder', 'search', \CMSApplication::$VAR, 'get');    
     
 }
 
 // Build the page
-$smarty->assign('search_category',    \CMSApplication::$VAR['search_category']                                                                           );
-$smarty->assign('search_term',        \CMSApplication::$VAR['search_term']                                                                               );
-$smarty->assign('filter_status',      \CMSApplication::$VAR['filter_status']                                                                             );
-$smarty->assign('workorder_statuses', get_workorder_statuses()                                                                          );
-$smarty->assign('display_workorders', display_workorders('workorder_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status']));
+$this->app->smarty->assign('search_category',    \CMSApplication::$VAR['search_category']                                                                           );
+$this->app->smarty->assign('search_term',        \CMSApplication::$VAR['search_term']                                                                               );
+$this->app->smarty->assign('filter_status',      \CMSApplication::$VAR['filter_status']                                                                             );
+$this->app->smarty->assign('workorder_statuses', $this->app->components->workorder->get_workorder_statuses()                                                                          );
+$this->app->smarty->assign('display_workorders', $this->app->components->workorder->display_workorders('workorder_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status']));

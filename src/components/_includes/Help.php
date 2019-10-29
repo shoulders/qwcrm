@@ -15,12 +15,12 @@
  * Update Functions - For updating records/fields
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
- * Other Functions - All other functions not covered above
+ * Other Functions - All other public functions not covered above
  */
 
 defined('_QWEXEC') or die;
 
-class Help {
+class Help extends Components {
 
     /** Mandatory Code **/
 

@@ -48,8 +48,8 @@ class Upgrade3_1_2 extends Setup {
     public function post_database() {
                 
         // Config File
-        delete_qwcrm_config_setting('session_name');
-        delete_qwcrm_config_setting('session');
+        $this->app->components->administrator->delete_qwcrm_config_setting('session_name');
+        $this->app->components->administrator->delete_qwcrm_config_setting('session');
         
         // Correct records that did not have their status updated properly to 'paid'
         $this->update_column_values(PRFX.'expense_records', 'status', 'valid', 'paid');

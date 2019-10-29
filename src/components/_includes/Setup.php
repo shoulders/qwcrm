@@ -15,26 +15,25 @@
  * Update Functions - For updating records/fields
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
- * Other Functions - All other functions not covered above
+ * Other Functions - All other public functions not covered above
  */
 
 defined('_QWEXEC') or die;
 
-// Only allow the use of these functions when the /setup/ folder exists.
+// Only allow the use of these public functions when the /setup/ folder exists.
 if (!is_dir(SETUP_DIR)) {      
-    die(_gettext("You cannot use these functions without the setup folder."));        
+    die(_gettext("You cannot use these public functions without the setup folder."));        
 }
 
-class Setup {
+class Setup extends Components {
 
-    public static $setup_error_flag = null;
+    public static $setup_error_flag = null;     /// ??? should the be 'protected'?
     public static $executed_sql_results = null;
-    public static $split_database_upgrade = null; 
-    protected $smarty = null;    
+    public static $split_database_upgrade = null;     
     
     public function __construct() {
         
-        $this->smarty = \Factory::getSmarty();
+        parent::__constructor;
         
         // Prevent undefined variable errors && Get 'stage' from the submit button
         \CMSApplication::$VAR['stage'] = isset(\CMSApplication::$VAR['submit']) ? \CMSApplication::$VAR['submit'] : null;
@@ -55,14 +54,12 @@ class Setup {
     
     public function get_column_comment($table, $column) {
         
-        $db = \Factory::getDbo();
-    
         $sql = "SELECT column_comment
                 FROM information_schema.columns
                 WHERE table_name = '$table'
                 AND column_name LIKE '$column'";
         
-        if(!$rs = $db->execute($sql)) { 
+        if(!$rs = $this->db->execute($sql)) { 
             
             return false;      
             
@@ -101,15 +98,15 @@ class Setup {
             $username = '-';
             $login_user_id = '-';
         } else {
-            $username = \Factory::getUser()->login_username;
-            $login_user_id = \Factory::getUser()->login_user_id;
+            $username = $this->app->user->login_username;
+            $login_user_id = $this->app->user->login_user_id;
         }
 
         // prepare database error for the log
-        $database_error = prepare_error_data('error_database', $database_error);   
+        $database_error = $this->app->components->general->prepare_error_data('error_database', $database_error);   
 
         // prepare SQL statement for the log (I have disabled logging SQL for security reasons)
-        //$sql_query = prepare_error_data('sql_query_for_log', $sql_query);    
+        //$sql_query = $this->app->components->general->prepare_error_data('sql_query_for_log', $sql_query);    
         $sql_query = '';
 
         // Build log entry - perhaps use the apache time stamp below
@@ -117,7 +114,7 @@ class Setup {
 
         // Write log entry  
         if(!$fp = fopen(SETUP_LOG, 'a')) {        
-            force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
+            $this->app->system->general->force_error_page('file', __FILE__, __FUNCTION__, '', '', _gettext("Could not open the Setup Log to save the record."));
         }
 
         fwrite($fp, $log_entry);
@@ -149,7 +146,7 @@ class Setup {
     public function delete_setup_folder() {
 
         // Clear any onscreen notifications        
-        ajax_clear_onscreen_notifications();
+        $this->app->components->general->ajax_clear_onscreen_notifications();
 
         // Build a success or failure message
         if($this->removeDirectory(SETUP_DIR)) {        
@@ -159,14 +156,14 @@ class Setup {
             $message = $record;
 
             // Hide the delete button
-            toggle_element_by_id('delete_setup_folder', 'hide');
+            $this->app->components->general->toggle_element_by_id('delete_setup_folder', 'hide');
 
             // Display the success message and login button
-            toggle_element_by_id('setup_folder_removed', 'show');
+            $this->app->components->general->toggle_element_by_id('setup_folder_removed', 'show');
 
             // Output the system message to the browser
-            systemMessagesWrite('success', $message);
-            ajax_output_system_messages_onscreen();
+            $this->app->system->variables->systemMessagesWrite('success', $message);
+            $this->app->components->general->ajax_output_system_messages_onscreen();
 
         } else {
 
@@ -175,16 +172,16 @@ class Setup {
             $message = $record.' '._gettext("You need to delete the folder manually.");
 
             // Hide the delete button
-            toggle_element_by_id('delete_setup_folder_button', 'hide');
+            $this->app->components->general->toggle_element_by_id('delete_setup_folder_button', 'hide');
 
             // Output the system message to the browser
-            systemMessagesWrite('danger', $message);
-            ajax_output_system_messages_onscreen();
+            $this->app->system->variables->systemMessagesWrite('danger', $message);
+            $this->app->components->general->ajax_output_system_messages_onscreen();
 
         }
 
         // Log activity
-        write_record_to_activity_log($record);    
+        $this->app->system->general->write_record_to_activity_log($record);    
 
         // Ajax has been done so die
         die();
@@ -233,7 +230,7 @@ class Setup {
         unset($VAR['msg_success']);
         unset($VAR['msg_danger']);   
 
-        update_qwcrm_config_settings_file($VAR);
+        $this->app->components->administrator->update_qwcrm_config_settings_file($VAR);
 
     }
     
@@ -249,13 +246,13 @@ class Setup {
         
         // Walk through php_options and convert objects into arrays
         $php_options = $this->getPhpOptions();
-        array_walk($php_options, function(&$value) {
+        array_walk($php_options, public function(&$value) {
             $value = get_object_vars($value);
         });
         
         // Walk through php_options and convert objects into arrays
         $php_settings = $this->getPhpSettings();
-        array_walk($php_settings, function(&$value) {
+        array_walk($php_settings, public function(&$value) {
             $value = get_object_vars($value);
         });
         
@@ -341,11 +338,11 @@ class Setup {
             $option->notice = $option->state ? null : _gettext("PHP mbstring language is not set to neutral. This can be set locally by entering <strong>php_value mbstring.language neutral</strong> in your <code>.htaccess</code> file.");
             $options[] = $option;
 
-            // Check for MB function overload.
+            // Check for MB public function overload.
             $option = new stdClass;
             $option->label  = _gettext("MB String Overload Off");
             $option->state  = ini_get('mbstring.func_overload') == 0;
-            $option->notice = $option->state ? null : _gettext("PHP mbstring function overload is set. This can be turned off locally by entering <strong>php_value mbstring.func_overload 0</strong> in your <code>.htaccess</code> file.");
+            $option->notice = $option->state ? null : _gettext("PHP mbstring public function overload is set. This can be turned off locally by entering <strong>php_value mbstring.func_overload 0</strong> in your <code>.htaccess</code> file.");
             $options[] = $option;
         }
 
@@ -359,7 +356,7 @@ class Setup {
         // Check for missing native json_encode / json_decode support.
         $option = new stdClass;
         $option->label  = _gettext("JSON Support");
-        $option->state  = function_exists('json_encode') && function_exists('json_decode');
+        $option->state  = public function_exists('json_encode') && public function_exists('json_decode');
         $option->notice = null;
         $options[] = $option;
 
@@ -419,7 +416,7 @@ class Setup {
         // Check for file_get_contents() support
         $option = new stdClass;
         $option->label  = _gettext("file_get_contents() Enabled");
-        $option->state  = function_exists('file_get_contents');
+        $option->state  = public function_exists('file_get_contents');
         $option->notice = $option->state ? null : _gettext("The PHP Function 'file_get_contents()' needs to be enabled.");
         $options[] = $option;
         
@@ -513,7 +510,7 @@ class Setup {
         // Check for native ZIP support.
         $setting = new stdClass;
         $setting->label = _gettext("Zlib Compression Support");
-        $setting->state = function_exists('zip_open') && function_exists('zip_read');
+        $setting->state = public function_exists('zip_open') && public function_exists('zip_read');
         $setting->recommended = true;
         $setting->notice = null;
         $settings[] = $setting;
@@ -535,7 +532,7 @@ class Setup {
         // Check for locale_accept_from_http() support
         $setting = new stdClass;
         $setting->label  = _gettext("locale_accept_from_http()");
-        $setting->state  = function_exists('locale_accept_from_http');        
+        $setting->state  = public function_exists('locale_accept_from_http');        
         $setting->recommended = true;
         $setting->notice = $setting->state ? null : _gettext("The PHP Function 'locale_accept_from_http()' is required for automatic language detection. ");
         $settings[] = $setting;
@@ -552,16 +549,14 @@ class Setup {
 
     public function update_record_value($select_table, $select_column, $record_new_value, $where_column = null, $where_record = null, $where_record_not_flag = null) {
 
-        $db = \Factory::getDbo();    
-        
         $sql = "UPDATE $select_table SET
-                $select_column =". $db->qstr($record_new_value);
+                $select_column =". $this->db->qstr($record_new_value);
 
         if($where_column) {    
-            $sql .=  "\nWHERE $where_column ".$where_record_not_flag."=".$db->qstr($where_record);
+            $sql .=  "\nWHERE $where_column ".$where_record_not_flag."=".$this->db->qstr($where_record);
         }
 
-        if(!$rs = $db->execute($sql)) { 
+        if(!$rs = $this->db->execute($sql)) { 
 
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -578,7 +573,7 @@ class Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log message to setup log        
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->db->ErrorMsg(), $sql);
 
             return false;
 
@@ -610,22 +605,20 @@ class Setup {
 
     public function update_column_values($table, $column, $current_value, $new_value) {
 
-        $db = \Factory::getDbo();    
-        
         if($current_value === '*') {
 
             $sql = "UPDATE $table SET
-                    $column         =". $db->qstr( $new_value       );
+                    $column         =". $this->db->qstr( $new_value       );
 
         } else {
 
             $sql = "UPDATE $table SET
-                    $column         =". $db->qstr( $new_value       )."                      
-                    WHERE $column   =". $db->qstr( $current_value   );
+                    $column         =". $this->db->qstr( $new_value       )."                      
+                    WHERE $column   =". $this->db->qstr( $current_value   );
 
         }
 
-        if(!$rs = $db->execute($sql)) { 
+        if(!$rs = $this->db->execute($sql)) { 
 
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -638,14 +631,14 @@ class Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';        
 
             // Log message to setup log        
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->db->ErrorMsg(), $sql);
 
             return false;
 
         } else {        
 
             // Affected Rows
-            if(!$affected_rows = $db->affected_rows()) { $affected_rows = '0'; }
+            if(!$affected_rows = $this->db->affected_rows()) { $affected_rows = '0'; }
 
             // Log message
             $record = _gettext("Successfully updated the values").' `'.$current_value.'` '._gettext("to").' `'.$new_value.'` '._gettext("in the column").' `'.$column.'` '._gettext("from the the table").' `'.$table.'` - '._gettext("Records Processed").': '.$affected_rows;
@@ -671,7 +664,6 @@ class Setup {
 
     public function execute_sql_file($sql_file) {
 
-        $db = \Factory::getDbo();    
         $local_error_flag = null;    
 
         // Load the SQL file into memory as string
@@ -696,7 +688,7 @@ class Setup {
             preg_match('/(^SET.*$|^.*`.*`)/U', $sql, $query_name);
 
            // Perform the query
-            if(!$db->Execute($sql)) {
+            if(!$this->db->Execute($sql)) {
 
                 // Set the setup global error flag
                 self::$setup_error_flag = true;
@@ -711,7 +703,7 @@ class Setup {
                 self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>';
 
                 // Log message to setup log            
-                $this->write_record_to_setup_log('install', $record, $db->ErrorMsg(), $sql);
+                $this->write_record_to_setup_log('install', $record, $this->db->ErrorMsg(), $sql);
 
 
             } else {
@@ -768,8 +760,6 @@ class Setup {
 
     public function execute_sql_file_lines($sql_file) {
 
-        $db = \Factory::getDbo();
-        
         // Prevent undefined variable errors
         $local_error_flag = null; 
         $sql = null;
@@ -878,7 +868,7 @@ class Setup {
                 /* EOF Rule Name Building */                
                  
                 // Perform the query
-                if(!$db->Execute($sql)) {
+                if(!$this->db->Execute($sql)) {
                     
                     // Set the setup global error flag
                     self::$setup_error_flag = true;
@@ -893,7 +883,7 @@ class Setup {
                     self::$executed_sql_results .= '<div style="color: red">'.$record.'</div>'; 
 
                     // Log message to setup log                
-                    $this->write_record_to_setup_log('upgrade', $record, $db->ErrorMsg(), $sql);
+                    $this->write_record_to_setup_log('upgrade', $record, $this->db->ErrorMsg(), $sql);
 
                 } else {
 
@@ -957,22 +947,17 @@ class Setup {
 
     public function verify_database_connection_details($db_host, $db_user, $db_pass, $db_name) {
 
-        $conf = \Factory::getConfig();
-
         // This allows me to re-use config-registry to test the database connection
-        $conf->set('db_host', $db_host);
-        $conf->set('db_user', $db_user);
-        $conf->set('db_pass', $db_pass);
-        $conf->set('db_name', $db_name);
+        $this->app->config->set('db_host', $this->db_host);
+        $this->app->config->set('db_user', $this->db_user);
+        $this->app->config->set('db_pass', $this->db_pass);
+        $this->app->config->set('db_name', $this->db_name);
 
         // Set an error trap
-        $conf->set('test_db_connection', 'test');
+        $this->app->config->set('test_db_connection', 'test');
 
-        // Fire up the database connection
-        \Factory::getDbo();
-
-        // This function will generate the error messages upstream as needed
-        if($conf->get('test_db_connection') == 'passed') {
+        // This public function will generate the error messages upstream as needed
+        if($this->app->config->get('test_db_connection') == 'passed') {
 
             return true;
 
@@ -1020,7 +1005,7 @@ class Setup {
         // This is to prevent using the MyITCRM prefix
         if($not_this_prefix) {
             if($prefix == $not_this_prefix) {
-                $prefix = generate_database_prefix($not_this_prefix);
+                $prefix = $this->generate_database_prefix($not_this_prefix);
             }
         }
 
@@ -1094,11 +1079,9 @@ class Setup {
 
     public function set_workorder_start_number($start_number) {
 
-        $db = \Factory::getDbo();
+        $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$this->db->qstr($start_number);
 
-        $sql = "ALTER TABLE ".PRFX."workorder_records auto_increment =".$db->qstr($start_number);
-
-        $db->execute($sql);    
+        $this->db->execute($sql);    
 
         return;
 
@@ -1110,11 +1093,9 @@ class Setup {
 
     public function set_invoice_start_number($start_number) {
 
-        $db = \Factory::getDbo();
+        $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$this->db->qstr($start_number);
 
-        $sql = "ALTER TABLE ".PRFX."invoice_records auto_increment =".$db->qstr($start_number);
-
-        $db->execute($sql);   
+        $this->db->execute($sql);   
 
         return;
 
@@ -1128,10 +1109,9 @@ class Setup {
 
     public function migrate_table($qwcrm_table, $myitcrm_table, $column_mappings) {
 
-        $db = \Factory::getDbo();        
         $local_error_flag = null;
 
-        // Add division to seperate table migration function results
+        // Add division to seperate table migration public function results
         self::$executed_sql_results .= '<div>&nbsp;</div>';
 
         // Log message
@@ -1147,13 +1127,13 @@ class Setup {
 
         $sql = "SELECT * FROM $myitcrm_table";
 
-        if(!$rs = $db->execute($sql)) {
+        if(!$rs = $this->db->execute($sql)) {
 
             // set error flag
             $local_error_flag = true; 
 
             // Log message
-            $record = _gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$db->ErrorMsg();        
+            $record = _gettext("Error reading the MyITCRM table").' `'.$myitcrm_table.'` - SQL: '.$sql.' - SQL Error: '.$this->db->ErrorMsg();        
 
             // Result message
             self::$executed_sql_results .= '<div><span style="color: red">'.$record.'</span></div>';
@@ -1206,7 +1186,7 @@ class Setup {
                             if($myitcrm_record_val === null) { $myitcrm_record_val = ''; }
 
                             //$values_sql .= "'$myitcrm_record_val', ";
-                            $values_sql .= $db->qstr($myitcrm_record_val).', ';
+                            $values_sql .= $this->db->qstr($myitcrm_record_val).', ';
                             break;
 
                         }    
@@ -1225,7 +1205,7 @@ class Setup {
                 $sql = $insert_sql.$values_sql;
 
                 // insert the migrated record into qwcrm
-                if(!$db->execute($sql)) {  
+                if(!$this->db->execute($sql)) {  
 
                     /* Fail */
 
@@ -1239,10 +1219,10 @@ class Setup {
                     $record = _gettext("Error migrating a MyITCRM record into QWcrm");
 
                     // Result message
-                    self::$executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$db->ErrorMsg().'</span></div>';                
+                    self::$executed_sql_results .= '<div><span style="color: red">'.$record.' - SQL Error: '.$this->db->ErrorMsg().'</span></div>';                
 
                     // Log message to setup log                
-                    $this->write_record_to_setup_log('migrate', $record, $db->ErrorMsg(), $sql);                
+                    $this->write_record_to_setup_log('migrate', $record, $this->db->ErrorMsg(), $sql);                
 
 
 
@@ -1294,7 +1274,7 @@ class Setup {
                 // Result message
                 self::$executed_sql_results .= '<div><strong><span style="color: red">'.$record.'</span></strong></div>';
 
-                // Add division to seperate table migration function results
+                // Add division to seperate table migration public function results
                 self::$executed_sql_results .= '<div>&nbsp;</div>';
 
                 // Log message to setup log                
@@ -1312,7 +1292,7 @@ class Setup {
                 // Result message
                 self::$executed_sql_results .= '<div><strong><span style="color: green">'.$record.'</span></strong></div>';
 
-                // Add division to seperate table migration function results
+                // Add division to seperate table migration public function results
                 self::$executed_sql_results .= '<div>&nbsp;</div>';
 
                 // Log message to setup log                
@@ -1335,7 +1315,7 @@ class Setup {
     public function get_upgrade_steps() {
         
         $upgrade_steps = array();
-        $current_db_version = get_qwcrm_database_version_number();
+        $current_db_version = $this->app->components->general->get_qwcrm_database_version_number();
         $targetVersion = null;
 
         // This pattern scans within the folder for objects (files and directories)
@@ -1460,14 +1440,12 @@ class Setup {
     #  Convert Otherincomes into a separate item and make a related payment    #
     ############################################################################
 
-    function copy_columnA_to_columnB($table, $columnA, $columnB) {
-        
-        $db = \Factory::getDbo();        
+    public function copy_columnA_to_columnB($table, $columnA, $columnB) {
         
         // Loop through all of the labour records
         $sql = "UPDATE `".PRFX.$table."` SET `".$columnB."` = `".$columnA."`";          
 
-        if(!$rs = $db->Execute($sql)) {
+        if(!$rs = $this->db->Execute($sql)) {
             
             // Set the setup global error flag
             self::$setup_error_flag = true;
@@ -1480,7 +1458,7 @@ class Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
             
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->db->ErrorMsg(), $sql);
             
             return false;
             
@@ -1494,7 +1472,7 @@ class Setup {
             self::$executed_sql_results .= '<div>&nbsp;</div>';
 
             // Log message to setup log
-            $this->write_record_to_setup_log('correction', $record, $db->ErrorMsg(), $sql);
+            $this->write_record_to_setup_log('correction', $record, $this->db->ErrorMsg(), $sql);
 
             return true;
 

@@ -10,18 +10,18 @@ defined('_QWEXEC') or die;
 
 // Check if we have an expense_id
 if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id']) {
-    systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
-    force_page('expense', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
+    $this->app->system->general->force_page('expense', 'search');
 }
 
 // Payment Details
-$smarty->assign('payment_types',            get_payment_types()                                                                                 );
-$smarty->assign('payment_methods',          get_payment_methods()                                                             ); 
-$smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
-$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'expense', null, null, null, null, null, null, \CMSApplication::$VAR['expense_id']));
+$this->app->smarty->assign('payment_types',            $this->app->components->payment->get_payment_types()                                                                                 );
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->get_payment_methods()                                                             ); 
+$this->app->smarty->assign('payment_statuses',         $this->app->components->payment->get_payment_statuses()                                                                              );
+$this->app->smarty->assign('display_payments',         $this->app->components->payment->display_payments('payment_id', 'DESC', false, null, null, null, null, 'expense', null, null, null, null, null, null, \CMSApplication::$VAR['expense_id']));
 
 // Build the page
-$smarty->assign('expense_statuses', get_expense_statuses()            );
-$smarty->assign('expense_types', get_expense_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes());
-$smarty->assign('expense_details', get_expense_details(\CMSApplication::$VAR['expense_id']));
+$this->app->smarty->assign('expense_statuses', $this->app->components->expense->get_expense_statuses()            );
+$this->app->smarty->assign('expense_types', $this->app->components->expense->get_expense_types());
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes());
+$this->app->smarty->assign('expense_details', $this->app->components->expense->get_expense_details(\CMSApplication::$VAR['expense_id']));

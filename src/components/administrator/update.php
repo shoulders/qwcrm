@@ -11,14 +11,14 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Check for updates
-    check_for_qwcrm_update();
+    $this->app->components->administrator->check_for_qwcrm_update();
 
 } else {
     // Prevent undefined variable errors
-    $smarty->assign('update_response', null);   
+    $this->app->smarty->assign('update_response', null);   
 }
 
 // Build the page
 
-$smarty->assign('current_version', QWCRM_VERSION);
+$this->app->smarty->assign('current_version', QWCRM_VERSION);
 

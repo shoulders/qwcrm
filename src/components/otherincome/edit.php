@@ -10,31 +10,31 @@ defined('_QWEXEC') or die;
 
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
-    systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-    force_page('otherincome', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
+    $this->app->system->general->force_page('otherincome', 'search');
 } 
 
 // If details submitted run update values, if not set load edit.tpl and populate values
 if(isset(\CMSApplication::$VAR['submit'])) {    
         
     // Update the otherincome in the database
-    update_otherincome(\CMSApplication::$VAR['qform']);
-    recalculate_otherincome_totals(\CMSApplication::$VAR['qform']['otherincome_id']);
+    $this->app->components->otherincome->update_otherincome(\CMSApplication::$VAR['qform']);
+    $this->app->components->otherincome->recalculate_otherincome_totals(\CMSApplication::$VAR['qform']['otherincome_id']);
     
     // load details page
-    force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
+    $this->app->system->general->force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['qform']['otherincome_id'], 'msg_success='._gettext("Otherincome updated successfully.")); 
 } else {  
 
     // Check if payment can be edited
-    if(!check_otherincome_can_be_edited(\CMSApplication::$VAR['otherincome_id'])) {
-        systemMessagesWrite('danger', _gettext("You cannot edit this otherincome because its status does not allow it."));
-        force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
+    if(!$this->app->components->otherincome->check_otherincome_can_be_edited(\CMSApplication::$VAR['otherincome_id'])) {
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("You cannot edit this otherincome because its status does not allow it."));
+        $this->app->system->general->force_page('otherincome', 'details&otherincome_id='.\CMSApplication::$VAR['otherincome_id']);
     }
     
     // Build the page
-    $smarty->assign('otherincome_statuses', get_otherincome_statuses());
-    $smarty->assign('otherincome_types', get_otherincome_types());
-    $smarty->assign('vat_tax_codes', get_vat_tax_codes(false) );    
-    $smarty->assign('otherincome_details', get_otherincome_details(\CMSApplication::$VAR['otherincome_id']));
+    $this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->get_otherincome_statuses());
+    $this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->get_otherincome_types());
+    $this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes(false) );    
+    $this->app->smarty->assign('otherincome_details', $this->app->components->otherincome->get_otherincome_details(\CMSApplication::$VAR['otherincome_id']));
 
 }

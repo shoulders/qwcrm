@@ -10,18 +10,18 @@ defined('_QWEXEC') or die;
 
 // Check if we have a otherincome_id
 if(!isset(\CMSApplication::$VAR['otherincome_id']) || !\CMSApplication::$VAR['otherincome_id']) {
-    systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-    force_page('otherincome', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
+    $this->app->system->general->force_page('otherincome', 'search');
 } 
 
 // Payment Details
-$smarty->assign('payment_types',            get_payment_types()                                                                                 );
-$smarty->assign('payment_methods',          get_payment_methods()                                                             ); 
-$smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
-$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'otherincome', null, null, null, null, null, null, null, \CMSApplication::$VAR['otherincome_id']));
+$this->app->smarty->assign('payment_types',            $this->app->components->payment->get_payment_types()                                                                                 );
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->get_payment_methods()                                                             ); 
+$this->app->smarty->assign('payment_statuses',         $this->app->components->payment->get_payment_statuses()                                                                              );
+$this->app->smarty->assign('display_payments',         $this->app->components->payment->display_payments('payment_id', 'DESC', false, null, null, null, null, 'otherincome', null, null, null, null, null, null, null, \CMSApplication::$VAR['otherincome_id']));
 
 // Build the page
-$smarty->assign('otherincome_statuses', get_otherincome_statuses());
-$smarty->assign('otherincome_types', get_otherincome_types());
-$smarty->assign('vat_tax_codes', get_vat_tax_codes() );
-$smarty->assign('otherincome_details', get_otherincome_details(\CMSApplication::$VAR['otherincome_id']));
+$this->app->smarty->assign('otherincome_statuses', $this->app->components->otherincome->get_otherincome_statuses());
+$this->app->smarty->assign('otherincome_types', $this->app->components->otherincome->get_otherincome_types());
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes() );
+$this->app->smarty->assign('otherincome_details', $this->app->components->otherincome->get_otherincome_details(\CMSApplication::$VAR['otherincome_id']));

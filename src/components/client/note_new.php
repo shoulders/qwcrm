@@ -10,16 +10,16 @@ defined('_QWEXEC') or die;
 
 // Check if we have a client_id
 if(!isset(\CMSApplication::$VAR['client_id']) || !\CMSApplication::$VAR['client_id']) {
-    systemMessagesWrite('danger', _gettext("No Client ID supplied."));
-    force_page('client', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Client ID supplied."));
+    $this->app->system->general->force_page('client', 'search');
     exit;
 }
 
 // Insert the client note
 if(isset(\CMSApplication::$VAR['submit'])) {   
     
-    insert_client_note(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['note']);    
-    force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);    
+    $this->app->components->client->insert_client_note(\CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['note']);    
+    $this->app->system->general->force_page('client', 'details&client_id='.\CMSApplication::$VAR['client_id']);    
 
 } else {  
 

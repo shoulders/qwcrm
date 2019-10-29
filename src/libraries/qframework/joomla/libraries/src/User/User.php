@@ -928,7 +928,7 @@ class User //extends \JObject
                 // Reset to guest user
                 $this->guest = 1;
 
-                //force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
+                //$this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the user details."));
 
                 return false;
 

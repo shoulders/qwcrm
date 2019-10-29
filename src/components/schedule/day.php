@@ -10,7 +10,7 @@ defined('_QWEXEC') or die;
 
 // Prevent undefined variable errors
 \CMSApplication::$VAR['workorder_id'] = isset(\CMSApplication::$VAR['workorder_id']) ? \CMSApplication::$VAR['workorder_id'] : null;
-\CMSApplication::$VAR['employee_id']  = isset(\CMSApplication::$VAR['employee_id']) ? \CMSApplication::$VAR['employee_id'] : \Factory::getUser()->login_user_id;
+\CMSApplication::$VAR['employee_id']  = isset(\CMSApplication::$VAR['employee_id']) ? \CMSApplication::$VAR['employee_id'] : $this->app->config->login_user_id;
 
 // If no schedule year/month/day set, use today's date
 \CMSApplication::$VAR['start_year']  = isset(\CMSApplication::$VAR['start_year']) ? \CMSApplication::$VAR['start_year'] : date('Y');
@@ -21,19 +21,19 @@ defined('_QWEXEC') or die;
 if(\CMSApplication::$VAR['workorder_id']) { 
     
     // If the workorder is closed, remove the workorder_id preventing further schedule creation for this workorder_id
-    if(get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {        
-        systemMessagesWrite('danger', _gettext("Can not set a schedule for closed work orders - Work Order ID").' '.\CMSApplication::$VAR['workorder_id']);
+    if($this->app->components->workorder->get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {        
+        $this->app->system->variables->systemMessagesWrite('danger', _gettext("Can not set a schedule for closed work orders - Work Order ID").' '.\CMSApplication::$VAR['workorder_id']);
         unset(\CMSApplication::$VAR['workorder_id']);
     }
     
 }
 
 // Build the page
-$smarty->assign('start_year',               \CMSApplication::$VAR['start_year']                                                                                                 );
-$smarty->assign('start_month',              \CMSApplication::$VAR['start_month']                                                                                                );
-$smarty->assign('start_day',                \CMSApplication::$VAR['start_day']                                                                                                  );
-$smarty->assign('selected_date',            timestamp_to_calendar_format(convert_year_month_day_to_timestamp(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']))    );
-$smarty->assign('employees',                get_active_users('employees')                                                                                                    );  
-$smarty->assign('current_schedule_date',    convert_year_month_day_to_timestamp(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day'])                                  );
-$smarty->assign('calendar_matrix',          build_calendar_matrix(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day'], \CMSApplication::$VAR['employee_id'], \CMSApplication::$VAR['workorder_id'])     );
-$smarty->assign('selected_employee',        \CMSApplication::$VAR['employee_id']                                                                                                              );
+$this->app->smarty->assign('start_year',               \CMSApplication::$VAR['start_year']                                                                                                 );
+$this->app->smarty->assign('start_month',              \CMSApplication::$VAR['start_month']                                                                                                );
+$this->app->smarty->assign('start_day',                \CMSApplication::$VAR['start_day']                                                                                                  );
+$this->app->smarty->assign('selected_date',            $this->app->components->general->timestamp_to_calendar_format($this->app->components->general->convert_year_month_day_to_timestamp(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day']))    );
+$this->app->smarty->assign('employees',                $this->app->components->user->get_active_users('employees')                                                                                                    );  
+$this->app->smarty->assign('current_schedule_date',    $this->app->components->general->convert_year_month_day_to_timestamp(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day'])                                  );
+$this->app->smarty->assign('calendar_matrix',          $this->app->components->schedule->build_calendar_matrix(\CMSApplication::$VAR['start_year'], \CMSApplication::$VAR['start_month'], \CMSApplication::$VAR['start_day'], \CMSApplication::$VAR['employee_id'], \CMSApplication::$VAR['workorder_id'])     );
+$this->app->smarty->assign('selected_employee',        \CMSApplication::$VAR['employee_id']                                                                                                              );

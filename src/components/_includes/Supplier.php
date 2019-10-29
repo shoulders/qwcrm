@@ -15,12 +15,12 @@
  * Update Functions - For updating records/fields
  * Close Functions - Closing Work Orders code
  * Delete Functions - Deleting Work Orders
- * Other Functions - All other functions not covered above
+ * Other Functions - All other public functions not covered above
  */
 
 defined('_QWEXEC') or die;
 
-class Supplier {
+class Supplier extends Components {
 
 
     /** Mandatory Code **/
@@ -31,10 +31,7 @@ class Supplier {
     #     Display Suppliers       #
     ###############################
 
-    function display_suppliers($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
-
-        $db = \Factory::getDbo();
-        $smarty = \Factory::getSmarty();
+    public function display_suppliers($order_by, $direction, $use_pages = false, $records_per_page = null, $page_no = null, $search_category = null, $search_term = null, $type = null, $status = null) {
 
         // Process certain variables - This prevents undefined variable errors
         $records_per_page = $records_per_page ?: '25';
@@ -48,21 +45,21 @@ class Supplier {
         $whereTheseRecords = "WHERE ".PRFX."supplier_records.supplier_id\n";
 
         // Search category (display_name) and search term
-        if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        if($search_category == 'display_name') {$havingTheseRecords .= " HAVING display_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         // Search category (full_name) and search term
-        elseif($search_category == 'full_name') {$havingTheseRecords .= " HAVING full_name LIKE ".$db->qstr('%'.$search_term.'%');}
+        elseif($search_category == 'full_name') {$havingTheseRecords .= " HAVING full_name LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         // Restrict results by search category and search term
-        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE ".$db->qstr('%'.$search_term.'%');}
+        elseif($search_term) {$whereTheseRecords .= " AND ".PRFX."supplier_records.$search_category LIKE ".$this->db->qstr('%'.$search_term.'%');}
 
         /* Filter the Records */ 
 
         // Restrict by Type
-        if($type) { $whereTheseRecords .= " AND ".PRFX."supplier_records.type= ".$db->qstr($type);}
+        if($type) { $whereTheseRecords .= " AND ".PRFX."supplier_records.type= ".$this->db->qstr($type);}
 
         // Restrict by status
-        if($status) {$whereTheseRecords .= " AND ".PRFX."supplier_records.status= ".$db->qstr($status);} 
+        if($status) {$whereTheseRecords .= " AND ".PRFX."supplier_records.status= ".$this->db->qstr($status);} 
 
         /* The SQL code */
 
@@ -86,29 +83,29 @@ class Supplier {
             $start_record = (($page_no * $records_per_page) - $records_per_page);
 
             // Figure out the total number of records in the database for the given search        
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to count the matching supplier records."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to count the matching supplier records."));
             } else {        
                 $total_results = $rs->RecordCount();            
-                $smarty->assign('total_results', $total_results);
+                $this->smarty->assign('total_results', $total_results);
             }        
 
             // Figure out the total number of pages. Always round up using ceil()
             $total_pages = ceil($total_results / $records_per_page);
-            $smarty->assign('total_pages', $total_pages);
+            $this->smarty->assign('total_pages', $total_pages);
 
             // Set the page number
-            $smarty->assign('page_no', $page_no);
+            $this->smarty->assign('page_no', $page_no);
 
             // Assign the Previous page        
             $previous_page_no = ($page_no - 1);        
-            $smarty->assign('previous_page_no', $previous_page_no);          
+            $this->smarty->assign('previous_page_no', $previous_page_no);          
 
             // Assign the next page        
             if($page_no == $total_pages) {$next_page_no = 0;}
             elseif($page_no < $total_pages) {$next_page_no = ($page_no + 1);}
             else {$next_page_no = $total_pages;}
-            $smarty->assign('next_page_no', $next_page_no);
+            $this->smarty->assign('next_page_no', $next_page_no);
 
             // Only return the given page's records
             $limitTheseRecords = " LIMIT ".$start_record.", ".$records_per_page;
@@ -119,14 +116,14 @@ class Supplier {
         } else {
 
             // This make the drop down menu look correct
-            $smarty->assign('total_pages', 1);
+            $this->smarty->assign('total_pages', 1);
 
         }
 
         /* Return the records */
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to return the matching supplier records."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to return the matching supplier records."));
         } else {
 
             $records = $rs->GetArray();
@@ -151,40 +148,38 @@ class Supplier {
     #      Insert New Record                 #
     ##########################################
 
-    function insert_supplier($qform) {
-
-        $db = \Factory::getDbo();
+    public function insert_supplier($qform) {
 
         $sql = "INSERT INTO ".PRFX."supplier_records SET       
-                employee_id    =". $db->qstr( \Factory::getUser()->login_user_id ).",
-                company_name   =". $db->qstr( $qform['company_name']  ).",
-                first_name     =". $db->qstr( $qform['first_name']    ).",
-                last_name      =". $db->qstr( $qform['last_name']     ).",
-                website        =". $db->qstr( process_inputted_url($qform['website'])).",
-                email          =". $db->qstr( $qform['email']         ).",
-                type           =". $db->qstr( $qform['type']          ).",
-                primary_phone  =". $db->qstr( $qform['primary_phone'] ).",
-                mobile_phone   =". $db->qstr( $qform['mobile_phone']  ).",
-                fax            =". $db->qstr( $qform['fax']           ).",
-                address        =". $db->qstr( $qform['address']       ).",
-                city           =". $db->qstr( $qform['city']          ).",
-                state          =". $db->qstr( $qform['state']         ).",
-                zip            =". $db->qstr( $qform['zip']           ).",
-                country        =". $db->qstr( $qform['country']       ).",
-                status         =". $db->qstr( 'valid'               ).",
-                opened_on      =". $db->qstr( mysql_datetime()      ).", 
-                description    =". $db->qstr( $qform['description']   ).", 
-                note           =". $db->qstr( $qform['note']          );            
+                employee_id    =". $this->db->qstr( $this->app->user->login_user_id ).",
+                company_name   =". $this->db->qstr( $qform['company_name']  ).",
+                first_name     =". $this->db->qstr( $qform['first_name']    ).",
+                last_name      =". $this->db->qstr( $qform['last_name']     ).",
+                website        =". $this->db->qstr( $this->app->components->general->process_inputted_url($qform['website'])).",
+                email          =". $this->db->qstr( $qform['email']         ).",
+                type           =". $this->db->qstr( $qform['type']          ).",
+                primary_phone  =". $this->db->qstr( $qform['primary_phone'] ).",
+                mobile_phone   =". $this->db->qstr( $qform['mobile_phone']  ).",
+                fax            =". $this->db->qstr( $qform['fax']           ).",
+                address        =". $this->db->qstr( $qform['address']       ).",
+                city           =". $this->db->qstr( $qform['city']          ).",
+                state          =". $this->db->qstr( $qform['state']         ).",
+                zip            =". $this->db->qstr( $qform['zip']           ).",
+                country        =". $this->db->qstr( $qform['country']       ).",
+                status         =". $this->db->qstr( 'valid'               ).",
+                opened_on      =". $this->db->qstr( $this->app->system->general->mysql_datetime()      ).", 
+                description    =". $this->db->qstr( $qform['description']   ).", 
+                note           =". $this->db->qstr( $qform['note']          );            
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to insert the supplier record into the database."));
         } else {
 
             // Log activity        
-            $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id);
+            $record = _gettext("Supplier Record").' '.$this->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("created.");
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
 
-            return $db->Insert_ID();
+            return $this->db->Insert_ID();
 
         }
 
@@ -196,14 +191,12 @@ class Supplier {
     #   Get supplier details   #
     ############################
 
-    function get_supplier_details($supplier_id, $item = null) {
+    public function get_supplier_details($supplier_id, $item = null) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$this->db->qstr($supplier_id);
 
-        $sql = "SELECT * FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
-
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the supplier details."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the supplier details."));
         } else {
 
             if($item === null){
@@ -242,9 +235,7 @@ class Supplier {
     #    Get Supplier Statuses          #
     #####################################
 
-    function get_supplier_statuses($restricted_statuses = false) {
-
-        $db = \Factory::getDbo();
+    public function get_supplier_statuses($restricted_statuses = false) {
 
         $sql = "SELECT * FROM ".PRFX."supplier_statuses";
 
@@ -253,8 +244,8 @@ class Supplier {
             $sql .= "\nWHERE status_key NOT IN ('invalid')";  // NB: 'invalid' does not currently exist
         }
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get Supplier statuses."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get Supplier statuses."));
         } else {
 
             return $rs->GetArray();     
@@ -267,14 +258,12 @@ class Supplier {
     #  Get Supplier status display name   #
     #######################################
 
-    function get_supplier_status_display_name($status_key) {
+    public function get_supplier_status_display_name($status_key) {
 
-        $db = \Factory::getDbo();
+        $sql = "SELECT display_name FROM ".PRFX."supplier_statuses WHERE status_key=".$this->db->qstr($status_key);
 
-        $sql = "SELECT display_name FROM ".PRFX."supplier_statuses WHERE status_key=".$db->qstr($status_key);
-
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get the supplier status display name."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get the supplier status display name."));
         } else {
 
             return $rs->fields['display_name'];
@@ -287,14 +276,12 @@ class Supplier {
     #    Get Supplier Types             #
     #####################################
 
-    function get_supplier_types() {
-
-        $db = \Factory::getDbo();
+    public function get_supplier_types() {
 
         $sql = "SELECT * FROM ".PRFX."supplier_types";
 
-        if(!$rs = $db->execute($sql)){        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to get supplier types."));
+        if(!$rs = $this->db->execute($sql)){        
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to get supplier types."));
         } else {
 
             return $rs->GetArray();
@@ -309,38 +296,36 @@ class Supplier {
     #     Update Record                 #
     #####################################
 
-    function update_supplier($qform) {
-
-        $db = \Factory::getDbo();
+    public function update_supplier($qform) {
 
         $sql = "UPDATE ".PRFX."supplier_records SET
-                employee_id    =". $db->qstr( \Factory::getUser()->login_user_id ).",
-                company_name   =". $db->qstr( $qform['company_name']  ).",
-                first_name     =". $db->qstr( $qform['first_name']    ).",
-                last_name      =". $db->qstr( $qform['last_name']     ).",
-                website        =". $db->qstr( process_inputted_url($qform['website'])).",
-                email          =". $db->qstr( $qform['email']         ).",
-                type           =". $db->qstr( $qform['type']          ).",
-                primary_phone  =". $db->qstr( $qform['primary_phone'] ).",
-                mobile_phone   =". $db->qstr( $qform['mobile_phone']  ).",
-                fax            =". $db->qstr( $qform['fax']           ).",
-                address        =". $db->qstr( $qform['address']       ).",
-                city           =". $db->qstr( $qform['city']          ).",
-                state          =". $db->qstr( $qform['state']         ).",
-                zip            =". $db->qstr( $qform['zip']           ).",
-                country        =". $db->qstr( $qform['country']       ).",
-                last_active    =". $db->qstr( mysql_datetime()      ).",
-                description    =". $db->qstr( $qform['description']   ).", 
-                note           =". $db->qstr( $qform['note']          )."
-                WHERE supplier_id = ". $db->qstr( $qform['supplier_id'] );                        
+                employee_id    =". $this->db->qstr( $this->app->user->login_user_id ).",
+                company_name   =". $this->db->qstr( $qform['company_name']  ).",
+                first_name     =". $this->db->qstr( $qform['first_name']    ).",
+                last_name      =". $this->db->qstr( $qform['last_name']     ).",
+                website        =". $this->db->qstr( $this->app->components->general->process_inputted_url($qform['website'])).",
+                email          =". $this->db->qstr( $qform['email']         ).",
+                type           =". $this->db->qstr( $qform['type']          ).",
+                primary_phone  =". $this->db->qstr( $qform['primary_phone'] ).",
+                mobile_phone   =". $this->db->qstr( $qform['mobile_phone']  ).",
+                fax            =". $this->db->qstr( $qform['fax']           ).",
+                address        =". $this->db->qstr( $qform['address']       ).",
+                city           =". $this->db->qstr( $qform['city']          ).",
+                state          =". $this->db->qstr( $qform['state']         ).",
+                zip            =". $this->db->qstr( $qform['zip']           ).",
+                country        =". $this->db->qstr( $qform['country']       ).",
+                last_active    =". $this->db->qstr( $this->app->system->general->mysql_datetime()      ).",
+                description    =". $this->db->qstr( $qform['description']   ).", 
+                note           =". $this->db->qstr( $qform['note']          )."
+                WHERE supplier_id = ". $this->db->qstr( $qform['supplier_id'] );                        
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the supplier details."));
         } else {
 
             // Log activity      
-            $record = _gettext("Supplier Record").' '.$db->Insert_ID().' ('.$qform['company_name'].') '._gettext("updated.");
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id);
+            $record = _gettext("Supplier Record").' '.$this->db->Insert_ID().' ('.$qform['company_name'].') '._gettext("updated.");
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -352,45 +337,43 @@ class Supplier {
     # Update Supplier Status    #
     #############################
 
-    function update_supplier_status($supplier_id, $new_status, $silent = false) {
-
-        $db = \Factory::getDbo();
+    public function update_supplier_status($supplier_id, $new_status, $silent = false) {
 
         // Get supplier details
-        $supplier_details = get_supplier_details($supplier_id);
+        $supplier_details = $this->get_supplier_details($supplier_id);
 
         // if the new status is the same as the current one, exit
         if($new_status == $supplier_details['status']) {        
-            if (!$silent) { systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
+            if (!$silent) { $this->app->system->variables->systemMessagesWrite('danger', _gettext("Nothing done. The new status is the same as the current status.")); }
             return false;
         }    
 
         // Unify Dates and Times
-        $datetime = mysql_datetime();
+        $datetime = $this->app->system->general->mysql_datetime();
 
         // Set the appropriate closed_on date
         $closed_on = ($new_status == 'closed') ? $datetime : '0000-00-00 00:00:00';
 
         $sql = "UPDATE ".PRFX."supplier_records SET
-                status             =". $db->qstr( $new_status   )."
-                closed_on          =". $db->qstr( $closed_on    )." 
-                last_active        =". $db->qstr( $datetime     )." 
-                WHERE supplier_id  =". $db->qstr( $supplier_id  );
+                status             =". $this->db->qstr( $new_status   )."
+                closed_on          =". $this->db->qstr( $closed_on    )." 
+                last_active        =". $this->db->qstr( $datetime     )." 
+                WHERE supplier_id  =". $this->db->qstr( $supplier_id  );
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update an supplier Status."));
 
         } else {    
 
             // Status updated message
-            if (!$silent) { systemMessagesWrite('success', _gettext("supplier status updated.")); }
+            if (!$silent) { $this->app->system->variables->systemMessagesWrite('success', _gettext("supplier status updated.")); }
 
             // For writing message to log file, get supplier status display name
-            $supplier_status_display_name = _gettext(get_supplier_status_display_name($new_status));
+            $supplier_status_display_name = _gettext($this->get_supplier_status_display_name($new_status));
 
             // Log activity        
-            $record = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.\Factory::getUser()->login_display_name.'.';
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id);
+            $record = _gettext("Supplier").' '.$supplier_id.' '._gettext("Status updated to").' '.$supplier_status_display_name.' '._gettext("by").' '.$this->app->user->login_display_name.'.';
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -404,22 +387,22 @@ class Supplier {
     #   Cancel Supplier                 #
     #####################################
 
-    function cancel_supplier($supplier) {
+    public function cancel_supplier($supplier) {
 
         // Make sure the supplier can be cancelled
-        if(!check_supplier_can_be_cancelled($supplier)) {        
+        if(!$this->check_supplier_can_be_cancelled($supplier)) {        
             return false;
         }
 
         // Get supplier details
-        //$supplier_details = get_supplier_details($supplier);  
+        //$supplier_details = $this->get_supplier_details($supplier);  
 
         // Change the supplier status to cancelled (I do this here to maintain consistency)
-        update_supplier_status($supplier, 'cancelled');      
+        $this->update_supplier_status($supplier, 'cancelled');      
 
         // Log activity        
-        $record = _gettext("Supplier").' '.$supplier.' '._gettext("was cancelled by").' '.\Factory::getUser()->login_display_name.'.';
-        write_record_to_activity_log($record, \Factory::getUser()->login_user_id);
+        $record = _gettext("Supplier").' '.$supplier.' '._gettext("was cancelled by").' '.$this->app->user->login_display_name.'.';
+        $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
 
         return true;
 
@@ -431,26 +414,24 @@ class Supplier {
     #    Delete Record                  #
     #####################################
 
-    function delete_supplier($supplier_id) {
+    public function delete_supplier($supplier_id) {
 
-        $db = \Factory::getDbo();
-
-        $display_name = get_supplier_details($supplier_id, 'display_name');
+        $display_name = $this->get_supplier_details($supplier_id, 'display_name');
 
         // Make sure the supplier can be deleted 
-        if(!check_supplier_can_be_deleted($supplier_id)) {        
+        if(!$this->check_supplier_can_be_deleted($supplier_id)) {        
             return false;
         }
 
-        $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$db->qstr($supplier_id);
+        $sql = "DELETE FROM ".PRFX."supplier_records WHERE supplier_id=".$this->db->qstr($supplier_id);
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to delete the supplier record."));
         } else {
 
             // Log activity     
             $record = _gettext("Supplier Record").' '.$supplier_id.' ('.$display_name.') '._gettext("deleted.");
-            write_record_to_activity_log($record, \Factory::getUser()->login_user_id);
+            $this->app->system->general->write_record_to_activity_log($record, $this->app->user->login_user_id);
 
             return true;
 
@@ -461,17 +442,15 @@ class Supplier {
     /** Other Functions **/
 
     ############################################
-    #      Last supplier Record ID Look Up     #  // not cureently used
+    #      Last supplier Record ID Look Up     #  // not curently used
     ############################################
 
-    function last_supplier_id_lookup() {
-
-        $db = \Factory::getDbo();
+    public function last_supplier_id_lookup() {
 
         $sql = "SELECT * FROM ".PRFX."supplier_records ORDER BY supplier_id DESC LIMIT 1";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to lookup the last supplier record ID."));
         } else {
 
             return $rs->fields['supplier_id'];
@@ -484,16 +463,16 @@ class Supplier {
     #  Check if the supplier status is allowed to be changed  #  // not currently used
     ###########################################################
 
-     function check_supplier_status_can_be_changed($supplier_id) {
+     public function check_supplier_status_can_be_changed($supplier_id) {
 
         $state_flag = true;
 
         // Get the supplier details
-        //$supplier_details = get_supplier_details($supplier_id); 
+        //$supplier_details = $this->get_supplier_details($supplier_id); 
 
         /* Is cancelled
         if($supplier_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be changed because the supplier has been deleted."));
             $state_flag = false;       
         }*/
 
@@ -506,16 +485,16 @@ class Supplier {
     #   Check to see if the supplier can be cancelled             #  // not currently used
     ###############################################################
 
-    function check_supplier_can_be_cancelled($supplier_id) {
+    public function check_supplier_can_be_cancelled($supplier_id) {
 
         $state_flag = true;
 
         // Get the supplier details
-        $supplier_details = get_supplier_details($supplier_id);   
+        $supplier_details = $this->get_supplier_details($supplier_id);   
 
         // Is cancelled
         if($supplier_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be cancelled because the supplier has been deleted."));
             $state_flag = false;       
         }  
 
@@ -527,16 +506,16 @@ class Supplier {
     #   Check to see if the supplier can be deleted               #
     ###############################################################
 
-    function check_supplier_can_be_deleted($supplier_id) {
+    public function check_supplier_can_be_deleted($supplier_id) {
 
         $state_flag = true;
 
         // Get the supplier details
-        //$supplier_details = get_supplier_details($supplier_id);
+        //$supplier_details = $this->get_supplier_details($supplier_id);
 
         /* Is cancelled
         if($supplier_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("This supplier cannot be deleted because it has been cancelled."));
             $state_flag = false;       
         }*/
 
@@ -548,16 +527,16 @@ class Supplier {
     #  Check if the supplier status allows editing           #  // not currently used
     ##########################################################
 
-     function check_supplier_can_be_edited($supplier_id) {
+     public function check_supplier_can_be_edited($supplier_id) {
 
         $state_flag = true;
 
         // Get the supplier details
-        $supplier_details = get_supplier_details($supplier_id);
+        $supplier_details = $this->get_supplier_details($supplier_id);
 
         // Is cancelled
         if($supplier_details['status'] == 'cancelled') {
-            systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been cancelled."));
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("The supplier cannot be edited because it has been cancelled."));
             $state_flag = false;       
         }
 

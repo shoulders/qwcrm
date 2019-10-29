@@ -9,16 +9,16 @@
 defined('_QWEXEC') or die;
 
 // Global Workorder Stats
-$smarty->assign('global_workorder_current_stats', get_workorders_stats('current'));
-$smarty->assign('global_workorder_historic_stats', get_workorders_stats('historic'));
+$this->app->smarty->assign('global_workorder_current_stats', $this->app->components->report->get_workorders_stats('current'));
+$this->app->smarty->assign('global_workorder_historic_stats', $this->app->components->report->get_workorders_stats('historic'));
 
 // Global Invoice Stats
-$smarty->assign('global_invoice_current_stats', get_invoices_stats('current'));
-$smarty->assign('global_invoice_historic_stats', get_invoices_stats('historic'));
+$this->app->smarty->assign('global_invoice_current_stats', $this->app->components->report->get_invoices_stats('current'));
+$this->app->smarty->assign('global_invoice_historic_stats', $this->app->components->report->get_invoices_stats('historic'));
 
 // Global Client Stats
-$smarty->assign('global_client_historic_stats', get_clients_stats('historic'));
+$this->app->smarty->assign('global_client_historic_stats', $this->app->components->report->get_clients_stats('historic'));
 
 // Employee Workorder Stats (Logged in user)
-$smarty->assign('employee_workorder_current_stats', get_workorders_stats('current', null, null, $user->login_user_id));
-$smarty->assign('employee_workorder_historic_stats', get_workorders_stats('historic', null, null, $user->login_user_id));
+$this->app->smarty->assign('employee_workorder_current_stats', $this->app->components->report->get_workorders_stats('current', null, null, $user->login_user_id));
+$this->app->smarty->assign('employee_workorder_historic_stats', $this->app->components->report->get_workorders_stats('historic', null, null, $user->login_user_id));

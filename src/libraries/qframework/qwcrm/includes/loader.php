@@ -22,8 +22,8 @@ require QFRAMEWORK_DIR . 'qwcrm/Pdf.php';                          // Load mPDF 
 require QFRAMEWORK_DIR . 'qwcrm/Email.php';                        // Load email transport
 require QFRAMEWORK_DIR . 'qwcrm/Variables.php';                    // Configure variables to be used by QWcrm
 require QFRAMEWORK_DIR . 'qwcrm/Router.php';                       // Route the page request
-require QFRAMEWORK_DIR . 'qwcrm/Page.php';                         // Page related functions*/
-require QFRAMEWORK_DIR . 'qwcrm/System.php';                       // System Classes wrapping class
+require QFRAMEWORK_DIR . 'qwcrm/Page.php';                         // Page related functions
+require QFRAMEWORK_DIR . 'qwcrm/Sections/System.php';              // System Classes wrapping class
 require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';               // Main Framework class*/
 
 // Misc (Joomla)
@@ -70,8 +70,17 @@ require QFRAMEWORK_DIR . 'joomla/plugins/user/joomla/joomla.php';               
 // Load dependencies via composer
 require(VENDOR_DIR.'autoload.php');   
 
-// Load the qframework system classes (files only)
-\CMSApplication::classFilesLoad('system', QFRAMEWORK_DIR.'qwcrm/System/');         
+// Main QWcrm Framework class
+require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';  
 
-// load the qframework components classes (files only)
+// Load the 'Section' wrapper classes (files only)
+\CMSApplication::classFilesLoad('section', QFRAMEWORK_DIR.'qwcrm/Sections/'); 
+
+// Load the qframework 'system' classes (files only)
+\CMSApplication::classFilesLoad('system', QFRAMEWORK_DIR.'qwcrm/System/');
+
+// Load the qframework 'components' classes (files only)
 \CMSApplication::classFilesLoad('components', CINCLUDES_DIR);
+
+// Main QWcrm Framework class
+require QFRAMEWORK_DIR . 'qwcrm/CMSApplication.php';  

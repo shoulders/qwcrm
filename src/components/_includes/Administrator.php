@@ -32,31 +32,31 @@ defined('_QWEXEC') or die;
 
 /* Insert */
 
-class Administrator {
+class Administrator extends Components {
 
     ############################################
     #   Insert a single QWcrm setting file     #
     ############################################
 
-    function insert_qwcrm_config_setting($key, $value) {
+    public function insert_qwcrm_config_setting($key, $value) {
 
         // Add the setting into the Registry
-        \Factory::getConfig()->set($key, $value);
+        $this->app->system->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = get_qwcrm_config_settings();  
+        $qwcrm_config = $this->get_qwcrm_config_settings();  
 
         // Add the key/value pair into the array
         //$qwcrm_config[$key] = $value;
 
         // Prepare the config file content
-        $qwcrm_config = build_config_file_content($qwcrm_config);
+        $qwcrm_config = $this->build_config_file_content($qwcrm_config);
 
         // Write the configuration file.
-        write_config_file($qwcrm_config);
+        $this->write_config_file($qwcrm_config);
 
         // Log activity
-        write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));    
+        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was inserted."));    
 
         return true;
 
@@ -68,7 +68,7 @@ class Administrator {
     #  Load Config settings from file or use the registry if present  #
     ###################################################################
 
-    function get_qwcrm_config_settings() {
+    public function get_qwcrm_config_settings() {
 
         // Verify the configuration.php file exists
         if(is_file('configuration.php')) {
@@ -82,7 +82,7 @@ class Administrator {
             } 
 
             // Use the config settings in the live Registry 
-            if($registry_object = \Factory::getConfig()->toObject()) {
+            if($registry_object = $this->app->system->config->toObject()) {
                 return get_object_vars($registry_object);
             }
 
@@ -97,14 +97,12 @@ class Administrator {
     #   Get ACL Permissions         #
     #################################
 
-    function get_acl_permissions() {
-
-        $db = \Factory::getDbo();
+    public function get_acl_permissions() {
 
         $sql = "SELECT * FROM ".PRFX."user_acl_page ORDER BY page";
 
-        if(!$rs = $db->execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
+        if(!$rs = $this->db->execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to load the Page ACL permissions from the database."));
         }
 
         return $rs->GetArray(); 
@@ -117,25 +115,25 @@ class Administrator {
     #   Update a single QWcrm setting file     #
     ############################################
 
-    function update_qwcrm_config_setting($key, $value) {
+    public function update_qwcrm_config_setting($key, $value) {
 
         // Update a setting into the Registry
-        \Factory::getConfig()->set($key, $value);
+        $this->app->system->config->set($key, $value);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = get_qwcrm_config_settings();
+        $qwcrm_config = $this->get_qwcrm_config_settings();
 
         // Add the key/value pair into the object
         //$qwcrm_config[$key] = $value;
 
         // Prepare the config file content
-        $qwcrm_config = build_config_file_content($qwcrm_config);
+        $qwcrm_config = $this->build_config_file_content($qwcrm_config);
 
         // Write the configuration file.
-        write_config_file($qwcrm_config);
+        $this->write_config_file($qwcrm_config);
 
         // Log activity
-        write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');    
+        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was updated to").' `'.$value.'`.');    
 
         return true;
 
@@ -145,9 +143,7 @@ class Administrator {
     #   Update ACL Permissions      #
     #################################
 
-    function update_acl($permissions) {
-
-        $db = \Factory::getDbo();
+    public function update_acl($permissions) {
 
         /* Process Submitted Permissions */
 
@@ -169,19 +165,19 @@ class Administrator {
             $page_permission['Administrator'] = '1';
 
             $sql = "UPDATE `".PRFX."user_acl_page` SET
-                    `Administrator` =". $db->qstr( $page_permission['Administrator']    ).",
-                    `Manager`       =". $db->qstr( $page_permission['Manager']          ).",
-                    `Supervisor`    =". $db->qstr( $page_permission['Supervisor']       ).",
-                    `Technician`    =". $db->qstr( $page_permission['Technician']       ).",
-                    `Clerical`      =". $db->qstr( $page_permission['Clerical']         ).",
-                    `Counter`       =". $db->qstr( $page_permission['Counter']          ).",
-                    `Client`        =". $db->qstr( $page_permission['Client']           ).",
-                    `Guest`         =". $db->qstr( $page_permission['Guest']            ).",
-                    `Public`        =". $db->qstr( $page_permission['Public']           )."
-                    WHERE `page`    =". $db->qstr( $page_name                           ).";";
+                    `Administrator` =". $this->db->qstr( $page_permission['Administrator']    ).",
+                    `Manager`       =". $this->db->qstr( $page_permission['Manager']          ).",
+                    `Supervisor`    =". $this->db->qstr( $page_permission['Supervisor']       ).",
+                    `Technician`    =". $this->db->qstr( $page_permission['Technician']       ).",
+                    `Clerical`      =". $this->db->qstr( $page_permission['Clerical']         ).",
+                    `Counter`       =". $this->db->qstr( $page_permission['Counter']          ).",
+                    `Client`        =". $this->db->qstr( $page_permission['Client']           ).",
+                    `Guest`         =". $this->db->qstr( $page_permission['Guest']            ).",
+                    `Public`        =". $this->db->qstr( $page_permission['Public']           )."
+                    WHERE `page`    =". $this->db->qstr( $page_name                           ).";";
 
-            if(!$rs = $db->execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
+            if(!$rs = $this->db->execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the Submitted ACL permissions."));
             }                 
 
         }
@@ -216,25 +212,25 @@ class Administrator {
         foreach($mandatory_permissions as $page_name => $page_permission) {
 
             $sql = "UPDATE `".PRFX."user_acl_page` SET
-                    `Administrator` =". $db->qstr( $page_permission['Administrator']  ).",
-                    `Manager`       =". $db->qstr( $page_permission['Manager']        ).",
-                    `Supervisor`    =". $db->qstr( $page_permission['Supervisor']     ).",
-                    `Technician`    =". $db->qstr( $page_permission['Technician']     ).",
-                    `Clerical`      =". $db->qstr( $page_permission['Clerical']       ).",
-                    `Counter`       =". $db->qstr( $page_permission['Counter']        ).",
-                    `Client`        =". $db->qstr( $page_permission['Client']         ).",
-                    `Guest`         =". $db->qstr( $page_permission['Guest']          ).",
-                    `Public`        =". $db->qstr( $page_permission['Public']         )."
-                    WHERE `page`    =". $db->qstr( $page_name                         ).";";
+                    `Administrator` =". $this->db->qstr( $page_permission['Administrator']  ).",
+                    `Manager`       =". $this->db->qstr( $page_permission['Manager']        ).",
+                    `Supervisor`    =". $this->db->qstr( $page_permission['Supervisor']     ).",
+                    `Technician`    =". $this->db->qstr( $page_permission['Technician']     ).",
+                    `Clerical`      =". $this->db->qstr( $page_permission['Clerical']       ).",
+                    `Counter`       =". $this->db->qstr( $page_permission['Counter']        ).",
+                    `Client`        =". $this->db->qstr( $page_permission['Client']         ).",
+                    `Guest`         =". $this->db->qstr( $page_permission['Guest']          ).",
+                    `Public`        =". $this->db->qstr( $page_permission['Public']         )."
+                    WHERE `page`    =". $this->db->qstr( $page_name                         ).";";
 
-             if(!$rs = $db->execute($sql)) {
-                 force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
+             if(!$rs = $this->db->execute($sql)) {
+                 $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to update the Mandatory ACL permissions."));
             }               
 
         }
 
         // Log activity        
-        write_record_to_activity_log(_gettext("ACL permissions updated."));      
+        $this->app->system->general->write_record_to_activity_log(_gettext("ACL permissions updated."));      
 
     }
 
@@ -242,30 +238,30 @@ class Administrator {
     #   Update the QWcrm settings file         #
     ############################################
 
-    function update_qwcrm_config_settings_file($new_config) {
+    public function update_qwcrm_config_settings_file($new_config) {
 
         // Perform miscellaneous operations based on configuration settings/changes.
-        $new_config = process_submitted_config_data($new_config);
+        $new_config = $this->process_submitted_config_data($new_config);
 
         // Get a fresh copy of the current settings as an array        
-        $current_config = get_qwcrm_config_settings();
+        $current_config = $this->get_qwcrm_config_settings();
 
         // Merge the new_config and the current_config. We do this to preserve values that were not in the submitted form but are in the config.    
         $merged_config = array_merge($current_config, $new_config);
 
-        // Walk through the merged_config array and escape all apostophes (anonymous function)
+        // Walk through the merged_config array and escape all apostophes (anonymous public function)
         array_walk($merged_config, function(&$value) {
             $value = str_replace("'", "\\'", $value);
         });
 
         // Prepare the config file content
-        $merged_config = build_config_file_content($merged_config);
+        $merged_config = $this->build_config_file_content($merged_config);
 
         // Write the configuration file.
-        write_config_file($merged_config);
+        $this->write_config_file($merged_config);
 
         // Log activity        
-        write_record_to_activity_log(_gettext("QWcrm config settings updated."));   
+        $this->app->system->general->write_record_to_activity_log(_gettext("QWcrm config settings updated."));   
 
         return true;
 
@@ -277,25 +273,25 @@ class Administrator {
     #   Delete s QWcrm setting                 #
     ############################################
 
-    function delete_qwcrm_config_setting($key) {
+    public function delete_qwcrm_config_setting($key) {
 
         // Remove the setting from the Registry
-        \Factory::getConfig()->remove($key);
+        $this->app->system->config->remove($key);
 
         // Get a fresh copy of the current settings as an array        
-        $qwcrm_config = get_qwcrm_config_settings();
+        $qwcrm_config = $this->get_qwcrm_config_settings();
 
         // Remove the key from the array
         //unset($qwcrm_config[$key]);
 
         // Prepare the config file content
-        $qwcrm_config = build_config_file_content($qwcrm_config);
+        $qwcrm_config = $this->build_config_file_content($qwcrm_config);
 
         // Write the configuration file.
-        write_config_file($qwcrm_config);
+        $this->write_config_file($qwcrm_config);
 
         // Log activity
-        write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
+        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm config setting").' `'.$key.'` '._gettext("was deleted."));    
 
         return true;
 
@@ -310,7 +306,7 @@ class Administrator {
      * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
      * @license     GNU General Public License version 2 or later; see LICENSE.txt
      */
-    function getPHPInfo()
+    public function getPHPInfo()
     {
         ob_start();
         date_default_timezone_set('UTC');
@@ -333,9 +329,7 @@ class Administrator {
     #   Check for QWcrm update      #
     #################################
 
-    function check_for_qwcrm_update() {
-
-        $smarty = \Factory::getSmarty();
+    public function check_for_qwcrm_update() {
 
         // Get curent version and check against quantumwarp.com
         $update_page    = 'https://quantumwarp.com/ext/updates/qwcrm/qwcrm.xml';
@@ -351,24 +345,24 @@ class Administrator {
 
         // If there is a connection error
         if($curl_error) {         
-            systemMessagesWrite('danger', _gettext("Connection Error - cURL Error Number").': '.$curl_error);
+            $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("Connection Error - cURL Error Number").': '.$curl_error);
             return;        
         }
 
         // If no response return with error message
         if(!$curl_response || $curl_error) {         
-            systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
-            $smarty->assign('update_response', 'no_response');
+            $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
+            $this->smarty->assign('update_response', 'no_response');
             return;        
         }
 
         // Parse the grabbed XML into an array
-        $update_response = parse_xml_sting_into_array($curl_response);
+        $update_response = $this->app->system->general->parse_xml_sting_into_array($curl_response);
 
         // Verify there is a real response and flag error if not
         if(!$update_response['name']) {
-            systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
-            $smarty->assign('update_response', 'no_response');
+            $this->app->components->vaiables->systemMessagesWrite('danger', _gettext("No response from the QWcrm update server."));
+            $this->smarty->assign('update_response', 'no_response');
             return;       
         }
 
@@ -377,20 +371,20 @@ class Administrator {
         if (version_compare(QWCRM_VERSION, $update_response['version'], '<')) {
 
             // An Update is available        
-            $smarty->assign('version_compare', '1');
+            $this->smarty->assign('version_compare', '1');
 
         } else {
 
             // No Updates available      
-            $smarty->assign('version_compare', '0');
+            $this->smarty->assign('version_compare', '0');
 
         }
 
         // Assign Variables    
-        $smarty->assign('update_response', $update_response);
+        $this->smarty->assign('update_response', $update_response);
 
         // Log activity        
-        write_record_to_activity_log(_gettext("QWcrm checked for updates."));
+        $this->app->system->general->write_record_to_activity_log(_gettext("QWcrm checked for updates."));
 
         return;
 
@@ -400,7 +394,7 @@ class Administrator {
     #   Prepare the Config file data layout    #
     ############################################
 
-    function build_config_file_content($config_data)
+    public function build_config_file_content($config_data)
     {
         $output = "<?php\r\n";
         $output .= "class QConfig {\r\n";
@@ -420,7 +414,7 @@ class Administrator {
     #      Write data to config file           #
     ############################################
 
-    function write_config_file($content)
+    public function write_config_file($content)
     {
         // Set the configuration file path.
         $file = 'configuration.php';
@@ -457,30 +451,27 @@ class Administrator {
 
 
     ###########################################################
-    #   Process form SUBMITTED config data before saving      #  // joomla/administrator/components/com_config/model/application.php  -  public function save($data)
+    #   Process form SUBMITTED config data before saving      #  // joomla/administrator/components/com_config/model/application.php  -  public public function save($data)
     ###########################################################
 
-    function process_submitted_config_data($new_config) {    
+    public function process_submitted_config_data($new_config) {    
 
         // Get a fresh copy of the current settings as an array        
-        $current_config = get_qwcrm_config_settings();
+        $current_config = $this->get_qwcrm_config_settings();
 
         // Process Google server URL (makes ure there is a https?:// - the isset prevents an install error becasue the variable is not present yet
-        if(isset($new_config['google_server'])) { $new_config['google_server'] = process_inputted_url($new_config['google_server']); }
+        if(isset($new_config['google_server'])) { $new_config['google_server'] = $this->app->system->general->$this->app->components->general->process_inputted_url($new_config['google_server']); }
 
         // Purge the database session table if we are changing to the database handler.
         if(!defined('QWCRM_SETUP')) {
-
-            // Get the database object
-            $db = \Factory::getDbo();
 
             // Empty the session table if changing to database session handling from non-database session handling
             if ($current_config['session_handler'] != 'database' && $new_config['session_handler'] == 'database')
             {
                 $sql = "TRUNCATE ".PRFX."session";                    
 
-                if(!$rs = $db->Execute($sql)) {
-                    force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
+                if(!$rs = $this->db->Execute($sql)) {
+                    $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed to empty the database session table."));
 
                 }
 
@@ -506,10 +497,10 @@ class Administrator {
                 //unset($new_config['session_name']);
 
                 // Remove 'session_name' from the live config registry and configuration.php (prevents 'session_name' getting remerged from these sources)
-                delete_qwcrm_config_setting('session_name');
+                $this->delete_qwcrm_config_setting('session_name');
 
                 // Logout the current user out silently (this should be for all users ie.e TRUNCATE #_session when on database handler, but this a work around for the current user)
-                logout(true);
+                $this->app->user->logout(true);
             }
         }     
 
@@ -522,14 +513,14 @@ class Administrator {
     #      Send Test Mail                      #
     ############################################
 
-    function send_test_mail() {
+    public function send_test_mail() {
 
-        $user_details = get_user_details(\Factory::getUser()->login_user_id);
+        $user_details = $this->app->user->$this->app->components->user->get_user_details($this->app->user->login_user_id);
 
-        send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.\Factory::getConfig()->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
+        $this->app->system->email->send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->system->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
 
         // Log activity        
-        write_record_to_activity_log(_gettext("Test email initiated."));
+        $this->app->system->general->write_record_to_activity_log(_gettext("Test email initiated."));
 
     }
 
@@ -537,15 +528,13 @@ class Administrator {
     #   Reset ACL Permissions       #
     #################################
 
-    function reset_acl_permissions() {
-
-        $db = \Factory::getDbo();
+    public function reset_acl_permissions() {
 
         // Remove current permissions
         $sql = "TRUNCATE ".PRFX."user_acl_page";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
         } else {
 
@@ -664,15 +653,15 @@ class Administrator {
                     ('workorder:search', 1, 1, 1, 0, 0, 0, 0, 0, 0),
                     ('workorder:status', 1, 1, 1, 0, 0, 0, 0, 0, 0);";
 
-            if(!$rs = $db->Execute($sql)) {
-                force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
+            if(!$rs = $this->db->Execute($sql)) {
+                $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Failed reset default permissions."));
 
             }
 
         }
 
         // Log activity        
-        write_record_to_activity_log(_gettext("ACL permissions reset to default settings."));    
+        $this->app->system->general->write_record_to_activity_log(_gettext("ACL permissions reset to default settings."));    
 
         return;
 
@@ -682,16 +671,16 @@ class Administrator {
     #   Refresh Live Config Registry with config file    #  // not currently used
     ######################################################
 
-    function refresh_qwcrm_live_config_from_file() {
+    public function refresh_qwcrm_live_config_from_file() {
 
         // wipe the live registry
-        \Factory::$config = null;
+        $this->app->system->config = null;
 
         // Re-populate the Live registry
         \Factory::getConfig();
 
         // Log activity
-        write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file."));    
+        $this->app->system->general->write_record_to_activity_log(_gettext("The QWcrm live config registry has been refreshed from the config file."));    
 
         return;
 

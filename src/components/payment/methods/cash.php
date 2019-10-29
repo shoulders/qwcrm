@@ -31,10 +31,10 @@ class PMethod {
     public function process() {
         
         // Build additional_info column
-        $this->VAR['qpayment']['additional_info'] = build_additional_info_json();  
+        $this->VAR['qpayment']['additional_info'] = $this->app->components->payment->build_additional_info_json();  
         
         // Insert the payment with the calculated information
-        if(insert_payment($this->VAR['qpayment'])) {            
+        if($this->app->components->payment->insert_payment($this->VAR['qpayment'])) {            
             NewPayment::$payment_processed = true;            
         }
         

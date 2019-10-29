@@ -21,6 +21,6 @@
 
 defined('_QWEXEC') or die;
 
-class CoreMenu {
+class CoreMenu extends Components {
     
 }

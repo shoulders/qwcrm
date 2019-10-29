@@ -9,7 +9,7 @@
 
 defined('_QWEXEC') or die;
 
-class CoreTheme {
+class CoreTheme extends Components {
 
     /** Misc **/
 
@@ -17,7 +17,7 @@ class CoreTheme {
     #  Greeting Message Based on Time       #
     #########################################
 
-    function greeting_message_based_on_time($employee_name) {
+    public function greeting_message_based_on_time($employee_name) {
 
         $morning    = _gettext("Good morning").' '.$employee_name;
         $afternoon  = _gettext("Good afternoon").' '.$employee_name;

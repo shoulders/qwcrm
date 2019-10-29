@@ -10,45 +10,45 @@ defined('_QWEXEC') or die;
 
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
-    systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    force_page('workorder', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
+    $this->app->system->general->force_page('workorder', 'search');
 }
 
 // Check if we can edit the workorder resolution
-if(get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {
-    systemMessagesWrite('danger', _gettext("Cannot edit the resolution of a closed Work Order."));
-    force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+if($this->app->components->workorder->get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'is_closed')) {
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("Cannot edit the resolution of a closed Work Order."));
+    $this->app->system->general->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
 }
 
 if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Update Work Resolution Only
     if(\CMSApplication::$VAR['submit'] == 'submitchangesonly') {
-        update_workorder_resolution(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-        systemMessagesWrite('success', _gettext("Resolution has been updated."));
-        force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        $this->app->components->workorder->update_workorder_resolution(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Resolution has been updated."));
+        $this->app->system->general->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
     }
 
     // Close without invoice
     if(\CMSApplication::$VAR['submit'] == 'closewithoutinvoice') {
-        close_workorder_without_invoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
-        systemMessagesWrite('success', _gettext("Work Order has been closed without an invoice."));
-        force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        $this->app->components->workorder->close_workorder_without_invoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed without an invoice."));
+        $this->app->system->general->force_page('workorder', 'details&workorder_id='.\CMSApplication::$VAR['workorder_id']);
     }
 
     // Close with invoice
     if(\CMSApplication::$VAR['submit'] == 'closewithinvoice') {
-        close_workorder_with_invoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
+        $this->app->components->workorder->close_workorder_with_invoice(\CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['resolution']);
         
         // Create a new invoice attached to this work order
-        systemMessagesWrite('success', _gettext("Work Order has been closed with an invoice."));
-        force_page('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
+        $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been closed with an invoice."));
+        $this->app->system->general->force_page('invoice', 'new&workorder_id='.\CMSApplication::$VAR['workorder_id']);
     }
 
 }
         
 // Build the page
-$smarty->assign('resolution', get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'resolution'));
+$this->app->smarty->assign('resolution', $this->app->components->workorder->get_workorder_details(\CMSApplication::$VAR['workorder_id'], 'resolution'));
 
     
     

@@ -19,17 +19,17 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of invoices has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    write_record_to_activity_log($record);
+    $this->app->system->general->write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    force_page('invoice', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->general->force_page('invoice', 'search', \CMSApplication::$VAR, 'get');
     
 }
 
 // Build the page
-$smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                          );
-$smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                              );
-$smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                            );
-$smarty->assign('invoice_statuses', get_invoice_statuses()                                                                           );
-$smarty->assign('display_invoices', display_invoices('invoice_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status'])   );
+$this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                          );
+$this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                              );
+$this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                            );
+$this->app->smarty->assign('invoice_statuses', $this->app->components->invoice->get_invoice_statuses()                                                                           );
+$this->app->smarty->assign('display_invoices', $this->app->components->invoice->display_invoices('invoice_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_status'])   );

@@ -106,7 +106,7 @@ class Router extends System {
 
             // Log activity
             $record = _gettext("A user tried to access the following resource without the correct permissions.").' ('.$component.':'.$page_tpl.')';
-            write_record_to_activity_log($record, \CMSApplication::$VAR['employee_id'], \CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']); 
+            $this->app->system->general->write_record_to_activity_log($record, \CMSApplication::$VAR['employee_id'], \CMSApplication::$VAR['client_id'], \CMSApplication::$VAR['workorder_id'], \CMSApplication::$VAR['invoice_id']); 
 
             // Set to the 403 error page 
             $component   = 'core';
@@ -411,7 +411,7 @@ class Router extends System {
                 WHERE usergroup_id =".$db->qstr($user->login_usergroup_id);
 
         if(!$rs = $db->execute($sql)) {        
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the user's Group Name by Login Account Type ID."));
         } else {
             $usergroup_display_name = $rs->fields['display_name'];
         } 
@@ -424,7 +424,7 @@ class Router extends System {
         $sql = "SELECT ".$usergroup_display_name." AS acl FROM ".PRFX."user_acl_page WHERE page=".$db->qstr($page_name);
 
         if(!$rs = $db->execute($sql)) {        
-            force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
+            $this->app->system->general->force_error_page('authentication', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not get the Page's ACL."));
         } else {
 
             $acl = $rs->fields['acl'];
@@ -463,7 +463,7 @@ class Router extends System {
         $sql = "SELECT page FROM ".PRFX."user_acl_page WHERE page = ".$db->qstr($component.':'.$page_tpl);
 
         if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Failed to check if the page exists in the ACL."));
         } else {
 
             if($rs->RecordCount() == 1) {

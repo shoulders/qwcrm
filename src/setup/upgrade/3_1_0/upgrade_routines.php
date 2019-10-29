@@ -52,7 +52,7 @@ class Upgrade3_1_0 extends Setup {
         // Config File
         insert_qwcrm_config_setting('sef', '0');
         insert_qwcrm_config_setting('error_handler_whoops', '1');
-        update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
+        $this->app->components->administrator->update_qwcrm_config_setting('smarty_debugging_ctrl', 'NONE');
         
         // Tag all previous payments as type 'invoice'
         $this->update_column_values(PRFX.'payment_records', 'type', '*', 'invoice');
@@ -583,7 +583,7 @@ class Upgrade3_1_0 extends Setup {
         
         // If the timestamp already is a proper date in the format xxxx/xx/xx 00:00 then timestamp is correct 'as is' (there is no offset)
         if(preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2} 00:00:00$/', date('Y-m-d H:i:s', $timestamp))) {              
-            return timestamp_mysql_date($timestamp);           
+            return $this->app->components->administrator->timestamp_mysql_date($timestamp);           
         }
         
         // Calculate backward difference
@@ -614,7 +614,7 @@ class Upgrade3_1_0 extends Setup {
         $corrected_timestamp = $timestamp + $offset;
      
         // Return the correct date in MySQL DATE format
-        return timestamp_mysql_date($corrected_timestamp);        
+        return $this->app->components->administrator->timestamp_mysql_date($corrected_timestamp);        
         
     } 
     

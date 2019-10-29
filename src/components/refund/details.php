@@ -10,20 +10,20 @@ defined('_QWEXEC') or die;
 
 // Check if we have a refund_id
 if(!isset(\CMSApplication::$VAR['refund_id']) || !\CMSApplication::$VAR['refund_id']) {
-    systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
-    force_page('refund', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Refund ID supplied."));
+    $this->app->system->general->force_page('refund', 'search');
 } 
 
 // Payment Details
-$smarty->assign('payment_types',            get_payment_types()                                                                                 );
-$smarty->assign('payment_methods',          get_payment_methods()                                                             ); 
-$smarty->assign('payment_statuses',         get_payment_statuses()                                                                              );
-$smarty->assign('display_payments',         display_payments('payment_id', 'DESC', false, null, null, null, null, 'refund', null, null, null, null, null, \CMSApplication::$VAR['refund_id']));
+$this->app->smarty->assign('payment_types',            $this->app->components->payment->get_payment_types()                                                                                 );
+$this->app->smarty->assign('payment_methods',          $this->app->components->payment->get_payment_methods()                                                             ); 
+$this->app->smarty->assign('payment_statuses',         $this->app->components->payment->get_payment_statuses()                                                                              );
+$this->app->smarty->assign('display_payments',         $this->app->components->payment->display_payments('payment_id', 'DESC', false, null, null, null, null, 'refund', null, null, null, null, null, \CMSApplication::$VAR['refund_id']));
 
 // Build the page
-$refund_details = get_refund_details(\CMSApplication::$VAR['refund_id']);
-$smarty->assign('refund_statuses', get_refund_statuses()  );
-$smarty->assign('refund_types', get_refund_types());
-$smarty->assign('refund_details', $refund_details);
-$smarty->assign('vat_tax_codes', get_vat_tax_codes() );
-$smarty->assign('client_display_name', get_client_details($refund_details['client_id'], 'display_name'));
+$refund_details = $this->app->components->refund->$this->app->components->refund->get_refund_details(\CMSApplication::$VAR['refund_id']);
+$this->app->smarty->assign('refund_statuses', $this->app->components->refund->get_refund_statuses()  );
+$this->app->smarty->assign('refund_types', $this->app->components->refund->get_refund_types());
+$this->app->smarty->assign('refund_details', $refund_details);
+$this->app->smarty->assign('vat_tax_codes', $this->app->components->company->get_vat_tax_codes() );
+$this->app->smarty->assign('client_display_name', $this->app->components->client->get_client_details($refund_details['client_id'], 'display_name'));

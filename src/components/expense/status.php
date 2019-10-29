@@ -10,20 +10,20 @@ defined('_QWEXEC') or die;
 
 // Check if we have a expense_id
 if(!isset(\CMSApplication::$VAR['expense_id']) || !\CMSApplication::$VAR['expense_id']) {
-    systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
-    force_page('expense', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Expense ID supplied."));
+    $this->app->system->general->force_page('expense', 'search');
 }
 
 // Update Expense Status
 if(isset(\CMSApplication::$VAR['change_status'])){
-    update_expense_status(\CMSApplication::$VAR['expense_id'], \CMSApplication::$VAR['assign_status']);    
-    force_page('expense', 'status&expense_id='.\CMSApplication::$VAR['expense_id']);
+    $this->app->components->expense->update_expense_status(\CMSApplication::$VAR['expense_id'], \CMSApplication::$VAR['assign_status']);    
+    $this->app->system->general->force_page('expense', 'status&expense_id='.\CMSApplication::$VAR['expense_id']);
 }
 
 // Build the page with the current status from the database
-$smarty->assign('allowed_to_change_status',        false       ); // I am not sure this is needed
-$smarty->assign('expense_status',                  get_expense_details(\CMSApplication::$VAR['expense_id'], 'status')             );
-$smarty->assign('expense_statuses',                get_expense_statuses() );
-$smarty->assign('allowed_to_cancel',               check_expense_can_be_cancelled(\CMSApplication::$VAR['expense_id'])     );
-$smarty->assign('allowed_to_delete',               check_expense_can_be_deleted(\CMSApplication::$VAR['expense_id'])              );
-$smarty->assign('expense_selectable_statuses',     get_expense_statuses(true) );
+$this->app->smarty->assign('allowed_to_change_status',        false       ); // I am not sure this is needed
+$this->app->smarty->assign('expense_status',                  $this->app->components->expense->get_expense_details(\CMSApplication::$VAR['expense_id'], 'status')             );
+$this->app->smarty->assign('expense_statuses',                $this->app->components->expense->get_expense_statuses() );
+$this->app->smarty->assign('allowed_to_cancel',               $this->app->components->expense->check_expense_can_be_cancelled(\CMSApplication::$VAR['expense_id'])     );
+$this->app->smarty->assign('allowed_to_delete',               $this->app->components->expense->check_expense_can_be_deleted(\CMSApplication::$VAR['expense_id'])              );
+$this->app->smarty->assign('expense_selectable_statuses',     $this->app->components->expense->get_expense_statuses(true) );

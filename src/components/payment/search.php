@@ -21,21 +21,21 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of payments has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    write_record_to_activity_log($record);
+    $this->app->system->general->write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    force_page('payment', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->general->force_page('payment', 'search', \CMSApplication::$VAR, 'get');
     
 }
 
 // Build the page
-$smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                             );
-$smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                                 );
-$smarty->assign('filter_type',      \CMSApplication::$VAR['filter_type']                                                                                 );
-$smarty->assign('filter_method',    \CMSApplication::$VAR['filter_method']                                                                               );
-$smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                               );
-$smarty->assign('payment_types',    get_payment_types()                                                                                 );
-$smarty->assign('payment_methods',  get_payment_methods()                                                                               );
-$smarty->assign('payment_statuses', get_payment_statuses()                                                                              );
-$smarty->assign('display_payments', display_payments('payment_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_method'], \CMSApplication::$VAR['filter_status'])   );
+$this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                             );
+$this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                                 );
+$this->app->smarty->assign('filter_type',      \CMSApplication::$VAR['filter_type']                                                                                 );
+$this->app->smarty->assign('filter_method',    \CMSApplication::$VAR['filter_method']                                                                               );
+$this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                               );
+$this->app->smarty->assign('payment_types',    $this->app->components->payment->get_payment_types()                                                                                 );
+$this->app->smarty->assign('payment_methods',  $this->app->components->payment->get_payment_methods()                                                                               );
+$this->app->smarty->assign('payment_statuses', $this->app->components->payment->get_payment_statuses()                                                                              );
+$this->app->smarty->assign('display_payments', $this->app->components->payment->display_payments('payment_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term'], \CMSApplication::$VAR['filter_type'], \CMSApplication::$VAR['filter_method'], \CMSApplication::$VAR['filter_status'])   );

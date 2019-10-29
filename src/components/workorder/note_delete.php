@@ -9,22 +9,22 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm()) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm()) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have a workorder_note_id
 if(!isset(\CMSApplication::$VAR['workorder_note_id']) || !\CMSApplication::$VAR['workorder_note_id']) {
-    systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));
-    force_page('workorder', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Work Order Note ID supplied."));
+    $this->app->system->general->force_page('workorder', 'search');
 }
 
 // Get the workorder_id before we delete the record
-$workorder_id = get_workorder_note_details(\CMSApplication::$VAR['workorder_note_id'], 'workorder_id');
+$workorder_id = $this->app->components->workorder->get_workorder_note_details(\CMSApplication::$VAR['workorder_note_id'], 'workorder_id');
 
 // Delete the record
-delete_workorder_note(\CMSApplication::$VAR['workorder_note_id']);
+$this->app->components->workorder->delete_workorder_note(\CMSApplication::$VAR['workorder_note_id']);
 
 // Reload the workorder details page
-force_page('workorder', 'details&workorder_id='.$workorder_id, 'msg_success='._gettext("The note has been deleted."));
+$this->app->system->general->force_page('workorder', 'details&workorder_id='.$workorder_id, 'msg_success='._gettext("The note has been deleted."));

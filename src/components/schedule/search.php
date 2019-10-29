@@ -19,16 +19,16 @@ if(isset(\CMSApplication::$VAR['submit'])) {
     
     // Log activity
     $record = _gettext("A search of schedules has been performed with the search term").' `'.\CMSApplication::$VAR['search_term'].'` '.'in the category'.' `'.\CMSApplication::$VAR['search_category'].'`.';
-    write_record_to_activity_log($record);
+    $this->app->system->general->write_record_to_activity_log($record);
     
     // Redirect search so the variables are in the URL
     unset(\CMSApplication::$VAR['submit']);
-    force_page('schedule', 'search', \CMSApplication::$VAR, 'get');
+    $this->app->system->general->force_page('schedule', 'search', \CMSApplication::$VAR, 'get');
     
 }
 
 // Build the page
-$smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                                                     );
-$smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                                                         );
-$smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                                                         );
-$smarty->assign('display_schedules', display_schedules('schedule_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term']), \CMSApplication::$VAR['filter_status']   );
+$this->app->smarty->assign('search_category',  \CMSApplication::$VAR['search_category']                                                                                                     );
+$this->app->smarty->assign('search_term',      \CMSApplication::$VAR['search_term']                                                                                                         );
+$this->app->smarty->assign('filter_status',    \CMSApplication::$VAR['filter_status']                                                                                                         );
+$this->app->smarty->assign('display_schedules', $this->app->components->schedule->display_schedules('schedule_id', 'DESC', true, '25', \CMSApplication::$VAR['page_no'], \CMSApplication::$VAR['search_category'], \CMSApplication::$VAR['search_term']), \CMSApplication::$VAR['filter_status']   );

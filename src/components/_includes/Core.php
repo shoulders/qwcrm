@@ -9,14 +9,14 @@
 
 /*
  * Mandatory Code - Code that is run upon the file being loaded
- * Workorders - functions for wokorders
- * Invoices - functions for invoices
- * Clients - functions for clientsd
+ * Workorders - public functions for wokorders
+ * Invoices - public functions for invoices
+ * Clients - public functions for clientsd
  */
 
 defined('_QWEXEC') or die;
 
-class Core {
+class Core extends Components {
 
     /** Home Page **/
 
@@ -24,14 +24,12 @@ class Core {
     # Display Welcome Note                  #
     #########################################
 
-    function display_welcome_msg() {
-
-        $db = \Factory::getDbo();
+    public function display_welcome_msg() {
 
         $sql = "SELECT welcome_msg FROM ".PRFX."company_record";
 
-        if(!$rs = $db->Execute($sql)) {
-            force_error_page('database', __FILE__, __FUNCTION__, $db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
+        if(!$rs = $this->db->Execute($sql)) {
+            $this->app->system->general->force_error_page('database', __FILE__, __FUNCTION__, $this->db->ErrorMsg(), $sql, _gettext("Could not display the welcome message."));
         } else { 
 
             return $rs->fields['welcome_msg'];

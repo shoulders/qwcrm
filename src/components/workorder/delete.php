@@ -9,29 +9,29 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('workorder', 'status')) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm('workorder', 'status')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have a workorder_id
 if(!isset(\CMSApplication::$VAR['workorder_id']) || !\CMSApplication::$VAR['workorder_id']) {
-    systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
-    force_page('workorder', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Workorder ID supplied."));
+    $this->app->system->general->force_page('workorder', 'search');
 }
 
 // Delete the Workorder
-if(!delete_workorder(\CMSApplication::$VAR['workorder_id'])) {
+if(!$this->app->components->workorder->delete_workorder(\CMSApplication::$VAR['workorder_id'])) {
     
     // load the staus page
-    force_page('workorder', 'status', 'workorder_id='.\CMSApplication::$VAR['workorder_id']);
+    $this->app->system->general->force_page('workorder', 'status', 'workorder_id='.\CMSApplication::$VAR['workorder_id']);
     
 } else {
     
     
     // load the workorder search page
-    systemMessagesWrite('success', _gettext("Work Order has been deleted."));
-    force_page('workorder', 'search');
+    $this->app->system->variables->systemMessagesWrite('success', _gettext("Work Order has been deleted."));
+    $this->app->system->general->force_page('workorder', 'search');
     
 }
     

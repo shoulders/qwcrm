@@ -12,21 +12,21 @@ defined('_QWEXEC') or die;
 if(isset(\CMSApplication::$VAR['submit']) || isset(\CMSApplication::$VAR['submitandnew'])) {
         
     // insert the supplier record and get the supplier_id
-    \CMSApplication::$VAR['supplier_id'] = insert_supplier(\CMSApplication::$VAR['qform']);
+    \CMSApplication::$VAR['supplier_id'] = $this->app->components->supplier->insert_supplier(\CMSApplication::$VAR['qform']);
             
     if (isset(\CMSApplication::$VAR['submitandnew'])) {
 
         // load the new supplier page
-        force_page('supplier', 'new', 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
+        $this->app->system->general->force_page('supplier', 'new', 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
 
     } else {
 
         // load the supplier details page
-        force_page('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
+        $this->app->system->general->force_page('supplier', 'details&supplier_id='.\CMSApplication::$VAR['supplier_id'], 'msg_success='._gettext("Supplier added successfully.").' '._gettext("ID").': '.\CMSApplication::$VAR['supplier_id']); 
 
     }
 
 }
 
 // Build the page
-$smarty->assign('supplier_types', get_supplier_types());
+$this->app->smarty->assign('supplier_types', $this->app->components->supplier->get_supplier_types());

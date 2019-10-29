@@ -9,15 +9,15 @@
 defined('_QWEXEC') or die;
 
 // Prevent direct access to this page
-if(!check_page_accessed_via_qwcrm('payment', 'status')) {
+if(!$this->app->system->security->check_page_accessed_via_qwcrm('payment', 'status')) {
     header('HTTP/1.1 403 Forbidden');
     die(_gettext("No Direct Access Allowed."));
 }
 
 // Check if we have an payment_id
 if(!isset(\CMSApplication::$VAR['payment_id']) || !\CMSApplication::$VAR['payment_id']) {
-    systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
-    force_page('payment', 'search');
+    $this->app->system->variables->systemMessagesWrite('danger', _gettext("No Payment ID supplied."));
+    $this->app->system->general->force_page('payment', 'search');
 }   
 
 // This is a dirty hack because QWcrm is not fully OOP yet
@@ -33,7 +33,7 @@ class CancelPayment {
         $this->VAR = &$VAR;
         
         // Set Payment details
-        $this->payment_details = get_payment_details($VAR['payment_id']);
+        $this->payment_details = $this->app->components->payment->get_payment_details($VAR['payment_id']);
         
         // Set the various payment type IDs
         $this->VAR['qpayment']['payment_id'] = $this->payment_details['payment_id'];
@@ -74,8 +74,8 @@ class CancelPayment {
             break;
 
             default:
-            systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
-            force_page('payment', 'search');
+            $this->app->system->variables->systemMessagesWrite('danger', _gettext("Invalid Payment Type."));
+            $this->app->system->general->force_page('payment', 'search');
             break;
 
         }

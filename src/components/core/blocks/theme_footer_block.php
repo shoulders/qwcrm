@@ -8,4 +8,4 @@
 
 defined('_QWEXEC') or die;
 
-$smarty->assign('qwcrm_version', QWCRM_VERSION);
+$this->app->smarty->assign('qwcrm_version', QWCRM_VERSION);
