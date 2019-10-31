@@ -62,10 +62,14 @@ class Router extends System {
         if ($this->app->config->get('sef') && $this->check_link_is_sef($_SERVER['REQUEST_URI']) && $mode != 'get_payload') {
 
             // Set 'component' and 'page_tpl' variables in \CMSApplication::$VAR for correct routing when using SEF
-            parse_sef_url($_SERVER['REQUEST_URI'], 'basic', 'set_var');
+            $this->parse_sef_url($_SERVER['REQUEST_URI'], 'basic', 'set_var');
+            
+            // Re-Grab the routing components
+            $component = \CMSApplication::$VAR['component'];
+            $page_tpl = \CMSApplication::$VAR['page_tpl'];
 
         }
-
+        
         // Check to see if the page exists otherwise send to the 404 page
         if (isset($component, $page_tpl) && !$this->check_page_exists($component, $page_tpl)) {
 

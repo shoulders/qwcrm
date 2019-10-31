@@ -271,7 +271,7 @@ class Page extends System {
         $pagePayload = preg_replace_callback('|(["\'])(index\.php.*)(["\'])|U',
             function($matches) {
 
-                return $matches[1].$this->build_sef_url($matches[2]).$matches[3];
+                return $matches[1].$this->app->system->router->build_sef_url($matches[2]).$matches[3];
 
             }, $pagePayload);
 
