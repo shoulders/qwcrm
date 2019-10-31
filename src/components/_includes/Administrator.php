@@ -515,7 +515,7 @@ class Administrator extends Components {
 
     public function send_test_mail() {
 
-        $user_details = $this->app->user->$this->app->components->user->get_user_details($this->app->user->login_user_id);
+        $user_details = $this->app->components->user->get_user_details($this->app->user->login_user_id);
 
         $this->app->system->email->send_email($user_details['email'], _gettext("Test mail from QWcrm"), 'This is a test mail sent using'.' '.$this->app->config->get('email_mailer').'. '.'Your email settings are correct!', $user_details['display_name']);
 

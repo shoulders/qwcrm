@@ -1222,7 +1222,7 @@ class General extends System {
 
     function ajax_output_system_messages_onscreen() {
 
-        echo "<script>processSystemMessages('".escape_for_javascript($this->app->system->variables->systemMessagesReturnStore())."');</script>";
+        echo "<script>processSystemMessages('".$this->escape_for_javascript($this->app->system->variables->systemMessagesReturnStore())."');</script>";
 
     }
 
@@ -1398,7 +1398,7 @@ class General extends System {
         PhpMyAdmin\MoTranslator\Loader::loadFunctions();
 
         // Autodetect Language - I18N support information here
-        if(function_exists('locale_accept_from_http') && (\Factory::getConfig()->get('autodetect_language') == '1' || $this->app->config->get('autodetect_language') == null)) {
+        if(function_exists('locale_accept_from_http') && ($this->app->config->get('autodetect_language') == '1' || $this->app->config->get('autodetect_language') == null)) {
 
             // Use the locale language if detected or default language or british english (format = en_GB)
             if(!$language = locale_accept_from_http($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {

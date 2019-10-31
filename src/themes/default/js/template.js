@@ -272,7 +272,7 @@ function checkPasswordsMatch(passwordsMatchMSG, passwordsDoNotMatchMSG, toggleSu
     
 }
 
-// This function allows me to grab systems messages created during page rendering and display
+// This function allows me to grab systems messages created by ajax and display
 function processSystemMessages(newMessages) {    
       
     var system_messages = document.getElementById('system_messages');
